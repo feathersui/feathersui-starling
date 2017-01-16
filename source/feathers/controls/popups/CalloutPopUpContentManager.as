@@ -110,7 +110,7 @@ package feathers.controls.popups
 		 *
 		 * @default Callout.DIRECTION_ANY
 		 */
-		public var direction:String = Callout.DIRECTION_ANY;
+		public var direction:String = "any";
 
 		/**
 		 * Determines if the callout will be modal or not.

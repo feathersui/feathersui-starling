@@ -992,7 +992,7 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
-			if(value === TRACK_LAYOUT_MODE_ON_OFF)
+			if(value === "onOff")
 			{
 				value = TrackLayoutMode.SPLIT;
 			}
@@ -1286,7 +1286,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _labelAlign:String = LABEL_ALIGN_MIDDLE;
+		protected var _labelAlign:String = "middle";
 
 		[Deprecated]
 		/**
@@ -3003,7 +3003,7 @@ package feathers.controls
 			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
+			if(this._labelAlign == "middle")
 			{
 				labelHeight = totalLabelHeight;
 			}

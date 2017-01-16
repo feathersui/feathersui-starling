@@ -1482,11 +1482,11 @@ package feathers.controls
 		 */
 		public function set titleAlign(value:String):void
 		{
-			if(value === TITLE_ALIGN_PREFER_LEFT)
+			if(value === "preferLeft")
 			{
 				value = HorizontalAlign.LEFT;
 			}
-			else if(value === TITLE_ALIGN_PREFER_RIGHT)
+			else if(value === "preferRight")
 			{
 				value = HorizontalAlign.RIGHT;
 			}

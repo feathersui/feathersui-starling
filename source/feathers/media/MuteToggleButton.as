@@ -13,6 +13,7 @@ package feathers.media
 	import feathers.core.PropertyProxy;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.layout.Direction;
+	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;
@@ -552,7 +553,7 @@ package feathers.media
 			{
 				var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 				popUpContentManager.fitContentMinWidthToOrigin = false;
-				popUpContentManager.primaryDirection = DropDownPopUpContentManager.PRIMARY_DIRECTION_UP;
+				popUpContentManager.primaryDirection = RelativePosition.TOP;
 				this._popUpContentManager = popUpContentManager;
 			}
 			super.initialize();

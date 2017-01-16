@@ -320,11 +320,11 @@ package feathers.controls.popups
 		 */
 		public function set primaryDirection(value:String):void
 		{
-			if(value === PRIMARY_DIRECTION_UP)
+			if(value === "up")
 			{
 				value = RelativePosition.TOP;
 			}
-			else if(value === PRIMARY_DIRECTION_DOWN)
+			else if(value === "down")
 			{
 				value = RelativePosition.BOTTOM;
 			}

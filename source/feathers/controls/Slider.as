@@ -1047,7 +1047,7 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
-			if(value === TRACK_LAYOUT_MODE_MIN_MAX)
+			if(value === "minMax")
 			{
 				value = TrackLayoutMode.SPLIT;
 			}

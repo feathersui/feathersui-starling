@@ -1949,7 +1949,7 @@ package feathers.controls
 		public function set openMode(value:String):void
 		{
 			//for legacy reasons, OPEN_MODE_ABOVE had a different string value
-			if(value === OPEN_MODE_ABOVE)
+			if(value === "overlay")
 			{
 				value = RelativeDepth.ABOVE;
 			}
@@ -2016,11 +2016,11 @@ package feathers.controls
 		 */
 		public function set openGesture(value:String):void
 		{
-			if(value === OPEN_GESTURE_DRAG_CONTENT)
+			if(value === "dragContent")
 			{
 				value = DragGesture.CONTENT;
 			}
-			else if(value === OPEN_GESTURE_DRAG_CONTENT_EDGE)
+			else if(value === "dragContentEdge")
 			{
 				value = DragGesture.EDGE;
 			}

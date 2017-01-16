@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
@@ -1356,31 +1357,31 @@ package feathers.controls
 		public function set supportedDirections(value:String):void
 		{
 			var positions:Vector.<String> = null;
-			if(value === DIRECTION_ANY)
+			if(value === "any")
 			{
 				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.LEFT];
 			}
-			else if(value === DIRECTION_HORIZONTAL)
+			else if(value === "horizontal")
 			{
 				positions = new <String>[RelativePosition.RIGHT, RelativePosition.LEFT];
 			}
-			else if(value === DIRECTION_VERTICAL)
+			else if(value === "vertical")
 			{
 				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP];
 			}
-			else if(value === DIRECTION_UP)
+			else if(value === "up")
 			{
 				positions = new <String>[RelativePosition.TOP];
 			}
-			else if(value === DIRECTION_DOWN)
+			else if(value === "down")
 			{
 				positions = new <String>[RelativePosition.BOTTOM];
 			}
-			else if(value === DIRECTION_RIGHT)
+			else if(value === "right")
 			{
 				positions = new <String>[RelativePosition.RIGHT];
 			}
-			else if(value === DIRECTION_LEFT)
+			else if(value === "left")
 			{
 				positions = new <String>[RelativePosition.LEFT];
 			}

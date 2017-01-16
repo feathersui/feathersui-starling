@@ -2796,7 +2796,7 @@ package feathers.controls
 					}
 					else
 					{
-						if(this._direction === DIRECTION_VERTICAL)
+						if(this._direction === Direction.VERTICAL)
 						{
 							this._selectionSkin.y = tab.y;
 							this._selectionSkin.height = tab.height;
