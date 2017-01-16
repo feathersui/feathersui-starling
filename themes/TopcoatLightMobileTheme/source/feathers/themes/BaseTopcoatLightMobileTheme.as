@@ -1717,7 +1717,7 @@ package feathers.themes
 			tab.fontStyles = this.darkFontStyles;
 			tab.disabledFontStyles = this.darkDisabledFontStyles;
 			tab.selectedFontStyles = this.selectedFontStyles;
-			tab.setFontStylesForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.selectedDisabledFontStyles);
+			tab.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.selectedDisabledFontStyles);
 
 			tab.paddingLeft = this.gutterSize;
 			tab.paddingRight = this.gutterSize;

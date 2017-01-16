@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.themes
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollPolicy;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.screens.AutoCompleteScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
@@ -68,7 +69,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setButtonScreenIconButtonStyles(button:Button):void
@@ -93,7 +94,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setCheckScreenStyles(screen:CheckScreen):void
@@ -108,7 +109,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setCalloutScreenStyles(screen:CalloutScreen):void
@@ -123,7 +124,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setCalloutHeaderStyles(header:Header):void
@@ -168,7 +169,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setProgressBarScreenStyles(screen:ProgressBarScreen):void
@@ -195,7 +196,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setSliderScreenStyles(screen:SliderScreen):void
@@ -230,7 +231,7 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.gap = this.smallGutterSize;
 			screen.layout = verticalLayout;
 
-			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
+			screen.verticalScrollPolicy = ScrollPolicy.ON;
 		}
 
 		protected function setToggleSwitchScreenStyles(screen:ToggleSwitchScreen):void

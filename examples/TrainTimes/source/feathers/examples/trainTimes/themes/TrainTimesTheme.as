@@ -24,15 +24,16 @@ package feathers.examples.trainTimes.themes
 	import feathers.themes.StyleNameFunctionTheme;
 
 	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.ResizeEvent;
+	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import starling.utils.Align;
 
 	public class TrainTimesTheme extends StyleNameFunctionTheme
 	{
@@ -180,11 +181,15 @@ package feathers.examples.trainTimes.themes
 			var regularFontName:String = "SourceSansPro";
 			var boldFontName:String = "SourceSansProBold";
 			var boldItalicFontName:String = "SourceSansProBoldItalic";
-			this.defaultTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR);
-			this.selectedTextFormat = new TextFormat(boldFontName, 18, PRIMARY_TEXT_COLOR, true);
-			this.headerTitleTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR);
-			this.stationListNameTextFormat = new TextFormat(boldItalicFontName, 24, PRIMARY_TEXT_COLOR, true, true);
-			this.stationListDetailTextFormat = new TextFormat(boldFontName, 12, DETAIL_TEXT_COLOR, true);
+			this.defaultTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR, Align.LEFT, Align.TOP);
+			this.selectedTextFormat = new TextFormat(boldFontName, 18, PRIMARY_TEXT_COLOR, Align.LEFT, Align.TOP);
+			this.selectedTextFormat.bold = true;
+			this.headerTitleTextFormat = new TextFormat(regularFontName, 18, PRIMARY_TEXT_COLOR, Align.LEFT, Align.TOP);
+			this.stationListNameTextFormat = new TextFormat(boldItalicFontName, 24, PRIMARY_TEXT_COLOR, Align.LEFT, Align.TOP);
+			this.stationListNameTextFormat.bold = true;
+			this.stationListNameTextFormat.italic = true;
+			this.stationListDetailTextFormat = new TextFormat(boldFontName, 12, DETAIL_TEXT_COLOR, Align.LEFT, Align.TOP);
+			this.stationListDetailTextFormat.bold = true;
 			this.stationListDetailTextFormat.letterSpacing = 3;
 		}
 
@@ -235,17 +240,17 @@ package feathers.examples.trainTimes.themes
 
 		protected function setLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.defaultTextFormat;
+			label.fontStyles = this.defaultTextFormat;
 		}
 
 		protected function setStationListNameLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.stationListNameTextFormat;
+			label.fontStyles = this.stationListNameTextFormat;
 		}
 
 		protected function setStationListDetailLabelStyles(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.stationListDetailTextFormat;
+			label.fontStyles = this.stationListDetailTextFormat;
 		}
 
 		protected function setButtonStyles(button:Button):void
@@ -285,7 +290,7 @@ package feathers.examples.trainTimes.themes
 			backgroundSkin.scale9Grid = HEADER_SCALE9_GRID;
 			header.backgroundSkin = backgroundSkin;
 			
-			header.titleProperties.textFormat = this.headerTitleTextFormat;
+			header.fontStyles = this.headerTitleTextFormat;
 		}
 
 		protected function setStationListStyles(list:List):void
@@ -308,8 +313,8 @@ package feathers.examples.trainTimes.themes
 			renderer.defaultSkin = defaultSkin;
 			var defaultSelectedSkin:Quad = new Quad(44, 44, 0xcc2a41);
 			renderer.defaultSelectedSkin = defaultSelectedSkin;
-			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			renderer.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
+			renderer.fontStyles = this.defaultTextFormat;
+			renderer.selectedFontStyles = this.selectedTextFormat;
 			renderer.paddingLeft = 4;
 			renderer.paddingRight = 8;
 		}
