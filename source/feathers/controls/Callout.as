@@ -43,7 +43,7 @@ package feathers.controls
 	 * will be managed by the callout and may change automatically if the
 	 * origin moves to a new position or if the stage resizes.
 	 *
-	 * <p>The <code>supportedDirections</code> property is related to this
+	 * <p>The <code>supportedPositions</code> property is related to this
 	 * one, but they have different meanings and are usually opposites. For
 	 * example, a callout on the right side of its origin will generally
 	 * display its left arrow.</p>
