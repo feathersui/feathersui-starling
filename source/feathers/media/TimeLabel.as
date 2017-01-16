@@ -69,6 +69,7 @@ package feathers.media
 	 */
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{
+		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_TIME")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_TIME</code>.
@@ -80,6 +81,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.TOTAL_TIME")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.TOTAL_TIME</code>.
@@ -91,6 +93,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_TOTAL_TIME:String = "totalTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.REMAINING_TIME")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.REMAINING_TIME</code>.
@@ -102,6 +105,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_REMAINING_TIME:String = "remainingTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>.

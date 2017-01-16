@@ -51,6 +51,7 @@ package feathers.layout
 	 */
 	public class FlowLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -62,6 +63,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -73,6 +75,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -84,6 +87,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -95,6 +99,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -106,6 +111,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -122,6 +128,7 @@ package feathers.layout
 		 */
 		public function FlowLayout()
 		{
+			super();
 		}
 
 		/**

@@ -428,6 +428,7 @@ package feathers.controls
 			RelativePosition.LEFT,
 		];
 
+		[Deprecated]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
@@ -440,6 +441,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_ANY:String = "any";
 
+		[Deprecated]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
@@ -452,6 +454,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
+		[Deprecated]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
@@ -464,6 +467,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -475,6 +479,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_UP:String = "up";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -486,6 +491,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_DOWN:String = "down";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -497,6 +503,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -508,6 +515,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -519,6 +527,7 @@ package feathers.controls
 		 */
 		public static const ARROW_POSITION_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -530,6 +539,7 @@ package feathers.controls
 		 */
 		public static const ARROW_POSITION_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -541,6 +551,7 @@ package feathers.controls
 		 */
 		public static const ARROW_POSITION_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -1324,6 +1335,7 @@ package feathers.controls
 		 */
 		protected var _supportedDirections:String = null;
 
+		[Deprecated(replacement="position")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by the <code>position</code> property.

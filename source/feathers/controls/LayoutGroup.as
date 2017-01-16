@@ -130,6 +130,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
@@ -141,6 +142,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.

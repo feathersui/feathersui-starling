@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	[ExcludeClass]
+	[Deprecated(replacement="IGroupedListHeaderRenderer or IGroupedListFooterRenderer")]
 	/**
 	 * DEPRECATED: Replaced by separate <code>IGroupedListHeaderRenderer</code>
 	 * and <code>IGroupedListFooterRenderer</code> interfaces.

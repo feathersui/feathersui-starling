@@ -88,9 +88,10 @@ package feathers.controls.popups
 	 */
 	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.BOTTOM</code>.
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -99,9 +100,10 @@ package feathers.controls.popups
 		 */
 		public static const PRIMARY_DIRECTION_DOWN:String = "down";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.TOP</code>.
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of

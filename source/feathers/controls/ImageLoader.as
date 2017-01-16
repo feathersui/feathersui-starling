@@ -413,6 +413,7 @@ package feathers.controls
 	[Event(name="progress",type="starling.events.Event")]
 
 	/**
+	 * @private
 	 * DEPRECATED: Replaced by <code>Event.IO_ERROR</code> and
 	 * <code>Event.SECURITY_ERROR</code>.
 	 *
@@ -536,6 +537,7 @@ package feathers.controls
 		 */
 		protected static var textureQueueTail:ImageLoader;
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -547,6 +549,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -558,6 +561,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -569,6 +573,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -580,6 +585,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -591,6 +597,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.

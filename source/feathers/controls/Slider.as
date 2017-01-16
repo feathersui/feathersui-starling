@@ -348,6 +348,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
 
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -358,7 +359,8 @@ package feathers.controls
 		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-		
+
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
@@ -370,6 +372,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
@@ -381,6 +384,7 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
@@ -392,9 +396,10 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
+		[Deprecated(replacement="feathers.controls.TrackScaleMode.EXACT_FIT")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.EXACT_FIT</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackScaleMode.EXACT_FIT</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -403,9 +408,10 @@ package feathers.controls
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
+		[Deprecated(replacement="feathers.controls.TrackScaleMode.DIRECTIONAL")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.DIRECTIONAL</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.TrackScaleMode.DIRECTIONAL</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -414,6 +420,7 @@ package feathers.controls
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
+		[Deprecated(replacement="feathers.controls.TrackInteractionMode.TO_VALUE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.TO_VALUE</code>.
@@ -425,6 +432,7 @@ package feathers.controls
 		 */
 		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
 
+		[Deprecated(replacement="feathers.controls.TrackInteractionMode.BY_PAGE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackInteractionMode.BY_PAGE</code>.

@@ -189,6 +189,7 @@ package feathers.controls
 	 */
 	public class StackScreenNavigator extends BaseScreenNavigator
 	{
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
@@ -200,6 +201,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.

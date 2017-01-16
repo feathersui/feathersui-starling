@@ -256,6 +256,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
 
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -267,6 +268,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.

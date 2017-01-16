@@ -476,6 +476,7 @@ package feathers.controls
 			"name"
 		];
 
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
@@ -487,6 +488,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
@@ -498,6 +500,7 @@ package feathers.controls
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -509,6 +512,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -520,6 +524,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -531,6 +536,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
@@ -542,6 +548,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -553,6 +560,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -564,6 +572,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -575,6 +584,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
