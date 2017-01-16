@@ -450,11 +450,11 @@ package feathers.controls
 			{
 				if(this._autoSizeMode === AutoSizeMode.STAGE)
 				{
-					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+					this.stage.addEventListener(Event.RESIZE, scrollContainer_stage_resizeHandler);
 				}
 				else
 				{
-					this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+					this.stage.removeEventListener(Event.RESIZE, scrollContainer_stage_resizeHandler);
 				}
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -850,7 +850,7 @@ package feathers.controls
 				//that the new stage dimensions are accounted for.
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 
-				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+				this.stage.addEventListener(Event.RESIZE, scrollContainer_stage_resizeHandler);
 			}
 		}
 
@@ -859,7 +859,7 @@ package feathers.controls
 		 */
 		protected function scrollContainer_removedFromStageHandler(event:Event):void
 		{
-			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+			this.stage.removeEventListener(Event.RESIZE, scrollContainer_stage_resizeHandler);
 		}
 
 		/**
@@ -889,7 +889,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function stage_resizeHandler(event:Event):void
+		protected function scrollContainer_stage_resizeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
