@@ -103,6 +103,11 @@ package feathers.controls.text
 		 */
 		public function TextFieldTextRenderer()
 		{
+			if(this._text === null)
+			{
+				//flash.text.TextField won't accept a null value
+				this._text = "";
+			}
 			super();
 			this.isQuickHitAreaEnabled = true;
 		}
