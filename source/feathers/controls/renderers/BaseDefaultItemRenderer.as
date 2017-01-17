@@ -5567,27 +5567,21 @@ package feathers.controls.renderers
 			}
 			if(this.labelTextRenderer !== null)
 			{
-				if(forMeasurement)
+				this.labelTextRenderer.width = this._explicitLabelWidth;
+				this.labelTextRenderer.height = this._explicitLabelHeight;
+				this.labelTextRenderer.minWidth = this._explicitLabelMinWidth;
+				this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
+				this.labelTextRenderer.validate();
+				if(!forMeasurement)
 				{
-					this.labelTextRenderer.width = this._explicitLabelWidth;
-					this.labelTextRenderer.height = this._explicitLabelHeight;
-					this.labelTextRenderer.minWidth = this._explicitLabelMinWidth;
-					this.labelTextRenderer.minHeight = this._explicitLabelMinHeight;
-					this.labelTextRenderer.maxWidth = calculatedWidth;
-					this.labelTextRenderer.maxHeight = calculatedHeight;
-					this.labelTextRenderer.validate();
-				}
-				else
-				{
+					calculatedWidth = this.labelTextRenderer.width;
+					calculatedHeight = this.labelTextRenderer.height;
 					//setting all of these dimensions explicitly means that the
 					//text renderer won't measure itself again when it
 					//validates, which helps performance. we'll reset them when
 					//the item renderer needs to measure itself.
-					this.labelTextRenderer.maxWidth = calculatedWidth;
-					this.labelTextRenderer.maxHeight = calculatedHeight;
-					this.labelTextRenderer.validate();
-					calculatedWidth = this.labelTextRenderer.width;
-					calculatedHeight = this.labelTextRenderer.height;
 					this.labelTextRenderer.width = calculatedWidth;
 					this.labelTextRenderer.height = calculatedHeight;
 					this.labelTextRenderer.minWidth = calculatedWidth;
