@@ -234,6 +234,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _cursorDelay:Number = 0.53;
+
+		/**
+		 * @private
+		 */
+		protected var _cursorDelayID:uint = uint.MAX_VALUE;
+
+		/**
+		 * @private
+		 */
 		protected var _cursorSkin:DisplayObject;
 
 		/**
@@ -250,16 +260,16 @@ package feathers.controls.text
 		 */
 		public function set cursorSkin(value:DisplayObject):void
 		{
-			if(this._cursorSkin == value)
+			if(this._cursorSkin === value)
 			{
 				return;
 			}
-			if(this._cursorSkin && this._cursorSkin.parent == this)
+			if(this._cursorSkin !== null && this._cursorSkin.parent === this)
 			{
 				this._cursorSkin.removeFromParent();
 			}
 			this._cursorSkin = value;
-			if(this._cursorSkin)
+			if(this._cursorSkin !== null)
 			{
 				this._cursorSkin.visible = false;
 				this.addChild(this._cursorSkin);
@@ -677,6 +687,7 @@ package feathers.controls.text
 			this._hasFocus = false;
 			this._cursorSkin.visible = false;
 			this._selectionSkin.visible = false;
+			this.refreshCursorBlink();
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
@@ -733,6 +744,7 @@ package feathers.controls.text
 				this._cursorSkin.visible = false;
 				this._selectionSkin.visible = true;
 			}
+			this.refreshCursorBlink();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -894,6 +906,7 @@ package feathers.controls.text
 				this._selectionBeginIndex === this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = showSelection;
+			this.refreshCursorBlink();
 			if(!FocusManager.isEnabledForStage(this.stage))
 			{
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
@@ -911,6 +924,41 @@ package feathers.controls.text
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshCursorBlink():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this._cursorDelayID === uint.MAX_VALUE && this._cursorSkin.visible)
+			{
+				this._cursorSkin.alpha = 1;
+				this._cursorDelayID = starling.juggler.delayCall(toggleCursorSkin, this._cursorDelay);
+			}
+			else if(this._cursorDelayID !== uint.MAX_VALUE && !this._cursorSkin.visible)
+			{
+				starling.juggler.removeByID(this._cursorDelayID);
+				this._cursorDelayID = uint.MAX_VALUE;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleCursorSkin():void
+		{
+			if(this._cursorSkin.alpha > 0)
+			{
+				this._cursorSkin.alpha = 0;
+			}
+			else
+			{
+				this._cursorSkin.alpha = 1;
+			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			this._cursorDelayID = starling.juggler.delayCall(toggleCursorSkin, this._cursorDelay);
 		}
 
 		/**
