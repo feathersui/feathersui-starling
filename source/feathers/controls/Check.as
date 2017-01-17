@@ -137,7 +137,7 @@ package feathers.controls
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP,since="3.0.0"")]
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
