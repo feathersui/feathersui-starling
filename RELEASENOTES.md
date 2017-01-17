@@ -19,6 +19,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.1.0 - October 2016
 
+See the [Feathers 3.1 Migration Guide](http://feathersui.com/help/migration-guide-3.1.html) for details about how to upgrade to Feathers 3.1.
+
 * New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
 * Font Styles: all components support starling.text.TextFormat for font styling. For advanced needs, text renderers can still use low-level ElementFormat/TextFormat objects which take precedence.
 * Style Properties: some properties are now considered styles, and a theme cannot replace their values if they are set outside of the theme first. No more AddOnFunctionStyleProvider, validation, or extending the theme required.
