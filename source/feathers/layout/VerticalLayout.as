@@ -2324,15 +2324,16 @@ package feathers.layout
 								totalMinHeight += feathersItem.minHeight;
 							}
 							totalPercentHeight += percentHeight;
+							totalExplicitHeight += this._gap;
 							this._discoveredItemsCache[pushIndex] = item;
 							pushIndex++;
 							continue;
 						}
 					}
 				}
-				totalExplicitHeight += item.height;
+				totalExplicitHeight += item.height + this._gap;
 			}
-			totalExplicitHeight += this._gap * (itemCount - 1);
+			totalExplicitHeight -= this._gap;
 			if(this._firstGap === this._firstGap && itemCount > 1)
 			{
 				totalExplicitHeight += (this._firstGap - this._gap);

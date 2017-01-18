@@ -2086,15 +2086,16 @@ package feathers.layout
 								totalMinWidth += feathersItem.minWidth;
 							}
 							totalPercentWidth += percentWidth;
+							totalExplicitWidth += this._gap;
 							this._discoveredItemsCache[pushIndex] = item;
 							pushIndex++;
 							continue;
 						}
 					}
 				}
-				totalExplicitWidth += item.width;
+				totalExplicitWidth += item.width + this._gap;
 			}
-			totalExplicitWidth += this._gap * (itemCount - 1);
+			totalExplicitWidth -= this._gap;
 			if(this._firstGap === this._firstGap && itemCount > 1)
 			{
 				totalExplicitWidth += (this._firstGap - this._gap);
