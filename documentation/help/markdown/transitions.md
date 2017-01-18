@@ -94,9 +94,9 @@ The [`Iris`](../api-reference/feathers/motion/Iris.html) transition shows or hid
 
 ``` code
 Iris.createIrisOpenTransition();
-Flip.createIrisOpenTransitionAt(x, y);
-Flip.createIrisCloseTransition();
-Flip.createIrisCloseTransitionAt(x, y);
+Iris.createIrisOpenTransitionAt(x, y);
+Iris.createIrisCloseTransition();
+Iris.createIrisCloseTransitionAt(x, y);
 ```
 
 ## Reveal
