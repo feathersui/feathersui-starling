@@ -44,7 +44,8 @@ package feathers.media
 		{
 			if(this._layout === null)
 			{
-				this._layout = new AnchorLayout();
+				this.ignoreNextStyleRestriction();
+				this.layout = new AnchorLayout();
 			}
 			super.initialize();
 		}

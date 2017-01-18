@@ -276,6 +276,8 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
+			//SpinnerList has a different default layout than its superclass,
+			//List, so set it before calling super.initialize()
 			if(this._layout === null)
 			{
 				if(this._hasElasticEdges &&
@@ -293,7 +295,8 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
-				this._layout = layout;
+				this.ignoreNextStyleRestriction();
+				this.layout = layout;
 			}
 
 			super.initialize();

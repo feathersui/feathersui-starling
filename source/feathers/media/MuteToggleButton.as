@@ -554,7 +554,8 @@ package feathers.media
 				var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 				popUpContentManager.fitContentMinWidthToOrigin = false;
 				popUpContentManager.primaryDirection = RelativePosition.TOP;
-				this._popUpContentManager = popUpContentManager;
+				this.ignoreNextStyleRestriction();
+				this.popUpContentManager = popUpContentManager;
 			}
 			super.initialize();
 		}

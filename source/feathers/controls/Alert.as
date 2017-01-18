@@ -926,7 +926,8 @@ package feathers.controls
 			{
 				var layout:VerticalLayout = new VerticalLayout();
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-				this._layout = layout;
+				this.ignoreNextStyleRestriction();
+				this.layout = layout;
 			}
 			super.initialize();
 		}

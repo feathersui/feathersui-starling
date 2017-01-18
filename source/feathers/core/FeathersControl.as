@@ -1790,6 +1790,11 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _ignoreNextStyleRestriction:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _invalidateCount:int = 0;
 
 		/**
@@ -2417,14 +2422,22 @@ package feathers.core
 		 * 
 		 *     this._customStyle = value;
 		 * }</listing>
+		 *
+		 * @see #ignoreNextStyleRestriction()
 		 */
 		protected function processStyleRestriction(key:Object):Boolean
 		{
+			var ignore:Boolean = this._ignoreNextStyleRestriction;
+			this._ignoreNextStyleRestriction = false;
 			//in most cases, the style is not restricted, and we can set it
 			if(this._applyingStyles)
 			{
 				return this._restrictedStyles !== null &&
 					key in this._restrictedStyles;
+			}
+			if(ignore)
+			{
+				return false;
 			}
 			if(this._restrictedStyles === null)
 			{
@@ -2433,6 +2446,18 @@ package feathers.core
 			}
 			this._restrictedStyles[key] = true;
 			return false;
+		}
+
+		/**
+		 * The next style that is set will not be restricted. This allows
+		 * components to set defaults by calling the setter while still allowing
+		 * the style property to be replaced by a theme in the future.
+		 * 
+		 * @see #processStyleRestriction()
+		 */
+		protected function ignoreNextStyleRestriction():void
+		{
+			this._ignoreNextStyleRestriction = true;
 		}
 
 		/**

@@ -1405,18 +1405,18 @@ package feathers.controls
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				if(SystemUtil.isDesktop)
 				{
-					this._popUpContentManager = new DropDownPopUpContentManager();
+					var popUpContentManager:IPopUpContentManager = new DropDownPopUpContentManager();
 				}
 				else if(DeviceCapabilities.isTablet(starling.nativeStage))
 				{
-					this._popUpContentManager = new CalloutPopUpContentManager();
+					popUpContentManager = new CalloutPopUpContentManager();
 				}
 				else
 				{
-					this._popUpContentManager = new VerticalCenteredPopUpContentManager();
+					popUpContentManager = new VerticalCenteredPopUpContentManager();
 				}
-				this._popUpContentManager.addEventListener(Event.OPEN, popUpContentManager_openHandler);
-				this._popUpContentManager.addEventListener(Event.CLOSE, popUpContentManager_closeHandler);
+				this.ignoreNextStyleRestriction();
+				this.popUpContentManager = popUpContentManager;
 			}
 			super.initialize();
 		}

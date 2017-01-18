@@ -1561,11 +1561,12 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this._layout)
+			if(this._layout === null)
 			{
-				this._layout = new HorizontalLayout();
-				this._layout.useVirtualLayout = false;
-				this._layout.verticalAlign = VerticalAlign.MIDDLE;
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.useVirtualLayout = false;
+				layout.verticalAlign = VerticalAlign.MIDDLE;
+				this._layout = layout; 
 			}
 		}
 

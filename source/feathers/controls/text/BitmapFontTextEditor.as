@@ -214,6 +214,10 @@ package feathers.controls.text
 		 */
 		public function set selectionSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._selectionSkin == value)
 			{
 				return;
@@ -260,6 +264,10 @@ package feathers.controls.text
 		 */
 		public function set cursorSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._cursorSkin === value)
 			{
 				return;
@@ -798,10 +806,12 @@ package feathers.controls.text
 			this._nativeFocus.addEventListener(TextEvent.TEXT_INPUT, nativeFocus_textInputHandler, false, 0, true);
 			if(!this._cursorSkin)
 			{
+				this.ignoreNextStyleRestriction();
 				this.cursorSkin = new Quad(1, 1, 0x000000);
 			}
 			if(!this._selectionSkin)
 			{
+				this.ignoreNextStyleRestriction();
 				this.selectionSkin = new Quad(1, 1, 0x000000);
 			}
 			super.initialize();
