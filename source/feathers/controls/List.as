@@ -1520,6 +1520,7 @@ package feathers.controls
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.verticalAlign = VerticalAlign.TOP;
 				this._layout = layout;
+				this._layout.addEventListener(Event.SCROLL, layout_scrollHandler);
 			}
 		}
 

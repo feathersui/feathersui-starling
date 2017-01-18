@@ -2963,6 +2963,7 @@ package feathers.controls
 				layout.verticalAlign = VerticalAlign.TOP;
 				layout.stickyHeader = !this._styleNameList.contains(ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
 				this._layout = layout;
+				this._layout.addEventListener(Event.SCROLL, layout_scrollHandler);
 			}
 		}
 
