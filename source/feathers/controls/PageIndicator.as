@@ -80,7 +80,7 @@ package feathers.controls
 	 * <p>In the following example, the interaction mode is changed to precise:</p>
 	 *
 	 * <listing version="3.0">
-	 * pages.direction = PageIndicatorInteractionMode.PRECISE;</listing>
+	 * pages.interactionMode = PageIndicatorInteractionMode.PRECISE;</listing>
 	 *
 	 * @default feathers.controls.PageIndicatorInteractionMode.PREVIOUS_NEXT
 	 *
