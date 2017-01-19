@@ -307,14 +307,26 @@ package feathers.controls
 		 */
 		override protected function refreshMinAndMaxScrollPositions():void
 		{
+			var oldActualPageWidth:Number = this.actualPageWidth;
+			var oldActualPageHeight:Number = this.actualPageHeight;
 			super.refreshMinAndMaxScrollPositions();
-			if(this._maxVerticalScrollPosition != this._minVerticalScrollPosition)
+			if(this._maxVerticalScrollPosition !== this._minVerticalScrollPosition)
 			{
 				this.actualPageHeight = ISpinnerLayout(this._layout).snapInterval;
+				if(!this.isScrolling && this.actualPageHeight !== oldActualPageHeight)
+				{
+					var pageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this._verticalScrollPosition = this.actualPageHeight * pageIndex;
+				}
 			}
-			else if(this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition)
+			else if(this._maxHorizontalScrollPosition !== this._minHorizontalScrollPosition)
 			{
 				this.actualPageWidth = ISpinnerLayout(this._layout).snapInterval;
+				if(!this.isScrolling && this.actualPageWidth !== oldActualPageWidth)
+				{
+					pageIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this._horizontalScrollPosition = this.actualPageWidth * pageIndex;
+				}
 			}
 		}
 
