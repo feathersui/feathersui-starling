@@ -4110,6 +4110,8 @@ package feathers.controls
 			//and it's better to handle it here instead of having them
 			//invalidate unrelated flags
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			//similarly, this flag may be set in subclasses
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
@@ -4151,7 +4153,7 @@ package feathers.controls
 			var oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
 			var oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var needsMeasurement:Boolean = (scrollInvalid && this._viewPort.requiresMeasurementOnScroll) ||
-				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || stateInvalid;
+				dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || stateInvalid || layoutInvalid;
 			this.refreshViewPort(needsMeasurement);
 			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
 			{
