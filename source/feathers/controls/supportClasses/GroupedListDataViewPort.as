@@ -1795,7 +1795,16 @@ package feathers.controls.supportClasses
 		private function findRendererForItem(item:Object, groupIndex:int, itemIndex:int, layoutIndex:int):void
 		{
 			var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-			if(itemRenderer)
+			if(this._factoryIDFunction !== null && itemRenderer !== null)
+			{
+				var newFactoryID:String = this.getFactoryID(itemRenderer.data, groupIndex, itemIndex);
+				if(newFactoryID !== itemRenderer.factoryID)
+				{
+					itemRenderer = null;
+					delete this._itemRendererMap[item];
+				}
+			}
+			if(itemRenderer !== null)
 			{
 				//the indices may have changed if items were added, removed,
 				//or reordered in the data provider
@@ -1820,7 +1829,7 @@ package feathers.controls.supportClasses
 				//the typical item renderer is a special case, and we will
 				//have already put it into the active renderers, so we don't
 				//want to do it again!
-				if(this._typicalItemRenderer != itemRenderer)
+				if(this._typicalItemRenderer !== itemRenderer)
 				{
 					var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(itemRenderer.factoryID,
 						itemRenderer.groupIndex, itemRenderer.itemIndex);
@@ -1854,7 +1863,16 @@ package feathers.controls.supportClasses
 		private function findRendererForHeader(header:Object, groupIndex:int, layoutIndex:int):void
 		{
 			var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
-			if(headerRenderer)
+			if(this._headerFactoryIDFunction !== null && headerRenderer !== null)
+			{
+				var newFactoryID:String = this.getHeaderFactoryID(headerRenderer.data, groupIndex);
+				if(newFactoryID !== headerRenderer.factoryID)
+				{
+					headerRenderer = null;
+					delete this._headerRendererMap[header];
+				}
+			}
+			if(headerRenderer !== null)
 			{
 				headerRenderer.groupIndex = groupIndex;
 				headerRenderer.layoutIndex = layoutIndex;
@@ -1892,7 +1910,16 @@ package feathers.controls.supportClasses
 		private function findRendererForFooter(footer:Object, groupIndex:int, layoutIndex:int):void
 		{
 			var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
-			if(footerRenderer)
+			if(this._footerFactoryIDFunction !== null && footerRenderer !== null)
+			{
+				var newFactoryID:String = this.getFooterFactoryID(footerRenderer.data, groupIndex);
+				if(newFactoryID !== footerRenderer.factoryID)
+				{
+					footerRenderer = null;
+					delete this._footerRendererMap[footer];
+				}
+			}
+			if(footerRenderer !== null)
 			{
 				footerRenderer.groupIndex = groupIndex;
 				footerRenderer.layoutIndex = layoutIndex;
@@ -2170,18 +2197,7 @@ package feathers.controls.supportClasses
 
 		private function createHeaderRenderer(header:Object, groupIndex:int, layoutIndex:int, isTemporary:Boolean = false):IGroupedListHeaderRenderer
 		{
-			var factoryID:String = null;
-			if(this._headerFactoryIDFunction !== null)
-			{
-				if(this._headerFactoryIDFunction.length === 1)
-				{
-					factoryID = this._headerFactoryIDFunction(header);
-				}
-				else
-				{
-					factoryID = this._headerFactoryIDFunction(header, groupIndex);
-				}
-			}
+			var factoryID:String = this.getHeaderFactoryID(header, groupIndex);
 			var headerRendererFactory:Function = this.headerFactoryIDToFactory(factoryID);
 			var storage:HeaderRendererFactoryStorage = this.headerFactoryIDToStorage(factoryID);
 			var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
@@ -2228,18 +2244,7 @@ package feathers.controls.supportClasses
 
 		private function createFooterRenderer(footer:Object, groupIndex:int, layoutIndex:int, isTemporary:Boolean = false):IGroupedListFooterRenderer
 		{
-			var factoryID:String = null;
-			if(this._footerFactoryIDFunction !== null)
-			{
-				if(this._footerFactoryIDFunction.length === 1)
-				{
-					factoryID = this._footerFactoryIDFunction(footer);
-				}
-				else
-				{
-					factoryID = this._footerFactoryIDFunction(footer, groupIndex);
-				}
-			}
+			var factoryID:String = this.getFooterFactoryID(footer, groupIndex);
 			var footerRendererFactory:Function = this.footerFactoryIDToFactory(factoryID);
 			var storage:FooterRendererFactoryStorage = this.footerFactoryIDToStorage(factoryID);
 			var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.inactiveFooterRenderers;
@@ -2567,6 +2572,32 @@ package feathers.controls.supportClasses
 				return storage;
 			}
 			return this._defaultItemRendererStorage;
+		}
+
+		private function getHeaderFactoryID(header:Object, groupIndex:int):String
+		{
+			if(this._headerFactoryIDFunction === null)
+			{
+				return null;
+			}
+			if(this._headerFactoryIDFunction.length === 1)
+			{
+				return this._headerFactoryIDFunction(header);
+			}
+			return this._headerFactoryIDFunction(header, groupIndex);
+		}
+
+		private function getFooterFactoryID(footer:Object, groupIndex:int):String
+		{
+			if(this._footerFactoryIDFunction === null)
+			{
+				return null;
+			}
+			if(this._footerFactoryIDFunction.length === 1)
+			{
+				return this._footerFactoryIDFunction(footer);
+			}
+			return this._footerFactoryIDFunction(footer, groupIndex);
 		}
 
 		private function headerFactoryIDToFactory(id:String):Function

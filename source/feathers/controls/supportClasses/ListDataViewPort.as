@@ -1152,7 +1152,16 @@ package feathers.controls.supportClasses
 				}
 				var item:Object = this._dataProvider.getItemAt(index);
 				var itemRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(itemRenderer)
+				if(this._factoryIDFunction !== null && itemRenderer !== null)
+				{
+					var newFactoryID:String = this.getFactoryID(itemRenderer.data, index);
+					if(newFactoryID !== itemRenderer.factoryID)
+					{
+						itemRenderer = null;
+						delete this._rendererMap[item];
+					}
+				}
+				if(itemRenderer !== null)
 				{
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
@@ -1178,7 +1187,7 @@ package feathers.controls.supportClasses
 					//the typical item renderer is a special case, and we will
 					//have already put it into the active renderers, so we don't
 					//want to do it again!
-					if(this._typicalItemRenderer != itemRenderer)
+					if(this._typicalItemRenderer !== itemRenderer)
 					{
 						var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(itemRenderer.factoryID);
 						var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
