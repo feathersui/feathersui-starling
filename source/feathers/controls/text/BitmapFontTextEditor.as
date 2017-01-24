@@ -931,6 +931,7 @@ package feathers.controls.text
 			//we're reusing this variable. since this isn't a display object
 			//that the focus manager can see, it's not being used anyway.
 			this._hasFocus = true;
+			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
@@ -1263,10 +1264,6 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
-					{
-						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
-					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
