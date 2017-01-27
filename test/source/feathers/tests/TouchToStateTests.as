@@ -72,6 +72,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on TouchPhase.BEGAN",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.DOWN on TouchPhase.BEGAN",
+				ButtonState.DOWN, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback TouchPhase.BEGAN",
 				ButtonState.DOWN, currentState);
 		}
 
@@ -101,6 +103,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on TouchPhase.HOVER",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.HOVER on TouchPhase.HOVER",
+				ButtonState.HOVER, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on TouchPhase.HOVER",
 				ButtonState.HOVER, currentState);
 		}
 
@@ -132,6 +136,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on no touches",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.UP on no touches",
+				ButtonState.UP, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on TouchPhase.HOVER end",
 				ButtonState.UP, currentState);
 		}
 
@@ -164,6 +170,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on TouchPhase.ENDED",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.UP on TouchPhase.ENDED",
+				ButtonState.UP, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on TouchPhase.ENDED",
 				ButtonState.UP, currentState);
 		}
 
@@ -195,6 +203,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on removed from stage",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.UP on removed from stage",
+				ButtonState.UP, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on removed from stage",
 				ButtonState.UP, currentState);
 		}
 
@@ -229,6 +239,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on TouchPhase.MOVED outside",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.UP on TouchPhase.MOVED outside",
+				ButtonState.UP, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on TouchPhase.MOVED outside",
 				ButtonState.UP, currentState);
 		}
 
@@ -266,6 +278,8 @@ package feathers.tests
 			Assert.assertTrue("TouchToState callback was not called on TouchPhase.MOVED outside and back in",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState did not change state to ButtonState.DOWN on TouchPhase.MOVED outside and back in",
+				ButtonState.DOWN, this._touchToState.currentState);
+			Assert.assertStrictlyEquals("TouchToState did not pass the correct state to callback on TouchPhase.MOVED outside and back in",
 				ButtonState.DOWN, currentState);
 		}
 
@@ -301,7 +315,7 @@ package feathers.tests
 			Assert.assertFalse("TouchToState callback must not be called on TouchPhase.MOVED outside when keepDownStateOnRollOut is true",
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState must not change state on TouchPhase.MOVED outside when keepDownStateOnRollOut is true",
-				ButtonState.DOWN, currentState);
+				ButtonState.DOWN, this._touchToState.currentState);
 		}
 	}
 }

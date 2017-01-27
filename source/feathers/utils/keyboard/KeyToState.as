@@ -86,6 +86,7 @@ package feathers.utils.keyboard
 			this._target = value;
 			if(this._target !== null)
 			{
+				this._currentState = this._upState;
 				this._target.addEventListener(FeathersEventType.FOCUS_IN, target_focusInHandler);
 				this._target.addEventListener(FeathersEventType.FOCUS_OUT, target_focusOutHandler);
 				this._target.addEventListener(Event.REMOVED_FROM_STAGE, target_removedFromStageHandler);
@@ -196,6 +197,14 @@ package feathers.utils.keyboard
 		 * @private
 		 */
 		protected var _currentState:String = ButtonState.UP;
+
+		/**
+		 * The current state of the utility.
+		 */
+		public function get currentState():String
+		{
+			return this._currentState;
+		}
 
 		/**
 		 * @private
