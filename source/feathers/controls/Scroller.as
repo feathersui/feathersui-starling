@@ -3389,7 +3389,71 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isTopPullActive:Boolean = false;
+		protected var _isTopPullViewActive:Boolean = false;
+
+		/**
+		 * Indicates if the <code>topPullView</code> has been activated. Set to
+		 * <code>false</code> to close the <code>topPullView</code>.
+		 * 
+		 * @see #topPullView
+		 * @see #event:update starling.events.Event.UPDATE
+		 */
+		public function get isTopPullViewActive():Boolean
+		{
+			return this._isTopPullViewActive;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isTopPullViewActive(value:Boolean):void
+		{
+			if(this._isTopPullViewActive === value)
+			{
+				return;
+			}
+			if(this._topPullView === null)
+			{
+				return;
+			}
+			this._isTopPullViewActive = value;
+			if(this._isTopPullViewActive)
+			{
+				if(this._topPullTween !== null)
+				{
+					this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+					this._topPullTween = null;
+				}
+				if(this._topPullView is IValidating)
+				{
+					IValidating(this._topPullTween).validate();
+				}
+				this._topPullView.visible = true;
+				this._topPullViewRatio = 1;
+				if(this._topPullViewDisplayMode === PullViewDisplayMode.DRAG)
+				{
+					this._topPullView.y = this._topViewPortOffset +
+						this._topPullView.pivotY * this._topPullView.scaleY -
+						this._topPullView.height;
+					this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
+					this._topPullTween.animate("y", 0);
+					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
+					Starling.juggler.add(this._topPullTween);
+				}
+				this.dispatchEventWith(Event.UPDATE, false, this._topPullView);
+			}
+			else
+			{
+				if(this._isScrolling)
+				{
+					this.restoreVerticalPullViews();
+				}
+				else
+				{
+					this.finishScrollingVertically();
+				}
+			}
+		}
 
 		/**
 		 * @private
@@ -3412,11 +3476,15 @@ package feathers.controls
 		 * <code>true</code>.</p>
 		 * 
 		 * <p>When the pull view is activated, the scroller will dispatch
-		 * <code>Event.UPDATE</code> on the pull view.</p>
+		 * <code>Event.UPDATE</code> on the pull view. When the pull view should
+		 * be deactivated, set the <code>isTopPullViewActive</code> property
+		 * to <code>false</code>.</p>
 		 * 
 		 * @default null
 		 *
+		 * @see #isTopPullViewActive
 		 * @see #topPullViewDisplayMode
+		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get topPullView():DisplayObject
 		{
@@ -3432,7 +3500,6 @@ package feathers.controls
 			{
 				this._topPullView.mask.dispose();
 				this._leftPullView.mask = null;
-				this._topPullView.removeEventListener(Event.COMPLETE, topPullView_completeHandler);
 				if(this._topPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._topPullView, false);
@@ -3447,7 +3514,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._isTopPullActive = false;
+				this.isTopPullViewActive = false;
 			}
 		}
 
@@ -3507,7 +3574,7 @@ package feathers.controls
 				return;
 			}
 			this._topPullViewRatio = value;
-			if(!this._isTopPullActive && this._topPullView !== null)
+			if(!this._isTopPullViewActive && this._topPullView !== null)
 			{
 				this._topPullView.dispatchEventWith(FeathersEventType.PULLING, false, value);
 			}
@@ -3516,7 +3583,70 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isRightPullActive:Boolean = false;
+		protected var _isRightPullViewActive:Boolean = false;
+
+		/**
+		 * Indicates if the <code>rightPullView</code> has been activated. Set
+		 * to <code>false</code> to close the <code>rightPullView</code>.
+		 *
+		 * @see #rightPullView
+		 * @see #event:update starling.events.Event.UPDATE
+		 */
+		public function get isRightPullViewActive():Boolean
+		{
+			return this._isRightPullViewActive;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isRightPullViewActive(value:Boolean):void
+		{
+			if(this._isRightPullViewActive === value)
+			{
+				return;
+			}
+			if(this._rightPullView === null)
+			{
+				return;
+			}
+			this._isRightPullViewActive = value;
+			if(this._isRightPullViewActive)
+			{
+				if(this._rightPullTween !== null)
+				{
+					this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+					this._rightPullTween = null;
+				}
+				if(this._rightPullView is IValidating)
+				{
+					IValidating(this._rightPullView).validate();
+				}
+				this._rightPullView.visible = true;
+				this._rightPullViewRatio = 1;
+				if(this._rightPullViewDisplayMode === PullViewDisplayMode.DRAG)
+				{
+					this._rightPullView.x = this.actualWidth - this._rightViewPortOffset +
+						this._rightPullView.pivotX * this._rightPullView.scaleX;
+					this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
+					this._rightPullTween.animate("x", this._rightPullView.x - this._rightPullView.width);
+					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
+					Starling.juggler.add(this._rightPullTween);
+				}
+				this.dispatchEventWith(Event.UPDATE, false, this._rightPullView);
+			}
+			else
+			{
+				if(this._isScrolling)
+				{
+					this.restoreHorizontalPullViews();
+				}
+				else
+				{
+					this.finishScrollingHorizontally();
+				}
+			}
+		}
 
 		/**
 		 * @private
@@ -3543,7 +3673,9 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #isRightPullViewActive
 		 * @see #rightPullViewDisplayMode
+		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get rightPullView():DisplayObject
 		{
@@ -3559,7 +3691,6 @@ package feathers.controls
 			{
 				this._rightPullView.mask.dispose();
 				this._rightPullView.mask = null;
-				this._rightPullView.removeEventListener(Event.COMPLETE, rightPullView_completeHandler);
 				if(this._rightPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._rightPullView, false);
@@ -3574,7 +3705,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._isRightPullActive = false;
+				this.isRightPullViewActive = false;
 			}
 		}
 
@@ -3634,7 +3765,7 @@ package feathers.controls
 				return;
 			}
 			this._rightPullViewRatio = value;
-			if(!this._isRightPullActive && this._rightPullView !== null)
+			if(!this._isRightPullViewActive && this._rightPullView !== null)
 			{
 				this._rightPullView.dispatchEventWith(FeathersEventType.PULLING, false, value);
 			}
@@ -3643,7 +3774,70 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isBottomPullActive:Boolean = false;
+		protected var _isBottomPullViewActive:Boolean = false;
+
+		/**
+		 * Indicates if the <code>bottomPullView</code> has been activated. Set
+		 * to <code>false</code> to close the <code>bottomPullView</code>.
+		 *
+		 * @see #bottomPullView
+		 * @see #event:update starling.events.Event.UPDATE
+		 */
+		public function get isBottomPullViewActive():Boolean
+		{
+			return this._isBottomPullViewActive;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isBottomPullViewActive(value:Boolean):void
+		{
+			if(this._isBottomPullViewActive === value)
+			{
+				return;
+			}
+			if(this._bottomPullView === null)
+			{
+				return;
+			}
+			this._isBottomPullViewActive = value;
+			if(this._isBottomPullViewActive)
+			{
+				if(this._bottomPullTween !== null)
+				{
+					this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+					this._bottomPullTween = null;
+				}
+				if(this._bottomPullView is IValidating)
+				{
+					IValidating(this._bottomPullView).validate();
+				}
+				this._bottomPullView.visible = true;
+				this._bottomPullViewRatio = 1;
+				if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
+				{
+					this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset +
+						this._bottomPullView.pivotY * this._bottomPullView.scaleY;
+					this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
+					this._bottomPullTween.animate("y", this._bottomPullView.y - this._bottomPullView.height);
+					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
+					Starling.juggler.add(this._bottomPullTween);
+				}
+				this.dispatchEventWith(Event.UPDATE, false, this._bottomPullView);
+			}
+			else
+			{
+				if(this._isScrolling)
+				{
+					this.restoreVerticalPullViews();
+				}
+				else
+				{
+					this.finishScrollingVertically();
+				}
+			}
+		}
 
 		/**
 		 * @private
@@ -3670,7 +3864,9 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #isBottomPullViewActive
 		 * @see #bottomPullViewDisplayMode
+		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get bottomPullView():DisplayObject
 		{
@@ -3686,7 +3882,6 @@ package feathers.controls
 			{
 				this._bottomPullView.mask.dispose();
 				this._bottomPullView.mask = null;
-				this._bottomPullView.removeEventListener(Event.COMPLETE, bottomPullView_completeHandler);
 				if(this._bottomPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._bottomPullView, false);
@@ -3701,7 +3896,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._isBottomPullActive = false;
+				this.isBottomPullViewActive = false;
 			}
 		}
 
@@ -3761,7 +3956,7 @@ package feathers.controls
 				return;
 			}
 			this._bottomPullViewRatio = value;
-			if(!this._isBottomPullActive && this._bottomPullView !== null)
+			if(!this._isBottomPullViewActive && this._bottomPullView !== null)
 			{
 				this._bottomPullView.dispatchEventWith(FeathersEventType.PULLING, false, value);
 			}
@@ -3770,7 +3965,71 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isLeftPullActive:Boolean = false;
+		protected var _isLeftPullViewActive:Boolean = false;
+
+		/**
+		 * Indicates if the <code>leftPullView</code> has been activated. Set to
+		 * <code>false</code> to close the <code>leftPullView</code>.
+		 *
+		 * @see #leftPullView
+		 * @see #event:update starling.events.Event.UPDATE
+		 */
+		public function get isLeftPullViewActive():Boolean
+		{
+			return this._isLeftPullViewActive;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isLeftPullViewActive(value:Boolean):void
+		{
+			if(this._isLeftPullViewActive === value)
+			{
+				return;
+			}
+			if(this._leftPullView === null)
+			{
+				return;
+			}
+			this._isLeftPullViewActive = value;
+			if(this._isLeftPullViewActive)
+			{
+				if(this._leftPullTween !== null)
+				{
+					this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+					this._leftPullTween = null;
+				}
+				if(this._leftPullView is IValidating)
+				{
+					IValidating(this._leftPullView).validate();
+				}
+				this._leftPullView.visible = true;
+				this._leftPullViewRatio = 1;
+				if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
+				{
+					this._leftPullView.x = this._leftViewPortOffset +
+						this._leftPullView.pivotX * this._leftPullView.scaleX -
+						this._leftPullView.width;
+					this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
+					this._leftPullTween.animate("x", 0);
+					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
+					Starling.juggler.add(this._leftPullTween);
+				}
+				this.dispatchEventWith(Event.UPDATE, false, this._leftPullView);
+			}
+			else
+			{
+				if(this._isScrolling)
+				{
+					this.restoreHorizontalPullViews();
+				}
+				else
+				{
+					this.finishScrollingHorizontally();
+				}
+			}
+		}
 
 		/**
 		 * @private
@@ -3797,7 +4056,9 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #isLeftPullViewActive
 		 * @see #leftPullViewDisplayMode
+		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get leftPullView():DisplayObject
 		{
@@ -3813,7 +4074,6 @@ package feathers.controls
 			{
 				this._leftPullView.mask.dispose();
 				this._leftPullView.mask = null;
-				this._leftPullView.removeEventListener(Event.COMPLETE, leftPullView_completeHandler);
 				if(this._leftPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._leftPullView, false);
@@ -3828,7 +4088,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._isLeftPullActive = false;
+				this.isLeftPullViewActive = false;
 			}
 		}
 
@@ -3855,7 +4115,7 @@ package feathers.controls
 				return;
 			}
 			this._leftPullViewRatio = value;
-			if(!this._isLeftPullActive && this._leftPullView !== null)
+			if(!this._isLeftPullViewActive && this._leftPullView !== null)
 			{
 				this._leftPullView.dispatchEventWith(FeathersEventType.PULLING, false, value);
 			}
@@ -5451,7 +5711,7 @@ package feathers.controls
 							finalRatio = scrollRatio;
 						}
 					}
-					if(this._isTopPullActive && finalRatio < 1)
+					if(this._isTopPullViewActive && finalRatio < 1)
 					{
 						finalRatio = 1;
 					}
@@ -5521,7 +5781,7 @@ package feathers.controls
 							finalRatio = scrollRatio;
 						}
 					}
-					if(this._isRightPullActive && finalRatio < 1)
+					if(this._isRightPullViewActive && finalRatio < 1)
 					{
 						finalRatio = 1;
 					}
@@ -5592,7 +5852,7 @@ package feathers.controls
 							finalRatio = scrollRatio;
 						}
 					}
-					if(this._isBottomPullActive && finalRatio < 1)
+					if(this._isBottomPullViewActive && finalRatio < 1)
 					{
 						finalRatio = 1;
 					}
@@ -5663,7 +5923,7 @@ package feathers.controls
 							finalRatio = scrollRatio;
 						}
 					}
-					if(this._isLeftPullActive && finalRatio < 1)
+					if(this._isLeftPullViewActive && finalRatio < 1)
 					{
 						finalRatio = 1;
 					}
@@ -5923,12 +6183,12 @@ package feathers.controls
 			var offset:Number = this._startTouchX - touchX;
 			var position:Number = this._startHorizontalScrollPosition + offset;
 			var adjustedMinScrollPosition:Number = this._minHorizontalScrollPosition;
-			if(this._isLeftPullActive && this._hasElasticEdges)
+			if(this._isLeftPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinScrollPosition -= this._leftPullView.width;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxHorizontalScrollPosition;
-			if(this._isRightPullActive && this._hasElasticEdges)
+			if(this._isRightPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._rightPullView.width;
 			}
@@ -5938,7 +6198,7 @@ package feathers.controls
 				position = position - (position - adjustedMinScrollPosition) * (1 - this._elasticity);
 				if(this._leftPullView !== null && position < adjustedMinScrollPosition)
 				{
-					if(this._isLeftPullActive)
+					if(this._isLeftPullViewActive)
 					{
 						this.leftPullViewRatio = 1;
 					}
@@ -5949,12 +6209,12 @@ package feathers.controls
 						this.leftPullViewRatio = (adjustedMinScrollPosition - position) / this._leftPullView.width;
 					}
 				}
-				if(this._rightPullView !== null && !this._isRightPullActive)
+				if(this._rightPullView !== null && !this._isRightPullViewActive)
 				{
 					this.rightPullViewRatio = 0;
 				}
 				if(!this._hasElasticEdges ||
-					(this._isRightPullActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
+					(this._isRightPullViewActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
 				{
 					//if elastic edges aren't enabled, use the minimum
 					position = adjustedMinScrollPosition;
@@ -5965,7 +6225,7 @@ package feathers.controls
 				position = position - (position - adjustedMaxScrollPosition) * (1 - this._elasticity);
 				if(this._rightPullView !== null && position > adjustedMaxScrollPosition)
 				{
-					if(this._isRightPullActive)
+					if(this._isRightPullViewActive)
 					{
 						this.rightPullViewRatio = 1;
 					}
@@ -5974,23 +6234,23 @@ package feathers.controls
 						this.rightPullViewRatio = (position - adjustedMaxScrollPosition) / this._rightPullView.width;
 					}
 				}
-				if(this._leftPullView !== null && !this._isLeftPullActive)
+				if(this._leftPullView !== null && !this._isLeftPullViewActive)
 				{
 					this.leftPullViewRatio = 0;
 				}
 				if(!this._hasElasticEdges ||
-					(this._isLeftPullActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
+					(this._isLeftPullViewActive && this._minHorizontalScrollPosition === this._maxHorizontalScrollPosition))
 				{
 					position = adjustedMaxScrollPosition;
 				}
 			}
 			else
 			{
-				if(this._leftPullView !== null && !this._isLeftPullActive)
+				if(this._leftPullView !== null && !this._isLeftPullViewActive)
 				{
 					this.leftPullViewRatio = 0;
 				}
-				if(this._rightPullView !== null && !this._isRightPullActive)
+				if(this._rightPullView !== null && !this._isRightPullViewActive)
 				{
 					this.rightPullViewRatio = 0;
 				}
@@ -5999,7 +6259,7 @@ package feathers.controls
 			{
 				if(this._leftPullTween !== null)
 				{
-					Starling.juggler.remove(this._leftPullTween);
+					this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._leftPullTween = null;
 				}
 				//ensure that the component invalidates, even if the
@@ -6010,7 +6270,7 @@ package feathers.controls
 			{
 				if(this._rightPullTween !== null)
 				{
-					Starling.juggler.remove(this._rightPullTween);
+					this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._rightPullTween = null;
 				}
 				//see note above with previous call to invalidate()
@@ -6027,12 +6287,12 @@ package feathers.controls
 			var offset:Number = this._startTouchY - touchY;
 			var position:Number = this._startVerticalScrollPosition + offset;
 			var adjustedMinScrollPosition:Number = this._minVerticalScrollPosition;
-			if(this._isTopPullActive && this._hasElasticEdges)
+			if(this._isTopPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinScrollPosition -= this._topPullView.height;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxVerticalScrollPosition;
-			if(this._isBottomPullActive && this._hasElasticEdges)
+			if(this._isBottomPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._bottomPullView.height;
 			}
@@ -6042,7 +6302,7 @@ package feathers.controls
 				position = position - (position - adjustedMinScrollPosition) * (1 - this._elasticity);
 				if(this._topPullView !== null && position < adjustedMinScrollPosition)
 				{
-					if(this._isTopPullActive)
+					if(this._isTopPullViewActive)
 					{
 						this.topPullViewRatio = 1;
 					}
@@ -6051,12 +6311,12 @@ package feathers.controls
 						this.topPullViewRatio = (adjustedMinScrollPosition - position) / this._topPullView.height;
 					}
 				}
-				if(this._bottomPullView !== null && !this._isBottomPullActive)
+				if(this._bottomPullView !== null && !this._isBottomPullViewActive)
 				{
 					this.bottomPullViewRatio = 0;
 				}
 				if(!this._hasElasticEdges ||
-					(this._isBottomPullActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
+					(this._isBottomPullViewActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
 				{
 					//if elastic edges aren't enabled, use the minimum
 					position = adjustedMinScrollPosition;
@@ -6067,7 +6327,7 @@ package feathers.controls
 				position = position - (position - adjustedMaxScrollPosition) * (1 - this._elasticity);
 				if(this._bottomPullView !== null && position > adjustedMaxScrollPosition)
 				{
-					if(this._isBottomPullActive)
+					if(this._isBottomPullViewActive)
 					{
 						this.bottomPullViewRatio = 1;
 					}
@@ -6076,23 +6336,23 @@ package feathers.controls
 						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height
 					}
 				}
-				if(this._topPullView !== null && !this._isTopPullActive)
+				if(this._topPullView !== null && !this._isTopPullViewActive)
 				{
 					this.topPullViewRatio = 0;
 				}
 				if(!this._hasElasticEdges ||
-					(this._isTopPullActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
+					(this._isTopPullViewActive && this._minVerticalScrollPosition === this._maxVerticalScrollPosition))
 				{
 					position = adjustedMaxScrollPosition;
 				}
 			}
 			else
 			{
-				if(this._topPullView !== null && !this._isTopPullActive)
+				if(this._topPullView !== null && !this._isTopPullViewActive)
 				{
 					this.topPullViewRatio = 0;
 				}
-				if(this._bottomPullView !== null && !this._isBottomPullActive)
+				if(this._bottomPullView !== null && !this._isBottomPullViewActive)
 				{
 					this.bottomPullViewRatio = 0;
 				}
@@ -6101,7 +6361,7 @@ package feathers.controls
 			{
 				if(this._topPullTween !== null)
 				{
-					Starling.juggler.remove(this._topPullTween);
+					this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._topPullTween = null;
 				}
 				//ensure that the component invalidates, even if the
@@ -6112,7 +6372,7 @@ package feathers.controls
 			{
 				if(this._bottomPullTween !== null)
 				{
-					Starling.juggler.remove(this._bottomPullTween);
+					this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._bottomPullTween = null;
 				}
 				//see note above with previous call to invalidate()
@@ -6297,12 +6557,12 @@ package feathers.controls
 		protected function finishScrollingHorizontally():void
 		{
 			var adjustedMinScrollPosition:Number = this._minHorizontalScrollPosition;
-			if(this._isLeftPullActive && this._hasElasticEdges)
+			if(this._isLeftPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinScrollPosition -= this._leftPullView.width;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxHorizontalScrollPosition;
-			if(this._isRightPullActive && this._hasElasticEdges)
+			if(this._isRightPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._rightPullView.width;
 			}
@@ -6340,12 +6600,12 @@ package feathers.controls
 		protected function finishScrollingVertically():void
 		{
 			var adjustedMinScrollPosition:Number = this._minVerticalScrollPosition;
-			if(this._isTopPullActive && this._hasElasticEdges)
+			if(this._isTopPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinScrollPosition -= this._topPullView.height;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxVerticalScrollPosition;
-			if(this._isBottomPullActive && this._hasElasticEdges)
+			if(this._isBottomPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._bottomPullView.height;
 			}
@@ -6387,14 +6647,14 @@ package feathers.controls
 			{
 				if(this._topPullTween !== null)
 				{
-					Starling.juggler.remove(this._topPullTween);
+					this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._topPullTween = null;
 				}
 				if(this._topPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
 					var yPosition:Number = this._topViewPortOffset + 
 						this._topPullView.pivotY * this._topPullView.scaleY;
-					if(!this._isTopPullActive)
+					if(!this._isTopPullViewActive)
 					{
 						yPosition -= this._topPullView.height;
 					}
@@ -6417,14 +6677,14 @@ package feathers.controls
 			{
 				if(this._bottomPullTween !== null)
 				{
-					Starling.juggler.remove(this._bottomPullTween);
+					this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._bottomPullTween = null;
 				}
 				if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
 					yPosition = this.actualHeight - this._bottomViewPortOffset +
 						this._bottomPullView.pivotY * this._bottomPullView.scaleY;
-					if(this._isBottomPullActive)
+					if(this._isBottomPullViewActive)
 					{
 						yPosition -= this._bottomPullView.height;
 					}
@@ -6454,14 +6714,14 @@ package feathers.controls
 			{
 				if(this._leftPullTween !== null)
 				{
-					Starling.juggler.remove(this._leftPullTween);
+					this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._leftPullTween = null;
 				}
 				if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
 					var xPosition:Number = this._leftViewPortOffset +
 						this._leftPullView.pivotX * this._leftPullView.scaleX;
-					if(!this._isLeftPullActive)
+					if(!this._isLeftPullViewActive)
 					{
 						xPosition -= this._leftPullView.width;
 					}
@@ -6484,14 +6744,14 @@ package feathers.controls
 			{
 				if(this._rightPullTween !== null)
 				{
-					Starling.juggler.remove(this._rightPullTween);
+					this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 					this._rightPullTween = null;
 				}
 				if(this._rightPullViewDisplayMode === PullViewDisplayMode.DRAG)
 				{
 					xPosition = this.actualWidth - this._rightViewPortOffset +
 						this._rightPullView.pivotX * this._rightPullView.scaleX;
-					if(this._isRightPullActive)
+					if(this._isRightPullViewActive)
 					{
 						xPosition -= this._rightPullView.width;
 					}
@@ -6741,12 +7001,12 @@ package feathers.controls
 		protected function refreshHorizontalAutoScrollTweenEndRatio():void
 		{
 			var adjustedMinVerticalScrollPosition:Number = this._minHorizontalScrollPosition;
-			if(this._isLeftPullActive && this._hasElasticEdges)
+			if(this._isLeftPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinVerticalScrollPosition -= this._leftPullView.width;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxHorizontalScrollPosition;
-			if(this._isRightPullActive && this._hasElasticEdges)
+			if(this._isRightPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._rightPullView.width;
 			}
@@ -6794,12 +7054,12 @@ package feathers.controls
 		protected function refreshVerticalAutoScrollTweenEndRatio():void
 		{
 			var adjustedMinVerticalScrollPosition:Number = this._minVerticalScrollPosition;
-			if(this._isTopPullActive && this._hasElasticEdges)
+			if(this._isTopPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMinVerticalScrollPosition -= this._topPullView.height;
 			}
 			var adjustedMaxScrollPosition:Number = this._maxVerticalScrollPosition;
-			if(this._isBottomPullActive && this._hasElasticEdges)
+			if(this._isBottomPullViewActive && this._hasElasticEdges)
 			{
 				adjustedMaxScrollPosition += this._bottomPullView.height;
 			}
@@ -7258,7 +7518,7 @@ package feathers.controls
 		protected function topPullTween_onComplete():void
 		{
 			this._topPullTween = null;
-			if(this._isTopPullActive)
+			if(this._isTopPullViewActive)
 			{
 				this._topPullViewRatio = 1;
 			}
@@ -7275,7 +7535,7 @@ package feathers.controls
 		protected function rightPullTween_onComplete():void
 		{
 			this._rightPullTween = null;
-			if(this._isRightPullActive)
+			if(this._isRightPullViewActive)
 			{
 				this._rightPullViewRatio = 1;
 			}
@@ -7292,7 +7552,7 @@ package feathers.controls
 		protected function bottomPullTween_onComplete():void
 		{
 			this._bottomPullTween = null;
-			if(this._isBottomPullActive)
+			if(this._isBottomPullViewActive)
 			{
 				this._bottomPullViewRatio = 1;
 			}
@@ -7309,7 +7569,7 @@ package feathers.controls
 		protected function leftPullTween_onComplete():void
 		{
 			this._leftPullTween = null;
-			if(this._isLeftPullActive)
+			if(this._isLeftPullViewActive)
 			{
 				this._leftPullViewRatio = 1;
 			}
@@ -7486,51 +7746,47 @@ package feathers.controls
 				this._touchPointID = -1;
 				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 
-				if(!this._isTopPullActive && this._isDraggingVertically &&
+				if(!this._isTopPullViewActive && this._isDraggingVertically &&
 					this._topPullView !== null &&
 					this._topPullViewRatio >= 1)
 				{
-					this._isTopPullActive = true;
-					this._topPullView.addEventListener(Event.COMPLETE, topPullView_completeHandler);
+					this._isTopPullViewActive = true;
 					this._topPullView.dispatchEventWith(Event.UPDATE);
 					this.dispatchEventWith(Event.UPDATE, false, this._topPullView);
 				}
-				if(!this._isRightPullActive && this._isDraggingHorizontally &&
+				if(!this._isRightPullViewActive && this._isDraggingHorizontally &&
 					this._rightPullView !== null &&
 					this._rightPullViewRatio >= 1)
 				{
-					this._isRightPullActive = true;
-					this._rightPullView.addEventListener(Event.COMPLETE, rightPullView_completeHandler);
+					this._isRightPullViewActive = true;
 					this._rightPullView.dispatchEventWith(Event.UPDATE);
 					this.dispatchEventWith(Event.UPDATE, false, this._rightPullView);
 				}
-				if(!this._isBottomPullActive && this._isDraggingVertically &&
+				if(!this._isBottomPullViewActive && this._isDraggingVertically &&
 					this._bottomPullView !== null &&
 					this._bottomPullViewRatio >= 1)
 				{
-					this._isBottomPullActive = true;
-					this._bottomPullView.addEventListener(Event.COMPLETE, bottomPullView_completeHandler);
+					this._isBottomPullViewActive = true;
 					this._bottomPullView.dispatchEventWith(Event.UPDATE);
 					this.dispatchEventWith(Event.UPDATE, false, this._bottomPullView);
 				}
-				if(!this._isLeftPullActive && this._isDraggingHorizontally && 
+				if(!this._isLeftPullViewActive && this._isDraggingHorizontally && 
 					this._leftPullView !== null &&
 					this._leftPullViewRatio >= 1)
 				{
-					this._isLeftPullActive = true;
-					this._leftPullView.addEventListener(Event.COMPLETE, leftPullView_completeHandler);
+					this._isLeftPullViewActive = true;
 					this._leftPullView.dispatchEventWith(Event.UPDATE);
 					this.dispatchEventWith(Event.UPDATE, false, this._leftPullView);
 				}
 
 				var isFinishingHorizontally:Boolean = false;
 				var adjustedMinHorizontalScrollPosition:Number = this._minHorizontalScrollPosition;
-				if(this._isLeftPullActive && this._hasElasticEdges)
+				if(this._isLeftPullViewActive && this._hasElasticEdges)
 				{
 					adjustedMinHorizontalScrollPosition -= this._leftPullView.width;
 				}
 				var adjustedMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
-				if(this._isRightPullActive && this._hasElasticEdges)
+				if(this._isRightPullViewActive && this._hasElasticEdges)
 				{
 					adjustedMaxHorizontalScrollPosition += this._rightPullView.width;
 				}
@@ -7542,12 +7798,12 @@ package feathers.controls
 				}
 				var isFinishingVertically:Boolean = false;
 				var adjustedMinVerticalScrollPosition:Number = this._minVerticalScrollPosition;
-				if(this._isTopPullActive && this._hasElasticEdges)
+				if(this._isTopPullViewActive && this._hasElasticEdges)
 				{
 					adjustedMinVerticalScrollPosition -= this._topPullView.height;
 				}
 				var adjustedMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
-				if(this._isBottomPullActive && this._hasElasticEdges)
+				if(this._isBottomPullViewActive && this._hasElasticEdges)
 				{
 					adjustedMaxVerticalScrollPosition += this._bottomPullView.height;
 				}
@@ -7867,22 +8123,22 @@ package feathers.controls
 			}
 			if(this._topPullTween)
 			{
-				Starling.juggler.remove(this._topPullTween);
+				this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 				this._topPullTween = null;
 			}
 			if(this._rightPullTween)
 			{
-				Starling.juggler.remove(this._rightPullTween);
+				this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 				this._rightPullTween = null;
 			}
 			if(this._bottomPullTween)
 			{
-				Starling.juggler.remove(this._bottomPullTween);
+				this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 				this._bottomPullTween = null;
 			}
 			if(this._leftPullTween)
 			{
-				Starling.juggler.remove(this._leftPullTween);
+				this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 				this._leftPullTween = null;
 			}
 
@@ -7969,46 +8225,6 @@ package feathers.controls
 			{
 				this.horizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function topPullView_completeHandler(event:Event):void
-		{
-			this._topPullView.removeEventListener(Event.COMPLETE, topPullView_completeHandler);
-			this._isTopPullActive = false;
-			this.finishScrollingVertically();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function rightPullView_completeHandler(event:Event):void
-		{
-			this._rightPullView.removeEventListener(Event.COMPLETE, rightPullView_completeHandler);
-			this._isRightPullActive = false;
-			this.finishScrollingHorizontally();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function bottomPullView_completeHandler(event:Event):void
-		{
-			this._bottomPullView.removeEventListener(Event.COMPLETE, bottomPullView_completeHandler);
-			this._isBottomPullActive = false;
-			this.finishScrollingVertically();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function leftPullView_completeHandler(event:Event):void
-		{
-			this._leftPullView.removeEventListener(Event.COMPLETE, leftPullView_completeHandler);
-			this._isLeftPullActive = false;
-			this.finishScrollingHorizontally();
 		}
 	}
 }
