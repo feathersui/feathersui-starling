@@ -3441,6 +3441,7 @@ package feathers.controls
 					this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
 					this._topPullTween.animate("y", 0);
 					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
+					this._topPullTween.onComplete = this.topPullTween_onComplete;
 					Starling.juggler.add(this._topPullTween);
 				}
 			}
@@ -3636,6 +3637,7 @@ package feathers.controls
 					this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
 					this._rightPullTween.animate("x", this._rightPullView.x - this._rightPullView.width);
 					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
+					this._rightPullTween.onComplete = this.rightPullTween_onComplete;
 					Starling.juggler.add(this._rightPullTween);
 				}
 			}
@@ -3831,6 +3833,7 @@ package feathers.controls
 					this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
 					this._bottomPullTween.animate("y", this._bottomPullView.y - this._bottomPullView.height);
 					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
+					this._bottomPullTween.onComplete = this.bottomPullTween_onComplete;
 					Starling.juggler.add(this._bottomPullTween);
 				}
 			}
@@ -4027,6 +4030,7 @@ package feathers.controls
 					this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
 					this._leftPullTween.animate("x", 0);
 					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
+					this._leftPullTween.onComplete = this.leftPullTween_onComplete;
 					Starling.juggler.add(this._leftPullTween);
 				}
 			}
