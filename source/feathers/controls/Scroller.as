@@ -3395,8 +3395,11 @@ package feathers.controls
 		 * Indicates if the <code>topPullView</code> has been activated. Set to
 		 * <code>false</code> to close the <code>topPullView</code>.
 		 * 
+		 * <p>Note: Manually setting <code>isTopPullViewActive</code> to
+		 * <code>true</code> will not result in <code>Event.UPDATE</code> being
+		 * dispatched.</p>
+		 * 
 		 * @see #topPullView
-		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get isTopPullViewActive():Boolean
 		{
@@ -3440,7 +3443,6 @@ package feathers.controls
 					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
 					Starling.juggler.add(this._topPullTween);
 				}
-				this.dispatchEventWith(Event.UPDATE, false, this._topPullView);
 			}
 			else
 			{
@@ -3475,8 +3477,8 @@ package feathers.controls
 		 * <code>1</code> is possible if <code>hasElasticEdges</code> is
 		 * <code>true</code>.</p>
 		 * 
-		 * <p>When the pull view is activated, the scroller will dispatch
-		 * <code>Event.UPDATE</code> on the pull view. When the pull view should
+		 * <p>When the pull view is activated by the user, the scroller will
+		 * dispatch <code>Event.UPDATE</code>. When the pull view should
 		 * be deactivated, set the <code>isTopPullViewActive</code> property
 		 * to <code>false</code>.</p>
 		 * 
@@ -3589,8 +3591,11 @@ package feathers.controls
 		 * Indicates if the <code>rightPullView</code> has been activated. Set
 		 * to <code>false</code> to close the <code>rightPullView</code>.
 		 *
+		 * <p>Note: Manually setting <code>isRightPullViewActive</code> to
+		 * <code>true</code> will not result in <code>Event.UPDATE</code> being
+		 * dispatched.</p>
+		 *
 		 * @see #rightPullView
-		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get isRightPullViewActive():Boolean
 		{
@@ -3633,7 +3638,6 @@ package feathers.controls
 					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
 					Starling.juggler.add(this._rightPullTween);
 				}
-				this.dispatchEventWith(Event.UPDATE, false, this._rightPullView);
 			}
 			else
 			{
@@ -3668,8 +3672,10 @@ package feathers.controls
 		 * <code>1</code> is possible if <code>hasElasticEdges</code> is
 		 * <code>true</code>.</p>
 		 *
-		 * <p>When the pull view is activated, the scroller will dispatch
-		 * <code>Event.UPDATE</code> on the pull view.</p>
+		 * <p>When the pull view is activated by the user, the scroller will
+		 * dispatch <code>Event.UPDATE</code>. When the pull view should
+		 * be deactivated, set the <code>isRightPullViewActive</code> property
+		 * to <code>false</code>.</p>
 		 *
 		 * @default null
 		 *
@@ -3780,8 +3786,11 @@ package feathers.controls
 		 * Indicates if the <code>bottomPullView</code> has been activated. Set
 		 * to <code>false</code> to close the <code>bottomPullView</code>.
 		 *
+		 * <p>Note: Manually setting <code>isBottomPullViewActive</code> to
+		 * <code>true</code> will not result in <code>Event.UPDATE</code> being
+		 * dispatched.</p>
+		 *
 		 * @see #bottomPullView
-		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get isBottomPullViewActive():Boolean
 		{
@@ -3824,7 +3833,6 @@ package feathers.controls
 					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
 					Starling.juggler.add(this._bottomPullTween);
 				}
-				this.dispatchEventWith(Event.UPDATE, false, this._bottomPullView);
 			}
 			else
 			{
@@ -3859,8 +3867,10 @@ package feathers.controls
 		 * <code>1</code> is possible if <code>hasElasticEdges</code> is
 		 * <code>true</code>.</p>
 		 *
-		 * <p>When the pull view is activated, the scroller will dispatch
-		 * <code>Event.UPDATE</code> on the pull view.</p>
+		 * <p>When the pull view is activated by the user, the scroller will
+		 * dispatch <code>Event.UPDATE</code>. When the pull view should
+		 * be deactivated, set the <code>isBottomPullViewActive</code> property
+		 * to <code>false</code>.</p>
 		 *
 		 * @default null
 		 *
@@ -3971,8 +3981,11 @@ package feathers.controls
 		 * Indicates if the <code>leftPullView</code> has been activated. Set to
 		 * <code>false</code> to close the <code>leftPullView</code>.
 		 *
+		 * <p>Note: Manually setting <code>isLeftpPullViewActive</code> to
+		 * <code>true</code> will not result in <code>Event.UPDATE</code> being
+		 * dispatched.</p>
+		 *
 		 * @see #leftPullView
-		 * @see #event:update starling.events.Event.UPDATE
 		 */
 		public function get isLeftPullViewActive():Boolean
 		{
@@ -4016,7 +4029,6 @@ package feathers.controls
 					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
 					Starling.juggler.add(this._leftPullTween);
 				}
-				this.dispatchEventWith(Event.UPDATE, false, this._leftPullView);
 			}
 			else
 			{
@@ -4051,8 +4063,10 @@ package feathers.controls
 		 * <code>1</code> is possible if <code>hasElasticEdges</code> is
 		 * <code>true</code>.</p>
 		 *
-		 * <p>When the pull view is activated, the scroller will dispatch
-		 * <code>Event.UPDATE</code> on the pull view.</p>
+		 * <p>When the pull view is activated by the user, the scroller will
+		 * dispatch <code>Event.UPDATE</code>. When the pull view should
+		 * be deactivated, set the <code>isLeftPullViewActive</code> property
+		 * to <code>false</code>.</p>
 		 *
 		 * @default null
 		 *
