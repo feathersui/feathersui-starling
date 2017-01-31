@@ -3426,7 +3426,7 @@ package feathers.controls
 				}
 				if(this._topPullView is IValidating)
 				{
-					IValidating(this._topPullTween).validate();
+					IValidating(this._topPullView).validate();
 				}
 				this._topPullView.visible = true;
 				this._topPullViewRatio = 1;
