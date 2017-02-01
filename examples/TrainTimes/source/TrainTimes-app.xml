@@ -5,7 +5,7 @@
 	<name>Train Times</name>
 	<versionNumber>3.2.0</versionNumber>
 	<description>Train Times example application built with Feathers UI controls for Starling</description>
-	<copyright>2016 Bowler Hat LLC</copyright>
+	<copyright>2017 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>TrainTimes.swf</content>

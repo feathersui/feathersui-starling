@@ -5,7 +5,7 @@
 	<name>Tabs</name>
 	<versionNumber>3.2.0</versionNumber>
 	<description>Tabs example application built with Feathers UI controls for Starling</description>
-	<copyright>2016 Bowler Hat LLC</copyright>
+	<copyright>2017 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>Tabs.swf</content>

@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2016 Bowler Hat LLC, Marcel Piestansky
+Copyright 2012-2017 Bowler Hat LLC, Marcel Piestansky
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
