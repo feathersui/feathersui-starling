@@ -795,6 +795,11 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS:String = "pendingRevealScrollBars";
 
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PENDING_PULL_VIEW:String = "pendingPullView";
+
 		[Deprecated(replacement="feathers.controls.ScrollPolicy.AUTO",since="3.0.0")]
 		/**
 		 * @private
@@ -3389,6 +3394,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isTopPullViewPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isTopPullViewActive:Boolean = false;
 
 		/**
@@ -3420,42 +3430,8 @@ package feathers.controls
 				return;
 			}
 			this._isTopPullViewActive = value;
-			if(this._isTopPullViewActive)
-			{
-				if(this._topPullTween !== null)
-				{
-					this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
-					this._topPullTween = null;
-				}
-				if(this._topPullView is IValidating)
-				{
-					IValidating(this._topPullView).validate();
-				}
-				this._topPullView.visible = true;
-				this._topPullViewRatio = 1;
-				if(this._topPullViewDisplayMode === PullViewDisplayMode.DRAG)
-				{
-					this._topPullView.y = this._topViewPortOffset +
-						this._topPullView.pivotY * this._topPullView.scaleY -
-						this._topPullView.height;
-					this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
-					this._topPullTween.animate("y", 0);
-					this._topPullTween.onUpdate = this.refreshTopPullViewMask;
-					this._topPullTween.onComplete = this.topPullTween_onComplete;
-					Starling.juggler.add(this._topPullTween);
-				}
-			}
-			else
-			{
-				if(this._isScrolling)
-				{
-					this.restoreVerticalPullViews();
-				}
-				else
-				{
-					this.finishScrollingVertically();
-				}
-			}
+			this._isTopPullViewPending = true;
+			this.invalidate(INVALIDATION_FLAG_PENDING_PULL_VIEW);
 		}
 
 		/**
@@ -3586,6 +3562,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isRightPullViewPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isRightPullViewActive:Boolean = false;
 
 		/**
@@ -3617,41 +3598,8 @@ package feathers.controls
 				return;
 			}
 			this._isRightPullViewActive = value;
-			if(this._isRightPullViewActive)
-			{
-				if(this._rightPullTween !== null)
-				{
-					this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
-					this._rightPullTween = null;
-				}
-				if(this._rightPullView is IValidating)
-				{
-					IValidating(this._rightPullView).validate();
-				}
-				this._rightPullView.visible = true;
-				this._rightPullViewRatio = 1;
-				if(this._rightPullViewDisplayMode === PullViewDisplayMode.DRAG)
-				{
-					this._rightPullView.x = this.actualWidth - this._rightViewPortOffset +
-						this._rightPullView.pivotX * this._rightPullView.scaleX;
-					this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
-					this._rightPullTween.animate("x", this._rightPullView.x - this._rightPullView.width);
-					this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
-					this._rightPullTween.onComplete = this.rightPullTween_onComplete;
-					Starling.juggler.add(this._rightPullTween);
-				}
-			}
-			else
-			{
-				if(this._isScrolling)
-				{
-					this.restoreHorizontalPullViews();
-				}
-				else
-				{
-					this.finishScrollingHorizontally();
-				}
-			}
+			this._isRightPullViewPending = true;
+			this.invalidate(INVALIDATION_FLAG_PENDING_PULL_VIEW);
 		}
 
 		/**
@@ -3782,6 +3730,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isBottomPullViewPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isBottomPullViewActive:Boolean = false;
 
 		/**
@@ -3813,41 +3766,8 @@ package feathers.controls
 				return;
 			}
 			this._isBottomPullViewActive = value;
-			if(this._isBottomPullViewActive)
-			{
-				if(this._bottomPullTween !== null)
-				{
-					this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
-					this._bottomPullTween = null;
-				}
-				if(this._bottomPullView is IValidating)
-				{
-					IValidating(this._bottomPullView).validate();
-				}
-				this._bottomPullView.visible = true;
-				this._bottomPullViewRatio = 1;
-				if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
-				{
-					this._bottomPullView.y = this.actualHeight - this._bottomViewPortOffset +
-						this._bottomPullView.pivotY * this._bottomPullView.scaleY;
-					this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
-					this._bottomPullTween.animate("y", this._bottomPullView.y - this._bottomPullView.height);
-					this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
-					this._bottomPullTween.onComplete = this.bottomPullTween_onComplete;
-					Starling.juggler.add(this._bottomPullTween);
-				}
-			}
-			else
-			{
-				if(this._isScrolling)
-				{
-					this.restoreVerticalPullViews();
-				}
-				else
-				{
-					this.finishScrollingVertically();
-				}
-			}
+			this._isBottomPullViewPending = true;
+			this.invalidate(INVALIDATION_FLAG_PENDING_PULL_VIEW);
 		}
 
 		/**
@@ -3978,6 +3898,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isLeftPullViewPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isLeftPullViewActive:Boolean = false;
 
 		/**
@@ -4009,42 +3934,8 @@ package feathers.controls
 				return;
 			}
 			this._isLeftPullViewActive = value;
-			if(this._isLeftPullViewActive)
-			{
-				if(this._leftPullTween !== null)
-				{
-					this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
-					this._leftPullTween = null;
-				}
-				if(this._leftPullView is IValidating)
-				{
-					IValidating(this._leftPullView).validate();
-				}
-				this._leftPullView.visible = true;
-				this._leftPullViewRatio = 1;
-				if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
-				{
-					this._leftPullView.x = this._leftViewPortOffset +
-						this._leftPullView.pivotX * this._leftPullView.scaleX -
-						this._leftPullView.width;
-					this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
-					this._leftPullTween.animate("x", 0);
-					this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
-					this._leftPullTween.onComplete = this.leftPullTween_onComplete;
-					Starling.juggler.add(this._leftPullTween);
-				}
-			}
-			else
-			{
-				if(this._isScrolling)
-				{
-					this.restoreHorizontalPullViews();
-				}
-				else
-				{
-					this.finishScrollingHorizontally();
-				}
-			}
+			this._isLeftPullViewPending = true;
+			this.invalidate(INVALIDATION_FLAG_PENDING_PULL_VIEW);
 		}
 
 		/**
@@ -4397,6 +4288,7 @@ package feathers.controls
 			var scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 			var pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
 			var pendingRevealScrollBarsInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS);
+			var pendingPullViewInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_PULL_VIEW);
 
 			if(scrollBarInvalid)
 			{
@@ -4470,6 +4362,11 @@ package feathers.controls
 			if(pendingRevealScrollBarsInvalid)
 			{
 				this.handlePendingRevealScrollBars();
+			}
+
+			if(pendingPullViewInvalid)
+			{
+				this.handlePendingPullView();
 			}
 		}
 
@@ -7299,6 +7196,209 @@ package feathers.controls
 			this.revealVerticalScrollBar();
 			this.hideHorizontalScrollBar(this._revealScrollBarsDuration);
 			this.hideVerticalScrollBar(this._revealScrollBarsDuration);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handlePendingPullView():void
+		{
+			if(this._isTopPullViewPending)
+			{
+				this._isTopPullViewPending = false;
+				if(this._isTopPullViewActive)
+				{
+					if(this._topPullTween !== null)
+					{
+						this._topPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+						this._topPullTween = null;
+					}
+					if(this._topPullView is IValidating)
+					{
+						IValidating(this._topPullView).validate();
+					}
+					this._topPullView.visible = true;
+					this._topPullViewRatio = 1;
+					if(this._topPullViewDisplayMode === PullViewDisplayMode.DRAG)
+					{
+						var targetY:Number = this._topViewPortOffset +
+							this._topPullView.pivotY * this._topPullView.scaleY;
+						if(this.isCreated)
+						{
+							this._topPullView.y = targetY - this._topPullView.height;
+							this._topPullTween = new Tween(this._topPullView, this._elasticSnapDuration, this._throwEase);
+							this._topPullTween.animate("y", targetY);
+							this._topPullTween.onUpdate = this.refreshTopPullViewMask;
+							this._topPullTween.onComplete = this.topPullTween_onComplete;
+							Starling.juggler.add(this._topPullTween);
+						}
+						else
+						{
+							//if this is the first time the component validates,
+							//we don't need animation
+							this._topPullView.y = targetY;
+						}
+					}
+				}
+				else
+				{
+					if(this._isScrolling)
+					{
+						this.restoreVerticalPullViews();
+					}
+					else
+					{
+						this.finishScrollingVertically();
+					}
+				}
+			}
+			if(this._isRightPullViewPending)
+			{
+				this._isRightPullViewPending = false;
+				if(this._isRightPullViewActive)
+				{
+					if(this._rightPullTween !== null)
+					{
+						this._rightPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+						this._rightPullTween = null;
+					}
+					if(this._rightPullView is IValidating)
+					{
+						IValidating(this._rightPullView).validate();
+					}
+					this._rightPullView.visible = true;
+					this._rightPullViewRatio = 1;
+					if(this._rightPullViewDisplayMode === PullViewDisplayMode.DRAG)
+					{
+						var targetX:Number = this.actualWidth - this._rightViewPortOffset +
+							this._rightPullView.pivotX * this._rightPullView.scaleX -
+							this._rightPullView.width;
+						if(this.isCreated)
+						{
+							this._rightPullView.x = targetX + this._rightPullView.width;
+							this._rightPullTween = new Tween(this._rightPullView, this._elasticSnapDuration, this._throwEase);
+							this._rightPullTween.animate("x", targetX);
+							this._rightPullTween.onUpdate = this.refreshRightPullViewMask;
+							this._rightPullTween.onComplete = this.rightPullTween_onComplete;
+							Starling.juggler.add(this._rightPullTween);
+						}
+						else
+						{
+							//if this is the first time the component validates,
+							//we don't need animation
+							this._rightPullView.x = targetX;
+						}
+					}
+				}
+				else
+				{
+					if(this._isScrolling)
+					{
+						this.restoreHorizontalPullViews();
+					}
+					else
+					{
+						this.finishScrollingHorizontally();
+					}
+				}
+			}
+			if(this._isBottomPullViewPending)
+			{
+				this._isBottomPullViewPending = false;
+				if(this._isBottomPullViewActive)
+				{
+					if(this._bottomPullTween !== null)
+					{
+						this._bottomPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+						this._bottomPullTween = null;
+					}
+					if(this._bottomPullView is IValidating)
+					{
+						IValidating(this._bottomPullView).validate();
+					}
+					this._bottomPullView.visible = true;
+					this._bottomPullViewRatio = 1;
+					if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
+					{
+						var targetY:Number = this.actualHeight - this._bottomViewPortOffset +
+							this._bottomPullView.pivotY * this._bottomPullView.scaleY -
+							this._bottomPullView.height;
+						if(this.isCreated)
+						{
+							this._bottomPullView.y = targetY + this._bottomPullView.height;
+							this._bottomPullTween = new Tween(this._bottomPullView, this._elasticSnapDuration, this._throwEase);
+							this._bottomPullTween.animate("y", targetY);
+							this._bottomPullTween.onUpdate = this.refreshBottomPullViewMask;
+							this._bottomPullTween.onComplete = this.bottomPullTween_onComplete;
+							Starling.juggler.add(this._bottomPullTween);
+						}
+						else
+						{
+							this._bottomPullView.y = targetY;
+						}
+					}
+				}
+				else
+				{
+					if(this._isScrolling)
+					{
+						this.restoreVerticalPullViews();
+					}
+					else
+					{
+						this.finishScrollingVertically();
+					}
+				}
+			}
+			if(this._isLeftPullViewPending)
+			{
+				this._isLeftPullViewPending = false;
+				if(this._isLeftPullViewActive)
+				{
+					if(this._leftPullTween !== null)
+					{
+						this._leftPullTween.dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+						this._leftPullTween = null;
+					}
+					if(this._leftPullView is IValidating)
+					{
+						IValidating(this._leftPullView).validate();
+					}
+					this._leftPullView.visible = true;
+					this._leftPullViewRatio = 1;
+					if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
+					{
+						var targetX:Number = this._leftViewPortOffset +
+							this._leftPullView.pivotX * this._leftPullView.scaleX;
+						if(this.isCreated)
+						{
+							this._leftPullView.x = targetX - this._leftPullView.width;
+							this._leftPullTween = new Tween(this._leftPullView, this._elasticSnapDuration, this._throwEase);
+							this._leftPullTween.animate("x", targetX);
+							this._leftPullTween.onUpdate = this.refreshLeftPullViewMask;
+							this._leftPullTween.onComplete = this.leftPullTween_onComplete;
+							Starling.juggler.add(this._leftPullTween);
+						}
+						else
+						{
+							//if this is the first time the component validates,
+							//we don't need animation
+							this._leftPullView.x = targetX;
+						}
+					}
+				}
+				else
+				{
+					if(this._isScrolling)
+					{
+						this.restoreHorizontalPullViews();
+					}
+					else
+					{
+						this.finishScrollingHorizontally();
+					}
+				}
+			}
 		}
 
 		/**
