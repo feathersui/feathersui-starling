@@ -63,5 +63,10 @@ package feathers.events
 		 * (but they have not been replaced by different items).
 		 */
 		public static const UPDATE_ALL:String = "updateAll";
+
+		/**
+		 * Dispatched when all items are removed from the collection.
+		 */
+		public static const REMOVE_ALL:String = "removeAll";
 	}
 }

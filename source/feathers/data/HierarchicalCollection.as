@@ -389,6 +389,7 @@ package feathers.data
 				return;
 			}
 			this._dataDescriptor.removeAll(this._data);
+			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 

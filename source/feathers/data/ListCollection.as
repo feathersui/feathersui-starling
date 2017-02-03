@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.data
 {
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -622,6 +623,7 @@ package feathers.data
 			{
 				this._dataDescriptor.removeAll(this._data);
 			}
+			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
