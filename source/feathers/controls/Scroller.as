@@ -7320,7 +7320,7 @@ package feathers.controls
 					this._bottomPullViewRatio = 1;
 					if(this._bottomPullViewDisplayMode === PullViewDisplayMode.DRAG)
 					{
-						var targetY:Number = this.actualHeight - this._bottomViewPortOffset +
+						targetY = this.actualHeight - this._bottomViewPortOffset +
 							this._bottomPullView.pivotY * this._bottomPullView.scaleY -
 							this._bottomPullView.height;
 						if(this.isCreated)
@@ -7368,7 +7368,7 @@ package feathers.controls
 					this._leftPullViewRatio = 1;
 					if(this._leftPullViewDisplayMode === PullViewDisplayMode.DRAG)
 					{
-						var targetX:Number = this._leftViewPortOffset +
+						targetX = this._leftViewPortOffset +
 							this._leftPullView.pivotX * this._leftPullView.scaleX;
 						if(this.isCreated)
 						{
