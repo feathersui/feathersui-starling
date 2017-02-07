@@ -2054,9 +2054,13 @@ package feathers.controls
 				{
 					this._texture.dispose();
 				}
-				else if(this._textureCache && this._source is String)
+				else if(this._textureCache !== null)
 				{
-					this._textureCache.releaseTexture(this._source as String);
+					var cacheKey:String = this.sourceToTextureCacheKey(this._source);
+					if(cacheKey !== null)
+					{
+						this._textureCache.releaseTexture(cacheKey);
+					}
 				}
 			}
 			if(this._pendingBitmapDataTexture)
@@ -2128,10 +2132,11 @@ package feathers.controls
 		 */
 		protected function findSourceInCache():Boolean
 		{
-			var sourceURL:String = this._source as String;
-			if(this._textureCache && !this._isRestoringTexture && this._textureCache.hasTexture(sourceURL))
+			var cacheKey:String = this.sourceToTextureCacheKey(this._source);
+			if(this._textureCache !== null && !this._isRestoringTexture &&
+				cacheKey !== null && this._textureCache.hasTexture(cacheKey))
 			{
-				this._texture = this._textureCache.retainTexture(sourceURL);
+				this._texture = this._textureCache.retainTexture(cacheKey);
 				this._isTextureOwner = false;
 				this._isRestoringTexture = false;
 				this._isLoaded = true;
@@ -2140,6 +2145,20 @@ package feathers.controls
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		 * @private
+		 * Subclasses may override this method to support sources other than
+		 * URLs in the texture cache.
+		 */
+		protected function sourceToTextureCacheKey(source:Object):String
+		{
+			if(source is String)
+			{
+				return source as String;
+			}
+			return null;
 		}
 
 		/**
@@ -2200,7 +2219,11 @@ package feathers.controls
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
 				{
-					this._textureCache.addTexture(this._source as String, this._texture, true);
+					var cacheKey:String = this.sourceToTextureCacheKey(this._source);
+					if(cacheKey !== null)
+					{
+						this._textureCache.addTexture(cacheKey, this._texture, true);
+					}
 				}
 			}
 			this._texture.root.uploadBitmapData(bitmapData);
@@ -2267,7 +2290,11 @@ package feathers.controls
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
 				{
-					this._textureCache.addTexture(this._source as String, this._texture, true);
+					var cacheKey:String = this.sourceToTextureCacheKey(this._source);
+					if(cacheKey !== null)
+					{
+						this._textureCache.addTexture(cacheKey, this._texture, true);
+					}
 				}
 			}
 			rawData.clear();
