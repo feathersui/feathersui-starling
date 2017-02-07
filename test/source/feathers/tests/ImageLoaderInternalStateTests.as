@@ -46,6 +46,7 @@ package feathers.tests
 		{
 			var isSecondImageLoaded:Boolean = false;
 			var loader:ImageLoaderDisposeWatcher = this._loader;
+			loader.asyncTextureUpload = false;
 			loader.addEventListener(Event.COMPLETE, function():void
 			{
 				loader.removeEventListener(Event.COMPLETE, arguments.callee);
