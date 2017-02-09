@@ -2,6 +2,64 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.2.0 - In Development
+
+* PullToRefresh: new example that demonstrates how to support the popular "pull to refresh" gesture with Feathers lists and other scrolling containers.
+* API Reference: All classes now specify the version of Feathers when they were first added.
+* Added [Deprecated] metadata to deprecated APIs.
+* Alert: added acceptButtonIndex and cancelButtonIndex to allow keyboard (or hardware back button) control over alert.
+* AnchorLayout: fixed issue where maxWidth and maxHeight were ignored when using top/right/bottom/left on AnchorLayoutData.
+* AutoComplete, PickerList: fixed issue where event listeners were not added to default popUpContentManager created in initialize().
+* BitmapFontTextEditor, TextBlockTextEditor: added support for blinking cursor when focused.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed issue where FeathersEventType.FOCUS_OUT would not be dispatched afte calling setFocus() when the FocusManager is not enabled.
+* BitmapFontTextRenderer: fixed an issue where extra whitespace would appear at the end of every line.
+* BitmapFontTextRenderer: added support for kerning and letterSpacing properties of starling.text.TextFormat.
+* Button, DefaultGroupedListHeaderOrFooterRenderer, Header: added wordWrap property. No longer needs to be set in text renderer factory, but existing code that sets it there will continue to work.
+* Button, DefaultGroupedListHeaderOrFooterRenderer, Header: added numLines getter to get the number of lines displayed in the text renderer.
+* Button: fixed issue where label text renderer measurement was incorrect if minWidth or minHeight is set explicitly.
+* CalloutPopUpContentManager: similar to Callout, the direction property is now deprecated and added supportedPositions as its replacement.
+* DateTimeSpinner: added backgroundSkin, backgroundDisabledSkin, and padding properties.
+* Drawers: content property may now be null when validating. However, it should not be null when opening a drawer.
+* FeathersControl; layoutData is set to null when disposed to avoid potential memory leaks.
+* FeathersControl: Removes event listeners on styleNameList when disposed so that they cannot be called for no reason.
+* FeathersControl; added ignoreNextStyleRestriction() to allow components to set defaults during initialization while still allowing a theme to replace styles later.
+* GroupedList: similar to items, an error is thrown if duplicate header or footer data appears in the data provider.
+* HorizontalLayout, VerticalLayout: fixed issue where includeInLayout was ignored when distributing item sizes.
+* HorizontalLayout, VerticalLayotu: fixed issue where includeInLayout was ignored when using percent dimensions.
+* ImageLoader: supports asynchronous texture uploads to improve performance when uploading textures to the GPU.
+* ImageLoader: exposed sourceToTextureCacheKey() to allow subclasses to override the key used in the TextureCache for non-URL sources.
+* ImageLoader: createTextureOnRestore accepts sources that are non-URLs to allow subclasses to override this behavior.
+* IPopUpContentManager: now includes EventDispatcher APIs so that casting is not required.
+* Item Renderers: callbacks like labelFunction and iconFunction now support a second, optional parameter for the item's index. For example, labelFunction may now use either of the following signatures: function(item:Object):String or function(item:Object, index:int):String.
+* Item Renderers: will now display data when owner is null.
+* KeyToState: new utility class to change a component's state based on keyboard events.
+* KeyToTrigger, KeyToSelect: fixed issue where event listeners added to the stage would not be removed if the target was set to null before it was removed from stage.
+* List, GroupedList; when updateAll() is called on the data provider, items that were added or removed from source are now rendered.
+* List, GroupedList: fixed issue where event listeners were not added to default layout created in initialize().
+* List, GroupedList: fixed issue where an item could not receive a new factoryID after its index changes.
+* ListCollection: added filterFunction property to support filtering.
+* ListCollection, HierarchicalCollection: removeAll() no longer results in CollectionEventType.RESET. This should not have been considered a drastic reset. CollectionEventType.REMOVE_ALL is dispatched instead.
+* PickerList: added itemRendererFactory and customItemRendererStyleName. They no longer need to be set in the listFactory. However, existing code that sets them in the listFactory will continue to work correctly.
+* Navigators: validates active screen when navigator validates to avoid flickering on next frame with delayed automatic validation.
+* ScrollContainer: renamed internal stage_resizeHandler to scrollContainer_stage_resizeHandler because ASC 1.0 might consider it a conflict.
+* Scroller: fixed issue where a state change would not cause the scroller to measure its new background skin.
+* Scroller: fixed issue where a layout change would not cause the scroller to measure its content again.
+* Scroller: added horizontalScrollBarPosition to allow the horizontal scroll bar to appear on top.
+* Scroller: added support for pull views on top, right, bottom, and left to support "pull to refresh" gesture.
+* SpinnerList: fixed issue where scroll position was not updated if layout snapInterval changed.
+* StageTextTextEditor: position of StageText can no longer be larger than 8191 or smaller than -8192 to avoid a runtime error.
+* StageTextTextEditor: added clearButtonMode property to support new StageText API.
+* TabBar: fixed issue where setSelectedIndexWithAnimation() and setSelectedItemWithAnimation() did not change the value of the selectedItem property.
+* TabBarSlideTransitionManager: moved to feathers-compat project.
+* TextBlockTextRenderer: fixed issue where a new line width would not be properly detected when using content property, and optimized for the standard text case.
+* TextBlockTextRenderer: added support for leading, kerning, and letterSpacing properties of starling.text.TextFormat.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed incorrect position of snapshots when using updateSnapshotOnScaleChange.
+* TextFieldTextRenderer: ensures that _text property is not null because flash.text.TextField does not support null values.
+* TextInput: no longer shows IBEAM cursor on TouchPhase.HOVER if isEditable and isSelectable are both false.
+* TouchToState: new utility class to change a component's state based on TouchPhase values.
+* VerticalCenteredPopUpContentManager: fixed margin setter that passed 0 to marginTop/marginRight/marginBottom/marginLeft instead of new value.
+* VerticalLayout: alignment of headers with getScrollPositionForIndex() defaults to VerticalAlign.TOP because that makes more sense for headers instead of VerticalAlign.MIDDLE.
+
 ## 3.1.2 - January 2017
 
 * FontStylesSet: Clones or copies properties from starling.text.TextFormat to avoid memory leak.
