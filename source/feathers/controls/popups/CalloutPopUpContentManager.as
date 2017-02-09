@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.popups
 {
 	import feathers.controls.Callout;
+	import feathers.layout.RelativePosition;
 
 	import flash.errors.IllegalOperationError;
 
@@ -74,6 +75,7 @@ package feathers.controls.popups
 		 */
 		public function CalloutPopUpContentManager()
 		{
+			super();
 		}
 
 		/**
@@ -110,7 +112,65 @@ package feathers.controls.popups
 		 *
 		 * @default Callout.DIRECTION_ANY
 		 */
-		public var direction:String = Callout.DIRECTION_ANY;
+		public var supportedPositions:Vector.<String> = Callout.DEFAULT_POSITIONS;
+
+		/**
+		 * @private
+		 */
+		protected var _direction:String = null;
+
+		[Deprecated(replacement="supportedPositions",since="3.2.0")]
+		/**
+		 * @private
+		 * DEPRECATED: Replaced by the <code>supportedPositions</code> property.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 3.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 */
+		public function get direction():String
+		{
+			return this._direction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set supportedDirections(value:String):void
+		{
+			var positions:Vector.<String> = null;
+			if(value === "any")
+			{
+				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.LEFT];
+			}
+			else if(value === "horizontal")
+			{
+				positions = new <String>[RelativePosition.RIGHT, RelativePosition.LEFT];
+			}
+			else if(value === "vertical")
+			{
+				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP];
+			}
+			else if(value === "up")
+			{
+				positions = new <String>[RelativePosition.TOP];
+			}
+			else if(value === "down")
+			{
+				positions = new <String>[RelativePosition.BOTTOM];
+			}
+			else if(value === "right")
+			{
+				positions = new <String>[RelativePosition.RIGHT];
+			}
+			else if(value === "left")
+			{
+				positions = new <String>[RelativePosition.LEFT];
+			}
+			this._direction = value;
+			this.supportedPositions = positions;
+		}
 
 		/**
 		 * Determines if the callout will be modal or not.
@@ -199,7 +259,7 @@ package feathers.controls.popups
 			}
 
 			this.content = content;
-			this.callout = Callout.show(content, source, this.direction, this.isModal, this.calloutFactory, this._overlayFactory);
+			this.callout = Callout.show(content, source, this.supportedPositions, this.isModal, this.calloutFactory, this._overlayFactory);
 			this.callout.addEventListener(Event.REMOVED_FROM_STAGE, callout_removedFromStageHandler);
 			this.dispatchEventWith(Event.OPEN);
 		}

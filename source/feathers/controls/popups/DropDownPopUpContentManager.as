@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -88,9 +88,10 @@ package feathers.controls.popups
 	 */
 	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.BOTTOM</code>.
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -99,9 +100,10 @@ package feathers.controls.popups
 		 */
 		public static const PRIMARY_DIRECTION_DOWN:String = "down";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.RelativePosition.TOP</code>.
+		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -318,11 +320,11 @@ package feathers.controls.popups
 		 */
 		public function set primaryDirection(value:String):void
 		{
-			if(value === PRIMARY_DIRECTION_UP)
+			if(value === "up")
 			{
 				value = RelativePosition.TOP;
 			}
-			else if(value === PRIMARY_DIRECTION_DOWN)
+			else if(value === "down")
 			{
 				value = RelativePosition.BOTTOM;
 			}

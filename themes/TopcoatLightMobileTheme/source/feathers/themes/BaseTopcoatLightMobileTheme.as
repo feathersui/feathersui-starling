@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2016 Bowler Hat LLC, Marcel Piestansky
+Copyright 2012-2017 Bowler Hat LLC, Marcel Piestansky
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -1717,7 +1717,7 @@ package feathers.themes
 			tab.fontStyles = this.darkFontStyles;
 			tab.disabledFontStyles = this.darkDisabledFontStyles;
 			tab.selectedFontStyles = this.selectedFontStyles;
-			tab.setFontStylesForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.selectedDisabledFontStyles);
+			tab.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.selectedDisabledFontStyles);
 
 			tab.paddingLeft = this.gutterSize;
 			tab.paddingRight = this.gutterSize;

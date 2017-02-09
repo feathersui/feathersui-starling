@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -548,6 +548,7 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_OFF_TRACK_FACTORY:String = "offTrackFactory";
 
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.
@@ -559,6 +560,7 @@ package feathers.controls
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.
@@ -570,6 +572,7 @@ package feathers.controls
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
@@ -581,6 +584,7 @@ package feathers.controls
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
+		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
@@ -988,7 +992,7 @@ package feathers.controls
 		 */
 		public function set trackLayoutMode(value:String):void
 		{
-			if(value === TRACK_LAYOUT_MODE_ON_OFF)
+			if(value === "onOff")
 			{
 				value = TrackLayoutMode.SPLIT;
 			}
@@ -1282,8 +1286,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _labelAlign:String = LABEL_ALIGN_MIDDLE;
+		protected var _labelAlign:String = "middle";
 
+		[Deprecated(since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Removed with no replacement.
@@ -2999,7 +3004,7 @@ package feathers.controls
 			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
+			if(this._labelAlign == "middle")
 			{
 				labelHeight = totalLabelHeight;
 			}

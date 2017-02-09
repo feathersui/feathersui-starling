@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -252,6 +252,10 @@ package feathers.controls.text
 		 */
 		public function set selectionSkin(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._selectionSkin == value)
 			{
 				return;
@@ -272,6 +276,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _cursorDelay:Number = 0.53;
+
+		/**
+		 * @private
+		 */
+		protected var _cursorDelayID:uint = uint.MAX_VALUE;
+
+		/**
+		 * @private
+		 */
 		protected var _cursorSkin:DisplayObject;
 
 		/**
@@ -288,16 +302,20 @@ package feathers.controls.text
 		 */
 		public function set cursorSkin(value:DisplayObject):void
 		{
-			if(this._cursorSkin == value)
+			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			if(this._cursorSkin && this._cursorSkin.parent == this)
+			if(this._cursorSkin === value)
+			{
+				return;
+			}
+			if(this._cursorSkin !== null && this._cursorSkin.parent === this)
 			{
 				this._cursorSkin.removeFromParent();
 			}
 			this._cursorSkin = value;
-			if(this._cursorSkin)
+			if(this._cursorSkin !== null)
 			{
 				this._cursorSkin.visible = false;
 				this.addChild(this._cursorSkin);
@@ -734,6 +752,7 @@ package feathers.controls.text
 			this._hasFocus = false;
 			this._cursorSkin.visible = false;
 			this._selectionSkin.visible = false;
+			this.refreshCursorBlink();
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
@@ -790,6 +809,7 @@ package feathers.controls.text
 				this._cursorSkin.visible = false;
 				this._selectionSkin.visible = true;
 			}
+			this.refreshCursorBlink();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -840,12 +860,14 @@ package feathers.controls.text
 			this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeFocus_pasteHandler, false, 0, true);
 			this._nativeFocus.addEventListener(flash.events.Event.SELECT_ALL, nativeFocus_selectAllHandler, false, 0, true);
 			this._nativeFocus.addEventListener(TextEvent.TEXT_INPUT, nativeFocus_textInputHandler, false, 0, true);
-			if(!this._cursorSkin)
+			if(this._cursorSkin === null)
 			{
+				this.ignoreNextStyleRestriction();
 				this.cursorSkin = new Quad(1, 1, 0x000000);
 			}
-			if(!this._selectionSkin)
+			if(this._selectionSkin === null)
 			{
+				this.ignoreNextStyleRestriction();
 				this.selectionSkin = new Quad(1, 1, 0x000000);
 			}
 			super.initialize();
@@ -943,6 +965,7 @@ package feathers.controls.text
 				this._selectionBeginIndex === this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = showSelection;
+			this.refreshCursorBlink();
 			if(!FocusManager.isEnabledForStage(this.stage))
 			{
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
@@ -957,9 +980,45 @@ package feathers.controls.text
 			//we're reusing this variable. since this isn't a display object
 			//that the focus manager can see, it's not being used anyway.
 			this._hasFocus = true;
+			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshCursorBlink():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this._cursorDelayID === uint.MAX_VALUE && this._cursorSkin.visible)
+			{
+				this._cursorSkin.alpha = 1;
+				this._cursorDelayID = starling.juggler.delayCall(toggleCursorSkin, this._cursorDelay);
+			}
+			else if(this._cursorDelayID !== uint.MAX_VALUE && !this._cursorSkin.visible)
+			{
+				starling.juggler.removeByID(this._cursorDelayID);
+				this._cursorDelayID = uint.MAX_VALUE;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleCursorSkin():void
+		{
+			if(this._cursorSkin.alpha > 0)
+			{
+				this._cursorSkin.alpha = 0;
+			}
+			else
+			{
+				this._cursorSkin.alpha = 1;
+			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			this._cursorDelayID = starling.juggler.delayCall(toggleCursorSkin, this._cursorDelay);
 		}
 
 		/**
@@ -1276,10 +1335,6 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
-					{
-						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
-					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet

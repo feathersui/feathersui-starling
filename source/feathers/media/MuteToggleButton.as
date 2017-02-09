@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -13,6 +13,7 @@ package feathers.media
 	import feathers.core.PropertyProxy;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.layout.Direction;
+	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
 
 	import flash.media.SoundTransform;
@@ -552,8 +553,9 @@ package feathers.media
 			{
 				var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 				popUpContentManager.fitContentMinWidthToOrigin = false;
-				popUpContentManager.primaryDirection = DropDownPopUpContentManager.PRIMARY_DIRECTION_UP;
-				this._popUpContentManager = popUpContentManager;
+				popUpContentManager.primaryDirection = RelativePosition.TOP;
+				this.ignoreNextStyleRestriction();
+				this.popUpContentManager = popUpContentManager;
 			}
 			super.initialize();
 		}

@@ -232,6 +232,29 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testDistributeWidthsWithIncludeInLayoutFalse():void
+		{
+			this._layout.distributeWidths = true;
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			var item3:LayoutGroup = new LayoutGroup();
+			item2.includeInLayout = false;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 640;
+			this._layout.layout(items, bounds);
+			var itemWidth:Number = viewPortWidth / (items.length - 1);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and an item with includeInLayout set to false results in wrong item width",
+				itemWidth, item1.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and an item with includeInLayout set to false results in wrong item width",
+				0, item2.width);
+			Assert.assertStrictlyEquals("HorizontalLayout with distributeWidths and an item with includeInLayout set to false results in wrong item width",
+				itemWidth, item3.width);
+		}
+
+		[Test]
 		public function testDistributeWidthsWithLargerItemWidths():void
 		{
 			this._layout.distributeWidths = true;

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -276,6 +276,8 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
+			//SpinnerList has a different default layout than its superclass,
+			//List, so set it before calling super.initialize()
 			if(this._layout === null)
 			{
 				if(this._hasElasticEdges &&
@@ -293,7 +295,8 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				layout.requestedRowCount = 4;
-				this._layout = layout;
+				this.ignoreNextStyleRestriction();
+				this.layout = layout;
 			}
 
 			super.initialize();
@@ -304,14 +307,26 @@ package feathers.controls
 		 */
 		override protected function refreshMinAndMaxScrollPositions():void
 		{
+			var oldActualPageWidth:Number = this.actualPageWidth;
+			var oldActualPageHeight:Number = this.actualPageHeight;
 			super.refreshMinAndMaxScrollPositions();
-			if(this._maxVerticalScrollPosition != this._minVerticalScrollPosition)
+			if(this._maxVerticalScrollPosition !== this._minVerticalScrollPosition)
 			{
 				this.actualPageHeight = ISpinnerLayout(this._layout).snapInterval;
+				if(!this.isScrolling && this.actualPageHeight !== oldActualPageHeight)
+				{
+					var pageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this._verticalScrollPosition = this.actualPageHeight * pageIndex;
+				}
 			}
-			else if(this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition)
+			else if(this._maxHorizontalScrollPosition !== this._minHorizontalScrollPosition)
 			{
 				this.actualPageWidth = ISpinnerLayout(this._layout).snapInterval;
+				if(!this.isScrolling && this.actualPageWidth !== oldActualPageWidth)
+				{
+					pageIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this._horizontalScrollPosition = this.actualPageWidth * pageIndex;
+				}
 			}
 		}
 

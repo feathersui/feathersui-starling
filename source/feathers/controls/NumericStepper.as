@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -267,6 +267,7 @@ package feathers.controls
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT:String = "feathers-numeric-stepper-text-input";
 
+		[Deprecated(replacement="feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.SPLIT_HORIZONTAL</code>.
@@ -278,6 +279,7 @@ package feathers.controls
 		 */
 		public static const BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL:String = "splitHorizontal";
 
+		[Deprecated(replacement="feathers.controls.StepperButtonLayoutMode.SPLIT_VERTICAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.SPLIT_VERTICAL</code>.
@@ -289,6 +291,7 @@ package feathers.controls
 		 */
 		public static const BUTTON_LAYOUT_MODE_SPLIT_VERTICAL:String = "splitVertical";
 
+		[Deprecated(replacement="feathers.controls.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL</code>.

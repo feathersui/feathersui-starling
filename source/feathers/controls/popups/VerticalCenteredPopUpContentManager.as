@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -119,10 +119,10 @@ package feathers.controls.popups
 		 */
 		public function set margin(value:Number):void
 		{
-			this.marginTop = 0;
-			this.marginRight = 0;
-			this.marginBottom = 0;
-			this.marginLeft = 0;
+			this.marginTop = value;
+			this.marginRight = value;
+			this.marginBottom = value;
+			this.marginLeft = value;
 		}
 
 		/**

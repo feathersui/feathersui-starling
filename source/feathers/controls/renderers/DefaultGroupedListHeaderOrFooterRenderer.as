@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -266,6 +266,7 @@ package feathers.controls.renderers
 	 */
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderRenderer, IGroupedListFooterRenderer
 	{
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -277,6 +278,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -288,6 +290,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -299,6 +302,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
@@ -310,6 +314,7 @@ package feathers.controls.renderers
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -321,6 +326,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -332,6 +338,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -343,6 +350,7 @@ package feathers.controls.renderers
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.

@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2016 Bowler Hat LLC
+Copyright 2012-2017 Bowler Hat LLC
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -1219,14 +1219,14 @@ package feathers.themes
 			otherSkin.minHeight = this.controlSize;
 
 			button.fontStyles = this.lightUIFontStyles;
-			button.setFontStylesForState(Button.STATE_DOWN, this.darkUIFontStyles);
-			button.setFontStylesForState(Button.STATE_DISABLED, this.lightDisabledUIFontStyles);
+			button.setFontStylesForState(ButtonState.DOWN, this.darkUIFontStyles);
+			button.setFontStylesForState(ButtonState.DISABLED, this.lightDisabledUIFontStyles);
 			if(button is ToggleButton)
 			{
 				//for convenience, this function can style both a regular button
 				//and a toggle button
 				toggleButton.selectedFontStyles = this.darkUIFontStyles;
-				toggleButton.setFontStylesForState(ToggleButton.STATE_DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles);
+				toggleButton.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles);
 			}
 
 			button.paddingTop = this.smallControlGutterSize;
@@ -1545,12 +1545,12 @@ package feathers.themes
 			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
 			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
 			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
 			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
 			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
@@ -1718,12 +1718,12 @@ package feathers.themes
 			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
 			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
 			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
 			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
 			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
@@ -1774,15 +1774,15 @@ package feathers.themes
 
 			itemRenderer.fontStyles = this.largeLightFontStyles;
 			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
-			itemRenderer.setFontStylesForState(ToggleButton.STATE_DOWN, this.largeDarkFontStyles);
+			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles);
 
 			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
 			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
 			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.itemHasIcon = false;
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
@@ -1952,15 +1952,15 @@ package feathers.themes
 
 			itemRenderer.fontStyles = this.largeLightFontStyles;
 			itemRenderer.disabledFontStyles = this.largeLightDisabledFontStyles;
-			itemRenderer.setFontStylesForState(ToggleButton.STATE_DOWN, this.largeDarkFontStyles);
+			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles);
 
 			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
 			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.setIconLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
 			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.setAccessoryLabelFontStylesForState(ToggleButton.STATE_DOWN, this.darkFontStyles);
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
 
 			itemRenderer.itemHasIcon = false;
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;

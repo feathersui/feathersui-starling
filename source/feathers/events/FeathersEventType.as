@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -264,5 +264,11 @@ package feathers.events
 		 * @see feathers.core.IStateContext
 		 */
 		public static const STATE_CHANGE:String = "stageChange";
+
+		/**
+		 * The <code>FeathersEventType.PULLING</code> event type is used by
+		 * Feathers scrolling containers to notify pull views of changes.
+		 */
+		public static const PULLING:String = "pulling";
 	}
 }

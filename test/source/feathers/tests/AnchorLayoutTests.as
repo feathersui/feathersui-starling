@@ -221,6 +221,44 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testLeftAndRightWithExplicitMaxWidth():void
+		{
+			var viewPortWidth:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.maxWidth = 250;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.left = 10;
+			layoutData1.right = 10;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = viewPortWidth;
+			bounds.explicitHeight = 320;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with left and right and smaller item explicitMaxWidth results in incorrect item width",
+				250, item1.width);
+		}
+
+		[Test]
+		public function testTopAndBottomWithExplicitMaxHeight():void
+		{
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.maxHeight = 250;
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.top = 10;
+			layoutData1.bottom = 10;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 320;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			Assert.assertStrictlyEquals("AnchorLayoutData with top and bottom and smaller item explicitMaxHeight results in incorrect item height",
+				250, item1.height);
+		}
+
+		[Test]
 		public function testLeftAndRightWithWrappingLabelAndMaxWidth():void
 		{
 			var viewPortMaxWidth:Number = 100;

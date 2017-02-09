@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	[ExcludeClass]
+	[Deprecated(since="3.0.0",message="The IGroupedListHeaderOrFooterRenderer interface has been replaced by two separate interfaces: IGroupedListHeaderRenderer or IGroupedListFooterRenderer")]
 	/**
 	 * DEPRECATED: Replaced by separate <code>IGroupedListHeaderRenderer</code>
 	 * and <code>IGroupedListFooterRenderer</code> interfaces.

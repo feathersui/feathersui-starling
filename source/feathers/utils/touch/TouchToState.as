@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -74,6 +74,8 @@ package feathers.utils.touch
 				//if we're changing targets, and a touch is active, we want to
 				//clear it.
 				this._touchPointID = -1;
+				//then restore to the default state
+				this._currentState = this._upState;
 				this._target.addEventListener(TouchEvent.TOUCH, target_touchHandler);
 				this._target.addEventListener(Event.REMOVED_FROM_STAGE, target_removedFromStageHandler);
 			}
@@ -115,6 +117,14 @@ package feathers.utils.touch
 		 * @private
 		 */
 		protected var _currentState:String = ButtonState.UP;
+
+		/**
+		 * The current state of the utility.
+		 */
+		public function get currentState():String
+		{
+			return this._currentState;
+		}
 
 		/**
 		 * @private

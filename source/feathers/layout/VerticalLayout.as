@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -80,6 +80,7 @@ package feathers.layout
 	 */
 	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
 	{
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -91,6 +92,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -102,6 +104,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -113,6 +116,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -124,6 +128,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -135,6 +140,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -146,6 +152,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
@@ -970,6 +977,39 @@ package feathers.layout
 		}
 
 		[Bindable(event="change")]
+		/**
+		 * @private
+		 */
+		protected var _headerScrollPositionVerticalAlign:String = VerticalAlign.TOP;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * When the scroll position is calculated for a header (specified by a
+		 * <code>GroupedList</code> or another component with the
+		 * <code>headerIndicies</code> property, an attempt will be made to
+		 * align the header to this position.
+		 *
+		 * @default feathers.layout.VerticalAlign.TOP
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see #headerIndices
+		 * @see #scrollPositionVerticalAlign
+		 */
+		public function get headerScrollPositionVerticalAlign():String
+		{
+			return this._headerScrollPositionVerticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerScrollPositionVerticalAlign(value:String):void
+		{
+			this._headerScrollPositionVerticalAlign = value;
+		}
+
 		/**
 		 * @inheritDoc
 		 */
@@ -2006,11 +2046,17 @@ package feathers.layout
 			}
 			result.x = 0;
 
-			if(this._scrollPositionVerticalAlign == VerticalAlign.MIDDLE)
+			var verticalAlign:String = this._scrollPositionVerticalAlign;
+			if(this._headerIndices !== null &&
+				this._headerIndices.indexOf(index) !== -1)
+			{
+				verticalAlign = this._headerScrollPositionVerticalAlign;
+			}
+			if(verticalAlign === VerticalAlign.MIDDLE)
 			{
 				maxScrollY -= Math.round((scrollRange - itemHeight) / 2);
 			}
-			else if(this._scrollPositionVerticalAlign == VerticalAlign.BOTTOM)
+			else if(verticalAlign === VerticalAlign.BOTTOM)
 			{
 				maxScrollY -= (scrollRange - itemHeight);
 			}
@@ -2208,20 +2254,26 @@ package feathers.layout
 		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number, measureItems:Boolean):Number
 		{
 			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
+			var includedItemCount:int = 0;
+			var maxItemHeight:Number = 0;
 			var itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				includedItemCount++;
+				var itemHeight:Number = item.height;
+				if(itemHeight > maxItemHeight)
+				{
+					maxItemHeight = itemHeight;
+				}
+			}
 			if(measureItems && needsHeight)
 			{
-				var maxItemHeight:Number = 0;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var item:DisplayObject = items[i];
-					var itemHeight:Number = item.height;
-					if(itemHeight > maxItemHeight)
-					{
-						maxItemHeight = itemHeight;
-					}
-				}
-				explicitHeight = maxItemHeight * itemCount + this._paddingTop + this._paddingBottom + this._gap * (itemCount - 1);
+				explicitHeight = maxItemHeight * includedItemCount + this._paddingTop + this._paddingBottom + this._gap * (includedItemCount - 1);
 				var needsRecalculation:Boolean = false;
 				if(explicitHeight > maxHeight)
 				{
@@ -2243,16 +2295,16 @@ package feathers.layout
 			{
 				availableSpace = maxHeight;
 			}
-			availableSpace = availableSpace - this._paddingTop - this._paddingBottom - this._gap * (itemCount - 1);
-			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
+			availableSpace = availableSpace - this._paddingTop - this._paddingBottom - this._gap * (includedItemCount - 1);
+			if(includedItemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;
 			}
-			if(itemCount > 2 && this._lastGap === this._lastGap) //!isNaN
+			if(includedItemCount > 2 && this._lastGap === this._lastGap) //!isNaN
 			{
 				availableSpace += this._gap - this._lastGap;
 			}
-			return availableSpace / itemCount;
+			return availableSpace / includedItemCount;
 		}
 
 		/**
@@ -2293,15 +2345,16 @@ package feathers.layout
 								totalMinHeight += feathersItem.minHeight;
 							}
 							totalPercentHeight += percentHeight;
+							totalExplicitHeight += this._gap;
 							this._discoveredItemsCache[pushIndex] = item;
 							pushIndex++;
 							continue;
 						}
 					}
 				}
-				totalExplicitHeight += item.height;
+				totalExplicitHeight += item.height + this._gap;
 			}
-			totalExplicitHeight += this._gap * (itemCount - 1);
+			totalExplicitHeight -= this._gap;
 			if(this._firstGap === this._firstGap && itemCount > 1)
 			{
 				totalExplicitHeight += (this._firstGap - this._gap);
@@ -2512,8 +2565,14 @@ package feathers.layout
 			}
 			positionY -= (lastHeight + gap);
 			result.x = positionY - height;
-			if(this._stickyHeader)
+			if(this._stickyHeader &&
+				this._headerIndices !== null &&
+				this._headerIndices.indexOf(index) === -1)
 			{
+				//if the headers are sticky, adjust the scroll range if we're
+				//scrolling to an item because the sticky header should not hide
+				//the item
+				//unlike items, though, headers have a full scroll range
 				positionY -= lastHeaderHeight;
 			}
 			result.y = positionY;

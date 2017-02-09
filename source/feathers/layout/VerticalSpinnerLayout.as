@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -50,6 +50,7 @@ package feathers.layout
 	 */
 	public class VerticalSpinnerLayout extends EventDispatcher implements ISpinnerLayout, ITrimmedVirtualLayout
 	{
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -61,6 +62,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -72,6 +74,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -83,6 +86,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
@@ -99,6 +103,7 @@ package feathers.layout
 		 */
 		public function VerticalSpinnerLayout()
 		{
+			super();
 		}
 
 		/**

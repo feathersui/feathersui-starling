@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1433,6 +1433,12 @@ package feathers.controls.text
 					this._fontStylesTextFormat = new BitmapFontTextFormat(
 						textFormat.font, textFormat.size, textFormat.color,
 						textFormat.horizontalAlign, textFormat.leading);
+					this._fontStylesTextFormat.isKerningEnabled = textFormat.kerning;
+					if("letterSpacing" in textFormat)
+					{
+						//letterSpacing was added after Starling 2.1
+						this._fontStylesTextFormat.letterSpacing = textFormat["letterSpacing"];
+					}
 					this._currentVerticalAlign = textFormat.verticalAlign;
 				}
 				else if(this._fontStylesTextFormat === null)

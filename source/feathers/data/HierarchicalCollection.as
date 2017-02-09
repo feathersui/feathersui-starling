@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -285,8 +285,8 @@ package feathers.data
 		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
 		 * 
 		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and item renderers can listen for that event
-		 * and update themselves automatically.</p>
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
 		 * 
 		 * @see #updateAll()
 		 */
@@ -305,8 +305,8 @@ package feathers.data
 		 * <code>CollectionEventType.UPDATE_ALL</code> event.
 		 *
 		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and item renderers can listen for that event
-		 * and update themselves automatically.</p>
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
 		 *
 		 * @see #updateItemAt()
 		 */
@@ -395,8 +395,8 @@ package feathers.data
 				return;
 			}
 			this._dataDescriptor.removeAll(this._data);
+			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
-			this.dispatchEventWith(CollectionEventType.RESET, false);
 		}
 
 		/**

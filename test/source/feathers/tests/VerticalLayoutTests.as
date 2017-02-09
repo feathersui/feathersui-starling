@@ -299,6 +299,29 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testDistributeHeightsWithIncludeInLayoutFalse():void
+		{
+			this._layout.distributeHeights = true;
+			var viewPortHeight:Number = 640;
+			var item1:LayoutGroup = new LayoutGroup();
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.includeInLayout = false;
+			var item3:LayoutGroup = new LayoutGroup();
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2, item3];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			bounds.explicitWidth = 640;
+			bounds.explicitHeight = viewPortHeight;
+			this._layout.layout(items, bounds);
+			var itemHeight:Number = viewPortHeight / (items.length - 1);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and an item with includeInLayout set to false results in wrong item height",
+				itemHeight, item1.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and an item with includeInLayout set to false results in wrong item height",
+				0, item2.height);
+			Assert.assertStrictlyEquals("VerticalLayout with distributeHeights and an item with includeInLayout set to false results in wrong item height",
+				itemHeight, item3.height);
+		}
+
+		[Test]
 		public function testDistributeHeightsWithLargerItemHeights():void
 		{
 			this._layout.distributeHeights = true;

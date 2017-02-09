@@ -8,14 +8,19 @@ package feathers.tests
 
 	import flash.events.KeyboardEvent;
 	import flash.events.TextEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	public class BitmapFontTextEditorFocusTests
 	{
@@ -63,6 +68,134 @@ package feathers.tests
 			this._textEditor = null;
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
+		}
+
+		[Test]
+		public function testFocusInEventAfterSetFocus():void
+		{
+			var hasDispatchedFocusIn:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
+			{
+				hasDispatchedFocusIn = true;
+			});
+			this._textInput.setFocus();
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_IN was not dispatched after calling setFocus() on TextInput",
+				hasDispatchedFocusIn);
+		}
+
+		[Test]
+		public function testFocusInEventAfterTouch():void
+		{
+			var hasDispatchedFocusIn:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_IN, function(event:Event):void
+			{
+				hasDispatchedFocusIn = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._textInput.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_IN was not dispatched after TouchEvent.TOUCH on TextInput",
+				hasDispatchedFocusIn);
+		}
+
+		[Test]
+		public function testFocusOutEventAfterSetFocusThenClearFocus():void
+		{
+			var hasDispatchedFocusOut:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_OUT, function(event:Event):void
+			{
+				hasDispatchedFocusOut = true;
+			});
+			this._textInput.setFocus();
+			this._textInput.clearFocus();
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_OUT was not dispatched after calling clearFocus() on TextInput",
+				hasDispatchedFocusOut);
+		}
+
+		[Test]
+		public function testFocusOutEventAfterTouchInsideThenTouchOutside():void
+		{
+			var hasDispatchedFocusOut:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_OUT, function(event:Event):void
+			{
+				hasDispatchedFocusOut = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._textInput.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.target = target.stage;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 1000;
+			touch.globalY = 1000;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_OUT was not dispatched after TouchEvent.TOUCH inside TextInput followed by TouchEvent.TOUCH outside TextInput",
+				hasDispatchedFocusOut);
+		}
+
+		[Test]
+		public function testFocusOutEventAfterSetFocusThenTouchOutside():void
+		{
+			var hasDispatchedFocusOut:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_OUT, function(event:Event):void
+			{
+				hasDispatchedFocusOut = true;
+			});
+			this._textInput.setFocus();
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._textInput.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = this._textInput.stage;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = 1000;
+			touch.globalY = 1000;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_OUT was not dispatched after calling setFocus() on TextInput followed by TouchEvent.TOUCH outside TextInput",
+				hasDispatchedFocusOut);
+		}
+
+		[Test]
+		public function testFocusOutEventAfterTouchInsideThenClearFocus():void
+		{
+			var hasDispatchedFocusOut:Boolean = false;
+			this._textInput.addEventListener(FeathersEventType.FOCUS_OUT, function(event:Event):void
+			{
+				hasDispatchedFocusOut = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._textInput.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._textInput.clearFocus();
+			Assert.assertTrue("BitmapFontTextEditor: FeathersEventType.FOCUS_OUT was not dispatched after TouchEvent.TOUCH inside TextInput followed by calling clearFocus() on TextInput",
+				hasDispatchedFocusOut);
 		}
 
 		[Test(async)]

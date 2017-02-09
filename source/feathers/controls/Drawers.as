@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -319,6 +319,7 @@ package feathers.controls
 		 */
 		public static var globalStyleProvider:IStyleProvider;
 
+		[Deprecated(replacement="feathers.layout.Orientation.PORTRAIT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.PORTRAIT</code>.
@@ -330,6 +331,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_PORTRAIT:String = "portrait";
 
+		[Deprecated(replacement="feathers.layout.Orientation.LANDSCAPE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.LANDSCAPE</code>.
@@ -341,6 +343,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_LANDSCAPE:String = "landscape";
 
+		[Deprecated(replacement="feathers.layout.Orientation.BOTH",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.BOTH</code>.
@@ -352,6 +355,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_BOTH:String = "both";
 
+		[Deprecated(replacement="feathers.layout.Orientation.NONE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.Orientation.NONE</code>.
@@ -363,6 +367,7 @@ package feathers.controls
 		 */
 		public static const DOCK_MODE_NONE:String = "none";
 
+		[Deprecated(replacement="feathers.layout.RelativeDepth.ABOVE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.ABOVE</code>.
@@ -374,6 +379,7 @@ package feathers.controls
 		 */
 		public static const OPEN_MODE_ABOVE:String = "overlay";
 
+		[Deprecated(replacement="feathers.layout.RelativeDepth.BELOW",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativeDepth.BELOW</code>.
@@ -385,6 +391,7 @@ package feathers.controls
 		 */
 		public static const OPEN_MODE_BELOW:String = "below";
 
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
@@ -396,6 +403,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
+		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
@@ -407,6 +415,7 @@ package feathers.controls
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
+		[Deprecated(replacement="feathers.controls.DragGesture.EDGE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.EDGE</code>.
@@ -418,6 +427,7 @@ package feathers.controls
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT_EDGE:String = "dragContentEdge";
 
+		[Deprecated(replacement="feathers.controls.DragGesture.CONTENT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.CONTENT</code>.
@@ -429,6 +439,7 @@ package feathers.controls
 		 */
 		public static const OPEN_GESTURE_DRAG_CONTENT:String = "dragContent";
 
+		[Deprecated(replacement="feathers.controls.DragGesture.NONE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DragGesture.NONE</code>.
@@ -1862,7 +1873,7 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
-			if(this._content)
+			if(this._content !== null)
 			{
 				if(this._autoSizeMode == AutoSizeMode.CONTENT)
 				{
@@ -1939,7 +1950,7 @@ package feathers.controls
 		public function set openMode(value:String):void
 		{
 			//for legacy reasons, OPEN_MODE_ABOVE had a different string value
-			if(value === OPEN_MODE_ABOVE)
+			if(value === "overlay")
 			{
 				value = RelativeDepth.ABOVE;
 			}
@@ -1952,7 +1963,7 @@ package feathers.controls
 				return;
 			}
 			this._openMode = value;
-			if(this._content)
+			if(this._content !== null)
 			{
 				if(this._openMode === RelativeDepth.ABOVE)
 				{
@@ -2006,11 +2017,11 @@ package feathers.controls
 		 */
 		public function set openGesture(value:String):void
 		{
-			if(value === OPEN_GESTURE_DRAG_CONTENT)
+			if(value === "dragContent")
 			{
 				value = DragGesture.CONTENT;
 			}
-			else if(value === OPEN_GESTURE_DRAG_CONTENT_EDGE)
+			else if(value === "dragContentEdge")
 			{
 				value = DragGesture.EDGE;
 			}
@@ -2149,12 +2160,12 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._content && this._contentEventDispatcherChangeEventType)
+			if(this._content !== null && this._contentEventDispatcherChangeEventType)
 			{
 				this._content.removeEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 			}
 			this._contentEventDispatcherChangeEventType = value;
-			if(this._content && this._contentEventDispatcherChangeEventType)
+			if(this._content !== null && this._contentEventDispatcherChangeEventType)
 			{
 				this._content.addEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 			}
@@ -2676,7 +2687,7 @@ package feathers.controls
 			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
 			if(measureContent)
 			{
-				if(this._content)
+				if(this._content !== null)
 				{
 					this._content.validate();
 					if(this._originalContentWidth !== this._originalContentWidth) //isNaN
@@ -2743,7 +2754,7 @@ package feathers.controls
 			{
 				if(measureContent)
 				{
-					if(this._content)
+					if(this._content !== null)
 					{
 						newWidth = this._originalContentWidth;
 					}
@@ -2779,7 +2790,7 @@ package feathers.controls
 			{
 				if(measureContent)
 				{
-					if(this._content)
+					if(this._content !== null)
 					{
 						newHeight = this._originalContentHeight;
 					}
@@ -2815,7 +2826,14 @@ package feathers.controls
 			{
 				if(measureContent)
 				{
-					newMinWidth = this._content.minWidth;
+					if(this._content !== null)
+					{
+						newMinWidth = this._content.minWidth;
+					}
+					else
+					{
+						newMinWidth = 0;
+					}
 					if(isLeftDrawerDocked)
 					{
 						newMinWidth += this._leftDrawer.minWidth;
@@ -2844,7 +2862,14 @@ package feathers.controls
 			{
 				if(measureContent)
 				{
-					newMinHeight = this._content.minHeight;
+					if(this._content !== null)
+					{
+						newMinHeight = this._content.minHeight;
+					}
+					else
+					{
+						newMinHeight = 0;
+					}
 					if(isTopDrawerDocked)
 					{
 						newMinHeight += this._topDrawer.minHeight;
@@ -3026,7 +3051,6 @@ package feathers.controls
 					contentX += this._leftDrawerDivider.width;
 				}
 			}
-			this._content.x = contentX;
 			var contentY:Number = 0;
 			if(isBottomDrawerOpen && this._openMode === RelativeDepth.BELOW)
 			{
@@ -3048,14 +3072,18 @@ package feathers.controls
 					contentY += this._topDrawerDivider.height;
 				}
 			}
-			this._content.y = contentY;
-			if(this._autoSizeMode !== AutoSizeMode.CONTENT)
+			if(this._content !== null)
 			{
-				this._content.width = contentWidth;
-				this._content.height = contentHeight;
+				this._content.x = contentX;
+				this._content.y = contentY;
+				if(this._autoSizeMode !== AutoSizeMode.CONTENT)
+				{
+					this._content.width = contentWidth;
+					this._content.height = contentHeight;
 
-				//final validation to avoid juggler next frame issues
-				this._content.validate();
+					//final validation to avoid juggler next frame issues
+					this._content.validate();
+				}
 			}
 
 			if(this._topDrawer !== null)
@@ -3070,7 +3098,7 @@ package feathers.controls
 					}
 					if(!isLeftDrawerDocked)
 					{
-						topDrawerX = this._content.x;
+						topDrawerX = contentX;
 					}
 				}
 				else if(this._openMode === RelativeDepth.ABOVE &&
@@ -3098,12 +3126,12 @@ package feathers.controls
 				var rightDrawerY:Number = 0;
 				if(isRightDrawerDocked)
 				{
-					rightDrawerX = this._content.x + this._content.width;
+					rightDrawerX = contentX + contentWidth;
 					if(this._rightDrawerDivider)
 					{
 						rightDrawerX += this._rightDrawerDivider.width;
 					}
-					rightDrawerY = this._content.y;
+					rightDrawerY = contentY;
 				}
 				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isRightDrawerOpen)
@@ -3132,9 +3160,9 @@ package feathers.controls
 				{
 					if(!isLeftDrawerDocked)
 					{
-						bottomDrawerX = this._content.x;
+						bottomDrawerX = contentX;
 					}
-					bottomDrawerY = this._content.y + this._content.height;
+					bottomDrawerY = contentY + contentHeight;
 					if(this._bottomDrawerDivider)
 					{
 						bottomDrawerY += this._bottomDrawerDivider.height;
@@ -3169,7 +3197,7 @@ package feathers.controls
 					{
 						leftDrawerX -= rightDrawerWidth;
 					}
-					leftDrawerY = this._content.y;
+					leftDrawerY = contentY;
 				}
 				else if(this._openMode === RelativeDepth.ABOVE &&
 					!this._isLeftDrawerOpen)
@@ -4259,11 +4287,11 @@ package feathers.controls
 		 */
 		protected function positionOverlaySkin():void
 		{
-			if(!this._overlaySkin)
+			if(this._overlaySkin === null)
 			{
 				return;
 			}
-			
+
 			if(this.isLeftDrawerDocked)
 			{
 				this._overlaySkin.x = this._leftDrawer.x;
@@ -4274,9 +4302,16 @@ package feathers.controls
 			}
 			else //below or no left drawer
 			{
-				this._overlaySkin.x = this._content.x;
+				if(this._content !== null)
+				{
+					this._overlaySkin.x = this._content.x;
+				}
+				else
+				{
+					this._overlaySkin.x = 0;
+				}
 			}
-			
+
 			if(this.isTopDrawerDocked)
 			{
 				this._overlaySkin.y = this._topDrawer.y;
@@ -4287,7 +4322,14 @@ package feathers.controls
 			}
 			else //below or now top drawer
 			{
-				this._overlaySkin.y = this._content.y;
+				if(this._content !== null)
+				{
+					this._overlaySkin.y = this._content.y;
+				}
+				else
+				{
+					this._overlaySkin.y = 0;
+				}
 			}
 		}
 

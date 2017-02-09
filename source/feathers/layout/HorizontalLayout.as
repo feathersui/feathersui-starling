@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -78,6 +78,7 @@ package feathers.layout
 	 */
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -89,6 +90,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -100,6 +102,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -111,6 +114,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
@@ -122,6 +126,7 @@ package feathers.layout
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -133,6 +138,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -144,6 +150,7 @@ package feathers.layout
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -2010,20 +2017,26 @@ package feathers.layout
 		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number, measureItems:Boolean):Number
 		{
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var maxItemWidth:Number = 0;
+			var includedItemCount:int = 0;
 			var itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				includedItemCount++;
+				var itemWidth:Number = item.width;
+				if(itemWidth > maxItemWidth)
+				{
+					maxItemWidth = itemWidth;
+				}
+			}
 			if(measureItems && needsWidth)
 			{
-				var maxItemWidth:Number = 0;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var item:DisplayObject = items[i];
-					var itemWidth:Number = item.width;
-					if(itemWidth > maxItemWidth)
-					{
-						maxItemWidth = itemWidth;
-					}
-				}
-				explicitWidth = maxItemWidth * itemCount + this._paddingLeft + this._paddingRight + this._gap * (itemCount - 1);
+				explicitWidth = maxItemWidth * includedItemCount + this._paddingLeft + this._paddingRight + this._gap * (includedItemCount - 1);
 				var needsRecalculation:Boolean = false;
 				if(explicitWidth > maxWidth)
 				{
@@ -2045,16 +2058,16 @@ package feathers.layout
 			{
 				availableSpace = maxWidth;
 			}
-			availableSpace = availableSpace - this._paddingLeft - this._paddingRight - this._gap * (itemCount - 1);
-			if(itemCount > 1 && this._firstGap === this._firstGap) //!isNaN
+			availableSpace = availableSpace - this._paddingLeft - this._paddingRight - this._gap * (includedItemCount - 1);
+			if(includedItemCount > 1 && this._firstGap === this._firstGap) //!isNaN
 			{
 				availableSpace += this._gap - this._firstGap;
 			}
-			if(itemCount > 2 && this._lastGap === this._lastGap) //!isNaN
+			if(includedItemCount > 2 && this._lastGap === this._lastGap) //!isNaN
 			{
 				availableSpace += this._gap - this._lastGap;
 			}
-			return availableSpace / itemCount;
+			return availableSpace / includedItemCount;
 		}
 
 		/**
@@ -2095,15 +2108,16 @@ package feathers.layout
 								totalMinWidth += feathersItem.minWidth;
 							}
 							totalPercentWidth += percentWidth;
+							totalExplicitWidth += this._gap;
 							this._discoveredItemsCache[pushIndex] = item;
 							pushIndex++;
 							continue;
 						}
 					}
 				}
-				totalExplicitWidth += item.width;
+				totalExplicitWidth += item.width + this._gap;
 			}
-			totalExplicitWidth += this._gap * (itemCount - 1);
+			totalExplicitWidth -= this._gap;
 			if(this._firstGap === this._firstGap && itemCount > 1)
 			{
 				totalExplicitWidth += (this._firstGap - this._gap);

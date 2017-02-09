@@ -36,6 +36,11 @@ package feathers.tests
 			{
 				hasChanged = true;
 			});
+			var hasRemovedAll:Boolean = false;
+			this._collection.addEventListener(CollectionEventType.REMOVE_ALL, function(event:Event):void
+			{
+				hasRemovedAll = true;
+			});
 			var hasReset:Boolean = false;
 			this._collection.addEventListener(CollectionEventType.RESET, function(event:Event):void
 			{
@@ -43,7 +48,9 @@ package feathers.tests
 			});
 			this._collection.removeAll();
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
-			Assert.assertTrue("CollectionEventType.RESET was not dispatched", hasReset);
+			//reset used to be dispatched, but REMOVE_ALL is better
+			Assert.assertFalse("CollectionEventType.RESET was incorrectly dispatched", hasReset);
+			Assert.assertTrue("CollectionEventType.REMOVE_ALL was not dispatched", hasRemovedAll);
 			Assert.assertStrictlyEquals("The length property was not changed to 0",
 				0, this._collection.length);
 		}

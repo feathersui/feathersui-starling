@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -63,5 +63,10 @@ package feathers.events
 		 * (but they have not been replaced by different items).
 		 */
 		public static const UPDATE_ALL:String = "updateAll";
+
+		/**
+		 * Dispatched when all items are removed from the collection.
+		 */
+		public static const REMOVE_ALL:String = "removeAll";
 	}
 }

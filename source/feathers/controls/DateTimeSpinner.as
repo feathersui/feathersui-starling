@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -259,6 +259,7 @@ package feathers.controls
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-date-time-spinner-list";
 
+		[Deprecated(replacement="feathers.controls.DateTimeMode.DATE_AND_TIME",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE_AND_TIME</code>.
@@ -270,6 +271,7 @@ package feathers.controls
 		 */
 		public static const EDITING_MODE_DATE_AND_TIME:String = "dateAndTime";
 
+		[Deprecated(replacement="feathers.controls.DateTimeMode.TIME",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.TIME</code>.
@@ -281,6 +283,7 @@ package feathers.controls
 		 */
 		public static const EDITING_MODE_TIME:String = "time";
 
+		[Deprecated(replacement="feathers.controls.DateTimeMode.DATE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE</code>.

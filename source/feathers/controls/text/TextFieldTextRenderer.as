@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -103,6 +103,11 @@ package feathers.controls.text
 		 */
 		public function TextFieldTextRenderer()
 		{
+			if(this._text === null)
+			{
+				//flash.text.TextField won't accept a null value
+				this._text = "";
+			}
 			super();
 			this.isQuickHitAreaEnabled = true;
 		}
@@ -1284,11 +1289,6 @@ package feathers.controls.text
 						}
 						snapshot.x = xPosition / scaleFactor;
 						snapshot.y = yPosition / scaleFactor;
-						if(this._updateSnapshotOnScaleChange)
-						{
-							snapshot.x /= this._lastGlobalScaleX;
-							snapshot.y /= this._lastGlobalScaleX;
-						}
 						snapshotIndex++;
 						yPosition += currentBitmapHeight;
 						totalBitmapHeight -= currentBitmapHeight;
@@ -2082,8 +2082,10 @@ package feathers.controls.text
 					{
 						snapshot.scaleX = 1 / globalScaleX;
 						snapshot.scaleY = 1 / globalScaleY;
-						snapshot.x /= globalScaleX;
-						snapshot.y /= globalScaleY;
+					}
+					else
+					{
+						snapshot.scale = 1;
 					}
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;

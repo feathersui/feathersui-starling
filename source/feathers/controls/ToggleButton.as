@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -370,6 +370,7 @@ package feathers.controls
 	 */
 	public class ToggleButton extends Button implements IGroupedToggle
 	{
+		[Deprecated(replacement="feathers.controls.ButtonState.UP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
@@ -381,6 +382,7 @@ package feathers.controls
 		 */
 		public static const STATE_UP:String = "up";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.DOWN",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
@@ -392,6 +394,7 @@ package feathers.controls
 		 */
 		public static const STATE_DOWN:String = "down";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.HOVER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
@@ -403,6 +406,7 @@ package feathers.controls
 		 */
 		public static const STATE_HOVER:String = "hover";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
@@ -414,9 +418,10 @@ package feathers.controls
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.UP_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
+		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
 		 * starting with Feathers 3.0. It will be removed in a future version of
@@ -425,6 +430,7 @@ package feathers.controls
 		 */
 		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.DOWN_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
@@ -436,6 +442,7 @@ package feathers.controls
 		 */
 		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.HOVER_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
@@ -447,9 +454,9 @@ package feathers.controls
 		 */
 		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
 
+		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED_AND_SELECTED",since="3.0.0")]
 		/**
 		 * @private
-		 *
 		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
@@ -459,6 +466,7 @@ package feathers.controls
 		 */
 		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
@@ -470,6 +478,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
@@ -481,6 +490,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
@@ -492,6 +502,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
@@ -503,6 +514,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
@@ -514,6 +526,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_MANUAL:String = "manual";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
@@ -525,6 +538,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 
+		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
@@ -536,6 +550,7 @@ package feathers.controls
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
@@ -547,6 +562,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
@@ -558,6 +574,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
+		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
@@ -569,6 +586,7 @@ package feathers.controls
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
@@ -580,6 +598,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
@@ -591,6 +610,7 @@ package feathers.controls
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
+		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
@@ -601,7 +621,7 @@ package feathers.controls
 		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleButton</code>
 		 * components. If <code>null</code>, falls back to using
@@ -714,6 +734,11 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.isToggle = true;
 		 * button.isSelected = true;</listing>
+		 * 
+		 * <p><strong>Warning:</strong> Do not listen to
+		 * <code>Event.TRIGGERED</code> to be notified when the
+		 * <code>isSelected</code> property changes. You must listen to
+		 * <code>Event.CHANGE</code>.</p>
 		 *
 		 * @default false
 		 *
@@ -905,7 +930,9 @@ package feathers.controls
 		 */
 		protected var _defaultSelectedLabelProperties:PropertyProxy;
 
+		[Deprecated(replacement="selectedFontStyles",since="3.1.0")]
 		/**
+		 * @private
 		 * DEPRECATED: Set the <code>selectedFontStyles</code> property instead.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
@@ -945,8 +972,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
-		 *
+		 * @private
 		 * DEPRECATED: Set the <code>selectedFontStyles</code> property, or call
 		 * the <code>setFontStylesForState()</code> function with
 		 * <code>ButtonState.UP_AND_SELECTED</code> and pass in a
@@ -994,7 +1022,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
+		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
 		 * with <code>ButtonState.DOWN_AND_SELECTED</code> and pass in a
 		 * <code>starling.text.TextFormat</code> object instead.
@@ -1040,7 +1070,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
+		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
 		 * with <code>ButtonState.HOVER_AND_SELECTED</code> and pass in a
 		 * <code>starling.text.TextFormat</code> object instead.
@@ -1086,7 +1118,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
 		/**
+		 * @private
 		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
 		 * with <code>ButtonState.DISABLED_AND_SELECTED</code> and pass in a
 		 * <code>starling.text.TextFormat</code> object instead.

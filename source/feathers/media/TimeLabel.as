@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2016 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -69,6 +69,7 @@ package feathers.media
 	 */
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{
+		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_TIME",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_TIME</code>.
@@ -80,6 +81,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.TOTAL_TIME",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.TOTAL_TIME</code>.
@@ -91,6 +93,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_TOTAL_TIME:String = "totalTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.REMAINING_TIME",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.REMAINING_TIME</code>.
@@ -102,6 +105,7 @@ package feathers.media
 		 */
 		public static const DISPLAY_MODE_REMAINING_TIME:String = "remainingTime";
 
+		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES",since="3.0.0")]
 		/**
 		 * @private
 		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>.
