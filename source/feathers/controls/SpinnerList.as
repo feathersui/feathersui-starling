@@ -313,19 +313,26 @@ package feathers.controls
 			if(this._maxVerticalScrollPosition !== this._minVerticalScrollPosition)
 			{
 				this.actualPageHeight = ISpinnerLayout(this._layout).snapInterval;
-				if(!this.isScrolling && this.actualPageHeight !== oldActualPageHeight)
+				if(!this.isScrolling && this.pendingItemIndex === -1 &&
+					this.actualPageHeight !== oldActualPageHeight)
 				{
-					var pageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
-					this._verticalScrollPosition = this.actualPageHeight * pageIndex;
+					//if the height of items have changed, we need to tweak the
+					//scroll position to re-center the selected item.
+					//we don't do this if the user is currently scrolling or if
+					//the selected index has changed (which will set
+					//pendingItemIndex).
+					var verticalPageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this._verticalScrollPosition = this.actualPageHeight * verticalPageIndex;
 				}
 			}
 			else if(this._maxHorizontalScrollPosition !== this._minHorizontalScrollPosition)
 			{
 				this.actualPageWidth = ISpinnerLayout(this._layout).snapInterval;
-				if(!this.isScrolling && this.actualPageWidth !== oldActualPageWidth)
+				if(!this.isScrolling && this.pendingItemIndex === -1 &&
+					this.actualPageWidth !== oldActualPageWidth)
 				{
-					pageIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
-					this._horizontalScrollPosition = this.actualPageWidth * pageIndex;
+					var horizontalPageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this._horizontalScrollPosition = this.actualPageWidth * horizontalPageIndex;
 				}
 			}
 		}
