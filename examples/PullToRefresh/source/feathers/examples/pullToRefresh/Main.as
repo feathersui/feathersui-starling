@@ -51,7 +51,7 @@ package feathers.examples.pullToRefresh
 
 			//FeathersEventType.PULLING will be dispatched on the pull view as
 			//it is pulled down so that we can change its appearance. 
-			this._pullView.addEventListener(FeathersEventType.PULLING, list_pullingHandler);
+			this._pullView.addEventListener(FeathersEventType.PULLING, pullView_pullingHandler);
 
 			this._list = new List();
 
@@ -123,7 +123,7 @@ package feathers.examples.pullToRefresh
 			Starling.juggler.remove(this._pullView);
 		}
 
-		private function list_pullingHandler(event:Event, ratio:Number):void
+		private function pullView_pullingHandler(event:Event, ratio:Number):void
 		{
 			var totalFrames:int = this._pullView.numFrames;
 
