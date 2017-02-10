@@ -70,6 +70,8 @@ package feathers.tests
 		[Test]
 		public function testLengthWithFilterFunctionAndSetFilterFunctionToNull():void
 		{
+			//ensure that the filter is processed once before setting to null
+			this._collection.getItemAt(0);
 			this._collection.filterFunction = null;
 			Assert.assertStrictlyEquals("ListCollection must update length if filterFunction is set to null.",
 				2, this._collection.length);
@@ -375,6 +377,36 @@ package feathers.tests
 				this._collection.contains(this._addedExcludedItem));
 			Assert.assertStrictlyEquals("ListCollection getItemIndex() must return correct index with filterFunction if item passed to setItemAt() is excluded after filterFunction is set to null.",
 				0, this._collection.getItemIndex(this._addedExcludedItem));
+		}
+
+	//-- refreshFilter()
+
+		[Test]
+		public function testRefreshFilter():void
+		{
+			var searchText:String = "Included";
+			this._collection.filterFunction = function(item:Object):Boolean
+			{
+				return item.label.indexOf(searchText) >= 0;
+			};
+			//ensure that the filter is processed once before changing the text
+			this._collection.getItemAt(0);
+			//change this variable, but the collection doesn't know about it yet
+			searchText = "Excluded";
+			Assert.assertStrictlyEquals("ListCollection incorrectly updated before calling refreshFilter().",
+				this._includedItem, this._collection.getItemAt(0));
+			this._collection.refreshFilter();
+			Assert.assertStrictlyEquals("ListCollection failed to update after calling refreshFilter().",
+				this._excludedItem, this._collection.getItemAt(0));
+		}
+
+		[Test]
+		public function testRefreshFilterWithNoFilterFunction():void
+		{
+			this._collection.filterFunction = null;
+			this._collection.refreshFilter();
+			Assert.assertStrictlyEquals("ListCollection refreshFilter() should not filter items if filterFunction is null.",
+				2, this._collection.length);
 		}
 	}
 }

@@ -396,6 +396,22 @@ package feathers.data
 		}
 
 		/**
+		 * Refreshes the collection using the <code>filterFunction</code>
+		 * without passing in a new <code>filterFunction</code>. Useful when the
+		 * filter function relies on external variables that have changed.
+		 */
+		public function refreshFilter():void
+		{
+			if(this._filterFunction === null)
+			{
+				return;
+			}
+			this._pendingRefresh = true;
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.FILTER_CHANGE);
+		}
+
+		/**
 		 * @private
 		 */
 		protected function refresh():void
