@@ -5,6 +5,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 ## 3.2.0 - In Development
 
 * PullToRefresh: new example that demonstrates how to support the popular "pull to refresh" gesture with Feathers lists and other scrolling containers.
+* TabNavigator: support for swiping between tabs.
+* ListCollection: added filterFunction property to support filtering items in data providers.
 * API Reference: All classes now specify the version of Feathers when they were first added.
 * Added [Deprecated] metadata to deprecated APIs.
 * Alert: added acceptButtonIndex and cancelButtonIndex to allow keyboard (or hardware back button) control over alert.
@@ -37,7 +39,6 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * List, GroupedList; when updateAll() is called on the data provider, items that were added or removed from source are now rendered.
 * List, GroupedList: fixed issue where event listeners were not added to default layout created in initialize().
 * List, GroupedList: fixed issue where an item could not receive a new factoryID after its index changes.
-* ListCollection: added filterFunction property to support filtering.
 * ListCollection, HierarchicalCollection: removeAll() no longer results in CollectionEventType.RESET. This should not have been considered a drastic reset. CollectionEventType.REMOVE_ALL is dispatched instead.
 * PickerList: added itemRendererFactory and customItemRendererStyleName. They no longer need to be set in the listFactory. However, existing code that sets them in the listFactory will continue to work correctly.
 * Navigators: validates active screen when navigator validates to avoid flickering on next frame with delayed automatic validation.
