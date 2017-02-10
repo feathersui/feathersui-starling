@@ -2262,7 +2262,9 @@ package feathers.controls
 			}
 			if(this._texture.root.uploadBitmapData.length === 2)
 			{
-				this._texture.root.uploadBitmapData(bitmapData, function():void
+				//using brackets as temporary workaround to make compiler happy
+				//when using Starling 2.1
+				this._texture.root["uploadBitmapData"](bitmapData, function():void
 				{
 					if(image !== null)
 					{
