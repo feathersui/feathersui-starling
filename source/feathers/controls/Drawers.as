@@ -99,7 +99,7 @@ package feathers.controls
 	 * or closes a drawer is set to 500 milliseconds:</p>
 	 *
 	 * <listing version="3.0">
-	 * scroller.openOrCloseDuration = 0.5;</listing>
+	 * drawers.openOrCloseDuration = 0.5;</listing>
 	 *
 	 * @default 0.25
 	 *
@@ -114,7 +114,7 @@ package feathers.controls
 	 * closes a drawer is customized:</p>
 	 *
 	 * <listing version="3.0">
-	 * drawrs.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
+	 * drawers.openOrCloseEase = Transitions.EASE_IN_OUT;</listing>
 	 *
 	 * @default starling.animation.Transitions.EASE_OUT
 	 *
@@ -2039,7 +2039,7 @@ package feathers.controls
 		 * <p>In the following example, the minimum drag distance is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.minimumDragDistance = 0.1;</listing>
+		 * drawers.minimumDragDistance = 0.1;</listing>
 		 *
 		 * @default 0.04
 		 */
@@ -2070,7 +2070,7 @@ package feathers.controls
 		 * <p>In the following example, the minimum drawer throw velocity is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.minimumDrawerThrowVelocity = 2;</listing>
+		 * drawers.minimumDrawerThrowVelocity = 2;</listing>
 		 *
 		 * @default 5
 		 */
@@ -2099,7 +2099,7 @@ package feathers.controls
 		 * <p>In the following example, the open gesture edge size customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.openGestureEdgeSize = 0.25;</listing>
+		 * drawers.openGestureEdgeSize = 0.25;</listing>
 		 *
 		 * @default 0.1
 		 */
