@@ -8,13 +8,27 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.core.IFeathersControl;
 	import feathers.data.ListCollection;
+	import feathers.events.ExclusiveTouch;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 
+	import flash.geom.Point;
+	import flash.utils.getTimer;
+
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	[DefaultProperty("mxmlContent")]
 	/**
@@ -41,6 +55,39 @@ package feathers.controls
 	 * @see #tabBarFactory
 	 */
 	[Style(name="customTabBarStyleName",type="String")]
+
+	/**
+	 * The duration, in seconds, of the animation for a swipe gesture.
+	 *
+	 * <p>In the following example, the duration of the animation for a swipe
+	 * gesture is set to 500 milliseconds:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.swipeDuration = 0.5;</listing>
+	 *
+	 * @default 0.25
+	 *
+	 * @see #style:swipeEase
+	 * @see #isSwipeEnabled
+	 */
+	[Style(name="swipeDuration",type="Number")]
+
+	/**
+	 * The easing function used with the animation for a swipe gesture.
+	 *
+	 * <p>In the following example, the ease of the animation for a swipe
+	 * gesture is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * navigator.swipeEase = Transitions.EASE_IN_OUT;</listing>
+	 *
+	 * @default starling.animation.Transitions.EASE_OUT
+	 *
+	 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
+	 * @see #style:swipeDuration
+	 * @see #isSwipeEnabled
+	 */
+	[Style(name="swipeEase",type="Object")]
 
 	/**
 	 * The location of the tab bar.
@@ -133,6 +180,56 @@ package feathers.controls
 	[Event(name="triggered", type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the user starts a swipe gesture to switch tabs.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see #event:endInteraction feathers.events.FeathersEventType.END_INTERACTION
+	 * @see #isSwipeEnabled
+	 */
+	[Event(name="beginInteraction",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user stops a swipe gesture. If the user interaction
+	 * has also triggered an animation, the content may continue moving after
+	 * this event is dispatched.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
+	 * @see #event:beginInteraction feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see #isSwipeEnabled
+	 */
+	[Event(name="endInteraction",type="starling.events.Event")]
+
+	/**
 	 * A tabbed container.
 	 *
 	 * <p>The following example creates a tab navigator, adds a couple of tabs
@@ -161,6 +258,23 @@ package feathers.controls
 	 */
 	public class TabNavigator extends BaseScreenNavigator
 	{
+		/**
+		 * @private
+		 * The current velocity is given high importance.
+		 */
+		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
+
+		/**
+		 * @private
+		 * Older saved velocities are given less importance.
+		 */
+		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[1, 1.33, 1.66, 2];
+
+		/**
+		 * @private
+		 */
+		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
+
 		/**
 		 * @private
 		 */
@@ -198,6 +312,7 @@ package feathers.controls
 		{
 			super();
 			this.screenContainer = new LayoutGroup();
+			this.screenContainer.addEventListener(TouchEvent.TOUCH, screenContainer_touchHandler);
 			this.addChild(this.screenContainer);
 		}
 
@@ -208,6 +323,11 @@ package feathers.controls
 		{
 			return TabNavigator.globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -462,6 +582,238 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _dragCancelled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDragging:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingPrevious:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingNext:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _swipeTween:Tween = null;
+
+		/**
+		 * @private
+		 */
+		protected var _isSwipeEnabled:Boolean = false;
+
+		/**
+		 * Determines if the swipe gesture to switch between tabs is enabled.
+		 * 
+		 * <p>In the following example, swiping between tabs is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.isSwipeEnabled = true;</listing>
+		 * 
+		 * @default false
+		 */
+		public function get isSwipeEnabled():Boolean
+		{
+			return this._swipeDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSwipeEnabled(value:Boolean):void
+		{
+			this._isSwipeEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _swipeDuration:Number = 0.25;
+
+		/**
+		 * @private
+		 */
+		public function get swipeDuration():Number
+		{
+			return this._swipeDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set swipeDuration(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._swipeDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _swipeEase:Object = Transitions.EASE_OUT;
+
+		/**
+		 * @private
+		 */
+		public function get swipeEase():Object
+		{
+			return this._swipeEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set swipeEase(value:Object):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._swipeEase = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumDragDistance:Number = 0.04;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before a drag gesture begins.
+		 *
+		 * <p>In the following example, the minimum drag distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumDragDistance = 0.1;</listing>
+		 *
+		 * @default 0.04
+		 */
+		public function get minimumDragDistance():Number
+		{
+			return this._minimumDragDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumDragDistance(value:Number):void
+		{
+			this._minimumDragDistance = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumSwipeVelocity:Number = 5;
+
+		/**
+		 * The minimum physical velocity (in inches per second) that a touch
+		 * must move before a swipe is detected. Otherwise, it will settle which
+		 * screen to navigate to base don which one is closer when the touch ends.
+		 *
+		 * <p>In the following example, the minimum swipe velocity is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.minimumSwipeVelocity = 2;</listing>
+		 *
+		 * @default 5
+		 */
+		public function get minimumSwipeVelocity():Number
+		{
+			return this._minimumSwipeVelocity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumSwipeVelocity(value:Number):void
+		{
+			this._minimumSwipeVelocity = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _startTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _startTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchTime:int;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityX:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityY:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _savedOldScreen:IFeathersControl;
+
+		/**
+		 * @private
+		 */
+		protected var _savedNewScreen:IFeathersControl;
+
+		/**
+		 * @private
+		 */
+		protected var _savedOnComplete:Function;
+
+		/**
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>showScreen()</code>.
@@ -586,6 +938,28 @@ package feathers.controls
 				return TabNavigatorItem(this._screens[id]);
 			}
 			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(localPoint);
+			if(result)
+			{
+				if(this._isDragging)
+				{
+					return this.screenContainer;
+				}
+				return result;
+			}
+			//we want to register touches in our hitArea as a last resort
+			if(!this.visible || !this.touchable)
+			{
+				return null;
+			}
+			return this._hitArea.contains(localPoint.x, localPoint.y) ? this.screenContainer : null;
 		}
 
 		/**
@@ -782,6 +1156,404 @@ package feathers.controls
 				transition = defaultTransition;
 			}
 			this.showScreen(id, transition);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function exclusiveTouch_changeHandler(event:Event, touchID:int):void
+		{
+			if(this.touchPointID < 0 || this.touchPointID != touchID || this._isDragging)
+			{
+				return;
+			}
+
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touchID) == this)
+			{
+				return;
+			}
+
+			this.touchPointID = -1;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragTransition(oldScreen:IFeathersControl, newScreen:IFeathersControl, onComplete:Function):void
+		{
+			this._savedOldScreen = oldScreen;
+			this._savedNewScreen = newScreen;
+			this._savedOnComplete = onComplete;
+			this.handleDragMove();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleTouchBegan(touch:Touch):void
+		{
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touch.id))
+			{
+				//already claimed
+				return;
+			}
+
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this, point);
+			var localX:Number = point.x;
+			var localY:Number = point.y;
+			Pool.putPoint(point);
+
+			this.touchPointID = touch.id;
+			this._velocityX = 0;
+			this._velocityY = 0;
+			this._previousVelocityX.length = 0;
+			this._previousVelocityY.length = 0;
+			this._previousTouchTime = getTimer();
+			this._previousTouchX = this._startTouchX = this._currentTouchX = localX;
+			this._previousTouchY = this._startTouchY = this._currentTouchY = localY;
+			this._isDraggingPrevious = false;
+			this._isDraggingNext = false;
+			this._isDragging = false;
+			this._dragCancelled = false;
+
+			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleTouchMoved(touch:Touch):void
+		{
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this, point);
+			this._currentTouchX = point.x;
+			this._currentTouchY = point.y;
+			Pool.putPoint(point);
+			var now:int = getTimer();
+			var timeOffset:int = now - this._previousTouchTime;
+			if(timeOffset > 0)
+			{
+				//we're keeping previous velocity updates to improve accuracy
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
+				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityX.shift();
+				}
+				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
+				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityY.shift();
+				}
+				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
+				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
+				this._previousTouchTime = now;
+				this._previousTouchX = this._currentTouchX;
+				this._previousTouchY = this._currentTouchY;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleDragMove():void
+		{
+			if(this._savedNewScreen === null || this._savedOldScreen === null)
+			{
+				return;
+			}
+			if(this._tabBarPosition === RelativePosition.LEFT ||
+				this._tabBarPosition === RelativePosition.RIGHT)
+			{
+				this._savedOldScreen.y = this._currentTouchY - this._startTouchY;
+			}
+			else //top or bottom
+			{
+				this._savedOldScreen.x = this._currentTouchX - this._startTouchX;
+			}
+			this.swipeTween_onUpdate();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function transitionComplete(cancelTransition:Boolean = false):void
+		{
+			if(cancelTransition)
+			{
+				this._selectedIndex = this._tabBarDataProvider.getItemIndex(this._previousScreenInTransitionID);
+				this.tabBar.selectedIndex = this._selectedIndex;
+			}
+			super.transitionComplete(cancelTransition);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function swipeTween_onUpdate():void
+		{
+			if(this._tabBarPosition === RelativePosition.LEFT ||
+				this._tabBarPosition === RelativePosition.RIGHT)
+			{
+				if(this._isDraggingPrevious)
+				{
+					this._savedNewScreen.x = this._savedOldScreen.x;
+					this._savedNewScreen.y = this._savedOldScreen.y - this._savedNewScreen.height;
+				}
+				else if(this._isDraggingNext)
+				{
+					this._savedNewScreen.x = this._savedOldScreen.x;
+					this._savedNewScreen.y = this._savedOldScreen.y + this._savedOldScreen.height;
+				}
+			}
+			else //top or bottom
+			{
+				if(this._isDraggingPrevious)
+				{
+					this._savedNewScreen.x = this._savedOldScreen.x - this._savedNewScreen.width;
+					this._savedNewScreen.y = this._savedOldScreen.y;
+				}
+				else if(this._isDraggingNext)
+				{
+					this._savedNewScreen.x = this._savedOldScreen.x + this._savedOldScreen.width;
+					this._savedNewScreen.y = this._savedOldScreen.y;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function swipeTween_onComplete():void
+		{
+			this._swipeTween = null;
+			this._isDragging = false;
+			this._isDraggingPrevious = false;
+			this._isDraggingNext = false;
+			this._savedNewScreen = null;
+			this._savedOldScreen = null;
+			var cancelled:Boolean = this._dragCancelled;
+			this._dragCancelled = false;
+			var onComplete:Function = this._savedOnComplete;
+			this._savedOnComplete = null;
+			onComplete(cancelled);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleDragEnd():void
+		{
+			this._dragCancelled = false;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this._tabBarPosition === RelativePosition.LEFT ||
+				this._tabBarPosition === RelativePosition.RIGHT)
+			{
+				//take the average for more accuracy
+				var sum:Number = this._velocityY * CURRENT_VELOCITY_WEIGHT;
+				var velocityCount:int = this._previousVelocityY.length;
+				var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
+				for(var i:int = 0; i < velocityCount; i++)
+				{
+					var weight:Number = VELOCITY_WEIGHTS[i];
+					sum += this._previousVelocityY.shift() * weight;
+					totalWeight += weight;
+				}
+				var inchesPerSecondY:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+
+			}
+			else //top or bottom
+			{
+				sum = this._velocityX * CURRENT_VELOCITY_WEIGHT;
+				velocityCount = this._previousVelocityX.length;
+				totalWeight = CURRENT_VELOCITY_WEIGHT;
+				for(i = 0; i < velocityCount; i++)
+				{
+					weight = VELOCITY_WEIGHTS[i];
+					sum += this._previousVelocityX.shift() * weight;
+					totalWeight += weight;
+				}
+
+				var inchesPerSecondX:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+
+				if(inchesPerSecondX < -this._minimumSwipeVelocity)
+				{
+					//force next
+					if(this._isDraggingPrevious)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(inchesPerSecondX > this._minimumSwipeVelocity)
+				{
+					//force previous
+					if(this._isDraggingNext)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(this._savedNewScreen.x >= (this.screenContainer.width / 2))
+				{
+					if(this._isDraggingNext)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(this._savedNewScreen.x <= -(this.screenContainer.width / 2))
+				{
+					if(this._isDraggingPrevious)
+					{
+						this._dragCancelled = true;
+					}
+				}
+			}
+
+			this._swipeTween = new Tween(this._savedOldScreen, this._swipeDuration, this._swipeEase);
+			if(this._tabBarPosition === RelativePosition.LEFT ||
+				this._tabBarPosition === RelativePosition.RIGHT)
+			{
+				if(this._dragCancelled)
+				{
+					this._swipeTween.animate("y", 0);
+				}
+				else if(this._isDraggingPrevious)
+				{
+					this._swipeTween.animate("y", this.screenContainer.height);
+				}
+				else if(this._isDraggingNext)
+				{
+					this._swipeTween.animate("y", -this.screenContainer.height);
+				}
+			}
+			else //top or bottom
+			{
+				if(this._dragCancelled)
+				{
+					this._swipeTween.animate("x", 0);
+				}
+				else if(this._isDraggingPrevious)
+				{
+					this._swipeTween.animate("x", this.screenContainer.width);
+				}
+				else if(this._isDraggingNext)
+				{
+					this._swipeTween.animate("x", -this.screenContainer.width);
+				}
+			}
+			this._swipeTween.onUpdate = this.swipeTween_onUpdate;
+			this._swipeTween.onComplete = this.swipeTween_onComplete;
+			starling.juggler.add(this._swipeTween);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function checkForDrag():void
+		{
+			var maxIndex:int = this._tabBarDataProvider.length - 1;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			if(this._tabBarPosition === RelativePosition.LEFT ||
+				this._tabBarPosition === RelativePosition.RIGHT)
+			{
+				if(this._selectedIndex > 0 && verticalInchesMoved >= this._minimumDragDistance)
+				{
+					this._isDraggingPrevious = true;
+				}
+				else if(this._selectedIndex < maxIndex && verticalInchesMoved <= -this._minimumDragDistance)
+				{
+					this._isDraggingNext = true;
+				}
+			}
+			else //top or bottom
+			{
+				if(this._selectedIndex > 0 && horizontalInchesMoved >= this._minimumDragDistance)
+				{
+					this._isDraggingPrevious = true;
+				}
+				else if(this._selectedIndex < maxIndex && horizontalInchesMoved <= -this._minimumDragDistance)
+				{
+					this._isDraggingNext = true;
+				}
+			}
+
+			if(this._isDraggingPrevious)
+			{
+				var previousIndex:int = this._selectedIndex - 1;
+				this._isDragging = true;
+				var previousID:String = this._tabBarDataProvider.getItemAt(previousIndex) as String;
+				this.showScreen(previousID, dragTransition);
+			}
+			if(this._isDraggingNext)
+			{
+				var nextIndex:int = this._selectedIndex + 1;
+				this._isDragging = true;
+				var nextID:String = this._tabBarDataProvider.getItemAt(nextIndex) as String;
+				this.showScreen(nextID, dragTransition);
+			}
+			if(this._isDragging)
+			{
+				this._startTouchX = this._currentTouchX;
+				this._startTouchY = this._currentTouchY;
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+				exclusiveTouch.claimTouch(this.touchPointID, this);
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function screenContainer_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled || this._swipeTween !== null || !this._isSwipeEnabled)
+			{
+				this.touchPointID = -1;
+				return;
+			}
+			if(this.touchPointID >= 0)
+			{
+				var touch:Touch = event.getTouch(this.screenContainer, null, this.touchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					this.handleTouchMoved(touch);
+
+					if(!this._isDragging)
+					{
+						this.checkForDrag();
+					}
+					if(this._isDragging)
+					{
+						this.handleDragMove();
+					}
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this.touchPointID = -1;
+					if(this._isDragging)
+					{
+						this.handleDragEnd();
+						this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+					}
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this.screenContainer, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					return;
+				}
+				this.handleTouchBegan(touch);
+			}
 		}
 	}
 }
