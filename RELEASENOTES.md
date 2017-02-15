@@ -21,6 +21,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Button: fixed issue where label text renderer measurement was incorrect if minWidth or minHeight is set explicitly.
 * CalloutPopUpContentManager: similar to Callout, the direction property is now deprecated and added supportedPositions as its replacement.
 * DateTimeSpinner: added backgroundSkin, backgroundDisabledSkin, and padding properties.
+* DateTimeSpinner: fixed issue where pending value of scrollToDate() was not cleared.
 * Drawers: content property may now be null when validating. However, it should not be null when opening a drawer.
 * FeathersControl; layoutData is set to null when disposed to avoid potential memory leaks.
 * FeathersControl: Removes event listeners on styleNameList when disposed so that they cannot be called for no reason.
