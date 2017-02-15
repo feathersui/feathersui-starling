@@ -13,11 +13,11 @@ package feathers.media
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.errors.IllegalOperationError;
+	import flash.events.FullScreenEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.media.SoundTransform;
@@ -670,7 +670,7 @@ package feathers.media
 			this._normalDisplayState = value;
 			if(!this._isFullScreen && this.stage)
 			{
-				var starling:Starling = stageToStarling(this.stage);
+				var starling:Starling = this.stage.starling;
 				var nativeStage:Stage = starling.nativeStage;
 				nativeStage.displayState = this._normalDisplayState;
 			}
@@ -722,7 +722,7 @@ package feathers.media
 			this._fullScreenDisplayState = value;
 			if(this._isFullScreen && this.stage)
 			{
-				var starling:Starling = stageToStarling(this.stage);
+				var starling:Starling = this.stage.starling;
 				var nativeStage:Stage = starling.nativeStage;
 				nativeStage.displayState = this._fullScreenDisplayState;
 			}
@@ -909,7 +909,7 @@ package feathers.media
 			{
 				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
 			}
-			var starling:Starling = stageToStarling(this.stage);
+			var starling:Starling = this.stage.starling;
 			var nativeStage:Stage = starling.nativeStage;
 			var oldIgnoreDisplayListEvents:Boolean = this._ignoreDisplayListEvents;
 			this._ignoreDisplayListEvents = true;
@@ -923,6 +923,7 @@ package feathers.media
 					var child:DisplayObject = this._fullScreenContainer.getChildAt(0);
 					this.addChild(child);
 				}
+				nativeStage.removeEventListener(FullScreenEvent.FULL_SCREEN, nativeStage_fullScreenHandler);
 				nativeStage.displayState = this._normalDisplayState;
 			}
 			else
@@ -945,6 +946,7 @@ package feathers.media
 					this._fullScreenContainer.addChild(child);
 				}
 				PopUpManager.addPopUp(this._fullScreenContainer, true, false);
+				nativeStage.addEventListener(FullScreenEvent.FULL_SCREEN, nativeStage_fullScreenHandler, false, 0, true);
 			}
 			this._ignoreDisplayListEvents = oldIgnoreDisplayListEvents;
 			this._isFullScreen = !this._isFullScreen;
@@ -1322,6 +1324,14 @@ package feathers.media
 				return;
 			}
 			super.mediaPlayer_removedHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_fullScreenHandler(event:FullScreenEvent):void
+		{
+			this.toggleFullScreen();
 		}
 	}
 }

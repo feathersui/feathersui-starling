@@ -60,6 +60,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * TouchToState: new utility class to change a component's state based on TouchPhase values.
 * VerticalCenteredPopUpContentManager: fixed margin setter that passed 0 to marginTop/marginRight/marginBottom/marginLeft instead of new value.
 * VerticalLayout: alignment of headers with getScrollPositionForIndex() defaults to VerticalAlign.TOP because that makes more sense for headers instead of VerticalAlign.MIDDLE.
+* VideoPlayer: fixed issue where display state was not properly updated when exiting full screen with the Escape key.
 
 ## 3.1.2 - January 2017
 
