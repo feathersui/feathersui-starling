@@ -345,6 +345,64 @@ package feathers.tests
 			Assert.assertTrue("Background is incorrectly hidden.", this._scroller.backgroundSkin.visible);
 		}
 
+		[Test]
+		public function testScrollToPositionWithZeroDuration():void
+		{
+			var hasDispatchedScrollStart:Boolean = false;
+			this._scroller.addEventListener(FeathersEventType.SCROLL_START, function(event:Event):void
+			{
+				hasDispatchedScrollStart = true;
+			});
+			var hasDispatchedScrollComplete:Boolean = false;
+			this._scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(event:Event):void
+			{
+				hasDispatchedScrollComplete = true;
+			});
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+			var targetPosition:Number = LARGE_VIEW_PORT_WIDTH - BACKGROUND_WIDTH;
+			this._scroller.scrollToPosition(targetPosition, 0, 0);
+			this._scroller.validate();
+			Assert.assertStrictlyEquals("Scroller: scrollToPosition() did not scroll to correct position",
+				targetPosition, this._scroller.horizontalScrollPosition);
+			Assert.assertTrue("Scroller: scrollToPosition() with duration 0 did not dispatch FeathersEventType.SCROLL_START",
+				hasDispatchedScrollStart);
+			Assert.assertTrue("Scroller: scrollToPosition() with duration 0 did not dispatch FeathersEventType.SCROLL_COMPLETE",
+				hasDispatchedScrollComplete);
+		}
+
+		[Test]
+		public function testScrollToPageIndexWithZeroDuration():void
+		{
+			var hasDispatchedScrollStart:Boolean = false;
+			this._scroller.addEventListener(FeathersEventType.SCROLL_START, function(event:Event):void
+			{
+				hasDispatchedScrollStart = true;
+			});
+			var hasDispatchedScrollComplete:Boolean = false;
+			this._scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(event:Event):void
+			{
+				hasDispatchedScrollComplete = true;
+			});
+			this._scroller.snapToPages = true;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+			this._scroller.scrollToPageIndex(2, 0, 0);
+			this._scroller.validate();
+			Assert.assertStrictlyEquals("Scroller: scrollToPageIndex() did not scroll to correct page",
+				2, this._scroller.horizontalPageIndex);
+			Assert.assertTrue("Scroller: scrollToPageIndex() with duration 0 did not dispatch FeathersEventType.SCROLL_START",
+				hasDispatchedScrollStart);
+			Assert.assertTrue("Scroller: scrollToPageIndex() with duration 0 did not dispatch FeathersEventType.SCROLL_COMPLETE",
+				hasDispatchedScrollComplete);
+		}
+
 		[Test(async,timeout="1500")]
 		public function testStopScrollingOnThrow():void
 		{

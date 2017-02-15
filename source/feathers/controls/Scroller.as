@@ -6431,15 +6431,6 @@ package feathers.controls
 			{
 				targetVerticalScrollPosition = this._maxVerticalScrollPosition;
 			}
-			if(duration > 0)
-			{
-				this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, duration);
-			}
-			else
-			{
-				this.horizontalScrollPosition = targetHorizontalScrollPosition;
-				this.verticalScrollPosition = targetVerticalScrollPosition;
-			}
 			if(targetHorizontalPageIndex >= this._minHorizontalPageIndex)
 			{
 				this._horizontalPageIndex = targetHorizontalPageIndex;
@@ -6448,6 +6439,7 @@ package feathers.controls
 			{
 				this._verticalPageIndex = targetVerticalPageIndex;
 			}
+			this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, duration);
 		}
 
 		/**

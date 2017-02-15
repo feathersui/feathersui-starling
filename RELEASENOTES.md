@@ -47,6 +47,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Scroller: fixed issue where a layout change would not cause the scroller to measure its content again.
 * Scroller: added horizontalScrollBarPosition to allow the horizontal scroll bar to appear on top.
 * Scroller: added support for pull views on top, right, bottom, and left to support "pull to refresh" gesture.
+* Scroller: fixed issue where scrollToPageIndex() would not result in dispatch of FeathersEventType.SCROLL_START and FeathersEventType.SCROLL_COMPLETE.
 * SpinnerList: fixed issue where scroll position was not updated if layout snapInterval changed.
 * StageTextTextEditor: position of StageText can no longer be larger than 8191 or smaller than -8192 to avoid a runtime error.
 * StageTextTextEditor: added clearButtonMode property to support new StageText API.
