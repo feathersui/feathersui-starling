@@ -10,7 +10,6 @@ package feathers.utils.touch
 	import feathers.controls.ButtonState;
 
 	import flash.events.TimerEvent;
-
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
