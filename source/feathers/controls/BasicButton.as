@@ -22,10 +22,6 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
-	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
 	/**
 	 * The skin used when no other skin is defined for the current state.

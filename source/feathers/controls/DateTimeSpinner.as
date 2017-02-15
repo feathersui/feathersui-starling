@@ -27,7 +27,6 @@ package feathers.controls
 	import flash.globalization.LocaleID;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	/**

@@ -27,11 +27,8 @@ package feathers.controls.renderers
 	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 	import feathers.utils.touch.DelayedDownTouchToState;
-	import feathers.utils.touch.TouchToState;
 
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;

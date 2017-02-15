@@ -27,7 +27,6 @@ package feathers.controls
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.text.TextFormat;

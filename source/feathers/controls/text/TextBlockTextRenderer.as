@@ -39,7 +39,6 @@ package feathers.controls.text
 	import flash.text.engine.TextElement;
 	import flash.text.engine.TextJustifier;
 	import flash.text.engine.TextLine;
-	import flash.text.engine.TextLineValidity;
 	import flash.text.engine.TextRotation;
 
 	import starling.core.Starling;

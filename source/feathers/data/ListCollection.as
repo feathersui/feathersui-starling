@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.data
 {
 	import feathers.events.CollectionEventType;
-	import feathers.events.FeathersEventType;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;

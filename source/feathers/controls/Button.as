@@ -29,11 +29,9 @@ package feathers.controls
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
