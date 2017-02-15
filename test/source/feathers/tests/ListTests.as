@@ -4,6 +4,7 @@ package feathers.tests
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 
 	import flash.geom.Point;
@@ -333,10 +334,24 @@ package feathers.tests
 		[Test]
 		public function testScrollToDisplayIndex():void
 		{
+			var hasDispatchedScrollStart:Boolean = false;
+			this._list.addEventListener(FeathersEventType.SCROLL_START, function(event:Event):void
+			{
+				hasDispatchedScrollStart = true;
+			});
+			var hasDispatchedScrollComplete:Boolean = false;
+			this._list.addEventListener(FeathersEventType.SCROLL_COMPLETE, function(event:Event):void
+			{
+				hasDispatchedScrollComplete = true;
+			});
 			this._list.height = 200;
 			this._list.scrollToDisplayIndex(1);
 			this._list.validate();
-			Assert.assertTrue("List scrollToDisplayIndex() set incorrect verticalScrollPosition", this._list.verticalScrollPosition > 0)
+			Assert.assertTrue("List: scrollToDisplayIndex() set incorrect verticalScrollPosition", this._list.verticalScrollPosition > 0);
+			Assert.assertTrue("List: scrollToDisplayIndex() with duration 0 did not dispatch FeathersEventType.SCROLL_START",
+				hasDispatchedScrollStart);
+			Assert.assertTrue("List: scrollToDisplayIndex() with duration 0 did not dispatch FeathersEventType.SCROLL_COMPLETE",
+				hasDispatchedScrollComplete);
 		}
 	}
 }

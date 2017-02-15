@@ -2389,6 +2389,8 @@ package feathers.controls
 			{
 				return;
 			}
+			var pendingDate:Date = this.pendingScrollToDate;
+			this.pendingScrollToDate = null;
 			var duration:Number = this.pendingScrollDuration;
 			if(duration !== duration) //isNaN
 			{
@@ -2396,7 +2398,7 @@ package feathers.controls
 			}
 			if(this.yearsList)
 			{
-				var year:int = this.pendingScrollToDate.fullYear;
+				var year:int = pendingDate.fullYear;
 				if(this.yearsList.selectedItem !== year)
 				{
 					var yearRange:IntegerRange = IntegerRange(this.yearsList.dataProvider.data);
@@ -2405,7 +2407,7 @@ package feathers.controls
 			}
 			if(this.monthsList)
 			{
-				var month:int = this.pendingScrollToDate.month;
+				var month:int = pendingDate.month;
 				if(this.monthsList.selectedItem !== month)
 				{
 					this.monthsList.scrollToDisplayIndex(month, duration);
@@ -2413,7 +2415,7 @@ package feathers.controls
 			}
 			if(this.datesList)
 			{
-				var date:int = this.pendingScrollToDate.date;
+				var date:int = pendingDate.date;
 				if(this.datesList.selectedItem !== date)
 				{
 					this.datesList.scrollToDisplayIndex(date - 1, duration);
@@ -2421,7 +2423,7 @@ package feathers.controls
 			}
 			if(this.dateAndTimeDatesList)
 			{
-				var dateIndex:int = (this.pendingScrollToDate.time - this._minimum.time) / MS_PER_DAY;
+				var dateIndex:int = (pendingDate.time - this._minimum.time) / MS_PER_DAY;
 				if(this.dateAndTimeDatesList.selectedIndex !== dateIndex)
 				{
 					this.dateAndTimeDatesList.scrollToDisplayIndex(dateIndex, duration);
@@ -2429,7 +2431,7 @@ package feathers.controls
 			}
 			if(this.hoursList)
 			{
-				var hours:int = this.pendingScrollToDate.hours;
+				var hours:int = pendingDate.hours;
 				if(this._showMeridiem)
 				{
 					hours %= 12;
@@ -2441,7 +2443,7 @@ package feathers.controls
 			}
 			if(this.minutesList)
 			{
-				var minutes:int = this.pendingScrollToDate.minutes;
+				var minutes:int = pendingDate.minutes;
 				if(this.minutesList.selectedItem !== minutes)
 				{
 					this.minutesList.scrollToDisplayIndex(minutes, duration);
@@ -2449,7 +2451,7 @@ package feathers.controls
 			}
 			if(this.meridiemList)
 			{
-				var index:int = (this.pendingScrollToDate.hours < MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
+				var index:int = (pendingDate.hours < MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
 				if(this.meridiemList.selectedIndex !== index)
 				{
 					this.meridiemList.scrollToDisplayIndex(index, duration);
