@@ -1,4 +1,4 @@
-# Feathers 3.2.0-prerelease
+# Feathers 3.2.0-beta
 
 ---
 
@@ -11,8 +11,8 @@ Say hello to [Feathers UI](http://feathersui.com/), a library of light-weight, s
 ## Quick Links
 
 * [Website](http://feathersui.com/)
-* [Help](http://feathersui.com/help/)
-* [API Reference](http://feathersui.com/api-reference/)
+* [Beta Help](http://feathersui.com/beta/help/)
+* [Beta API Reference](http://feathersui.com/beta/api-reference/)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/BowlerHatLLC/feathers)
 
