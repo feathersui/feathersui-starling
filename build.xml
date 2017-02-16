@@ -429,6 +429,7 @@
 		<copy overwrite="true" todir="${examples.output}/PullToRefresh">
 			<fileset dir="${examples.root}/PullToRefresh">
 				<include name="README.md"/>
+				<include name="assets/**"/>
 				<include name="source/**"/>
 				<exclude name="source/PullToRefreshWeb.as"/>
 			</fileset>
