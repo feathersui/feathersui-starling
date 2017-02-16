@@ -1343,7 +1343,14 @@ package feathers.controls.text
 					//has focus, we'll set it back to false.
 					this.stageText.editable = true;
 				}
-				this.stageText.assignFocus();
+				if(!this._stageTextHasFocus)
+				{
+					//on iOS, calling assignFocus() when the StageText already
+					//has focus seems to make it harder to change the selection
+					//with a touch and hold gesture. the soft keyboard appears
+					//to close and re-open on touch begin more often.
+					this.stageText.assignFocus();
+				}
 			}
 			else
 			{
