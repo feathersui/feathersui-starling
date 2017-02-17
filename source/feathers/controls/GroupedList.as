@@ -974,6 +974,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _helperLocation:Vector.<int> = new <int>[];
+
+		/**
+		 * @private
+		 */
 		protected var _selectedGroupIndex:int = -1;
 
 		/**
@@ -1067,7 +1072,12 @@ package feathers.controls
 			{
 				return null;
 			}
-			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
+			this._helperLocation.length = 2;
+			this._helperLocation[0] = this._selectedGroupIndex;
+			this._helperLocation[1] = this._selectedItemIndex;
+			var result:Object = this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
+			this._helperLocation.length = 0;
+			return result;
 		}
 
 		/**
@@ -3036,11 +3046,18 @@ package feathers.controls
 				{
 					if(this.pendingItemIndex >= 0)
 					{
+						this._helperLocation.length = 2;
+						this._helperLocation[0] = this._selectedGroupIndex;
+						this._helperLocation[1] = this._selectedItemIndex;
 						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+						this._helperLocation.length = 0
 					}
 					else
 					{
+						this._helperLocation.length = 1;
+						this._helperLocation[0] = this._selectedGroupIndex;
 						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex);
+						this._helperLocation.length = 0;
 					}
 				}
 				if(pendingData is Object)
@@ -3087,25 +3104,31 @@ package feathers.controls
 			var changedSelection:Boolean = false;
 			if(event.keyCode == Keyboard.HOME)
 			{
-				if(this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+				this._helperLocation.length = 1;
+				this._helperLocation[0] = 0;
+				if(this._dataProvider.getLengthAtLocation() > 0 && this._dataProvider.getLengthAtLocation(this._helperLocation) > 0)
 				{
 					this.setSelectedLocation(0, 0);
 					changedSelection = true;
 				}
+				this._helperLocation.length = 0;
 			}
 			if(event.keyCode == Keyboard.END)
 			{
-				var groupIndex:int = this._dataProvider.getLength();
+				var groupIndex:int = this._dataProvider.getLengthAtLocation();
 				var itemIndex:int = -1;
+				this._helperLocation.length = 1;
 				do
 				{
 					groupIndex--;
 					if(groupIndex >= 0)
 					{
-						itemIndex = this._dataProvider.getLength(groupIndex) - 1;
+						this._helperLocation[0] = groupIndex;
+						itemIndex = this._dataProvider.getLengthAtLocation(this._helperLocation) - 1;
 					}
 				}
 				while(groupIndex > 0 && itemIndex < 0)
+				this._helperLocation.length = 0;
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
 					this.setSelectedLocation(groupIndex, itemIndex);
@@ -3118,15 +3141,18 @@ package feathers.controls
 				itemIndex = this._selectedItemIndex - 1;
 				if(itemIndex < 0)
 				{
+					this._helperLocation.length = 1;
 					do
 					{
 						groupIndex--;
 						if(groupIndex >= 0)
 						{
-							itemIndex = this._dataProvider.getLength(groupIndex) - 1;
+							this._helperLocation[0] = groupIndex;
+							itemIndex = this._dataProvider.getLengthAtLocation(this._helperLocation) - 1;
 						}
 					}
 					while(groupIndex > 0 && itemIndex < 0)
+					this._helperLocation.length = 0;
 				}
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
@@ -3145,14 +3171,17 @@ package feathers.controls
 				{
 					itemIndex = this._selectedItemIndex + 1;
 				}
-				if(groupIndex < 0 || itemIndex >= this._dataProvider.getLength(groupIndex))
+				this._helperLocation.length = 1;
+				this._helperLocation[0] = groupIndex;
+				if(groupIndex < 0 || itemIndex >= this._dataProvider.getLengthAtLocation(this._helperLocation))
 				{
 					itemIndex = -1;
 					groupIndex++;
-					var groupCount:int = this._dataProvider.getLength();
+					var groupCount:int = this._dataProvider.getLengthAtLocation();
 					while(groupIndex < groupCount && itemIndex < 0)
 					{
-						if(this._dataProvider.getLength(groupIndex) > 0)
+						this._helperLocation[0] = groupIndex;
+						if(this._dataProvider.getLengthAtLocation(this._helperLocation) > 0)
 						{
 							itemIndex = 0;
 						}
@@ -3162,6 +3191,7 @@ package feathers.controls
 						}
 					}
 				}
+				this._helperLocation.length = 0;
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
 					this.setSelectedLocation(groupIndex, itemIndex);

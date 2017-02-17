@@ -267,11 +267,21 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#getLength()
+		 *
+		 * @see #getLengthAtLocation()
 		 */
 		public function getLength(...rest:Array):int
 		{
 			rest.insertAt(0, this._data);
 			return this._dataDescriptor.getLength.apply(null, rest);
+		}
+
+		/**
+		 * @copy feathers.data.IHierarchicalCollection#getLengthAtLocation()
+		 */
+		public function getLengthAtLocation(location:Vector.<int> = null):int
+		{
+			return this._dataDescriptor.getLengthAtLocation(this._data, location);
 		}
 
 		/**
@@ -297,12 +307,22 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#getItemAt()
+		 *
+		 * @see #getItemAtLocation()
 		 */
 		public function getItemAt(index:int, ...rest:Array):Object
 		{
 			rest.insertAt(0, index);
 			rest.insertAt(0, this._data);
 			return this._dataDescriptor.getItemAt.apply(null, rest);
+		}
+
+		/**
+		 * @copy feathers.data.IHierarchicalCollection#getItemAtLocation()
+		 */
+		public function getItemAtLocation(location:Vector.<int>):Object
+		{
+			return this._dataDescriptor.getItemAtLocation(this._data, location);
 		}
 
 		/**
@@ -315,6 +335,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#addItemAt()
+		 *
+		 * @see #addItemAtLocation()
 		 */
 		public function addItemAt(item:Object, index:int, ...rest:Array):void
 		{
@@ -329,7 +351,17 @@ package feathers.data
 		}
 
 		/**
+		 * @copy feathers.data.IHierarchicalCollection#addItemAtLocation()
+		 */
+		public function addItemAtLocation(item:Object, location:Vector.<int>):void
+		{
+			return this._dataDescriptor.addItemAtLocation(this._data, item, location);
+		}
+
+		/**
 		 * @copy feathers.data.IHierarchicalCollection#removeItemAt()
+		 * 
+		 * @see #removeItemAtLocation()
 		 */
 		public function removeItemAt(index:int, ...rest:Array):Object
 		{
@@ -340,6 +372,14 @@ package feathers.data
 			rest.shift();
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, rest);
 			return item;
+		}
+
+		/**
+		 * @copy feathers.data.IHierarchicalCollection#removeItemAtLocation()
+		 */
+		public function removeItemAtLocation(location:Vector.<int>):Object
+		{
+			return this._dataDescriptor.removeItemAtLocation(this._data, location);
 		}
 
 		/**
@@ -377,6 +417,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#setItemAt()
+		 *
+		 * @see #setItemAtLocation()
 		 */
 		public function setItemAt(item:Object, index:int, ...rest:Array):void
 		{
@@ -388,6 +430,14 @@ package feathers.data
 			rest.shift();
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, rest);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @copy feathers.data.IHierarchicalCollection#setItemAtLocation()
+		 */
+		public function setItemAtLocation(item:Object, location:Vector.<int>):void
+		{
+			this._data.setItemAtLocation(item, location);
 		}
 
 		/**

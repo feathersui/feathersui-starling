@@ -70,6 +70,24 @@ package feathers.data
 		/**
 		 * @inheritDoc
 		 */
+		public function getLengthAtLocation(data:Object, location:Vector.<int> = null):int
+		{
+			var branch:Array = data as Array;
+			if(location !== null)
+			{
+				var indexCount:int = location.length;
+				for(var i:int = 0; i < indexCount; i++)
+				{
+					var index:int = location[i];
+					branch = branch[index][childrenField] as Array;
+				}
+			}
+			return branch.length;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemAt(data:Object, index:int, ...rest:Array):Object
 		{
 			rest.insertAt(0, index);
@@ -87,6 +105,22 @@ package feathers.data
 		/**
 		 * @inheritDoc
 		 */
+		public function getItemAtLocation(data:Object, location:Vector.<int>):Object
+		{
+			var branch:Array = data as Array;
+			var indexCount:int = location.length - 1;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = location[i];
+				branch = branch[index][childrenField] as Array;
+			}
+			var lastIndex:int = location[indexCount];
+			return branch[lastIndex];
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function setItemAt(data:Object, item:Object, index:int, ...rest:Array):void
 		{
 			rest.insertAt(0, index);
@@ -97,7 +131,23 @@ package feathers.data
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			var lastIndex:int = rest[indexCount];
+			var lastIndex:int = rest[indexCount] as int;
+			branch[lastIndex] = item;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function setItemAtLocation(data:Object, item:Object, location:Vector.<int>):void
+		{
+			var branch:Array = data as Array;
+			var indexCount:int = location.length - 1;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = location[i];
+				branch = branch[index][childrenField] as Array;
+			}
+			var lastIndex:int = location[indexCount];
 			branch[lastIndex] = item;
 		}
 
@@ -114,7 +164,23 @@ package feathers.data
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			var lastIndex:int = rest[indexCount];
+			var lastIndex:int = rest[indexCount] as int;
+			branch.insertAt(lastIndex, item);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addItemAtLocation(data:Object, item:Object, location:Vector.<int>):void
+		{
+			var branch:Array = data as Array;
+			var indexCount:int = location.length - 1;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = location[i];
+				branch = branch[index][childrenField] as Array;
+			}
+			var lastIndex:int = location[indexCount];
 			branch.insertAt(lastIndex, item);
 		}
 
@@ -131,7 +197,23 @@ package feathers.data
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			var lastIndex:int = rest[indexCount];
+			var lastIndex:int = rest[indexCount] as int;
+			return branch.removeAt(lastIndex);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeItemAtLocation(data:Object, location:Vector.<int>):Object
+		{
+			var branch:Array = data as Array;
+			var indexCount:int = location.length - 1;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = location[i];
+				branch = branch[index][childrenField] as Array;
+			}
+			var lastIndex:int = location[indexCount];
 			return branch.removeAt(lastIndex);
 		}
 

@@ -193,8 +193,18 @@ package feathers.data
 
 		/**
 		 * The number of items at the specified location in the collection.
+		 *
+		 * <p>Calling <code>getLengthOfBranch()</code> instead is recommended
+		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
+		 * avoid excessive garbage collection from temporary objects created by
+		 * <code>...rest</code> arguments.</p>
 		 */
 		function getLength(...rest:Array):int;
+
+		/**
+		 * The number of items at the specified location in the collection.
+		 */
+		function getLengthAtLocation(location:Vector.<int> = null):int;
 
 		/**
 		 * Call <code>updateItemAt()</code> to manually inform any component
@@ -209,7 +219,7 @@ package feathers.data
 		 *
 		 * @see #updateAll()
 		 */
-		function updateItemAt(index:int, ...rest:Array):void
+		function updateItemAt(index:int, ...rest:Array):void;
 
 		/**
 		 * Call <code>updateAll()</code> to manually inform any component
@@ -228,8 +238,18 @@ package feathers.data
 
 		/**
 		 * Returns the item at the specified location in the collection.
+		 *
+		 * <p>Calling <code>getItemAtLocation()</code> instead is recommended
+		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
+		 * avoid excessive garbage collection from temporary objects created by
+		 * <code>...rest</code> arguments.</p>
 		 */
 		function getItemAt(index:int, ...rest:Array):Object;
+
+		/**
+		 * Returns the item at the specified location in the collection.
+		 */
+		function getItemAtLocation(location:Vector.<int>):Object;
 
 		/**
 		 * Determines which location the item appears at within the collection. If
@@ -239,14 +259,35 @@ package feathers.data
 
 		/**
 		 * Adds an item to the collection, at the specified location.
+		 *
+		 * <p>Calling <code>addItemAtLocation()</code> instead is recommended
+		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
+		 * avoid excessive garbage collection from temporary objects created by
+		 * <code>...rest</code> arguments.</p>
 		 */
 		function addItemAt(item:Object, index:int, ...rest:Array):void;
+
+		/**
+		 * Adds an item to the collection, at the specified location.
+		 */
+		function addItemAtLocation(item:Object, location:Vector.<int>):void;
+
+		/**
+		 * Removes the item at the specified location from the collection and
+		 * returns it.
+		 *
+		 * <p>Calling <code>removeItemAtLocation()</code> instead is recommended
+		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
+		 * avoid excessive garbage collection from temporary objects created by
+		 * <code>...rest</code> arguments.</p>
+		 */
+		function removeItemAt(index:int, ...rest:Array):Object;
 
 		/**
 		 * Removes the item at the specified location from the collection and
 		 * returns it.
 		 */
-		function removeItemAt(index:int, ...rest:Array):Object;
+		function removeItemAtLocation(location:Vector.<int>):Object;
 
 		/**
 		 * Removes a specific item from the collection.
@@ -260,8 +301,18 @@ package feathers.data
 
 		/**
 		 * Replaces the item at the specified location with a new item.
+		 *
+		 * <p>Calling <code>setItemAtLocation()</code> instead is recommended
+		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
+		 * avoid excessive garbage collection from temporary objects created by
+		 * <code>...rest</code> arguments.</p>
 		 */
 		function setItemAt(item:Object, index:int, ...rest:Array):void;
+
+		/**
+		 * Replaces the item at the specified location with a new item.
+		 */
+		function setItemAtLocation(item:Object, location:Vector.<int>):void;
 
 		/**
 		 * Calls a function for each group in the collection and another
