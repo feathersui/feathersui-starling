@@ -16,7 +16,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.IHierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.IGroupedLayout;
@@ -328,14 +328,14 @@ package feathers.controls.supportClasses
 
 		private var _updateForDataReset:Boolean = false;
 
-		private var _dataProvider:HierarchicalCollection;
+		private var _dataProvider:IHierarchicalCollection;
 
-		public function get dataProvider():HierarchicalCollection
+		public function get dataProvider():IHierarchicalCollection
 		{
 			return this._dataProvider;
 		}
 
-		public function set dataProvider(value:HierarchicalCollection):void
+		public function set dataProvider(value:IHierarchicalCollection):void
 		{
 			if(this._dataProvider == value)
 			{

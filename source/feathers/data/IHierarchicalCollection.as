@@ -7,10 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.data
 {
-	import feathers.events.CollectionEventType;
-
-	import starling.events.Event;
-	import starling.events.EventDispatcher;
+	import feathers.core.IFeathersEventDispatcher;
 
 	/**
 	 * Dispatched when the underlying data source changes and the ui will
@@ -175,7 +172,7 @@ package feathers.data
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #updateAll()
 	 *
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ALL
@@ -183,257 +180,120 @@ package feathers.data
 	[Event(name="updateAll",type="starling.events.Event")]
 
 	/**
-	 * Wraps a two-dimensional data source with a common API for use with UI
-	 * controls that support this type of data.
-	 *
-	 * @productversion Feathers 1.0.0
+	 * An interface for hierarchical collections.
+	 * 
+	 * @productversion 3.3.0
 	 */
-	public class HierarchicalCollection extends EventDispatcher implements IHierarchicalCollection
+	public interface IHierarchicalCollection extends IFeathersEventDispatcher
 	{
-		public function HierarchicalCollection(data:Object = null)
-		{
-			if(!data)
-			{
-				//default to an array if no data is provided
-				data = [];
-			}
-			this.data = data;
-		}
-
 		/**
-		 * @private
+		 * Determines if a node from the data source is a branch.
 		 */
-		protected var _data:Object;
+		function isBranch(node:Object):Boolean;
 
 		/**
-		 * The data source for this collection. May be any type of data, but a
-		 * <code>dataDescriptor</code> needs to be provided to translate from
-		 * the data source's APIs to something that can be understood by
-		 * <code>HierarchicalCollection</code>.
+		 * The number of items at the specified location in the collection.
 		 */
-		public function get data():Object
-		{
-			return _data;
-		}
+		function getLength(...rest:Array):int;
 
 		/**
-		 * @private
-		 */
-		public function set data(value:Object):void
-		{
-			if(this._data == value)
-			{
-				return;
-			}
-			this._data = value;
-			this.dispatchEventWith(CollectionEventType.RESET);
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _dataDescriptor:IHierarchicalCollectionDataDescriptor = new ArrayChildrenHierarchicalCollectionDataDescriptor();
-
-		/**
-		 * Describes the underlying data source by translating APIs.
-		 */
-		public function get dataDescriptor():IHierarchicalCollectionDataDescriptor
-		{
-			return this._dataDescriptor;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set dataDescriptor(value:IHierarchicalCollectionDataDescriptor):void
-		{
-			if(this._dataDescriptor == value)
-			{
-				return;
-			}
-			this._dataDescriptor = value;
-			this.dispatchEventWith(CollectionEventType.RESET);
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @copy feathers.data.IHierarchicalCollection#isBranch()
-		 */
-		public function isBranch(node:Object):Boolean
-		{
-			return this._dataDescriptor.isBranch(node);
-		}
-
-		/**
-		 * @copy feathers.data.IHierarchicalCollection#getLength()
-		 */
-		public function getLength(...rest:Array):int
-		{
-			rest.insertAt(0, this._data);
-			return this._dataDescriptor.getLength.apply(null, rest);
-		}
-
-		/**
-		 * @copy feathers.data.IHierarchicalCollection#updateItemAt()
-		 * 
+		 * Call <code>updateItemAt()</code> to manually inform any component
+		 * rendering the <code>HierarchicalCollection</code> that the properties
+		 * of a single item in the collection have changed, and that any views
+		 * associated with the item should be updated. The collection will
+		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
+		 *
+		 * <p>Alternatively, the item can dispatch an event when one of its
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
+		 *
 		 * @see #updateAll()
 		 */
-		public function updateItemAt(index:int, ...rest:Array):void
-		{
-			rest.insertAt(0, index);
-			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, rest);
-		}
+		function updateItemAt(index:int, ...rest:Array):void
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#updateAll()
+		 * Call <code>updateAll()</code> to manually inform any component
+		 * rendering the <code>HierarchicalCollection</code> that the properties
+		 * of all, or many, of the collection's items have changed, and that any
+		 * rendered views should be updated. The collection will dispatch the
+		 * <code>CollectionEventType.UPDATE_ALL</code> event.
+		 *
+		 * <p>Alternatively, the item can dispatch an event when one of its
+		 * properties has changed, and  a custom item renderer can listen for
+		 * that event and update itself automatically.</p>
 		 *
 		 * @see #updateItemAt()
 		 */
-		public function updateAll():void
-		{
-			this.dispatchEventWith(CollectionEventType.UPDATE_ALL);
-		}
+		function updateAll():void;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#getItemAt()
+		 * Returns the item at the specified location in the collection.
 		 */
-		public function getItemAt(index:int, ...rest:Array):Object
-		{
-			rest.insertAt(0, index);
-			rest.insertAt(0, this._data);
-			return this._dataDescriptor.getItemAt.apply(null, rest);
-		}
+		function getItemAt(index:int, ...rest:Array):Object;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#getItemLocation()
+		 * Determines which location the item appears at within the collection. If
+		 * the item isn't in the collection, returns <code>null</code>.
 		 */
-		public function getItemLocation(item:Object, result:Vector.<int> = null):Vector.<int>
-		{
-			return this._dataDescriptor.getItemLocation(this._data, item, result);
-		}
+		function getItemLocation(item:Object, result:Vector.<int> = null):Vector.<int>;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#addItemAt()
+		 * Adds an item to the collection, at the specified location.
 		 */
-		public function addItemAt(item:Object, index:int, ...rest:Array):void
-		{
-			rest.insertAt(0, index);
-			rest.insertAt(0, item);
-			rest.insertAt(0, this._data);
-			this._dataDescriptor.addItemAt.apply(null, rest);
-			this.dispatchEventWith(Event.CHANGE);
-			rest.shift();
-			rest.shift();
-			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, rest);
-		}
+		function addItemAt(item:Object, index:int, ...rest:Array):void;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#removeItemAt()
+		 * Removes the item at the specified location from the collection and
+		 * returns it.
 		 */
-		public function removeItemAt(index:int, ...rest:Array):Object
-		{
-			rest.insertAt(0, index);
-			rest.insertAt(0, this._data);
-			var item:Object = this._dataDescriptor.removeItemAt.apply(null, rest);
-			this.dispatchEventWith(Event.CHANGE);
-			rest.shift();
-			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, rest);
-			return item;
-		}
+		function removeItemAt(index:int, ...rest:Array):Object;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#removeItem()
+		 * Removes a specific item from the collection.
 		 */
-		public function removeItem(item:Object):void
-		{
-			var location:Vector.<int> = this.getItemLocation(item);
-			if(location)
-			{
-				//this is hacky. a future version probably won't use rest args.
-				var locationAsArray:Array = [];
-				var indexCount:int = location.length;
-				for(var i:int = 0; i < indexCount; i++)
-				{
-					locationAsArray.push(location[i]);
-				}
-				this.removeItemAt.apply(this, locationAsArray);
-			}
-		}
+		function removeItem(item:Object):void;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#removeAll()
+		 * Removes all items from the collection.
 		 */
-		public function removeAll():void
-		{
-			if(this.getLength() == 0)
-			{
-				return;
-			}
-			this._dataDescriptor.removeAll(this._data);
-			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
-			this.dispatchEventWith(Event.CHANGE);
-		}
+		function removeAll():void;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#setItemAt()
+		 * Replaces the item at the specified location with a new item.
 		 */
-		public function setItemAt(item:Object, index:int, ...rest:Array):void
-		{
-			rest.insertAt(0, index);
-			rest.insertAt(0, item);
-			rest.insertAt(0, this._data);
-			this._dataDescriptor.setItemAt.apply(null, rest);
-			rest.shift();
-			rest.shift();
-			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, rest);
-			this.dispatchEventWith(Event.CHANGE);
-		}
+		function setItemAt(item:Object, index:int, ...rest:Array):void;
 
 		/**
-		 * @copy feathers.data.IHierarchicalCollection#dispose()
+		 * Calls a function for each group in the collection and another
+		 * function for each item in a group, where each function handles any
+		 * properties that require disposal on these objects. For example,
+		 * display objects or textures may need to be disposed. You may pass in
+		 * a value of <code>null</code> for either function if you don't have
+		 * anything to dispose in one or the other.
+		 *
+		 * <p>The function to dispose a group is expected to have the following signature:</p>
+		 * <pre>function( group:Object ):void</pre>
+		 *
+		 * <p>The function to dispose an item is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):void</pre>
+		 *
+		 * <p>In the following example, the items in the collection are disposed:</p>
+		 *
+		 * <listing version="3.0">
+		 * collection.dispose( function( group:Object ):void
+		 * {
+		 *     var content:DisplayObject = DisplayObject(group.content);
+		 *     content.dispose();
+		 * },
+		 * function( item:Object ):void
+		 * {
+		 *     var accessory:DisplayObject = DisplayObject(item.accessory);
+		 *     accessory.dispose();
+		 * },)</listing>
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#dispose() starling.display.DisplayObject.dispose()
 		 * @see http://doc.starling-framework.org/core/starling/textures/Texture.html#dispose() starling.textures.Texture.dispose()
 		 */
-		public function dispose(disposeGroup:Function, disposeItem:Function):void
-		{
-			var groupCount:int = this.getLength();
-			var path:Array = [];
-			for(var i:int = 0; i < groupCount; i++)
-			{
-				var group:Object = this.getItemAt(i);
-				path[0] = i;
-				this.disposeGroupInternal(group, path, disposeGroup, disposeItem);
-				path.length = 0;
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function disposeGroupInternal(group:Object, path:Array, disposeGroup:Function, disposeItem:Function):void
-		{
-			if(disposeGroup != null)
-			{
-				disposeGroup(group);
-			}
-
-			var itemCount:int = this.getLength.apply(this, path);
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				path[path.length] = i;
-				var item:Object = this.getItemAt.apply(this, path);
-				if(this.isBranch(item))
-				{
-					this.disposeGroupInternal(item, path, disposeGroup, disposeItem);
-				}
-				else if(disposeItem != null)
-				{
-					disposeItem(item);
-				}
-				path.length--;
-			}
-		}
+		function dispose(disposeGroup:Function, disposeItem:Function):void;
 	}
 }

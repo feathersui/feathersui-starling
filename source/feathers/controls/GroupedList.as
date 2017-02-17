@@ -15,7 +15,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.IHierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -805,7 +805,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:HierarchicalCollection;
+		protected var _dataProvider:IHierarchicalCollection;
 
 		/**
 		 * The collection of data displayed by the list. Changing this property
@@ -889,7 +889,7 @@ package feathers.controls
 		 * @see feathers.data.HierarchicalCollection
 		 * @see feathers.data.IHierarchicalCollectionDataDescriptor
 		 */
-		public function get dataProvider():HierarchicalCollection
+		public function get dataProvider():IHierarchicalCollection
 		{
 			return this._dataProvider;
 		}
@@ -897,7 +897,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:HierarchicalCollection):void
+		public function set dataProvider(value:IHierarchicalCollection):void
 		{
 			if(this._dataProvider == value)
 			{
