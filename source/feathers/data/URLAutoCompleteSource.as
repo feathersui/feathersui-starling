@@ -176,7 +176,12 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected var _savedSuggestionsCollection:ListCollection;
+		protected var _intermediateCollection:ListCollection = new ListCollection();
+
+		/**
+		 * @private
+		 */
+		protected var _savedSuggestionsCollection:IListCollection;
 
 		/**
 		 * @private
@@ -191,7 +196,7 @@ package feathers.data
 		/**
 		 * @copy feathers.data.IAutoCompleteSource#load()
 		 */
-		public function load(textToMatch:String, suggestionsResult:ListCollection = null):void
+		public function load(textToMatch:String, suggestionsResult:IListCollection = null):void
 		{
 			if(!suggestionsResult)
 			{
@@ -232,17 +237,20 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected function parseData(resultText:String, textToMatch:String, suggestions:ListCollection):void
+		protected function parseData(resultText:String, textToMatch:String, suggestions:IListCollection):void
 		{
 			var parseResultFunction:Function = this._parseResultFunction;
 			if(parseResultFunction.length === 2)
 			{
-				suggestions.data = parseResultFunction(resultText, textToMatch);
+				//this is kind of hacky, and maybe it would be better to modify
+				//parseResultFunction to return an IListCollection
+				this._intermediateCollection.data = parseResultFunction(resultText, textToMatch);
 			}
 			else
 			{
-				suggestions.data = parseResultFunction(resultText);
+				this._intermediateCollection.data = parseResultFunction(resultText);
 			}
+			suggestions.reset(this._intermediateCollection);
 			this.dispatchEventWith(starling.events.Event.COMPLETE, false, suggestions);
 		}
 
@@ -252,7 +260,7 @@ package feathers.data
 		 */
 		protected function urlLoader_completeHandler(event:flash.events.Event):void
 		{
-			var suggestions:ListCollection = this._savedSuggestionsCollection;
+			var suggestions:IListCollection = this._savedSuggestionsCollection;
 			this._savedSuggestionsCollection = null;
 			var textToMatch:String = this._savedTextToMatch;
 			this._savedTextToMatch = null;
@@ -278,7 +286,7 @@ package feathers.data
 		 */
 		protected function urlLoader_errorHandler(event:ErrorEvent):void
 		{
-			var result:ListCollection = this._savedSuggestionsCollection;
+			var result:IListCollection = this._savedSuggestionsCollection;
 			result.removeAll();
 			this._savedSuggestionsCollection = null;
 			this.dispatchEventWith(starling.events.Event.COMPLETE, false, result);

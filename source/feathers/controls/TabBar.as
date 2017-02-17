@@ -13,7 +13,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
-	import feathers.data.ListCollection;
+	import feathers.data.IListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
@@ -728,7 +728,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
+		protected var _dataProvider:IListCollection;
 
 		/**
 		 * The collection of data to be displayed with tabs. The default
@@ -765,7 +765,7 @@ package feathers.controls
 		 *
 		 * @see #tabInitializer
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
@@ -773,7 +773,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

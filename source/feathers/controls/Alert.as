@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
@@ -334,7 +335,7 @@ package feathers.controls
 		 *     ]);
 		 * }</listing>
 		 */
-		public static function show(message:String, title:String = null, buttons:ListCollection = null,
+		public static function show(message:String, title:String = null, buttons:IListCollection = null,
 			icon:DisplayObject = null, isModal:Boolean = true, isCentered:Boolean = true,
 			customAlertFactory:Function = null, customOverlayFactory:Function = null):Alert
 		{
@@ -528,12 +529,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _buttonsDataProvider:ListCollection;
+		protected var _buttonsDataProvider:IListCollection;
 
 		/**
 		 * The data provider of the alert's <code>ButtonGroup</code>.
 		 */
-		public function get buttonsDataProvider():ListCollection
+		public function get buttonsDataProvider():IListCollection
 		{
 			return this._buttonsDataProvider;
 		}
@@ -541,7 +542,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set buttonsDataProvider(value:ListCollection):void
+		public function set buttonsDataProvider(value:IListCollection):void
 		{
 			if(this._buttonsDataProvider == value)
 			{

@@ -10,7 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
-	import feathers.data.ListCollection;
+	import feathers.data.IListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
@@ -656,7 +656,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
+		protected var _dataProvider:IListCollection;
 
 		/**
 		 * The collection of data to be displayed with buttons.
@@ -718,7 +718,7 @@ package feathers.controls
 		 * @see Button
 		 * @see #buttonInitializer
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
@@ -726,7 +726,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

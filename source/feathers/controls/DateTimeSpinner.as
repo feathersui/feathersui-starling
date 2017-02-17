@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
@@ -1663,7 +1664,7 @@ package feathers.controls
 			{
 				if(this.monthsList)
 				{
-					var monthsCollection:ListCollection = this.monthsList.dataProvider;
+					var monthsCollection:IListCollection = this.monthsList.dataProvider;
 					if(monthsCollection)
 					{
 						monthsCollection.updateAll();
@@ -1671,7 +1672,7 @@ package feathers.controls
 				}
 				if(this.dateAndTimeDatesList)
 				{
-					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+					var dateAndTimeDatesCollection:IListCollection = this.dateAndTimeDatesList.dataProvider;
 					if(dateAndTimeDatesCollection)
 					{
 						dateAndTimeDatesCollection.updateAll();
@@ -1977,7 +1978,7 @@ package feathers.controls
 			
 			if(this._editingMode === DateTimeMode.DATE)
 			{
-				var yearsCollection:ListCollection = this.yearsList.dataProvider;
+				var yearsCollection:ListCollection = ListCollection(this.yearsList.dataProvider);
 				if(yearsCollection)
 				{
 					var yearRange:IntegerRange = IntegerRange(yearsCollection.data);
@@ -2006,7 +2007,7 @@ package feathers.controls
 
 				if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 				{
-					var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList.dataProvider;
+					var dateAndTimeDatesCollection:ListCollection = ListCollection(this.dateAndTimeDatesList.dataProvider);
 					if(dateAndTimeDatesCollection)
 					{
 						var datesRange:IntegerRange = IntegerRange(dateAndTimeDatesCollection.data);
@@ -2030,7 +2031,7 @@ package feathers.controls
 
 				var hoursMinimum:Number = MIN_HOURS_VALUE;
 				var hoursMaximum:Number = this._showMeridiem ? MAX_HOURS_VALUE_12HOURS : MAX_HOURS_VALUE_24HOURS;
-				var hoursCollection:ListCollection = this.hoursList.dataProvider;
+				var hoursCollection:ListCollection = ListCollection(this.hoursList.dataProvider);
 				if(hoursCollection)
 				{
 					var hoursRange:IntegerRange = IntegerRange(hoursCollection.data);
@@ -2226,23 +2227,23 @@ package feathers.controls
 			//after the ranges change, so we need to call updateAll() on the
 			//collections
 			
-			var yearsCollection:ListCollection = this.yearsList ? this.yearsList.dataProvider : null;
+			var yearsCollection:IListCollection = this.yearsList ? this.yearsList.dataProvider : null;
 			if(yearsCollection && (oldMinYear !== this._minYear || oldMaxYear !== this._maxYear))
 			{
 				//we need to ensure that the item renderers are enabled
 				yearsCollection.updateAll();
 			}
-			var monthsCollection:ListCollection = this.monthsList ? this.monthsList.dataProvider : null;
+			var monthsCollection:IListCollection = this.monthsList ? this.monthsList.dataProvider : null;
 			if(monthsCollection && (oldMinMonth !== this._minMonth || oldMaxMonth !== this._maxMonth))
 			{
 				monthsCollection.updateAll();
 			}
-			var datesCollection:ListCollection = this.datesList ? this.datesList.dataProvider : null;
+			var datesCollection:IListCollection = this.datesList ? this.datesList.dataProvider : null;
 			if(datesCollection && (oldMinDate !== this._minDate || oldMaxDate !== this._maxDate))
 			{
 				datesCollection.updateAll();
 			}
-			var dateAndTimeDatesCollection:ListCollection = this.dateAndTimeDatesList ? this.dateAndTimeDatesList.dataProvider : null;
+			var dateAndTimeDatesCollection:IListCollection = this.dateAndTimeDatesList ? this.dateAndTimeDatesList.dataProvider : null;
 			if(dateAndTimeDatesCollection &&
 				(oldMinYear !== this._minYear || oldMaxYear !== this._maxYear ||
 				oldMinMonth !== this._minMonth || oldMaxMonth !== this._maxMonth ||
@@ -2250,13 +2251,13 @@ package feathers.controls
 			{
 				dateAndTimeDatesCollection.updateAll();
 			}
-			var hoursCollection:ListCollection = this.hoursList ? this.hoursList.dataProvider : null;
+			var hoursCollection:IListCollection = this.hoursList ? this.hoursList.dataProvider : null;
 			if(hoursCollection && (oldMinHours !== this._minHours || oldMaxHours !== this._maxHours ||
 				(this._showMeridiem && this._lastMeridiemValue !== this.meridiemList.selectedIndex)))
 			{
 				hoursCollection.updateAll();
 			}
-			var minutesCollection:ListCollection = this.minutesList ? this.minutesList.dataProvider : null;
+			var minutesCollection:IListCollection = this.minutesList ? this.minutesList.dataProvider : null;
 			if(minutesCollection && (oldMinMinutes !== this._minMinute || oldMaxMinutes!== this._maxMinute))
 			{
 				minutesCollection.updateAll();
@@ -2400,7 +2401,7 @@ package feathers.controls
 				var year:int = pendingDate.fullYear;
 				if(this.yearsList.selectedItem !== year)
 				{
-					var yearRange:IntegerRange = IntegerRange(this.yearsList.dataProvider.data);
+					var yearRange:IntegerRange = IntegerRange(ListCollection(this.yearsList.dataProvider).data);
 					this.yearsList.scrollToDisplayIndex(year - yearRange.minimum, duration);
 				}
 			}

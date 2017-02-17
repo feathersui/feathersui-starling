@@ -14,6 +14,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
@@ -281,14 +282,14 @@ package feathers.controls.supportClasses
 
 		private var _updateForDataReset:Boolean = false;
 
-		private var _dataProvider:ListCollection;
+		private var _dataProvider:IListCollection;
 
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
 
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.core.PropertyProxy;
 	import feathers.data.IAutoCompleteSource;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -203,7 +204,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _listCollection:ListCollection;
+		protected var _listCollection:IListCollection;
 
 		/**
 		 * @private
@@ -851,7 +852,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_completeHandler(event:Event, data:ListCollection):void
+		protected function dataProvider_completeHandler(event:Event, data:IListCollection):void
 		{
 			this.list.dataProvider = data;
 			if(data.length == 0)

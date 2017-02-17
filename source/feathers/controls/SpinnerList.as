@@ -8,7 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.IValidating;
-	import feathers.data.ListCollection;
+	import feathers.data.IListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -212,7 +212,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function set dataProvider(value:ListCollection):void
+		override public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

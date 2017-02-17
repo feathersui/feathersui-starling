@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
@@ -528,12 +529,12 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
-		
+		protected var _dataProvider:IListCollection;
+
 		/**
 		 * The collection of data displayed by the list. Changing this property
 		 * to a new value is considered a drastic change to the list's data, so
@@ -579,15 +580,15 @@ package feathers.controls
 		 *
 		 * @see feathers.data.ListCollection#dispose()
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -625,12 +626,12 @@ package feathers.controls
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _isSelectable:Boolean = true;
-		
+
 		/**
 		 * Determines if items in the list may be selected. By default only a
 		 * single item may be selected at any given time. In other words, if

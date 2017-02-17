@@ -18,6 +18,7 @@ package feathers.controls
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
@@ -381,7 +382,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
+		protected var _dataProvider:IListCollection;
 		
 		/**
 		 * The collection of data displayed by the list.
@@ -408,7 +409,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
@@ -416,7 +417,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{
