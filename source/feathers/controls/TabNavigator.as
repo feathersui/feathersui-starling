@@ -1319,6 +1319,36 @@ package feathers.controls
 				}
 				var inchesPerSecondY:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 
+				if(inchesPerSecondY < -this._minimumSwipeVelocity)
+				{
+					//force next
+					if(this._isDraggingPrevious)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(inchesPerSecondY > this._minimumSwipeVelocity)
+				{
+					//force previous
+					if(this._isDraggingNext)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(this._savedNewScreen.y >= (this.screenContainer.height / 2))
+				{
+					if(this._isDraggingNext)
+					{
+						this._dragCancelled = true;
+					}
+				}
+				else if(this._savedNewScreen.y <= -(this.screenContainer.height / 2))
+				{
+					if(this._isDraggingPrevious)
+					{
+						this._dragCancelled = true;
+					}
+				}
 			}
 			else //top or bottom
 			{
