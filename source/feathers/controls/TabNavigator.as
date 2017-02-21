@@ -757,17 +757,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _savedOldScreen:IFeathersControl;
-
-		/**
-		 * @private
-		 */
-		protected var _savedNewScreen:IFeathersControl;
-
-		/**
-		 * @private
-		 */
-		protected var _savedOnComplete:Function;
+		protected var _savedTransitionOnComplete:Function;
 
 		/**
 		 * Registers a new screen with a string identifier that can be used
@@ -1138,10 +1128,19 @@ package feathers.controls
 		 */
 		protected function dragTransition(oldScreen:IFeathersControl, newScreen:IFeathersControl, onComplete:Function):void
 		{
-			this._savedOldScreen = oldScreen;
-			this._savedNewScreen = newScreen;
-			this._savedOnComplete = onComplete;
-			this.handleDragMove();
+			this._savedTransitionOnComplete = onComplete;
+			if(this._swipeTween !== null)
+			{
+				//it's possible that TouchPhase.ENDED is dispatched before the
+				//transition starts. if that's the case, the tween will already
+				//be created, and we simply add it to the juggler.
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				starling.juggler.add(this._swipeTween);
+			}
+			else
+			{
+				this.handleDragMove();
+			}
 		}
 
 		/**
@@ -1216,18 +1215,14 @@ package feathers.controls
 		 */
 		protected function handleDragMove():void
 		{
-			if(this._savedNewScreen === null || this._savedOldScreen === null)
-			{
-				return;
-			}
 			if(this._tabBarPosition === RelativePosition.LEFT ||
 				this._tabBarPosition === RelativePosition.RIGHT)
 			{
-				this._savedOldScreen.y = this._currentTouchY - this._startTouchY;
+				this._previousScreenInTransition.y = this._currentTouchY - this._startTouchY;
 			}
 			else //top or bottom
 			{
-				this._savedOldScreen.x = this._currentTouchX - this._startTouchX;
+				this._previousScreenInTransition.x = this._currentTouchX - this._startTouchX;
 			}
 			this.swipeTween_onUpdate();
 		}
@@ -1255,26 +1250,26 @@ package feathers.controls
 			{
 				if(this._isDraggingPrevious)
 				{
-					this._savedNewScreen.x = this._savedOldScreen.x;
-					this._savedNewScreen.y = this._savedOldScreen.y - this._savedNewScreen.height;
+					this._activeScreen.x = this._previousScreenInTransition.x;
+					this._activeScreen.y = this._previousScreenInTransition.y - this._activeScreen.height;
 				}
 				else if(this._isDraggingNext)
 				{
-					this._savedNewScreen.x = this._savedOldScreen.x;
-					this._savedNewScreen.y = this._savedOldScreen.y + this._savedOldScreen.height;
+					this._activeScreen.x = this._previousScreenInTransition.x;
+					this._activeScreen.y = this._previousScreenInTransition.y + this._previousScreenInTransition.height;
 				}
 			}
 			else //top or bottom
 			{
 				if(this._isDraggingPrevious)
 				{
-					this._savedNewScreen.x = this._savedOldScreen.x - this._savedNewScreen.width;
-					this._savedNewScreen.y = this._savedOldScreen.y;
+					this._activeScreen.x = this._previousScreenInTransition.x - this._activeScreen.width;
+					this._activeScreen.y = this._previousScreenInTransition.y;
 				}
 				else if(this._isDraggingNext)
 				{
-					this._savedNewScreen.x = this._savedOldScreen.x + this._savedOldScreen.width;
-					this._savedNewScreen.y = this._savedOldScreen.y;
+					this._activeScreen.x = this._previousScreenInTransition.x + this._previousScreenInTransition.width;
+					this._activeScreen.y = this._previousScreenInTransition.y;
 				}
 			}
 		}
@@ -1288,12 +1283,10 @@ package feathers.controls
 			this._isDragging = false;
 			this._isDraggingPrevious = false;
 			this._isDraggingNext = false;
-			this._savedNewScreen = null;
-			this._savedOldScreen = null;
 			var cancelled:Boolean = this._dragCancelled;
 			this._dragCancelled = false;
-			var onComplete:Function = this._savedOnComplete;
-			this._savedOnComplete = null;
+			var onComplete:Function = this._savedTransitionOnComplete;
+			this._savedTransitionOnComplete = null;
 			onComplete(cancelled);
 		}
 
@@ -1335,14 +1328,14 @@ package feathers.controls
 						this._dragCancelled = true;
 					}
 				}
-				else if(this._savedNewScreen.y >= (this.screenContainer.height / 2))
+				else if(this._activeScreen.y >= (this.screenContainer.height / 2))
 				{
 					if(this._isDraggingNext)
 					{
 						this._dragCancelled = true;
 					}
 				}
-				else if(this._savedNewScreen.y <= -(this.screenContainer.height / 2))
+				else if(this._activeScreen.y <= -(this.screenContainer.height / 2))
 				{
 					if(this._isDraggingPrevious)
 					{
@@ -1380,14 +1373,14 @@ package feathers.controls
 						this._dragCancelled = true;
 					}
 				}
-				else if(this._savedNewScreen.x >= (this.screenContainer.width / 2))
+				else if(this._activeScreen.x >= (this.screenContainer.width / 2))
 				{
 					if(this._isDraggingNext)
 					{
 						this._dragCancelled = true;
 					}
 				}
-				else if(this._savedNewScreen.x <= -(this.screenContainer.width / 2))
+				else if(this._activeScreen.x <= -(this.screenContainer.width / 2))
 				{
 					if(this._isDraggingPrevious)
 					{
@@ -1396,7 +1389,7 @@ package feathers.controls
 				}
 			}
 
-			this._swipeTween = new Tween(this._savedOldScreen, this._swipeDuration, this._swipeEase);
+			this._swipeTween = new Tween(this._previousScreenInTransition, this._swipeDuration, this._swipeEase);
 			if(this._tabBarPosition === RelativePosition.LEFT ||
 				this._tabBarPosition === RelativePosition.RIGHT)
 			{
@@ -1430,7 +1423,13 @@ package feathers.controls
 			}
 			this._swipeTween.onUpdate = this.swipeTween_onUpdate;
 			this._swipeTween.onComplete = this.swipeTween_onComplete;
-			starling.juggler.add(this._swipeTween);
+			if(this._savedTransitionOnComplete !== null)
+			{
+				//it's possible that we get here before the transition has
+				//officially start. if that's the case, we won't add the tween
+				//to the juggler now, and we'll do it later.
+				starling.juggler.add(this._swipeTween);
+			}
 		}
 
 		/**
