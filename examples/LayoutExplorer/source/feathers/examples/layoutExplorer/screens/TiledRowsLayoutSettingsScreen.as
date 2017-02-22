@@ -6,7 +6,8 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
-	import feathers.data.ListCollection;
+	import feathers.data.ArrayCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -84,7 +85,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._pagingPicker = new PickerList();
 			this._pagingPicker.typicalItem = TiledRowsLayout.PAGING_HORIZONTAL;
-			this._pagingPicker.dataProvider = new ListCollection(new <String>
+			this._pagingPicker.dataProvider = new VectorCollection(new <String>
 			[
 				TiledRowsLayout.PAGING_NONE,
 				TiledRowsLayout.PAGING_HORIZONTAL,
@@ -95,7 +96,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._horizontalAlignPicker = new PickerList();
 			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
-			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._horizontalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				HorizontalAlign.LEFT,
 				HorizontalAlign.CENTER,
@@ -106,7 +107,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._verticalAlignPicker = new PickerList();
 			this._verticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
-			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._verticalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				VerticalAlign.TOP,
 				VerticalAlign.MIDDLE,
@@ -117,7 +118,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._tileHorizontalAlignPicker = new PickerList();
 			this._tileHorizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
-			this._tileHorizontalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._tileHorizontalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				HorizontalAlign.LEFT,
 				HorizontalAlign.CENTER,
@@ -129,7 +130,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._tileVerticalAlignPicker = new PickerList();
 			this._tileVerticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
-			this._tileVerticalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._tileVerticalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				VerticalAlign.TOP,
 				VerticalAlign.MIDDLE,
@@ -184,7 +185,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "Item Count", accessory: this._itemCountStepper },
 				{ label: "Requested Column Count", accessory: this._requestedColumnCountStepper },

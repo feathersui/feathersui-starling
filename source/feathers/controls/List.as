@@ -199,7 +199,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:List = new List();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -545,7 +545,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new ListCollection(
+		 * list.dataProvider = new ArrayCollection(
 		 * [
 		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -573,12 +573,14 @@ package feathers.controls
 		 * automatically dispose its texture because the texture may be used
 		 * by other display objects, a list cannot dispose its data provider
 		 * because the data provider may be used by other lists. See the
-		 * <code>dispose()</code> function on <code>ListCollection</code> to
+		 * <code>dispose()</code> function on <code>IListCollection</code> to
 		 * see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.data.ListCollection#dispose()
+		 * @see feathers.data.IListCollection#dispose()
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
 		 */
 		public function get dataProvider():IListCollection
 		{

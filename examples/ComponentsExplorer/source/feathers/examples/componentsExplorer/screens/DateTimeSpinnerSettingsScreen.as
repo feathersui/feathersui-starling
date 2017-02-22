@@ -6,7 +6,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -51,7 +53,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._editingModePicker = new PickerList();
-			this._editingModePicker.dataProvider = new ListCollection(
+			this._editingModePicker.dataProvider = new VectorCollection(new <String>
 			[
 				DateTimeMode.DATE_AND_TIME,
 				DateTimeMode.DATE,
@@ -62,7 +64,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "editingMode", accessory: this._editingModePicker },
 			]);

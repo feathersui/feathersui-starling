@@ -6,6 +6,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.ListSettings;
@@ -49,9 +50,9 @@ package feathers.examples.componentsExplorer.screens
 				items[i] = item;
 			}
 			items.fixed = true;
-			
+
 			this._list = new List();
-			this._list.dataProvider = new ListCollection(items);
+			this._list.dataProvider = new ArrayCollection(items);
 			this._list.typicalItem = {text: "Item 1000"};
 			this._list.isSelectable = this.settings.isSelectable;
 			this._list.allowMultipleSelection = this.settings.allowMultipleSelection;

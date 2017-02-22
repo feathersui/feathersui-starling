@@ -5,6 +5,7 @@ package feathers.examples.trainTimes.screens
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.trainTimes.controls.StationListItemRenderer;
 	import feathers.examples.trainTimes.model.StationData;
 
@@ -49,7 +50,7 @@ package feathers.examples.trainTimes.screens
 		{
 			this._stationList = new List();
 			this._stationList.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST);
-			this._stationList.dataProvider = new ListCollection(
+			this._stationList.dataProvider = new VectorCollection(new <StationData>
 			[
 				new StationData("Ten Stone Road"),
 				new StationData("Birch Grove"),

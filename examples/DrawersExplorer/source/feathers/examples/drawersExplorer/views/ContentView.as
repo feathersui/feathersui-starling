@@ -5,6 +5,7 @@ package feathers.examples.drawersExplorer.views
 	import feathers.controls.Panel;
 	import feathers.controls.PickerList;
 	import feathers.controls.ScrollContainer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -103,7 +104,7 @@ package feathers.examples.drawersExplorer.views
 			this.addChild(optionsPanel);
 			
 			this._openModePicker = new PickerList();
-			this._openModePicker.dataProvider = new ListCollection(
+			this._openModePicker.dataProvider = new ArrayCollection(
 			[
 				{ label: "Below", data: RelativeDepth.BELOW },
 				{ label: "Above", data: RelativeDepth.ABOVE },
@@ -111,7 +112,7 @@ package feathers.examples.drawersExplorer.views
 			this._openModePicker.addEventListener(Event.CHANGE, openModePicker_changeHandler);
 
 			var optionsList:List = new List();
-			optionsList.dataProvider = new ListCollection(
+			optionsList.dataProvider = new ArrayCollection(
 			[
 				{ label: "Open Mode", accessory: this._openModePicker },
 			]);

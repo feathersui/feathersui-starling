@@ -204,7 +204,7 @@ package feathers.controls
 	 * 
 	 * function button_triggeredHandler( event:Event ):void
 	 * {
-	 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+	 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ArrayCollection(
 	 *     [
 	 *         { label: "OK" }
 	 *     ]));
@@ -329,7 +329,7 @@ package feathers.controls
 		 *
 		 * function button_triggeredHandler( event:Event ):void
 		 * {
-		 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+		 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ArrayCollection(
 		 *     [
 		 *         { label: "OK" }
 		 *     ]);
@@ -565,7 +565,7 @@ package feathers.controls
 		 * set to the first button in the data provider.</p>
 		 *
 		 * <listing version="3.0">
-		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ArrayCollection(
 		 * [
 		 *     { label: "OK" }
 		 * ]));
@@ -600,7 +600,7 @@ package feathers.controls
 		 * set to the second button in the data provider.</p>
 		 *
 		 * <listing version="3.0">
-		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ListCollection(
+		 * var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ArrayCollection(
 		 * [
 		 *     { label: "OK" },
 		 *     { label: "Cancel" },

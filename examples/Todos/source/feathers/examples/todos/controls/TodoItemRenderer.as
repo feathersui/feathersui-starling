@@ -6,7 +6,7 @@ package feathers.examples.todos.controls
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.renderers.LayoutGroupListItemRenderer;
-	import feathers.data.ListCollection;
+	import feathers.data.ArrayCollection;
 	import feathers.examples.todos.TodoItem;
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.skins.IStyleProvider;
@@ -119,7 +119,7 @@ package feathers.examples.todos.controls
 		protected function deleteButton_triggeredHandler(event:Event):void
 		{
 			Alert.show("Are you sure that you want to delete this item? This action cannot be undone.", "Confirm delete",
-				new ListCollection(
+				new ArrayCollection(
 				[
 					{ label: "Cancel" },
 					{ label: "Delete", triggered: confirmButton_triggeredHandler },

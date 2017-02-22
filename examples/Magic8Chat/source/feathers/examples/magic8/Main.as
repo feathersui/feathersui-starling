@@ -9,6 +9,7 @@ package feathers.examples.magic8
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.core.ITextEditor;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.magic8.data.ChatMessage;
@@ -70,7 +71,7 @@ package feathers.examples.magic8
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
-			this._list.dataProvider = new ListCollection();
+			this._list.dataProvider = new ArrayCollection();
 			this._list.isSelectable = false;
 			this._list.setItemRendererFactoryWithID(USER_ITEM, function():IListItemRenderer
 			{

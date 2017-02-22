@@ -4,6 +4,7 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -59,7 +60,7 @@ package feathers.examples.layoutExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ text: "Anchor", event: SHOW_ANCHOR },
 				{ text: "Flow", event: SHOW_FLOW },

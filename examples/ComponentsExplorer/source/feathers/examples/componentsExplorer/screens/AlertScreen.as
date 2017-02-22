@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -81,7 +82,7 @@ package feathers.examples.componentsExplorer.screens
 
 		private function showAlertButton_triggeredHandler(event:Event):void
 		{
-			var alert:Alert = Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ListCollection(
+			var alert:Alert = Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ArrayCollection(
 			[
 				{ label: "OK" },
 				{ label: "Cancel" }

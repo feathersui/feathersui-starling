@@ -6,6 +6,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -37,7 +38,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new SpinnerList();
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ text: "Aardvark" },
 				{ text: "Alligator" },

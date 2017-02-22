@@ -7,7 +7,7 @@ package feathers.examples.gallery
 	import feathers.controls.List;
 	import feathers.controls.ScrollPolicy;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -167,7 +167,7 @@ package feathers.examples.gallery
 
 			this.message.text = "";
 
-			this.list.dataProvider = new ListCollection(items);
+			this.list.dataProvider = new VectorCollection(items);
 			this.list.selectedIndex = 0;
 		}
 

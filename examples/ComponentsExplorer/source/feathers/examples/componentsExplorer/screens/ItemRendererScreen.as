@@ -7,6 +7,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -101,7 +102,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._listItem = { text: "Primary Text" };
 			this._list.itemRendererFactory = this.customItemRendererFactory;
-			this._list.dataProvider = new ListCollection([this._listItem]);
+			this._list.dataProvider = new ArrayCollection([this._listItem]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.isSelectable = false;
 			this._list.clipContent = false;

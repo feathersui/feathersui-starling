@@ -8,6 +8,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoDetails;
 	import feathers.examples.youtube.models.YouTubeModel;
@@ -230,7 +231,7 @@ package feathers.examples.youtube.screens
 				}
 				items.push(item);
 			}
-			var collection:ListCollection = new ListCollection(items);
+			var collection:VectorCollection = new VectorCollection(items);
 			this._model.cachedLists[this._model.selectedList.url] = collection;
 			this._list.dataProvider = collection;
 

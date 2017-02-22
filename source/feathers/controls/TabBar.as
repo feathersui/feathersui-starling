@@ -398,7 +398,7 @@ package feathers.controls
 	 * tab bar:</p>
 	 *
 	 * <listing version="3.0">
-	 * tabs.dataProvider = new ListCollection(
+	 * tabs.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "1" },
 	 *     { label: "2" },
@@ -438,7 +438,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var tabs:TabBar = new TabBar();
-	 * tabs.dataProvider = new ListCollection(
+	 * tabs.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "One" },
 	 *     { label: "Two" },
@@ -754,7 +754,7 @@ package feathers.controls
 		 * <p>The following example passes in a data provider:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new ListCollection(
+		 * list.dataProvider = new ArrayCollection(
 		 * [
 		 *     { label: "General", defaultIcon: new Image( generalTexture ) },
 		 *     { label: "Security", defaultIcon: new Image( securityTexture ) },
@@ -764,6 +764,8 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #tabInitializer
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
 		 */
 		public function get dataProvider():IListCollection
 		{

@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -34,7 +35,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._buttonGroup = new ButtonGroup();
-			this._buttonGroup.dataProvider = new ListCollection(
+			this._buttonGroup.dataProvider = new ArrayCollection(
 			[
 				{ label: "One", triggered: button_triggeredHandler },
 				{ label: "Two", triggered: button_triggeredHandler },

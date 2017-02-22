@@ -317,7 +317,7 @@ package feathers.controls
 	 * button group instead of on individual buttons:</p>
 	 *
 	 * <listing version="3.0">
-	 * group.dataProvider = new ListCollection(
+	 * group.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "Yes" },
 	 *     { label: "No" },
@@ -355,7 +355,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var group:ButtonGroup = new ButtonGroup();
-	 * group.dataProvider = new ListCollection(
+	 * group.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 	 *     { label: "No", triggered: noButton_triggeredHandler },
@@ -664,7 +664,7 @@ package feathers.controls
 		 * <p>The following example sets the button group's data provider:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.dataProvider = new ListCollection(
+		 * group.dataProvider = new ArrayCollection(
 		 * [
 		 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 		 *     { label: "No", triggered: noButton_triggeredHandler },
@@ -715,8 +715,10 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see Button
+		 * @see feathers.controls.Button
 		 * @see #buttonInitializer
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
 		 */
 		public function get dataProvider():IListCollection
 		{

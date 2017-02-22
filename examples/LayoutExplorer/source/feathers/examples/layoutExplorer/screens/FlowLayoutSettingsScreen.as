@@ -6,7 +6,9 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.layoutExplorer.data.FlowLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -72,7 +74,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._horizontalAlignPicker = new PickerList();
 			this._horizontalAlignPicker.typicalItem = HorizontalAlign.CENTER;
-			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._horizontalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				HorizontalAlign.LEFT,
 				HorizontalAlign.CENTER,
@@ -83,7 +85,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._verticalAlignPicker = new PickerList();
 			this._verticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
-			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._verticalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				VerticalAlign.TOP,
 				VerticalAlign.MIDDLE,
@@ -94,7 +96,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._rowVerticalAlignPicker = new PickerList();
 			this._rowVerticalAlignPicker.typicalItem = VerticalAlign.BOTTOM;
-			this._rowVerticalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._rowVerticalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				VerticalAlign.TOP,
 				VerticalAlign.MIDDLE,
@@ -148,7 +150,7 @@ package feathers.examples.layoutExplorer.screens
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "Item Count", accessory: this._itemCountStepper },
 				{ label: "horizontalAlign", accessory: this._horizontalAlignPicker },

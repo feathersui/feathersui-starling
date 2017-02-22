@@ -2,6 +2,7 @@ package feathers.examples.pullToRefresh
 {
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -63,7 +64,7 @@ package feathers.examples.pullToRefresh
 			//releases, the list will dispatch Event.UPDATE
 			this._list.addEventListener(Event.UPDATE, list_updateHandler);
 
-			this._list.dataProvider = new ListCollection();
+			this._list.dataProvider = new ArrayCollection();
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
 

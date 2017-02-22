@@ -7,8 +7,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
+	import feathers.data.ArrayCollection;
 	import feathers.data.HierarchicalCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -74,7 +76,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._iconTypePicker = new PickerList();
 			this._iconTypePicker.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
-			this._iconTypePicker.dataProvider = new ListCollection(new <String>
+			this._iconTypePicker.dataProvider = new VectorCollection(new <String>
 			[
 				ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT,
 				ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE,
@@ -86,7 +88,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._iconPositionPicker = new PickerList();
 			this._iconPositionPicker.typicalItem = RelativePosition.RIGHT_BASELINE;
-			this._iconPositionPicker.dataProvider = new ListCollection(new <String>
+			this._iconPositionPicker.dataProvider = new VectorCollection(new <String>
 			[
 				RelativePosition.TOP,
 				RelativePosition.RIGHT,
@@ -101,7 +103,7 @@ package feathers.examples.componentsExplorer.screens
 			this._iconPositionPicker.addEventListener(Event.CHANGE, iconPositionPicker_changeHandler);
 
 			this._gapPicker = new PickerList();
-			this._gapPicker.dataProvider = new ListCollection(
+			this._gapPicker.dataProvider = new ArrayCollection(
 			[
 				{ label: GAP_LABEL_INFINITE, value: true },
 				{ label: GAP_LABEL_DEFAULT, value: false },
@@ -117,7 +119,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._accessoryTypePicker = new PickerList();
 			this._accessoryTypePicker.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
-			this._accessoryTypePicker.dataProvider = new ListCollection(new <String>
+			this._accessoryTypePicker.dataProvider = new VectorCollection(new <String>
 			[
 				ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT,
 				ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE,
@@ -129,7 +131,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._accessoryPositionPicker = new PickerList();
 			this._accessoryPositionPicker.typicalItem = RelativePosition.BOTTOM;
-			this._accessoryPositionPicker.dataProvider = new ListCollection(new <String>
+			this._accessoryPositionPicker.dataProvider = new VectorCollection(new <String>
 			[
 				RelativePosition.TOP,
 				RelativePosition.RIGHT,
@@ -142,7 +144,7 @@ package feathers.examples.componentsExplorer.screens
 			this._accessoryPositionPicker.addEventListener(Event.CHANGE, accessoryPositionPicker_changeHandler);
 
 			this._accessoryGapPicker = new PickerList();
-			this._accessoryGapPicker.dataProvider = new ListCollection(
+			this._accessoryGapPicker.dataProvider = new ArrayCollection(
 			[
 				{ label: GAP_LABEL_INFINITE, value: true },
 				{ label: GAP_LABEL_DEFAULT, value: false },
@@ -154,7 +156,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._layoutOrderPicker = new PickerList();
 			this._layoutOrderPicker.typicalItem = ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON;
-			this._layoutOrderPicker.dataProvider = new ListCollection(new <String>
+			this._layoutOrderPicker.dataProvider = new VectorCollection(new <String>
 			[
 				ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY,
 				ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON,
@@ -164,7 +166,7 @@ package feathers.examples.componentsExplorer.screens
 			this._layoutOrderPicker.addEventListener(Event.CHANGE, layoutOrderPicker_changeHandler);
 
 			this._horizontalAlignPicker = new PickerList();
-			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._horizontalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				HorizontalAlign.LEFT,
 				HorizontalAlign.CENTER,
@@ -176,7 +178,7 @@ package feathers.examples.componentsExplorer.screens
 			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
 
 			this._verticalAlignPicker = new PickerList();
-			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
+			this._verticalAlignPicker.dataProvider = new VectorCollection(new <String>
 			[
 				VerticalAlign.TOP,
 				VerticalAlign.MIDDLE,

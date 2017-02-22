@@ -12,7 +12,9 @@ package feathers.examples.todos
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.todos.controls.TodoItemRenderer;
 	import feathers.layout.AnchorLayout;
@@ -81,14 +83,14 @@ package feathers.examples.todos
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection();
+			this._list.dataProvider = new VectorCollection(new <TodoItem>[]);
 			this._list.itemRendererType = TodoItemRenderer;
 			this.addChild(this._list);
 
 			this._toolbar = new LayoutGroup();
 			this._toolbar.styleNameList.add(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR);
 			this.addChild(this._toolbar);
-			
+
 			this._clearButton = new Button();
 			this._clearButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON);
 			this._clearButton.label = "Delete All Checked Items";
@@ -121,7 +123,7 @@ package feathers.examples.todos
 			toolbarLayoutData.right = 0;
 			toolbarLayoutData.left = 0;
 			this._toolbar.layoutData = toolbarLayoutData;
-			
+
 			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			listLayoutData.top = 0;
 			listLayoutData.topAnchorDisplayObject = this._toolbar;
@@ -181,7 +183,7 @@ package feathers.examples.todos
 			this._input.visible = !isEditing;
 			this._input.includeInLayout = !isEditing;
 		}
-		
+
 		private function clearButton_triggeredHandler(event:Event):void
 		{
 			var hasCompletedItem:Boolean = false;
@@ -199,15 +201,15 @@ package feathers.examples.todos
 			{
 				return;
 			}
-			
+
 			Alert.show("Are you sure that you want to delete all checked items? This action cannot be undone.", "Confirm delete",
-				new ListCollection(
+				new ArrayCollection(
 				[
 					{ label: "Cancel" },
 					{ label: "Delete", triggered: confirmButton_triggeredHandler },
 				]));
 		}
-		
+
 		private function confirmButton_triggeredHandler(event:Event):void
 		{
 			var itemCount:int = this._list.dataProvider.length;
@@ -226,7 +228,7 @@ package feathers.examples.todos
 			this.width = this.stage.stageWidth;
 			this.height = this.stage.stageHeight;
 		}
-		
+
 		private function list_touchHandler(event:TouchEvent):void
 		{
 			if(this._touchID >= 0)

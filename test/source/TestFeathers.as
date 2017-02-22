@@ -3,6 +3,7 @@ package
 	import feathers.tests.AddOnFunctionStyleProviderTests;
 	import feathers.tests.AlertMeasurementTests;
 	import feathers.tests.AnchorLayoutTests;
+	import feathers.tests.ArrayCollectionTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
@@ -123,6 +124,7 @@ package
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
 	import feathers.tests.TouchToStateTests;
+	import feathers.tests.VectorCollectionTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
@@ -280,6 +282,8 @@ package
 				//collections tests
 				ListCollectionWithArrayTests,
 				ListCollectionFilterTests,
+				ArrayCollectionTests,
+				VectorCollectionTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,

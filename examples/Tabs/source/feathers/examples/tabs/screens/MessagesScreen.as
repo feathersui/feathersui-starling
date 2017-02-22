@@ -5,6 +5,7 @@ package feathers.examples.tabs.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.examples.tabs.themes.StyleNames;
 	import feathers.layout.AnchorLayout;
@@ -45,7 +46,7 @@ package feathers.examples.tabs.screens
 			this._list.itemRendererFactory = this.createMessageItemRenderer;
 			this.addChild(this._list);
 
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{
 					name: "Patsy Brewer",

@@ -6,6 +6,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.data.ListCollection;
 	import feathers.data.LocalAutoCompleteSource;
+	import feathers.data.VectorCollection;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -39,7 +40,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._input = new AutoComplete();
 			this._input.prompt = "Fruits. Type 'ap' to see suggestions";
-			this._input.source = new LocalAutoCompleteSource(new ListCollection(new <String>
+			this._input.source = new LocalAutoCompleteSource(new VectorCollection(new <String>
 			[
 				"Apple",
 				"Apricot",

@@ -52,7 +52,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:SpinnerList = new SpinnerList();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },

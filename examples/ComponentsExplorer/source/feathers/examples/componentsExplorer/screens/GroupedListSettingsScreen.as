@@ -6,7 +6,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -54,7 +56,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._stylePicker = new PickerList();
-			this._stylePicker.dataProvider = new ListCollection(new <String>
+			this._stylePicker.dataProvider = new VectorCollection(new <String>
 			[
 				GroupedListSettings.STYLE_NORMAL,
 				GroupedListSettings.STYLE_INSET
@@ -74,7 +76,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "Group Style", accessory: this._stylePicker },
 				{ label: "isSelectable", accessory: this._isSelectableToggle },

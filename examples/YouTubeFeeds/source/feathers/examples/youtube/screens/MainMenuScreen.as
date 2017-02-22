@@ -6,6 +6,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.layout.AnchorLayout;
@@ -149,7 +150,7 @@ package feathers.examples.youtube.screens
 				item.url = LIST_VIDEOS_IN_CATEGORY_URL + categoryID;
 				items.push(item);
 			}
-			var collection:ListCollection = new ListCollection(items);
+			var collection:VectorCollection = new VectorCollection(items);
 			this._list.dataProvider = collection;
 
 			//show the scroll bars so that the user knows they can scroll

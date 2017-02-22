@@ -12,8 +12,10 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
@@ -2052,10 +2054,10 @@ package feathers.controls
 					hoursCollection.dataDescriptor = new IntegerRangeDataDescriptor();
 					this.hoursList.dataProvider = hoursCollection;
 				}
-				
+
 				if(this._showMeridiem && !this.meridiemList.dataProvider)
 				{
-					this.meridiemList.dataProvider = new ListCollection(new <String>[this._amString, this._pmString]);
+					this.meridiemList.dataProvider = new VectorCollection(new <String>[this._amString, this._pmString]);
 				}
 			}
 			

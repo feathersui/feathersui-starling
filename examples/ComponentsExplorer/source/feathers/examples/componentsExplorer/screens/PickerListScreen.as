@@ -8,6 +8,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.SpinnerList;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -47,7 +48,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list = new PickerList();
 			this._list.prompt = "Select an Item";
-			this._list.dataProvider = new ListCollection(items);
+			this._list.dataProvider = new ArrayCollection(items);
 			//normally, the first item is selected, but let's show the prompt
 			this._list.selectedIndex = -1;
 			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();

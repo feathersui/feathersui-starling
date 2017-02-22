@@ -4,6 +4,7 @@ package feathers.examples.video
 	import feathers.controls.AutoSizeMode;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.events.MediaPlayerEventType;
@@ -160,7 +161,7 @@ package feathers.examples.video
 		protected function videoPlayer_errorHandler(event:Event):void
 		{
 			Alert.show("Cannot play selected video.",
-				"Video Error", new ListCollection([{ label: "OK" }]));
+				"Video Error", new ArrayCollection([{ label: "OK" }]));
 			trace("VideoPlayer Error: " + event.data);
 		}
 		

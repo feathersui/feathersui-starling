@@ -125,7 +125,7 @@ package feathers.data
 			}
 			else
 			{
-				result = new ListCollection();
+				result = new ArrayCollection();
 			}
 			if(!this._dataProvider || textToMatch.length == 0)
 			{

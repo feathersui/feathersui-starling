@@ -200,7 +200,7 @@ package feathers.data
 		{
 			if(!suggestionsResult)
 			{
-				suggestionsResult = new ListCollection();
+				suggestionsResult = new ArrayCollection();
 			}
 			var urlRequestFunction:Function = this._urlRequestFunction;
 			var request:URLRequest;

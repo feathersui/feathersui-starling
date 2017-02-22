@@ -7,6 +7,7 @@ package feathers.examples.trainTimes.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.examples.trainTimes.model.TimeData;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -57,7 +58,7 @@ package feathers.examples.trainTimes.screens
 
 			this._list = new List();
 			this._list.styleNameList.add(CHILD_STYLE_NAME_TIMES_LIST);
-			this._list.dataProvider = new ListCollection(NORTH_TIMES);
+			this._list.dataProvider = new VectorCollection(NORTH_TIMES);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.itemRendererFactory = this.customItemRendererFactory;
 			this.addChild(this._list);

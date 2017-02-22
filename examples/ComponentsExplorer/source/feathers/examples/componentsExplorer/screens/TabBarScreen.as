@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.TabBar;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -36,7 +37,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._tabBar = new TabBar();
-			this._tabBar.dataProvider = new ListCollection(
+			this._tabBar.dataProvider = new ArrayCollection(
 			[
 				{ label: "One" },
 				{ label: "Two" },

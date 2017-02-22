@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.layout.AnchorLayout;
@@ -58,7 +59,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "step", accessory: this._stepStepper },
 			]);

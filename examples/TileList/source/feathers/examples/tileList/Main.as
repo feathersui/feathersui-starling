@@ -7,7 +7,7 @@ package feathers.examples.tileList
 	import feathers.controls.ScrollPolicy;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
+	import feathers.data.ArrayCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.Direction;
@@ -149,7 +149,7 @@ package feathers.examples.tileList
 			var atlas:TextureAtlas = this._assetManager.getTextureAtlas("atlas@2x");
 			
 			//populate the list using the textures
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "Behance", texture: atlas.getTexture("behance") },
 				{ label: "Blogger", texture: atlas.getTexture("blogger") },

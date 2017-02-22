@@ -217,7 +217,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:PickerList = new PickerList();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -391,7 +391,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new ListCollection(
+		 * list.dataProvider = new ArrayCollection(
 		 * [
 		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -408,12 +408,15 @@ package feathers.controls
 		 * };</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
 		 */
 		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */

@@ -4,6 +4,7 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.data.ArrayCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -42,7 +43,7 @@ package feathers.examples.transitionsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
-			this._list.dataProvider = new ListCollection(
+			this._list.dataProvider = new ArrayCollection(
 			[
 				{ label: "Color Fade", event: COLOR_FADE },
 				{ label: "Cover", event: COVER },
