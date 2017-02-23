@@ -629,6 +629,11 @@ package feathers.controls.supportClasses
 				this.explicitVisibleHeight !== this.explicitVisibleHeight);
 		}
 
+		public function calculateNavigationDestination(index:int, keyCode:uint):int
+		{
+			return this._layout.calculateNavigationDestination(this._layoutItems, index, keyCode, this._layoutResult);
+		}
+
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
 		{
 			if(!result)

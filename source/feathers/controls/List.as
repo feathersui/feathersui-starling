@@ -1609,36 +1609,20 @@ package feathers.controls
 			{
 				return;
 			}
-			var changedSelection:Boolean = false;
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
+				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
+				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
+				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
 			{
-				if(this._dataProvider.length > 0)
+				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
+				if(this.selectedIndex !== newIndex)
 				{
-					this.selectedIndex = 0;
-					changedSelection = true;
+					this.selectedIndex = newIndex;
+					var point:Point = Pool.getPoint();
+					this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
+					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+					Pool.putPoint(point);
 				}
-			}
-			else if(event.keyCode == Keyboard.END)
-			{
-				this.selectedIndex = this._dataProvider.length - 1;
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
-				changedSelection = true;
-			}
-			if(changedSelection)
-			{
-				var point:Point = Pool.getPoint();
-				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
-				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
-				Pool.putPoint(point);
 			}
 		}
 

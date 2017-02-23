@@ -3101,109 +3101,26 @@ package feathers.controls
 			{
 				return;
 			}
-			var changedSelection:Boolean = false;
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
+				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
+				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
+				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
 			{
-				this._helperLocation.length = 1;
-				this._helperLocation[0] = 0;
-				if(this._dataProvider.getLengthAtLocation() > 0 && this._dataProvider.getLengthAtLocation(this._helperLocation) > 0)
+				this.dataViewPort.calculateNavigationDestination(this._selectedGroupIndex, this._selectedItemIndex, event.keyCode, this._helperLocation);
+				var newGroupIndex:int = this._helperLocation[0];
+				var newItemIndex:int = this._helperLocation[1];
+				if(newGroupIndex === -1 || newItemIndex === -1)
 				{
-					this.setSelectedLocation(0, 0);
-					changedSelection = true;
+					this.setSelectedLocation(-1, -1);
 				}
-				this._helperLocation.length = 0;
-			}
-			if(event.keyCode == Keyboard.END)
-			{
-				var groupIndex:int = this._dataProvider.getLengthAtLocation();
-				var itemIndex:int = -1;
-				this._helperLocation.length = 1;
-				do
+				else if(this._selectedGroupIndex !== newGroupIndex || this._selectedItemIndex !== newItemIndex)
 				{
-					groupIndex--;
-					if(groupIndex >= 0)
-					{
-						this._helperLocation[0] = groupIndex;
-						itemIndex = this._dataProvider.getLengthAtLocation(this._helperLocation) - 1;
-					}
+					this.setSelectedLocation(newGroupIndex, newItemIndex);
+					var point:Point = Pool.getPoint();
+					this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);
+					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+					Pool.putPoint(point);
 				}
-				while(groupIndex > 0 && itemIndex < 0)
-				this._helperLocation.length = 0;
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				groupIndex = this._selectedGroupIndex;
-				itemIndex = this._selectedItemIndex - 1;
-				if(itemIndex < 0)
-				{
-					this._helperLocation.length = 1;
-					do
-					{
-						groupIndex--;
-						if(groupIndex >= 0)
-						{
-							this._helperLocation[0] = groupIndex;
-							itemIndex = this._dataProvider.getLengthAtLocation(this._helperLocation) - 1;
-						}
-					}
-					while(groupIndex > 0 && itemIndex < 0)
-					this._helperLocation.length = 0;
-				}
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				groupIndex = this._selectedGroupIndex;
-				if(groupIndex < 0)
-				{
-					itemIndex = -1;
-				}
-				else
-				{
-					itemIndex = this._selectedItemIndex + 1;
-				}
-				this._helperLocation.length = 1;
-				this._helperLocation[0] = groupIndex;
-				if(groupIndex < 0 || itemIndex >= this._dataProvider.getLengthAtLocation(this._helperLocation))
-				{
-					itemIndex = -1;
-					groupIndex++;
-					var groupCount:int = this._dataProvider.getLengthAtLocation();
-					while(groupIndex < groupCount && itemIndex < 0)
-					{
-						this._helperLocation[0] = groupIndex;
-						if(this._dataProvider.getLengthAtLocation(this._helperLocation) > 0)
-						{
-							itemIndex = 0;
-						}
-						else
-						{
-							groupIndex++;
-						}
-					}
-				}
-				this._helperLocation.length = 0;
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			if(changedSelection)
-			{
-				var point:Point = Pool.getPoint();
-				this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);
-				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
-				Pool.putPoint(point);
 			}
 		}
 

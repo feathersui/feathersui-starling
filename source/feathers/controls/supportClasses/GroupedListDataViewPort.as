@@ -1055,6 +1055,14 @@ package feathers.controls.supportClasses
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		public function calculateNavigationDestination(groupIndex:int, itemIndex:int, keyCode:uint, result:Vector.<int>):void
+		{
+			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			var newDisplayIndex:int = this._layout.calculateNavigationDestination(this._layoutItems, displayIndex, keyCode, this._layoutResult);
+			this.displayIndexToLocation(newDisplayIndex, result);
+			trace(displayIndex, newDisplayIndex, result);
+		}
+
 		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
 		{
 			if(!result)
@@ -2424,6 +2432,50 @@ package feathers.controls.supportClasses
 			}
 			LOCATION_HELPER_VECTOR.length = 0;
 			return -1;
+		}
+
+		private function displayIndexToLocation(displayIndex:int, result:Vector.<int>):void
+		{
+			result.length = 2;
+			LOCATION_HELPER_VECTOR.length = 1;
+			var totalCount:int = 0;
+			var groupCount:int = this._dataProvider.getLengthAtLocation();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				var group:Object = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
+				var header:Object = this._owner.groupToHeaderData(group);
+				if(header !== null)
+				{
+					totalCount++;
+				}
+				var groupLength:int = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
+				totalCount += groupLength;
+				if(totalCount > displayIndex)
+				{
+					var itemIndex:int = displayIndex - (totalCount - groupLength);
+					if(itemIndex === -1)
+					{
+						result[0] = -1;
+						result[1] = -1;
+					}
+					else
+					{
+						result[0] = i;
+						result[1] = itemIndex;
+					}
+					LOCATION_HELPER_VECTOR.length = 0;
+					return;
+				}
+				var footer:Object = this._owner.groupToFooterData(group);
+				if(footer !== null)
+				{
+					totalCount++;
+				}
+			}
+			//we didn't find it!
+			result[0] = -1;
+			result[1] = -1;
+			LOCATION_HELPER_VECTOR.length = 0;
 		}
 
 		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int

@@ -90,6 +90,21 @@ package feathers.layout
 		 */
 		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
 
+		/**
+		 * Using the current index and a key press, calculates the new index.
+		 * This might be use to change a list's <code>selectedIndex</code> when
+		 * a key is pressed.
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#UP flash.ui.Keyboard.UP
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#DOWN flash.ui.Keyboard.DOWN
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#LEFT flash.ui.Keyboard.LEFT
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#RIGHT flash.ui.Keyboard.RIGHT
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#HOME flash.ui.Keyboard.HOME
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#END flash.ui.Keyboard.END
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#PAGE_UP flash.ui.Keyboard.PAGE_UP
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#PAGE_DOWN flash.ui.Keyboard.PAGE_DOWN
+		 */
+		function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 
 		/**
 		 * Using the item dimensions, calculates a scroll position that will

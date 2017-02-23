@@ -160,6 +160,14 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			return index;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
