@@ -1038,17 +1038,47 @@ package feathers.layout
 		 */
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
+			var itemArrayCount:int = items.length;
+			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
 			var result:int = index;
 			if(keyCode === Keyboard.HOME)
 			{
-				if(items.length > 0)
+				if(itemCount > 0)
 				{
 					result = 0;
 				}
 			}
 			else if(keyCode === Keyboard.END)
 			{
-				result = items.length - 1;
+				result = itemCount - 1;
+			}
+			else if(keyCode === Keyboard.PAGE_UP)
+			{
+				var xPosition:Number = 0;
+				for(var i:int = index; i >= 0; i--)
+				{
+					xPosition += this.snapInterval;
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.PAGE_DOWN)
+			{
+				xPosition = 0;
+				for(i = index; i < itemCount; i++)
+				{
+					xPosition += this.snapInterval;
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
 			}
 			else if(keyCode === Keyboard.LEFT)
 			{
@@ -1062,9 +1092,9 @@ package feathers.layout
 			{
 				return 0;
 			}
-			if(result >= items.length)
+			if(result >= itemCount)
 			{
-				return items.length - 1;
+				return itemCount - 1;
 			}
 			return result;
 		}

@@ -1995,19 +1995,90 @@ package feathers.layout
 		 */
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
+			var itemArrayCount:int = items.length;
+			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+			if(this._useVirtualLayout)
+			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
+				this.prepareTypicalItem(bounds.viewPortWidth - this._paddingLeft - this._paddingRight);
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
 			var backwards:Boolean = false;
 			var result:int = index;
 			if(keyCode === Keyboard.HOME)
 			{
 				backwards = true;
-				if(items.length > 0)
+				if(itemCount > 0)
 				{
 					result = 0;
 				}
 			}
 			else if(keyCode === Keyboard.END)
 			{
-				result = items.length - 1;
+				result = itemCount - 1;
+			}
+			else if(keyCode === Keyboard.PAGE_UP)
+			{
+				backwards = true;
+				var yPosition:Number = 0;
+				for(var i:int = index; i >= 0; i--)
+				{
+					var iNormalized:int = i - this._beforeVirtualizedItemCount;
+					if(iNormalized < 0 || iNormalized >= itemArrayCount)
+					{
+						yPosition += calculatedTypicalItemHeight;
+					}
+					else
+					{
+						var item:DisplayObject = items[iNormalized];
+						if(item === null)
+						{
+							yPosition += calculatedTypicalItemHeight;
+						}
+						else
+						{
+							yPosition += item.height;
+						}
+					}
+					if(yPosition > bounds.viewPortHeight)
+					{
+						break;
+					}
+					yPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.PAGE_DOWN)
+			{
+				yPosition = 0;
+				for(i = index; i < itemCount; i++)
+				{
+					iNormalized = i - this._beforeVirtualizedItemCount;
+					if(iNormalized < 0 || iNormalized >= itemArrayCount)
+					{
+						yPosition += calculatedTypicalItemHeight;
+					}
+					else
+					{
+						item = items[iNormalized];
+						if(item === null)
+						{
+							yPosition += calculatedTypicalItemHeight;
+						}
+						else
+						{
+							yPosition += item.height;
+						}
+					}
+					if(yPosition > bounds.viewPortHeight)
+					{
+						break;
+					}
+					yPosition += this._gap;
+					result = i;
+				}
 			}
 			else if(keyCode === Keyboard.UP)
 			{
@@ -2022,9 +2093,9 @@ package feathers.layout
 			{
 				result = 0;
 			}
-			if(result >= items.length)
+			if(result >= itemCount)
 			{
-				result = items.length - 1;
+				result = itemCount - 1;
 			}
 			while(this._headerIndices !== null && this._headerIndices.indexOf(result) !== -1)
 			{
