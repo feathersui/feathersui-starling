@@ -1793,19 +1793,42 @@ package feathers.layout
 			else if(keyCode === Keyboard.PAGE_UP)
 			{
 				var xPosition:Number = 0;
+				var indexOffset:int = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
 				for(var i:int = index; i >= 0; i--)
 				{
-					var iNormalized:int = i - this._beforeVirtualizedItemCount;
+					var iNormalized:int = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						var cachedWidth:Number = this._widthCache[i];
+					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
-						xPosition += calculatedTypicalItemWidth;
+						if(cachedWidth === cachedWidth) //!isNaN
+						{
+							xPosition += cachedWidth;
+						}
+						else
+						{
+							xPosition += calculatedTypicalItemWidth;
+						}
 					}
 					else
 					{
 						var item:DisplayObject = items[iNormalized];
 						if(item === null)
 						{
-							xPosition += calculatedTypicalItemWidth;
+							if(cachedWidth === cachedWidth) //!isNaN
+							{
+								xPosition += cachedWidth;
+							}
+							else
+							{
+								xPosition += calculatedTypicalItemWidth;
+							}
 						}
 						else
 						{
@@ -1823,19 +1846,42 @@ package feathers.layout
 			else if(keyCode === Keyboard.PAGE_DOWN)
 			{
 				xPosition = 0;
+				indexOffset = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
 				for(i = index; i < itemCount; i++)
 				{
-					iNormalized = i - this._beforeVirtualizedItemCount;
+					iNormalized = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						cachedWidth = this._widthCache[i];
+					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
-						xPosition += calculatedTypicalItemWidth;
+						if(cachedWidth === cachedWidth) //!isNaN
+						{
+							xPosition += cachedWidth;
+						}
+						else
+						{
+							xPosition += calculatedTypicalItemWidth;
+						}
 					}
 					else
 					{
 						item = items[iNormalized];
 						if(item === null)
 						{
-							xPosition += calculatedTypicalItemWidth;
+							if(cachedWidth === cachedWidth) //!isNaN
+							{
+								xPosition += cachedWidth;
+							}
+							else
+							{
+								xPosition += calculatedTypicalItemWidth;
+							}
 						}
 						else
 						{

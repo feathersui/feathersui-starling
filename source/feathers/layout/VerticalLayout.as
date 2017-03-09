@@ -2022,20 +2022,43 @@ package feathers.layout
 			else if(keyCode === Keyboard.PAGE_UP)
 			{
 				backwards = true;
+				var indexOffset:int = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
 				var yPosition:Number = 0;
 				for(var i:int = index; i >= 0; i--)
 				{
-					var iNormalized:int = i - this._beforeVirtualizedItemCount;
+					var iNormalized:int = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						var cachedHeight:Number = this._heightCache[i];
+					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
-						yPosition += calculatedTypicalItemHeight;
+						if(cachedHeight === cachedHeight)
+						{
+							yPosition += cachedHeight;
+						}
+						else
+						{
+							yPosition += calculatedTypicalItemHeight;
+						}
 					}
 					else
 					{
 						var item:DisplayObject = items[iNormalized];
 						if(item === null)
 						{
-							yPosition += calculatedTypicalItemHeight;
+							if(cachedHeight === cachedHeight)
+							{
+								yPosition += cachedHeight;
+							}
+							else
+							{
+								yPosition += calculatedTypicalItemHeight;
+							}
 						}
 						else
 						{
@@ -2053,19 +2076,42 @@ package feathers.layout
 			else if(keyCode === Keyboard.PAGE_DOWN)
 			{
 				yPosition = 0;
+				indexOffset = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
 				for(i = index; i < itemCount; i++)
 				{
-					iNormalized = i - this._beforeVirtualizedItemCount;
+					iNormalized = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						cachedHeight = this._heightCache[i];
+					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
-						yPosition += calculatedTypicalItemHeight;
+						if(cachedHeight === cachedHeight) //!isNaN
+						{
+							yPosition += cachedHeight;
+						}
+						else
+						{
+							yPosition += calculatedTypicalItemHeight;
+						}
 					}
 					else
 					{
 						item = items[iNormalized];
 						if(item === null)
 						{
-							yPosition += calculatedTypicalItemHeight;
+							if(cachedHeight === cachedHeight) //!isNaN
+							{
+								yPosition += cachedHeight;
+							}
+							else
+							{
+								yPosition += calculatedTypicalItemHeight;
+							}
 						}
 						else
 						{
