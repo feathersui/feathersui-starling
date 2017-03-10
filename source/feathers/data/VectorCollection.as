@@ -12,6 +12,8 @@ package feathers.data
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 
+	[Exclude(name="data",kind="property")]
+
 	/**
 	 * Dispatched when the underlying data source changes and the ui will
 	 * need to redraw the data.
@@ -196,7 +198,7 @@ package feathers.data
 			{
 				data = new <*>[];
 			}
-			this.data = data as Vector.<*>;
+			this.vectorData = data as Vector.<*>;
 		}
 
 		/**
@@ -207,28 +209,52 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected var _data:Vector.<*>;
+		protected var _vectorData:Vector.<*>;
 
 		/**
 		 * The <code>Vector</code> data source for this collection.
+		 * 
+		 * <p>Note: Ideally, this property would be typed as something other
+		 * than <code>Object</code>, but there is no type that will accept all
+		 * <code>Vector</code> objects without requiring a cast first.</p>
 		 */
-		public function get data():Object
+		public function get vectorData():Object
 		{
-			return _data;
+			return _vectorData;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set data(value:Object):void
+		public function set vectorData(value:Object):void
 		{
-			if(this._data === value)
+			if(this._vectorData === value)
 			{
 				return;
 			}
-			this._data = value as Vector.<*>;
+			this._vectorData = value as Vector.<*>;
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		[Deprecated(replacement="vectorData",since="3.3.0")]
+		/**
+		 * @private
+		 * This will be removed when the deprecated IListCollection data
+		 * property is removed. 
+		 */
+		public function get data():Object
+		{
+			return this.vectorData;
+		}
+
+		[Deprecated(replacement="vectorData",since="3.3.0")]
+		/**
+		 * @private
+		 */
+		public function set data(value:Object):void
+		{
+			this.vectorData = value;
 		}
 
 		/**
@@ -277,7 +303,7 @@ package feathers.data
 			{
 				return this._filteredData.length;
 			}
-			return this._data.length;
+			return this._vectorData.length;
 		}
 
 		/**
@@ -312,11 +338,11 @@ package feathers.data
 				{
 					result = new <*>[];
 				}
-				var itemCount:int = this._data.length;
+				var itemCount:int = this._vectorData.length;
 				var pushIndex:int = 0;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var item:Object = this._data[i];
+					var item:Object = this._vectorData[i];
 					if(this._filterFunction(item))
 					{
 						result[pushIndex] = item;
@@ -364,7 +390,7 @@ package feathers.data
 			{
 				return this._filteredData[index];
 			}
-			return this._data[index];
+			return this._vectorData[index];
 		}
 
 		/**
@@ -380,7 +406,7 @@ package feathers.data
 			{
 				return this._filteredData.indexOf(item);
 			}
-			return this._data.indexOf(item);
+			return this._vectorData.indexOf(item);
 		}
 
 		/**
@@ -399,16 +425,16 @@ package feathers.data
 					//find the item at the index in the filtered data, and use
 					//its index from the unfiltered data
 					var oldItem:Object = this._filteredData[index];
-					var unfilteredIndex:int = this._data.indexOf(oldItem);
+					var unfilteredIndex:int = this._vectorData.indexOf(oldItem);
 				}
 				else
 				{
 					//if the item is added at the end of the filtered data
 					//then add it at the end of the unfiltered data
-					unfilteredIndex = this._data.length;
+					unfilteredIndex = this._vectorData.length;
 				}
 				//always add to the original data
-				this._data.insertAt(unfilteredIndex, item);
+				this._vectorData.insertAt(unfilteredIndex, item);
 				//but check if the item should be in the filtered data
 				var includeItem:Boolean = true;
 				if(this._filterFunction !== null)
@@ -425,7 +451,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data.insertAt(index, item);
+				this._vectorData.insertAt(index, item);
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 			}
@@ -443,12 +469,12 @@ package feathers.data
 			if(this._filteredData !== null)
 			{
 				var item:Object = this._filteredData.removeAt(index);
-				var unfilteredIndex:int = this._data.indexOf(item);
-				this._data.removeAt(unfilteredIndex);
+				var unfilteredIndex:int = this._vectorData.indexOf(item);
+				this._vectorData.removeAt(unfilteredIndex);
 			}
 			else
 			{
-				item = this._data.removeAt(index);
+				item = this._vectorData.removeAt(index);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
@@ -486,7 +512,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data.length = 0;
+				this._vectorData.length = 0;
 			}
 			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
@@ -504,8 +530,8 @@ package feathers.data
 			if(this._filteredData !== null)
 			{
 				var oldItem:Object = this._filteredData[index];
-				var unfilteredIndex:int = this._data.indexOf(oldItem);
-				this._data[unfilteredIndex] = item;
+				var unfilteredIndex:int = this._vectorData.indexOf(oldItem);
+				this._vectorData[unfilteredIndex] = item;
 				if(this._filterFunction !== null)
 				{
 					var includeItem:Boolean = this._filterFunction(item);
@@ -528,7 +554,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data[index] = item;
+				this._vectorData[index] = item;
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 			}
@@ -558,11 +584,11 @@ package feathers.data
 		public function addAll(collection:IListCollection):void
 		{
 			var otherCollectionLength:int = collection.length;
-			var pushIndex:int = this._data.length;
+			var pushIndex:int = this._vectorData.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data[pushIndex] = item;
+				this._vectorData[pushIndex] = item;
 				pushIndex++;
 			}
 		}
@@ -577,7 +603,7 @@ package feathers.data
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data.insertAt(currentIndex, item);
+				this._vectorData.insertAt(currentIndex, item);
 				currentIndex++;
 			}
 		}
@@ -587,12 +613,12 @@ package feathers.data
 		 */
 		public function reset(collection:IListCollection):void
 		{
-			this._data.length = 0;
+			this._vectorData.length = 0;
 			var otherCollectionLength:int = collection.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data[i] = item;
+				this._vectorData[i] = item;
 			}
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
@@ -603,7 +629,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this._data.pop();
+			return this._vectorData.pop();
 		}
 
 		/**
@@ -611,7 +637,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			this._data.unshift(item);
+			this._vectorData.unshift(item);
 		}
 
 		/**
@@ -619,7 +645,7 @@ package feathers.data
 		 */
 		public function shift():Object
 		{
-			return this._data.shift();
+			return this._vectorData.shift();
 		}
 
 		/**
@@ -627,7 +653,7 @@ package feathers.data
 		 */
 		public function contains(item:Object):Boolean
 		{
-			return this._data.indexOf(item) !== -1;
+			return this._vectorData.indexOf(item) !== -1;
 		}
 
 		/**
@@ -643,10 +669,10 @@ package feathers.data
 			this._filterFunction = null;
 			this.refresh();
 
-			var itemCount:int = this._data.length;
+			var itemCount:int = this._vectorData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:Object = this._data[i];
+				var item:Object = this._vectorData[i];
 				disposeItem(item);
 			}
 		}

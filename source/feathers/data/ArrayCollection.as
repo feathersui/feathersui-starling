@@ -12,6 +12,8 @@ package feathers.data
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 
+	[Exclude(name="data",kind="property")]
+
 	/**
 	 * Dispatched when the underlying data source changes and the ui will
 	 * need to redraw the data.
@@ -197,7 +199,7 @@ package feathers.data
 			{
 				data = [];
 			}
-			this.data = data;
+			this.arrayData = data;
 		}
 
 		/**
@@ -208,28 +210,50 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected var _data:Array;
+		protected var _arrayData:Array;
 
 		/**
 		 * The <code>Array</code> data source for this collection. 
 		 */
-		public function get data():Array
+		public function get arrayData():Array
 		{
-			return _data;
+			return this._arrayData;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set data(value:Array):void
+		public function set arrayData(value:Array):void
 		{
-			if(this._data === value)
+			if(this._arrayData === value)
 			{
 				return;
 			}
-			this._data = value;
+			this._arrayData = value;
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		[Deprecated(replacement="arrayData",since="3.3.0")]
+		/**
+		 * @private
+		 */
+		public function get data():Object
+		{
+			return this.arrayData;
+		}
+
+		[Deprecated(replacement="arrayData",since="3.3.0")]
+		/**
+		 * @private
+		 */
+		public function set data(value:Object):void
+		{
+			if(!(value is Array))
+			{
+				throw new ArgumentError("ArrayCollection data must be of type Array.");
+			}
+			this.arrayData = value as Array;
 		}
 
 		/**
@@ -278,7 +302,7 @@ package feathers.data
 			{
 				return this._filteredData.length;
 			}
-			return this._data.length;
+			return this._arrayData.length;
 		}
 
 		/**
@@ -313,11 +337,11 @@ package feathers.data
 				{
 					result = [];
 				}
-				var itemCount:int = this._data.length;
+				var itemCount:int = this._arrayData.length;
 				var pushIndex:int = 0;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var item:Object = this._data[i];
+					var item:Object = this._arrayData[i];
 					if(this._filterFunction(item))
 					{
 						result[pushIndex] = item;
@@ -365,7 +389,7 @@ package feathers.data
 			{
 				return this._filteredData[index];
 			}
-			return this._data[index];
+			return this._arrayData[index];
 		}
 
 		/**
@@ -381,7 +405,7 @@ package feathers.data
 			{
 				return this._filteredData.indexOf(item);
 			}
-			return this._data.indexOf(item);
+			return this._arrayData.indexOf(item);
 		}
 
 		/**
@@ -400,16 +424,16 @@ package feathers.data
 					//find the item at the index in the filtered data, and use
 					//its index from the unfiltered data
 					var oldItem:Object = this._filteredData[index];
-					var unfilteredIndex:int = this._data.indexOf(oldItem);
+					var unfilteredIndex:int = this._arrayData.indexOf(oldItem);
 				}
 				else
 				{
 					//if the item is added at the end of the filtered data
 					//then add it at the end of the unfiltered data
-					unfilteredIndex = this._data.length;
+					unfilteredIndex = this._arrayData.length;
 				}
 				//always add to the original data
-				this._data.insertAt(unfilteredIndex, item);
+				this._arrayData.insertAt(unfilteredIndex, item);
 				//but check if the item should be in the filtered data
 				var includeItem:Boolean = true;
 				if(this._filterFunction !== null)
@@ -426,7 +450,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data.insertAt(index, item);
+				this._arrayData.insertAt(index, item);
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 			}
@@ -444,12 +468,12 @@ package feathers.data
 			if(this._filteredData !== null)
 			{
 				var item:Object = this._filteredData.removeAt(index);
-				var unfilteredIndex:int = this._data.indexOf(item);
-				this._data.removeAt(unfilteredIndex);
+				var unfilteredIndex:int = this._arrayData.indexOf(item);
+				this._arrayData.removeAt(unfilteredIndex);
 			}
 			else
 			{
-				item = this._data.removeAt(index);
+				item = this._arrayData.removeAt(index);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
@@ -487,7 +511,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data.length = 0;
+				this._arrayData.length = 0;
 			}
 			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
@@ -505,8 +529,8 @@ package feathers.data
 			if(this._filteredData !== null)
 			{
 				var oldItem:Object = this._filteredData[index];
-				var unfilteredIndex:int = this._data.indexOf(oldItem);
-				this._data[unfilteredIndex] = item;
+				var unfilteredIndex:int = this._arrayData.indexOf(oldItem);
+				this._arrayData[unfilteredIndex] = item;
 				if(this._filterFunction !== null)
 				{
 					var includeItem:Boolean = this._filterFunction(item);
@@ -529,7 +553,7 @@ package feathers.data
 			}
 			else
 			{
-				this._data[index] = item;
+				this._arrayData[index] = item;
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 			}
@@ -559,11 +583,11 @@ package feathers.data
 		public function addAll(collection:IListCollection):void
 		{
 			var otherCollectionLength:int = collection.length;
-			var pushIndex:int = this._data.length;
+			var pushIndex:int = this._arrayData.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data[pushIndex] = item;
+				this._arrayData[pushIndex] = item;
 				pushIndex++;
 			}
 		}
@@ -578,7 +602,7 @@ package feathers.data
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data.insertAt(currentIndex, item);
+				this._arrayData.insertAt(currentIndex, item);
 				currentIndex++;
 			}
 		}
@@ -588,12 +612,12 @@ package feathers.data
 		 */
 		public function reset(collection:IListCollection):void
 		{
-			this._data.length = 0;
+			this._arrayData.length = 0;
 			var otherCollectionLength:int = collection.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._data[i] = item;
+				this._arrayData[i] = item;
 			}
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
@@ -604,7 +628,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this._data.pop();
+			return this._arrayData.pop();
 		}
 
 		/**
@@ -612,7 +636,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			this._data.unshift(item);
+			this._arrayData.unshift(item);
 		}
 
 		/**
@@ -620,7 +644,7 @@ package feathers.data
 		 */
 		public function shift():Object
 		{
-			return this._data.shift();
+			return this._arrayData.shift();
 		}
 
 		/**
@@ -628,7 +652,7 @@ package feathers.data
 		 */
 		public function contains(item:Object):Boolean
 		{
-			return this._data.indexOf(item) !== -1;
+			return this._arrayData.indexOf(item) !== -1;
 		}
 
 		/**
@@ -644,10 +668,10 @@ package feathers.data
 			this._filterFunction = null;
 			this.refresh();
 
-			var itemCount:int = this._data.length;
+			var itemCount:int = this._arrayData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:Object = this._data[i];
+				var item:Object = this._arrayData[i];
 				disposeItem(item);
 			}
 		}
