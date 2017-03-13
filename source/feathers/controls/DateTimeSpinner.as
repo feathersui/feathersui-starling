@@ -12,9 +12,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
-	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
@@ -1736,10 +1734,7 @@ package feathers.controls
 			this.monthsList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.monthsList.styleNameList.add(listStyleName);
-			var monthsRange:IntegerRange = new IntegerRange(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
-			var monthsCollection:ListCollection = new ListCollection(monthsRange);
-			monthsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-			this.monthsList.dataProvider = monthsCollection;
+			this.monthsList.dataProvider = new IntegerRangeCollection(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
 			this.monthsList.typicalItem = this._longestMonthNameIndex;
 			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
@@ -1772,10 +1767,7 @@ package feathers.controls
 			this.datesList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.datesList.styleNameList.add(listStyleName);
-			var datesRange:IntegerRange = new IntegerRange(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
-			var datesCollection:ListCollection = new ListCollection(datesRange);
-			datesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-			this.datesList.dataProvider = datesCollection;
+			this.datesList.dataProvider = new IntegerRangeCollection(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
 			this.datesList.itemRendererFactory = this.datesListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
 			//precedence if it also sets customItemRendererStyleName
@@ -1838,10 +1830,7 @@ package feathers.controls
 			this.minutesList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.minutesList.styleNameList.add(listStyleName);
-			var minutesRange:IntegerRange = new IntegerRange(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
-			var minutesCollection:ListCollection = new ListCollection(minutesRange);
-			minutesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-			this.minutesList.dataProvider = minutesCollection;
+			this.minutesList.dataProvider = new IntegerRangeCollection(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
 			this.minutesList.itemRendererFactory = this.minutesListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
 			//precedence if it also sets customItemRendererStyleName
@@ -1977,29 +1966,18 @@ package feathers.controls
 		{
 			var oldIgnoreListChanges:Boolean = this._ignoreListChanges;
 			this._ignoreListChanges = true;
-			
+
 			if(this._editingMode === DateTimeMode.DATE)
 			{
-				var yearsCollection:ListCollection = ListCollection(this.yearsList.dataProvider);
-				if(yearsCollection)
+				var yearsCollection:IntegerRangeCollection = IntegerRangeCollection(this.yearsList.dataProvider);
+				if(yearsCollection !== null)
 				{
-					var yearRange:IntegerRange = IntegerRange(yearsCollection.data);
-					if(yearRange.minimum !== this._listMinYear || yearRange.maximum !== this._listMaxYear)
-					{
-						yearRange.minimum = this._listMinYear;
-						yearRange.maximum = this._listMaxYear;
-						var dataDescriptor:IntegerRangeDataDescriptor = IntegerRangeDataDescriptor(yearsCollection.dataDescriptor);
-						yearsCollection.data = null;
-						yearsCollection.data = yearRange;
-						yearsCollection.dataDescriptor = dataDescriptor;
-					}
+					yearsCollection.minimum = this._listMinYear;
+					yearsCollection.maximum = this._listMaxYear;
 				}
 				else
 				{
-					yearRange = new IntegerRange(this._listMinYear, this._listMaxYear, 1);
-					yearsCollection = new ListCollection(yearRange);
-					yearsCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.yearsList.dataProvider = yearsCollection;
+					this.yearsList.dataProvider = new IntegerRangeCollection(this._listMinYear, this._listMaxYear, 1);
 				}
 			}
 			else //time only or both date and time
@@ -2009,50 +1987,28 @@ package feathers.controls
 
 				if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 				{
-					var dateAndTimeDatesCollection:ListCollection = ListCollection(this.dateAndTimeDatesList.dataProvider);
-					if(dateAndTimeDatesCollection)
+					var dateAndTimeDatesCollection:IntegerRangeCollection = IntegerRangeCollection(this.dateAndTimeDatesList.dataProvider);
+					if(dateAndTimeDatesCollection !== null)
 					{
-						var datesRange:IntegerRange = IntegerRange(dateAndTimeDatesCollection.data);
-						if(datesRange.maximum !== totalDays)
-						{
-							datesRange.maximum = totalDays;
-							dataDescriptor = IntegerRangeDataDescriptor(dateAndTimeDatesCollection.dataDescriptor);
-							dateAndTimeDatesCollection.data = null;
-							dateAndTimeDatesCollection.data = datesRange;
-							dateAndTimeDatesCollection.dataDescriptor = dataDescriptor;
-						}
+						dateAndTimeDatesCollection.maximum = totalDays;
 					}
 					else
 					{
-						datesRange = new IntegerRange(0, totalDays, 1);
-						dateAndTimeDatesCollection = new ListCollection(datesRange);
-						dateAndTimeDatesCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-						this.dateAndTimeDatesList.dataProvider = dateAndTimeDatesCollection;
+						this.dateAndTimeDatesList.dataProvider = new IntegerRangeCollection(0, totalDays, 1);
 					}
 				}
 
 				var hoursMinimum:Number = MIN_HOURS_VALUE;
 				var hoursMaximum:Number = this._showMeridiem ? MAX_HOURS_VALUE_12HOURS : MAX_HOURS_VALUE_24HOURS;
-				var hoursCollection:ListCollection = ListCollection(this.hoursList.dataProvider);
-				if(hoursCollection)
+				var hoursCollection:IntegerRangeCollection = IntegerRangeCollection(this.hoursList.dataProvider);
+				if(hoursCollection !== null)
 				{
-					var hoursRange:IntegerRange = IntegerRange(hoursCollection.data);
-					if(hoursRange.minimum !== hoursMinimum || hoursRange.maximum !== hoursMaximum)
-					{
-						hoursRange.minimum = hoursMinimum;
-						hoursRange.maximum = hoursMaximum;
-						dataDescriptor = IntegerRangeDataDescriptor(hoursCollection.dataDescriptor);
-						hoursCollection.data = null;
-						hoursCollection.data = hoursRange;
-						hoursCollection.dataDescriptor = dataDescriptor;
-					}
+					hoursCollection.minimum = hoursMinimum;
+					hoursCollection.maximum = hoursMaximum;
 				}
 				else
 				{
-					hoursRange = new IntegerRange(hoursMinimum, hoursMaximum, 1);
-					hoursCollection = new ListCollection(hoursRange);
-					hoursCollection.dataDescriptor = new IntegerRangeDataDescriptor();
-					this.hoursList.dataProvider = hoursCollection;
+					this.hoursList.dataProvider = new IntegerRangeCollection(hoursMinimum, hoursMaximum, 1);
 				}
 
 				if(this._showMeridiem && !this.meridiemList.dataProvider)
@@ -2060,7 +2016,7 @@ package feathers.controls
 					this.meridiemList.dataProvider = new VectorCollection(new <String>[this._amString, this._pmString]);
 				}
 			}
-			
+
 			if(this.monthsList && !this.monthsList.isScrolling)
 			{
 				this.monthsList.selectedItem = this._value.month;
@@ -2403,7 +2359,7 @@ package feathers.controls
 				var year:int = pendingDate.fullYear;
 				if(this.yearsList.selectedItem !== year)
 				{
-					var yearRange:IntegerRange = IntegerRange(ListCollection(this.yearsList.dataProvider).data);
+					var yearRange:IntegerRangeCollection = IntegerRangeCollection(this.yearsList.dataProvider);
 					this.yearsList.scrollToDisplayIndex(year - yearRange.minimum, duration);
 				}
 			}
@@ -2884,36 +2840,104 @@ package feathers.controls
 	}
 }
 
-import feathers.data.IListCollectionDataDescriptor;
+import feathers.data.IListCollection;
+import feathers.events.CollectionEventType;
 
-class IntegerRange
+import starling.events.Event;
+import starling.events.EventDispatcher;
+
+class IntegerRangeCollection extends EventDispatcher implements IListCollection
 {
-	public function IntegerRange(minimum:int, maximum:int, step:int = 1)
+	public function IntegerRangeCollection(minimum:int = 0, maximum:int = 1, step:int = 1)
 	{
-		this.minimum = minimum;
-		this.maximum = maximum;
-		this.step = step;
-	}
-	
-	public var minimum:int;
-	public var maximum:int;
-	public var step:int;
-}
-
-
-class IntegerRangeDataDescriptor implements IListCollectionDataDescriptor
-{
-	public function getLength(data:Object):int
-	{
-		var range:IntegerRange = IntegerRange(data);
-		return 1 + int((range.maximum - range.minimum) / range.step);
+		this._minimum = minimum;
+		this._maximum = maximum;
+		this._step = step;
 	}
 
-	public function getItemAt(data:Object, index:int):Object
+	protected var _minimum:int;
+
+	public function get minimum():int
 	{
-		var range:IntegerRange = IntegerRange(data);
-		var maximum:int = range.maximum;
-		var result:int = range.minimum + index * range.step;
+		return this._minimum;
+	}
+
+	public function set minimum(value:int):void
+	{
+		if(this._minimum === value)
+		{
+			return;
+		}
+		this._minimum = value;
+		this.dispatchEventWith(CollectionEventType.RESET);
+		this.dispatchEventWith(Event.CHANGE);
+	}
+
+	protected var _maximum:int;
+
+	public function get maximum():int
+	{
+		return this._maximum;
+	}
+
+	public function set maximum(value:int):void
+	{
+		if(this._maximum === value)
+		{
+			return;
+		}
+		this._maximum = value;
+		this.dispatchEventWith(CollectionEventType.RESET);
+		this.dispatchEventWith(Event.CHANGE);
+	}
+
+	protected var _step:int;
+
+	public function get step():int
+	{
+		return this._step;
+	}
+
+	public function set step(value:int):void
+	{
+		if(this._step === value)
+		{
+			return;
+		}
+		this._step = value;
+		this.dispatchEventWith(CollectionEventType.RESET);
+		this.dispatchEventWith(Event.CHANGE);
+	}
+
+	public function get filterFunction():Function
+	{
+		return null;
+	}
+
+	public function set filterFunction(value:Function):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function get data():Object
+	{
+		return null;
+	}
+
+	public function set data(value:Object):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function get length():int
+	{
+		return 1 + int((this._maximum - this._minimum) / this._step);
+	}
+
+	public function getItemAt(index:int):Object
+	{
+		var maximum:int = this._maximum;
+		var result:int = this._minimum + index * this._step;
 		if(result > maximum)
 		{
 			result = maximum;
@@ -2921,34 +2945,108 @@ class IntegerRangeDataDescriptor implements IListCollectionDataDescriptor
 		return result;
 	}
 
-	public function setItemAt(data:Object, item:Object, index:int):void
+	public function contains(item:Object):Boolean
 	{
-		throw "Not implemented";
+		if(!(item is int))
+		{
+			return false;
+		}
+		var value:int = item as int;
+		return Math.ceil((value - this._minimum) / this._step) !== -1;
 	}
 
-	public function addItemAt(data:Object, item:Object, index:int):void
-	{
-		throw "Not implemented";
-	}
-
-	public function removeItemAt(data:Object, index:int):Object
-	{
-		throw "Not implemented";
-	}
-
-	public function getItemIndex(data:Object, item:Object):int
+	public function getItemIndex(item:Object):int
 	{
 		if(!(item is int))
 		{
 			return -1;
 		}
 		var value:int = item as int;
-		var range:IntegerRange = IntegerRange(data);
-		return Math.ceil((value - range.minimum) / range.step);
+		return Math.ceil((value - this._minimum) / this._step);
 	}
 
-	public function removeAll(data:Object):void
+	public function refreshFilter():void
 	{
-		throw "Not implemented";
+		throw new Error("Not implemented");
+	}
+
+	public function setItemAt(item:Object, index:int):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function addItem(item:Object):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function addItemAt(item:Object, index:int):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function push(item:Object):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function shift():Object
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function removeItem(item:Object):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function removeItemAt(index:int):Object
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function unshift(item:Object):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function removeAll():void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function pop():Object
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function addAll(collection:IListCollection):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function addAllAt(collection:IListCollection, index:int):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function reset(collection:IListCollection):void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function updateItemAt(index:int):void
+	{
+		this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
+	}
+
+	public function updateAll():void
+	{
+		this.dispatchEventWith(CollectionEventType.UPDATE_ALL);
+	}
+
+	public function dispose(callback:Function):void
+	{
+		throw new Error("Not implemented");
 	}
 }
