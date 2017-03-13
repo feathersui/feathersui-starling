@@ -70,7 +70,7 @@ package feathers.examples.youtube.screens
 
 		public var savedVerticalScrollPosition:Number = 0;
 		public var savedSelectedIndex:int = -1;
-		public var savedDataProvider:ListCollection;
+		public var savedDataProvider:VectorCollection;
 
 		private var _loader:URLLoader;
 		private var _savedResult:Object;
