@@ -5893,7 +5893,7 @@ package feathers.controls
 		{
 			var pullViewHeight:Number = this._topPullView.height / this._topPullView.scaleY;
 			var mask:DisplayObject = this._topPullView.mask;
-			var maskHeight:Number = pullViewHeight + (this._topPullView.y / this._topPullView.scaleY);
+			var maskHeight:Number = pullViewHeight + ((this._topPullView.y - this._paddingTop) / this._topPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -5959,7 +5959,7 @@ package feathers.controls
 		{
 			var pullViewWidth:Number = this._leftPullView.width / this._leftPullView.scaleX;
 			var mask:DisplayObject = this._leftPullView.mask;
-			var maskWidth:Number = pullViewWidth + (this._leftPullView.x / this._leftPullView.scaleX);
+			var maskWidth:Number = pullViewWidth + ((this._leftPullView.x - this._paddingLeft) / this._leftPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
