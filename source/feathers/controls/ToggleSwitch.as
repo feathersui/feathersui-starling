@@ -17,6 +17,7 @@ package feathers.controls
 	import feathers.core.IToggle;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -3404,6 +3405,20 @@ package feathers.controls
 				var trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
 				if(touch.phase == TouchPhase.MOVED)
 				{
+					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					var claim:DisplayObject = exclusiveTouch.getClaim(this._touchPointID);
+					if(claim !== this)
+					{
+						if(claim)
+						{
+							//already claimed by another display object
+							return;
+						}
+						else
+						{
+							exclusiveTouch.claimTouch(this._touchPointID, this);
+						}
+					}
 					var xOffset:Number = HELPER_POINT.x - this._touchStartX;
 					var xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
