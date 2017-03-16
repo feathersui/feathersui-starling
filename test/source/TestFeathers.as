@@ -128,6 +128,7 @@ package
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
+	import feathers.tests.XMLListCollectionTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -284,6 +285,7 @@ package
 				ListCollectionFilterTests,
 				ArrayCollectionTests,
 				VectorCollectionTests,
+				XMLListCollectionTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,
