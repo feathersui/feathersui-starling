@@ -35,14 +35,14 @@ Then, in the listener for the button's `Event.TRIGGERED` event, we create the al
 function button_triggeredHandler( event:Event ):void
 {
 	var button:Button = Button( event.currentTarget );
-	var alert:Alert = Alert.show( "I have something important to say", "Warning", new ListCollection(
+	var alert:Alert = Alert.show( "I have something important to say", "Warning", new ArrayCollection(
 	[
 		{ label: "OK", triggered: okButton_triggeredHandler }
 	]) );
 }
 ```
 
-Three arguments are required. The first is the alert's message. The second argument is the title displayed in the alert's header. Finally, a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) of button data must be passed in to display in a [`ButtonGroup`](button-group.html).
+Three arguments are required. The first is the alert's message. The second argument is the title displayed in the alert's header. Finally, a collection of button data must be passed in to display in a [`ButtonGroup`](button-group.html).
 
 In addition to listening for [`Event.TRIGGERED`](../api-reference/feathers/controls/Button.html#event:triggered) to be dispatched by individual buttons, you may also listen for [`Event.CLOSE`](../api-reference/feathers/controls/Alert.html#event:close) on the alert:
 
@@ -107,7 +107,7 @@ function customAlertFactory():Alert
 	alert.styleNameList.add( "custom-alert" );
 	return alert;
 };
-Alert.show( "I have something important to say", "Alert Title", new ListCollection({label: "OK"}), true, true, customAlertFactory );
+Alert.show( "I have something important to say", "Alert Title", new ArrayCollection({label: "OK"}), true, true, customAlertFactory );
 ```
 
 If you're working with a [theme](themes.html), you can set a custom styling function for a `Alert` with the style name `"custom-alert"` to provide different skins for this alert.

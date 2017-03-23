@@ -13,7 +13,7 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Hardware-accelerated graphics.
 
--   Target iOS, Android, Windows and Mac OS X.
+-   Target iOS, Android, Windows and macOS.
 
 -   Built on top of Starling Framework and Adobe AIR.
 
@@ -23,9 +23,9 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Create user interfaces for both desktop and mobile apps.
 
--   Easy to scale for different screen dimensions and DPIs.
+-   Easy to scale for different screen dimensions and densities with [`ScreenDensityScaleFactorManager`](../api-reference/feathers/utils/ScreenDensityScaleFactorManager.html).
 
--   Support for fluid layouts that fit to a wide variety of screen sizes.
+-   Support for fluid layouts, with anchors or dimensions set as percentages, that fit to a wide variety of screen sizes.
 
 -   Choose between scrolling with touch physics including elastic, springy edges or traditional desktop scroll bars and the mouse scroll wheel.
 
@@ -33,11 +33,13 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 ## Skinning
 
--   All components may be skinned using any Starling display object.
+-   All components may be skinned using regular Starling display objects.
+
+-   Resizable skins using `scale9Grid` and `tileGrid`.
 
 -   Strictly-typed properties for all skins and properties that affect visual styling. No vague `getStyle()` or `setStyle()` look-ups with string keys.
 
--   Scale 9, scale 3, and tiled image types provide fluid resizing for skins.
+-   [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) can change color and texture when a component's state changes.
 
 -   Supports [themes](themes.html) that separate all skinning code from the application logic.
 
@@ -49,7 +51,7 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   If no width or height is provided, components will resize themselves automatically based on the provided skin and dimensions of sub-components.
 
--   Factories and interfaces allow you to customize sub-components. For instance, select the type best suited for phone, tablet, or desktop.
+-   Factories and interfaces allow you to customize sub-components. For instance, select the type of sub-component best suited for phone, tablet, or desktop.
 
 -   Choice of [text rendering](text-renderers.html) between bitmap fonts or vector fonts drawn to textures. Vector fonts may be rendered with either `flash.text.TextField` or Flash Text Engine.
 
@@ -87,13 +89,13 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Variable item renderer dimensions.
 
--   A `ListCollection` class with data descriptors to support any type of data. Includes built-in support for `Array`, `Vector`, and `XMLList`.
+-   Collection classes for various types of data, such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html), [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), or [`XMLListCollection`](../api-reference/feathers/data/XMLListCollection.html).
 
 -   Optionally split items into multiple pages, and snap to each page when scrolling.
 
 ## Menus and Navigation
 
--   Create menus and navigate between screens using [`StackScreenNavigator`](stack-screen-navigator.html) or [`ScreenNavigator`](screen-navigator.html).
+-   Create menus and navigate between screens using [`StackScreenNavigator`](stack-screen-navigator.html) or [`TabNavigator`](tab-navigator.html).
 
 -   Push and pop screens using a history stack that easily supports a back button.
 

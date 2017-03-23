@@ -28,7 +28,7 @@ this.addChild(group);
 This won't display anything because we haven't populated the data provider with information about the buttons we want. Let's do that next:
 
 ``` code
-group.dataProvider = new ListCollection(
+group.dataProvider = new ArrayCollection(
 [
     { label: "One", triggered: oneButton_triggeredHandler },
     { label: "Two", triggered: twoButton_triggeredHandler },
@@ -36,7 +36,7 @@ group.dataProvider = new ListCollection(
 ]);
 ```
 
-Like the [`List`](list.html) or [`TabBar`](tab-bar.html) components, the `ButtonGroup` uses a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) as its data provider.
+Like the [`List`](list.html) or [`TabBar`](tab-bar.html) components, the `ButtonGroup` uses an implementation of [`IListCollection`](../api-reference/feathers/data/IListCollection.html), such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) or [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), as its data provider.
 
 A number of fields in each item from the collection are automatically detected by the button group. For instance, we set the `label` on each button above. Each of a button's icon states may also be used here, along with `isToggle` and `isSelected` to make them into toggling buttons.
 

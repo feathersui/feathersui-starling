@@ -33,7 +33,7 @@ list.itemRendererFactory = function():IListItemRenderer
     renderer.padding = 10;
     return renderer;
 };
-list.dataProvider = new ListCollection(
+list.dataProvider = new ArrayCollection(
 [
     { label: "One" },
     { label: "Two" },

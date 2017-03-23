@@ -143,7 +143,7 @@ Pass in a [`VerticalLayout`](../vertical-layout.html) with its [`hasVariableItem
 
 ### How do I update an item renderer in a list after I change a property on an item?
 
-You can pass the item's index to [`updateItemAt()`](../../api-reference/feathers/data/ListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
+You can pass the item's index to [`updateItemAt()`](../../api-reference/feathers/data/IListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
 
 ``` code
 list.dataProvider.updateItemAt( itemIndex );

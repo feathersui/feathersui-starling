@@ -30,7 +30,7 @@ for(var i:int = 0; i < 100; i++)
     items.push( { label: i.toString() } );
 }
 this._list = new List();
-this._list.dataProvider = new ListCollection( items );
+this._list.dataProvider = new ArrayCollection( items );
 this.addChild(this._list);
 ```
 

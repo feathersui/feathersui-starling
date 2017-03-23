@@ -22,7 +22,7 @@ First, let's create a `TabBar` control, set its data provider to display a few t
 
 ``` code
 var tabs:TabBar = new TabBar();
-tabs.dataProvider = new ListCollection(
+tabs.dataProvider = new ArrayCollection(
 [
     { label: "One" },
     { label: "Two" },

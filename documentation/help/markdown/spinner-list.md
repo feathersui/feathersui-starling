@@ -25,10 +25,10 @@ var list:SpinnerList = new SpinnerList();
 this.addChild( list );
 ```
 
-Similar to a `List`, we can pass a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) to the [`dataProvider`](../api-reference/feathers/controls/List.html#dataProvider) property:
+Similar to a `List`, we can pass an [`IListCollection`](../api-reference/feathers/data/IListCollection.html) implementation, such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) or [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), to the [`dataProvider`](../api-reference/feathers/controls/List.html#dataProvider) property:
 
 ``` code
-list.dataProvider = new ListCollection(
+list.dataProvider = new ArrayCollection(
 [
     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },

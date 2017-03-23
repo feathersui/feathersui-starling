@@ -69,7 +69,7 @@ Next, we'll want to add some content to a drawer. Let's add a [`List`](list.html
 
 ``` code
 var list:List = new List();
-list.dataProvider = new ListCollection(
+list.dataProvider = new ArrayCollection(
 [
     { screen: "start", label: "Start" },
     { screen: "options", label: "Options" },

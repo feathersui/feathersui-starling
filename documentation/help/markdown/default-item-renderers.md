@@ -92,7 +92,7 @@ slider.maximum = 10;
 slider.step = 1;
 slider.value = 0;
  
-list.dataProvider = new ListCollection(
+list.dataProvider = new ArrayCollection(
 [
     { label: "Example Label", control: slider }
 ];
@@ -104,7 +104,7 @@ For an item renderer to add the display object as a child, it needs to know abou
 renderer.iconField = "control";
 ```
 
-When using `iconField`, it's important to understand that the display object in the data provider will not be automatically disposed when the item renderer or the list is disposed. This display object may need to be used in another list later, and Feathers cannot know whether it is safe to dispose it, similar to how a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) cannot dispose its [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html). To avoid memory leaks, remember to dispose any display objects included in the list's data provider when the list is disposed. The [`dispose()`](../api-reference/feathers/data/ListCollection.html#dispose()) function on the data provider makes it easy to dispose display objects in the `ListCollection`.
+When using `iconField`, it's important to understand that the display object in the data provider will not be automatically disposed when the item renderer or the list is disposed. This display object may need to be used in another list later, and Feathers cannot know whether it is safe to dispose it, similar to how a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) cannot dispose its [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html). To avoid memory leaks, remember to dispose any display objects included in the list's data provider when the list is disposed. The [`dispose()`](../api-reference/feathers/data/IListCollection.html#dispose()) function on the data provider makes it easy to dispose display objects in an `IListCollection`.
 
 Finally, it's possible to skin the icon without passing it through the data provider. For example, you might want to display a checkmark as the icon when an item renderer is selected. Set the [`itemHasIcon`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#itemHasIcon) property to `false`, and you can skin the icon using [`defaultIcon`](../api-reference/feathers/controls/Button.html#defaultIcon) and [`setIconForState()`](../api-reference/feathers/controls/Button.html#setIconForState()) just like you would for a button.
 

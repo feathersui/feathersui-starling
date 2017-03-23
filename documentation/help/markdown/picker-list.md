@@ -25,10 +25,10 @@ var list:PickerList = new PickerList();
 this.addChild( list );
 ```
 
-Next, we want to actually allow it to select some items, so like a `List` components, we pass in a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) to the [`dataProvider`](../api-reference/feathers/controls/PickerList.html#dataProvider) property.
+Next, we want to actually allow it to select some items, so like a `List` components, we pass in an [`IListCollection`](../api-reference/feathers/data/IListCollection.html) implementation, such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) or [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), to the [`dataProvider`](../api-reference/feathers/controls/PickerList.html#dataProvider) property.
 
 ``` code
-var groceryList:ListCollection = new ListCollection(
+var groceryList:ArrayCollection = new ArrayCollection(
 [
     { text: "Milk" },
     { text: "Eggs" },

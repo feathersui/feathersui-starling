@@ -206,12 +206,12 @@ When sub-components require a factory, we can define it in the MXML using `<fx:C
         </fx:Component>
     </f:itemRendererFactory>
     <f:dataProvider>
-        <f:ListCollection>
+        <f:ArrayCollection>
             <fx:Object text="Milk"/>
             <fx:Object text="Eggs"/>
             <fx:Object text="Flour"/>
             <fx:Object text="Sugar"/>
-        </f:ListCollection>
+        </f:ArrayCollection>
     </f:dataProvider>
 </f:List>
 ```

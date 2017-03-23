@@ -37,10 +37,10 @@ list.height = 300;
 this.addChild( list );
 ```
 
-Next, we want the list to display some items, so let's create a [`ListCollection`](../api-reference/feathers/data/ListCollection.html) as its data provider. In the example below, an `Array` of objects is passed to the `ListCollection`.
+Next, we want the list to display some items, so let's create an [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) implementation as its data provider.
 
 ``` code
-var groceryList:ListCollection = new ListCollection(
+var groceryList:ArrayCollection = new ArrayCollection(
 [
     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -50,7 +50,7 @@ var groceryList:ListCollection = new ListCollection(
 list.dataProvider = groceryList;
 ```
 
-`ListCollection` wraps any type of data to provide a common API that the `List` component can understand. Out of the box, `ListCollection` automatically supports `Vector`, `Array`, and `XMLList`, but it's possible to support custom types of data, if needed.
+The [`IListCollection`](../api-reference/feathers/data/IListCollection.html) interface may wrap any type of data to provide a common API that the `List` component can understand. Out of the box, we may use [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html), [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), and [`XMLListCollection`](../api-reference/feathers/data/XMLListCollection.html). It's even possible to create new `IListCollection` implementations to display custom data types, if needed.
 
 Now, we need to tell the item renderer how to display the data. The list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
