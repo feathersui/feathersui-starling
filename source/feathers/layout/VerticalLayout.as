@@ -1256,7 +1256,13 @@ package feathers.layout
 						{
 							//if all items must have the same height, we will
 							//use the height of the typical item (calculatedTypicalItemHeight).
-							item.height = itemHeight = calculatedTypicalItemHeight;
+							itemHeight = calculatedTypicalItemHeight;
+							if(item !== this._typicalItem || item.height !== itemHeight)
+							{
+								//ensure that the typical item's height is not
+								//set explicitly so that it can resize
+								item.height = itemHeight;
+							}
 						}
 					}
 					positionY += itemHeight + gap;
