@@ -571,5 +571,28 @@ package feathers.tests
 			Assert.assertStrictlyEquals("HorizontalLayout without explicit view port height and child with percentHeight, calculated height, and calculated minHeight results in wrong child height",
 				100, item1.height);
 		}
+
+		[Test]
+		public function testTypicalItemExplicitWidthWithoutHasVariableItemDimensions():void
+		{
+			this._layout.useVirtualLayout = true;
+			this._layout.hasVariableItemDimensions = false;
+
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.backgroundSkin = new Quad(100, 200);
+
+			var item2:LayoutGroup = new LayoutGroup();
+			item2.backgroundSkin = new Quad(150, 50);
+
+			this._layout.typicalItem = item1;
+
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1, item2];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertTrue("HorizontalLayout: typicalItem explicitWidth must be NaN when useVirtualLayout is true and hasVariableItemDimensions is false so that it can resize later",
+				isNaN(item1.explicitWidth));
+			Assert.assertStrictlyEquals("HorizontalLayout: item explicitWidth must be equal to typicalItem width when useVirtualLayout is true and hasVariableItemDimensions is false",
+				item1.width, item2.explicitWidth);
+		}
 	}
 }
