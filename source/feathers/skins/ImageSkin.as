@@ -24,11 +24,12 @@ package feathers.skins
 	 * component that is being skinned.
 	 * 
 	 * <listing version="3.0">
-	 * var button:Button = new Button();
-	 * button.label = "Click Me";
 	 * var skin:ImageSkin = new ImageSkin( upTexture );
 	 * skin.setTextureForState( ButtonState.DOWN, downTexture );
 	 * skin.setTextureForState( ButtonState.HOVER, hoverTexture );
+	 * 
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
 	 * button.defaultSkin = skin;
 	 * this.addChild( button );</listing>
 	 * 
@@ -114,7 +115,9 @@ package feathers.skins
 		 * <listing version="3.0">
 		 * var skin:ImageSkin = new ImageSkin( upTexture );
 		 * skin.disabledTexture = disabledTexture;
-		 * button.skin = skin;
+		 * 
+		 * var button:Button = new Button();
+		 * button.defaultSkin = skin;
 		 * button.isEnabled = false;</listing>
 		 *
 		 * @default null
@@ -159,7 +162,9 @@ package feathers.skins
 		 * <listing version="3.0">
 		 * var skin:ImageSkin = new ImageSkin( upTexture );
 		 * skin.selectedTexture = selectedTexture;
-		 * toggleButton.skin = skin;
+		 *
+		 * var toggleButton:ToggleButton = new ToggleButton();
+		 * toggleButton.defaultSkin = skin;
 		 * toggleButton.isSelected = true;</listing>
 		 *
 		 * @default null
@@ -255,7 +260,9 @@ package feathers.skins
 		 * var skin:ImageSkin = new ImageSkin();
 		 * skin.defaultColor = 0xffffff;
 		 * skin.disabledColor = 0x999999;
-		 * button.skin = skin;
+		 *
+		 * var button:Button = new Button();
+		 * button.defaultSkin = skin;
 		 * button.isEnabled = false;</listing>
 		 *
 		 * @default uint.MAX_VALUE
@@ -300,7 +307,9 @@ package feathers.skins
 		 * var skin:ImageSkin = new ImageSkin();
 		 * skin.defaultColor = 0xffffff;
 		 * skin.selectedColor = 0xffcc00;
-		 * toggleButton.skin = skin;
+		 *
+		 * var toggleButton:ToggleButton = new ToggleButton();
+		 * toggleButton.defaultSkin = skin;
 		 * toggleButton.isSelected = true;</listing>
 		 *
 		 * @default uint.MAX_VALUE
