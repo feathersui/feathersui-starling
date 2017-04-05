@@ -54,6 +54,7 @@ package
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
+	import feathers.tests.LayoutGroupValidationTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
@@ -81,6 +82,7 @@ package
 	import feathers.tests.ScrollBarVerticalMeasurementTests;
 	import feathers.tests.ScrollContainerMeasurementTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollContainerValidationTests;
 	import feathers.tests.ScrollerMeasurementTests;
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
@@ -221,6 +223,7 @@ package
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				LayoutGroupMeasurementTests,
+				LayoutGroupValidationTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
@@ -241,6 +244,7 @@ package
 				ScrollBarVerticalMeasurementTests,
 				ScrollContainerTests,
 				ScrollContainerMeasurementTests,
+				ScrollContainerValidationTests,
 				ScrollerTests,
 				ScrollerMeasurementTests,
 				SliderHorizontalTests,
