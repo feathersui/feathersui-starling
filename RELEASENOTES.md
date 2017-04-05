@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.2.0 - In Development
+## 3.2.0 - April 2017
 
 * PullToRefresh: new example that demonstrates how to support the popular "pull to refresh" gesture with Feathers lists and other scrolling containers.
 * TabNavigator: support for swiping between tabs.
@@ -26,9 +26,11 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * FeathersControl; layoutData is set to null when disposed to avoid potential memory leaks.
 * FeathersControl: Removes event listeners on styleNameList when disposed so that they cannot be called for no reason.
 * FeathersControl; added ignoreNextStyleRestriction() to allow components to set defaults during initialization while still allowing a theme to replace styles later.
+* FeathersControl: fixed an issue where measured minimum dimensions were not affected by explicit maximum dimensions.
 * GroupedList: similar to items, an error is thrown if duplicate header or footer data appears in the data provider.
 * HorizontalLayout, VerticalLayout: fixed issue where includeInLayout was ignored when distributing item sizes.
-* HorizontalLayout, VerticalLayotu: fixed issue where includeInLayout was ignored when using percent dimensions.
+* HorizontalLayout, VerticalLayout: fixed issue where includeInLayout was ignored when using percent dimensions.
+* HorizontalLayout, VerticalLayout: fixed issue where the typicalItem could not resize after layout.
 * ImageLoader: supports asynchronous texture uploads to improve performance when uploading textures to the GPU.
 * ImageLoader: exposed sourceToTextureCacheKey() to allow subclasses to override the key used in the TextureCache for non-URL sources.
 * ImageLoader: createTextureOnRestore accepts sources that are non-URLs to allow subclasses to override this behavior.
@@ -52,6 +54,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * SpinnerList: fixed issue where scroll position was not updated if layout snapInterval changed.
 * StageTextTextEditor: position of StageText can no longer be larger than 8191 or smaller than -8192 to avoid a runtime error.
 * StageTextTextEditor: added clearButtonMode property to support new StageText API.
+* StageTextTextEditor: does not call assignFocus() on StageText if StageText already has focus because this can cause soft keyboard to close and re-open on iOS.
 * TabBar: fixed issue where setSelectedIndexWithAnimation() and setSelectedItemWithAnimation() did not change the value of the selectedItem property.
 * TabBarSlideTransitionManager: moved to feathers-compat project.
 * TextBlockTextRenderer: fixed issue where a new line width would not be properly detected when using content property, and optimized for the standard text case.
