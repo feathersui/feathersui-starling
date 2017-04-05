@@ -5218,7 +5218,8 @@ package feathers.controls.renderers
 			{
 				this.iconLoader = this._iconLoaderFactory();
 				this.iconLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.iconLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.iconLoader.addEventListener(Event.IO_ERROR, loader_completeOrErrorHandler);
+				this.iconLoader.addEventListener(Event.SECURITY_ERROR, loader_completeOrErrorHandler);
 				var iconLoaderStyleName:String = this._customIconLoaderStyleName != null ? this._customIconLoaderStyleName : this.iconLoaderStyleName;
 				this.iconLoader.styleNameList.add(iconLoaderStyleName);
 			}
@@ -5253,7 +5254,8 @@ package feathers.controls.renderers
 			{
 				this.accessoryLoader = this._accessoryLoaderFactory();
 				this.accessoryLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.accessoryLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.accessoryLoader.addEventListener(Event.IO_ERROR, loader_completeOrErrorHandler);
+				this.accessoryLoader.addEventListener(Event.SECURITY_ERROR, loader_completeOrErrorHandler);
 				var accessoryLoaderStyleName:String = this._customAccessoryLoaderStyleName != null ? this._customAccessoryLoaderStyleName : this.accessoryLoaderStyleName;
 				this.accessoryLoader.styleNameList.add(accessoryLoaderStyleName);
 			}

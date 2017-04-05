@@ -1142,7 +1142,13 @@ package feathers.layout
 						{
 							//if all items must have the same width, we will
 							//use the width of the typical item (calculatedTypicalItemWidth).
-							item.width = itemWidth = calculatedTypicalItemWidth;
+							itemWidth = calculatedTypicalItemWidth;
+							if(item !== this._typicalItem || item.width !== itemWidth)
+							{
+								//ensure that the typical item's width is not
+								//set explicitly so that it can resize
+								item.width = itemWidth;
+							}
 						}
 					}
 					positionX += itemWidth + gap;
