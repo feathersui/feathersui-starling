@@ -2,6 +2,8 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.3.0 - In Development
+
 ## 3.2.0 - April 2017
 
 * PullToRefresh: new example that demonstrates how to support the popular "pull to refresh" gesture with Feathers lists and other scrolling containers.
