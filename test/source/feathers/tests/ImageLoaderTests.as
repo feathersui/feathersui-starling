@@ -259,5 +259,24 @@ package feathers.tests
 			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit width larger than texture width and using scale9Grid.",
 				textureHeight, this._loader.height);
 		}
+
+		[Test]
+		public function testExplicitMaxWidthWithLargerMinWidth():void
+		{
+			var textureWidth:Number = 20;
+			var textureHeight:Number = 15;
+			var maxWidth:Number = 10;
+			var maxHeight:Number = 5;
+			this._texture = Texture.fromColor(textureWidth, textureHeight);
+			this._loader.source = this._texture;
+			this._loader.maxWidth = maxWidth;
+			this._loader.maxHeight = maxHeight;
+			this._loader.validate();
+
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect width when setting explicit max width smaller than measured min width.",
+				maxWidth, this._loader.width);
+			Assert.assertStrictlyEquals("ImageLoader calculates incorrect height when setting explicit max height smaller than measured min height.",
+				maxHeight, this._loader.height);
+		}
 	}
 }

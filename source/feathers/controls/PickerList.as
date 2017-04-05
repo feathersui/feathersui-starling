@@ -399,7 +399,7 @@ package feathers.controls
 		 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 		 * ]);
 		 *
-		 * list.listProperties.itemRendererFactory = function():IListItemRenderer
+		 * list.itemRendererFactory = function():IListItemRenderer
 		 * {
 		 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 		 *     renderer.labelField = "text";

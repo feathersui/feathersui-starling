@@ -52,7 +52,7 @@ package feathers.examples.drawersExplorer.views
 		override protected function initialize():void
 		{
 			var openControlsPanel:Panel = new Panel();
-			openControlsPanel.headerProperties.title = "Open Drawers";
+			openControlsPanel.title = "Open Drawers";
 			openControlsPanel.layout = new AnchorLayout();
 			this.addChild(openControlsPanel);
 
@@ -99,7 +99,7 @@ package feathers.examples.drawersExplorer.views
 			leftLayoutData.horizontalCenter = -horizontalOffset;
 			
 			var optionsPanel:Panel = new Panel();
-			optionsPanel.headerProperties.title = "Options";
+			optionsPanel.title = "Options";
 			optionsPanel.layout = new VerticalLayout();
 			this.addChild(optionsPanel);
 			

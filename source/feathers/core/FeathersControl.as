@@ -2236,11 +2236,23 @@ package feathers.core
 				//the measured min width
 				minWidth = this._explicitMinWidth;
 			}
+			else if(minWidth > this._explicitMaxWidth)
+			{
+				//similarly, if the max width has been set explicitly, it can
+				//affect the measured min width (but not explicit min width)
+				minWidth = this._explicitMaxWidth;
+			}
 			if(this._explicitMinHeight === this._explicitMinHeight) //!isNaN
 			{
 				//the min height has been set explicitly. it has precedence over
 				//the measured min height
 				minHeight = this._explicitMinHeight;
+			}
+			else if(minHeight > this._explicitMaxHeight)
+			{
+				//similarly, if the max height has been set explicitly, it can
+				//affect the measured min height (but not explicit min height)
+				minHeight = this._explicitMaxHeight;
 			}
 			if(this._explicitWidth === this._explicitWidth) //!isNaN
 			{

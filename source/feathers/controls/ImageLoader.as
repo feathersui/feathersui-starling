@@ -2260,7 +2260,7 @@ package feathers.controls
 					}
 				}
 			}
-			if(this._texture.root.uploadBitmapData.length === 2)
+			if(this._asyncTextureUpload && this._texture.root.uploadBitmapData.length === 2)
 			{
 				//using brackets as temporary workaround to make compiler happy
 				//when using Starling 2.1
@@ -2281,7 +2281,7 @@ package feathers.controls
 					dispatchEventWith(starling.events.Event.COMPLETE);
 				});
 			}
-			else //fallback for Starling 2.1
+			else //synchronous
 			{
 				this._texture.root.uploadBitmapData(bitmapData);
 				if(this.image !== null)

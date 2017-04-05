@@ -21,3 +21,4 @@ html-template/
 .idea/
 archive/
 *.lnk
+.vscode/
