@@ -5,6 +5,7 @@ package feathers.examples.layoutExplorer
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.layoutExplorer.data.FlowLayoutSettings;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
+	import feathers.examples.layoutExplorer.data.SlideShowLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
@@ -15,6 +16,8 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.MainMenuScreen;
+	import feathers.examples.layoutExplorer.screens.SlideShowLayoutScreen;
+	import feathers.examples.layoutExplorer.screens.SlideShowLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.TiledColumnsLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.TiledColumnsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutScreen;
@@ -43,12 +46,14 @@ package feathers.examples.layoutExplorer
 		private static const TILED_ROWS:String = "tiledRows";
 		private static const TILED_COLUMNS:String = "tiledColumns";
 		private static const WATERFALL:String = "waterfall";
+		private static const SLIDE_SHOW:String = "slideShow";
 		private static const FLOW_SETTINGS:String = "flowSettings";
 		private static const HORIZONTAL_SETTINGS:String = "horizontalSettings";
 		private static const VERTICAL_SETTINGS:String = "verticalSettings";
 		private static const TILED_ROWS_SETTINGS:String = "tiledRowsSettings";
 		private static const TILED_COLUMNS_SETTINGS:String = "tiledColumnsSettings";
 		private static const WATERFALL_SETTINGS:String = "waterfallSettings";
+		private static const SLIDE_SHOW_SETTINGS:String = "slideShowSettings";
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
@@ -58,7 +63,8 @@ package feathers.examples.layoutExplorer
 			showVertical: VERTICAL,
 			showTiledRows: TILED_ROWS,
 			showTiledColumns: TILED_COLUMNS,
-			showWaterfall: WATERFALL
+			showWaterfall: WATERFALL,
+			showSlideShow: SLIDE_SHOW
 		};
 
 		public function Main()
@@ -168,6 +174,20 @@ package feathers.examples.layoutExplorer
 			waterfallSettingsItem.pushTransition = Cover.createCoverUpTransition();
 			waterfallSettingsItem.popTransition = Reveal.createRevealDownTransition();
 			this._navigator.addScreen(WATERFALL_SETTINGS, waterfallSettingsItem);
+
+			var slideShowSettings:SlideShowLayoutSettings = new SlideShowLayoutSettings();
+			var slideShowItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SlideShowLayoutScreen);
+			slideShowItem.setScreenIDForPushEvent(SlideShowLayoutScreen.SHOW_SETTINGS, SLIDE_SHOW_SETTINGS);
+			slideShowItem.addPopEvent(Event.COMPLETE);
+			slideShowItem.properties.settings = slideShowSettings;
+			this._navigator.addScreen(SLIDE_SHOW, slideShowItem);
+
+			var slideShowSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SlideShowLayoutSettingsScreen);
+			slideShowSettingsItem.addPopEvent(Event.COMPLETE);
+			slideShowSettingsItem.properties.settings = slideShowSettings;
+			slideShowSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			slideShowSettingsItem.popTransition = Reveal.createRevealDownTransition();
+			this._navigator.addScreen(SLIDE_SHOW_SETTINGS, slideShowSettingsItem);
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{

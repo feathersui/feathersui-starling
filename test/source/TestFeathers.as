@@ -90,6 +90,7 @@ package
 	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
+	import feathers.tests.SlideShowLayoutTests;
 	import feathers.tests.SpinnerListTests;
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -283,6 +284,7 @@ package
 				VerticalLayoutTests,
 				HorizontalSpinnerLayoutTests,
 				VerticalSpinnerLayoutTests,
+				SlideShowLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
