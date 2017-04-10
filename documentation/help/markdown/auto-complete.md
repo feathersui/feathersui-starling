@@ -77,8 +77,7 @@ In some cases, you may want to request personalized suggestions from a server in
 To load suggestions from the web, we need a URL. The [`urlRequestFunction`](../api-reference/feathers/data/URLAutoCompleteSource.html#urlRequestFunction) property can be used to generate a [`URLRequest`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html):
 
 ``` code
-var source:URLAutoCompleteSource = new URLAutoCompleteSource();
-source.urlRequestFunction = function( textToMatch:String ):URLRequest
+function createURLRequest( textToMatch:String ):URLRequest
 {
 	var request:URLRequest = new URLRequest( "http://example.com/search_suggestions" );
 	var variables:URLVariables = new URLVariables();
@@ -86,7 +85,7 @@ source.urlRequestFunction = function( textToMatch:String ):URLRequest
 	request.data = variables;
 	return request;
 };
-input.source = source;
+input.source = new URLAutoCompleteSource( createURLRequest );
 ```
 
 The `urlRequestFunction` takes one argument, the text entered into the `AutoComplete`. We can pass that to the server to return relevant suggestions.
