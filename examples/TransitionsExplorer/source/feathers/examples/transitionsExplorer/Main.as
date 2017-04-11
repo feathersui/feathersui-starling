@@ -61,6 +61,9 @@ package feathers.examples.transitionsExplorer
 
 		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._menu = new StackScreenNavigator();
