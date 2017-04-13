@@ -141,7 +141,7 @@ We can give the list a background skin that fills the entire width and height of
 ``` code
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
-header.backgroundSkin = skin;
+list.backgroundSkin = skin;
 ```
 
 It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
