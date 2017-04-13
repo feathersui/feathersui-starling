@@ -49,6 +49,9 @@ package com.example
 
 		private function starling_context3DCreateHandler( event:Event ):void
 		{
+			//this listener shouldn't be called again if context is lost
+			this._starling.removeEventListener( Event.CONTEXT3D_CREATE, starling_context3DCreateHandler );
+
 			// the context is ready, so the theme can create its textures
 			new MetalWorksMobileTheme();
 
