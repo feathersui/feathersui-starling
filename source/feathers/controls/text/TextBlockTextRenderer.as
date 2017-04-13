@@ -313,6 +313,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsUpdateSnapshot:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _truncationOffset:int = 0;
 
 		/**
@@ -1351,6 +1356,14 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
+			if(this._needsUpdateSnapshot)
+			{
+				this._needsUpdateSnapshot = false;
+				if(this._content !== null)
+				{
+					this.refreshSnapshot();
+				}
+			}
 			if(this.textSnapshot !== null)
 			{
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
@@ -1404,11 +1417,13 @@ package feathers.controls.text
 						if(snapshotIndex < 0)
 						{
 							var snapshot:Image = this.textSnapshot;
+							snapshot.visible = this._snapshotWidth > 0 && this._snapshotHeight > 0 && this._content !== null;
 						}
 						else
 						{
 							snapshot = this.textSnapshots[snapshotIndex];
 						}
+						snapshot.pixelSnapping = this._pixelSnapping;
 						snapshot.x = xPosition / scaleFactor;
 						snapshot.y = yPosition / scaleFactor;
 						snapshotIndex++;
@@ -1711,22 +1726,11 @@ package feathers.controls.text
 
 			if(contentStateChanged || this._needsNewTexture)
 			{
-				if(this._content !== null)
-				{
-					this.refreshSnapshot();
-				}
-				if(this.textSnapshot !== null)
-				{
-					this.textSnapshot.visible = this._snapshotWidth > 0 && this._snapshotHeight > 0 && this._content !== null;
-					this.textSnapshot.pixelSnapping = this._pixelSnapping;
-				}
-				if(this.textSnapshots !== null)
-				{
-					for each(var snapshot:Image in this.textSnapshots)
-					{
-						snapshot.pixelSnapping = this._pixelSnapping;
-					}
-				}
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsUpdateSnapshot = true;
+				this.setRequiresRedraw();
 			}
 		}
 
