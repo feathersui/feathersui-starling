@@ -319,6 +319,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsTextureUpdate:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreStageTextChanges:Boolean = false;
 
 		/**
@@ -1225,7 +1230,7 @@ package feathers.controls.text
 			{
 				painter.excludeFromCache(this);
 			}
-			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
 				var matrix:Matrix = Pool.getMatrix();
 				this.getTransformationMatrix(this.stage, matrix);
@@ -1239,10 +1244,32 @@ package feathers.controls.text
 				}
 				Pool.putMatrix(matrix);
 			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				var hasText:Boolean = this._text.length > 0;
+				if(hasText)
+				{
+					this.refreshSnapshot();
+				}
+				if(this.textSnapshot)
+				{
+					this.textSnapshot.visible = !this._stageTextHasFocus;
+					this.textSnapshot.alpha = hasText ? 1 : 0;
+				}
+				if(!this._stageTextHasFocus)
+				{
+					//hide the StageText after the snapshot is created
+					//native controls don't necessarily render at the same time
+					//as starling, and we don't want to see the text disappear
+					//for a moment
+					this.stageText.visible = false;
+				}
+			}
 
 			//we'll skip this if the text field isn't visible to avoid running
 			//that code every frame.
-			if(this.stageText && this.stageText.visible)
+			if(this.stageText !== null && this.stageText.visible)
 			{
 				this.refreshViewPortAndFontSize();
 			}
@@ -1612,17 +1639,11 @@ package feathers.controls.text
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
-				var hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					this.refreshSnapshot();
-				}
-				if(this.textSnapshot)
-				{
-					this.textSnapshot.visible = !this._stageTextHasFocus;
-					this.textSnapshot.alpha = hasText ? 1 : 0;
-				}
-				this.stageText.visible = false;
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 
 			this.doPendingActions();

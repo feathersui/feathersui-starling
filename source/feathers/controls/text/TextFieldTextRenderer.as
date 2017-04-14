@@ -173,6 +173,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsTextureUpdate:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -1229,24 +1234,41 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.textSnapshot !== null)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
-				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-				if(this._updateSnapshotOnScaleChange)
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				if(globalScaleX != this._lastGlobalScaleX ||
+					globalScaleY != this._lastGlobalScaleY ||
+					starling.contentScaleFactor != this._lastContentScaleFactor)
 				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-					if(globalScaleX != this._lastGlobalScaleX ||
-						globalScaleY != this._lastGlobalScaleY ||
-						starling.contentScaleFactor != this._lastContentScaleFactor)
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
+				}
+			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				if(this._text.length > 0)
+				{
+					if(this._useSnapshotDelayWorkaround)
 					{
-						//the snapshot needs to be updated because the scale has
-						//changed since the last snapshot was taken.
-						this.invalidate(INVALIDATION_FLAG_SIZE);
-						this.validate();
+						//we need to wait a frame for the TextField to render
+						//properly. sometimes two, and this is a known issue.
+						this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+					}
+					else
+					{
+						this.refreshSnapshot();
 					}
 				}
+			}
+			if(this.textSnapshot !== null)
+			{
 				var scaleFactor:Number = starling.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
@@ -1282,11 +1304,13 @@ package feathers.controls.text
 						if(snapshotIndex < 0)
 						{
 							var snapshot:Image = this.textSnapshot;
+							snapshot.visible = this._text.length > 0 && this._snapshotWidth > 0 && this._snapshotHeight > 0;
 						}
 						else
 						{
 							snapshot = this.textSnapshots[snapshotIndex];
 						}
+						snapshot.pixelSnapping = this._pixelSnapping;
 						snapshot.x = xPosition / scaleFactor;
 						snapshot.y = yPosition / scaleFactor;
 						snapshotIndex++;
@@ -1629,32 +1653,11 @@ package feathers.controls.text
 			{
 				this._previousActualWidth = this.actualWidth;
 				this._previousActualHeight = this.actualHeight;
-				var hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					if(this._useSnapshotDelayWorkaround)
-					{
-						//we need to wait a frame for the TextField to render
-						//properly. sometimes two, and this is a known issue.
-						this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-					}
-					else
-					{
-						this.refreshSnapshot();
-					}
-				}
-				if(this.textSnapshot)
-				{
-					this.textSnapshot.visible = hasText && this._snapshotWidth > 0 && this._snapshotHeight > 0;
-					this.textSnapshot.pixelSnapping = this._pixelSnapping;
-				}
-				if(this.textSnapshots)
-				{
-					for each(var snapshot:Image in this.textSnapshots)
-					{
-						snapshot.pixelSnapping = this._pixelSnapping;
-					}
-				}
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 		}
 

@@ -313,7 +313,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsUpdateSnapshot:Boolean = false;
+		protected var _needsTextureUpdate:Boolean = false;
 
 		/**
 		 * @private
@@ -1356,9 +1356,25 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this._needsUpdateSnapshot)
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
-				this._needsUpdateSnapshot = false;
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				if(globalScaleX != this._lastGlobalScaleX ||
+					globalScaleY != this._lastGlobalScaleY ||
+					starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
+				{
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
+				}
+			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
 				if(this._content !== null)
 				{
 					this.refreshSnapshot();
@@ -1366,22 +1382,6 @@ package feathers.controls.text
 			}
 			if(this.textSnapshot !== null)
 			{
-				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-				if(this._updateSnapshotOnScaleChange)
-				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-					if(globalScaleX != this._lastGlobalScaleX ||
-						globalScaleY != this._lastGlobalScaleY ||
-						starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
-					{
-						//the snapshot needs to be updated because the scale has
-						//changed since the last snapshot was taken.
-						this.invalidate(INVALIDATION_FLAG_SIZE);
-						this.validate();
-					}
-				}
 				var scaleFactor:Number = starling.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
@@ -1729,7 +1729,7 @@ package feathers.controls.text
 				//we're going to update the texture in render() because 
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
-				this._needsUpdateSnapshot = true;
+				this._needsTextureUpdate = true;
 				this.setRequiresRedraw();
 			}
 		}

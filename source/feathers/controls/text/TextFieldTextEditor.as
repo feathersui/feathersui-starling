@@ -335,6 +335,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsTextureUpdate:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -1403,21 +1408,32 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.textSnapshot)
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
-				if(this._updateSnapshotOnScaleChange)
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(this.stage, matrix);
+				if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
+					matrixToScaleY(matrix) !== this._lastGlobalScaleY)
 				{
-					var matrix:Matrix = Pool.getMatrix();
-					this.getTransformationMatrix(this.stage, matrix);
-					if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
-						matrixToScaleY(matrix) !== this._lastGlobalScaleY)
-					{
-						//the snapshot needs to be updated because the scale has
-						//changed since the last snapshot was taken.
-						this.invalidate(INVALIDATION_FLAG_SIZE);
-						this.validate();
-					}
-					Pool.putMatrix(matrix);
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
+				}
+				Pool.putMatrix(matrix);
+			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				if(this._useSnapshotDelayWorkaround)
+				{
+					//sometimes, we need to wait a frame for flash.text.TextField
+					//to render properly when drawing to BitmapData.
+					this.addEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
+				}
+				else
+				{
+					this.refreshSnapshot();
 				}
 				this.positionSnapshot();
 			}
@@ -2078,16 +2094,11 @@ package feathers.controls.text
 
 			if(!this._textFieldHasFocus && (sizeInvalid || stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
-				if(this._useSnapshotDelayWorkaround)
-				{
-					//sometimes, we need to wait a frame for flash.text.TextField
-					//to render properly when drawing to BitmapData.
-					this.addEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
-				}
-				else
-				{
-					this.refreshSnapshot();
-				}
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 			this.doPendingActions();
 		}
