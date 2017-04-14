@@ -24,6 +24,7 @@ package feathers.controls
 	import feathers.utils.math.roundUpToNearest;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
+	import flash.errors.IllegalOperationError;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -1980,6 +1981,44 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		public function set horizontalPageIndex(value:int):void
+		{
+			if(!this._snapToPages)
+			{
+				throw new IllegalOperationError("The horizontalPageIndex may not be set if snapToPages is false.");
+			}
+			this.hasPendingHorizontalPageIndex = false;
+			this.pendingHorizontalScrollPosition = NaN;
+			if(this._horizontalPageIndex === value)
+			{
+				return;
+			}
+			if(!this.isInvalid())
+			{
+				if(value < this._minHorizontalPageIndex)
+				{
+					value = this._minHorizontalPageIndex;
+				}
+				else if(value > this._maxHorizontalPageIndex)
+				{
+					value = this._maxHorizontalPageIndex;
+				}
+				this._horizontalScrollPosition = this.actualPageWidth * value;
+			}
+			else
+			{
+				//minimum and maximum values haven't been calculated yet, so we
+				//need to wait for validation to change the scroll position
+				this.hasPendingHorizontalPageIndex = true;
+				this.pendingHorizontalPageIndex = value;
+				this.pendingScrollDuration = 0;
+			}
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _minHorizontalPageIndex:int = 0;
 
 		/**
@@ -2259,6 +2298,44 @@ package feathers.controls
 				return this.pendingVerticalPageIndex;
 			}
 			return this._verticalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalPageIndex(value:int):void
+		{
+			if(!this._snapToPages)
+			{
+				throw new IllegalOperationError("The verticalPageIndex may not be set if snapToPages is false.");
+			}
+			this.hasPendingVerticalPageIndex = false;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this._verticalPageIndex === value)
+			{
+				return;
+			}
+			if(!this.isInvalid())
+			{
+				if(value < this._minVerticalPageIndex)
+				{
+					value = this._minVerticalPageIndex;
+				}
+				else if(value > this._maxVerticalPageIndex)
+				{
+					value = this._maxVerticalPageIndex;
+				}
+				this._verticalScrollPosition = this.actualPageHeight * value;
+			}
+			else
+			{
+				//minimum and maximum values haven't been calculated yet, so we
+				//need to wait for validation to change the scroll position
+				this.hasPendingVerticalPageIndex = true;
+				this.pendingVerticalPageIndex = value;
+				this.pendingScrollDuration = 0;
+			}
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		/**
