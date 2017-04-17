@@ -1,6 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.Callout;
+	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.RelativePosition;
 
@@ -260,6 +261,27 @@ package feathers.tests
 				BACKGROUND_WIDTH + LEFT_ARROW_WIDTH, this._callout.minWidth);
 			Assert.assertStrictlyEquals("The minHeight of the Callout was not calculated correctly.",
 				BACKGROUND_HEIGHT, this._callout.minHeight);
+		}
+
+		[Test]
+		public function testWrappingLabel():void
+		{
+			var label:Label = new Label();
+			label.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+			label.wordWrap = true;
+
+			var label2:Label = new Label();
+			label2.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+			label2.validate();
+			label2.dispose();
+
+			this._callout.content = label;
+			this._callout.validate();
+
+			Assert.assertTrue("Callout: when content is set to Label with wordWrap true, the numLines should be greater than 1",
+				label.numLines > 1);
+			Assert.assertTrue("Callout: when content is set to Label with wordWrap true, the height should be greater than the height for 1 line",
+				label.height > label2.height);
 		}
 	}
 }
