@@ -652,6 +652,8 @@ package feathers.controls
 		 *
 		 * @default true
 		 *
+		 * @see #selectedItem
+		 * @see #selectedIndex
 		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean

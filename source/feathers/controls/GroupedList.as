@@ -952,6 +952,10 @@ package feathers.controls
 	 	 * list.isSelectable = false;</listing>
 		 *
 		 * @default true
+		 *
+		 * @see #selectedItem
+		 * @see #selectedGroupIndex
+		 * @see #selectedItemIndex
 		 */
 		public function get isSelectable():Boolean
 		{
