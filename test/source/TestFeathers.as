@@ -127,6 +127,7 @@ package
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
 	import feathers.tests.TouchToStateTests;
+	import feathers.tests.TreeTests;
 	import feathers.tests.VectorCollectionTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
@@ -269,6 +270,7 @@ package
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				ToggleSwitchMeasurementTests,
+				TreeTests,
 
 				//media tests
 				TimeLabelTests,
