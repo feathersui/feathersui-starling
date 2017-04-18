@@ -68,6 +68,10 @@ package feathers.controls.text
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 *
+	 * @see #text
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -92,8 +96,9 @@ package feathers.controls.text
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType feathers.events.FeathersEventType.ENTER
 	 * @see #returnKeyLabel
+	 *
+	 * @eventType feathers.events.FeathersEventType.ENTER
 	 */
 	[Event(name="enter",type="starling.events.Event")]
 

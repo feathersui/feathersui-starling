@@ -475,6 +475,8 @@ package feathers.controls
 
 	/**
 	 * @copy feathers.core.IToggle#event:change
+	 * 
+	 * @see #isSelected
 	 */
 	[Event(name="change",type="starling.events.Event")]
 

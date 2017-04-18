@@ -42,6 +42,9 @@ package feathers.controls.supportClasses
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #activeScreen
+	 * @see #activeScreenID
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
