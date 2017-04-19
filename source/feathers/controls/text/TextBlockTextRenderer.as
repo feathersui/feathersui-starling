@@ -375,21 +375,44 @@ package feathers.controls.text
 
 		/**
 		 * Sets the contents of the <code>TextBlock</code> to a complex value
-		 * that is more than simple text. If the <code>text</code> property is
-		 * set after the <code>content</code> property, the <code>content</code>
-		 * property will be replaced with a <code>TextElement</code>.
+		 * that may contain graphics and text with multiple formats.
 		 *
-		 * <p>In the following example, the content is changed to a
-		 * <code>GroupElement</code>:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.content = new GroupElement( element );</listing>
-		 *
-		 * <p>To simply display a string value, use the <code>text</code> property
-		 * instead:</p>
+		 * <p>In the following example, the content is set to a
+		 * <code>GroupElement</code> that contains text with multiple
+		 * formats:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem Ipsum";</listing>
+		 * var format1:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20, 0x000000);
+		 * var format2:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20, 0xff0000);
+		 * var format3:ElementFormat = new ElementFormat(new FontDescription("_sans", FontWeight.NORMAL, FontPosture.ITALIC), 20, 0x000000);
+		 * var text1:TextElement = new TextElement("Different ", format1);
+		 * var text2:TextElement = new TextElement("colors", format2);
+		 * var text3:TextElement = new TextElement(" and ", format1);
+		 * var text4:TextElement = new TextElement("styles", format3);
+		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text1, text2, text3, text4];
+		 * var group:GroupElement = new GroupElement(elements);
+		 *
+		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+		 * textRenderer.content = group;</listing>
+		 *
+		 * <p>In the following example, the content is set to a
+		 * <code>GroupElement</code> that contains both text and a bitmap
+		 * graphic:</p>
+		 *
+		 * <listing version="3.0">
+		 * var format:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20);
+		 * var text:TextElement = new TextElement("Hi there! ", format);
+		 * var bitmap:Bitmap = new EmbeddedBitmap(); //a bitmap included with [Embed]
+		 * var graphic:GraphicElement = new GraphicElement(bitmap, bitmap.width, bitmap.height, format);
+		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text, graphic];
+		 * var group:GroupElement = new GroupElement(elements);
+		 *
+		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+		 * textRenderer.content = group;</listing>
+		 *
+		 * <p>Note: The <code>content</code> property cannot be used when the
+		 * <code>TextBlockTextRenderer</code> receives its text from a parent
+		 * component, such as a <code>Label</code> or a <code>Button</code>.</p>
 		 *
 		 * @default null
 		 *
