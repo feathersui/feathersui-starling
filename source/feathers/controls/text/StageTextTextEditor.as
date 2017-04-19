@@ -1163,18 +1163,17 @@ package feathers.controls.text
 		protected var _clearButtonMode:String = "whileEditing";
 
 		/**
-		 * Determines when the clear button is displayed by the
+		 * Determines when the clear button is displayed or hidden by the
 		 * <code>StageText</code> object.
 		 *
-		 * <p>In the following example, the snapshot will be updated when the
-		 * text editor is scaled:</p>
+		 * <p>In the following example, the clear button is always hidden:</p>
 		 *
 		 * <listing version="3.0">
-		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 * textEditor.clearButtonMode = StageTextClearButtonMode.NEVER;</listing>
 		 * 
 		 * <p>Requires <code>-swf-version=34</code> or newer.</p>
 		 *
-		 * @default false
+		 * @default flash.text.StageTextClearButtonMode.WHILE_EDITING
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#clearButtonMode Full description of flash.text.StageText.clearButtonMode in Adobe's Flash Platform API Reference
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageTextClearButtonMode.html Full description of flash.text.StageTextClearButtonMode in Adobe's Flash Platform API Reference
