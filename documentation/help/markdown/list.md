@@ -270,7 +270,7 @@ The styling function might look like this:
 private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
-    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.setTextureForState( ButtonState.DOWN, downTexture );
     skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
     itemRenderer.defaultSkin = skin;
     itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
@@ -301,7 +301,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
     //set item renderer styles here, if not using a theme
     var skin:ImageSkin = new ImageSkin( upTexture );
-    skin.setTextForState( ButtonState.DOWN, downTexture );
+    skin.setTextureForState( ButtonState.DOWN, downTexture );
     skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
     itemRenderer.defaultSkin = skin;
     itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
