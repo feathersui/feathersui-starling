@@ -8,26 +8,39 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
-	import feathers.controls.Tree;
-	import feathers.layout.IVariableVirtualLayout;
-	import feathers.layout.ILayout;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.controls.Scroller;
-	import feathers.data.IHierarchicalCollection;
+	import feathers.controls.Tree;
 	import feathers.controls.renderers.ITreeItemRenderer;
-
-	import starling.events.Event;
-	import feathers.layout.ViewPortBounds;
-	import feathers.layout.LayoutBoundsResult;
-	import starling.display.DisplayObject;
-	import flash.geom.Point;
-	import flash.utils.Dictionary;
-	import flash.errors.IllegalOperationError;
+	import feathers.data.IHierarchicalCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.events.CollectionEventType;
+	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.ILayout;
+	import feathers.layout.IVirtualLayout;
+	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.ViewPortBounds;
 
+	import flash.errors.IllegalOperationError;
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+
+	import starling.events.Event;
+	import starling.display.DisplayObject;
+	import starling.utils.Pool;
+
+	/**
+	 * @private
+	 * Used internally by Tree. Not meant to be used on its own.
+	 *
+	 * @productversion Feathers 3.3.0
+	 */
 	public class TreeDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
+		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
+		private static const LOCATION_HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function TreeDataViewPort()
 		{
@@ -270,7 +283,7 @@ package feathers.controls.supportClasses
 			return itemRendererHeight;
 		}
 
-		private var _owner:Tree;
+		private var _owner:Tree = null;
 
 		public function get owner():Tree
 		{
@@ -284,7 +297,7 @@ package feathers.controls.supportClasses
 
 		private var _updateForDataReset:Boolean = false;
 
-		private var _dataProvider:IHierarchicalCollection;
+		private var _dataProvider:IHierarchicalCollection = null;
 
 		public function get dataProvider():IHierarchicalCollection
 		{
@@ -329,7 +342,7 @@ package feathers.controls.supportClasses
 		private var _ignoreLayoutChanges:Boolean = false;
 		private var _ignoreRendererResizing:Boolean = false;
 
-		private var _layout:ILayout;
+		private var _layout:ILayout = null;
 
 		public function get layout():ILayout
 		{
@@ -558,10 +571,11 @@ package feathers.controls.supportClasses
 
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 
-		private var _unrenderedItems:Vector.<int> = new <int>[];
+		private var _unrenderedItems:Array = [];
 		private var _defaultItemRendererStorage:ItemRendererFactoryStorage = new ItemRendererFactoryStorage();
 		private var _itemStorageMap:Object = {};
 		private var _itemRendererMap:Dictionary = new Dictionary(true);
+		private var _minimumItemCount:int;
 
 		public function calculateNavigationDestination(groupIndex:int, itemIndex:int, keyCode:uint, result:Vector.<int>):void
 		{
@@ -644,6 +658,42 @@ package feathers.controls.supportClasses
 			{
 				this.refreshViewPortBounds();
 			}
+			if(basicsInvalid)
+			{
+				this.refreshInactiveItemRenderers(null, itemRendererInvalid);
+				if(this._itemStorageMap)
+				{
+					for(var factoryID:String in this._itemStorageMap)
+					{
+						this.refreshInactiveItemRenderers(factoryID, itemRendererInvalid);
+					}
+				}
+			}
+			if(dataInvalid || layoutInvalid || itemRendererInvalid)
+			{
+				trace("refresh layout typical item...");
+				this.refreshLayoutTypicalItem();
+			}
+			if(basicsInvalid)
+			{
+				this.refreshItemRenderers();
+			}
+			if(selectionInvalid || basicsInvalid)
+			{
+				//unlike resizing renderers and layout changes, we only want to
+				//stop listening for selection changes when we're forcibly
+				//updating selection. other property changes on item renderers
+				//can validly change selection, and we need to detect that.
+				var oldIgnoreSelectionChanges:Boolean = this._ignoreSelectionChanges;
+				this._ignoreSelectionChanges = true;
+				this.refreshSelection();
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
+			}
+			if(stateInvalid || basicsInvalid)
+			{
+				this.refreshEnabled();
+			}
+			this._ignoreLayoutChanges = oldIgnoreLayoutChanges;
 
 			if(stateInvalid || selectionInvalid || stylesInvalid || basicsInvalid)
 			{
@@ -660,6 +710,9 @@ package feathers.controls.supportClasses
 			this._actualVisibleHeight = this._layoutResult.viewPortHeight;
 			this._actualMinVisibleWidth = this._layoutResult.viewPortWidth;
 			this._actualMinVisibleHeight = this._layoutResult.viewPortHeight;
+
+			//final validation to avoid juggler next frame issues
+			this.validateRenderers();
 		}
 
 		private function displayIndexToLocation(displayIndex:int, result:Vector.<int>):void
@@ -699,6 +752,389 @@ package feathers.controls.supportClasses
 			}
 			this._viewPortBounds.maxWidth = this._maxVisibleWidth;
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
+		}
+
+		private function refreshLayoutTypicalItem():void
+		{
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
+			{
+				//the old layout was virtual, but this one isn't
+				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer !== null)
+				{
+					//it's safe to destroy this renderer
+					this.destroyItemRenderer(this._typicalItemRenderer);
+					this._typicalItemRenderer = null;
+				}
+				return;
+			}
+			var typicalItemLocation:Vector.<int> = null;
+			var newTypicalItemIsInDataProvider:Boolean = false;
+			var typicalItem:Object = this._typicalItem;
+			if(typicalItem !== null)
+			{
+				if(this._dataProvider !== null)
+				{
+					typicalItemLocation = this._dataProvider.getItemLocation(typicalItem);
+					newTypicalItemIsInDataProvider = typicalItemLocation !== null;
+				}
+			}
+			else
+			{
+				newTypicalItemIsInDataProvider = true;
+				if(this._dataProvider && this._dataProvider.getLengthAtLocation() > 0)
+				{
+					typicalItem = this._dataProvider.getItemAt(0);
+					typicalItemLocation = new <int>[];
+				}
+			}
+			trace("typical item: " + typicalItem, newTypicalItemIsInDataProvider, typicalItemLocation);
+
+			if(typicalItem !== null)
+			{
+				var typicalItemRenderer:ITreeItemRenderer = ITreeItemRenderer(this._itemRendererMap[typicalItem]);
+				//at this point, the item may already have an item renderer.
+				//(this doesn't necessarily mean that the current typical
+				//item was the typical item last time this function was
+				//called)
+				if(typicalItemRenderer === null && this._typicalItemRenderer !== null)
+				{
+					//the typical item has changed, and doesn't have an item
+					//renderer yet. the previous typical item had an item
+					//renderer, so we will try to reuse it.
+					
+					//we can reuse the existing typical item renderer if the old
+					//typical item wasn't in the data provider. otherwise, it
+					//may still be needed for the same item.
+					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
+					var oldTypicalItemRemoved:Boolean = this._typicalItemIsInDataProvider &&
+						this._dataProvider !== null && this._dataProvider.getItemLocation(this._typicalItemRenderer.data) === null;
+					if(!canReuse && oldTypicalItemRemoved)
+					{
+						//special case: if the old typical item was in the data
+						//provider, but it has been removed, it's safe to reuse.
+						canReuse = true;
+					}
+					if(canReuse)
+					{
+						//we can't reuse if the factoryID has changed, though!
+						var factoryID:String = null;
+						if(this._factoryIDFunction !== null)
+						{
+							factoryID = this.getFactoryID(typicalItem, typicalItemLocation);
+						}
+						if(this._typicalItemRenderer.factoryID !== factoryID)
+						{
+							canReuse = false;
+						}
+					}
+					if(canReuse)
+					{
+						//we can reuse the item renderer used for the old
+						//typical item!
+						
+						//if the old typical item was in the data provider,
+						//remove it from the renderer map.
+						if(this._typicalItemIsInDataProvider)
+						{
+							delete this._itemRendererMap[this._typicalItemRenderer.data];
+						}
+						typicalItemRenderer = this._typicalItemRenderer;
+						typicalItemRenderer.data = typicalItem;
+						typicalItemRenderer.location = typicalItemLocation;
+						//if the new typical item is in the data provider, add it
+						//to the renderer map.
+						if(newTypicalItemIsInDataProvider)
+						{
+							this._itemRendererMap[typicalItem] = typicalItemRenderer;
+						}
+					}
+				}
+				if(typicalItemRenderer === null)
+				{
+					//if we still don't have a typical item renderer, we need to
+					//create a new one.
+					typicalItemRenderer = this.createItemRenderer(typicalItem, typicalItemLocation, 0, false, !newTypicalItemIsInDataProvider);
+					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+					{
+						//get rid of the old typical item renderer if it isn't
+						//needed anymore.  since it was not in the data
+						//provider, we don't need to mess with the renderer map
+						//dictionary or dispatch any events.
+						this.destroyItemRenderer(this._typicalItemRenderer);
+						this._typicalItemRenderer = null;
+					}
+				}
+			}
+
+			virtualLayout.typicalItem = DisplayObject(typicalItemRenderer);
+			this._typicalItemRenderer = typicalItemRenderer;
+			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
+			if(this._typicalItemRenderer !== null && !this._typicalItemIsInDataProvider)
+			{
+				//we need to know if this item renderer resizes to adjust the
+				//layout because the layout may use this item renderer to resize
+				//the other item renderers
+				this._typicalItemRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+			}
+		}
+
+		private function refreshItemRenderers():void
+		{
+			if(this._typicalItemRenderer !== null)
+			{
+				if(this._typicalItemIsInDataProvider)
+				{
+					var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(this._typicalItemRenderer.factoryID);
+					var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
+					var activeItemRenderers:Vector.<ITreeItemRenderer> = storage.activeItemRenderers;
+					//this renderer is already is use by the typical item, so we
+					//don't want to allow it to be used by other items.
+					var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
+					if(inactiveIndex >= 0)
+					{
+						inactiveItemRenderers[inactiveIndex] = null;
+					}
+					//if refreshLayoutTypicalItem() was called, it will have already
+					//added the typical item renderer to the active renderers. if
+					//not, we need to do it here.
+					var activeRendererCount:int = activeItemRenderers.length;
+					if(activeRendererCount === 0)
+					{
+						activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
+					}
+				}
+			}
+
+			this.findUnrenderedData();
+			this.recoverInactiveItemRenderers(this._defaultItemRendererStorage);
+			if(this._itemStorageMap)
+			{
+				for(var factoryID:String in this._itemStorageMap)
+				{
+					storage = ItemRendererFactoryStorage(this._itemStorageMap[factoryID]);
+					this.recoverInactiveItemRenderers(storage);
+				}
+			}
+			this.renderUnrenderedData();
+			this.freeInactiveItemRenderers(this._defaultItemRendererStorage, this._minimumItemCount);
+			if(this._itemStorageMap)
+			{
+				for(factoryID in this._itemStorageMap)
+				{
+					storage = ItemRendererFactoryStorage(this._itemStorageMap[factoryID]);
+					this.freeInactiveItemRenderers(storage, 1);
+				}
+			}
+			this._updateForDataReset = false;
+		}
+
+		private function findTotalLayoutCount(location:Vector.<int>):int
+		{
+			var itemCount:int = 0;
+			if(this._dataProvider !== null)
+			{
+				itemCount = this._dataProvider.getLengthAtLocation(location);
+			}
+			var result:int = itemCount;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				location[location.length] = i;
+				var item:Object = this._dataProvider.getItemAtLocation(location);
+				if(this._dataProvider.isBranch(item))
+				{
+					result += this.findTotalLayoutCount(location);
+				}
+				location.length--;
+			}
+			return result;
+		}
+
+		private function findUnrenderedDataForLocation(location:Vector.<int>, currentIndex:int):int
+		{
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			var useVirtualLayout:Boolean = virtualLayout !== null && virtualLayout.useVirtualLayout;
+			var itemCount:int = this._dataProvider.getLengthAtLocation(location);
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				location[location.length] = i;
+				var item:Object = this._dataProvider.getItemAtLocation(location);
+
+				if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
+				{
+					if(this._typicalItemRenderer !== null &&
+						this._typicalItemIsInDataProvider &&
+						this._typicalItemRenderer.data === item)
+					{
+						//the index may have changed if items were added, removed,
+						//or reordered in the data provider
+						this._typicalItemRenderer.layoutIndex = currentIndex;
+					}
+					this._layoutItems[currentIndex] = null;
+				}
+				else
+				{
+					this.findRendererForItem(item, location.slice(), currentIndex);
+				}
+				currentIndex++;
+
+				if(this._dataProvider.isBranch(item))
+				{
+					currentIndex = this.findUnrenderedDataForLocation(location, currentIndex);
+				}
+				location.length--;
+			}
+			return currentIndex;
+		}
+
+		private function findUnrenderedData():void
+		{
+			LOCATION_HELPER_VECTOR.length = 0;
+			var totalLayoutCount:int = this.findTotalLayoutCount(LOCATION_HELPER_VECTOR);
+			LOCATION_HELPER_VECTOR.length = 0;
+			this._layoutItems.length = totalLayoutCount;
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			var useVirtualLayout:Boolean = virtualLayout !== null && virtualLayout.useVirtualLayout;
+			if(useVirtualLayout)
+			{
+				var point:Point = Pool.getPoint();
+				virtualLayout.measureViewPort(totalLayoutCount, this._viewPortBounds, point);
+				var viewPortWidth:Number = point.x;
+				var viewPortHeight:Number = point.y;
+				Pool.putPoint(point);
+				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, viewPortWidth, viewPortHeight, totalLayoutCount, HELPER_VECTOR);
+
+				if(this._typicalItemRenderer !== null)
+				{
+					var minimumTypicalItemEdge:Number = this._typicalItemRenderer.height;
+					if(this._typicalItemRenderer.width < minimumTypicalItemEdge)
+					{
+						minimumTypicalItemEdge = this._typicalItemRenderer.width;
+					}
+
+					var maximumViewPortEdge:Number = viewPortWidth;
+					if(viewPortHeight > viewPortWidth)
+					{
+						maximumViewPortEdge = viewPortHeight;
+					}
+					
+					this._minimumItemCount = Math.ceil(maximumViewPortEdge / minimumTypicalItemEdge) + 1;
+				}
+				else
+				{
+					this._minimumItemCount = 1;
+				}
+			}
+			LOCATION_HELPER_VECTOR.length = 0;
+			this.findUnrenderedDataForLocation(LOCATION_HELPER_VECTOR, 0);
+			LOCATION_HELPER_VECTOR.length = 0;
+			//update the typical item renderer's visibility
+			if(this._typicalItemRenderer !== null)
+			{
+				if(useVirtualLayout && this._typicalItemIsInDataProvider)
+				{
+					var index:int = HELPER_VECTOR.indexOf(this._typicalItemRenderer.layoutIndex);
+					if(index >= 0)
+					{
+						this._typicalItemRenderer.visible = true;
+					}
+					else
+					{
+						this._typicalItemRenderer.visible = false;
+
+						//uncomment these lines to see a hidden typical item for
+						//debugging purposes...
+						/*this._typicalItemRenderer.visible = true;
+						this._typicalItemRenderer.x = this._horizontalScrollPosition;
+						this._typicalItemRenderer.y = this._verticalScrollPosition;*/
+					}
+				}
+				else
+				{
+					this._typicalItemRenderer.visible = this._typicalItemIsInDataProvider;
+				}
+			}
+			HELPER_VECTOR.length = 0;
+		}
+
+		private function findRendererForItem(item:Object, location:Vector.<int>, layoutIndex:int):void
+		{
+			var itemRenderer:ITreeItemRenderer = ITreeItemRenderer(this._itemRendererMap[item]);
+			if(this._factoryIDFunction !== null && itemRenderer !== null)
+			{
+				var newFactoryID:String = this.getFactoryID(itemRenderer.data, location);
+				if(newFactoryID !== itemRenderer.factoryID)
+				{
+					itemRenderer = null;
+					delete this._itemRendererMap[item];
+				}
+			}
+			if(itemRenderer !== null)
+			{
+				//the indices may have changed if items were added, removed,
+				//or reordered in the data provider
+				itemRenderer.location = location;
+				itemRenderer.layoutIndex = layoutIndex;
+				if(this._updateForDataReset)
+				{
+					//similar to calling updateItemAt(), replacing the data
+					//provider or resetting its source means that we should
+					//trick the item renderer into thinking it has new data.
+					//many developers seem to expect this behavior, so while
+					//it's not the most optimal for performance, it saves on
+					//support time in the forums. thankfully, it's still
+					//somewhat optimized since the same item renderer will
+					//receive the same data, and the children generally
+					//won't have changed much, if at all.
+					itemRenderer.data = null;
+					itemRenderer.data = item;
+				}
+
+				//the typical item renderer is a special case, and we will
+				//have already put it into the active renderers, so we don't
+				//want to do it again!
+				if(this._typicalItemRenderer !== itemRenderer)
+				{
+					var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(itemRenderer.factoryID);
+					var activeItemRenderers:Vector.<ITreeItemRenderer> = storage.activeItemRenderers;
+					var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
+					activeItemRenderers[activeItemRenderers.length] = itemRenderer;
+					var inactiveIndex:int = inactiveItemRenderers.indexOf(itemRenderer);
+					if(inactiveIndex >= 0)
+					{
+						inactiveItemRenderers.removeAt(inactiveIndex);
+					}
+					else
+					{
+						throw new IllegalOperationError("TreeDataViewPort: item renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
+					}
+				}
+				itemRenderer.visible = true;
+				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
+			}
+			else
+			{
+				var pushIndex:int = this._unrenderedItems.length;
+				this._unrenderedItems[pushIndex] = location;
+				pushIndex++;
+				this._unrenderedItems[pushIndex] = layoutIndex;
+			}
+		}
+
+		private function renderUnrenderedData():void
+		{
+			LOCATION_HELPER_VECTOR.length = 2;
+			var rendererCount:int = this._unrenderedItems.length;
+			for(var i:int = 0; i < rendererCount; i += 2)
+			{
+				var location:Vector.<int> = this._unrenderedItems.shift();
+				var layoutIndex:int = this._unrenderedItems.shift();
+				var item:Object = this._dataProvider.getItemAtLocation(location);
+				var itemRenderer:ITreeItemRenderer = this.createItemRenderer(
+					item, location, layoutIndex, true, false);
+				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
+			}
+			LOCATION_HELPER_VECTOR.length = 0;
 		}
 
 		private function refreshInactiveItemRenderers(factoryID:String, itemRendererTypeIsInvalid:Boolean):void
@@ -781,6 +1217,7 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				itemRenderer.data = null;
+				itemRenderer.location = null;
 				itemRenderer.visible = false;
 				activeItemRenderers[activeItemRenderersCount] = itemRenderer;
 				activeItemRenderersCount++;
@@ -797,12 +1234,12 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function createItemRenderer(item:Object, layoutIndex:int, useCache:Boolean, isTemporary:Boolean):ITreeItemRenderer
+		private function createItemRenderer(item:Object, location:Vector.<int>, layoutIndex:int, useCache:Boolean, isTemporary:Boolean):ITreeItemRenderer
 		{
 			var factoryID:String = null;
 			if(this._factoryIDFunction !== null)
 			{
-				factoryID = this.getFactoryID(item);
+				factoryID = this.getFactoryID(item, location);
 			}
 			var itemRendererFactory:Function = this.factoryIDToFactory(factoryID);
 			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(factoryID);
@@ -840,6 +1277,7 @@ package feathers.controls.supportClasses
 			itemRenderer.data = item;
 			itemRenderer.owner = this._owner;
 			itemRenderer.factoryID = factoryID;
+			itemRenderer.location = location;
 			itemRenderer.layoutIndex = layoutIndex;
 
 			if(!isTemporary)
@@ -862,15 +1300,21 @@ package feathers.controls.supportClasses
 			itemRenderer.removeEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
 			itemRenderer.owner = null;
 			itemRenderer.data = null;
+			itemRenderer.location = null;
+			itemRenderer.layoutIndex = -1;
 			itemRenderer.factoryID = null;
 			this.removeChild(DisplayObject(itemRenderer), true);
 		}
 		
-		private function getFactoryID(item:Object):String
+		private function getFactoryID(item:Object, location:Vector.<int>):String
 		{
 			if(this._factoryIDFunction === null)
 			{
 				return null;
+			}
+			if(this._factoryIDFunction.length === 2)
+			{
+				return this._factoryIDFunction(item, location);
 			}
 			return this._factoryIDFunction(item);
 		}
@@ -909,6 +1353,43 @@ package feathers.controls.supportClasses
 		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
 			Scroller(this.parent).invalidate(flag);
+		}
+
+		private function refreshSelection():void
+		{
+			for each(var item:DisplayObject in this._layoutItems)
+			{
+				var itemRenderer:ITreeItemRenderer = item as ITreeItemRenderer;
+				if(itemRenderer !== null)
+				{
+					itemRenderer.isSelected = itemRenderer.data === this._selectedItem;
+				}
+			}
+		}
+
+		private function refreshEnabled():void
+		{
+			for each(var item:DisplayObject in this._layoutItems)
+			{
+				var control:IFeathersControl = item as IFeathersControl;
+				if(control !== null)
+				{
+					control.isEnabled = this._isEnabled;
+				}
+			}
+		}
+
+		private function validateRenderers():void
+		{
+			var itemCount:int = this._layoutItems.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:IValidating = this._layoutItems[i] as IValidating;
+				if(item !== null)
+				{
+					item.validate();
+				}
+			}
 		}
 
 		private function layout_changeHandler(event:Event):void

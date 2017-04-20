@@ -66,6 +66,21 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set owner(value:Tree):void;
+		
+		/**
+		 * The location (a vector of numeric indices, starting from zero) of
+		 * the item within the tree's data provider. Like the <code>data</code>
+		 * property, this value may change if this item renderer is reused by
+		 * the tree for a different item.
+		 *
+		 * <p>This property is set by the tree, and it should not be set manually.</p>
+		 */
+		function get location():Vector.<int>;
+		
+		/**
+		 * @private
+		 */
+		function set location(value:Vector.<int>):void;
 
 		/**
 		 * The index of the item within the layout.

@@ -106,6 +106,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _location:Vector.<int> = null;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get location():Vector.<int>
+		{
+			return this._location;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set location(value:Vector.<int>):void
+		{
+			if(this._location === value)
+			{
+				return;
+			}
+			this._location = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _layoutIndex:int = -1;
 
 		/**

@@ -63,12 +63,14 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.Tree;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextBlockTextEditor;
@@ -1005,6 +1007,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
+
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 
 			//media controls
 
@@ -2466,6 +2472,17 @@ package feathers.themes
 			skin.height = this.controlSize;
 			track.defaultSkin = skin;
 			track.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+			tree.backgroundSkin = backgroundSkin;
 		}
 
 	//-------------------------
