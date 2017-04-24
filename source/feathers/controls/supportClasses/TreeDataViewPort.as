@@ -582,7 +582,6 @@ package feathers.controls.supportClasses
 			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
 			var newDisplayIndex:int = this._layout.calculateNavigationDestination(this._layoutItems, displayIndex, keyCode, this._layoutResult);
 			this.displayIndexToLocation(newDisplayIndex, result);
-			trace(displayIndex, newDisplayIndex, result);
 		}
 
 		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
@@ -671,7 +670,6 @@ package feathers.controls.supportClasses
 			}
 			if(dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
-				trace("refresh layout typical item...");
 				this.refreshLayoutTypicalItem();
 			}
 			if(basicsInvalid)
@@ -788,7 +786,6 @@ package feathers.controls.supportClasses
 					typicalItemLocation = new <int>[];
 				}
 			}
-			trace("typical item: " + typicalItem, newTypicalItemIsInDataProvider, typicalItemLocation);
 
 			if(typicalItem !== null)
 			{
