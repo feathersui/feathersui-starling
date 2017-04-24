@@ -954,7 +954,11 @@ package feathers.controls.supportClasses
 		{
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			var useVirtualLayout:Boolean = virtualLayout !== null && virtualLayout.useVirtualLayout;
-			var itemCount:int = this._dataProvider.getLengthAtLocation(location);
+			var itemCount:int = 0;
+			if(this._dataProvider !== null)
+			{
+				this._dataProvider.getLengthAtLocation(location);
+			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				location[location.length] = i;
