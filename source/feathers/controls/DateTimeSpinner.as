@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.data.IListCollection;
 	import feathers.data.VectorCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
@@ -828,7 +829,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _itemRendererFactory:Function;
+		protected var _itemRendererFactory:Function = null;
 
 		/**
 		 * A function used to instantiate the date time spinner's item renderer
@@ -1705,13 +1706,19 @@ package feathers.controls
 			this.yearsList.styleNameList.add(listStyleName);
 			//we'll set the data provider later, when we know what range
 			//of years we need
-			this.yearsList.itemRendererFactory = this.yearsListItemRendererFactory;
+
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.yearsList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.yearsList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.yearsList.addEventListener(FeathersEventType.RENDERER_ADD, yearsList_rendererAddHandler);
 			this.yearsList.addEventListener(Event.CHANGE, yearsList_changeHandler);
 			this.listGroup.addChild(this.yearsList);
 		}
@@ -1738,13 +1745,18 @@ package feathers.controls
 			this.monthsList.styleNameList.add(listStyleName);
 			this.monthsList.dataProvider = new IntegerRangeCollection(MIN_MONTH_VALUE, MAX_MONTH_VALUE, 1);
 			this.monthsList.typicalItem = this._longestMonthNameIndex;
-			this.monthsList.itemRendererFactory = this.monthsListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.monthsList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.monthsList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.monthsList.addEventListener(FeathersEventType.RENDERER_ADD, monthsList_rendererAddHandler);
 			this.monthsList.addEventListener(Event.CHANGE, monthsList_changeHandler);
 			this.listGroup.addChildAt(this.monthsList, 0);
 		}
@@ -1770,13 +1782,18 @@ package feathers.controls
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.datesList.styleNameList.add(listStyleName);
 			this.datesList.dataProvider = new IntegerRangeCollection(MIN_DATE_VALUE, MAX_DATE_VALUE, 1);
-			this.datesList.itemRendererFactory = this.datesListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.datesList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.datesList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.datesList.addEventListener(FeathersEventType.RENDERER_ADD, datesList_rendererAddHandler);
 			this.datesList.addEventListener(Event.CHANGE, datesList_changeHandler);
 			this.listGroup.addChildAt(this.datesList, 0);
 		}
@@ -1801,13 +1818,18 @@ package feathers.controls
 			this.hoursList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.hoursList.styleNameList.add(listStyleName);
-			this.hoursList.itemRendererFactory = this.hoursListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.hoursList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.hoursList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.hoursList.addEventListener(FeathersEventType.RENDERER_ADD, hoursList_rendererAddHandler);
 			this.hoursList.addEventListener(Event.CHANGE, hoursList_changeHandler);
 			this.listGroup.addChild(this.hoursList);
 		}
@@ -1833,13 +1855,18 @@ package feathers.controls
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.minutesList.styleNameList.add(listStyleName);
 			this.minutesList.dataProvider = new IntegerRangeCollection(MIN_MINUTES_VALUE, MAX_MINUTES_VALUE, this._minuteStep);
-			this.minutesList.itemRendererFactory = this.minutesListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.minutesList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.minutesList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.minutesList.addEventListener(FeathersEventType.RENDERER_ADD, minutesList_rendererAddHandler);
 			this.minutesList.addEventListener(Event.CHANGE, minutesList_changeHandler);
 			this.listGroup.addChild(this.minutesList);
 		}
@@ -1864,8 +1891,17 @@ package feathers.controls
 			this.meridiemList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.meridiemList.styleNameList.add(listStyleName);
-			this.meridiemList.itemRendererFactory = this.meridiemListItemRendererFactory;
-			this.meridiemList.customItemRendererStyleName = this._customItemRendererStyleName;
+			//for backwards compatibility, allow the listFactory to take
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.meridiemList.itemRendererFactory = this._itemRendererFactory;
+			}
+			if(this._customItemRendererStyleName !== null)
+			{
+				this.meridiemList.customItemRendererStyleName = this._customItemRendererStyleName;
+			}
 			this.meridiemList.addEventListener(Event.CHANGE, meridiemList_changeHandler);
 			this.listGroup.addChild(this.meridiemList);
 		}
@@ -1890,13 +1926,18 @@ package feathers.controls
 			this.dateAndTimeDatesList = SpinnerList(listFactory());
 			var listStyleName:String = (this._customListStyleName !== null) ? this._customListStyleName : this.listStyleName;
 			this.dateAndTimeDatesList.styleNameList.add(listStyleName);
-			this.dateAndTimeDatesList.itemRendererFactory = this.dateAndTimeDatesListItemRendererFactory;
 			//for backwards compatibility, allow the listFactory to take
-			//precedence if it also sets customItemRendererStyleName
+			//precedence if it also sets itemRendererFactory or
+			//customItemRendererStyleName
+			if(this._itemRendererFactory !== null)
+			{
+				this.dateAndTimeDatesList.itemRendererFactory = this._itemRendererFactory;
+			}
 			if(this._customItemRendererStyleName !== null)
 			{
 				this.dateAndTimeDatesList.customItemRendererStyleName = this._customItemRendererStyleName;
 			}
+			this.dateAndTimeDatesList.addEventListener(FeathersEventType.RENDERER_ADD, dateAndTimeDatesList_rendererAddHandler);
 			this.dateAndTimeDatesList.addEventListener(Event.CHANGE, dateAndTimeDatesList_changeHandler);
 			this.dateAndTimeDatesList.typicalItem = {};
 			this.listGroup.addChildAt(this.dateAndTimeDatesList, 0);
@@ -2422,133 +2463,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function meridiemListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function minutesListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.labelFunction = formatMinutes;
-			itemRenderer.enabledFunction = isMinuteEnabled;
-			itemRenderer.itemHasEnabled = true;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function hoursListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.labelFunction = formatHours;
-			itemRenderer.enabledFunction = isHourEnabled;
-			itemRenderer.itemHasEnabled = true;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function dateAndTimeDatesListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.labelFunction = formatDateAndTimeDate;
-			itemRenderer.accessoryLabelFunction = formatDateAndTimeWeekday;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function monthsListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.labelFunction = formatMonthName;
-			itemRenderer.enabledFunction = isMonthEnabled;
-			itemRenderer.itemHasEnabled = true;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function datesListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.enabledFunction = isDateEnabled;
-			itemRenderer.itemHasEnabled = true;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function yearsListItemRendererFactory():DefaultListItemRenderer
-		{
-			if(this._itemRendererFactory !== null)
-			{
-				var itemRenderer:DefaultListItemRenderer = DefaultListItemRenderer(this._itemRendererFactory());
-			}
-			else
-			{
-				itemRenderer = new DefaultListItemRenderer();
-			}
-			itemRenderer.enabledFunction = isYearEnabled;
-			itemRenderer.itemHasEnabled = true;
-			return itemRenderer;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function isMonthEnabled(month:int):Boolean
 		{
 			return month >= this._minMonth && month <= this._maxMonth;
@@ -2729,6 +2643,63 @@ package feathers.controls
 				hours += 12;
 			}
 			this._value.setHours(hours);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function minutesList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.labelFunction = formatMinutes;
+			itemRenderer.enabledFunction = isMinuteEnabled;
+			itemRenderer.itemHasEnabled = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hoursList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.labelFunction = formatHours;
+			itemRenderer.enabledFunction = isHourEnabled;
+			itemRenderer.itemHasEnabled = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dateAndTimeDatesList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.labelFunction = formatDateAndTimeDate;
+			itemRenderer.accessoryLabelFunction = formatDateAndTimeWeekday;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function monthsList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.labelFunction = formatMonthName;
+			itemRenderer.enabledFunction = isMonthEnabled;
+			itemRenderer.itemHasEnabled = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function datesList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.enabledFunction = isDateEnabled;
+			itemRenderer.itemHasEnabled = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function yearsList_rendererAddHandler(event:Event, itemRenderer:DefaultListItemRenderer):void
+		{
+			itemRenderer.enabledFunction = isYearEnabled;
+			itemRenderer.itemHasEnabled = true;
 		}
 
 		/**
