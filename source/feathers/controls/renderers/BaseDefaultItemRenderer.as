@@ -3886,6 +3886,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _topOffset:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _rightOffset:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _bottomOffset:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _leftOffset:Number = 0;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._iconIsFromItem)
@@ -4448,6 +4468,10 @@ package feathers.controls.renderers
 			{
 				this.refreshAccessory();
 			}
+			if(stylesInvalid)
+			{
+				this.refreshOffsets();
+			}
 			super.draw();
 		}
 
@@ -4505,7 +4529,7 @@ package feathers.controls.renderers
 					newWidth = this.addIconWidth(newWidth);
 					newWidth = this.addAccessoryWidth(newWidth);
 				}
-				newWidth += this._paddingLeft + this._paddingRight;
+				newWidth += this._leftOffset + this._rightOffset;
 				if(this.currentSkin !== null &&
 					this.currentSkin.width > newWidth)
 				{
@@ -4534,7 +4558,7 @@ package feathers.controls.renderers
 					newHeight = this.addIconHeight(newHeight);
 					newHeight = this.addAccessoryHeight(newHeight);
 				}
-				newHeight += this._paddingTop + this._paddingBottom;
+				newHeight += this._topOffset + this._bottomOffset;
 				if(this.currentSkin !== null &&
 					this.currentSkin.height > newHeight)
 				{
@@ -4563,7 +4587,7 @@ package feathers.controls.renderers
 					newMinWidth = this.addIconWidth(newMinWidth);
 					newMinWidth = this.addAccessoryWidth(newMinWidth);
 				}
-				newMinWidth += this._paddingLeft + this._paddingRight;
+				newMinWidth += this._leftOffset + this._rightOffset;
 				if(this.currentSkin !== null)
 				{
 					if(measureSkin !== null)
@@ -4601,7 +4625,7 @@ package feathers.controls.renderers
 					newMinHeight = this.addIconHeight(newMinHeight);
 					newMinHeight = this.addAccessoryHeight(newMinHeight);
 				}
-				newMinHeight += this._paddingTop + this._paddingBottom;
+				newMinHeight += this._topOffset + this._bottomOffset;
 				if(this.currentSkin !== null)
 				{
 					if(measureSkin !== null)
@@ -5365,8 +5389,8 @@ package feathers.controls.renderers
 			{
 				if(!accessoryIsInLayout)
 				{
-					this.currentAccessory.x = this._paddingLeft;
-					this.currentAccessory.y = this._paddingTop;
+					this.currentAccessory.x = this._leftOffset;
+					this.currentAccessory.y = this._topOffset;
 				}
 				this.currentAccessory.x += this._accessoryOffsetX;
 				this.currentAccessory.y += this._accessoryOffsetY;
@@ -5375,8 +5399,8 @@ package feathers.controls.renderers
 			{
 				if(!iconIsInLayout)
 				{
-					this.currentIcon.x = this._paddingLeft;
-					this.currentIcon.y = this._paddingTop;
+					this.currentIcon.x = this._leftOffset;
+					this.currentIcon.y = this._topOffset;
 				}
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
@@ -5388,6 +5412,17 @@ package feathers.controls.renderers
 			}
 			this._ignoreIconResizes = oldIgnoreIconResizes;
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshOffsets():void
+		{
+			this._topOffset = this._paddingTop;
+			this._rightOffset = this._paddingRight;
+			this._bottomOffset = this._paddingBottom;
+			this._leftOffset = this._paddingLeft;
 		}
 
 		/**
@@ -5406,7 +5441,7 @@ package feathers.controls.renderers
 					calculatedWidth = this._explicitMaxWidth;
 				}
 			}
-			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+			calculatedWidth -= (this._leftOffset + this._rightOffset);
 			var calculatedHeight:Number = this.actualHeight;
 			if(forMeasurement)
 			{
@@ -5416,7 +5451,7 @@ package feathers.controls.renderers
 					calculatedHeight = this._explicitMaxHeight;
 				}
 			}
-			calculatedHeight -= (this._paddingTop + this._paddingBottom);
+			calculatedHeight -= (this._topOffset + this._bottomOffset);
 
 			var adjustedGap:Number = this._gap;
 			if(adjustedGap == Number.POSITIVE_INFINITY)
@@ -5593,20 +5628,79 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function positionSingleChild(displayObject:DisplayObject):void
+		{
+			if(this._horizontalAlign === HorizontalAlign.LEFT)
+			{
+				displayObject.x = this._leftOffset;
+			}
+			else if(this._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				displayObject.x = this.actualWidth - this._rightOffset - displayObject.width;
+			}
+			else //center
+			{
+				displayObject.x = this._leftOffset + Math.round((this.actualWidth - this._leftOffset - this._rightOffset - displayObject.width) / 2);
+			}
+			if(this._verticalAlign === VerticalAlign.TOP)
+			{
+				displayObject.y = this._topOffset;
+			}
+			else if(this._verticalAlign === VerticalAlign.BOTTOM)
+			{
+				displayObject.y = this.actualHeight - this._bottomOffset - displayObject.height;
+			}
+			else //middle
+			{
+				displayObject.y = this._topOffset + Math.round((this.actualHeight - this._topOffset - this._bottomOffset - displayObject.height) / 2);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number, otherPosition:String, otherGap:Number):void
 		{
-			var relativeToX:Number = relativeTo2 ? Math.min(relativeTo.x, relativeTo2.x) : relativeTo.x;
-			var relativeToY:Number = relativeTo2 ? Math.min(relativeTo.y, relativeTo2.y) : relativeTo.y;
-			var relativeToWidth:Number = relativeTo2 ? (Math.max(relativeTo.x + relativeTo.width, relativeTo2.x + relativeTo2.width) - relativeToX) : relativeTo.width;
-			var relativeToHeight:Number = relativeTo2 ? (Math.max(relativeTo.y + relativeTo.height, relativeTo2.y + relativeTo2.height) - relativeToY) : relativeTo.height;
+			var relativeToX:Number = relativeTo.x;
+			if(relativeTo2 !== null && relativeTo2.x < relativeToX)
+			{
+				relativeToX = relativeTo2.x;
+			}
+			var relativeToY:Number = relativeTo.y;
+			if(relativeTo2 !== null && relativeTo2.y < relativeToY)
+			{
+				relativeToY = relativeTo2.y;
+			}
+			var relativeToWidth:Number = relativeTo.width;
+			if(relativeTo2 !== null)
+			{
+				relativeToWidth = relativeTo.x + relativeTo.width;
+				var relativeToWidth2:Number = relativeTo2.x + relativeTo2.width;
+				if(relativeToWidth2 > relativeToWidth)
+				{
+					relativeToWidth = relativeToWidth2;
+				}
+				relativeToWidth -= relativeToX;
+			}
+			var relativeToHeight:Number = relativeTo.height;
+			if(relativeTo2 !== null)
+			{
+				relativeToHeight = relativeTo.y + relativeTo.height;
+				var relativeToHeight2:Number = relativeTo2.y + relativeTo2.height;
+				if(relativeToHeight2 > relativeToHeight)
+				{
+					relativeToHeight = relativeToHeight2;
+				}
+				relativeToHeight -= relativeToY;
+			}
 			var newRelativeToX:Number = relativeToX;
 			var newRelativeToY:Number = relativeToY;
 			if(position == RelativePosition.TOP)
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
-					object.y = this._paddingTop;
-					newRelativeToY = this.actualHeight - this._paddingBottom - relativeToHeight;
+					object.y = this._topOffset;
+					newRelativeToY = this.actualHeight - this._bottomOffset - relativeToHeight;
 				}
 				else
 				{
@@ -5618,9 +5712,13 @@ package feathers.controls.renderers
 					{
 						newRelativeToY += Math.round((object.height + gap) / 2);
 					}
-					if(relativeTo2)
+					if(relativeTo2 != null)
 					{
-						newRelativeToY = Math.max(newRelativeToY, this._paddingTop + object.height + gap);
+						var newRelativeToY2:Number = this._topOffset + object.height + gap;
+						if(newRelativeToY2 > newRelativeToY)
+						{
+							newRelativeToY = newRelativeToY2;
+						}
 					}
 					object.y = newRelativeToY - object.height - gap;
 				}
@@ -5629,8 +5727,8 @@ package feathers.controls.renderers
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
-					newRelativeToX = this._paddingLeft;
-					object.x = this.actualWidth - this._paddingRight - object.width;
+					newRelativeToX = this._leftOffset;
+					object.x = this.actualWidth - this._rightOffset - object.width;
 				}
 				else
 				{
@@ -5642,9 +5740,13 @@ package feathers.controls.renderers
 					{
 						newRelativeToX -= Math.round((object.width + gap) / 2);
 					}
-					if(relativeTo2)
+					if(relativeTo2 !== null)
 					{
-						newRelativeToX = Math.min(newRelativeToX, this.actualWidth - this._paddingRight - object.width - relativeToWidth - gap);
+						var newRelativeToX2:Number = this.actualWidth - this._rightOffset - object.width - relativeToWidth - gap;
+						if(newRelativeToX2 < newRelativeToX)
+						{
+							newRelativeToX = newRelativeToX2;
+						}
 					}
 					object.x = newRelativeToX + relativeToWidth + gap;
 				}
@@ -5653,8 +5755,8 @@ package feathers.controls.renderers
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
-					newRelativeToY = this._paddingTop;
-					object.y = this.actualHeight - this._paddingBottom - object.height;
+					newRelativeToY = this._topOffset;
+					object.y = this.actualHeight - this._bottomOffset - object.height;
 				}
 				else
 				{
@@ -5666,9 +5768,13 @@ package feathers.controls.renderers
 					{
 						newRelativeToY -= Math.round((object.height + gap) / 2);
 					}
-					if(relativeTo2)
+					if(relativeTo2 !== null)
 					{
-						newRelativeToY = Math.min(newRelativeToY, this.actualHeight - this._paddingBottom - object.height - relativeToHeight - gap);
+						newRelativeToY2 = this.actualHeight - this._bottomOffset - object.height - relativeToHeight - gap;
+						if(newRelativeToY2 < newRelativeToY)
+						{
+							newRelativeToY = newRelativeToY2;
+						}
 					}
 					object.y = newRelativeToY + relativeToHeight + gap;
 				}
@@ -5677,8 +5783,8 @@ package feathers.controls.renderers
 			{
 				if(gap == Number.POSITIVE_INFINITY)
 				{
-					object.x = this._paddingLeft;
-					newRelativeToX = this.actualWidth - this._paddingRight - relativeToWidth;
+					object.x = this._leftOffset;
+					newRelativeToX = this.actualWidth - this._rightOffset - relativeToWidth;
 				}
 				else
 				{
@@ -5690,9 +5796,13 @@ package feathers.controls.renderers
 					{
 						newRelativeToX += Math.round((gap + object.width) / 2);
 					}
-					if(relativeTo2)
+					if(relativeTo2 !== null)
 					{
-						newRelativeToX = Math.max(newRelativeToX, this._paddingLeft + object.width + gap);
+						newRelativeToX2 = this._leftOffset + object.width + gap;
+						if(newRelativeToX2 > newRelativeToX)
+						{
+							newRelativeToX = newRelativeToX2;
+						}
 					}
 					object.x = newRelativeToX - gap - object.width;
 				}
@@ -5763,30 +5873,30 @@ package feathers.controls.renderers
 			{
 				if(this._verticalAlign == VerticalAlign.TOP)
 				{
-					object.y = this._paddingTop;
+					object.y = this._topOffset;
 				}
 				else if(this._verticalAlign == VerticalAlign.BOTTOM)
 				{
-					object.y = this.actualHeight - this._paddingBottom - object.height;
+					object.y = this.actualHeight - this._bottomOffset - object.height;
 				}
 				else //middle
 				{
-					object.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - object.height) / 2);
+					object.y = this._topOffset + Math.round((this.actualHeight - this._topOffset - this._bottomOffset - object.height) / 2);
 				}
 			}
 			else if(position == RelativePosition.TOP || position == RelativePosition.BOTTOM)
 			{
 				if(this._horizontalAlign == HorizontalAlign.LEFT)
 				{
-					object.x = this._paddingLeft;
+					object.x = this._leftOffset;
 				}
 				else if(this._horizontalAlign == HorizontalAlign.RIGHT)
 				{
-					object.x = this.actualWidth - this._paddingRight - object.width;
+					object.x = this.actualWidth - this._rightOffset - object.width;
 				}
 				else //center
 				{
-					object.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - object.width) / 2);
+					object.x = this._leftOffset + Math.round((this.actualWidth - this._leftOffset - this._rightOffset - object.width) / 2);
 				}
 			}
 		}
