@@ -13,6 +13,18 @@ package feathers.controls.renderers
 	import feathers.controls.Tree;
 
 	/**
+	 * The size, in pixels, of the indentation when an item is a child of a branch.
+	 *
+	 * <p>In the following example, the indentation is set to 15 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * tree.indentation = 15;</listing>
+	 *
+	 * @default 10
+	 */
+	[Style(name="indentation",type="Number")]
+
+	/**
 	 * The default item renderer for Tree control. Supports up to three optional
 	 * sub-views, including a label to display text, an icon to display an
 	 * image, and an "accessory" to display a UI control or another display
@@ -153,10 +165,45 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _indentation:Number = 10;
+
+		/**
+		 * @private
+		 */
+		public function get indentation():Number
+		{
+			return this._indentation;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set indentation(value:Number):void
+		{
+			this._indentation = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.owner = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshOffsets():void
+		{
+			super.refreshOffsets();
+			if(this._location !== null)
+			{
+				//if the data provider is empty, but the tree has a typicalItem,
+				//the location will be null
+				this._leftOffset += this._indentation * (this._location.length - 1);
+			}
 		}
 	}
 }
