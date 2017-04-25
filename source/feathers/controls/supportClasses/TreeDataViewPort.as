@@ -780,20 +780,27 @@ package feathers.controls.supportClasses
 			else
 			{
 				newTypicalItemIsInDataProvider = true;
-				if(this._dataProvider && this._dataProvider.getLengthAtLocation() > 0)
+				if(this._dataProvider !== null && this._dataProvider.getLengthAtLocation() > 0)
 				{
 					typicalItem = this._dataProvider.getItemAt(0);
-					typicalItemLocation = new <int>[];
+					typicalItemLocation = new <int>[0];
 				}
 			}
 
 			if(typicalItem !== null)
 			{
 				var typicalItemRenderer:ITreeItemRenderer = ITreeItemRenderer(this._itemRendererMap[typicalItem]);
-				//at this point, the item may already have an item renderer.
-				//(this doesn't necessarily mean that the current typical
-				//item was the typical item last time this function was
-				//called)
+				if(typicalItemRenderer !== null)
+				{
+					//at this point, the item already has an item renderer.
+					//(this doesn't necessarily mean that the current typical
+					//item was the typical item last time this function was
+					//called)
+					
+					//the location may have changed if items were added,
+					//removed or reordered in the data provider
+					typicalItemRenderer.location = typicalItemLocation;
+				}
 				if(typicalItemRenderer === null && this._typicalItemRenderer !== null)
 				{
 					//the typical item has changed, and doesn't have an item
