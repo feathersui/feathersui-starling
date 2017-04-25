@@ -954,7 +954,7 @@ package feathers.controls.supportClasses
 			var itemCount:int = 0;
 			if(this._dataProvider !== null)
 			{
-				this._dataProvider.getLengthAtLocation(location);
+				itemCount = this._dataProvider.getLengthAtLocation(location);
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
