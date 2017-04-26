@@ -231,7 +231,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:IHierarchicalCollection;
+		protected var _dataProvider:IHierarchicalCollection = null;
 
 		/**
 		 * The collection of data displayed by the tree. Changing this property
@@ -266,7 +266,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._dataProvider)
+			if(this._dataProvider !== null)
 			{
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
@@ -275,7 +275,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
-			if(this._dataProvider)
+			if(this._dataProvider !== null)
 			{
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
@@ -380,10 +380,13 @@ package feathers.controls
 			{
 				value = null;
 			}
-			var result:Vector.<int> = this._dataProvider.getItemLocation(value, this._helperLocation);
-			if(result.length === 0)
+			if(value !== null)
 			{
-				value = null;
+				var result:Vector.<int> = this._dataProvider.getItemLocation(value, this._helperLocation);
+				if(result === null || result.length === 0)
+				{
+					value = null;
+				}
 			}
 			if(this._selectedItem === value)
 			{
@@ -855,7 +858,7 @@ package feathers.controls
 				return;
 			}
 			var selectedItemLocation:Vector.<int> = this._dataProvider.getItemLocation(this._selectedItem, this._helperLocation);
-			if(selectedItemLocation === null)
+			if(selectedItemLocation === null || selectedItemLocation.length === 0)
 			{
 				this.selectedItem = null;
 			}
