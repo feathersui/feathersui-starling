@@ -355,7 +355,15 @@ package feathers.data
 		 */
 		public function addItemAtLocation(item:Object, location:Vector.<int>):void
 		{
-			return this._dataDescriptor.addItemAtLocation(this._data, item, location);
+			this._dataDescriptor.addItemAtLocation(this._data, item, location);
+			this.dispatchEventWith(Event.CHANGE);
+			var result:Array = [];
+			var locationCount:int = location.length;
+			for(var i:int = 0; i < locationCount; i++)
+			{
+				result[i] = location[i];
+			}
+			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, result);
 		}
 
 		/**
@@ -379,7 +387,16 @@ package feathers.data
 		 */
 		public function removeItemAtLocation(location:Vector.<int>):Object
 		{
-			return this._dataDescriptor.removeItemAtLocation(this._data, location);
+			var item:Object = this._dataDescriptor.removeItemAtLocation(this._data, location);
+			var result:Array = [];
+			var locationCount:int = location.length;
+			for(var i:int = 0; i < locationCount; i++)
+			{
+				result[i] = location[i];
+			}
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, result);
+			return item;
 		}
 
 		/**
@@ -437,7 +454,15 @@ package feathers.data
 		 */
 		public function setItemAtLocation(item:Object, location:Vector.<int>):void
 		{
-			this._data.setItemAtLocation(item, location);
+			this._dataDescriptor.setItemAtLocation(data, item, location);
+			this.dispatchEventWith(Event.CHANGE);
+			var result:Array = [];
+			var locationCount:int = location.length;
+			for(var i:int = 0; i < locationCount; i++)
+			{
+				result[i] = location[i];
+			}
+			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, result);
 		}
 
 		/**

@@ -40,6 +40,7 @@ package
 	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
 	import feathers.tests.HeaderTests;
+	import feathers.tests.HierarchicalCollectionTests;
 	import feathers.tests.HorizontalLayoutTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -294,6 +295,7 @@ package
 				ArrayCollectionTests,
 				VectorCollectionTests,
 				XMLListCollectionTests,
+				HierarchicalCollectionTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,

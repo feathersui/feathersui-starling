@@ -253,7 +253,7 @@ package feathers.data
 
 		/**
 		 * Determines which location the item appears at within the collection. If
-		 * the item isn't in the collection, returns <code>null</code>.
+		 * the item isn't in the collection, returns an empty vector.
 		 */
 		function getItemLocation(item:Object, result:Vector.<int> = null):Vector.<int>;
 
