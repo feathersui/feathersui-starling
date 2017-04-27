@@ -68,52 +68,57 @@ package feathers.controls.text
 		 */
 		private var _ignoreScrolling:Boolean = false;
 
-		/**
-		 * @private
-		 */
-		private var _minVisibleWidth:Number = 0;
+		private var _actualMinVisibleWidth:Number = 0;
 
-		/**
-		 * @private
-		 */
+		private var _explicitMinVisibleWidth:Number;
+
 		public function get minVisibleWidth():Number
 		{
-			return this._minVisibleWidth;
+			if(this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth) //isNaN
+			{
+				return this._actualMinVisibleWidth;
+			}
+			return this._explicitMinVisibleWidth;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set minVisibleWidth(value:Number):void
 		{
-			if(this._minVisibleWidth == value)
+			if(this._explicitMinVisibleWidth == value)
 			{
 				return;
 			}
-			if(value !== value) //isNaN
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN &&
+				this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth) //isNaN
 			{
-				throw new ArgumentError("minVisibleWidth cannot be NaN");
+				return;
 			}
-			this._minVisibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			var oldValue:Number = this._explicitMinVisibleWidth;
+			this._explicitMinVisibleWidth = value;
+			if(valueIsNaN)
+			{
+				this._actualMinVisibleWidth = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this._actualMinVisibleWidth = value;
+				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
+					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+				{
+					//only invalidate if this change might affect the visibleWidth
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+			}
 		}
 
-		/**
-		 * @private
-		 */
 		private var _maxVisibleWidth:Number = Number.POSITIVE_INFINITY;
 
-		/**
-		 * @private
-		 */
 		public function get maxVisibleWidth():Number
 		{
 			return this._maxVisibleWidth;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set maxVisibleWidth(value:Number):void
 		{
 			if(this._maxVisibleWidth == value)
@@ -124,83 +129,95 @@ package feathers.controls.text
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
+			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
+				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+			{
+				//only invalidate if this change might affect the visibleWidth
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
-		/**
-		 * @private
-		 */
-		private var _visibleWidth:Number = NaN;
+		private var _actualVisibleWidth:Number = 0;
 
-		/**
-		 * @private
-		 */
+		private var _explicitVisibleWidth:Number;
+
 		public function get visibleWidth():Number
 		{
-			return this._visibleWidth;
+			if(this._explicitVisibleWidth !== this._explicitVisibleWidth) //isNaN
+			{
+				return this._actualVisibleWidth;
+			}
+			return this._explicitVisibleWidth;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value ||
-				(value !== value && this._visibleWidth !== this._visibleWidth)) //isNaN
+			if(this._explicitVisibleWidth == value ||
+				(value !== value && this._explicitVisibleWidth !== this._explicitVisibleWidth)) //isNaN
 			{
 				return;
 			}
-			this._visibleWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this._explicitVisibleWidth = value;
+			if(this._actualVisibleWidth !== value)
+			{
+				this._actualVisibleWidth = value;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
-		/**
-		 * @private
-		 */
-		private var _minVisibleHeight:Number = 0;
+		private var _actualMinVisibleHeight:Number = 0;
 
-		/**
-		 * @private
-		 */
+		private var _explicitMinVisibleHeight:Number;
+
 		public function get minVisibleHeight():Number
 		{
-			return this._minVisibleHeight;
+			if(this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight) //isNaN
+			{
+				return this._actualMinVisibleHeight;
+			}
+			return this._explicitMinVisibleHeight;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set minVisibleHeight(value:Number):void
 		{
-			if(this._minVisibleHeight == value)
+			if(this._explicitMinVisibleHeight == value)
 			{
 				return;
 			}
-			if(value !== value) //isNaN
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN &&
+				this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight) //isNaN
 			{
-				throw new ArgumentError("minVisibleHeight cannot be NaN");
+				return;
 			}
-			this._minVisibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			var oldValue:Number = this._explicitMinVisibleHeight;
+			this._explicitMinVisibleHeight = value;
+			if(valueIsNaN)
+			{
+				this._actualMinVisibleHeight = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this._actualMinVisibleHeight = value;
+				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
+					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+				{
+					//only invalidate if this change might affect the visibleHeight
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+			}
 		}
 
-		/**
-		 * @private
-		 */
 		private var _maxVisibleHeight:Number = Number.POSITIVE_INFINITY;
 
-		/**
-		 * @private
-		 */
 		public function get maxVisibleHeight():Number
 		{
 			return this._maxVisibleHeight;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set maxVisibleHeight(value:Number):void
 		{
 			if(this._maxVisibleHeight == value)
@@ -211,35 +228,42 @@ package feathers.controls.text
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
+			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
+				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+			{
+				//only invalidate if this change might affect the visibleHeight
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
-		/**
-		 * @private
-		 */
-		private var _visibleHeight:Number = NaN;
+		private var _actualVisibleHeight:Number = 0;
 
-		/**
-		 * @private
-		 */
+		private var _explicitVisibleHeight:Number;
+
 		public function get visibleHeight():Number
 		{
-			return this._visibleHeight;
+			if(this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
+			{
+				return this._actualVisibleHeight;
+			}
+			return this._explicitVisibleHeight;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value ||
-				(value !== value && this._visibleHeight !== this._visibleHeight)) //isNaN
+			if(this._explicitVisibleHeight == value ||
+				(value !== value && this._explicitVisibleHeight !== this._explicitVisibleHeight)) //isNaN
 			{
 				return;
 			}
-			this._visibleHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this._explicitVisibleHeight = value;
+			if(this._actualVisibleHeight !== value)
+			{
+				this._actualVisibleHeight = value;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
 		}
 
 		/**
@@ -507,6 +531,40 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			var result:Boolean = super.autoSizeIfNeeded();
+			var needsWidth:Boolean = this._explicitVisibleWidth !== this._explicitVisibleWidth; //isNaN
+			var needsHeight:Boolean = this._explicitVisibleHeight !== this._explicitVisibleHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
+			{
+				return result;
+			}
+			if(needsWidth)
+			{
+				this._actualVisibleWidth = this.actualWidth;
+			}
+			if(needsHeight)
+			{
+				this._actualVisibleHeight = this.actualHeight;
+			}
+			if(needsMinWidth)
+			{
+				this._actualMinVisibleWidth = this.actualMinWidth;
+			}
+			if(needsMinHeight)
+			{
+				this._actualMinVisibleHeight = this.actualMinHeight;
+			}
+			trace(needsWidth, this.actualWidth, this._explicitVisibleWidth, this._actualVisibleWidth);
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function measure(result:Point = null):Point
 		{
 			if(!result)
@@ -514,7 +572,7 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this._visibleWidth !== this._visibleWidth; //isNaN
+			var needsWidth:Boolean = this._explicitVisibleWidth !== this._explicitVisibleWidth; //isNaN
 
 			this.commitStylesAndData(this.measureTextField);
 
@@ -524,35 +582,42 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 
-			var newWidth:Number = this._visibleWidth;
+			var newWidth:Number = this._explicitVisibleWidth;
 			this.measureTextField.width = newWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
 			if(needsWidth)
 			{
+				//this.measureTextField.wordWrap = false;
 				newWidth = this.measureTextField.width + this._paddingLeft + this._paddingRight - gutterDimensionsOffset;
-				if(newWidth < this._minVisibleWidth)
+				if(this._explicitMinVisibleWidth === this._explicitMinVisibleWidth && //!isNaN
+					newWidth < this._explicitMinVisibleWidth)
 				{
-					newWidth = this._minVisibleWidth;
+					newWidth = this._explicitMinVisibleWidth;
 				}
 				else if(newWidth > this._maxVisibleWidth)
 				{
 					newWidth = this._maxVisibleWidth;
 				}
 			}
+			//this.measureTextField.width = newWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
+			//this.measureTextField.wordWrap = true;
 			var newHeight:Number = this.measureTextField.height + this._paddingTop + this._paddingBottom - gutterDimensionsOffset;
 			if(this._useGutter)
 			{
 				newHeight += 4;
 			}
-			if(this._visibleHeight === this._visibleHeight) //!isNaN
+			if(this._explicitVisibleHeight === this._explicitVisibleHeight) //!isNaN
 			{
-				if(newHeight < this._visibleHeight)
+				if(newHeight < this._explicitVisibleHeight)
 				{
-					newHeight = this._visibleHeight;
+					newHeight = this._explicitVisibleHeight;
 				}
 			}
-			else if(newHeight < this._minVisibleHeight)
+			else if(this._explicitMinVisibleHeight === this._explicitMinVisibleHeight) //!isNaN
 			{
-				newHeight = this._minVisibleHeight;
+				if(newHeight < this._explicitMinVisibleHeight)
+				{
+					newHeight = this._explicitMinVisibleHeight;
+				}
 			}
 
 			result.x = newWidth;
@@ -566,7 +631,7 @@ package feathers.controls.text
 		 */
 		override protected function refreshSnapshotParameters():void
 		{
-			var textFieldWidth:Number = this._visibleWidth - this._paddingLeft - this._paddingRight;
+			var textFieldWidth:Number = this._actualVisibleWidth - this._paddingLeft - this._paddingRight;
 			if(textFieldWidth !== textFieldWidth) //isNaN
 			{
 				if(this._maxVisibleWidth < Number.POSITIVE_INFINITY)
@@ -575,10 +640,10 @@ package feathers.controls.text
 				}
 				else
 				{
-					textFieldWidth = this._minVisibleWidth - this._paddingLeft - this._paddingRight;
+					textFieldWidth = this._actualMinVisibleWidth - this._paddingLeft - this._paddingRight;
 				}
 			}
-			var textFieldHeight:Number = this._visibleHeight - this._paddingTop - this._paddingBottom;
+			var textFieldHeight:Number = this._actualVisibleHeight - this._paddingTop - this._paddingBottom;
 			if(textFieldHeight !== textFieldHeight) //isNaN
 			{
 				if(this._maxVisibleHeight < Number.POSITIVE_INFINITY)
@@ -587,7 +652,7 @@ package feathers.controls.text
 				}
 				else
 				{
-					textFieldHeight = this._minVisibleHeight - this._paddingTop - this._paddingBottom;
+					textFieldHeight = this._actualMinVisibleHeight - this._paddingTop - this._paddingBottom;
 				}
 			}
 
@@ -635,8 +700,8 @@ package feathers.controls.text
 				gutterDimensionsOffset = 0;
 			}
 			this._ignoreScrolling = true;
-			this.textField.width = this._visibleWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
-			var textFieldHeight:Number = this._visibleHeight - this._paddingTop - this._paddingBottom + gutterDimensionsOffset;
+			this.textField.width = this._actualVisibleWidth - this._paddingLeft - this._paddingRight + gutterDimensionsOffset;
+			var textFieldHeight:Number = this._actualVisibleHeight - this._paddingTop - this._paddingBottom + gutterDimensionsOffset;
 			if(this.textField.height != textFieldHeight)
 			{
 				this.textField.height = textFieldHeight;
