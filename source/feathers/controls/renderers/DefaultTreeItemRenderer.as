@@ -11,6 +11,13 @@ package feathers.controls.renderers
 	import feathers.skins.IStyleProvider;
 	import feathers.events.FeathersEventType;
 	import feathers.controls.Tree;
+	import feathers.controls.BasicButton;
+	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import feathers.utils.touch.TapToTrigger;
+	import feathers.core.IValidating;
+	import flash.geom.Point;
+	import starling.display.DisplayObjectContainer;
 
 	/**
 	 * The size, in pixels, of the indentation when an item is a child of a branch.
@@ -72,6 +79,50 @@ package feathers.controls.renderers
 		public function DefaultTreeItemRenderer()
 		{
 			super();
+			this.addEventListener(Event.TRIGGERED, treeItemRenderer_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disclosureIconTapToTrigger:TapToTrigger = null;
+
+		/**
+		 * @private
+		 */
+		protected var _disclosureIcon:DisplayObject = null;
+
+		public function get disclosureIcon():DisplayObject
+		{
+			return this._disclosureIcon;
+		}
+
+		public function set disclosureIcon(value:DisplayObject):void
+		{
+			if(this._disclosureIcon === value)
+			{
+				return;
+			}
+			if(this._disclosureIcon !== null)
+			{
+				if(this._disclosureIcon.parent === this)
+				{
+					this._disclosureIcon.removeFromParent(false);
+				}
+				this._disclosureIconTapToTrigger = null;
+				this._disclosureIcon.removeEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
+			}
+			this._disclosureIcon = value;
+			if(this._disclosureIcon !== null)
+			{
+				if(!(this._disclosureIcon is BasicButton))
+				{
+					this._disclosureIconTapToTrigger = new TapToTrigger(this._disclosureIcon);
+				}
+				this._disclosureIcon.addEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
+				this.addChild(this._disclosureIcon);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -204,6 +255,97 @@ package feathers.controls.renderers
 				//the location will be null
 				this._leftOffset += this._indentation * (this._location.length - 1);
 			}
+			if(this._disclosureIcon !== null)
+			{
+				if(this._disclosureIcon is IValidating)
+				{
+					IValidating(this._disclosureIcon).validate();
+				}
+				this._leftOffset += this._disclosureIcon.width + this._gap;
+				if(this.owner.dataProvider.isBranch(this._data))
+				{
+					this._disclosureIcon.visible = true;
+				}
+				else
+				{
+					this._disclosureIcon.visible = false;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutContent():void
+		{
+			super.layoutContent();
+			if(this._disclosureIcon !== null)
+			{
+				var indent:Number = 0;
+				if(this._location !== null)
+				{
+					indent = this._indentation * (this._location.length - 1);
+				}
+				if(this._disclosureIcon is IValidating)
+				{
+					IValidating(this._disclosureIcon).validate();
+				}
+				this._disclosureIcon.x = this._paddingLeft + indent;
+				this._disclosureIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._disclosureIcon.height) / 2;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function hitTestWithAccessory(localPosition:Point):Boolean
+		{
+			if(this._disclosureIcon !== null)
+			{
+				if(this._disclosureIcon is DisplayObjectContainer)
+				{
+					var container:DisplayObjectContainer = DisplayObjectContainer(this._disclosureIcon);
+					if(container.contains(this.hitTest(localPosition)))
+					{
+						return false;
+					}
+				}
+				if(this.hitTest(localPosition) === this._disclosureIcon)
+				{
+					return false;
+				}
+			}
+			return super.hitTestWithAccessory(localPosition);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleBranch():void
+		{
+		}
+
+		/**
+		 * @private
+		 */
+		protected function disclosureIcon_triggeredHandler(event:Event):void
+		{
+			this.toggleBranch();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function treeItemRenderer_triggeredHandler(event:Event):void
+		{
+			if(this._disclosureIcon !== null ||
+				!this.owner.dataProvider.isBranch(this._data))
+			{
+				return;
+			}
+			//if there is no disclosure icon, then the branch is toggled simply
+			//by triggering it with a click/tap
+			this.toggleBranch();
 		}
 	}
 }
