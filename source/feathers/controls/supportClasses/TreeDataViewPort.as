@@ -774,7 +774,7 @@ package feathers.controls.supportClasses
 				if(this._dataProvider !== null)
 				{
 					typicalItemLocation = this._dataProvider.getItemLocation(typicalItem);
-					newTypicalItemIsInDataProvider = typicalItemLocation !== null;
+					newTypicalItemIsInDataProvider = typicalItemLocation !== null && typicalItemLocation.length > 0;
 				}
 			}
 			else
@@ -859,7 +859,7 @@ package feathers.controls.supportClasses
 					//if we still don't have a typical item renderer, we need to
 					//create a new one.
 					typicalItemRenderer = this.createItemRenderer(typicalItem, typicalItemLocation, 0, false, !newTypicalItemIsInDataProvider);
-					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer !== null)
 					{
 						//get rid of the old typical item renderer if it isn't
 						//needed anymore.  since it was not in the data
