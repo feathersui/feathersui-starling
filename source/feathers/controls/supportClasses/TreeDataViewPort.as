@@ -1160,7 +1160,7 @@ package feathers.controls.supportClasses
 			storage.activeItemRenderers = temp;
 			if(storage.activeItemRenderers.length > 0)
 			{
-				throw new IllegalOperationError("ListDataViewPort: active renderers should be empty.");
+				throw new IllegalOperationError("TreeDataViewPort: active renderers should be empty.");
 			}
 			if(itemRendererTypeIsInvalid)
 			{
