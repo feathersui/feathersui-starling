@@ -18,6 +18,8 @@ package feathers.controls.renderers
 	import feathers.core.IValidating;
 	import flash.geom.Point;
 	import starling.display.DisplayObjectContainer;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IStateObserver;
 
 	/**
 	 * The size, in pixels, of the indentation when an item is a child of a branch.
@@ -85,43 +87,117 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _ignoreDisclosureIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _disclosureIconTapToTrigger:TapToTrigger = null;
 
 		/**
 		 * @private
 		 */
-		protected var _disclosureIcon:DisplayObject = null;
+		protected var _currentDisclosureIcon:DisplayObject = null;
 
-		public function get disclosureIcon():DisplayObject
+		/**
+		 * @private
+		 */
+		protected var _defaultDisclosureIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get defaultDisclosureIcon():DisplayObject
 		{
-			return this._disclosureIcon;
+			return this._defaultDisclosureIcon;
 		}
 
-		public function set disclosureIcon(value:DisplayObject):void
+		/**
+		 * @private
+		 */
+		public function set defaultDisclosureIcon(value:DisplayObject):void
 		{
-			if(this._disclosureIcon === value)
+			if(this._defaultDisclosureIcon === value)
 			{
 				return;
 			}
-			if(this._disclosureIcon !== null)
+			if(this._defaultDisclosureIcon !== null &&
+				this._currentDisclosureIcon === this._defaultDisclosureIcon)
 			{
-				if(this._disclosureIcon.parent === this)
-				{
-					this._disclosureIcon.removeFromParent(false);
-				}
-				this._disclosureIconTapToTrigger = null;
-				this._disclosureIcon.removeEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentDisclosureIcon(this._defaultDisclosureIcon);
+				this._currentDisclosureIcon = null;
 			}
-			this._disclosureIcon = value;
-			if(this._disclosureIcon !== null)
+			this._defaultDisclosureIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disclosureOpenIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get disclosureOpenIcon():DisplayObject
+		{
+			return this._defaultDisclosureIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disclosureOpenIcon(value:DisplayObject):void
+		{
+			if(this._disclosureOpenIcon === value)
 			{
-				if(!(this._disclosureIcon is BasicButton))
-				{
-					this._disclosureIconTapToTrigger = new TapToTrigger(this._disclosureIcon);
-				}
-				this._disclosureIcon.addEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
-				this.addChild(this._disclosureIcon);
+				return;
 			}
+			if(this._disclosureOpenIcon !== null &&
+				this._currentDisclosureIcon === this._disclosureOpenIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentDisclosureIcon(this._disclosureOpenIcon);
+				this._currentDisclosureIcon = null;
+			}
+			this._disclosureOpenIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disclosureClosedIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get disclosureClosedIcon():DisplayObject
+		{
+			return this._disclosureClosedIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disclosureClosedIcon(value:DisplayObject):void
+		{
+			if(this._disclosureClosedIcon === value)
+			{
+				return;
+			}
+			if(this._disclosureClosedIcon !== null &&
+				this._currentDisclosureIcon === this._disclosureClosedIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentDisclosureIcon(this._disclosureClosedIcon);
+				this._currentDisclosureIcon = null;
+			}
+			this._disclosureClosedIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -231,7 +307,38 @@ package feathers.controls.renderers
 		 */
 		public function set indentation(value:Number):void
 		{
+			if(this._indentation === value)
+			{
+				return;
+			}
 			this._indentation = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _open:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get open():Boolean
+		{
+			return this._open;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set open(value:Boolean):void
+		{
+			if(this._open === value)
+			{
+				return;
+			}
+			this._open = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -239,8 +346,36 @@ package feathers.controls.renderers
 		 */
 		override public function dispose():void
 		{
+			//we don't dispose it if the item renderer is the parent because
+			//it'll already get disposed in super.dispose()
+			if(this._defaultDisclosureIcon !== null && this._defaultDisclosureIcon.parent !== this)
+			{
+				this._defaultDisclosureIcon.dispose();
+			}
+			if(this._disclosureOpenIcon !== null && this._disclosureOpenIcon.parent !== this)
+			{
+				this._disclosureOpenIcon.dispose();
+			}
+			if(this._disclosureClosedIcon !== null && this._disclosureClosedIcon.parent !== this)
+			{
+				this._disclosureClosedIcon.dispose();
+			}
 			this.owner = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function draw():void
+		{
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			if(stylesInvalid || stateInvalid)
+			{
+				this.refreshDisclosureIcon();
+			}
+			super.draw();
 		}
 
 		/**
@@ -255,20 +390,23 @@ package feathers.controls.renderers
 				//the location will be null
 				this._leftOffset += this._indentation * (this._location.length - 1);
 			}
-			if(this._disclosureIcon !== null)
+			if(this._currentDisclosureIcon !== null)
 			{
-				if(this._disclosureIcon is IValidating)
+				var oldIgnoreIconResizes:Boolean = this._ignoreDisclosureIconResizes;
+				this._ignoreDisclosureIconResizes = true;
+				if(this._currentDisclosureIcon is IValidating)
 				{
-					IValidating(this._disclosureIcon).validate();
+					IValidating(this._currentDisclosureIcon).validate();
 				}
-				this._leftOffset += this._disclosureIcon.width + this._gap;
+				this._ignoreDisclosureIconResizes = oldIgnoreIconResizes;
+				this._leftOffset += this._currentDisclosureIcon.width + this._gap;
 				if(this.owner.dataProvider.isBranch(this._data))
 				{
-					this._disclosureIcon.visible = true;
+					this._currentDisclosureIcon.visible = true;
 				}
 				else
 				{
-					this._disclosureIcon.visible = false;
+					this._currentDisclosureIcon.visible = false;
 				}
 			}
 		}
@@ -279,19 +417,22 @@ package feathers.controls.renderers
 		override protected function layoutContent():void
 		{
 			super.layoutContent();
-			if(this._disclosureIcon !== null)
+			if(this._currentDisclosureIcon !== null)
 			{
 				var indent:Number = 0;
 				if(this._location !== null)
 				{
 					indent = this._indentation * (this._location.length - 1);
 				}
-				if(this._disclosureIcon is IValidating)
+				var oldIgnoreIconResizes:Boolean = this._ignoreDisclosureIconResizes;
+				this._ignoreDisclosureIconResizes = true;
+				if(this._currentDisclosureIcon is IValidating)
 				{
-					IValidating(this._disclosureIcon).validate();
+					IValidating(this._currentDisclosureIcon).validate();
 				}
-				this._disclosureIcon.x = this._paddingLeft + indent;
-				this._disclosureIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._disclosureIcon.height) / 2;
+				this._ignoreDisclosureIconResizes = oldIgnoreIconResizes;
+				this._currentDisclosureIcon.x = this._paddingLeft + indent;
+				this._currentDisclosureIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._currentDisclosureIcon.height) / 2;
 			}
 		}
 
@@ -300,22 +441,111 @@ package feathers.controls.renderers
 		 */
 		override protected function hitTestWithAccessory(localPosition:Point):Boolean
 		{
-			if(this._disclosureIcon !== null)
+			if(this._currentDisclosureIcon !== null)
 			{
-				if(this._disclosureIcon is DisplayObjectContainer)
+				if(this._currentDisclosureIcon is DisplayObjectContainer)
 				{
-					var container:DisplayObjectContainer = DisplayObjectContainer(this._disclosureIcon);
+					var container:DisplayObjectContainer = DisplayObjectContainer(this._currentDisclosureIcon);
 					if(container.contains(this.hitTest(localPosition)))
 					{
 						return false;
 					}
 				}
-				if(this.hitTest(localPosition) === this._disclosureIcon)
+				if(this.hitTest(localPosition) === this._currentDisclosureIcon)
 				{
 					return false;
 				}
 			}
 			return super.hitTestWithAccessory(localPosition);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentDisclosureIcon():DisplayObject
+		{
+			var newIcon:DisplayObject = this._defaultDisclosureIcon;
+			if(this._open && this._disclosureOpenIcon !== null)
+			{
+				newIcon = this._disclosureOpenIcon;
+			}
+			else if(!this._open && this._disclosureClosedIcon !== null)
+			{
+				newIcon = this._disclosureClosedIcon;
+			}
+			return newIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentDisclosureIcon(icon:DisplayObject):void
+		{
+			if(icon === null)
+			{
+				return;
+			}
+			if(icon is IFeathersControl)
+			{
+				IFeathersControl(icon).removeEventListener(FeathersEventType.RESIZE, currentDisclosureIcon_resizeHandler);
+			}
+			icon.removeEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
+			if(icon is IStateObserver)
+			{
+				IStateObserver(icon).stateContext = null;
+			}
+			if(icon.parent === this)
+			{
+				this.removeChild(icon, false);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDisclosureIcon():void
+		{
+			var oldDisclosureIcon:DisplayObject = this._currentDisclosureIcon;
+			this._currentDisclosureIcon = this.getCurrentDisclosureIcon();
+			if(this._currentDisclosureIcon is IFeathersControl)
+			{
+				IFeathersControl(this._currentDisclosureIcon).isEnabled = this._isEnabled;
+			}
+			if(this._currentDisclosureIcon !== oldDisclosureIcon)
+			{
+				if(oldDisclosureIcon !== null)
+				{
+					this.removeCurrentDisclosureIcon(oldDisclosureIcon);
+				}
+				if(this._currentDisclosureIcon !== null)
+				{
+					if(this._currentDisclosureIcon is IStateObserver)
+					{
+						IStateObserver(this._currentDisclosureIcon).stateContext = this;
+					}
+					this.addChild(this._currentDisclosureIcon);
+					if(!(this._currentDisclosureIcon is BasicButton))
+					{
+						if(this._disclosureIconTapToTrigger !== null)
+						{
+							this._disclosureIconTapToTrigger.target = this._currentDisclosureIcon;
+						}
+						else
+						{
+							this._disclosureIconTapToTrigger = new TapToTrigger(this._currentDisclosureIcon);
+						}
+					}
+					this._currentDisclosureIcon.addEventListener(Event.TRIGGERED, disclosureIcon_triggeredHandler);
+					if(this._currentDisclosureIcon is IFeathersControl)
+					{
+						IFeathersControl(this._currentDisclosureIcon).addEventListener(FeathersEventType.RESIZE, currentDisclosureIcon_resizeHandler);
+					}
+				}
+				else
+				{
+					this._disclosureIconTapToTrigger = null;
+				}
+			}
 		}
 
 		/**
@@ -338,7 +568,7 @@ package feathers.controls.renderers
 		 */
 		protected function treeItemRenderer_triggeredHandler(event:Event):void
 		{
-			if(this._disclosureIcon !== null ||
+			if(this._defaultDisclosureIcon !== null ||
 				!this.owner.dataProvider.isBranch(this._data))
 			{
 				return;
@@ -346,6 +576,18 @@ package feathers.controls.renderers
 			//if there is no disclosure icon, then the branch is toggled simply
 			//by triggering it with a click/tap
 			this.toggleBranch();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function currentDisclosureIcon_resizeHandler():void
+		{
+			if(this._ignoreDisclosureIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
