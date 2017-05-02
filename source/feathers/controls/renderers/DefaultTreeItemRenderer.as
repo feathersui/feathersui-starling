@@ -669,7 +669,7 @@ package feathers.controls.renderers
 		protected function getCurrentBranchOrLeafIcon():DisplayObject
 		{
 			var newIcon:DisplayObject = this._leafIcon;
-			if(this.owner.dataProvider.isBranch(this._data))
+			if(this.owner.dataProvider !== null && this.owner.dataProvider.isBranch(this._data))
 			{
 				newIcon = this._branchIcon;
 				if(this._open && this._branchOpenIcon !== null)
