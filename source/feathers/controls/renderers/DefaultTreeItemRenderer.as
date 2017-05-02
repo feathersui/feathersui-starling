@@ -92,6 +92,11 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _ignoreBranchOrLeafIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _disclosureIconTapToTrigger:TapToTrigger = null;
 
 		/**
@@ -143,7 +148,7 @@ package feathers.controls.renderers
 		 */
 		public function get disclosureOpenIcon():DisplayObject
 		{
-			return this._defaultDisclosureIcon;
+			return this._disclosureOpenIcon;
 		}
 
 		/**
@@ -198,6 +203,147 @@ package feathers.controls.renderers
 				this._currentDisclosureIcon = null;
 			}
 			this._disclosureClosedIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _currentBranchOrLeafIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		protected var _branchIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get branchIcon():DisplayObject
+		{
+			return this._branchIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set branchIcon(value:DisplayObject):void
+		{
+			if(this._branchIcon === value)
+			{
+				return;
+			}
+			if(this._branchIcon !== null &&
+				this._currentBranchOrLeafIcon === this._branchIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBranchOrLeafIcon(this._branchIcon);
+				this._currentBranchOrLeafIcon = null;
+			}
+			this._branchIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _branchOpenIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get branchOpenIcon():DisplayObject
+		{
+			return this._branchOpenIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set branchOpenIcon(value:DisplayObject):void
+		{
+			if(this._branchOpenIcon === value)
+			{
+				return;
+			}
+			if(this._branchOpenIcon !== null &&
+				this._currentBranchOrLeafIcon === this._branchOpenIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBranchOrLeafIcon(this._branchOpenIcon);
+				this._currentBranchOrLeafIcon = null;
+			}
+			this._branchOpenIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _branchClosedIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get branchClosedIcon():DisplayObject
+		{
+			return this._branchClosedIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set branchClosedIcon(value:DisplayObject):void
+		{
+			if(this._branchOpenIcon === value)
+			{
+				return;
+			}
+			if(this._branchClosedIcon !== null &&
+				this._currentBranchOrLeafIcon === this._branchClosedIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBranchOrLeafIcon(this._branchClosedIcon);
+				this._currentBranchOrLeafIcon = null;
+			}
+			this._branchClosedIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _leafIcon:DisplayObject = null;
+
+		/**
+		 * 
+		 */
+		public function get leafIcon():DisplayObject
+		{
+			return this._leafIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set leafIcon(value:DisplayObject):void
+		{
+			if(this._leafIcon === value)
+			{
+				return;
+			}
+			if(this._leafIcon !== null &&
+				this._currentBranchOrLeafIcon === this._leafIcon)
+			{
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				this.removeCurrentBranchOrLeafIcon(this._leafIcon);
+				this._currentBranchOrLeafIcon = null;
+			}
+			this._leafIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -374,6 +520,7 @@ package feathers.controls.renderers
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshDisclosureIcon();
+				this.refreshBranchOrLeafIcon();
 			}
 			super.draw();
 		}
@@ -409,6 +556,17 @@ package feathers.controls.renderers
 					this._currentDisclosureIcon.visible = false;
 				}
 			}
+			if(this._currentBranchOrLeafIcon !== null)
+			{
+				oldIgnoreIconResizes = this._ignoreBranchOrLeafIconResizes;
+				this._ignoreBranchOrLeafIconResizes = true;
+				if(this._currentBranchOrLeafIcon is IValidating)
+				{
+					IValidating(this._currentBranchOrLeafIcon).validate();
+				}
+				this._ignoreBranchOrLeafIconResizes = oldIgnoreIconResizes;
+				this._leftOffset += this._currentBranchOrLeafIcon.width + this._gap;
+			}
 		}
 
 		/**
@@ -417,13 +575,13 @@ package feathers.controls.renderers
 		override protected function layoutContent():void
 		{
 			super.layoutContent();
+			var indent:Number = this._paddingLeft;
+			if(this._location !== null)
+			{
+				indent += this._indentation * (this._location.length - 1);
+			}
 			if(this._currentDisclosureIcon !== null)
 			{
-				var indent:Number = 0;
-				if(this._location !== null)
-				{
-					indent = this._indentation * (this._location.length - 1);
-				}
 				var oldIgnoreIconResizes:Boolean = this._ignoreDisclosureIconResizes;
 				this._ignoreDisclosureIconResizes = true;
 				if(this._currentDisclosureIcon is IValidating)
@@ -431,8 +589,21 @@ package feathers.controls.renderers
 					IValidating(this._currentDisclosureIcon).validate();
 				}
 				this._ignoreDisclosureIconResizes = oldIgnoreIconResizes;
-				this._currentDisclosureIcon.x = this._paddingLeft + indent;
+				this._currentDisclosureIcon.x = indent;
 				this._currentDisclosureIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._currentDisclosureIcon.height) / 2;
+				indent += this._currentDisclosureIcon.width + this._gap;
+			}
+			if(this._currentBranchOrLeafIcon !== null)
+			{
+				oldIgnoreIconResizes = this._ignoreBranchOrLeafIconResizes;
+				this._ignoreDisclosureIconResizes = true;
+				if(this._currentBranchOrLeafIcon is IValidating)
+				{
+					IValidating(this._currentBranchOrLeafIcon).validate();
+				}
+				this._ignoreBranchOrLeafIconResizes = oldIgnoreIconResizes;
+				this._currentBranchOrLeafIcon.x = indent;
+				this._currentBranchOrLeafIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._currentBranchOrLeafIcon.height) / 2;
 			}
 		}
 
@@ -479,6 +650,27 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function getCurrentBranchOrLeafIcon():DisplayObject
+		{
+			var newIcon:DisplayObject = this._leafIcon;
+			if(this.owner.dataProvider.isBranch(this._data))
+			{
+				newIcon = this._branchIcon;
+				if(this._open && this._disclosureOpenIcon !== null)
+				{
+					newIcon = this._disclosureOpenIcon;
+				}
+				else if(!this._open && this._disclosureClosedIcon !== null)
+				{
+					newIcon = this._disclosureClosedIcon;
+				}
+			}
+			return newIcon;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function removeCurrentDisclosureIcon(icon:DisplayObject):void
 		{
 			if(icon === null)
@@ -503,19 +695,42 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function removeCurrentBranchOrLeafIcon(icon:DisplayObject):void
+		{
+			if(icon === null)
+			{
+				return;
+			}
+			if(icon is IFeathersControl)
+			{
+				IFeathersControl(icon).removeEventListener(FeathersEventType.RESIZE, currentBranchOrLeafIcon_resizeHandler);
+			}
+			if(icon is IStateObserver)
+			{
+				IStateObserver(icon).stateContext = null;
+			}
+			if(icon.parent === this)
+			{
+				this.removeChild(icon, false);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshDisclosureIcon():void
 		{
-			var oldDisclosureIcon:DisplayObject = this._currentDisclosureIcon;
+			var oldIcon:DisplayObject = this._currentDisclosureIcon;
 			this._currentDisclosureIcon = this.getCurrentDisclosureIcon();
 			if(this._currentDisclosureIcon is IFeathersControl)
 			{
 				IFeathersControl(this._currentDisclosureIcon).isEnabled = this._isEnabled;
 			}
-			if(this._currentDisclosureIcon !== oldDisclosureIcon)
+			if(this._currentDisclosureIcon !== oldIcon)
 			{
-				if(oldDisclosureIcon !== null)
+				if(oldIcon !== null)
 				{
-					this.removeCurrentDisclosureIcon(oldDisclosureIcon);
+					this.removeCurrentDisclosureIcon(oldIcon);
 				}
 				if(this._currentDisclosureIcon !== null)
 				{
@@ -544,6 +759,38 @@ package feathers.controls.renderers
 				else
 				{
 					this._disclosureIconTapToTrigger = null;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBranchOrLeafIcon():void
+		{
+			var oldIcon:DisplayObject = this._currentBranchOrLeafIcon;
+			this._currentBranchOrLeafIcon = this.getCurrentBranchOrLeafIcon();
+			if(this._currentBranchOrLeafIcon is IFeathersControl)
+			{
+				IFeathersControl(this._currentBranchOrLeafIcon).isEnabled = this._isEnabled;
+			}
+			if(this._currentBranchOrLeafIcon !== oldIcon)
+			{
+				if(oldIcon !== null)
+				{
+					this.removeCurrentBranchOrLeafIcon(oldIcon);
+				}
+				if(this._currentBranchOrLeafIcon !== null)
+				{
+					if(this._currentBranchOrLeafIcon is IStateObserver)
+					{
+						IStateObserver(this._currentDisclosureIcon).stateContext = this;
+					}
+					this.addChild(this._currentBranchOrLeafIcon);
+					if(this._currentBranchOrLeafIcon is IFeathersControl)
+					{
+						IFeathersControl(this._currentBranchOrLeafIcon).addEventListener(FeathersEventType.RESIZE, currentBranchOrLeafIcon_resizeHandler);
+					}
 				}
 			}
 		}
@@ -584,6 +831,18 @@ package feathers.controls.renderers
 		protected function currentDisclosureIcon_resizeHandler():void
 		{
 			if(this._ignoreDisclosureIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function currentBranchOrLeafIcon_resizeHandler():void
+		{
+			if(this._ignoreBranchOrLeafIconResizes)
 			{
 				return;
 			}
