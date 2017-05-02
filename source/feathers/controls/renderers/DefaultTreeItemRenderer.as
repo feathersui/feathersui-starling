@@ -107,34 +107,34 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _defaultDisclosureIcon:DisplayObject = null;
+		protected var _disclosureIcon:DisplayObject = null;
 
 		/**
 		 * 
 		 */
-		public function get defaultDisclosureIcon():DisplayObject
+		public function get disclosureIcon():DisplayObject
 		{
-			return this._defaultDisclosureIcon;
+			return this._disclosureIcon;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set defaultDisclosureIcon(value:DisplayObject):void
+		public function set disclosureIcon(value:DisplayObject):void
 		{
-			if(this._defaultDisclosureIcon === value)
+			if(this._disclosureIcon === value)
 			{
 				return;
 			}
-			if(this._defaultDisclosureIcon !== null &&
-				this._currentDisclosureIcon === this._defaultDisclosureIcon)
+			if(this._disclosureIcon !== null &&
+				this._currentDisclosureIcon === this._disclosureIcon)
 			{
 				//if this icon needs to be reused somewhere else, we need to
 				//properly clean it up
-				this.removeCurrentDisclosureIcon(this._defaultDisclosureIcon);
+				this.removeCurrentDisclosureIcon(this._disclosureIcon);
 				this._currentDisclosureIcon = null;
 			}
-			this._defaultDisclosureIcon = value;
+			this._disclosureIcon = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -494,9 +494,9 @@ package feathers.controls.renderers
 		{
 			//we don't dispose it if the item renderer is the parent because
 			//it'll already get disposed in super.dispose()
-			if(this._defaultDisclosureIcon !== null && this._defaultDisclosureIcon.parent !== this)
+			if(this._disclosureIcon !== null && this._disclosureIcon.parent !== this)
 			{
-				this._defaultDisclosureIcon.dispose();
+				this._disclosureIcon.dispose();
 			}
 			if(this._disclosureOpenIcon !== null && this._disclosureOpenIcon.parent !== this)
 			{
@@ -505,6 +505,22 @@ package feathers.controls.renderers
 			if(this._disclosureClosedIcon !== null && this._disclosureClosedIcon.parent !== this)
 			{
 				this._disclosureClosedIcon.dispose();
+			}
+			if(this._branchIcon !== null && this._branchIcon.parent !== this)
+			{
+				this._branchIcon.dispose();
+			}
+			if(this._branchOpenIcon !== null && this._branchOpenIcon.parent !== this)
+			{
+				this._branchOpenIcon.dispose();
+			}
+			if(this._branchClosedIcon !== null && this._branchClosedIcon.parent !== this)
+			{
+				this._branchClosedIcon.dispose();
+			}
+			if(this._leafIcon !== null && this._leafIcon.parent !== this)
+			{
+				this._leafIcon.dispose();
 			}
 			this.owner = null;
 			super.dispose();
@@ -596,7 +612,7 @@ package feathers.controls.renderers
 			if(this._currentBranchOrLeafIcon !== null)
 			{
 				oldIgnoreIconResizes = this._ignoreBranchOrLeafIconResizes;
-				this._ignoreDisclosureIconResizes = true;
+				this._ignoreBranchOrLeafIconResizes = true;
 				if(this._currentBranchOrLeafIcon is IValidating)
 				{
 					IValidating(this._currentBranchOrLeafIcon).validate();
@@ -635,7 +651,7 @@ package feathers.controls.renderers
 		 */
 		protected function getCurrentDisclosureIcon():DisplayObject
 		{
-			var newIcon:DisplayObject = this._defaultDisclosureIcon;
+			var newIcon:DisplayObject = this._disclosureIcon;
 			if(this._open && this._disclosureOpenIcon !== null)
 			{
 				newIcon = this._disclosureOpenIcon;
@@ -656,13 +672,13 @@ package feathers.controls.renderers
 			if(this.owner.dataProvider.isBranch(this._data))
 			{
 				newIcon = this._branchIcon;
-				if(this._open && this._disclosureOpenIcon !== null)
+				if(this._open && this._branchOpenIcon !== null)
 				{
-					newIcon = this._disclosureOpenIcon;
+					newIcon = this._branchOpenIcon;
 				}
-				else if(!this._open && this._disclosureClosedIcon !== null)
+				else if(!this._open && this._branchClosedIcon !== null)
 				{
-					newIcon = this._disclosureClosedIcon;
+					newIcon = this._branchClosedIcon;
 				}
 			}
 			return newIcon;
@@ -784,7 +800,7 @@ package feathers.controls.renderers
 				{
 					if(this._currentBranchOrLeafIcon is IStateObserver)
 					{
-						IStateObserver(this._currentDisclosureIcon).stateContext = this;
+						IStateObserver(this._currentBranchOrLeafIcon).stateContext = this;
 					}
 					this.addChild(this._currentBranchOrLeafIcon);
 					if(this._currentBranchOrLeafIcon is IFeathersControl)
@@ -815,7 +831,7 @@ package feathers.controls.renderers
 		 */
 		protected function treeItemRenderer_triggeredHandler(event:Event):void
 		{
-			if(this._defaultDisclosureIcon !== null ||
+			if(this._currentDisclosureIcon !== null ||
 				!this.owner.dataProvider.isBranch(this._data))
 			{
 				return;
