@@ -75,6 +75,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Text Callout", screen: ScreenID.TEXT_CALLOUT },
 				{ label: "Text Input and Text Area", screen: ScreenID.TEXT_INPUT },
 				{ label: "Toggle Switch", screen: ScreenID.TOGGLES },
+				{ label: "Tree", screen: ScreenID.TREE },
 			]);
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
 			{

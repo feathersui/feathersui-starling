@@ -41,6 +41,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TextCalloutScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleSwitchScreen;
+	import feathers.examples.componentsExplorer.screens.TreeScreen;
 	import feathers.examples.componentsExplorer.screens.WebViewScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.layout.Orientation;
@@ -237,6 +238,10 @@ package feathers.examples.componentsExplorer
 			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleSwitchScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ScreenID.TOGGLES, togglesItem);
+
+			var treeItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TreeScreen);
+			treeItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ScreenID.TREE, treeItem);
 
 			if(Capabilities.playerType == "Desktop") //this means AIR, even for mobile
 			{
