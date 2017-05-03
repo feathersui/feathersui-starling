@@ -851,7 +851,7 @@ package feathers.controls.renderers
 		 */
 		protected function treeItemRenderer_triggeredHandler(event:Event):void
 		{
-			if(this._currentDisclosureIcon !== null || !this._isBranch)
+			if((this._currentDisclosureIcon !== null && !this._isQuickHitAreaEnabled) || !this._isBranch)
 			{
 				return;
 			}
