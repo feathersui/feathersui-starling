@@ -1314,7 +1314,7 @@ package feathers.controls.supportClasses
 			itemRenderer.factoryID = factoryID;
 			itemRenderer.location = location;
 			itemRenderer.layoutIndex = layoutIndex;
-			var isBranch:Boolean = this._dataProvider.isBranch(item);
+			var isBranch:Boolean = this._dataProvider !== null && this._dataProvider.isBranch(item);
 			itemRenderer.isBranch = isBranch;
 			itemRenderer.isOpen = isBranch && this._openBranches.contains(item);
 
