@@ -113,7 +113,13 @@ package feathers.examples.componentsExplorer.screens
 			this._list.typicalItem = { text: "Item 1000" };
 			this._list.isSelectable = this.settings.isSelectable;
 			this._list.hasElasticEdges = this.settings.hasElasticEdges;
+			//optimization: since this list fills the entire screen, there's no
+			//need for clipping. clipping should not be disabled if there's a
+			//chance that item renderers could be visible if they appear outside
+			//the list's bounds
 			this._list.clipContent = false;
+			//optimization: when the background is covered by all item
+			//renderers, don't render it
 			this._list.autoHideBackground = true;
 			this._list.itemRendererFactory = function():IGroupedListItemRenderer
 			{
