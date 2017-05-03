@@ -29,6 +29,7 @@ package feathers.controls.supportClasses
 	import starling.events.Event;
 	import starling.display.DisplayObject;
 	import starling.utils.Pool;
+	import feathers.data.IListCollection;
 
 	/**
 	 * @private
@@ -566,6 +567,31 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
+		private var _openBranches:IListCollection;
+
+		public function get openBranches():IListCollection
+		{
+			return this._openBranches;
+		}
+
+		public function set openBranches(value:IListCollection):void
+		{
+			if(this._openBranches == value)
+			{
+				return;
+			}
+			if(this._openBranches !== null)
+			{
+				this._openBranches.removeEventListener(Event.CHANGE, openBranches_changeHandler);
+			}
+			this._openBranches = value;
+			if(this._openBranches !== null)
+			{
+				this._openBranches.addEventListener(Event.CHANGE, openBranches_changeHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
 		private var _typicalItemIsInDataProvider:Boolean = false;
 		private var _typicalItemRenderer:ITreeItemRenderer;
 
@@ -885,28 +911,25 @@ package feathers.controls.supportClasses
 
 		private function refreshItemRenderers():void
 		{
-			if(this._typicalItemRenderer !== null)
+			if(this._typicalItemRenderer !== null && this._typicalItemIsInDataProvider)
 			{
-				if(this._typicalItemIsInDataProvider)
+				var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(this._typicalItemRenderer.factoryID);
+				var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
+				var activeItemRenderers:Vector.<ITreeItemRenderer> = storage.activeItemRenderers;
+				//this renderer is already is use by the typical item, so we
+				//don't want to allow it to be used by other items.
+				var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
+				if(inactiveIndex >= 0)
 				{
-					var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(this._typicalItemRenderer.factoryID);
-					var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
-					var activeItemRenderers:Vector.<ITreeItemRenderer> = storage.activeItemRenderers;
-					//this renderer is already is use by the typical item, so we
-					//don't want to allow it to be used by other items.
-					var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
-					if(inactiveIndex >= 0)
-					{
-						inactiveItemRenderers[inactiveIndex] = null;
-					}
-					//if refreshLayoutTypicalItem() was called, it will have already
-					//added the typical item renderer to the active renderers. if
-					//not, we need to do it here.
-					var activeRendererCount:int = activeItemRenderers.length;
-					if(activeRendererCount === 0)
-					{
-						activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
-					}
+					inactiveItemRenderers[inactiveIndex] = null;
+				}
+				//if refreshLayoutTypicalItem() was called, it will have already
+				//added the typical item renderer to the active renderers. if
+				//not, we need to do it here.
+				var activeRendererCount:int = activeItemRenderers.length;
+				if(activeRendererCount === 0)
+				{
+					activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
 				}
 			}
 
@@ -945,7 +968,8 @@ package feathers.controls.supportClasses
 			{
 				location[location.length] = i;
 				var item:Object = this._dataProvider.getItemAtLocation(location);
-				if(this._dataProvider.isBranch(item))
+				if(this._dataProvider.isBranch(item) &&
+					this._openBranches.contains(item))
 				{
 					result += this.findTotalLayoutCount(location);
 				}
@@ -968,7 +992,7 @@ package feathers.controls.supportClasses
 				location[location.length] = i;
 				var item:Object = this._dataProvider.getItemAtLocation(location);
 
-				if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
+				if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) === -1)
 				{
 					if(this._typicalItemRenderer !== null &&
 						this._typicalItemIsInDataProvider &&
@@ -986,7 +1010,8 @@ package feathers.controls.supportClasses
 				}
 				currentIndex++;
 
-				if(this._dataProvider.isBranch(item))
+				if(this._dataProvider.isBranch(item) &&
+					this._openBranches.contains(item))
 				{
 					currentIndex = this.findUnrenderedDataForLocation(location, currentIndex);
 				}
@@ -1083,6 +1108,7 @@ package feathers.controls.supportClasses
 				//or reordered in the data provider
 				itemRenderer.location = location;
 				itemRenderer.layoutIndex = layoutIndex;
+				itemRenderer.isOpen = this._dataProvider.isBranch(item) && this._openBranches.contains(item);
 				if(this._updateForDataReset)
 				{
 					//similar to calling updateItemAt(), replacing the data
@@ -1140,6 +1166,7 @@ package feathers.controls.supportClasses
 				var item:Object = this._dataProvider.getItemAtLocation(location);
 				var itemRenderer:ITreeItemRenderer = this.createItemRenderer(
 					item, location, layoutIndex, true, false);
+				itemRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
 			}
 			LOCATION_HELPER_VECTOR.length = 0;
@@ -1287,6 +1314,9 @@ package feathers.controls.supportClasses
 			itemRenderer.factoryID = factoryID;
 			itemRenderer.location = location;
 			itemRenderer.layoutIndex = layoutIndex;
+			var isBranch:Boolean = this._dataProvider.isBranch(item);
+			itemRenderer.isBranch = isBranch;
+			itemRenderer.isOpen = isBranch && this._openBranches.contains(item);
 
 			if(!isTemporary)
 			{
@@ -1463,6 +1493,11 @@ package feathers.controls.supportClasses
 			}
 			var itemRenderer:ITreeItemRenderer = ITreeItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(itemRenderer.layoutIndex, DisplayObject(itemRenderer));
+		}
+
+		private function openBranches_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
 }

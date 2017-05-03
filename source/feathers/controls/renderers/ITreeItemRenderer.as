@@ -107,16 +107,32 @@ package feathers.controls.renderers
 		function set factoryID(value:String):void;
 
 		/**
-		 * Indicates if a branch is open or closed. An item that is not a
-		 * branch will always return <code>false</code>.
+		 * Indicates if the data is a branch or a leaf.
 		 *
 		 * <p>This property is set by the tree, and it should not be set manually.</p>
+		 *
+		 * @see #isOpen
 		 */
-		function get open():Boolean;
+		function get isBranch():Boolean;
 
 		/**
 		 * @private
 		 */
-		function set open(value:Boolean):void;
+		function set isBranch(value:Boolean):void;
+
+		/**
+		 * Indicates if a branch is open or closed. An item that is not a
+		 * branch will always return <code>false</code>.
+		 *
+		 * <p>This property is set by the tree, and it should not be set manually.</p>
+		 *
+		 * @see #isBranch
+		 */
+		function get isOpen():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set isOpen(value:Boolean):void;
 	}
 }

@@ -464,26 +464,52 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _open:Boolean = false;
+		protected var _isOpen:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		public function get open():Boolean
+		public function get isOpen():Boolean
 		{
-			return this._open;
+			return this._isOpen;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set open(value:Boolean):void
+		public function set isOpen(value:Boolean):void
 		{
-			if(this._open === value)
+			if(this._isOpen === value)
 			{
 				return;
 			}
-			this._open = value;
+			this._isOpen = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isBranch:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get isBranch():Boolean
+		{
+			return this._isBranch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isBranch(value:Boolean):void
+		{
+			if(this._isBranch === value)
+			{
+				return;
+			}
+			this._isBranch = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -533,7 +559,8 @@ package feathers.controls.renderers
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			if(stylesInvalid || stateInvalid)
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			if(dataInvalid || stateInvalid || stylesInvalid)
 			{
 				this.refreshDisclosureIcon();
 				this.refreshBranchOrLeafIcon();
@@ -563,7 +590,7 @@ package feathers.controls.renderers
 				}
 				this._ignoreDisclosureIconResizes = oldIgnoreIconResizes;
 				this._leftOffset += this._currentDisclosureIcon.width + this._gap;
-				if(this.owner.dataProvider.isBranch(this._data))
+				if(this._isBranch)
 				{
 					this._currentDisclosureIcon.visible = true;
 				}
@@ -652,11 +679,11 @@ package feathers.controls.renderers
 		protected function getCurrentDisclosureIcon():DisplayObject
 		{
 			var newIcon:DisplayObject = this._disclosureIcon;
-			if(this._open && this._disclosureOpenIcon !== null)
+			if(this._isOpen && this._disclosureOpenIcon !== null)
 			{
 				newIcon = this._disclosureOpenIcon;
 			}
-			else if(!this._open && this._disclosureClosedIcon !== null)
+			else if(!this._isOpen && this._disclosureClosedIcon !== null)
 			{
 				newIcon = this._disclosureClosedIcon;
 			}
@@ -669,14 +696,14 @@ package feathers.controls.renderers
 		protected function getCurrentBranchOrLeafIcon():DisplayObject
 		{
 			var newIcon:DisplayObject = this._leafIcon;
-			if(this.owner.dataProvider !== null && this.owner.dataProvider.isBranch(this._data))
+			if(this._isBranch)
 			{
 				newIcon = this._branchIcon;
-				if(this._open && this._branchOpenIcon !== null)
+				if(this._isOpen && this._branchOpenIcon !== null)
 				{
 					newIcon = this._branchOpenIcon;
 				}
-				else if(!this._open && this._branchClosedIcon !== null)
+				else if(!this._isOpen && this._branchClosedIcon !== null)
 				{
 					newIcon = this._branchClosedIcon;
 				}
@@ -814,16 +841,9 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function toggleBranch():void
-		{
-		}
-
-		/**
-		 * @private
-		 */
 		protected function disclosureIcon_triggeredHandler(event:Event):void
 		{
-			this.toggleBranch();
+			this.owner.toggleBranch(this._data, !this._isOpen);
 		}
 
 		/**
@@ -831,14 +851,13 @@ package feathers.controls.renderers
 		 */
 		protected function treeItemRenderer_triggeredHandler(event:Event):void
 		{
-			if(this._currentDisclosureIcon !== null ||
-				!this.owner.dataProvider.isBranch(this._data))
+			if(this._currentDisclosureIcon !== null || !this._isBranch)
 			{
 				return;
 			}
 			//if there is no disclosure icon, then the branch is toggled simply
 			//by triggering it with a click/tap
-			this.toggleBranch();
+			this.owner.toggleBranch(this._data, !this._isOpen);
 		}
 
 		/**

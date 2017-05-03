@@ -4468,10 +4468,7 @@ package feathers.controls.renderers
 			{
 				this.refreshAccessory();
 			}
-			if(stylesInvalid)
-			{
-				this.refreshOffsets();
-			}
+			this.refreshOffsets();
 			super.draw();
 		}
 

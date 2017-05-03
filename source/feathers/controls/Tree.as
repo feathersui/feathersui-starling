@@ -21,7 +21,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.controls.renderers.ITreeItemRenderer;
 	import feathers.controls.renderers.DefaultTreeItemRenderer;
-	import __AS3__.vec.Vector;
+	import feathers.data.ArrayCollection;
 
 	/**
 	 * A style name to add to all item renderers in this tree. Typically
@@ -174,6 +174,58 @@ package feathers.controls
 	 * @eventType feathers.events.FeathersEventType.RENDERER_REMOVE
 	 */
 	[Event(name="rendererRemove",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when a branch is opened.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The data for the branch that was opened</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.OPEN
+	 *
+	 * @see #event:close starling.events.Event.CLOSE
+	 * @see #isBranchOpen()
+	 * @see #toggleBranch()
+	 */
+	[Event(name="open",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when a branch is closed.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The data for the branch that was closed</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.CLOSE
+	 *
+	 * @see #event:open starling.events.Event.OPEN
+	 * @see #isBranchOpen()
+	 * @see #toggleBranch()
+	 */
+	[Event(name="close",type="starling.events.Event")]
 
 	/**
 	 * Displays a hierarchical tree of items. Supports scrolling, custom item
@@ -784,6 +836,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _openBranches:ArrayCollection = new ArrayCollection();
+
+		/**
+		 * Opens or closes a branch.
+		 *
+		 * @see #isBranchOpen()
+		 * @see #event:open starling.events.Event.OPEN
+		 * @see #event:close starling.events.Event.CLOSE
+		 */
+		public function toggleBranch(branch:Object, open:Boolean):void
+		{
+			if(this._dataProvider === null || !this._dataProvider.isBranch(branch))
+			{
+				throw new ArgumentError("toggleBranch() may not open an item that is not a branch.");
+			}
+			var index:int = this._openBranches.getItemIndex(branch);
+			if(open)
+			{
+				if(index !== -1)
+				{
+					//the branch is already open
+					return;
+				}
+				this._openBranches.addItem(branch);
+				this.dispatchEventWith(Event.OPEN, false, branch);
+			}
+			else //close
+			{
+				if(index === -1)
+				{
+					//the branch is already closed
+					return;
+				}
+				this._openBranches.removeItem(branch);
+				this.dispatchEventWith(Event.CLOSE, false, branch);
+			}
+		}
+
+		/**
+		 * Indicates if a branch from the data provider is open or closed.
+		 *
+		 * @see #toggleBranch()
+		 * @see #event:open starling.events.Event.OPEN
+		 * @see #event:close starling.events.Event.CLOSE
+		 */
+		public function isBranchOpen(branch:Object):Boolean
+		{
+			if(this._dataProvider === null || !this._dataProvider.isBranch(branch))
+			{
+				return false;
+			}
+			return this._openBranches.getItemIndex(branch) !== -1;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			var hasLayout:Boolean = this._layout !== null;
@@ -838,6 +947,7 @@ package feathers.controls
 			this.dataViewPort.selectedItem = this._selectedItem;
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.typicalItem = this._typicalItem;
+			this.dataViewPort.openBranches = this._openBranches;
 
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
