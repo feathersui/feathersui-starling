@@ -366,6 +366,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _previousStarlingTextFormat:starling.text.TextFormat;
+
+		/**
+		 * @private
+		 */
+		protected var _currentStarlingTextFormat:starling.text.TextFormat;
+
+		/**
+		 * @private
+		 */
 		protected var _previousTextFormat:flash.text.TextFormat;
 
 		/**
@@ -1922,14 +1932,28 @@ package feathers.controls.text
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled && (this._isEditable || this._isSelectable);
 
+			var isFormatDifferent:Boolean = false;
 			if(textField === this.textField)
 			{
 				//for some reason, textField.defaultTextFormat always fails
 				//comparison against currentTextFormat. if we save to a member
 				//variable and compare against that instead, it works.
 				//I guess text field creates a different TextFormat object.
-				var isFormatDifferent:Boolean = this._previousTextFormat != this._currentTextFormat;
+				if(this._currentTextFormat === this._fontStylesTextFormat)
+				{
+					isFormatDifferent = this._previousStarlingTextFormat !== this._currentStarlingTextFormat;
+				}
+				else
+				{
+					isFormatDifferent = this._previousTextFormat !== this._currentTextFormat;
+				}
+				this._previousStarlingTextFormat = this._currentStarlingTextFormat;
 				this._previousTextFormat = this._currentTextFormat;
+			}
+			else
+			{
+				//for measurement
+				isFormatDifferent = true;
 			}
 			textField.defaultTextFormat = this._currentTextFormat;
 
@@ -2016,14 +2040,17 @@ package feathers.controls.text
 			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
 				this.isInvalid(INVALIDATION_FLAG_STATE))
 			{
-				var fontStylesFormat:starling.text.TextFormat;
 				if(this._fontStyles !== null)
 				{
-					fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+					this._currentStarlingTextFormat = this._fontStyles.getTextFormatForTarget(this);
 				}
-				if(fontStylesFormat !== null)
+				else
 				{
-					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+					this._currentStarlingTextFormat = null;
+				}
+				if(this._currentStarlingTextFormat !== null)
+				{
+					this._fontStylesTextFormat = this._currentStarlingTextFormat.toNativeFormat(this._fontStylesTextFormat);
 				}
 				else if(this._fontStylesTextFormat === null)
 				{
