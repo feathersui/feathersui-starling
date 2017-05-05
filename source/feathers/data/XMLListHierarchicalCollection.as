@@ -493,14 +493,7 @@ package feathers.data
 			var location:Vector.<int> = this.getItemLocation(item);
 			if(location !== null)
 			{
-				//this is hacky. a future version probably won't use rest args.
-				var locationAsArray:Array = [];
-				var indexCount:int = location.length;
-				for(var i:int = 0; i < indexCount; i++)
-				{
-					locationAsArray[i] = location[i];
-				}
-				this.removeItemAt.apply(this, locationAsArray);
+				this.removeItemAtLocation(location);
 			}
 		}
 
