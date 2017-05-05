@@ -248,9 +248,9 @@ package feathers.data
 		 */
 		public function set data(value:Object):void
 		{
-			if(!(value is Array))
+			if(!(value is XMLList))
 			{
-				throw new ArgumentError("ArrayCollection data must be of type Array.");
+				throw new ArgumentError("XMLListCollection data must be of type XMLList.");
 			}
 			this.xmlListData = value as XMLList;
 		}
