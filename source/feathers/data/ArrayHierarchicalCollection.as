@@ -309,14 +309,17 @@ package feathers.data
 		public function getLengthAtLocation(location:Vector.<int> = null):int
 		{
 			var branch:Array = this._arrayData;
-			var indexCount:int = location.length;
-			for(var i:int = 0; i < indexCount; i++)
+			if(location !== null)
 			{
-				var index:int = location[i];
-				branch = branch[index][this._childrenField] as Array;
-				if(branch === null)
+				var indexCount:int = location.length;
+				for(var i:int = 0; i < indexCount; i++)
 				{
-					throw new RangeError("Branch not found at location: " + location);
+					var index:int = location[i];
+					branch = branch[index][this._childrenField] as Array;
+					if(branch === null)
+					{
+						throw new RangeError("Branch not found at location: " + location);
+					}
 				}
 			}
 			return branch.length;

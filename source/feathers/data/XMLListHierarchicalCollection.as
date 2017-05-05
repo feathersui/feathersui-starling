@@ -289,13 +289,15 @@ package feathers.data
 		public function getLengthAtLocation(location:Vector.<int> = null):int
 		{
 			var branch:XMLList = this._xmlListData;
-			var indexCount:int = location.length;
-			for(var i:int = 0; i < indexCount; i++)
+			if(location !== null)
 			{
-				var index:int = location[i];
-				branch = branch[index].elements();
+				var indexCount:int = location.length;
+				for(var i:int = 0; i < indexCount; i++)
+				{
+					var index:int = location[i];
+					branch = branch[index].elements();
+				}
 			}
-
 			return branch.length();
 		}
 
