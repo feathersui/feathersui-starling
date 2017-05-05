@@ -41,6 +41,30 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testGetLength():void
+		{
+			var length:int = this._collection.getLength();
+			Assert.assertStrictlyEquals("XMLListHierarchicalCollection: getLengthAtLocation() returned incorrect length",
+				4, length);
+		}
+
+		[Test]
+		public function testGetLengthNested():void
+		{
+			var length:int = this._collection.getLength(3);
+			Assert.assertStrictlyEquals("XMLListHierarchicalCollection: getLengthAtLocation() returned incorrect length",
+				2, length);
+		}
+
+		[Test]
+		public function testGetLengthAtLocationWithNull():void
+		{
+			var length:int = this._collection.getLengthAtLocation();
+			Assert.assertStrictlyEquals("XMLListHierarchicalCollection: getLengthAtLocation() returned incorrect length",
+				4, length);
+		}
+
+		[Test]
 		public function testGetItemAt():void
 		{
 			var item:XML = this._collection.getItemAt(1) as XML;

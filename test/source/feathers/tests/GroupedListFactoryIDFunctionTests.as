@@ -5,7 +5,7 @@ package feathers.tests
 	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.core.IFeathersControl;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.events.FeathersEventType;
 
 	import flash.utils.Dictionary;
@@ -30,7 +30,7 @@ package feathers.tests
 			this._itemRendererMap = new Dictionary(true);
 
 			this._list = new GroupedList();
-			this._list.dataProvider = new HierarchicalCollection(
+			this._list.dataProvider = new ArrayHierarchicalCollection(
 			[	
 				{
 					header: { label: "Group A" },

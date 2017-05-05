@@ -3,7 +3,7 @@ package feathers.tests
 	import feathers.controls.Tree;
 	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import starling.display.Quad;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import org.flexunit.Assert;
 	import starling.events.Event;
 	import flash.geom.Point;
@@ -21,7 +21,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._tree = new Tree();
-			this._tree.dataProvider = new HierarchicalCollection(
+			this._tree.dataProvider = new ArrayHierarchicalCollection(
 			[
 				{
 					label: "A",
