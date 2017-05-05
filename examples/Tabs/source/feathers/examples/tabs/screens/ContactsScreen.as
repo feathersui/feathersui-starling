@@ -46,7 +46,7 @@ package feathers.examples.tabs.screens
 			this._list.itemRendererFactory = this.createContactItemRenderer;
 			this.addChild(this._list);
 
-			this._list.dataProvider = new HierarchicalCollection(
+			this._list.dataProvider = new ArrayHierarchicalCollection(
 			[
 				{
 					header: "A",

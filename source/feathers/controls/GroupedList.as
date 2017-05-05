@@ -339,7 +339,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:GroupedList = new GroupedList();
 	 * 
-	 * list.dataProvider = new HierarchicalCollection(
+	 * list.dataProvider = new ArrayHierarchicalCollection(
 	 * [
 	 *     {
 	 *         header: "Dairy",

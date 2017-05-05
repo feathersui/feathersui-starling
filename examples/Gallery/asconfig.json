@@ -1,0 +1,15 @@
+{
+	"config": "airmobile",
+	"application": "source/Gallery-app.xml",
+	"compilerOptions": {
+		"output": "bin/Gallery.swf",
+		"source-path": [
+			"../../source",
+			"../../third-party/starling",
+			"../../themes/MetalWorksMobileTheme/source"
+		]
+	},
+	"files": [
+		"source/Gallery.as"
+	]
+}

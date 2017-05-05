@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+	<script type="text/javascript">
+		swfobject.registerObject("example", "19.0.0", "expressInstall.swf");
+	</script>
+</head>
+<body>
+	<div>	
+		<object id="example" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="960" height="640">
+			<param name="movie" value="TransitionsExplorer.swf" />
+			<param name="wmode" value="direct" />
+			<param name="bgcolor" value="#000000" />
+			<!--[if !IE]>-->
+			<object type="application/x-shockwave-flash" data="TransitionsExplorer.swf" wmode="direct" bgcolor="#000000" width="960" height="640">
+			<!--<![endif]-->
+			<div>
+				<p>Please <a href="http://www.adobe.com/go/getflashplayer">activate Adobe Flash Player</a> to view this example.</p>
+			</div>
+			<!--[if !IE]>-->
+			</object>
+			<!--<![endif]-->
+		</object>
+	</div>
+</body>
+</html>

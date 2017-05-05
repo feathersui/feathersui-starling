@@ -295,7 +295,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * tree.dataProvider = new HierarchicalCollection(
+		 * tree.dataProvider = new ArrayHierarchicalCollection(
 		 * [
 		 * ]);</listing>
 		 *

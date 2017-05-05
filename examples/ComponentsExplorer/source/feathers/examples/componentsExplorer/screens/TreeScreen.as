@@ -4,7 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Tree;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -82,7 +82,7 @@ package feathers.examples.componentsExplorer.screens
 			];
 			
 			this._tree = new Tree();
-			this._tree.dataProvider = new HierarchicalCollection(data);
+			this._tree.dataProvider = new ArrayHierarchicalCollection(data);
 			this._tree.typicalItem = { text: "Item 1000" };
 			//optimization: since this tree fills the entire screen, there's no
 			//need for clipping. clipping should not be disabled if there's a

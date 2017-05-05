@@ -8,7 +8,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ArrayCollection;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -192,7 +192,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list = new GroupedList();
 			this._list.styleNameList.add(GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
 			this._list.isSelectable = false;
-			this._list.dataProvider = new HierarchicalCollection(
+			this._list.dataProvider = new ArrayHierarchicalCollection(
 			[
 				{
 					header: "Layout",

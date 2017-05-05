@@ -1,0 +1,15 @@
+{
+	"config": "airmobile",
+	"application": "source/Tabs-app.xml",
+	"compilerOptions": {
+		"output": "output/Tabs.swf",
+		"source-path": [
+			"../../source",
+			"../../third-party/starling",
+			"../../themes/MetalWorksMobileTheme/source"
+		]
+	},
+	"files": [
+		"source/Tabs.as"
+	]
+}
