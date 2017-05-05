@@ -134,6 +134,8 @@ package
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
 	import feathers.tests.XMLListCollectionTests;
+	import feathers.tests.XMLListHierarchicalCollectionTests;
+	import feathers.tests.XMLListInsertAtTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -296,6 +298,7 @@ package
 				VectorCollectionTests,
 				XMLListCollectionTests,
 				HierarchicalCollectionTests,
+				XMLListHierarchicalCollectionTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,
@@ -338,6 +341,7 @@ package
 				BottomDrawerPopUpContentManagerTests,
 				VerticalCenteredPopUpContentManagerTests,
 				CalloutPopUpContentManagerTests,
+				XMLListInsertAtTests,
 			]);
 		}
 
