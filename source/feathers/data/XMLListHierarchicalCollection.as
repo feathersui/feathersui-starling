@@ -378,37 +378,6 @@ package feathers.data
 		}
 
 		/**
-		 * @private
-		 */
-		protected function findItemInBranch(branch:XMLList, item:XML, result:Vector.<int>):Boolean
-		{
-			var branchLength:int = branch.length();
-			var insertIndex:int = result.length;
-			for(var i:int = 0; i < branchLength; i++)
-			{
-				var branchItem:XML = branch[i] as XML;
-				//don't use strict equality here or it may not be possible to
-				//find items that were added
-				if(branchItem == item)
-				{
-					result[insertIndex] = i;
-					return true;
-				}
-				if(this.isBranch(branchItem))
-				{
-					result[insertIndex] = i;
-					var isFound:Boolean = this.findItemInBranch(branchItem.elements(), item, result);
-					if(isFound)
-					{
-						return true;
-					}
-					result.pop();
-				}
-			}
-			return false;
-		}
-
-		/**
 		 * @copy feathers.data.IHierarchicalCollection#addItemAt()
 		 *
 		 * @see #addItemAtLocation()
@@ -635,6 +604,37 @@ package feathers.data
 				}
 				path.length--;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findItemInBranch(branch:XMLList, item:XML, result:Vector.<int>):Boolean
+		{
+			var branchLength:int = branch.length();
+			var insertIndex:int = result.length;
+			for(var i:int = 0; i < branchLength; i++)
+			{
+				var branchItem:XML = branch[i] as XML;
+				//don't use strict equality here or it may not be possible to
+				//find items that were added
+				if(branchItem == item)
+				{
+					result[insertIndex] = i;
+					return true;
+				}
+				if(this.isBranch(branchItem))
+				{
+					result[insertIndex] = i;
+					var isFound:Boolean = this.findItemInBranch(branchItem.elements(), item, result);
+					if(isFound)
+					{
+						return true;
+					}
+					result.pop();
+				}
+			}
+			return false;
 		}
 	}
 }
