@@ -190,6 +190,9 @@ package feathers.data
 	 */
 	public class HierarchicalCollection extends EventDispatcher implements IHierarchicalCollection
 	{
+		/**
+		 * Constructor.
+		 */
 		public function HierarchicalCollection(data:Object = null)
 		{
 			if(!data)

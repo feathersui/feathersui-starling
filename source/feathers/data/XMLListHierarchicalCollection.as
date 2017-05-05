@@ -191,6 +191,9 @@ package feathers.data
 	 */
 	public class XMLListHierarchicalCollection extends EventDispatcher implements IHierarchicalCollection
 	{
+		/**
+		 * Constructor.
+		 */
 		public function XMLListHierarchicalCollection(xmlListData:XMLList = null)
 		{
 			if(xmlListData === null)
