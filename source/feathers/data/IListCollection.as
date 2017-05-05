@@ -10,7 +10,7 @@ package feathers.data
 	import feathers.core.IFeathersEventDispatcher;
 
 	/**
-	 * Dispatched when the underlying data source changes and the ui will
+	 * Dispatched when the underlying data source changes and components will
 	 * need to redraw the data.
 	 *
 	 * <p>The properties of the event object have the following values:</p>

@@ -10,11 +10,12 @@ package feathers.data
 	import starling.events.EventDispatcher;
 	import starling.events.Event;
 	import feathers.events.CollectionEventType;
+	import feathers.utils.xml.xmlListInsertAt;
 
 	[Exclude(name="data",kind="property")]
 
 	/**
-	 * Dispatched when the underlying data source changes and the ui will
+	 * Dispatched when the underlying data source changes and components will
 	 * need to redraw the data.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -191,9 +192,13 @@ package feathers.data
 		/**
 		 * Constructor.
 		 */
-		public function XMLListCollection(data:XMLList)
+		public function XMLListCollection(data:XMLList = null)
 		{
-			this.xmlListData = data;
+			if(xmlListData === null)
+			{
+				xmlListData = new XMLList();
+			}
+			this._xmlListData = data;
 		}
 
 		/**
@@ -427,7 +432,7 @@ package feathers.data
 					unfilteredIndex = this._xmlListData.length();
 				}
 				//always add to the original data
-				this.xmlListInsertAt(unfilteredIndex, item);
+				this._xmlListData = xmlListInsertAt(this._xmlListData, unfilteredIndex, item as XML);
 				//but check if the item should be in the filtered data
 				var includeItem:Boolean = true;
 				if(this._filterFunction !== null)
@@ -444,7 +449,7 @@ package feathers.data
 			}
 			else
 			{
-				this.xmlListInsertAt(index, item);
+				this._xmlListData = xmlListInsertAt(this._xmlListData, index, item as XML);
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 			}
@@ -597,7 +602,7 @@ package feathers.data
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this.xmlListInsertAt(currentIndex, item);
+				this._xmlListData = xmlListInsertAt(this._xmlListData, currentIndex, item as XML);
 				currentIndex++;
 			}
 		}
@@ -669,29 +674,6 @@ package feathers.data
 				var item:Object = this._xmlListData[i];
 				disposeItem(item);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function xmlListInsertAt(index:int, item:Object):void
-		{
-			var listLength:int = this._xmlListData.length();
-			//we can't use insertChildAfter() or insertChildAfter() directly on
-			//the XMLList, so we add it to an XML and insert there instead
-			var wrapper:XML = <wrapper/>;
-			wrapper.appendChild(this._xmlListData);
-			if(index === listLength)
-			{
-				var lastItem:XML = this._xmlListData[index - 1];
-				wrapper.insertChildAfter(lastItem, item);
-			}
-			else
-			{
-				var currentItem:XML = this._xmlListData[index];
-				wrapper.insertChildBefore(currentItem, item);
-			}
-			this._xmlListData = wrapper.elements();
 		}
 
 		/**

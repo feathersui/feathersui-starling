@@ -15,7 +15,7 @@ package feathers.data
 	[Exclude(name="data",kind="property")]
 
 	/**
-	 * Dispatched when the underlying data source changes and the ui will
+	 * Dispatched when the underlying data source changes and components will
 	 * need to redraw the data.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -198,7 +198,7 @@ package feathers.data
 			{
 				data = new <*>[];
 			}
-			this.vectorData = data as Vector.<*>;
+			this._vectorData = data as Vector.<*>;
 		}
 
 		/**
