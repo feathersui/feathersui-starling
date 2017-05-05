@@ -227,6 +227,28 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
+		[Deprecated(replacement="xmlListData",since="3.3.0")]
+		/**
+		 * @private
+		 */
+		public function get data():Object
+		{
+			return this.xmlListData;
+		}
+
+		[Deprecated(replacement="xmlListData",since="3.3.0")]
+		/**
+		 * @private
+		 */
+		public function set data(value:Object):void
+		{
+			if(!(value is XMLList))
+			{
+				throw new ArgumentError("XMLListHierarchicalCollection data must be of type XMLList.");
+			}
+			this.xmlListData = value as XMLList;
+		}
+
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#isBranch()
 		 */
