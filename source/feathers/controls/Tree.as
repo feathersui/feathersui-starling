@@ -231,6 +231,50 @@ package feathers.controls
 	 * Displays a hierarchical tree of items. Supports scrolling, custom item
 	 * renderers, and custom layouts.
 	 *
+	 * <p>The following example creates a tree, gives it a data provider, and
+	 * tells the item renderer how to interpret the data:</p>
+	 *
+	 * <listing version="3.0">
+	 * var tree:Tree = new Tree();
+	 * 
+	 * tree.dataProvider = new ArrayHierarchicalCollection(
+	 * [
+	 *     {
+	 *         text: "Node 1",
+	 *         children:
+	 *         [
+	 *             {
+	 *                 text: "Node 1A",
+	 *                 children:
+	 *                 [
+	 *                     { text: "Node 1A-I" },
+	 *                     { text: "Node 1A-II" },
+	 *                 ]
+	 *             },
+	 *             { text: "Node 1B" },
+	 *         ]
+	 *     },
+	 *     { text: "Node 2" },
+	 *     {
+	 *         text: "Node 3",
+	 *         children:
+	 *         [
+	 *             { text: "Node 4A" },
+	 *             { text: "Node 4B" },
+	 *             { text: "Node 4C" },
+	 *         ]
+	 *     }
+	 * ]);
+	 * 
+	 * tree.itemRendererFactory = function():ITreeItemRenderer
+	 * {
+	 *     var itemRenderer:DefaultTreeItemRenderer = new DefaultTreeItemRenderer();
+	 *     itemRenderer.labelField = "text";
+	 *     return itemRenderer;
+	 * };
+	 * 
+	 * this.addChild( tree );</listing>
+	 *
 	 * @see ../../../help/tree.html How to use the Feathers Tree component
 	 * @see ../../../help/default-item-renderers.html How to use the Feathers default item renderer
 	 * @see ../../../help/item-renderers.html Creating custom item renderers for the Feathers Tree component
@@ -294,15 +338,64 @@ package feathers.controls
 		 * <p>The following example passes in a data provider and tells the item
 		 * renderer how to interpret the data:</p>
 		 *
-		 * <listing version="3.0">
+		 * <listing version="3.0"> 
 		 * tree.dataProvider = new ArrayHierarchicalCollection(
 		 * [
-		 * ]);</listing>
+		 *     {
+		 *         text: "Node 1",
+		 *         children:
+		 *         [
+		 *             {
+		 *                 text: "Node 1A",
+		 *                 children:
+		 *                 [
+		 *                     { text: "Node 1A-I" },
+		 *                     { text: "Node 1A-II" },
+		 *                 ]
+		 *             },
+		 *             { text: "Node 1B" },
+		 *         ]
+		 *     },
+		 *     { text: "Node 2" },
+		 *     {
+		 *         text: "Node 3",
+		 *         children:
+		 *         [
+		 *             { text: "Node 4A" },
+		 *             { text: "Node 4B" },
+		 *             { text: "Node 4C" },
+		 *         ]
+		 *     }
+		 * ]);
+		 * 
+		 * tree.itemRendererFactory = function():ITreeItemRenderer
+		 * {
+		 *     var itemRenderer:DefaultTreeItemRenderer = new DefaultTreeItemRenderer();
+		 *     itemRenderer.labelField = "text";
+		 *     return itemRenderer;
+		 * };</listing>
+		 *
+		 * <p><em>Warning:</em> A tree's data provider cannot contain duplicate
+		 * items. To display the same item in multiple item renderers, you must
+		 * create separate objects with the same properties. This limitation
+		 * exists because it significantly improves performance.</p>
+		 *
+		 * <p><em>Warning:</em> If the data provider contains display objects,
+		 * concrete textures, or anything that needs to be disposed, those
+		 * objects will not be automatically disposed when the list is disposed.
+		 * Similar to how <code>starling.display.Image</code> cannot
+		 * automatically dispose its texture because the texture may be used
+		 * by other display objects, a list cannot dispose its data provider
+		 * because the data provider may be used by other lists. See the
+		 * <code>dispose()</code> function on <code>IHierarchicalCollection</code> to
+		 * see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.data.HierarchicalCollection
-		 * @see feathers.data.IHierarchicalCollectionDataDescriptor
+		 * @see feathers.data.IHierarchicalCollection#dispose()
+		 * @see feathers.data.ArrayHierarchicalCollection
+		 * @see feathers.data.VectorHierarchicalCollection
+		 * @see feathers.data.XMLListHierarchicalCollection
 		 */
 		public function get dataProvider():IHierarchicalCollection
 		{
@@ -503,13 +596,6 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * tree.itemRendererType = CustomItemRendererClass;</listing>
 		 *
-		 * <p>The first item and last item in a group may optionally use
-		 * different item renderer types, if desired. Use the
-		 * <code>firstItemRendererType</code> and <code>lastItemRendererType</code>,
-		 * respectively. Additionally, if a group contains only one item, it may
-		 * also have a different type. Use the <code>singleItemRendererType</code>.
-		 * Finally, factories for each of these types may also be customized.</p>
-		 *
 		 * @default feathers.controls.renderers.DefaultTreeItemRenderer
 		 *
 		 * @see feathers.controls.renderers.ITreeItemRenderer
@@ -565,12 +651,6 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
-		 * <p>The first item and last item in a group may optionally use
-		 * different item renderer factories, if desired. Use the
-		 * <code>firstItemRendererFactory</code> and <code>lastItemRendererFactory</code>,
-		 * respectively. Additionally, if a group contains only one item, it may
-		 * also have a different factory. Use the <code>singleItemRendererFactory</code>.</p>
-		 *
 		 * @default null
 		 *
 		 * @see feathers.controls.renderers.ITreeItemRenderer
@@ -613,7 +693,7 @@ package feathers.controls
 		 *
 		 * <pre>function(item:Object):String</pre>
 		 *
-		 * <pre>function(item:Object, groupIndex:int, itemIndex:int):String</pre>
+		 * <pre>function(item:Object, location:Vector.&lt;int&gt;):String</pre>
 		 *
 		 * <p>The following example provides a <code>factoryIDFunction</code>:</p>
 		 *
@@ -629,9 +709,9 @@ package feathers.controls
 		 * tree.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
 		 * tree.setItemRendererFactoryWithID( "first-item", firstItemFactory );
 		 *
-		 * tree.factoryIDFunction = function( item:Object, groupIndex:int, itemIndex:int ):String
+		 * tree.factoryIDFunction = function( item:Object, location:Vector.&lt;int&gt; ):String
 		 * {
-		 *     if(index === 0)
+		 *     if(location.length === 1 &amp;&amp; location[0] === 0)
 		 *     {
 		 *         return "first-item";
 		 *     }

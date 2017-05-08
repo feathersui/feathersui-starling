@@ -212,10 +212,10 @@ package feathers.controls
 	 * 
 	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
-	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-	 *     renderer.labelField = "text";
-	 *     renderer.iconSourceField = "thumbnail";
-	 *     return renderer;
+	 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     itemRenderer.labelField = "text";
+	 *     itemRenderer.iconSourceField = "thumbnail";
+	 *     return itemRenderer;
 	 * };
 	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
@@ -584,6 +584,7 @@ package feathers.controls
 		 * @see feathers.data.IListCollection#dispose()
 		 * @see feathers.data.ArrayCollection
 		 * @see feathers.data.VectorCollection
+		 * @see feathers.data.XMLListCollection
 		 */
 		public function get dataProvider():IListCollection
 		{

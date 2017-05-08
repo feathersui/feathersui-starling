@@ -821,7 +821,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new HierarchicalCollection(
+		 * list.dataProvider = new ArrayHierarchicalCollection(
 		 * [
 		 *     {
 		 *     	   header: "Dairy",
@@ -857,22 +857,6 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
-		 * <p>By default, a <code>HierarchicalCollection</code> accepts an
-		 * <code>Array</code> containing objects for each group. By default, the
-		 * <code>header</code> and <code>footer</code> fields in each group will
-		 * contain data to pass to the header and footer renderers of the
-		 * grouped list. The <code>children</code> field of each group should be
-		 * be an <code>Array</code> of data where each item is passed to an item
-		 * renderer.</p>
-		 *
-		 * <p>A custom <em>data descriptor</em> may be passed to the
-		 * <code>HierarchicalCollection</code> to tell it to parse the data
-		 * source differently than the default behavior described above. For
-		 * instance, you might want to use <code>Vector</code> instead of
-		 * <code>Array</code> or structure the data differently. Custom data
-		 * descriptors may be implemented with the
-		 * <code>IHierarchicalCollectionDataDescriptor</code> interface.</p>
-		 *
 		 * <p><em>Warning:</em> A grouped list's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item renderers,
 		 * you must create separate objects with the same properties. This
@@ -885,13 +869,14 @@ package feathers.controls
 		 * automatically dispose its texture because the texture may be used
 		 * by other display objects, a list cannot dispose its data provider
 		 * because the data provider may be used by other lists. See the
-		 * <code>dispose()</code> function on <code>HierarchicalCollection</code>
+		 * <code>dispose()</code> function on <code>IHierarchicalCollection</code>
 		 * to see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.data.HierarchicalCollection
-		 * @see feathers.data.IHierarchicalCollectionDataDescriptor
+		 * @see feathers.data.ArrayHierarchicalCollection
+		 * @see feathers.data.VectorHierarchicalCollection
+		 * @see feathers.data.XMLListHierarchicalCollection
 		 */
 		public function get dataProvider():IHierarchicalCollection
 		{

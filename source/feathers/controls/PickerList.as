@@ -414,6 +414,7 @@ package feathers.controls
 		 * 
 		 * @see feathers.data.ArrayCollection
 		 * @see feathers.data.VectorCollection
+		 * @see feathers.data.XMLListCollection
 		 */
 		public function get dataProvider():IListCollection
 		{

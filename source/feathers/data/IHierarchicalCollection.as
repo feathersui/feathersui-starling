@@ -115,7 +115,7 @@ package feathers.data
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
 	 * <tr><td><code>data</code></td><td>The index path of the item that has
-	 * been re[;aced. It is of type <code>Array</code> and contains objects of
+	 * been replaced. It is of type <code>Array</code> and contains objects of
 	 * type <code>int</code>.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
@@ -129,7 +129,7 @@ package feathers.data
 
 	/**
 	 * Dispatched when the <code>updateItemAt()</code> function is called on the
-	 * <code>HierarchicalCollection</code>.
+	 * hierarchical collection.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -156,7 +156,7 @@ package feathers.data
 
 	/**
 	 * Dispatched when the <code>updateAll()</code> function is called on the
-	 * <code>HierarchicalCollection</code>.
+	 * hierarchical collection.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -220,8 +220,8 @@ package feathers.data
 
 		/**
 		 * Call <code>updateItemAt()</code> to manually inform any component
-		 * rendering the <code>HierarchicalCollection</code> that the properties
-		 * of a single item in the collection have changed, and that any views
+		 * rendering the hierarchical collection that the properties of a
+		 * single item in the collection have changed, and that any views
 		 * associated with the item should be updated. The collection will
 		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
 		 *
@@ -235,9 +235,9 @@ package feathers.data
 
 		/**
 		 * Call <code>updateAll()</code> to manually inform any component
-		 * rendering the <code>HierarchicalCollection</code> that the properties
-		 * of all, or many, of the collection's items have changed, and that any
-		 * rendered views should be updated. The collection will dispatch the
+		 * rendering the hierarchical collection that the properties of all, or
+		 * many, of the collection's items have changed, and that any rendered
+		 * views should be updated. The collection will dispatch the
 		 * <code>CollectionEventType.UPDATE_ALL</code> event.
 		 *
 		 * <p>Alternatively, the item can dispatch an event when one of its
