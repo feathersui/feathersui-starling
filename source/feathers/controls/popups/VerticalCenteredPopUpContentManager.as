@@ -328,13 +328,18 @@ package feathers.controls.popups
 		protected function layout():void
 		{
 			var stage:Stage = Starling.current.stage;
-			var maxWidth:Number = stage.stageWidth;
-			if(maxWidth > stage.stageHeight)
+			var point:Point = Pool.getPoint(stage.stageWidth, stage.stageHeight);
+			PopUpManager.root.globalToLocal(point, point);
+			var parentWidth:Number = point.x;
+			var parentHeight:Number = point.y;
+			Pool.putPoint(point);
+			var maxWidth:Number = parentWidth;
+			if(maxWidth > parentHeight)
 			{
-				maxWidth = stage.stageHeight;
+				maxWidth = parentHeight;
 			}
 			maxWidth -= (this.marginLeft + this.marginRight);
-			var maxHeight:Number = stage.stageHeight - this.marginTop - this.marginBottom;
+			var maxHeight:Number = parentHeight - this.marginTop - this.marginBottom;
 			var hasSetBounds:Boolean = false;
 			if(this.content is IFeathersControl)
 			{
@@ -365,8 +370,8 @@ package feathers.controls.popups
 				}
 			}
 			//round to the nearest pixel to avoid unnecessary smoothing
-			this.content.x = Math.round((stage.stageWidth - this.content.width) / 2);
-			this.content.y = Math.round((stage.stageHeight - this.content.height) / 2);
+			this.content.x = Math.round((parentWidth - this.content.width) / 2);
+			this.content.y = Math.round((parentHeight - this.content.height) / 2);
 		}
 
 		/**
