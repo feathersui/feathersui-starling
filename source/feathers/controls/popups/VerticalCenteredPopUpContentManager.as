@@ -12,9 +12,12 @@ package feathers.controls.popups
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
@@ -257,6 +260,13 @@ package feathers.controls.popups
 			{
 				throw new IllegalOperationError("Pop-up content is already open. Close the previous content before opening new content.");
 			}
+
+			//make sure the content is scaled the same as the source
+			var matrix:Matrix = Pool.getMatrix();
+			source.getTransformationMatrix(PopUpManager.root, matrix);
+			content.scaleX = matrixToScaleX(matrix)
+			content.scaleY = matrixToScaleY(matrix);
+			Pool.putMatrix(matrix);
 
 			this.content = content;
 			PopUpManager.addPopUp(this.content, true, false, this._overlayFactory);

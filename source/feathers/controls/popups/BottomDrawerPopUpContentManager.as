@@ -14,9 +14,12 @@ package feathers.controls.popups
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
@@ -329,6 +332,14 @@ package feathers.controls.popups
 			this.panel.headerFactory = headerFactory;
 			this.panel.touchable = false;
 			this.panel.addChild(content);
+
+			//make sure the content is scaled the same as the source
+			var matrix:Matrix = Pool.getMatrix();
+			source.getTransformationMatrix(PopUpManager.root, matrix);
+			panel.scaleX = matrixToScaleX(matrix)
+			panel.scaleY = matrixToScaleY(matrix);
+			Pool.putMatrix(matrix);
+
 			PopUpManager.addPopUp(this.panel, true, false, this._overlayFactory);
 			this.layout();
 			

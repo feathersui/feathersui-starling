@@ -8,13 +8,18 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.popups
 {
 	import feathers.controls.Callout;
+	import feathers.core.PopUpManager;
 	import feathers.layout.RelativePosition;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.errors.IllegalOperationError;
+	import flash.geom.Matrix;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the pop-up content opens.
@@ -258,8 +263,31 @@ package feathers.controls.popups
 				throw new IllegalOperationError("Pop-up content is already open. Close the previous content before opening new content.");
 			}
 
+			var scaledCalloutFactory:Function = this.calloutFactory;
+			//make sure the content is scaled the same as the source
+			var matrix:Matrix = Pool.getMatrix();
+			source.getTransformationMatrix(PopUpManager.root, matrix);
+			var contentScaleX:Number = matrixToScaleX(matrix)
+			var contentScaleY:Number = matrixToScaleY(matrix);
+			Pool.putMatrix(matrix);
+			if(contentScaleX !== 1 || contentScaleY !== 1)
+			{
+				var originalCalloutFactory:Function = this.calloutFactory;
+				if(originalCalloutFactory === null)
+				{
+					originalCalloutFactory = Callout.calloutFactory;
+				}
+				scaledCalloutFactory = function():Callout
+				{
+					var callout:Callout = originalCalloutFactory();
+					callout.scaleX = contentScaleX;
+					callout.scaleY = contentScaleY;
+					return callout;
+				}
+			}
+
 			this.content = content;
-			this.callout = Callout.show(content, source, this.supportedPositions, this.isModal, this.calloutFactory, this._overlayFactory);
+			this.callout = Callout.show(content, source, this.supportedPositions, this.isModal, scaledCalloutFactory, this._overlayFactory);
 			this.callout.addEventListener(Event.REMOVED_FROM_STAGE, callout_removedFromStageHandler);
 			this.dispatchEventWith(Event.OPEN);
 		}
