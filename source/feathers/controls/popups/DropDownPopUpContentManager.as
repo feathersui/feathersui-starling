@@ -137,6 +137,8 @@ package feathers.controls.popups
 
 		/**
 		 * @private
+		 * Stores the same value as the content property, but the content
+		 * property may be set to null before the animation ends.
 		 */
 		protected var _openCloseTweenTarget:DisplayObject;
 
@@ -392,6 +394,8 @@ package feathers.controls.popups
 			if(this._openCloseDuration > 0)
 			{
 				this._delegate = new RenderDelegate(content);
+				this._delegate.scaleX = content.scaleX;
+				this._delegate.scaleY = content.scaleY;
 				//temporarily hide the content while the delegate is displayed
 				content.visible = false;
 				PopUpManager.addPopUp(this._delegate, false, false);
@@ -404,7 +408,9 @@ package feathers.controls.popups
 				{
 					this._delegate.y = content.y - content.height;
 				}
-				var mask:Quad = new Quad(content.width, content.height, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				mask.width = content.width / content.scaleX;
+				mask.height = 0;
 				this._delegate.mask = mask;
 				mask.height = 0;
 				this._openCloseTween = new Tween(this._delegate, this._openCloseDuration, this._openCloseEase);
@@ -460,12 +466,14 @@ package feathers.controls.popups
 			if(this._openCloseDuration > 0)
 			{
 				this._delegate = new RenderDelegate(content);
+				this._delegate.scaleX = content.scaleX;
+				this._delegate.scaleY = content.scaleY;
 				PopUpManager.addPopUp(this._delegate, false, false);
 				this._delegate.x = content.x;
 				this._delegate.y = content.y;
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
-				mask.width = content.width;
-				mask.height = content.height;
+				mask.width = content.width / content.scaleX;
+				mask.height = content.height / content.scaleY;
 				this._delegate.mask = mask;
 				this._openCloseTween = new Tween(this._delegate, this._openCloseDuration, this._openCloseEase);
 				this._openCloseTweenTarget = content;
@@ -649,13 +657,13 @@ package feathers.controls.popups
 			var mask:DisplayObject = this._delegate.mask;
 			if(this._actualDirection === RelativePosition.TOP)
 			{
-				mask.height = this._openCloseTweenTarget.height - (this._delegate.y - this._openCloseTweenTarget.y);
+				mask.height = (this._openCloseTweenTarget.height - (this._delegate.y - this._openCloseTweenTarget.y)) / this._openCloseTweenTarget.scaleY;
 				mask.y = 0;
 			}
 			else
 			{
-				mask.height = this._openCloseTweenTarget.height - (this._openCloseTweenTarget.y - this._delegate.y);
-				mask.y = this._openCloseTweenTarget.height - mask.height;
+				mask.height = (this._openCloseTweenTarget.height - (this._openCloseTweenTarget.y - this._delegate.y)) / this._openCloseTweenTarget.scaleY;
+				mask.y = (this._openCloseTweenTarget.height / this._openCloseTweenTarget.scaleY) - mask.height;
 			}
 		}
 
