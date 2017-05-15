@@ -114,7 +114,7 @@ package feathers.themes
 		protected static const COLOR_TEXT_LIGHT:uint = 0xFFFFFF;
 		protected static const COLOR_TEXT_SELECTED:uint = 0x0083E8;
 		protected static const COLOR_TEXT_DARK_DISABLED:uint = 0x848585;
-		protected static const COLOR_TEXT_SELECTED_DISABLED:uint = 0xC6DFF3;
+		protected static const COLOR_TEXT_SELECTED_DISABLED:uint = 0x96AFC3;
 		protected static const COLOR_TEXT_ACTION_DISABLED:uint = 0xC6DFF3;
 		protected static const COLOR_TEXT_DANGER_DISABLED:uint = 0xF7B4AF;
 		protected static const COLOR_BACKGROUND_LIGHT:uint = 0xDFE2E2;
