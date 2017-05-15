@@ -406,8 +406,8 @@ package feathers.controls.supportClasses
 				{
 					IValidating(item).validate();
 				}
-				var itemX:Number = item.x - item.pivotX;
-				var itemY:Number = item.y - item.pivotY;
+				var itemX:Number = item.x - item.pivotX * item.scaleX;
+				var itemY:Number = item.y - item.pivotY * item.scaleY;
 				var itemMaxX:Number = itemX + item.width;
 				var itemMaxY:Number = itemY + item.height;
 				if(itemX === itemX && //!isNaN
