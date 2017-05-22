@@ -2601,44 +2601,52 @@ package feathers.controls.supportClasses
 
 		private function getFactoryID(item:Object, groupIndex:int, itemIndex:int):String
 		{
-			if(this._factoryIDFunction === null)
+			var factoryID:String = null;
+			if(this._factoryIDFunction !== null)
 			{
-				var groupLength:int = 0;
-				if(this._dataProvider !== null && this._dataProvider.getLengthAtLocation() > 0)
+				if(this._factoryIDFunction.length === 1)
 				{
-					LOCATION_HELPER_VECTOR.length = 1;
-					LOCATION_HELPER_VECTOR[0] = groupIndex;
-					groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
-					LOCATION_HELPER_VECTOR.length = 0;
+					factoryID = this._factoryIDFunction(item);
 				}
-				if(itemIndex === 0)
+				else
 				{
-					if((this._singleItemRendererType !== null ||
-						this._singleItemRendererFactory !== null ||
-						this._customSingleItemRendererStyleName !== null) &&
-						groupLength === 1)
-					{
-						return SINGLE_ITEM_RENDERER_FACTORY_ID;
-					}
-					else if(this._firstItemRendererType !== null || this._firstItemRendererFactory !== null || this._customFirstItemRendererStyleName !== null)
-					{
-						return FIRST_ITEM_RENDERER_FACTORY_ID;
-					}
+					factoryID = this._factoryIDFunction(item, groupIndex, itemIndex);
 				}
-				if((this._lastItemRendererType !== null ||
-					this._lastItemRendererFactory !== null ||
-					this._customLastItemRendererStyleName !== null) &&
-					itemIndex === (groupLength - 1))
-				{
-					return LAST_ITEM_RENDERER_FACTORY_ID;
-				}
-				return null;
 			}
-			if(this._factoryIDFunction.length === 1)
+			if(factoryID !== null)
 			{
-				return this._factoryIDFunction(item);
+				return factoryID;
 			}
-			return this._factoryIDFunction(item, groupIndex, itemIndex);
+			var groupLength:int = 0;
+			if(this._dataProvider !== null && this._dataProvider.getLengthAtLocation() > 0)
+			{
+				LOCATION_HELPER_VECTOR.length = 1;
+				LOCATION_HELPER_VECTOR[0] = groupIndex;
+				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
+				LOCATION_HELPER_VECTOR.length = 0;
+			}
+			if(itemIndex === 0)
+			{
+				if((this._singleItemRendererType !== null ||
+					this._singleItemRendererFactory !== null ||
+					this._customSingleItemRendererStyleName !== null) &&
+					groupLength === 1)
+				{
+					return SINGLE_ITEM_RENDERER_FACTORY_ID;
+				}
+				else if(this._firstItemRendererType !== null || this._firstItemRendererFactory !== null || this._customFirstItemRendererStyleName !== null)
+				{
+					return FIRST_ITEM_RENDERER_FACTORY_ID;
+				}
+			}
+			if((this._lastItemRendererType !== null ||
+				this._lastItemRendererFactory !== null ||
+				this._customLastItemRendererStyleName !== null) &&
+				itemIndex === (groupLength - 1))
+			{
+				return LAST_ITEM_RENDERER_FACTORY_ID;
+			}
+			return null;
 		}
 
 		private function factoryIDToFactory(id:String, groupIndex:int, itemIndex:int):Function

@@ -48,6 +48,14 @@ package feathers.tests
 						{ label: "Four", factory: 0 }
 					]
 				},
+				{
+					header: { label: "Group C" },
+					children:
+					[
+						{ label: "Five", factory: 0 },
+						{ label: "Six", factory: 0 }
+					]
+				},
 			]);
 			this._list.itemRendererFactory = function():DefaultGroupedListItemRenderer
 			{
@@ -212,6 +220,58 @@ package feathers.tests
 			this._list.dispose();
 			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_REMOVE not dispatched for all header renderers after dispose().", groupCount, headerRendererCount);
 			Assert.assertStrictlyEquals("FeathersEventType.RENDERER_REMOVE not dispatched for all item renderers after dispose().", expectedItemRendererCount, itemRendererCount);
+		}
+
+		[Test]
+		public function testFirstItemRendererFactoryWithFactoryIDFunction():void
+		{
+			this._list.firstItemRendererFactory = function():IGroupedListItemRenderer
+			{
+				return new DefaultGroupedListItemRenderer();
+			};
+			this._list.factoryIDFunction = factoryIDFunction;
+			this._list.validate();
+
+			var itemRenderer:IGroupedListItemRenderer = this.getItemRendererAt(0, 0);
+			Assert.assertFalse("First item renderer factoryID incorrect when using factoryIDFunction and firstItemRendererFactory.",
+				itemRenderer.factoryID === null);
+		}
+
+		[Test]
+		public function testLastItemRendererFactoryWithFactoryIDFunction():void
+		{
+			this._list.lastItemRendererFactory = function():IGroupedListItemRenderer
+			{
+				return new DefaultGroupedListItemRenderer();
+			};
+			this._list.factoryIDFunction = factoryIDFunction;
+			this._list.validate();
+
+			//this one should have the ID for the lastItemRendererFactory
+			var itemRenderer:IGroupedListItemRenderer = this.getItemRendererAt(2, 1);
+			Assert.assertFalse("Last item renderer factoryID incorrect when using factoryIDFunction and lastItemRendererFactory (1).",
+				itemRenderer.factoryID === null);
+
+			//a non-null result from factoryIDFunction takes precedence, so
+			//this one should not be from lastItemRendererFactory
+			itemRenderer = this.getItemRendererAt(0, 2);
+			Assert.assertStrictlyEquals("Last item renderer factoryID incorrect when using factoryIDFunction and lastItemRendererFactory (2).",
+				FACTORY_ONE, itemRenderer.factoryID);
+		}
+
+		[Test]
+		public function testSingleItemRendererFactoryWithFactoryIDFunction():void
+		{
+			this._list.singleItemRendererFactory = function():IGroupedListItemRenderer
+			{
+				return new DefaultGroupedListItemRenderer();
+			};
+			this._list.factoryIDFunction = factoryIDFunction;
+			this._list.validate();
+
+			var itemRenderer:IGroupedListItemRenderer = this.getItemRendererAt(1, 0);
+			Assert.assertFalse("Single item renderer factoryID incorrect when using factoryIDFunction and singleItemRendererFactory.",
+				itemRenderer.factoryID === null);
 		}
 
 		private function getItemRendererAt(groupIndex:int, itemIndex:int):IGroupedListItemRenderer
