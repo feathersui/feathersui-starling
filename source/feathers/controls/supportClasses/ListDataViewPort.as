@@ -501,12 +501,25 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			if(this._typicalItemRenderer === null)
+			var itemRenderer:DisplayObject = null;
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
+			{
+				if(this._layoutItems.length > 0)
+				{
+					itemRenderer = this._layoutItems[0] as DisplayObject;
+				}
+			}
+			if(itemRenderer === null)
+			{
+				itemRenderer = this._typicalItemRenderer as DisplayObject;
+			}
+			if(itemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = this._typicalItemRenderer.width;
-			var itemRendererHeight:Number = this._typicalItemRenderer.height;
+			var itemRendererWidth:Number = itemRenderer.width;
+			var itemRendererHeight:Number = itemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
@@ -516,12 +529,25 @@ package feathers.controls.supportClasses
 
 		public function get verticalScrollStep():Number
 		{
-			if(this._typicalItemRenderer === null)
+			var itemRenderer:DisplayObject = null;
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
+			{
+				if(this._layoutItems.length > 0)
+				{
+					itemRenderer = this._layoutItems[0] as DisplayObject;
+				}
+			}
+			if(itemRenderer === null)
+			{
+				itemRenderer = this._typicalItemRenderer as DisplayObject;
+			}
+			if(itemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = this._typicalItemRenderer.width;
-			var itemRendererHeight:Number = this._typicalItemRenderer.height;
+			var itemRendererWidth:Number = itemRenderer.width;
+			var itemRendererHeight:Number = itemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
