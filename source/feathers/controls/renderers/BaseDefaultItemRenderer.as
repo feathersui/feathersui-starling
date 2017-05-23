@@ -3000,7 +3000,7 @@ package feathers.controls.renderers
 		 */
 		public function set skinSourceField(value:String):void
 		{
-			if(this._iconSourceField == value)
+			if(this._skinSourceField == value)
 			{
 				return;
 			}
