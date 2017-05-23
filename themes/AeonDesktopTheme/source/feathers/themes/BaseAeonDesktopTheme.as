@@ -104,6 +104,8 @@ package feathers.themes
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
+	import feathers.controls.Tree;
 
 	/**
 	 * The base class for the "Aeon" theme for desktop Feathers apps. Handles
@@ -568,6 +570,12 @@ package feathers.themes
 		
 		protected var listDrillDownAccessoryTexture:Texture;
 
+		protected var treeBranchOpenIconTexture:Texture;
+		protected var treeBranchClosedIconTexture:Texture;
+		protected var treeLeafIconTexture:Texture;
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
@@ -844,6 +852,12 @@ package feathers.themes
 			this.seekSliderProgressSkinTexture = this.atlas.getTexture("seek-slider-progress-skin0000");
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("drill-down-icon0000");
+
+			this.treeBranchOpenIconTexture = this.atlas.getTexture("tree-branch-open-icon0000");
+			this.treeBranchClosedIconTexture = this.atlas.getTexture("tree-branch-closed-icon0000");
+			this.treeLeafIconTexture = this.atlas.getTexture("tree-leaf-icon0000");
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 		}
 
 		/**
@@ -899,6 +913,7 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListItemRendererStyles);
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderOrFooterRendererStyles;
@@ -1009,6 +1024,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
+
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
 
 			//media controls
 			
@@ -1392,7 +1410,7 @@ package feathers.themes
 
 			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
-			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
 			list.backgroundSkin = backgroundSkin;
 
@@ -1605,7 +1623,7 @@ package feathers.themes
 
 			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
-			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
@@ -2444,6 +2462,35 @@ package feathers.themes
 			thumb.height = this.controlSize;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+
+			tree.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			tree.backgroundSkin = backgroundSkin;
+
+			tree.padding = this.borderSize;
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+			itemRenderer.disclosureOpenIcon = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			itemRenderer.disclosureClosedIcon = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			itemRenderer.branchIcon = new ImageSkin(this.treeBranchClosedIconTexture);
+			itemRenderer.branchOpenIcon = new ImageSkin(this.treeBranchOpenIconTexture);
+			itemRenderer.leafIcon = new ImageSkin(this.treeLeafIconTexture);
 		}
 
 	//-------------------------
