@@ -54,6 +54,11 @@ package feathers.layout
 	public class SlideShowLayout extends EventDispatcher implements IVirtualLayout, ITrimmedVirtualLayout
 	{
 		/**
+		 * @private
+		 */
+		protected static const FUZZY_PAGE_DETECTION:Number = 0.000001;
+
+		/**
 		 * Constructor.
 		 */
 		public function SlideShowLayout()
@@ -411,6 +416,38 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _minimumItemCount:int = 1;
+
+		/**
+		 * If the layout is virtualized, specifies the minimum total number of
+		 * items that will be created, even if some are not currently visible
+		 * in the view port.
+		 * 
+		 * @default 1
+		 *
+		 * @see #useVirtualLayout
+		 */
+		public function get minimumItemCount():int
+		{
+			return this._minimumItemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumItemCount(value:int):void
+		{
+			if(this._minimumItemCount === value)
+			{
+				return;
+			}
+			this._minimumItemCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get requiresLayoutOnScroll():Boolean
@@ -748,18 +785,27 @@ package feathers.layout
 			}
 			if(this._direction === Direction.VERTICAL)
 			{
-				var baseIndex:int = scrollX / width;
+				var baseIndex:int = scrollY / height;
+				var isBetweenPages:Boolean = ((scrollY / height) - baseIndex) > FUZZY_PAGE_DETECTION;
 			}
-			else
+			else //horizontal
 			{
-				baseIndex = scrollY / height;
+				baseIndex = scrollX / width;
+				isBetweenPages = ((scrollX / width) - baseIndex) > FUZZY_PAGE_DETECTION;
 			}
-			var startIndex:int = baseIndex - 1;
+			var extraBeforeCount:int = int(this._minimumItemCount / 2);
+			var startIndex:int = baseIndex - extraBeforeCount;
 			if(startIndex < 0)
 			{
+				extraBeforeCount += startIndex;
 				startIndex = 0;
 			}
-			var endIndex:int = baseIndex + 1;
+			var extraAfterCount:int = this._minimumItemCount - extraBeforeCount;
+			if(!isBetweenPages || this._minimumItemCount > 2)
+			{
+				extraAfterCount--;
+			}
+			var endIndex:int = baseIndex + extraAfterCount;
 			var maxIndex:int = itemCount - 1;
 			if(endIndex > maxIndex)
 			{
