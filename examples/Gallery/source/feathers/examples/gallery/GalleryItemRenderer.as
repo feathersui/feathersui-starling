@@ -34,6 +34,8 @@ package feathers.examples.gallery
 			this.isQuickHitAreaEnabled = true;
 		}
 
+		public var isThumb:Boolean = true;
+
 		/**
 		 * @private
 		 */
@@ -248,7 +250,14 @@ package feathers.examples.gallery
 				if(this._data)
 				{
 					this.image.visible = false;
-					this.image.source = this._data.thumbURL;
+					if(this.isThumb)
+					{
+						this.image.source = this._data.thumbURL;
+					}
+					else
+					{
+						this.image.source = this._data.url;
+					}
 				}
 				else
 				{
