@@ -1165,6 +1165,10 @@ package feathers.controls.renderers
 		 * renderer.itemHasLabel = false;</listing>
 		 *
 		 * @default true
+		 *
+		 * @see #labelField
+		 * @see #labelFunction
+		 * @see #label
 		 */
 		public function get itemHasLabel():Boolean
 		{
@@ -1307,6 +1311,9 @@ package feathers.controls.renderers
 		 * renderer.itemHasSelectable = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see #selectableField
+		 * @see #selectableFunction
 		 */
 		public function get itemHasSelectable():Boolean
 		{
@@ -1342,6 +1349,9 @@ package feathers.controls.renderers
 		 * renderer.itemHasEnabled = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see #enabledField
+		 * @see #enabledFunction
 		 */
 		public function get itemHasEnabled():Boolean
 		{
@@ -3113,6 +3123,7 @@ package feathers.controls.renderers
 		 * @default "selectable"
 		 *
 		 * @see #selectableFunction
+		 * @see #itemHasSelectable
 		 */
 		public function get selectableField():String
 		{
@@ -3171,6 +3182,7 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see #selectableField
+		 * @see #itemHasSelectable
 		 */
 		public function get selectableFunction():Function
 		{
@@ -3216,6 +3228,7 @@ package feathers.controls.renderers
 		 * @default "enabled"
 		 *
 		 * @see #enabledFunction
+		 * @see #itemHasEnabled
 		 */
 		public function get enabledField():String
 		{
@@ -3274,6 +3287,7 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see #enabledField
+		 * @see #itemHasEnabled
 		 */
 		public function get enabledFunction():Function
 		{
