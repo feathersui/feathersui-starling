@@ -11,8 +11,6 @@ package feathers.layout
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import mx.effects.easing.Linear;
-	
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
