@@ -48,7 +48,7 @@ package feathers.core
 		public static function getFocusManagerForStage(stage:Stage):IFocusManager
 		{
 			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage] as Vector.<IFocusManager>;
-			if(!stack)
+			if(stack === null || stack.length === 0)
 			{
 				return null;
 			}
