@@ -8006,41 +8006,47 @@ package feathers.controls
 					return;
 				}
 
-				if(!isFinishingHorizontally && this._isDraggingHorizontally)
+				if(!isFinishingHorizontally)
 				{
-					//take the average for more accuracy
-					var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
-					var velocityCount:int = this._previousVelocityX.length;
-					var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
-					for(var i:int = 0; i < velocityCount; i++)
+					if(this._isDraggingHorizontally)
 					{
-						var weight:Number = VELOCITY_WEIGHTS[i];
-						sum += this._previousVelocityX.shift() * weight;
-						totalWeight += weight;
+						//take the average for more accuracy
+						var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
+						var velocityCount:int = this._previousVelocityX.length;
+						var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
+						for(var i:int = 0; i < velocityCount; i++)
+						{
+							var weight:Number = VELOCITY_WEIGHTS[i];
+							sum += this._previousVelocityX.shift() * weight;
+							totalWeight += weight;
+						}
+						this.throwHorizontally(sum / totalWeight);
 					}
-					this.throwHorizontally(sum / totalWeight);
-				}
-				else
-				{
-					this.hideHorizontalScrollBar();
+					else
+					{
+						this.hideHorizontalScrollBar();
+					}
 				}
 
-				if(!isFinishingVertically && this._isDraggingVertically)
+				if(!isFinishingVertically)
 				{
-					sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
-					velocityCount = this._previousVelocityY.length;
-					totalWeight = CURRENT_VELOCITY_WEIGHT;
-					for(i = 0; i < velocityCount; i++)
+					if(this._isDraggingVertically)
 					{
-						weight = VELOCITY_WEIGHTS[i];
-						sum += this._previousVelocityY.shift() * weight;
-						totalWeight += weight;
+						sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
+						velocityCount = this._previousVelocityY.length;
+						totalWeight = CURRENT_VELOCITY_WEIGHT;
+						for(i = 0; i < velocityCount; i++)
+						{
+							weight = VELOCITY_WEIGHTS[i];
+							sum += this._previousVelocityY.shift() * weight;
+							totalWeight += weight;
+						}
+						this.throwVertically(sum / totalWeight);
 					}
-					this.throwVertically(sum / totalWeight);
-				}
-				else
-				{
-					this.hideVerticalScrollBar();
+					else
+					{
+						this.hideVerticalScrollBar();
+					}
 				}
 			}
 		}
