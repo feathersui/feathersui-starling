@@ -12,6 +12,7 @@ signing/
 .actionScriptProperties
 .flexLibProperties
 .project
+asconfig.json
 .settings/
 bin-debug/
 bin-release/
