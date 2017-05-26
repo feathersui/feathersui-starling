@@ -1,5 +1,6 @@
 package feathers.examples.gallery
 {
+	import feathers.controls.DecelerationRate;
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
@@ -9,12 +10,16 @@ package feathers.examples.gallery
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.gallery.controls.GalleryItemRenderer;
+	import feathers.examples.gallery.controls.ThumbItemRenderer;
+	import feathers.examples.gallery.data.GalleryItem;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.SlideShowLayout;
 	import feathers.layout.VerticalAlign;
+	import feathers.themes.MetalWorksMobileTheme;
 	import feathers.utils.textures.TextureCache;
 
 	import flash.events.Event;
@@ -30,9 +35,6 @@ package feathers.examples.gallery
 
 	public class Main extends LayoutGroup
 	{
-		//used by the extended theme
-		public static const THUMBNAIL_LIST_NAME:String = "thumbnailList";
-
 		private static const FLICKR_URL:String = "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=" + CONFIG::FLICKR_API_KEY + "&format=rest";
 		private static const FLICKR_PHOTO_URL:String = "https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg";
 
@@ -40,7 +42,7 @@ package feathers.examples.gallery
 		{
 			//set up the theme right away!
 			//this is an *extended* version of MetalWorksMobileTheme
-			new GalleryTheme();
+			new MetalWorksMobileTheme();
 			super();
 		}
 
@@ -48,29 +50,28 @@ package feathers.examples.gallery
 		protected var thumbnailList:List;
 		protected var message:Label;
 		protected var apiLoader:URLLoader;
-		protected var fadeTween:Tween;
-		protected var textureCache:TextureCache;
+		protected var thumbnailTextureCache:TextureCache;
 
 		override public function dispose():void
 		{
-			if(this.textureCache)
+			if(this.thumbnailTextureCache)
 			{
-				this.textureCache.dispose();
-				this.textureCache = null;
+				this.thumbnailTextureCache.dispose();
+				this.thumbnailTextureCache = null;
 			}
 			super.dispose();
 		}
 
 		override protected function initialize():void
 		{
+			//don't forget to call super.initialize() when you override it!
 			super.initialize();
-
-			//this is an *extended* version of MetalWorksMobileTheme
-			new GalleryTheme();
 
 			this.layout = new AnchorLayout();
 
-			this.textureCache = new TextureCache(30);
+			//keep some thumbnails in memory so that they don't need to be
+			//reloaded from the web
+			this.thumbnailTextureCache = new TextureCache(30);
 
 			this.apiLoader = new URLLoader();
 			this.apiLoader.addEventListener(flash.events.Event.COMPLETE, apiLoader_completeListener);
@@ -78,42 +79,59 @@ package feathers.examples.gallery
 			this.apiLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, apiLoader_errorListener);
 			this.apiLoader.load(new URLRequest(FLICKR_URL));
 
-			var thumbnailListLayout:HorizontalLayout = new HorizontalLayout();
-			thumbnailListLayout.verticalAlign = VerticalAlign.JUSTIFY;
-			thumbnailListLayout.hasVariableItemDimensions = true;
-
+			//the thumbnail list is positioned on the bottom edge of the app
+			//and fills the entire width
 			var thumbnailListLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			thumbnailListLayoutData.left = 0;
 			thumbnailListLayoutData.right = 0;
 			thumbnailListLayoutData.bottom = 0;
 
+			var thumbnailListLayout:HorizontalLayout = new HorizontalLayout();
+			thumbnailListLayout.verticalAlign = VerticalAlign.JUSTIFY;
+			thumbnailListLayout.hasVariableItemDimensions = true;
+
 			this.thumbnailList = new List();
-			this.thumbnailList.styleNameList.add(THUMBNAIL_LIST_NAME);
 			this.thumbnailList.layout = thumbnailListLayout;
+			//make sure that we have elastic edges horizontally
 			this.thumbnailList.horizontalScrollPolicy = ScrollPolicy.ON;
+			//we're not displaying scroll bars
+			this.thumbnailList.scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
+			//make a swipe scroll a shorter distance
+			this.thumbnailList.decelerationRate = DecelerationRate.FAST;
 			this.thumbnailList.itemRendererFactory = thumbnailItemRendererFactory;
 			this.thumbnailList.addEventListener(starling.events.Event.CHANGE, thumbnailList_changeHandler);
 			this.thumbnailList.height = 100;
 			this.thumbnailList.layoutData = thumbnailListLayoutData;
 			this.addChild(this.thumbnailList);
 
+			//the full size list fills the remaining space above the thumbnails
 			var fullSizeListLayoutData:AnchorLayoutData = new AnchorLayoutData(0, 0, 0, 0);
 			fullSizeListLayoutData.bottomAnchorDisplayObject = this.thumbnailList;
 
+			//show a single item per page
 			var fullSizeListLayout:SlideShowLayout = new SlideShowLayout();
 			fullSizeListLayout.horizontalAlign = HorizontalAlign.JUSTIFY;
 			fullSizeListLayout.verticalAlign = VerticalAlign.JUSTIFY;
+			//load the previous and next items so that they are already visible
+			//if images use a lot of memory, this might not be possible for
+			//some galleries!
+			fullSizeListLayout.minimumItemCount = 3;
 
 			this.fullSizeList = new List();
+			//snap to the nearest page when scrolling
 			this.fullSizeList.snapToPages = true;
+			//there is nothing to select in this list
 			this.fullSizeList.isSelectable = false;
+			//no need to display scroll bars in this list
 			this.fullSizeList.scrollBarDisplayMode = ScrollBarDisplayMode.NONE;
-			this.fullSizeList.layout = fullSizeListLayout;
+			//make sure that we have elastic edges horizontally
 			this.fullSizeList.horizontalScrollPolicy = ScrollPolicy.ON;
+			this.fullSizeList.layout = fullSizeListLayout;
 			this.fullSizeList.layoutData = fullSizeListLayoutData;
 			this.fullSizeList.itemRendererFactory = fullSizeItemRendererFactory;
 			this.addChild(this.fullSizeList);
 
+			//display at the center of the list of full size images
 			var messageLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			messageLayoutData.horizontalCenter = 0;
 			messageLayoutData.verticalCenter = 0;
@@ -127,25 +145,19 @@ package feathers.examples.gallery
 
 		protected function fullSizeItemRendererFactory():IListItemRenderer
 		{
-			var itemRenderer:GalleryItemRenderer = new GalleryItemRenderer();
-			itemRenderer.isThumb = false;
-			return itemRenderer;
+			return new GalleryItemRenderer();
 		}
 
 		protected function thumbnailItemRendererFactory():IListItemRenderer
 		{
-			var itemRenderer:GalleryItemRenderer = new GalleryItemRenderer();
-			itemRenderer.textureCache = this.textureCache;
+			var itemRenderer:ThumbItemRenderer = new ThumbItemRenderer();
+			//cache the textures so that they don't need to be reloaded from URLs
+			itemRenderer.textureCache = this.thumbnailTextureCache;
 			return itemRenderer;
 		}
 
 		protected function thumbnailList_changeHandler(event:starling.events.Event):void
 		{
-			if(this.fadeTween)
-			{
-				Starling.juggler.remove(this.fadeTween);
-				this.fadeTween = null;
-			}
 			var item:GalleryItem = GalleryItem(this.thumbnailList.selectedItem);
 			if(!item)
 			{

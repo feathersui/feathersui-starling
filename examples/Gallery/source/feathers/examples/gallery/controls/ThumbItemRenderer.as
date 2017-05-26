@@ -1,10 +1,11 @@
-package feathers.examples.gallery
+package feathers.examples.gallery.controls
 {
 	import feathers.controls.ImageLoader;
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.gallery.data.GalleryItem;
 	import feathers.utils.textures.TextureCache;
 	import feathers.utils.touch.TapToSelect;
 
@@ -16,7 +17,11 @@ package feathers.examples.gallery
 	import starling.core.Starling;
 	import starling.events.Event;
 
-	public class GalleryItemRenderer extends FeathersControl implements IListItemRenderer
+	/**
+	 * Renders a simple thumbnail image with animation to fade in when it
+	 * completes loading.
+	 */
+	public class ThumbItemRenderer extends FeathersControl implements IListItemRenderer
 	{
 		/**
 		 * @private
@@ -28,13 +33,11 @@ package feathers.examples.gallery
 		/**
 		 * Constructor.
 		 */
-		public function GalleryItemRenderer()
+		public function ThumbItemRenderer()
 		{
 			//optimization: this item renderer doesn't have interactive children
 			this.isQuickHitAreaEnabled = true;
 		}
-
-		public var isThumb:Boolean = true;
 
 		/**
 		 * @private
@@ -250,14 +253,7 @@ package feathers.examples.gallery
 				if(this._data)
 				{
 					this.image.visible = false;
-					if(this.isThumb)
-					{
-						this.image.source = this._data.thumbURL;
-					}
-					else
-					{
-						this.image.source = this._data.url;
-					}
+					this.image.source = this._data.thumbURL;
 				}
 				else
 				{

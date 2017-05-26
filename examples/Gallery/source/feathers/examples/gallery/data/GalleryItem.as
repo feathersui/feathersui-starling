@@ -1,4 +1,4 @@
-package feathers.examples.gallery
+package feathers.examples.gallery.data
 {
 	public class GalleryItem
 	{
