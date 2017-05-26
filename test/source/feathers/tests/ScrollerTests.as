@@ -204,19 +204,31 @@ package feathers.tests
 
 			var self:Object = this;
 			var scroller:Scroller = this._scroller;
-			Async.delayCall(this, function():void
+			Async.delayCall(self, function():void
 			{
-				touch.globalY = VERTICAL_DRAG_OFFSET; //move the touch a bit to drag
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalY = -VERTICAL_DRAG_OFFSET;
 				touch.phase = TouchPhase.MOVED;
 				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-				
 				Async.delayCall(self, function():void
 				{
-					touch.phase = TouchPhase.ENDED;
-					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-					
 					Assert.assertTrue("Scroller FeathersEventType.SCROLL_START was not dispatched when dragging", hasDispatchedScrollStart);
 					Assert.assertTrue("Scroller isScrolling was not set to true when dragging", scroller.isScrolling);
+
+					//move the touch a bit more to drag
+					touch.globalY = 2 * -VERTICAL_DRAG_OFFSET;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+				
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						
+						Assert.assertTrue("Scroller verticalScrollPosition must change when dragged vertically:",
+							scroller.verticalScrollPosition > 0);
+					}, 25);
 				}, 25);
 			}, 25);
 		}
@@ -248,19 +260,415 @@ package feathers.tests
 
 			var self:Object = this;
 			var scroller:Scroller = this._scroller;
-			Async.delayCall(this, function():void
+			Async.delayCall(self, function():void
 			{
-				touch.globalX = HORIZONTAL_DRAG_OFFSET; //move the touch a bit to drag
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalX = -HORIZONTAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+				Async.delayCall(self, function():void
+				{
+					Assert.assertTrue("Scroller FeathersEventType.SCROLL_START was not dispatched when dragging", hasDispatchedScrollStart);
+					Assert.assertTrue("Scroller isScrolling was not set to true when dragging", scroller.isScrolling);
+
+					//move the touch a bit more to drag
+					touch.globalX = 2 * -HORIZONTAL_DRAG_OFFSET;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+						Assert.assertTrue("Scroller horizontalScrollPosition must change when dragged horizontally:",
+							scroller.horizontalScrollPosition > 0);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragVerticallyBeyondMaxWithElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = true;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = BACKGROUND_WIDTH;
+			this._viewPort.height = LARGE_VIEW_PORT_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalY = -VERTICAL_DRAG_OFFSET;
 				touch.phase = TouchPhase.MOVED;
 				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 
 				Async.delayCall(self, function():void
 				{
-					touch.phase = TouchPhase.ENDED;
+					//move the touch well beyond the maximum edge
+					touch.globalY = 2 * -LARGE_VIEW_PORT_HEIGHT;
+					touch.phase = TouchPhase.MOVED;
 					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 
-					Assert.assertTrue("Scroller FeathersEventType.SCROLL_START was not dispatched when dragging", hasDispatchedScrollStart);
-					Assert.assertTrue("Scroller isScrolling was not set to true when dragging", scroller.isScrolling);
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertTrue("Scroller: verticalScrollPosition must be able to be larger than maxVerticalScrollPosition when dragging with elastic edges",
+							scroller.verticalScrollPosition > scroller.maxVerticalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragVerticallyBeyondMaxWithoutElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = false;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = BACKGROUND_WIDTH;
+			this._viewPort.height = LARGE_VIEW_PORT_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalY = -VERTICAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalY = 2 * -LARGE_VIEW_PORT_HEIGHT;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertStrictlyEquals("Scroller: verticalScrollPosition must be equal to maxVerticalScrollPosition when dragging without elastic edges",
+							scroller.maxVerticalScrollPosition, scroller.verticalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragVerticallyBeyondMinWithElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = true;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = BACKGROUND_WIDTH;
+			this._viewPort.height = LARGE_VIEW_PORT_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalY = VERTICAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalY = 2 * LARGE_VIEW_PORT_HEIGHT;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertTrue("Scroller: verticalScrollPosition must be able to be smaller than minVerticalScrollPosition when dragging with elastic edges",
+							scroller.verticalScrollPosition < scroller.minVerticalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragVerticallyBeyondMinWithoutElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = false;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = BACKGROUND_WIDTH;
+			this._viewPort.height = LARGE_VIEW_PORT_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalY = VERTICAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalY = 2 * LARGE_VIEW_PORT_HEIGHT;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertStrictlyEquals("Scroller: verticalScrollPosition must be equal to minVerticalScrollPosition when dragging without elastic edges",
+							scroller.minVerticalScrollPosition, scroller.verticalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragHorizontallyBeyondMaxWithElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = true;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalX = -HORIZONTAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalX = 2 * -LARGE_VIEW_PORT_WIDTH;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertTrue("Scroller: horizontalScrollPosition must be able to be larger than maxHorizontalScrollPosition when dragging with elastic edges",
+							scroller.horizontalScrollPosition > scroller.maxHorizontalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragHorizontallyBeyondMaxWithoutElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = false;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalX = -HORIZONTAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalX = 2 * -LARGE_VIEW_PORT_WIDTH;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertStrictlyEquals("Scroller: horizontalScrollPosition must be equal to maxHorizontalScrollPosition when dragging with elastic edges",
+							scroller.maxHorizontalScrollPosition, scroller.horizontalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragHorizontallyBeyondMinWithElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = true;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalX = HORIZONTAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalX = 2 * LARGE_VIEW_PORT_WIDTH;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertTrue("Scroller: horizontalScrollPosition must be able to be smaller than minHorizontalScrollPosition when dragging with elastic edges",
+							scroller.horizontalScrollPosition < scroller.minHorizontalScrollPosition);
+					}, 25);
+				}, 25);
+			}, 25);
+		}
+
+		[Test(async)]
+		public function testDragHorizontallyBeyondMinWithoutElasticEdges():void
+		{
+			this._scroller.hasElasticEdges = false;
+			this._scroller.width = BACKGROUND_WIDTH;
+			this._scroller.height = BACKGROUND_HEIGHT;
+			this._viewPort.width = LARGE_VIEW_PORT_WIDTH;
+			this._viewPort.height = BACKGROUND_HEIGHT;
+			this._scroller.validate();
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._scroller.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			var self:Object = this;
+			var scroller:Scroller = this._scroller;
+			Async.delayCall(self, function():void
+			{
+				//move the touch a bit to start scrolling
+				//it won't have changed the scroll position yet, though
+				touch.globalX = HORIZONTAL_DRAG_OFFSET;
+				touch.phase = TouchPhase.MOVED;
+				target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+				Async.delayCall(self, function():void
+				{
+					//move the touch well beyond the maximum edge
+					touch.globalX = 2 * LARGE_VIEW_PORT_WIDTH;
+					touch.phase = TouchPhase.MOVED;
+					target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+					Async.delayCall(self, function():void
+					{
+						touch.phase = TouchPhase.ENDED;
+						target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+						Assert.assertStrictlyEquals("Scroller: horizontalScrollPosition must be equal to minHorizontalScrollPosition when dragging with elastic edges",
+							scroller.minHorizontalScrollPosition, scroller.horizontalScrollPosition);
+					}, 25);
 				}, 25);
 			}, 25);
 		}
