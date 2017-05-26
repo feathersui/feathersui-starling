@@ -43,6 +43,7 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.MathUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * If <code>true</code>, the background's <code>visible</code> property
@@ -776,11 +777,6 @@ package feathers.controls
 	 */
 	public class Scroller extends FeathersControl implements IFocusDisplayObject
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -4244,8 +4240,9 @@ package feathers.controls
 				}
 				else
 				{
-					HELPER_POINT.setTo(horizontalScrollPosition - this._horizontalScrollPosition, verticalScrollPosition - this._verticalScrollPosition);
-					animationDuration = this.calculateDynamicThrowDuration(HELPER_POINT.length * this._logDecelerationRate + MINIMUM_VELOCITY);
+					var point:Point = Pool.getPoint(horizontalScrollPosition - this._horizontalScrollPosition, verticalScrollPosition - this._verticalScrollPosition);
+					animationDuration = this.calculateDynamicThrowDuration(point.length * this._logDecelerationRate + MINIMUM_VELOCITY);
+					Pool.putPoint(point);
 				}
 			}
 			//cancel any pending scroll to a different page. we can have only
@@ -7823,9 +7820,10 @@ package feathers.controls
 				return;
 			}
 
-			touch.getLocation(this, HELPER_POINT);
-			var touchX:Number = HELPER_POINT.x;
-			var touchY:Number = HELPER_POINT.y;
+			var touchPosition:Point = touch.getLocation(this, Pool.getPoint());
+			var touchX:Number = touchPosition.x;
+			var touchY:Number = touchPosition.y;
+			Pool.putPoint(touchPosition);
 			if(touchX < this._leftViewPortOffset || touchY < this._topViewPortOffset ||
 				touchX >= this.actualWidth - this._rightViewPortOffset ||
 				touchY >= this.actualHeight - this._bottomViewPortOffset)
@@ -7918,9 +7916,10 @@ package feathers.controls
 
 			if(touch.phase === TouchPhase.MOVED)
 			{
-				touch.getLocation(this, HELPER_POINT);
-				this._currentTouchX = HELPER_POINT.x;
-				this._currentTouchY = HELPER_POINT.y;
+				var touchPosition:Point = touch.getLocation(this, Pool.getPoint());
+				this._currentTouchX = touchPosition.x;
+				this._currentTouchY = touchPosition.y;
+				Pool.putPoint(touchPosition);
 				this.checkForDrag();
 				//we don't call saveVelocity() on TouchPhase.MOVED because the
 				//time interval may be very short, which could lead to
@@ -8109,13 +8108,20 @@ package feathers.controls
 			}
 			var starlingViewPort:Rectangle = starling.viewPort;
 			var scaleFactor:Number = nativeScaleFactor / starling.contentScaleFactor;
-			HELPER_POINT.x = (event.stageX - starlingViewPort.x) * scaleFactor;
-			HELPER_POINT.y = (event.stageY - starlingViewPort.y) * scaleFactor;
-			if(this.contains(this.stage.hitTest(HELPER_POINT)))
+			var point:Point = Pool.getPoint(
+				(event.stageX - starlingViewPort.x) * scaleFactor,
+				(event.stageY - starlingViewPort.y) * scaleFactor);
+			var isContained:Boolean = this.contains(this.stage.hitTest(point));
+			if(!isContained)
 			{
-				this.globalToLocal(HELPER_POINT, HELPER_POINT);
-				var localMouseX:Number = HELPER_POINT.x;
-				var localMouseY:Number = HELPER_POINT.y;
+				Pool.putPoint(point);
+			}
+			else
+			{
+				this.globalToLocal(point, point);
+				var localMouseX:Number = point.x;
+				var localMouseY:Number = point.y;
+				Pool.putPoint(point);
 				if(localMouseX < this._leftViewPortOffset || localMouseY < this._topViewPortOffset ||
 					localMouseX >= this.actualWidth - this._rightViewPortOffset ||
 					localMouseY >= this.actualHeight - this._bottomViewPortOffset)
@@ -8197,8 +8203,9 @@ package feathers.controls
 				}
 
 				this._horizontalScrollBarTouchPointID = -1;
-				touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT) !== null;
+				var touchPosition:Point = touch.getLocation(displayHorizontalScrollBar, Pool.getPoint());
+				var isInBounds:Boolean = this.horizontalScrollBar.hitTest(touchPosition) !== null;
+				Pool.putPoint(touchPosition);
 				if(!isInBounds)
 				{
 					this.hideHorizontalScrollBar();
@@ -8249,8 +8256,9 @@ package feathers.controls
 				}
 
 				this._verticalScrollBarTouchPointID = -1;
-				touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
-				var isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT) !== null;
+				var touchPosition:Point = touch.getLocation(displayVerticalScrollBar, Pool.getPoint());
+				var isInBounds:Boolean = this.verticalScrollBar.hitTest(touchPosition) !== null;
+				Pool.putPoint(touchPosition);
 				if(!isInBounds)
 				{
 					this.hideVerticalScrollBar();
