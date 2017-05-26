@@ -1,6 +1,6 @@
 # Gallery Example for Feathers
 
-Displays a simple gallery of images from the [Flickr API](http://www.flickr.com/services/api/) using [Feathers](http://feathersui.com/). This example shows how to use a horizontal layout and a custom item renderer with a List component. Additionally, this example demonstrates how to [extend a theme](http://feathersui.com/help/extending-themes.html) by adding a new style to the `MetalWorksMobileTheme` example theme.
+Displays a simple gallery of images from the [Flickr API](http://www.flickr.com/services/api/) using [Feathers](http://feathersui.com/). This example shows how to create lists with `SlideShowLayout` and `HorizontalLayout` with custom item renderers.
 
 ## Requirements
 
