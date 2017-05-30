@@ -2599,5 +2599,14 @@ package feathers.controls.text
 		{
 			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
 		}
+
+		/**
+		 * @private
+		 */
+		override protected function fontStylesSet_changeHandler(event:Event):void
+		{
+			this._previousStarlingTextFormat = null;
+			super.fontStylesSet_changeHandler(event);
+		}
 	}
 }
