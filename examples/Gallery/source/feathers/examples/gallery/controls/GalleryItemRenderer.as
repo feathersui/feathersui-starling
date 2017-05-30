@@ -124,7 +124,15 @@ package feathers.examples.gallery.controls
 			{
 				return;
 			}
+			if(this._owner !== null)
+			{
+				this._owner.removeEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
+			}
 			this._owner = value;
+			if(this._owner !== null)
+			{
+				this._owner.addEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -264,15 +272,24 @@ package feathers.examples.gallery.controls
 					this._gestureCompleteTween = null;
 				}
 				//reset all of the transformations because it's a new image
-				this.touchSheet.rotation = 0;
-				this.touchSheet.scale = 1;
-				this.touchSheet.pivotX = 0;
-				this.touchSheet.pivotY = 0;
-				this.touchSheet.x = 0;
-				this.touchSheet.y = 0;
+				this._defaultScale = 1;
+				this.resetTransformation();
 			}
 
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resetTransformation():void
+		{
+			this.touchSheet.rotation = 0;
+			this.touchSheet.scale = this._defaultScale;
+			this.touchSheet.pivotX = 0;
+			this.touchSheet.pivotY = 0;
+			this.touchSheet.x = 0;
+			this.touchSheet.y = 0;
 		}
 
 		/**
@@ -345,9 +362,24 @@ package feathers.examples.gallery.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function gestureCompleteTween_onComplete():void
 		{
 			this._gestureCompleteTween = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function owner_scrollCompleteHandler(event:Event):void
+		{
+			if(this._owner.horizontalPageIndex === this._index)
+			{
+				return;
+			}
+			this.resetTransformation();
 		}
 	}
 }
