@@ -189,7 +189,6 @@ package feathers.utils.touch
                     }
                     if(zoomed)
                     {
-                        trace("scale:", newScaleX, newScaleY, sizeDiff, currentVector.length, previousVector.length, currentPosB, previousPosB);
                         dispatchEventWith(ZOOM);
                     }
                 }
