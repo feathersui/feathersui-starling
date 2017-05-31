@@ -579,6 +579,10 @@ package feathers.themes
 		protected var searchIconDisabledTexture:Texture;
 		protected var listDrillDownAccessoryTexture:Texture;
 		protected var listDrillDownAccessorySelectedTexture:Texture;
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureOpenSelectedIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+		protected var treeDisclosureClosedSelectedIconTexture:Texture;
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -827,6 +831,11 @@ package feathers.themes
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
 			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-selected-icon0000");
+
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureOpenSelectedIconTexture = this.atlas.getTexture("tree-disclosure-open-selected-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
+			this.treeDisclosureClosedSelectedIconTexture = this.atlas.getTexture("tree-disclosure-closed-selected-icon0000");
 			
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -1010,7 +1019,7 @@ package feathers.themes
 
 			//tree
 			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
-			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 
 			//media controls
 
@@ -2483,6 +2492,21 @@ package feathers.themes
 			this.setScrollerStyles(tree);
 			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
 			tree.backgroundSkin = backgroundSkin;
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
+
+			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			disclosureOpenIcon.selectedTexture = this.treeDisclosureOpenSelectedIconTexture;
+			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
+
+			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			disclosureClosedIcon.selectedTexture = this.treeDisclosureClosedSelectedIconTexture;
+			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 
 	//-------------------------

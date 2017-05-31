@@ -67,11 +67,13 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.Tree;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
@@ -578,6 +580,10 @@ package feathers.themes
 		protected var searchIconDisabledTexture:Texture;
 		protected var listDrillDownAccessoryTexture:Texture;
 		protected var listDrillDownAccessorySelectedTexture:Texture;
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureOpenSelectedIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+		protected var treeDisclosureClosedSelectedIconTexture:Texture;
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -834,6 +840,11 @@ package feathers.themes
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-icon0000");
 			this.listDrillDownAccessorySelectedTexture = this.atlas.getTexture("item-renderer-drill-down-accessory-selected-icon0000");
 
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureOpenSelectedIconTexture = this.atlas.getTexture("tree-disclosure-open-selected-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
+			this.treeDisclosureClosedSelectedIconTexture = this.atlas.getTexture("tree-disclosure-closed-selected-icon0000");
+
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
 			this.playPauseButtonPauseUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-pause-up-icon0000");
@@ -1021,6 +1032,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
+
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 
 			//media controls
 			this.getStyleProviderForClass(VideoPlayer).defaultStyleFunction = this.setVideoPlayerStyles;
@@ -2571,6 +2586,46 @@ package feathers.themes
 			track.defaultSkin = skin;
 
 			track.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+
+			tree.padding = this.borderSize;
+
+			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			tree.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Image = new Image(this.backgroundDisabledSkinTexture);
+			backgroundDisabledSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
+			tree.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			tree.verticalScrollPolicy = ScrollPolicy.AUTO;
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
+
+			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			disclosureOpenIcon.selectedTexture = this.treeDisclosureOpenSelectedIconTexture;
+			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
+
+			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			disclosureClosedIcon.selectedTexture = this.treeDisclosureClosedSelectedIconTexture;
+			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 
 	//-------------------------
