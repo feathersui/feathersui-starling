@@ -22,16 +22,49 @@ package feathers.controls.renderers
 	import feathers.core.IStateObserver;
 
 	/**
-	 * The size, in pixels, of the indentation when an item is a child of a branch.
+	 * The icon used to indicate if the tree item is a branch.
 	 *
-	 * <p>In the following example, the indentation is set to 15 pixels:</p>
+	 * <p>The following example gives the item renderer a branch icon:</p>
 	 *
 	 * <listing version="3.0">
-	 * tree.indentation = 15;</listing>
+	 * itemRenderer.branchIcon = new Image( texture );</listing>
 	 *
-	 * @default 10
+	 * @default null
+	 *
+	 * @see #style:branchOpenIcon
+	 * @see #style:branchClosedIcon
 	 */
-	[Style(name="indentation",type="Number")]
+	[Style(name="branchIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used to indicate if the tree item is an open branch. If
+	 * <code>null</code>, the <code>branchIcon</code> will be used instead.
+	 *
+	 * <p>The following example gives the item renderer a branch open icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.branchOpenIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:branchClosedIcon
+	 */
+	[Style(name="branchOpenIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used to indicate if the tree item is a closed branch. If
+	 * <code>null</code>, the <code>branchIcon</code> will be used instead.
+	 *
+	 * <p>The following example gives the item renderer a branch closed icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.branchClosedIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:branchOpenIcon
+	 */
+	[Style(name="branchClosedIcon",type="starling.display.DisplayObject")]
 
 	/**
 	 * The space, in pixels, between the disclosure icon and left edge of the
@@ -41,13 +74,82 @@ package feathers.controls.renderers
 	 * <p>In the following example, the disclosure gap is set to 20 pixels:</p>
 	 *
 	 * <listing version="3.0">
-	 * renderer.disclosureGap = 20;</listing>
+	 * itemRenderer.disclosureGap = 20;</listing>
 	 *
 	 * @default NaN
 	 *
 	 * @see #style:gap
 	 */
 	[Style(name="disclosureGap",type="Number")]
+
+	/**
+	 * The icon used to indicate if the tree item is open or closed.
+	 *
+	 * <p>The following example gives the item renderer a disclosure icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.disclosureIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:disclosureOpenIcon
+	 * @see #style:disclosureClosedIcon
+	 */
+	[Style(name="disclosureIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used to indicate if the tree item is open. If
+	 * <code>null</code>, the <code>disclosureIcon</code> will be used instead.
+	 *
+	 * <p>The following example gives the item renderer a disclosure open icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.disclosureOpenIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:disclosureClosedIcon
+	 */
+	[Style(name="disclosureOpenIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The icon used to indicate if the tree item is closed. If
+	 * <code>null</code>, the <code>disclosureIcon</code> will be used instead.
+	 *
+	 * <p>The following example gives the item renderer a disclosure closed icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.disclosureClosedIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:disclosureOpenIcon
+	 */
+	[Style(name="disclosureClosedIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * The size, in pixels, of the indentation when an item is a child of a branch.
+	 *
+	 * <p>In the following example, the indentation is set to 15 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.indentation = 15;</listing>
+	 *
+	 * @default 10
+	 */
+	[Style(name="indentation",type="Number")]
+
+	/**
+	 * The icon used to indicate if the tree item is a leaf.
+	 *
+	 * <p>The following example gives the item renderer a leaf icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.leafIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="leafIcon",type="starling.display.DisplayObject")]
 
 	/**
 	 * The default item renderer for Tree control. Supports up to three optional
@@ -233,7 +335,7 @@ package feathers.controls.renderers
 		protected var _branchIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get branchIcon():DisplayObject
 		{
@@ -267,7 +369,7 @@ package feathers.controls.renderers
 		protected var _branchOpenIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get branchOpenIcon():DisplayObject
 		{
@@ -301,7 +403,7 @@ package feathers.controls.renderers
 		protected var _branchClosedIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get branchClosedIcon():DisplayObject
 		{
@@ -335,7 +437,7 @@ package feathers.controls.renderers
 		protected var _leafIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get leafIcon():DisplayObject
 		{
