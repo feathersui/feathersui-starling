@@ -2486,6 +2486,9 @@ package feathers.themes
 		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
 		{
 			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.gutterSize;
+
 			itemRenderer.disclosureOpenIcon = new ImageSkin(this.treeDisclosureOpenIconTexture);
 			itemRenderer.disclosureClosedIcon = new ImageSkin(this.treeDisclosureClosedIconTexture);
 			itemRenderer.branchIcon = new ImageSkin(this.treeBranchClosedIconTexture);
