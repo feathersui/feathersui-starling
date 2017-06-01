@@ -34,6 +34,22 @@ package feathers.controls.renderers
 	[Style(name="indentation",type="Number")]
 
 	/**
+	 * The space, in pixels, between the disclosure icon and left edge of the
+	 * other children in the item renderer. If the value is <code>NaN</code>,
+	 * the value of the <code>gap</code> property will be used instead.
+	 *
+	 * <p>In the following example, the disclosure gap is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * renderer.disclosureGap = 20;</listing>
+	 *
+	 * @default NaN
+	 *
+	 * @see #style:gap
+	 */
+	[Style(name="disclosureGap",type="Number")]
+
+	/**
 	 * The default item renderer for Tree control. Supports up to three optional
 	 * sub-views, including a label to display text, an icon to display an
 	 * image, and an "accessory" to display a UI control or another display
@@ -110,7 +126,7 @@ package feathers.controls.renderers
 		protected var _disclosureIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get disclosureIcon():DisplayObject
 		{
@@ -144,7 +160,7 @@ package feathers.controls.renderers
 		protected var _disclosureOpenIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get disclosureOpenIcon():DisplayObject
 		{
@@ -178,7 +194,7 @@ package feathers.controls.renderers
 		protected var _disclosureClosedIcon:DisplayObject = null;
 
 		/**
-		 * 
+		 * @private
 		 */
 		public function get disclosureClosedIcon():DisplayObject
 		{
@@ -464,6 +480,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _disclosureGap:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		public function get disclosureGap():Number
+		{
+			return this._disclosureGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disclosureGap(value:Number):void
+		{
+			if(this._disclosureGap === value)
+			{
+				return;
+			}
+			this._disclosureGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isOpen:Boolean = false;
 
 		/**
@@ -580,6 +622,11 @@ package feathers.controls.renderers
 				//the location will be null
 				this._leftOffset += this._indentation * (this._location.length - 1);
 			}
+			var disclosureGap:Number = this._gap;
+			if(this._disclosureGap === this._disclosureGap) //!isNaN
+			{
+				disclosureGap = this._disclosureGap;
+			}
 			if(this._currentDisclosureIcon !== null)
 			{
 				var oldIgnoreIconResizes:Boolean = this._ignoreDisclosureIconResizes;
@@ -589,7 +636,7 @@ package feathers.controls.renderers
 					IValidating(this._currentDisclosureIcon).validate();
 				}
 				this._ignoreDisclosureIconResizes = oldIgnoreIconResizes;
-				this._leftOffset += this._currentDisclosureIcon.width + this._gap;
+				this._leftOffset += this._currentDisclosureIcon.width + disclosureGap;
 				if(this._isBranch)
 				{
 					this._currentDisclosureIcon.visible = true;
@@ -608,7 +655,7 @@ package feathers.controls.renderers
 					IValidating(this._currentBranchOrLeafIcon).validate();
 				}
 				this._ignoreBranchOrLeafIconResizes = oldIgnoreIconResizes;
-				this._leftOffset += this._currentBranchOrLeafIcon.width + this._gap;
+				this._leftOffset += this._currentBranchOrLeafIcon.width + disclosureGap;
 			}
 		}
 
