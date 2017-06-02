@@ -170,24 +170,24 @@ package feathers.themes
 			super();
 		}
 
-		protected var gridSize:int;
-		protected var gutterSize:int;
-		protected var smallGutterSize:int;
-		protected var extraSmallGutterSize:int;
-		protected var borderSize:int;
-		protected var controlSize:int;
-		protected var smallControlSize:int;
-		protected var wideControlSize:int;
-		protected var popUpFillSize:int;
-		protected var thumbSize:int;
-		protected var shadowSize:int;
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutVerticalArrowGap:int;
-		protected var calloutHorizontalArrowGap:int;
+		protected var gridSize:int = 70;
+		protected var gutterSize:int = 20;
+		protected var smallGutterSize:int = 10;
+		protected var extraSmallGutterSize:int = 5;
+		protected var borderSize:int = 1;
+		protected var controlSize:int = 50;
+		protected var smallControlSize:int = 16;
+		protected var wideControlSize:int = 230;
+		protected var popUpFillSize:int = 300;
+		protected var thumbSize:int = 34;
+		protected var shadowSize:int = 2;
+		protected var calloutBackgroundMinSize:int = 53;
+		protected var calloutVerticalArrowGap:int = -8;
+		protected var calloutHorizontalArrowGap:int = -7;
 
-		protected var smallFontSize:int;
-		protected var regularFontSize:int;
-		protected var largeFontSize:int;
+		protected var smallFontSize:int = 14;
+		protected var regularFontSize:int = 16;
+		protected var largeFontSize:int = 20;
 
 		protected var darkFontStyles:TextFormat;
 		protected var lightFontStyles:TextFormat;
@@ -318,7 +318,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
@@ -330,24 +329,6 @@ package feathers.themes
 		{
 			this.starling.stage.color = COLOR_BACKGROUND_LIGHT;
 			this.starling.nativeStage.color = COLOR_BACKGROUND_LIGHT;
-		}
-
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 70;
-			this.gutterSize = 20;
-			this.smallGutterSize = 10;
-			this.extraSmallGutterSize = 5;
-			this.borderSize = 1;
-			this.controlSize = 50;
-			this.smallControlSize = 16;
-			this.wideControlSize = 230;
-			this.popUpFillSize = 300;
-			this.thumbSize = 34;
-			this.calloutBackgroundMinSize = 53;
-			this.calloutVerticalArrowGap = -8;
-			this.calloutHorizontalArrowGap = -7;
-			this.shadowSize = 2;
 		}
 
 		protected function initializeTextures():void
@@ -456,10 +437,6 @@ package feathers.themes
 
 		protected function initializeFonts():void
 		{
-			this.smallFontSize = 14;
-			this.regularFontSize = 16;
-			this.largeFontSize = 20;
-
 			this.darkFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_LIGHT, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.selectedFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);

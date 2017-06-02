@@ -325,77 +325,77 @@ package feathers.themes
 		/**
 		 * A smaller font size for details.
 		 */
-		protected var smallFontSize:int;
+		protected var smallFontSize:int = 11;
 
 		/**
 		 * A normal font size.
 		 */
-		protected var regularFontSize:int;
+		protected var regularFontSize:int = 14;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 18;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 30;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 8;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 4;
 
 		/**
 		 * The size, in pixels, of very smaller padding and gaps.
 		 */
-		protected var extraSmallGutterSize:int;
+		protected var extraSmallGutterSize:int = 2;
 
 		/**
 		 * The minimum width, in pixels, of some types of buttons.
 		 */
-		protected var buttonMinWidth:int;
+		protected var buttonMinWidth:int = 68;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 144;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 22;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 12;
 
 		/**
 		 * The size, in pixels, of a border around any control.
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 1;
 
 		/**
 		 * The size, in pixels, of the focus indicator skin's padding.
 		 */
-		protected var focusPaddingSize:int;
+		protected var focusPaddingSize:int = -2;
 
-		protected var calloutArrowOverlapGap:int;
-		protected var calloutBackgroundMinSize:int;
-		protected var progressBarFillMinSize:int;
-		protected var scrollBarGutterSize:int;
-		protected var popUpSize:int;
-		protected var popUpVolumeSliderPaddingSize:int;
+		protected var calloutArrowOverlapGap:int = -2;
+		protected var calloutBackgroundMinSize:int = 5;
+		protected var progressBarFillMinSize:int = 7;
+		protected var scrollBarGutterSize:int = 4;
+		protected var popUpSize:int = 336;
+		protected var popUpVolumeSliderPaddingSize:int = 10;
 
 		/**
 		 * The font styles for standard-sized, light text.
@@ -634,7 +634,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
@@ -668,37 +667,10 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 30;
-			this.extraSmallGutterSize = 2;
-			this.smallGutterSize = 4;
-			this.gutterSize = 8;
-			this.borderSize = 1;
-			this.controlSize = 22;
-			this.smallControlSize = 12;
-			this.calloutBackgroundMinSize = 5;
-			this.progressBarFillMinSize = 7;
-			this.scrollBarGutterSize = 4;
-			this.calloutArrowOverlapGap = -2;
-			this.focusPaddingSize = -2;
-			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize;
-			this.wideControlSize = this.gridSize * 4 + this.gutterSize * 3;
-			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.popUpVolumeSliderPaddingSize = 10;
-		}
-
-		/**
 		 * Initializes font sizes and formats.
 		 */
 		protected function initializeFonts():void
 		{
-			this.smallFontSize = 11;
-			this.regularFontSize = 14;
-			this.largeFontSize = 18;
-
 			this.lightFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.darkFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.selectedFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, SELECTED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);

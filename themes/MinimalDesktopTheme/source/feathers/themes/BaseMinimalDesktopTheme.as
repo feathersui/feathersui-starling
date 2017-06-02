@@ -263,77 +263,78 @@ package feathers.themes
 		}
 
 		/**
-		 * A normal font size.
+		 * A normal font size. Since it's a pixel font, we want a multiple of
+		 * the original size, which, in this case, is 8.
 		 */
-		protected var fontSize:int;
+		protected var fontSize:int = 8;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 16;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 30;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 8;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 4;
 
 		/**
 		 * The size, in pixels, of very smaller padding and gaps.
 		 */
-		protected var extraSmallGutterSize:int;
+		protected var extraSmallGutterSize:int = 2;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 98;
 
 		/**
 		 * The minimum width, in pixels, of some types of buttons.
 		 */
-		protected var buttonMinWidth:int;
+		protected var buttonMinWidth:int = 64;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 20;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 12;
 
 		/**
 		 * The size, in pixels, of a border around any control.
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 1;
 
 		/**
 		 * The size, in pixels, of a drop shadow on a control's bottom right.
 		 */
-		protected var dropShadowSize:int;
+		protected var dropShadowSize:int = 4;
 
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutTopLeftArrowOverlapGapSize:int;
-		protected var calloutBottomRightArrowOverlapGapSize:int;
-		protected var progressBarFillMinSize:int;
-		protected var popUpSize:int;
-		protected var dropDownGapSize:int;
-		protected var focusPaddingSize:int;
-		protected var popUpVolumeSliderPaddingTopLeft:int;
-		protected var popUpVolumeSliderPaddingBottomRight:int;
+		protected var calloutBackgroundMinSize:int = 5;
+		protected var calloutTopLeftArrowOverlapGapSize:int = -2;
+		protected var calloutBottomRightArrowOverlapGapSize:int = -6;
+		protected var progressBarFillMinSize:int = 7;
+		protected var popUpSize:int = 336;
+		protected var dropDownGapSize:int = -1;
+		protected var focusPaddingSize:int = -2;
+		protected var popUpVolumeSliderPaddingTopLeft:int = 9;
+		protected var popUpVolumeSliderPaddingBottomRight:int = 13;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -482,38 +483,11 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
 			this.initializeStage();
 			this.initializeStyleProviders();
-		}
-
-		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 30;
-			this.extraSmallGutterSize = 2;
-			this.smallGutterSize = 4;
-			this.gutterSize = 8;
-			this.borderSize = 1;
-			this.dropShadowSize = 4;
-			this.controlSize = 20;
-			this.smallControlSize = 12;
-			this.calloutTopLeftArrowOverlapGapSize = -2;
-			this.calloutBottomRightArrowOverlapGapSize = -6;
-			this.calloutBackgroundMinSize = 5;
-			this.progressBarFillMinSize = 7;
-			this.buttonMinWidth = this.gridSize * 2 + this.smallGutterSize * 1;
-			this.wideControlSize = this.gridSize * 3 + this.smallGutterSize * 2;
-			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.dropDownGapSize = -1;
-			this.focusPaddingSize = -2;
-			this.popUpVolumeSliderPaddingTopLeft = 9;
-			this.popUpVolumeSliderPaddingBottomRight = this.popUpVolumeSliderPaddingTopLeft + this.dropShadowSize;
 		}
 
 		/**
@@ -649,11 +623,6 @@ package feathers.themes
 		 */
 		protected function initializeFonts():void
 		{
-			//since it's a pixel font, we want a multiple of the original size,
-			//which, in this case, is 8.
-			this.fontSize = 8;
-			this.largeFontSize = 16;
-
 			this.primaryFontStyles = new TextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.disabledFontStyles = new TextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.headingFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);

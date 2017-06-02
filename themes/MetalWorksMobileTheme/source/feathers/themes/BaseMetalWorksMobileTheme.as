@@ -297,70 +297,70 @@ package feathers.themes
 		/**
 		 * A smaller font size for details.
 		 */
-		protected var smallFontSize:int;
+		protected var smallFontSize:int = 10;
 
 		/**
 		 * A normal font size.
 		 */
-		protected var regularFontSize:int;
+		protected var regularFontSize:int = 12;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 14;
 
 		/**
 		 * An extra large font size.
 		 */
-		protected var extraLargeFontSize:int;
+		protected var extraLargeFontSize:int = 18;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 44;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 12;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 8;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within controls.
 		 */
-		protected var smallControlGutterSize:int;
+		protected var smallControlGutterSize:int = 6;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 156;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 28;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 12;
 
 		/**
 		 * The size, in pixels, of borders;
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 1;
 
-		protected var popUpFillSize:int;
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutArrowOverlapGap:int;
-		protected var scrollBarGutterSize:int;
+		protected var popUpFillSize:int = 276;
+		protected var calloutBackgroundMinSize:int = 12;
+		protected var calloutArrowOverlapGap:int = -2;
+		protected var scrollBarGutterSize:int = 2;
 
 		/**
 		 * The font styles for standard-sized, light text.
@@ -628,7 +628,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
@@ -658,34 +657,10 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 44;
-			this.smallControlGutterSize = 6;
-			this.smallGutterSize = 8;
-			this.gutterSize = 12;
-			this.controlSize = 28;
-			this.smallControlSize = 12;
-			this.popUpFillSize = 276;
-			this.calloutBackgroundMinSize = 12;
-			this.calloutArrowOverlapGap = -2;
-			this.scrollBarGutterSize = 2;
-			this.wideControlSize = this.gridSize * 3 + this.gutterSize * 2;
-			this.borderSize = 1;
-		}
-
-		/**
 		 * Initializes font sizes and formats.
 		 */
 		protected function initializeFonts():void
 		{
-			this.smallFontSize = 10;
-			this.regularFontSize = 12;
-			this.largeFontSize = 14;
-			this.extraLargeFontSize = 18;
-
 			this.lightFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.darkFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DARK_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, LIGHT_DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
