@@ -21,6 +21,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.controls.renderers.IListItemRenderer;
 
 	/**
 	 * An optional skin to display in the horizontal or vertical center of
@@ -435,17 +436,33 @@ package feathers.controls
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
 			var itemCount:int = this._dataProvider.length;
-			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+			if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
 			{
 				var pageIndex:int = this._verticalPageIndex % itemCount;
 			}
-			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+			else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
 			{
 				pageIndex = this._horizontalPageIndex % itemCount;
 			}
 			if(pageIndex < 0)
 			{
 				pageIndex = itemCount + pageIndex;
+			}
+			var item:Object = this._dataProvider.getItemAt(pageIndex);
+			var itemRenderer:IListItemRenderer = this.itemToItemRenderer(item);
+			if(itemRenderer !== null && !itemRenderer.isEnabled)
+			{
+				//if the item renderer isn't enabled, we cannot select it
+				//go back to the previously selected index
+				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				{
+					this.scrollToPageIndex(this._horizontalPageIndex, this._selectedIndex, this._pageThrowDuration);
+				}
+				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				{
+					this.scrollToPageIndex(this._selectedIndex, this._verticalPageIndex, this._pageThrowDuration);
+				}
+				return;
 			}
 			this.selectedIndex = pageIndex;
 		}
