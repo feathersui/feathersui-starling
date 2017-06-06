@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.*;
+	import feathers.controls.List;
 	import feathers.core.IToggle;
 
 	/**
@@ -75,12 +76,12 @@ package feathers.controls.renderers
 		 *
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
-		function get owner():List;
+		function get owner():import feathers.controls.List;
 		
 		/**
 		 * @private
 		 */
-		function set owner(value:List):void;
+		function set owner(value:import feathers.controls.List):void;
 
 		/**
 		 * The ID of the factory used to create this item renderer.
