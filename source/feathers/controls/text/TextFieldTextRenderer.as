@@ -1524,7 +1524,7 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
+				newHeight = Math.ceil(this.textField.height / scaleFactor) - gutterDimensionsOffset;
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
