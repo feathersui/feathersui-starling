@@ -279,7 +279,7 @@ Item renderers are custom components used by lists to display items from the dat
 
 ### Contributing to Feathers
 
-Would you like to contribute a bug fix or new feature to Feathers? Please open a [Pull Request](https://help.github.com/articles/using-pull-requests) on the [Feathers Github project](https://github.com/joshtynjala/feathers).
+Would you like to contribute a bug fix or new feature to the next version of Feathers? Please open a [Pull Request](https://help.github.com/articles/using-pull-requests) on the [Feathers Github project](https://github.com/joshtynjala/feathers).
 
 -   [Feathers Coding Conventions for Contributors](coding-conventions.html)
 
