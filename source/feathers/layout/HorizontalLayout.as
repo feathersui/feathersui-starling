@@ -13,6 +13,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -1787,6 +1788,158 @@ package feathers.layout
 			}
 			result.y = 0;
 
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			var itemArrayCount:int = items.length;
+			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+			if(this._useVirtualLayout)
+			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
+				this.prepareTypicalItem(bounds.viewPortHeight - this._paddingTop - this._paddingBottom);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			}
+
+			var result:int = index;
+			if(keyCode === Keyboard.HOME)
+			{
+				if(itemCount > 0)
+				{
+					result = 0;
+				}
+			}
+			else if(keyCode === Keyboard.END)
+			{
+				result = itemCount - 1;
+			}
+			else if(keyCode === Keyboard.PAGE_UP)
+			{
+				var xPosition:Number = 0;
+				var indexOffset:int = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
+				for(var i:int = index; i >= 0; i--)
+				{
+					var iNormalized:int = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						var cachedWidth:Number = this._widthCache[i];
+					}
+					if(iNormalized < 0 || iNormalized >= itemArrayCount)
+					{
+						if(cachedWidth === cachedWidth) //!isNaN
+						{
+							xPosition += cachedWidth;
+						}
+						else
+						{
+							xPosition += calculatedTypicalItemWidth;
+						}
+					}
+					else
+					{
+						var item:DisplayObject = items[iNormalized];
+						if(item === null)
+						{
+							if(cachedWidth === cachedWidth) //!isNaN
+							{
+								xPosition += cachedWidth;
+							}
+							else
+							{
+								xPosition += calculatedTypicalItemWidth;
+							}
+						}
+						else
+						{
+							xPosition += item.width;
+						}
+					}
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.PAGE_DOWN)
+			{
+				xPosition = 0;
+				indexOffset = 0;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					indexOffset = -this._beforeVirtualizedItemCount;
+				}
+				for(i = index; i < itemCount; i++)
+				{
+					iNormalized = i + indexOffset;
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						cachedWidth = this._widthCache[i];
+					}
+					if(iNormalized < 0 || iNormalized >= itemArrayCount)
+					{
+						if(cachedWidth === cachedWidth) //!isNaN
+						{
+							xPosition += cachedWidth;
+						}
+						else
+						{
+							xPosition += calculatedTypicalItemWidth;
+						}
+					}
+					else
+					{
+						item = items[iNormalized];
+						if(item === null)
+						{
+							if(cachedWidth === cachedWidth) //!isNaN
+							{
+								xPosition += cachedWidth;
+							}
+							else
+							{
+								xPosition += calculatedTypicalItemWidth;
+							}
+						}
+						else
+						{
+							xPosition += item.width;
+						}
+					}
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.LEFT)
+			{
+				result--;
+			}
+			else if(keyCode === Keyboard.RIGHT)
+			{
+				result++;
+			}
+			if(result < 0)
+			{
+				return 0;
+			}
+			if(result >= itemCount)
+			{
+				return itemCount - 1;
+			}
 			return result;
 		}
 

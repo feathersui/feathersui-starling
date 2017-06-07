@@ -245,6 +245,8 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #selectedIndex
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */

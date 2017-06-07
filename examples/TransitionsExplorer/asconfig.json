@@ -1,0 +1,18 @@
+{
+	"config": "flex",
+	"application": "source/TransitionsExplorer-app.xml",
+	"compilerOptions": {
+		"source-path": [
+			"../../source",
+			"../../third-party/starling",
+			"../../themes/MetalWorksMobileTheme/source"
+		],
+		"swf-version": 30,
+		"output": "output/TransitionsExplorer.swf"
+	},
+	"copySourcePathAssets": true,
+	"additionalOptions": "-advanced-telemetry=true -frame=two,feathers.examples.transitionsExplorer.Main",
+	"files": [
+		"source/TransitionsExplorerWeb.as"
+	]
+}

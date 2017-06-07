@@ -14,6 +14,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
@@ -281,14 +282,14 @@ package feathers.controls.supportClasses
 
 		private var _updateForDataReset:Boolean = false;
 
-		private var _dataProvider:ListCollection;
+		private var _dataProvider:IListCollection;
 
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
 
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -500,12 +501,25 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			if(this._typicalItemRenderer === null)
+			var itemRenderer:DisplayObject = null;
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
+			{
+				if(this._layoutItems.length > 0)
+				{
+					itemRenderer = this._layoutItems[0] as DisplayObject;
+				}
+			}
+			if(itemRenderer === null)
+			{
+				itemRenderer = this._typicalItemRenderer as DisplayObject;
+			}
+			if(itemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = this._typicalItemRenderer.width;
-			var itemRendererHeight:Number = this._typicalItemRenderer.height;
+			var itemRendererWidth:Number = itemRenderer.width;
+			var itemRendererHeight:Number = itemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
@@ -515,12 +529,25 @@ package feathers.controls.supportClasses
 
 		public function get verticalScrollStep():Number
 		{
-			if(this._typicalItemRenderer === null)
+			var itemRenderer:DisplayObject = null;
+			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
+			{
+				if(this._layoutItems.length > 0)
+				{
+					itemRenderer = this._layoutItems[0] as DisplayObject;
+				}
+			}
+			if(itemRenderer === null)
+			{
+				itemRenderer = this._typicalItemRenderer as DisplayObject;
+			}
+			if(itemRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = this._typicalItemRenderer.width;
-			var itemRendererHeight:Number = this._typicalItemRenderer.height;
+			var itemRendererWidth:Number = itemRenderer.width;
+			var itemRendererHeight:Number = itemRenderer.height;
 			if(itemRendererWidth < itemRendererHeight)
 			{
 				return itemRendererWidth;
@@ -626,6 +653,11 @@ package feathers.controls.supportClasses
 			return this._layout.requiresLayoutOnScroll &&
 				(this.explicitVisibleWidth !== this.explicitVisibleWidth ||
 				this.explicitVisibleHeight !== this.explicitVisibleHeight);
+		}
+
+		public function calculateNavigationDestination(index:int, keyCode:uint):int
+		{
+			return this._layout.calculateNavigationDestination(this._layoutItems, index, keyCode, this._layoutResult);
 		}
 
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point

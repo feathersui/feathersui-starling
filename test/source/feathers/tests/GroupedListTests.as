@@ -5,7 +5,7 @@ package feathers.tests
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.IGroupedListHeaderRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.tests.supportClasses.AssertViewPortBoundsLayout;
 
@@ -28,7 +28,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._list = new GroupedList();
-			this._list.dataProvider = new HierarchicalCollection(
+			this._list.dataProvider = new ArrayHierarchicalCollection(
 			[
 				{
 					header: { label: "A" },
@@ -749,7 +749,7 @@ package feathers.tests
 		[Test]
 		public function testGroupToHeaderData():void
 		{
-			var rawData:Object = this._list.dataProvider.data;
+			var rawData:Object = ArrayHierarchicalCollection(this._list.dataProvider).data;
 			var group0:Object = this._list.dataProvider.getItemAt(0);
 			var header0:Object = this._list.groupToHeaderData(group0);
 			var group1:Object = this._list.dataProvider.getItemAt(1);

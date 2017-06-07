@@ -24,6 +24,8 @@ package feathers.core
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #isSelected
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */

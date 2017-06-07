@@ -16,6 +16,7 @@ package feathers.media
 	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundLoaderContext;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 
@@ -266,6 +267,7 @@ package feathers.media
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html flash.net.URLRequest
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html flash.media.Sound
+		 * @see #soundLoaderContext
 		 */
 		public function get soundSource():Object
 		{
@@ -504,6 +506,40 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _soundLoaderContext:SoundLoaderContext = null;
+
+		/**
+		 * If a custom <code>SoundLoaderContext</code> is provided, it will be
+		 * passed to the <code>load()</code> method of the
+		 * <code>flash.media.Sound</code> when loading a sound from a URL.
+		 *
+		 * <p>This property must be set before the <code>soundSource</code>
+		 * property.</p>
+		 *
+		 * <p>In the following example, a custom
+		 * <code>SoundLoaderContext</code> is used:</p>
+		 *
+		 * <listing version="3.0">
+		 * soundPlayer.soundLoaderContext = new SoundLoaderContext(1000, true);</listing>
+		 *
+		 * @see #soundSource
+		 */
+		public function get soundLoaderContext():SoundLoaderContext
+		{
+			return this._soundLoaderContext;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set soundLoaderContext(value:SoundLoaderContext):void
+		{
+			this._soundLoaderContext = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.soundSource = null;
@@ -615,7 +651,7 @@ package feathers.media
 			this._sound.addEventListener(ProgressEvent.PROGRESS, sound_progressHandler);
 			this._sound.addEventListener(flash.events.Event.COMPLETE, sound_completeHandler);
 			this._sound.addEventListener(flash.events.Event.ID3, sound_id3Handler);
-			this._sound.load(request);
+			this._sound.load(request, this._soundLoaderContext);
 		}
 
 		/**

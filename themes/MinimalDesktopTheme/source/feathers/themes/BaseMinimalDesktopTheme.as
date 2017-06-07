@@ -68,11 +68,13 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.Tree;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
@@ -187,6 +189,11 @@ package feathers.themes
 		 */
 		protected static const THEME_STYLE_NAME_TOOL_TIP_LABEL_TEXT_RENDERER:String = "minimal-desktop-tool-tip-label-text-renderer";
 
+		/**
+		 * @private
+		 */
+		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "minimal-desktop-alert-button-group-button";
+
 		protected static const FONT_TEXTURE_NAME:String = "pf-ronda-seven-font";
 
 		protected static const ATLAS_SCALE_FACTOR:Number = 2;
@@ -261,77 +268,78 @@ package feathers.themes
 		}
 
 		/**
-		 * A normal font size.
+		 * A normal font size. Since it's a pixel font, we want a multiple of
+		 * the original size, which, in this case, is 8.
 		 */
-		protected var fontSize:int;
+		protected var fontSize:int = 8;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 16;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 30;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 8;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 4;
 
 		/**
 		 * The size, in pixels, of very smaller padding and gaps.
 		 */
-		protected var extraSmallGutterSize:int;
+		protected var extraSmallGutterSize:int = 2;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 98;
 
 		/**
 		 * The minimum width, in pixels, of some types of buttons.
 		 */
-		protected var buttonMinWidth:int;
+		protected var buttonMinWidth:int = 64;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 20;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 12;
 
 		/**
 		 * The size, in pixels, of a border around any control.
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 1;
 
 		/**
 		 * The size, in pixels, of a drop shadow on a control's bottom right.
 		 */
-		protected var dropShadowSize:int;
+		protected var dropShadowSize:int = 4;
 
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutTopLeftArrowOverlapGapSize:int;
-		protected var calloutBottomRightArrowOverlapGapSize:int;
-		protected var progressBarFillMinSize:int;
-		protected var popUpSize:int;
-		protected var dropDownGapSize:int;
-		protected var focusPaddingSize:int;
-		protected var popUpVolumeSliderPaddingTopLeft:int;
-		protected var popUpVolumeSliderPaddingBottomRight:int;
+		protected var calloutBackgroundMinSize:int = 5;
+		protected var calloutTopLeftArrowOverlapGapSize:int = -2;
+		protected var calloutBottomRightArrowOverlapGapSize:int = -6;
+		protected var progressBarFillMinSize:int = 7;
+		protected var popUpSize:int = 336;
+		protected var dropDownGapSize:int = -1;
+		protected var focusPaddingSize:int = -2;
+		protected var popUpVolumeSliderPaddingTopLeft:int = 9;
+		protected var popUpVolumeSliderPaddingBottomRight:int = 13;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -422,6 +430,9 @@ package feathers.themes
 		
 		protected var listDrillDownAccessoryTexture:Texture;
 
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
@@ -477,38 +488,11 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
 			this.initializeStage();
 			this.initializeStyleProviders();
-		}
-
-		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 30;
-			this.extraSmallGutterSize = 2;
-			this.smallGutterSize = 4;
-			this.gutterSize = 8;
-			this.borderSize = 1;
-			this.dropShadowSize = 4;
-			this.controlSize = 20;
-			this.smallControlSize = 12;
-			this.calloutTopLeftArrowOverlapGapSize = -2;
-			this.calloutBottomRightArrowOverlapGapSize = -6;
-			this.calloutBackgroundMinSize = 5;
-			this.progressBarFillMinSize = 7;
-			this.buttonMinWidth = this.gridSize * 2 + this.smallGutterSize * 1;
-			this.wideControlSize = this.gridSize * 3 + this.smallGutterSize * 2;
-			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.dropDownGapSize = -1;
-			this.focusPaddingSize = -2;
-			this.popUpVolumeSliderPaddingTopLeft = 9;
-			this.popUpVolumeSliderPaddingBottomRight = this.popUpVolumeSliderPaddingTopLeft + this.dropShadowSize;
 		}
 
 		/**
@@ -634,6 +618,9 @@ package feathers.themes
 			this.seekSliderProgressSkinTexture = this.atlas.getTexture("seek-slider-progress-skin0000");
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon0000");
+
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 		}
 
 		/**
@@ -641,11 +628,6 @@ package feathers.themes
 		 */
 		protected function initializeFonts():void
 		{
-			//since it's a pixel font, we want a multiple of the original size,
-			//which, in this case, is 8.
-			this.fontSize = 8;
-			this.largeFontSize = 16;
-
 			this.primaryFontStyles = new TextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.disabledFontStyles = new TextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.headingFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
@@ -666,6 +648,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Alert).defaultStyleFunction = this.setAlertStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPanelHeaderStyles);
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
 
 			//autocomplete
 			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
@@ -818,6 +801,10 @@ package feathers.themes
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
 			
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
+
 			//media controls
 			this.getStyleProviderForClass(VideoPlayer).defaultStyleFunction = this.setVideoPlayerStyles;
 
@@ -919,12 +906,18 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
+			group.customButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON;
 			group.direction = Direction.HORIZONTAL;
 			group.horizontalAlign = HorizontalAlign.CENTER;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.distributeButtonSizes = false;
 			group.gap = this.smallGutterSize;
 			group.padding = this.smallGutterSize;
+		}
+
+		protected function setAlertButtonGroupButtonStyles(button:Button):void
+		{
+			this.setButtonStyles(button);
 		}
 
 	//-------------------------
@@ -2241,6 +2234,50 @@ package feathers.themes
 			thumb.defaultSkin = skin;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+
+			tree.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			tree.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
+			tree.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			tree.padding = this.borderSize;
+			tree.paddingRight = 0;
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
+			itemRenderer.disclosureGap = this.gutterSize;
+
+			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			disclosureOpenIcon.textureSmoothing = TextureSmoothing.NONE;
+			disclosureOpenIcon.pixelSnapping = true;
+			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
+
+			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			disclosureClosedIcon.textureSmoothing = TextureSmoothing.NONE;
+			disclosureClosedIcon.pixelSnapping = true;
+			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 
 	//-------------------------

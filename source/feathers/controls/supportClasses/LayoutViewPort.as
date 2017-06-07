@@ -406,8 +406,8 @@ package feathers.controls.supportClasses
 				{
 					IValidating(item).validate();
 				}
-				var itemX:Number = item.x - item.pivotX;
-				var itemY:Number = item.y - item.pivotY;
+				var itemX:Number = item.x - item.pivotX * item.scaleX;
+				var itemY:Number = item.y - item.pivotY * item.scaleY;
 				var itemMaxX:Number = itemX + item.width;
 				var itemMaxY:Number = itemY + item.height;
 				if(itemX === itemX && //!isNaN
@@ -431,8 +431,6 @@ package feathers.controls.supportClasses
 					maxY = itemMaxY;
 				}
 			}
-			this._contentX = minX;
-			this._contentY = minY;
 			var minWidth:Number = this.viewPortBounds.minWidth;
 			var maxWidth:Number = this.viewPortBounds.maxWidth;
 			var minHeight:Number = this.viewPortBounds.minHeight;
@@ -472,8 +470,8 @@ package feathers.controls.supportClasses
 			{
 				this._actualVisibleHeight = explicitViewPortHeight;
 			}
-			this._layoutResult.contentX = 0;
-			this._layoutResult.contentY = 0;
+			this._layoutResult.contentX = minX;
+			this._layoutResult.contentY = minY;
 			this._layoutResult.contentWidth = calculatedWidth;
 			this._layoutResult.contentHeight = calculatedHeight;
 			this._layoutResult.viewPortWidth = calculatedWidth;

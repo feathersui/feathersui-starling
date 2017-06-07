@@ -8,7 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.IValidating;
-	import feathers.data.ListCollection;
+	import feathers.data.IListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -21,6 +21,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.controls.renderers.IListItemRenderer;
 
 	/**
 	 * An optional skin to display in the horizontal or vertical center of
@@ -52,7 +53,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:SpinnerList = new SpinnerList();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -212,7 +213,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function set dataProvider(value:ListCollection):void
+		override public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -435,17 +436,33 @@ package feathers.controls
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
 			var itemCount:int = this._dataProvider.length;
-			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+			if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
 			{
 				var pageIndex:int = this._verticalPageIndex % itemCount;
 			}
-			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+			else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
 			{
 				pageIndex = this._horizontalPageIndex % itemCount;
 			}
 			if(pageIndex < 0)
 			{
 				pageIndex = itemCount + pageIndex;
+			}
+			var item:Object = this._dataProvider.getItemAt(pageIndex);
+			var itemRenderer:IListItemRenderer = this.itemToItemRenderer(item);
+			if(itemRenderer !== null && !itemRenderer.isEnabled)
+			{
+				//if the item renderer isn't enabled, we cannot select it
+				//go back to the previously selected index
+				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				{
+					this.scrollToPageIndex(this._horizontalPageIndex, this._selectedIndex, this._pageThrowDuration);
+				}
+				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				{
+					this.scrollToPageIndex(this._selectedIndex, this._verticalPageIndex, this._pageThrowDuration);
+				}
+				return;
 			}
 			this.selectedIndex = pageIndex;
 		}
@@ -529,51 +546,24 @@ package feathers.controls
 			{
 				return;
 			}
-			var changedSelection:Boolean = false;
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
+				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
+				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
+				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
 			{
-				if(this._dataProvider.length > 0)
+				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
+				if(this.selectedIndex !== newIndex)
 				{
-					this.selectedIndex = 0;
-					changedSelection = true;
-				}
-			}
-			else if(event.keyCode == Keyboard.END)
-			{
-				this.selectedIndex = this._dataProvider.length - 1;
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				var newIndex:int = this._selectedIndex - 1;
-				if(newIndex < 0)
-				{
-					newIndex = this._dataProvider.length + newIndex;
-				}
-				this.selectedIndex = newIndex;
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				newIndex = this._selectedIndex + 1;
-				if(newIndex >= this._dataProvider.length)
-				{
-					newIndex -= this._dataProvider.length;
-				}
-				this.selectedIndex = newIndex;
-				changedSelection = true;
-			}
-			if(changedSelection)
-			{
-				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
-				{
-					var pageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
-					this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
-				}
-				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
-				{
-					pageIndex = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
-					this.throwToPage(pageIndex, this._verticalPageIndex);
+					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+					{
+						var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+						this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
+					}
+					else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+					{
+						pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+						this.throwToPage(pageIndex, this._verticalPageIndex);
+					}
 				}
 			}
 		}

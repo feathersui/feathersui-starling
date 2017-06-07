@@ -115,6 +115,25 @@ package feathers.tests
 		}
 
 		[Test(async)]
+		public function testOriginalSourceDimensionsInCompleteEvent():void
+		{
+			var completeDispatched:Boolean = false;
+			var loader:ImageLoader = this._loader;
+			loader.addEventListener(Event.COMPLETE, function():void
+			{
+				Assert.assertStrictlyEquals("ImageLoader originalSourceWidth property not changed after loading URL.", 100, loader.originalSourceWidth);
+				Assert.assertStrictlyEquals("ImageLoader originalSourceHeight property not changed after loading URL.", 100, loader.originalSourceHeight);
+				completeDispatched = true;
+			});
+			loader.source = "fixtures/red100x100.png";
+			loader.validate();
+			Async.delayCall(this, function():void
+			{
+				Assert.assertTrue("Event.COMPLETE not dispatched by ImageLoader after loading valid URL.", completeDispatched);
+			}, 200);
+		}
+
+		[Test(async)]
 		public function testScaleFactor():void
 		{
 			var loader:ImageLoader = this._loader;

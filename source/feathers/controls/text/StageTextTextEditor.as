@@ -68,6 +68,10 @@ package feathers.controls.text
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 *
+	 * @see #text
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -92,8 +96,9 @@ package feathers.controls.text
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType feathers.events.FeathersEventType.ENTER
 	 * @see #returnKeyLabel
+	 *
+	 * @eventType feathers.events.FeathersEventType.ENTER
 	 */
 	[Event(name="enter",type="starling.events.Event")]
 
@@ -315,6 +320,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _needsNewTexture:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _needsTextureUpdate:Boolean = false;
 
 		/**
 		 * @private
@@ -1153,18 +1163,17 @@ package feathers.controls.text
 		protected var _clearButtonMode:String = "whileEditing";
 
 		/**
-		 * Determines when the clear button is displayed by the
+		 * Determines when the clear button is displayed or hidden by the
 		 * <code>StageText</code> object.
 		 *
-		 * <p>In the following example, the snapshot will be updated when the
-		 * text editor is scaled:</p>
+		 * <p>In the following example, the clear button is always hidden:</p>
 		 *
 		 * <listing version="3.0">
-		 * textEditor.updateSnapshotOnScaleChange = true;</listing>
+		 * textEditor.clearButtonMode = StageTextClearButtonMode.NEVER;</listing>
 		 * 
 		 * <p>Requires <code>-swf-version=34</code> or newer.</p>
 		 *
-		 * @default false
+		 * @default flash.text.StageTextClearButtonMode.WHILE_EDITING
 		 * 
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#clearButtonMode Full description of flash.text.StageText.clearButtonMode in Adobe's Flash Platform API Reference
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageTextClearButtonMode.html Full description of flash.text.StageTextClearButtonMode in Adobe's Flash Platform API Reference
@@ -1225,7 +1234,7 @@ package feathers.controls.text
 			{
 				painter.excludeFromCache(this);
 			}
-			if(this.textSnapshot && this._updateSnapshotOnScaleChange)
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
 				var matrix:Matrix = Pool.getMatrix();
 				this.getTransformationMatrix(this.stage, matrix);
@@ -1239,10 +1248,32 @@ package feathers.controls.text
 				}
 				Pool.putMatrix(matrix);
 			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				var hasText:Boolean = this._text.length > 0;
+				if(hasText)
+				{
+					this.refreshSnapshot();
+				}
+				if(this.textSnapshot)
+				{
+					this.textSnapshot.visible = !this._stageTextHasFocus;
+					this.textSnapshot.alpha = hasText ? 1 : 0;
+				}
+				if(!this._stageTextHasFocus)
+				{
+					//hide the StageText after the snapshot is created
+					//native controls don't necessarily render at the same time
+					//as starling, and we don't want to see the text disappear
+					//for a moment
+					this.stageText.visible = false;
+				}
+			}
 
 			//we'll skip this if the text field isn't visible to avoid running
 			//that code every frame.
-			if(this.stageText && this.stageText.visible)
+			if(this.stageText !== null && this.stageText.visible)
 			{
 				this.refreshViewPortAndFontSize();
 			}
@@ -1612,17 +1643,11 @@ package feathers.controls.text
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
-				var hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					this.refreshSnapshot();
-				}
-				if(this.textSnapshot)
-				{
-					this.textSnapshot.visible = !this._stageTextHasFocus;
-					this.textSnapshot.alpha = hasText ? 1 : 0;
-				}
-				this.stageText.visible = false;
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 
 			this.doPendingActions();

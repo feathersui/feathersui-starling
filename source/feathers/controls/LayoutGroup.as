@@ -718,6 +718,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function validate():void
+		{
+			//for the start of validation, we're going to ignore when children
+			//resize or dispatch changes to layout data. this allows subclasses
+			//to modify children in draw() before the layout is applied.
+			var oldIgnoreChildChanges:Boolean = this._ignoreChildChanges;
+			this._ignoreChildChanges = true;
+			super.validate();
+			//if super.validate() returns without calling draw(), the flag
+			//won't be reset before layout is called, so we need reset manually.
+			this._ignoreChildChanges = oldIgnoreChildChanges;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(this.stage !== null)
@@ -739,6 +755,10 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
+			//children are allowed to change during draw() in a subclass up
+			//until it calls super.draw().
+			this._ignoreChildChanges = false;
+
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);

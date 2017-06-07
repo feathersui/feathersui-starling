@@ -62,12 +62,14 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.Tree;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextBlockTextEditor;
@@ -114,7 +116,7 @@ package feathers.themes
 		protected static const COLOR_TEXT_LIGHT:uint = 0xFFFFFF;
 		protected static const COLOR_TEXT_SELECTED:uint = 0x0083E8;
 		protected static const COLOR_TEXT_DARK_DISABLED:uint = 0x848585;
-		protected static const COLOR_TEXT_SELECTED_DISABLED:uint = 0xC6DFF3;
+		protected static const COLOR_TEXT_SELECTED_DISABLED:uint = 0x96AFC3;
 		protected static const COLOR_TEXT_ACTION_DISABLED:uint = 0xC6DFF3;
 		protected static const COLOR_TEXT_DANGER_DISABLED:uint = 0xF7B4AF;
 		protected static const COLOR_BACKGROUND_LIGHT:uint = 0xDFE2E2;
@@ -168,24 +170,24 @@ package feathers.themes
 			super();
 		}
 
-		protected var gridSize:int;
-		protected var gutterSize:int;
-		protected var smallGutterSize:int;
-		protected var extraSmallGutterSize:int;
-		protected var borderSize:int;
-		protected var controlSize:int;
-		protected var smallControlSize:int;
-		protected var wideControlSize:int;
-		protected var popUpFillSize:int;
-		protected var thumbSize:int;
-		protected var shadowSize:int;
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutVerticalArrowGap:int;
-		protected var calloutHorizontalArrowGap:int;
+		protected var gridSize:int = 70;
+		protected var gutterSize:int = 20;
+		protected var smallGutterSize:int = 10;
+		protected var extraSmallGutterSize:int = 5;
+		protected var borderSize:int = 1;
+		protected var controlSize:int = 50;
+		protected var smallControlSize:int = 16;
+		protected var wideControlSize:int = 230;
+		protected var popUpFillSize:int = 300;
+		protected var thumbSize:int = 34;
+		protected var shadowSize:int = 2;
+		protected var calloutBackgroundMinSize:int = 53;
+		protected var calloutVerticalArrowGap:int = -8;
+		protected var calloutHorizontalArrowGap:int = -7;
 
-		protected var smallFontSize:int;
-		protected var regularFontSize:int;
-		protected var largeFontSize:int;
+		protected var smallFontSize:int = 14;
+		protected var regularFontSize:int = 16;
+		protected var largeFontSize:int = 20;
 
 		protected var darkFontStyles:TextFormat;
 		protected var lightFontStyles:TextFormat;
@@ -294,6 +296,8 @@ package feathers.themes
 		protected var spinnerListSelectionOverlayTexture:Texture;
 		protected var pageIndicatorNormalTexture:Texture;
 		protected var pageIndicatorSelectedTexture:Texture;
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -314,7 +318,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
@@ -326,24 +329,6 @@ package feathers.themes
 		{
 			this.starling.stage.color = COLOR_BACKGROUND_LIGHT;
 			this.starling.nativeStage.color = COLOR_BACKGROUND_LIGHT;
-		}
-
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 70;
-			this.gutterSize = 20;
-			this.smallGutterSize = 10;
-			this.extraSmallGutterSize = 5;
-			this.borderSize = 1;
-			this.controlSize = 50;
-			this.smallControlSize = 16;
-			this.wideControlSize = 230;
-			this.popUpFillSize = 300;
-			this.thumbSize = 34;
-			this.calloutBackgroundMinSize = 53;
-			this.calloutVerticalArrowGap = -8;
-			this.calloutHorizontalArrowGap = -7;
-			this.shadowSize = 2;
 		}
 
 		protected function initializeTextures():void
@@ -445,14 +430,13 @@ package feathers.themes
 			this.toggleSwitchOnTrackDisabledTexture = this.atlas.getTexture("toggle-switch-on-track-disabled-skin0000");
 			this.toggleSwitchOffTrackTexture = this.atlas.getTexture("toggle-switch-off-track-skin0000");
 			this.toggleSwitchOffTrackDisabledTexture = this.atlas.getTexture("toggle-switch-off-track-disabled-skin0000");
+
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 		}
 
 		protected function initializeFonts():void
 		{
-			this.smallFontSize = 14;
-			this.regularFontSize = 16;
-			this.largeFontSize = 20;
-
 			this.darkFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.lightFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_LIGHT, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.selectedFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);
@@ -627,6 +611,10 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK, this.setToggleSwitchOffTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setHorizontalThumbStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setHorizontalThumbStyles);
+
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 		}
 
 		protected static function textRendererFactory():ITextRenderer
@@ -1894,6 +1882,26 @@ package feathers.themes
 			skin.height = this.thumbSize;
 			thumb.defaultSkin = skin;
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+			tree.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
+
+			itemRenderer.disclosureOpenIcon = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			itemRenderer.disclosureClosedIcon = new ImageSkin(this.treeDisclosureClosedIconTexture);
 		}
 
 	}

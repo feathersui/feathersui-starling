@@ -12,6 +12,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -1041,6 +1042,72 @@ package feathers.layout
 					result[resultLastIndex] = loopedI;
 				}
 				resultLastIndex++;
+			}
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			var itemArrayCount:int = items.length;
+			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+			var result:int = index;
+			if(keyCode === Keyboard.HOME)
+			{
+				if(itemCount > 0)
+				{
+					result = 0;
+				}
+			}
+			else if(keyCode === Keyboard.END)
+			{
+				result = itemCount - 1;
+			}
+			else if(keyCode === Keyboard.PAGE_UP)
+			{
+				var xPosition:Number = 0;
+				for(var i:int = index; i >= 0; i--)
+				{
+					xPosition += this.snapInterval;
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.PAGE_DOWN)
+			{
+				xPosition = 0;
+				for(i = index; i < itemCount; i++)
+				{
+					xPosition += this.snapInterval;
+					if(xPosition > bounds.viewPortWidth)
+					{
+						break;
+					}
+					xPosition += this._gap;
+					result = i;
+				}
+			}
+			else if(keyCode === Keyboard.LEFT)
+			{
+				result--;
+			}
+			else if(keyCode === Keyboard.RIGHT)
+			{
+				result++;
+			}
+			if(result < 0)
+			{
+				return 0;
+			}
+			if(result >= itemCount)
+			{
+				return itemCount - 1;
 			}
 			return result;
 		}

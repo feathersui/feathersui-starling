@@ -18,6 +18,7 @@ package feathers.controls
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
@@ -199,6 +200,9 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 * 
+	 * @see #selectedItem
+	 * @see #selectedIndex
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -217,7 +221,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:PickerList = new PickerList();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -382,7 +386,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
+		protected var _dataProvider:IListCollection;
 		
 		/**
 		 * The collection of data displayed by the list.
@@ -391,7 +395,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new ListCollection(
+		 * list.dataProvider = new ArrayCollection(
 		 * [
 		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -408,16 +412,20 @@ package feathers.controls
 		 * };</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
+		 * @see feathers.data.XMLListCollection
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

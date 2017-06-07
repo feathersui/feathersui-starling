@@ -11,6 +11,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -1130,6 +1131,42 @@ package feathers.layout
 				}
 			}
 
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			var result:int = index;
+			if(keyCode === Keyboard.HOME)
+			{
+				if(items.length > 0)
+				{
+					result = 0;
+				}
+			}
+			else if(keyCode === Keyboard.END)
+			{
+				result = items.length - 1;
+			}
+			else if(keyCode === Keyboard.UP)
+			{
+				result--;
+			}
+			else if(keyCode === Keyboard.DOWN)
+			{
+				result++;
+			}
+			if(result < 0)
+			{
+				return 0;
+			}
+			if(result >= items.length)
+			{
+				return items.length - 1;
+			}
 			return result;
 		}
 

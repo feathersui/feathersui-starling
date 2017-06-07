@@ -49,6 +49,6 @@ package feathers.data
 		 * <p>If an existing <code>ListCollection</code> is passed in as the
 		 * result, all items will be removed before new items are added.</p>
 		 */
-		function load(textToMatch:String, suggestionsResult:ListCollection = null):void;
+		function load(textToMatch:String, suggestionsResult:IListCollection = null):void;
 	}
 }

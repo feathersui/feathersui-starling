@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
@@ -101,6 +102,9 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 *
+	 * @see #selectedItem
+	 * @see #selectedIndex
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -199,7 +203,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:List = new List();
 	 * 
-	 * list.dataProvider = new ListCollection(
+	 * list.dataProvider = new ArrayCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -209,10 +213,10 @@ package feathers.controls
 	 * 
 	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
-	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-	 *     renderer.labelField = "text";
-	 *     renderer.iconSourceField = "thumbnail";
-	 *     return renderer;
+	 *     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     itemRenderer.labelField = "text";
+	 *     itemRenderer.iconSourceField = "thumbnail";
+	 *     return itemRenderer;
 	 * };
 	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
@@ -529,12 +533,12 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
-		
+		protected var _dataProvider:IListCollection;
+
 		/**
 		 * The collection of data displayed by the list. Changing this property
 		 * to a new value is considered a drastic change to the list's data, so
@@ -545,7 +549,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new ListCollection(
+		 * list.dataProvider = new ArrayCollection(
 		 * [
 		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
 		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
@@ -573,22 +577,25 @@ package feathers.controls
 		 * automatically dispose its texture because the texture may be used
 		 * by other display objects, a list cannot dispose its data provider
 		 * because the data provider may be used by other lists. See the
-		 * <code>dispose()</code> function on <code>ListCollection</code> to
+		 * <code>dispose()</code> function on <code>IListCollection</code> to
 		 * see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.data.ListCollection#dispose()
+		 * @see feathers.data.IListCollection#dispose()
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
+		 * @see feathers.data.XMLListCollection
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -626,12 +633,12 @@ package feathers.controls
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _isSelectable:Boolean = true;
-		
+
 		/**
 		 * Determines if items in the list may be selected. By default only a
 		 * single item may be selected at any given time. In other words, if
@@ -647,6 +654,8 @@ package feathers.controls
 		 *
 		 * @default true
 		 *
+		 * @see #selectedItem
+		 * @see #selectedIndex
 		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean
@@ -1612,36 +1621,20 @@ package feathers.controls
 			{
 				return;
 			}
-			var changedSelection:Boolean = false;
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
+				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
+				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
+				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
 			{
-				if(this._dataProvider.length > 0)
+				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
+				if(this.selectedIndex !== newIndex)
 				{
-					this.selectedIndex = 0;
-					changedSelection = true;
+					this.selectedIndex = newIndex;
+					var point:Point = Pool.getPoint();
+					this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
+					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+					Pool.putPoint(point);
 				}
-			}
-			else if(event.keyCode == Keyboard.END)
-			{
-				this.selectedIndex = this._dataProvider.length - 1;
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-				changedSelection = true;
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
-				changedSelection = true;
-			}
-			if(changedSelection)
-			{
-				var point:Point = Pool.getPoint();
-				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
-				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
-				Pool.putPoint(point);
 			}
 		}
 

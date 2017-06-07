@@ -11,6 +11,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -1605,6 +1606,182 @@ package feathers.layout
 				this.getVisibleIndicesAtScrollPositionWithoutPaging(scrollX, scrollY, width, height, itemCount, result);
 			}
 
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			var itemCount:int = items.length;
+			if(keyCode === Keyboard.HOME)
+			{
+				return 0;
+			}
+			else if(keyCode === Keyboard.END)
+			{
+				return itemCount - 1;
+			}
+
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem();
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			this.validateItems(items);
+
+			this._discoveredItemsCache.length = 0;
+			var tileWidth:Number = 0;
+			var tileHeight:Number = 0;
+			if(this._useVirtualLayout)
+			{
+				//a virtual layout assumes that all items are the same size as
+				//the typical item, so we don't need to measure every item in
+				//that case
+				tileWidth = calculatedTypicalItemWidth;
+				tileHeight = calculatedTypicalItemHeight;
+			}
+			else
+			{
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					var itemWidth:Number = item.width;
+					var itemHeight:Number = item.height;
+					if(itemWidth > tileWidth)
+					{
+						tileWidth = itemWidth;
+					}
+					if(itemHeight > tileHeight)
+					{
+						tileHeight = itemHeight;
+					}
+				}
+			}
+			if(tileWidth < 0)
+			{
+				tileWidth = 0;
+			}
+			if(tileHeight < 0)
+			{
+				tileHeight = 0;
+			}
+			if(this._useSquareTiles)
+			{
+				if(tileWidth > tileHeight)
+				{
+					tileHeight = tileWidth;
+				}
+				else if(tileHeight > tileWidth)
+				{
+					tileWidth = tileHeight;
+				}
+			}
+
+			var availableWidth:Number = bounds.viewPortWidth;
+			var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
+				availableWidth, Number.POSITIVE_INFINITY, this._paddingLeft + this._paddingRight,
+				this._horizontalGap, this._requestedColumnCount, itemCount);
+			var pageHorizontalTileCount:int = horizontalTileCount;
+			var pageVerticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
+				bounds.viewPortHeight, Number.POSITIVE_INFINITY, this._paddingTop + this._paddingBottom,
+				this._verticalGap, this._requestedRowCount, itemCount,
+				pageHorizontalTileCount, this._distributeHeights && !this._useSquareTiles);
+			var verticalTileCount:int = Math.ceil(itemCount / horizontalTileCount);
+			var rowIndex:int = index / pageHorizontalTileCount;
+			var columnIndex:int = index % pageHorizontalTileCount;
+			if(this._paging === PAGING_HORIZONTAL)
+			{
+				verticalTileCount = pageVerticalTileCount;
+				var perPage:Number = pageHorizontalTileCount * pageVerticalTileCount;
+				var pageCount:int = Math.ceil(itemCount / perPage);
+				horizontalTileCount *= pageCount;
+				while(rowIndex >= verticalTileCount)
+				{
+					rowIndex -= verticalTileCount;
+					columnIndex += pageHorizontalTileCount;
+				}
+			}
+
+			if(keyCode === Keyboard.PAGE_UP)
+			{
+				if(this._paging === PAGING_HORIZONTAL)
+				{
+					columnIndex -= pageHorizontalTileCount;
+				}
+				else
+				{
+					rowIndex -= pageVerticalTileCount;
+				}
+			}
+			else if(keyCode === Keyboard.PAGE_DOWN)
+			{
+				if(this._paging === PAGING_HORIZONTAL)
+				{
+					columnIndex += pageHorizontalTileCount;
+				}
+				else
+				{
+					rowIndex += pageVerticalTileCount;
+				}
+			}
+			else if(keyCode === Keyboard.UP)
+			{
+				rowIndex--;
+			}
+			else if(keyCode === Keyboard.DOWN)
+			{
+				rowIndex++;
+			}
+			else if(keyCode === Keyboard.LEFT)
+			{
+				columnIndex--;
+			}
+			else if(keyCode === Keyboard.RIGHT)
+			{
+				columnIndex++;
+			}
+			if(rowIndex < 0)
+			{
+				rowIndex = 0;
+			}
+			else if(rowIndex >= verticalTileCount)
+			{
+				rowIndex = verticalTileCount - 1;
+			}
+			if(columnIndex < 0)
+			{
+				columnIndex = 0;
+			}
+			else if(columnIndex >= horizontalTileCount)
+			{
+				columnIndex = horizontalTileCount - 1;
+			}
+			if(this._paging === PAGING_HORIZONTAL)
+			{
+				while(columnIndex >= pageHorizontalTileCount)
+				{
+					columnIndex -= pageHorizontalTileCount;
+					rowIndex += verticalTileCount;
+				}
+			}
+			var result:int = rowIndex * pageHorizontalTileCount + columnIndex;
+			if(result >= itemCount)
+			{
+				//nothing at this column on the next row
+				result = itemCount - 1;
+			}
 			return result;
 		}
 

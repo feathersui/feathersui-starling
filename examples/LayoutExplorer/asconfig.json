@@ -1,0 +1,16 @@
+{
+	"config": "airmobile",
+	"application": "source/LayoutExplorer-app.xml",
+	"compilerOptions": {
+		"source-path": [
+			"../../source",
+			"../../third-party/starling",
+			"../../themes/MetalWorksMobileTheme/source"
+		],
+		"swf-version": 30,
+		"output": "output/LayoutExplorer.swf"
+	},
+	"files": [
+		"source/LayoutExplorer.as"
+	]
+}

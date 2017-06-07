@@ -72,6 +72,10 @@ package feathers.controls.text
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
+	 *
+	 * @see #text
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -335,6 +339,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsTextureUpdate:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _needsNewTexture:Boolean = false;
 
 		/**
@@ -353,6 +362,16 @@ package feathers.controls.text
 			}
 			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _previousStarlingTextFormat:starling.text.TextFormat;
+
+		/**
+		 * @private
+		 */
+		protected var _currentStarlingTextFormat:starling.text.TextFormat;
 
 		/**
 		 * @private
@@ -1403,21 +1422,32 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
-			if(this.textSnapshot)
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
 			{
-				if(this._updateSnapshotOnScaleChange)
+				var matrix:Matrix = Pool.getMatrix();
+				this.getTransformationMatrix(this.stage, matrix);
+				if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
+					matrixToScaleY(matrix) !== this._lastGlobalScaleY)
 				{
-					var matrix:Matrix = Pool.getMatrix();
-					this.getTransformationMatrix(this.stage, matrix);
-					if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
-						matrixToScaleY(matrix) !== this._lastGlobalScaleY)
-					{
-						//the snapshot needs to be updated because the scale has
-						//changed since the last snapshot was taken.
-						this.invalidate(INVALIDATION_FLAG_SIZE);
-						this.validate();
-					}
-					Pool.putMatrix(matrix);
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
+				}
+				Pool.putMatrix(matrix);
+			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				if(this._useSnapshotDelayWorkaround)
+				{
+					//sometimes, we need to wait a frame for flash.text.TextField
+					//to render properly when drawing to BitmapData.
+					this.addEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
+				}
+				else
+				{
+					this.refreshSnapshot();
 				}
 				this.positionSnapshot();
 			}
@@ -1902,14 +1932,28 @@ package feathers.controls.text
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled && (this._isEditable || this._isSelectable);
 
+			var isFormatDifferent:Boolean = false;
 			if(textField === this.textField)
 			{
 				//for some reason, textField.defaultTextFormat always fails
 				//comparison against currentTextFormat. if we save to a member
 				//variable and compare against that instead, it works.
 				//I guess text field creates a different TextFormat object.
-				var isFormatDifferent:Boolean = this._previousTextFormat != this._currentTextFormat;
+				if(this._currentTextFormat === this._fontStylesTextFormat)
+				{
+					isFormatDifferent = this._previousStarlingTextFormat !== this._currentStarlingTextFormat;
+				}
+				else
+				{
+					isFormatDifferent = this._previousTextFormat !== this._currentTextFormat;
+				}
+				this._previousStarlingTextFormat = this._currentStarlingTextFormat;
 				this._previousTextFormat = this._currentTextFormat;
+			}
+			else
+			{
+				//for measurement
+				isFormatDifferent = true;
 			}
 			textField.defaultTextFormat = this._currentTextFormat;
 
@@ -1996,14 +2040,17 @@ package feathers.controls.text
 			if(this.isInvalid(INVALIDATION_FLAG_STYLES) ||
 				this.isInvalid(INVALIDATION_FLAG_STATE))
 			{
-				var fontStylesFormat:starling.text.TextFormat;
 				if(this._fontStyles !== null)
 				{
-					fontStylesFormat = this._fontStyles.getTextFormatForTarget(this);
+					this._currentStarlingTextFormat = this._fontStyles.getTextFormatForTarget(this);
 				}
-				if(fontStylesFormat !== null)
+				else
 				{
-					this._fontStylesTextFormat = fontStylesFormat.toNativeFormat(this._fontStylesTextFormat);
+					this._currentStarlingTextFormat = null;
+				}
+				if(this._currentStarlingTextFormat !== null)
+				{
+					this._fontStylesTextFormat = this._currentStarlingTextFormat.toNativeFormat(this._fontStylesTextFormat);
 				}
 				else if(this._fontStylesTextFormat === null)
 				{
@@ -2078,16 +2125,11 @@ package feathers.controls.text
 
 			if(!this._textFieldHasFocus && (sizeInvalid || stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
-				if(this._useSnapshotDelayWorkaround)
-				{
-					//sometimes, we need to wait a frame for flash.text.TextField
-					//to render properly when drawing to BitmapData.
-					this.addEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
-				}
-				else
-				{
-					this.refreshSnapshot();
-				}
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 			this.doPendingActions();
 		}
@@ -2556,6 +2598,15 @@ package feathers.controls.text
 		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
 		{
 			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function fontStylesSet_changeHandler(event:Event):void
+		{
+			this._previousStarlingTextFormat = null;
+			super.fontStylesSet_changeHandler(event);
 		}
 	}
 }

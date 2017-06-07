@@ -15,7 +15,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
 	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.IHierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -237,6 +237,10 @@ package feathers.controls
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
+	 * @see #selectedItem
+	 * @see #selectedGroupIndex
+	 * @see #selectedItemIndex
+	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
@@ -336,7 +340,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:GroupedList = new GroupedList();
 	 * 
-	 * list.dataProvider = new HierarchicalCollection(
+	 * list.dataProvider = new ArrayHierarchicalCollection(
 	 * [
 	 *     {
 	 *         header: "Dairy",
@@ -806,7 +810,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:HierarchicalCollection;
+		protected var _dataProvider:IHierarchicalCollection;
 
 		/**
 		 * The collection of data displayed by the list. Changing this property
@@ -818,7 +822,7 @@ package feathers.controls
 		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.dataProvider = new HierarchicalCollection(
+		 * list.dataProvider = new ArrayHierarchicalCollection(
 		 * [
 		 *     {
 		 *     	   header: "Dairy",
@@ -854,22 +858,6 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
-		 * <p>By default, a <code>HierarchicalCollection</code> accepts an
-		 * <code>Array</code> containing objects for each group. By default, the
-		 * <code>header</code> and <code>footer</code> fields in each group will
-		 * contain data to pass to the header and footer renderers of the
-		 * grouped list. The <code>children</code> field of each group should be
-		 * be an <code>Array</code> of data where each item is passed to an item
-		 * renderer.</p>
-		 *
-		 * <p>A custom <em>data descriptor</em> may be passed to the
-		 * <code>HierarchicalCollection</code> to tell it to parse the data
-		 * source differently than the default behavior described above. For
-		 * instance, you might want to use <code>Vector</code> instead of
-		 * <code>Array</code> or structure the data differently. Custom data
-		 * descriptors may be implemented with the
-		 * <code>IHierarchicalCollectionDataDescriptor</code> interface.</p>
-		 *
 		 * <p><em>Warning:</em> A grouped list's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item renderers,
 		 * you must create separate objects with the same properties. This
@@ -882,15 +870,16 @@ package feathers.controls
 		 * automatically dispose its texture because the texture may be used
 		 * by other display objects, a list cannot dispose its data provider
 		 * because the data provider may be used by other lists. See the
-		 * <code>dispose()</code> function on <code>HierarchicalCollection</code>
+		 * <code>dispose()</code> function on <code>IHierarchicalCollection</code>
 		 * to see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.data.HierarchicalCollection
-		 * @see feathers.data.IHierarchicalCollectionDataDescriptor
+		 * @see feathers.data.ArrayHierarchicalCollection
+		 * @see feathers.data.VectorHierarchicalCollection
+		 * @see feathers.data.XMLListHierarchicalCollection
 		 */
-		public function get dataProvider():HierarchicalCollection
+		public function get dataProvider():IHierarchicalCollection
 		{
 			return this._dataProvider;
 		}
@@ -898,7 +887,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:HierarchicalCollection):void
+		public function set dataProvider(value:IHierarchicalCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -949,6 +938,10 @@ package feathers.controls
 	 	 * list.isSelectable = false;</listing>
 		 *
 		 * @default true
+		 *
+		 * @see #selectedItem
+		 * @see #selectedGroupIndex
+		 * @see #selectedItemIndex
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -971,6 +964,11 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _helperLocation:Vector.<int> = new <int>[];
 
 		/**
 		 * @private
@@ -1071,7 +1069,12 @@ package feathers.controls
 			{
 				return null;
 			}
-			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
+			this._helperLocation.length = 2;
+			this._helperLocation[0] = this._selectedGroupIndex;
+			this._helperLocation[1] = this._selectedItemIndex;
+			var result:Object = this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
+			this._helperLocation.length = 0;
+			return result;
 		}
 
 		/**
@@ -3040,11 +3043,18 @@ package feathers.controls
 				{
 					if(this.pendingItemIndex >= 0)
 					{
+						this._helperLocation.length = 2;
+						this._helperLocation[0] = this._selectedGroupIndex;
+						this._helperLocation[1] = this._selectedItemIndex;
 						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+						this._helperLocation.length = 0
 					}
 					else
 					{
+						this._helperLocation.length = 1;
+						this._helperLocation[0] = this._selectedGroupIndex;
 						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex);
+						this._helperLocation.length = 0;
 					}
 				}
 				if(pendingData is Object)
@@ -3088,96 +3098,26 @@ package feathers.controls
 			{
 				return;
 			}
-			var changedSelection:Boolean = false;
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
+				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
+				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
+				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
 			{
-				if(this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+				this.dataViewPort.calculateNavigationDestination(this._selectedGroupIndex, this._selectedItemIndex, event.keyCode, this._helperLocation);
+				var newGroupIndex:int = this._helperLocation[0];
+				var newItemIndex:int = this._helperLocation[1];
+				if(newGroupIndex === -1 || newItemIndex === -1)
 				{
-					this.setSelectedLocation(0, 0);
-					changedSelection = true;
+					this.setSelectedLocation(-1, -1);
 				}
-			}
-			if(event.keyCode == Keyboard.END)
-			{
-				var groupIndex:int = this._dataProvider.getLength();
-				var itemIndex:int = -1;
-				do
+				else if(this._selectedGroupIndex !== newGroupIndex || this._selectedItemIndex !== newItemIndex)
 				{
-					groupIndex--;
-					if(groupIndex >= 0)
-					{
-						itemIndex = this._dataProvider.getLength(groupIndex) - 1;
-					}
+					this.setSelectedLocation(newGroupIndex, newItemIndex);
+					var point:Point = Pool.getPoint();
+					this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);
+					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+					Pool.putPoint(point);
 				}
-				while(groupIndex > 0 && itemIndex < 0)
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				groupIndex = this._selectedGroupIndex;
-				itemIndex = this._selectedItemIndex - 1;
-				if(itemIndex < 0)
-				{
-					do
-					{
-						groupIndex--;
-						if(groupIndex >= 0)
-						{
-							itemIndex = this._dataProvider.getLength(groupIndex) - 1;
-						}
-					}
-					while(groupIndex > 0 && itemIndex < 0)
-				}
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				groupIndex = this._selectedGroupIndex;
-				if(groupIndex < 0)
-				{
-					itemIndex = -1;
-				}
-				else
-				{
-					itemIndex = this._selectedItemIndex + 1;
-				}
-				if(groupIndex < 0 || itemIndex >= this._dataProvider.getLength(groupIndex))
-				{
-					itemIndex = -1;
-					groupIndex++;
-					var groupCount:int = this._dataProvider.getLength();
-					while(groupIndex < groupCount && itemIndex < 0)
-					{
-						if(this._dataProvider.getLength(groupIndex) > 0)
-						{
-							itemIndex = 0;
-						}
-						else
-						{
-							groupIndex++;
-						}
-					}
-				}
-				if(groupIndex >= 0 && itemIndex >= 0)
-				{
-					this.setSelectedLocation(groupIndex, itemIndex);
-					changedSelection = true;
-				}
-			}
-			if(changedSelection)
-			{
-				var point:Point = Pool.getPoint();
-				this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);
-				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
-				Pool.putPoint(point);
 			}
 		}
 

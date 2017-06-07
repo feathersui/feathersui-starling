@@ -10,7 +10,9 @@ package feathers.controls
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.core.PropertyProxy;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IAutoCompleteSource;
+	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
@@ -117,7 +119,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var input:AutoComplete = new AutoComplete();
-	 * input.source = new LocalAutoCompleteSource( new ListCollection(new &lt;String&gt;
+	 * input.source = new LocalAutoCompleteSource( new VectorCollection(new &lt;String&gt;
 	 * [
 	 *     "Apple",
 	 *     "Banana",
@@ -203,7 +205,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _listCollection:ListCollection;
+		protected var _listCollection:IListCollection;
 
 		/**
 		 * @private
@@ -233,7 +235,7 @@ package feathers.controls
 		 * <p>In the following example, a source of suggestions is provided:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.source = new LocalAutoCompleteSource( new ListCollection(new &lt;String&gt;
+		 * input.source = new LocalAutoCompleteSource( new VectorCollection(new &lt;String&gt;
 		 * [
 		 *     "Apple",
 		 *     "Banana",
@@ -639,7 +641,7 @@ package feathers.controls
 		{
 			super.initialize();
 
-			this._listCollection = new ListCollection();
+			this._listCollection = new ArrayCollection();
 			if(this._popUpContentManager === null)
 			{
 				this.ignoreNextStyleRestriction();
@@ -851,7 +853,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_completeHandler(event:Event, data:ListCollection):void
+		protected function dataProvider_completeHandler(event:Event, data:IListCollection):void
 		{
 			this.list.dataProvider = data;
 			if(data.length == 0)

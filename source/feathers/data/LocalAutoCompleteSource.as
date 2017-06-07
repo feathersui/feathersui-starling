@@ -56,7 +56,7 @@ package feathers.data
 		/**
 		 * Constructor.
 		 */
-		public function LocalAutoCompleteSource(source:ListCollection = null)
+		public function LocalAutoCompleteSource(source:IListCollection = null)
 		{
 			this._dataProvider = source;
 		}
@@ -64,13 +64,13 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		private var _dataProvider:ListCollection;
+		private var _dataProvider:IListCollection;
 
 		/**
 		 * A collection of items to be used as a source for auto-complete
 		 * results.
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
@@ -78,7 +78,7 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			this._dataProvider = value;
 		}
@@ -118,7 +118,7 @@ package feathers.data
 		/**
 		 * @copy feathers.data.IAutoCompleteSource#load()
 		 */
-		public function load(textToMatch:String, result:ListCollection = null):void
+		public function load(textToMatch:String, result:IListCollection = null):void
 		{
 			if(result)
 			{
@@ -126,7 +126,7 @@ package feathers.data
 			}
 			else
 			{
-				result = new ListCollection();
+				result = new ArrayCollection();
 			}
 			if(!this._dataProvider || textToMatch.length == 0)
 			{

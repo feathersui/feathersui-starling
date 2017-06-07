@@ -15,10 +15,13 @@ package feathers.controls.popups
 	import feathers.events.FeathersEventType;
 	import feathers.layout.RelativePosition;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
-	import feathers.utils.display.stageToStarling;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
@@ -137,6 +140,8 @@ package feathers.controls.popups
 
 		/**
 		 * @private
+		 * Stores the same value as the content property, but the content
+		 * property may be set to null before the animation ends.
 		 */
 		protected var _openCloseTweenTarget:DisplayObject;
 
@@ -359,12 +364,12 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected var _lastGlobalX:Number;
+		protected var _lastOriginX:Number;
 
 		/**
 		 * @private
 		 */
-		protected var _lastGlobalY:Number;
+		protected var _lastOriginY:Number;
 
 		/**
 		 * @inheritDoc
@@ -375,6 +380,13 @@ package feathers.controls.popups
 			{
 				throw new IllegalOperationError("Pop-up content is already open. Close the previous content before opening new content.");
 			}
+
+			//make sure the content is scaled the same as the source
+			var matrix:Matrix = Pool.getMatrix();
+			source.getTransformationMatrix(PopUpManager.root, matrix);
+			content.scaleX = matrixToScaleX(matrix)
+			content.scaleY = matrixToScaleY(matrix);
+			Pool.putMatrix(matrix);
 
 			this.content = content;
 			this.source = source;
@@ -392,6 +404,8 @@ package feathers.controls.popups
 			if(this._openCloseDuration > 0)
 			{
 				this._delegate = new RenderDelegate(content);
+				this._delegate.scaleX = content.scaleX;
+				this._delegate.scaleY = content.scaleY;
 				//temporarily hide the content while the delegate is displayed
 				content.visible = false;
 				PopUpManager.addPopUp(this._delegate, false, false);
@@ -404,7 +418,9 @@ package feathers.controls.popups
 				{
 					this._delegate.y = content.y - content.height;
 				}
-				var mask:Quad = new Quad(content.width, content.height, 0xff00ff);
+				var mask:Quad = new Quad(1, 1, 0xff00ff);
+				mask.width = content.width / content.scaleX;
+				mask.height = 0;
 				this._delegate.mask = mask;
 				mask.height = 0;
 				this._openCloseTween = new Tween(this._delegate, this._openCloseDuration, this._openCloseEase);
@@ -446,8 +462,7 @@ package feathers.controls.popups
 			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			stage.removeEventListener(Event.ENTER_FRAME, stage_enterFrameHandler);
-			var starling:Starling = stageToStarling(stage);
-			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			stage.starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(content is IFeathersControl)
 			{
 				content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
@@ -460,12 +475,14 @@ package feathers.controls.popups
 			if(this._openCloseDuration > 0)
 			{
 				this._delegate = new RenderDelegate(content);
+				this._delegate.scaleX = content.scaleX;
+				this._delegate.scaleY = content.scaleY;
 				PopUpManager.addPopUp(this._delegate, false, false);
 				this._delegate.x = content.x;
 				this._delegate.y = content.y;
 				var mask:Quad = new Quad(1, 1, 0xff00ff);
-				mask.width = content.width;
-				mask.height = content.height;
+				mask.width = content.width / content.scaleX;
+				mask.height = content.height / content.scaleY;
 				this._delegate.mask = mask;
 				this._openCloseTween = new Tween(this._delegate, this._openCloseDuration, this._openCloseEase);
 				this._openCloseTweenTarget = content;
@@ -512,7 +529,8 @@ package feathers.controls.popups
 				}
 			}
 
-			var sourceWidth:Number = this.source.width;
+			var originBoundsInParent:Rectangle = this.source.getBounds(PopUpManager.root);
+			var sourceWidth:Number = originBoundsInParent.width;
 			var hasSetBounds:Boolean = false;
 			var uiContent:IFeathersControl = this.content as IFeathersControl;
 			if(this._fitContentMinWidthToOrigin && uiContent && uiContent.minWidth < sourceWidth)
@@ -533,8 +551,7 @@ package feathers.controls.popups
 
 			//we need to be sure that the source is properly positioned before
 			//positioning the content relative to it.
-			var starling:Starling = stageToStarling(stage);
-			var validationQueue:ValidationQueue = ValidationQueue.forStarling(starling);
+			var validationQueue:ValidationQueue = ValidationQueue.forStarling(stage.starling);
 			if(validationQueue && !validationQueue.isValidating)
 			{
 				//force a COMPLETE validation of everything
@@ -542,45 +559,48 @@ package feathers.controls.popups
 				validationQueue.advanceTime(0);
 			}
 
-			var globalOrigin:Rectangle = this.source.getBounds(stage);
-			this._lastGlobalX = globalOrigin.x;
-			this._lastGlobalY = globalOrigin.y;
+			originBoundsInParent = this.source.getBounds(PopUpManager.root);
+			this._lastOriginX = originBoundsInParent.x;
+			this._lastOriginY = originBoundsInParent.y;
 
-			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height + this._gap);
+			var stageDimensionsInParent:Point = new Point(stage.stageWidth, stage.stageHeight);
+			PopUpManager.root.globalToLocal(stageDimensionsInParent, stageDimensionsInParent);
+
+			var downSpace:Number = (stageDimensionsInParent.y - this.content.height) - (originBoundsInParent.y + originBoundsInParent.height + this._gap);
 			//skip this if the primary direction is up
 			if(this._primaryDirection == RelativePosition.BOTTOM && downSpace >= 0)
 			{
-				layoutBelow(globalOrigin);
+				layoutBelow(originBoundsInParent, stageDimensionsInParent);
 				return;
 			}
 
-			var upSpace:Number = globalOrigin.y - this._gap - this.content.height;
+			var upSpace:Number = originBoundsInParent.y - this._gap - this.content.height;
 			if(upSpace >= 0)
 			{
-				layoutAbove(globalOrigin);
+				layoutAbove(originBoundsInParent, stageDimensionsInParent);
 				return;
 			}
 
 			//do what we skipped earlier if the primary direction is up
 			if(this._primaryDirection == RelativePosition.TOP && downSpace >= 0)
 			{
-				layoutBelow(globalOrigin);
+				layoutBelow(originBoundsInParent, stageDimensionsInParent);
 				return;
 			}
 
 			//worst case: pick the side that has the most available space
 			if(upSpace >= downSpace)
 			{
-				layoutAbove(globalOrigin);
+				layoutAbove(originBoundsInParent, stageDimensionsInParent);
 			}
 			else
 			{
-				layoutBelow(globalOrigin);
+				layoutBelow(originBoundsInParent, stageDimensionsInParent);
 			}
 
 			//the content is too big for the space, so we need to adjust it to
 			//fit properly
-			var newMaxHeight:Number = stage.stageHeight - (globalOrigin.y + globalOrigin.height);
+			var newMaxHeight:Number = stageDimensionsInParent.y - (originBoundsInParent.y + originBoundsInParent.height);
 			if(uiContent)
 			{
 				if(uiContent.maxHeight > newMaxHeight)
@@ -597,31 +617,31 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function layoutAbove(globalOrigin:Rectangle):void
+		protected function layoutAbove(originBoundsInParent:Rectangle, stageDimensionsInParent:Point):void
 		{
 			this._actualDirection = RelativePosition.TOP;
-			this.content.x = this.calculateXPosition(globalOrigin);
-			this.content.y = globalOrigin.y - this.content.height - this._gap;
+			this.content.x = this.calculateXPosition(originBoundsInParent, stageDimensionsInParent);
+			this.content.y = originBoundsInParent.y - this.content.height - this._gap;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function layoutBelow(globalOrigin:Rectangle):void
+		protected function layoutBelow(originBoundsInParent:Rectangle, stageDimensionsInParent:Point):void
 		{
 			this._actualDirection = RelativePosition.BOTTOM;
-			this.content.x = this.calculateXPosition(globalOrigin);
-			this.content.y = globalOrigin.y + globalOrigin.height + this._gap;
+			this.content.x = this.calculateXPosition(originBoundsInParent, stageDimensionsInParent);
+			this.content.y = originBoundsInParent.y + originBoundsInParent.height + this._gap;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function calculateXPosition(globalOrigin:Rectangle):Number
+		protected function calculateXPosition(originBoundsInParent:Rectangle, stageDimensionsInParent:Point):Number
 		{
-			var idealXPosition:Number = globalOrigin.x;
-			var fallbackXPosition:Number = idealXPosition + globalOrigin.width - this.content.width;
-			var maxXPosition:Number = this.source.stage.stageWidth - this.content.width;
+			var idealXPosition:Number = originBoundsInParent.x;
+			var fallbackXPosition:Number = idealXPosition + originBoundsInParent.width - this.content.width;
+			var maxXPosition:Number = stageDimensionsInParent.x - this.content.width;
 			var xPosition:Number = idealXPosition;
 			if(xPosition > maxXPosition)
 			{
@@ -649,13 +669,13 @@ package feathers.controls.popups
 			var mask:DisplayObject = this._delegate.mask;
 			if(this._actualDirection === RelativePosition.TOP)
 			{
-				mask.height = this._openCloseTweenTarget.height - (this._delegate.y - this._openCloseTweenTarget.y);
+				mask.height = (this._openCloseTweenTarget.height - (this._delegate.y - this._openCloseTweenTarget.y)) / this._openCloseTweenTarget.scaleY;
 				mask.y = 0;
 			}
 			else
 			{
-				mask.height = this._openCloseTweenTarget.height - (this._openCloseTweenTarget.y - this._delegate.y);
-				mask.y = this._openCloseTweenTarget.height - mask.height;
+				mask.height = (this._openCloseTweenTarget.height - (this._openCloseTweenTarget.y - this._delegate.y)) / this._openCloseTweenTarget.scaleY;
+				mask.y = (this._openCloseTweenTarget.height / this._openCloseTweenTarget.scaleY) - mask.height;
 			}
 		}
 
@@ -701,12 +721,14 @@ package feathers.controls.popups
 		protected function stage_enterFrameHandler(event:Event):void
 		{
 			var rect:Rectangle = Pool.getRectangle();
-			this.source.getBounds(this.source.stage, rect);
-			if(rect.x !== this._lastGlobalX || rect.y !== this._lastGlobalY)
+			this.source.getBounds(PopUpManager.root, rect);
+			var rectX:Number = rect.x;
+			var rectY:Number = rect.y;
+			Pool.putRectangle(rect);
+			if(rectY !== this._lastOriginX || rectY !== this._lastOriginY)
 			{
 				this.layout();
 			}
-			Pool.putRectangle(rect);
 		}
 
 		/**

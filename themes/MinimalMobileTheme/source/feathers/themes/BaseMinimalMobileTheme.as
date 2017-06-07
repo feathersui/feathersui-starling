@@ -63,12 +63,14 @@ package feathers.themes
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
+	import feathers.controls.Tree;
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.ITextEditorViewPort;
@@ -153,6 +155,12 @@ package feathers.themes
 		 * The theme's custom style name for item renderers in a PickerList.
 		 */
 		protected static const THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER:String = "minimal-mobile-tablet-picker-list-item-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for a button in an Alert's button group.
+		 */
+		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "minimal-mobile-alert-button-group-button";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
@@ -262,17 +270,17 @@ package feathers.themes
 		/**
 		 * A normal font size.
 		 */
-		protected var fontSize:int;
+		protected var fontSize:int = 12;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 16;
 
 		/**
 		 * A smaller font size for details.
 		 */
-		protected var smallFontSize:int;
+		protected var smallFontSize:int = 8;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -365,50 +373,53 @@ package feathers.themes
 		
 		protected var listDrillDownAccessoryTexture:Texture;
 
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 44;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 11;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 6;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 154;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 30;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 16;
 
 		/**
 		 * The size, in pixels, of a UI control's border.
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 2;
 
-		protected var simpleScrollBarThumbSize:int;
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutBottomRightArrowOverlapGapSize:Number;
-		protected var calloutTopLeftArrowOverlapGapSize:int;
-		protected var popUpFillSize:int;
-		protected var dropShadowSize:int;
+		protected var simpleScrollBarThumbSize:int = 4;
+		protected var calloutBackgroundMinSize:int = 6;
+		protected var calloutBottomRightArrowOverlapGapSize:Number = -10.5;
+		protected var calloutTopLeftArrowOverlapGapSize:int = -4;
+		protected var popUpFillSize:int = 276;
+		protected var dropShadowSize:int = 6;
 
 		protected var primaryFontStyles:TextFormat;
 		protected var disabledFontStyles:TextFormat;
@@ -449,7 +460,6 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeTextures();
 			this.initializeFonts();
 			this.initializeGlobals();
@@ -476,26 +486,6 @@ package feathers.themes
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-		}
-
-		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 44;
-			this.smallGutterSize = 6;
-			this.gutterSize = 11;
-			this.borderSize = 2;
-			this.dropShadowSize = 6;
-			this.controlSize = 30;
-			this.smallControlSize = 16;
-			this.popUpFillSize = 276;
-			this.wideControlSize = this.gridSize * 3 + this.gutterSize * 2;
-			this.simpleScrollBarThumbSize = 4;
-			this.calloutBackgroundMinSize = 6;
-			this.calloutTopLeftArrowOverlapGapSize = -4;
-			this.calloutBottomRightArrowOverlapGapSize = -10.5;
 		}
 
 		/**
@@ -586,6 +576,9 @@ package feathers.themes
 			this.seekSliderProgressSkinTexture = this.atlas.getTexture("seek-slider-progress-skin0000");
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon0000");
+
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 		}
 
 		/**
@@ -593,10 +586,6 @@ package feathers.themes
 		 */
 		protected function initializeFonts():void
 		{
-			this.fontSize = 12;
-			this.largeFontSize = 16;
-			this.smallFontSize = 8;
-
 			this.primaryFontStyles = new TextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.disabledFontStyles = new TextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.centeredFontStyles = new TextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.CENTER, VerticalAlign.TOP);
@@ -619,6 +608,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Alert).defaultStyleFunction = this.setAlertStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPanelHeaderStyles);
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
 
 			//auto-complete
 			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
@@ -761,6 +751,9 @@ package feathers.themes
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
 
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 
 			//media controls
 			this.getStyleProviderForClass(VideoPlayer).defaultStyleFunction = this.setVideoPlayerStyles;
@@ -857,11 +850,17 @@ package feathers.themes
 
 		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
+			group.customButtonStyleName = THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON;
 			group.direction = Direction.VERTICAL;
 			group.horizontalAlign = HorizontalAlign.JUSTIFY;
 			group.verticalAlign = VerticalAlign.JUSTIFY;
 			group.gap = this.smallGutterSize;
 			group.padding = this.smallGutterSize;
+		}
+
+		protected function setAlertButtonGroupButtonStyles(button:Button):void
+		{
+			this.setButtonGroupButtonStyles(button);
 		}
 
 	//-------------------------
@@ -2134,6 +2133,34 @@ package feathers.themes
 			thumb.minTouchHeight = this.gridSize;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+
+			tree.backgroundSkin = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
+
+			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			disclosureOpenIcon.textureSmoothing = TextureSmoothing.NONE;
+			disclosureOpenIcon.pixelSnapping = true;
+			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
+
+			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			disclosureClosedIcon.textureSmoothing = TextureSmoothing.NONE;
+			disclosureOpenIcon.pixelSnapping = true;
+			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 
 	//-------------------------

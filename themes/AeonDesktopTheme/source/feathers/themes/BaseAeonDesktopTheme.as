@@ -104,6 +104,8 @@ package feathers.themes
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
+	import feathers.controls.Tree;
 
 	/**
 	 * The base class for the "Aeon" theme for desktop Feathers apps. Handles
@@ -324,73 +326,73 @@ package feathers.themes
 		/**
 		 * A smaller font size for details.
 		 */
-		protected var smallFontSize:int;
+		protected var smallFontSize:int = 10;
 
 		/**
 		 * A normal font size.
 		 */
-		protected var regularFontSize:int;
+		protected var regularFontSize:int = 11;
 
 		/**
 		 * A larger font size for headers.
 		 */
-		protected var largeFontSize:int;
+		protected var largeFontSize:int = 13;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int;
+		protected var gridSize:int = 30;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
 		 * padding and gaps.
 		 */
-		protected var gutterSize:int;
+		protected var gutterSize:int = 10;
 
 		/**
 		 * The size, in pixels, of smaller padding and gaps within the major
 		 * regions in the grid.
 		 */
-		protected var smallGutterSize:int;
+		protected var smallGutterSize:int = 6;
 
 		/**
 		 * The size, in pixels, of very smaller padding and gaps.
 		 */
-		protected var extraSmallGutterSize:int;
+		protected var extraSmallGutterSize:int = 2;
 
 		/**
 		 * The minimum width, in pixels, of some types of buttons.
 		 */
-		protected var buttonMinWidth:int;
+		protected var buttonMinWidth:int = 40;
 
 		/**
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
-		protected var wideControlSize:int;
+		protected var wideControlSize:int = 152;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int;
+		protected var controlSize:int = 22;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
 		 */
-		protected var smallControlSize:int;
+		protected var smallControlSize:int = 12;
 
 		/**
 		 * The size, in pixels, of a border around any control.
 		 */
-		protected var borderSize:int;
+		protected var borderSize:int = 1;
 
-		protected var calloutBackgroundMinSize:int;
-		protected var calloutArrowOverlapGap:int;
-		protected var progressBarFillMinSize:int;
-		protected var popUpSize:int;
-		protected var popUpVolumeSliderPaddingSize:int;
-		protected var bottomDropShadowSize:int;
-		protected var leftAndRightDropShadowSize:int;
+		protected var calloutBackgroundMinSize:int = 5;
+		protected var calloutArrowOverlapGap:int = -1;
+		protected var progressBarFillMinSize:int = 7;
+		protected var popUpSize:int = 354;
+		protected var popUpVolumeSliderPaddingSize:int = 6;
+		protected var bottomDropShadowSize:int = 3;
+		protected var leftAndRightDropShadowSize:int = 1;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -568,6 +570,12 @@ package feathers.themes
 		
 		protected var listDrillDownAccessoryTexture:Texture;
 
+		protected var treeBranchOpenIconTexture:Texture;
+		protected var treeBranchClosedIconTexture:Texture;
+		protected var treeLeafIconTexture:Texture;
+		protected var treeDisclosureOpenIconTexture:Texture;
+		protected var treeDisclosureClosedIconTexture:Texture;
+
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
 		protected var playPauseButtonPauseUpIconTexture:Texture;
@@ -615,35 +623,11 @@ package feathers.themes
 		 */
 		protected function initialize():void
 		{
-			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
 			this.initializeStage();
 			this.initializeStyleProviders();
-		}
-
-		/**
-		 * Initializes common values used for setting the dimensions of components.
-		 */
-		protected function initializeDimensions():void
-		{
-			this.gridSize = 30;
-			this.extraSmallGutterSize = 2;
-			this.smallGutterSize = 6;
-			this.gutterSize = 10;
-			this.borderSize = 1;
-			this.controlSize = 22;
-			this.smallControlSize = 12;
-			this.calloutBackgroundMinSize = 5;
-			this.progressBarFillMinSize = 7;
-			this.buttonMinWidth = 40;
-			this.wideControlSize = 152;
-			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.popUpVolumeSliderPaddingSize = 6;
-			this.leftAndRightDropShadowSize = 1;
-			this.bottomDropShadowSize = 3;
-			this.calloutArrowOverlapGap = -1;
 		}
 
 		/**
@@ -676,10 +660,6 @@ package feathers.themes
 		 */
 		protected function initializeFonts():void
 		{
-			this.smallFontSize = 10;
-			this.regularFontSize = 11;
-			this.largeFontSize = 13;
-
 			this.defaultFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.disabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, DISABLED_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.headingFontStyles = new TextFormat(FONT_NAME, this.largeFontSize, PRIMARY_TEXT_COLOR, HorizontalAlign.LEFT, VerticalAlign.TOP);
@@ -844,6 +824,12 @@ package feathers.themes
 			this.seekSliderProgressSkinTexture = this.atlas.getTexture("seek-slider-progress-skin0000");
 
 			this.listDrillDownAccessoryTexture = this.atlas.getTexture("drill-down-icon0000");
+
+			this.treeBranchOpenIconTexture = this.atlas.getTexture("tree-branch-open-icon0000");
+			this.treeBranchClosedIconTexture = this.atlas.getTexture("tree-branch-closed-icon0000");
+			this.treeLeafIconTexture = this.atlas.getTexture("tree-leaf-icon0000");
+			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
+			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 		}
 
 		/**
@@ -899,6 +885,7 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListItemRendererStyles);
+			this.getStyleProviderForClass(DefaultTreeItemRenderer).defaultStyleFunction = this.setTreeItemRendererStyles;
 
 			//header and footer renderers for grouped list
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderOrFooterRendererStyles;
@@ -1009,6 +996,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
+
+			//tree
+			this.getStyleProviderForClass(Tree).defaultStyleFunction = this.setTreeStyles;
 
 			//media controls
 			
@@ -1392,7 +1382,7 @@ package feathers.themes
 
 			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
-			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
 			list.backgroundSkin = backgroundSkin;
 
@@ -1605,7 +1595,7 @@ package feathers.themes
 
 			list.verticalScrollPolicy = ScrollPolicy.AUTO;
 
-			var backgroundSkin:Image = new Image(this.simpleBorderBackgroundSkinTexture);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
 			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
@@ -2444,6 +2434,38 @@ package feathers.themes
 			thumb.height = this.controlSize;
 
 			thumb.hasLabelTextRenderer = false;
+		}
+
+	//-------------------------
+	// Tree
+	//-------------------------
+
+		protected function setTreeStyles(tree:Tree):void
+		{
+			this.setScrollerStyles(tree);
+
+			tree.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			tree.backgroundSkin = backgroundSkin;
+
+			tree.padding = this.borderSize;
+		}
+
+		protected function setTreeItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			itemRenderer.indentation = this.gutterSize;
+
+			itemRenderer.disclosureOpenIcon = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			itemRenderer.disclosureClosedIcon = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			itemRenderer.branchIcon = new ImageSkin(this.treeBranchClosedIconTexture);
+			itemRenderer.branchOpenIcon = new ImageSkin(this.treeBranchOpenIconTexture);
+			itemRenderer.leafIcon = new ImageSkin(this.treeLeafIconTexture);
 		}
 
 	//-------------------------

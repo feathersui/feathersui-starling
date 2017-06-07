@@ -57,5 +57,10 @@ package feathers.tests.supportClasses
 			}
 			return result;
 		}
+
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		{
+			return index;
+		}
 	}
 }

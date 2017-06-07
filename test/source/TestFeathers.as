@@ -3,6 +3,8 @@ package
 	import feathers.tests.AddOnFunctionStyleProviderTests;
 	import feathers.tests.AlertMeasurementTests;
 	import feathers.tests.AnchorLayoutTests;
+	import feathers.tests.ArrayCollectionTests;
+	import feathers.tests.ArrayHierarchicalCollectionTests;
 	import feathers.tests.BasicButtonInternalStateTests;
 	import feathers.tests.BasicButtonMeasurementTests;
 	import feathers.tests.BasicButtonTests;
@@ -39,6 +41,7 @@ package
 	import feathers.tests.HeaderInternalStateTests;
 	import feathers.tests.HeaderMeasurementTests;
 	import feathers.tests.HeaderTests;
+	import feathers.tests.HierarchicalCollectionTests;
 	import feathers.tests.HorizontalLayoutTests;
 	import feathers.tests.HorizontalSpinnerLayoutTests;
 	import feathers.tests.ImageLoaderInternalStateTests;
@@ -53,6 +56,7 @@ package
 	import feathers.tests.LayoutGroupInternalStateTests;
 	import feathers.tests.LayoutGroupMeasurementTests;
 	import feathers.tests.LayoutGroupTests;
+	import feathers.tests.LayoutGroupValidationTests;
 	import feathers.tests.LayoutGroupVerticalLayoutTests;
 	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
@@ -80,6 +84,7 @@ package
 	import feathers.tests.ScrollBarVerticalMeasurementTests;
 	import feathers.tests.ScrollContainerMeasurementTests;
 	import feathers.tests.ScrollContainerTests;
+	import feathers.tests.ScrollContainerValidationTests;
 	import feathers.tests.ScrollerMeasurementTests;
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
@@ -87,6 +92,7 @@ package
 	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
+	import feathers.tests.SlideShowLayoutTests;
 	import feathers.tests.SpinnerListTests;
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -123,9 +129,15 @@ package
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
 	import feathers.tests.TouchToStateTests;
+	import feathers.tests.TreeTests;
+	import feathers.tests.VectorCollectionTests;
+	import feathers.tests.VectorHierarchicalCollectionTests;
 	import feathers.tests.VerticalCenteredPopUpContentManagerTests;
 	import feathers.tests.VerticalLayoutTests;
 	import feathers.tests.VerticalSpinnerLayoutTests;
+	import feathers.tests.XMLListCollectionTests;
+	import feathers.tests.XMLListHierarchicalCollectionTests;
+	import feathers.tests.XMLListInsertAtTests;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -218,6 +230,7 @@ package
 				LayoutGroupTests,
 				LayoutGroupInternalStateTests,
 				LayoutGroupMeasurementTests,
+				LayoutGroupValidationTests,
 				ListTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
@@ -238,6 +251,7 @@ package
 				ScrollBarVerticalMeasurementTests,
 				ScrollContainerTests,
 				ScrollContainerMeasurementTests,
+				ScrollContainerValidationTests,
 				ScrollerTests,
 				ScrollerMeasurementTests,
 				SliderHorizontalTests,
@@ -261,6 +275,7 @@ package
 				ToggleGroupTests,
 				ToggleSwitchTests,
 				ToggleSwitchMeasurementTests,
+				TreeTests,
 
 				//media tests
 				TimeLabelTests,
@@ -276,10 +291,18 @@ package
 				VerticalLayoutTests,
 				HorizontalSpinnerLayoutTests,
 				VerticalSpinnerLayoutTests,
+				SlideShowLayoutTests,
 
 				//collections tests
 				ListCollectionWithArrayTests,
 				ListCollectionFilterTests,
+				ArrayCollectionTests,
+				VectorCollectionTests,
+				XMLListCollectionTests,
+				HierarchicalCollectionTests,
+				ArrayHierarchicalCollectionTests,
+				VectorHierarchicalCollectionTests,
+				XMLListHierarchicalCollectionTests,
 
 				//text renderers
 				BitmapFontTextRendererTests,
@@ -322,6 +345,7 @@ package
 				BottomDrawerPopUpContentManagerTests,
 				VerticalCenteredPopUpContentManagerTests,
 				CalloutPopUpContentManagerTests,
+				XMLListInsertAtTests,
 			]);
 		}
 

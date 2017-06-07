@@ -425,7 +425,7 @@ package feathers.tests
 			bounds.minWidth = 3 * CHILD1_WIDTH;
 			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
 			Assert.assertStrictlyEquals("TiledRowsLayout layout LayoutBoundsResult viewPortWidth not equal to minWidth when minWidth is larger than item width.", bounds.minWidth, result.viewPortWidth);
-			Assert.assertStrictlyEquals("TiledRowsLayout layout LayoutBoundsResult contentWidth not equal to item width when minWidth is smaller than item width.", CHILD1_WIDTH, result.contentWidth);
+			Assert.assertStrictlyEquals("TiledRowsLayout layout LayoutBoundsResult contentWidth not equal to item width when minWidth is larger than item width.", CHILD1_WIDTH, result.contentWidth);
 		}
 
 		[Test]

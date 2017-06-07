@@ -13,7 +13,7 @@ package feathers.data
 	import starling.events.EventDispatcher;
 
 	/**
-	 * Dispatched when the underlying data source changes and the ui will
+	 * Dispatched when the underlying data source changes and components will
 	 * need to redraw the data.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -184,14 +184,10 @@ package feathers.data
 	 * lists, that support one dimensional collections of data. Supports custom
 	 * "data descriptors" so that unexpected data sources may be used. Supports
 	 * Arrays, Vectors, and XMLLists automatically.
-	 * 
-	 * @see ArrayListCollectionDataDescriptor
-	 * @see VectorListCollectionDataDescriptor
-	 * @see XMLListListCollectionDataDescriptor
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class ListCollection extends EventDispatcher
+	public class ListCollection extends EventDispatcher implements IListCollection
 	{
 		/**
 		 * Constructor
@@ -320,41 +316,7 @@ package feathers.data
 		protected var _filterFunction:Function;
 
 		/**
-		 * A function to determine if each item in the collection should be
-		 * included or excluded from visibility through APIs like
-		 * <code>length</code> and <code>getItemAt()</code>.
-		 *
-		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function( item:Object ):Boolean</pre>
-		 *
-		 * <p>In the following example, the filter function is based on the
-		 * text of a <code>TextInput</code> component:</p>
-		 *
-		 * <listing version="3.0">
-		 * var collection:ListCollection = new ListCollection( data );
-		 * 
-		 * var list:List = new List();
-		 * list.dataProvider = collection;
-		 * this.addChild( list);
-		 * 
-		 * var input:TextInput = new TextInput();
-		 * input.addEventListener( Event.CHANGE, function():void
-		 * {
-		 *    if( input.text.length === 0 )
-		 *    {
-		 *        collection.filterFunction = null;
-		 *        return;
-		 *    }
-		 *    collection.filterFunction = function( item:Object ):Boolean
-		 *    {
-		 *        var itemText:String = item.label.toLowerCase();
-		 *        var filterText:String = input.text.toLowerCase();
-		 *        return itemText.indexOf( filterText ) >= 0;
-		 *    };
-		 * } );
-		 * this.addChild( input );</listing>
-		 *
-		 * @default null
+		 * @copy feathers.data.IListCollection#filterFunction
 		 */
 		public function get filterFunction():Function
 		{
@@ -377,7 +339,7 @@ package feathers.data
 		}
 
 		/**
-		 * The number of items in the collection.
+		 * @copy feathers.data.IListCollection#length
 		 */
 		public function get length():int
 		{
@@ -397,9 +359,7 @@ package feathers.data
 		}
 
 		/**
-		 * Refreshes the collection using the <code>filterFunction</code>
-		 * without passing in a new <code>filterFunction</code>. Useful when the
-		 * filter function relies on external variables that have changed.
+		 * @copy feathers.data.IListCollection#refreshFilter()
 		 */
 		public function refreshFilter():void
 		{
@@ -452,16 +412,8 @@ package feathers.data
 		}
 
 		/**
-		 * Call <code>updateItemAt()</code> to manually inform any component
-		 * rendering the <code>ListCollection</code> that the properties of a
-		 * single item in the collection have changed, and that any views
-		 * associated with the item should be updated. The collection will
-		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
+		 * @copy feathers.data.IListCollection#updateItemAt()
 		 *
-		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and a custom item renderer can listen for
-		 * that event and update itself automatically.</p>
-		 * 
 		 * @see #updateAll()
 		 */
 		public function updateItemAt(index:int):void
@@ -470,16 +422,8 @@ package feathers.data
 		}
 
 		/**
-		 * Call <code>updateAll()</code> to manually inform any component
-		 * rendering the <code>ListCollection</code> that the properties of all,
-		 * or many, of the collection's items have changed, and that any
-		 * rendered views should be updated. The collection will dispatch the
-		 * <code>CollectionEventType.UPDATE_ALL</code> event.
+		 * @copy feathers.data.IListCollection#updateAll()
 		 *
-		 * <p>Alternatively, the item can dispatch an event when one of its
-		 * properties has changed, and a custom item renderer can listen for
-		 * that event and update itself automatically.</p>
-		 * 
 		 * @see #updateItemAt()
 		 */
 		public function updateAll():void
@@ -489,7 +433,7 @@ package feathers.data
 
 		[Bindable(event="change")]
 		/**
-		 * Returns the item at the specified index in the collection.
+		 * @copy feathers.data.IListCollection#getItemAt()
 		 */
 		public function getItemAt(index:int):Object
 		{
@@ -506,11 +450,7 @@ package feathers.data
 
 		[Bindable(event="change")]
 		/**
-		 * Determines which index the item appears at within the collection. If
-		 * the item isn't in the collection, returns <code>-1</code>.
-		 * 
-		 * <p>If the collection is filtered, <code>getItemIndex()</code> will
-		 * return <code>-1</code> for items that are excluded by the filter.</p>
+		 * @copy feathers.data.IListCollection#getItemIndex()
 		 */
 		public function getItemIndex(item:Object):int
 		{
@@ -526,10 +466,7 @@ package feathers.data
 		}
 
 		/**
-		 * Adds an item to the collection, at the specified index.
-		 *
-		 * <p>If the collection is filtered, the index is the position in the
-		 * filtered data, rather than position in the unfiltered data.</p>
+		 * @copy feathers.data.IListCollection#addItemAt()
 		 */
 		public function addItemAt(item:Object, index:int):void
 		{
@@ -577,11 +514,7 @@ package feathers.data
 		}
 
 		/**
-		 * Removes the item at the specified index from the collection and
-		 * returns it.
-		 * 
-		 * <p>If the collection is filtered, the index is the position in the
-		 * filtered data, rather than position in the unfiltered data.</p>
+		 * @copy feathers.data.IListCollection#removeItemAt()
 		 */
 		public function removeItemAt(index:int):Object
 		{
@@ -605,12 +538,7 @@ package feathers.data
 		}
 
 		/**
-		 * Removes a specific item from the collection.
-		 *
-		 * <p>If the collection is filtered, <code>removeItem()</code> will not
-		 * remove the item from the unfiltered data if it is not included in the
-		 * filtered data. If the item is not removed,
-		 * <code>CollectionEventType.REMOVE_ITEM</code> will not be dispatched.</p>
+		 * @copy feathers.data.IListCollection#removeItem()
 		 */
 		public function removeItem(item:Object):void
 		{
@@ -622,7 +550,7 @@ package feathers.data
 		}
 
 		/**
-		 * Removes all items from the collection.
+		 * @copy feathers.data.IListCollection#removeAll()
 		 */
 		public function removeAll():void
 		{
@@ -647,7 +575,7 @@ package feathers.data
 		}
 
 		/**
-		 * Replaces the item at the specified index with a new item.
+		 * @copy feathers.data.IListCollection#setItemAt()
 		 */
 		public function setItemAt(item:Object, index:int):void
 		{
@@ -689,12 +617,7 @@ package feathers.data
 		}
 
 		/**
-		 * Adds an item to the end of the collection.
-		 *
-		 * <p>If the collection is filtered, <code>addItem()</code> may add
-		 * the item to the unfiltered data, but omit it from the filtered data.
-		 * If the item is omitted from the filtered data,
-		 * <code>CollectionEventType.ADD_ITEM</code> will not be dispatched.</p>
+		 * @copy feathers.data.IListCollection#addItem()
 		 */
 		public function addItem(item:Object):void
 		{
@@ -702,7 +625,9 @@ package feathers.data
 		}
 
 		/**
-		 * Adds an item to the end of the collection.
+		 * @copy feathers.data.IListCollection#push()
+		 *
+		 * @see #addItem()
 		 */
 		public function push(item:Object):void
 		{
@@ -710,9 +635,9 @@ package feathers.data
 		}
 
 		/**
-		 * Adds all items from another collection.
+		 * @copy feathers.data.IListCollection#addAll()
 		 */
-		public function addAll(collection:ListCollection):void
+		public function addAll(collection:IListCollection):void
 		{
 			var otherCollectionLength:int = collection.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
@@ -723,10 +648,9 @@ package feathers.data
 		}
 
 		/**
-		 * Adds all items from another collection, placing the items at a
-		 * specific index in this collection.
+		 * @copy feathers.data.IListCollection#addAllAt()
 		 */
-		public function addAllAt(collection:ListCollection, index:int):void
+		public function addAllAt(collection:IListCollection, index:int):void
 		{
 			var otherCollectionLength:int = collection.length;
 			var currentIndex:int = index;
@@ -739,7 +663,23 @@ package feathers.data
 		}
 
 		/**
-		 * Removes the item from the end of the collection and returns it.
+		 * @copy feathers.data.IListCollection#reset()
+		 */
+		public function reset(collection:IListCollection):void
+		{
+			this._dataDescriptor.removeAll(this._data);
+			var otherCollectionLength:int = collection.length;
+			for(var i:int = 0; i < otherCollectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				this._dataDescriptor.addItemAt(this._data, item, i);
+			}
+			this.dispatchEventWith(CollectionEventType.RESET);
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @copy feathers.data.IListCollection#pop()
 		 */
 		public function pop():Object
 		{
@@ -747,7 +687,7 @@ package feathers.data
 		}
 
 		/**
-		 * Adds an item to the beginning of the collection.
+		 * @copy feathers.data.IListCollection#unshift()
 		 */
 		public function unshift(item:Object):void
 		{
@@ -755,7 +695,7 @@ package feathers.data
 		}
 
 		/**
-		 * Removed the item from the beginning of the collection and returns it. 
+		 * @copy feathers.data.IListCollection#shift()
 		 */
 		public function shift():Object
 		{
@@ -764,10 +704,7 @@ package feathers.data
 
 		[Bindable(event="change")]
 		/**
-		 * Determines if the specified item is in the collection.
-		 *
-		 * <p>If the collection is filtered, <code>contains()</code> will return
-		 * <code>false</code> for items that are excluded by the filter.</p>
+		 * @copy feathers.data.IListCollection#contains()
 		 */
 		public function contains(item:Object):Boolean
 		{
@@ -775,24 +712,7 @@ package feathers.data
 		}
 
 		/**
-		 * Calls a function for each item in the collection that may be used
-		 * to dispose any properties on the item. For example, display objects
-		 * or textures may need to be disposed.
-		 *
-		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function( item:Object ):void</pre>
-		 *
-		 * <p>In the following example, the items in the collection are disposed:</p>
-		 *
-		 * <listing version="3.0">
-		 * collection.dispose( function( item:Object ):void
-		 * {
-		 *     var accessory:DisplayObject = DisplayObject(item.accessory);
-		 *     accessory.dispose();
-		 * }</listing>
-		 * 
-		 * <p>If the collection has a <code>filterFunction</code>, it will be
-		 * removed, and it will not be restored.</p>
+		 * @copy feathers.data.IListCollection#dispose()
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#dispose() starling.display.DisplayObject.dispose()
 		 * @see http://doc.starling-framework.org/core/starling/textures/Texture.html#dispose() starling.textures.Texture.dispose()

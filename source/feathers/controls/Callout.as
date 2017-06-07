@@ -2239,6 +2239,24 @@ package feathers.controls
 				return false;
 			}
 
+			//the dimensions of the stage (plus stage padding) affect the
+			//maximum width and height
+			var maxWidth:Number = this._explicitMaxWidth;
+			var maxHeight:Number = this._explicitMaxHeight;
+			if(this.stage !== null)
+			{
+				var stageMaxWidth:Number = this.stage.stageWidth - stagePaddingLeft - stagePaddingRight;
+				if(maxWidth > stageMaxWidth)
+				{
+					maxWidth = stageMaxWidth;
+				}
+				var stageMaxHeight:Number = this.stage.stageHeight - stagePaddingTop - stagePaddingBottom;
+				if(maxHeight > stageMaxHeight)
+				{
+					maxHeight = stageMaxHeight;
+				}
+			}
+
 			if(this._backgroundSkin !== null)
 			{
 				var oldBackgroundWidth:Number = this._backgroundSkin.width;
@@ -2248,7 +2266,7 @@ package feathers.controls
 			resetFluidChildDimensionsForMeasurement(this._backgroundSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
-				this._explicitMaxWidth, this._explicitMaxHeight,
+				maxWidth, maxHeight,
 				this._explicitBackgroundSkinWidth, this._explicitBackgroundSkinHeight,
 				this._explicitBackgroundSkinMinWidth, this._explicitBackgroundSkinMinHeight,
 				this._explicitBackgroundSkinMaxWidth, this._explicitBackgroundSkinMaxHeight);
@@ -2291,47 +2309,16 @@ package feathers.controls
 				this._explicitHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
 				this._explicitMinWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight,
 				this._explicitMinHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
-				this._explicitMaxWidth - leftOrRightArrowHeight - this._paddingLeft - this._paddingRight,
-				this._explicitMaxHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
+				maxWidth - leftOrRightArrowHeight - this._paddingLeft - this._paddingRight,
+				maxHeight - topOrBottomArrowHeight - this._paddingTop - this._paddingBottom,
 				this._explicitContentWidth, this._explicitContentHeight,
 				this._explicitContentMinWidth, this._explicitContentMinHeight,
 				this._explicitContentMaxWidth, this._explicitContentMaxHeight);
-			if(measureContent !== null)
-			{
-				var contentMaxWidth:Number = this._explicitMaxWidth - this._paddingLeft - this._paddingRight;
-				if(contentMaxWidth < measureContent.maxWidth)
-				{
-					measureContent.maxWidth = contentMaxWidth;
-				}
-				var contentMaxHeight:Number = this._explicitMaxHeight - this._paddingTop - this._paddingBottom;
-				if(contentMaxHeight < measureContent.maxHeight)
-				{
-					measureContent.maxHeight = contentMaxHeight;
-				}
-			}
 			if(this._content is IValidating)
 			{
 				IValidating(this._content).validate();
 			}
 			this._ignoreContentResize = oldIgnoreContentResize;
-
-			//the dimensions of the stage (plus stage padding) affect the
-			//maximum width and height
-			var maxWidth:Number = this._explicitMaxWidth;
-			var maxHeight:Number = this._explicitMaxHeight;
-			if(this.stage !== null)
-			{
-				var stageMaxWidth:Number = this.stage.stageWidth - stagePaddingLeft - stagePaddingRight;
-				if(maxWidth > stageMaxWidth)
-				{
-					maxWidth = stageMaxWidth;
-				}
-				var stageMaxHeight:Number = this.stage.stageHeight - stagePaddingTop - stagePaddingBottom;
-				if(maxHeight > stageMaxHeight)
-				{
-					maxHeight = stageMaxHeight;
-				}
-			}
 			
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)

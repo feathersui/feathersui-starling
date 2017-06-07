@@ -2029,9 +2029,7 @@ package feathers.core
 			{
 				if(this._isInitializing)
 				{
-					//initializing components cannot validate until they've
-					//finished initializing. we'll have to wait.
-					return;
+					throw new IllegalOperationError("A component cannot validate until after it has finished initializing.");
 				}
 				this.initializeNow();
 			}

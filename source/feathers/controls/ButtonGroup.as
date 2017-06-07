@@ -10,7 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.PropertyProxy;
-	import feathers.data.ListCollection;
+	import feathers.data.IListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
@@ -317,7 +317,7 @@ package feathers.controls
 	 * button group instead of on individual buttons:</p>
 	 *
 	 * <listing version="3.0">
-	 * group.dataProvider = new ListCollection(
+	 * group.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "Yes" },
 	 *     { label: "No" },
@@ -356,7 +356,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var group:ButtonGroup = new ButtonGroup();
-	 * group.dataProvider = new ListCollection(
+	 * group.dataProvider = new ArrayCollection(
 	 * [
 	 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 	 *     { label: "No", triggered: noButton_triggeredHandler },
@@ -657,7 +657,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
+		protected var _dataProvider:IListCollection;
 
 		/**
 		 * The collection of data to be displayed with buttons.
@@ -665,7 +665,7 @@ package feathers.controls
 		 * <p>The following example sets the button group's data provider:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.dataProvider = new ListCollection(
+		 * group.dataProvider = new ArrayCollection(
 		 * [
 		 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 		 *     { label: "No", triggered: noButton_triggeredHandler },
@@ -716,10 +716,13 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see Button
+		 * @see feathers.controls.Button
 		 * @see #buttonInitializer
+		 * @see feathers.data.ArrayCollection
+		 * @see feathers.data.VectorCollection
+		 * @see feathers.data.XMLListCollection
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():IListCollection
 		{
 			return this._dataProvider;
 		}
@@ -727,7 +730,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:IListCollection):void
 		{
 			if(this._dataProvider == value)
 			{

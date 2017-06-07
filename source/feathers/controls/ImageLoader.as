@@ -2277,6 +2277,7 @@ package feathers.controls
 					_isTextureOwner = _textureCache === null;
 					_isRestoringTexture = false;
 					_isLoaded = true;
+					refreshCurrentTexture();
 					invalidate(INVALIDATION_FLAG_DATA);
 					dispatchEventWith(starling.events.Event.COMPLETE);
 				});
@@ -2295,6 +2296,11 @@ package feathers.controls
 				this._isTextureOwner = this._textureCache === null;
 				this._isRestoringTexture = false;
 				this._isLoaded = true;
+				//let's refresh the texture right away so that properties like
+				//originalSourceWidth and originalSourceHeight return the
+				//correct values in the Event.COMPLETE listeners.
+				this.refreshCurrentTexture();
+				//we can still do other things later, like layout
 				this.invalidate(INVALIDATION_FLAG_DATA);
 				this.dispatchEventWith(starling.events.Event.COMPLETE);
 			}

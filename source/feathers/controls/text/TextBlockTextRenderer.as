@@ -313,6 +313,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsTextureUpdate:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _truncationOffset:int = 0;
 
 		/**
@@ -375,21 +380,44 @@ package feathers.controls.text
 
 		/**
 		 * Sets the contents of the <code>TextBlock</code> to a complex value
-		 * that is more than simple text. If the <code>text</code> property is
-		 * set after the <code>content</code> property, the <code>content</code>
-		 * property will be replaced with a <code>TextElement</code>.
+		 * that may contain graphics and text with multiple formats.
 		 *
-		 * <p>In the following example, the content is changed to a
-		 * <code>GroupElement</code>:</p>
-		 *
-		 * <listing version="3.0">
-		 * textRenderer.content = new GroupElement( element );</listing>
-		 *
-		 * <p>To simply display a string value, use the <code>text</code> property
-		 * instead:</p>
+		 * <p>In the following example, the content is set to a
+		 * <code>GroupElement</code> that contains text with multiple
+		 * formats:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.text = "Lorem Ipsum";</listing>
+		 * var format1:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20, 0x000000);
+		 * var format2:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20, 0xff0000);
+		 * var format3:ElementFormat = new ElementFormat(new FontDescription("_sans", FontWeight.NORMAL, FontPosture.ITALIC), 20, 0x000000);
+		 * var text1:TextElement = new TextElement("Different ", format1);
+		 * var text2:TextElement = new TextElement("colors", format2);
+		 * var text3:TextElement = new TextElement(" and ", format1);
+		 * var text4:TextElement = new TextElement("styles", format3);
+		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text1, text2, text3, text4];
+		 * var group:GroupElement = new GroupElement(elements);
+		 *
+		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+		 * textRenderer.content = group;</listing>
+		 *
+		 * <p>In the following example, the content is set to a
+		 * <code>GroupElement</code> that contains both text and a bitmap
+		 * graphic:</p>
+		 *
+		 * <listing version="3.0">
+		 * var format:ElementFormat = new ElementFormat(new FontDescription("_sans"), 20);
+		 * var text:TextElement = new TextElement("Hi there! ", format);
+		 * var bitmap:Bitmap = new EmbeddedBitmap(); //a bitmap included with [Embed]
+		 * var graphic:GraphicElement = new GraphicElement(bitmap, bitmap.width, bitmap.height, format);
+		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text, graphic];
+		 * var group:GroupElement = new GroupElement(elements);
+		 *
+		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
+		 * textRenderer.content = group;</listing>
+		 *
+		 * <p>Note: The <code>content</code> property cannot be used when the
+		 * <code>TextBlockTextRenderer</code> receives its text from a parent
+		 * component, such as a <code>Label</code> or a <code>Button</code>.</p>
 		 *
 		 * @default null
 		 *
@@ -1351,24 +1379,32 @@ package feathers.controls.text
 		 */
 		override public function render(painter:Painter):void
 		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				if(globalScaleX != this._lastGlobalScaleX ||
+					globalScaleY != this._lastGlobalScaleY ||
+					starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
+				{
+					//the snapshot needs to be updated because the scale has
+					//changed since the last snapshot was taken.
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+					this.validate();
+				}
+			}
+			if(this._needsTextureUpdate)
+			{
+				this._needsTextureUpdate = false;
+				if(this._content !== null)
+				{
+					this.refreshSnapshot();
+				}
+			}
 			if(this.textSnapshot !== null)
 			{
-				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-				if(this._updateSnapshotOnScaleChange)
-				{
-					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
-					var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-					if(globalScaleX != this._lastGlobalScaleX ||
-						globalScaleY != this._lastGlobalScaleY ||
-						starling.contentScaleFactor != this._lastGlobalContentScaleFactor)
-					{
-						//the snapshot needs to be updated because the scale has
-						//changed since the last snapshot was taken.
-						this.invalidate(INVALIDATION_FLAG_SIZE);
-						this.validate();
-					}
-				}
 				var scaleFactor:Number = starling.contentScaleFactor;
 				if(!this._nativeFilters || this._nativeFilters.length === 0)
 				{
@@ -1404,11 +1440,13 @@ package feathers.controls.text
 						if(snapshotIndex < 0)
 						{
 							var snapshot:Image = this.textSnapshot;
+							snapshot.visible = this._snapshotWidth > 0 && this._snapshotHeight > 0 && this._content !== null;
 						}
 						else
 						{
 							snapshot = this.textSnapshots[snapshotIndex];
 						}
+						snapshot.pixelSnapping = this._pixelSnapping;
 						snapshot.x = xPosition / scaleFactor;
 						snapshot.y = yPosition / scaleFactor;
 						snapshotIndex++;
@@ -1711,22 +1749,11 @@ package feathers.controls.text
 
 			if(contentStateChanged || this._needsNewTexture)
 			{
-				if(this._content !== null)
-				{
-					this.refreshSnapshot();
-				}
-				if(this.textSnapshot !== null)
-				{
-					this.textSnapshot.visible = this._snapshotWidth > 0 && this._snapshotHeight > 0 && this._content !== null;
-					this.textSnapshot.pixelSnapping = this._pixelSnapping;
-				}
-				if(this.textSnapshots !== null)
-				{
-					for each(var snapshot:Image in this.textSnapshots)
-					{
-						snapshot.pixelSnapping = this._pixelSnapping;
-					}
-				}
+				//we're going to update the texture in render() because 
+				//there's a chance that it will be updated more than once per
+				//frame if we do it here.
+				this._needsTextureUpdate = true;
+				this.setRequiresRedraw();
 			}
 		}
 
