@@ -227,6 +227,7 @@ package feathers.controls
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a hierarchical tree of items. Supports scrolling, custom item
 	 * renderers, and custom layouts.
