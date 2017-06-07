@@ -433,6 +433,7 @@ package feathers.controls
 	 */
 	[Event(name="triggered", type="starling.events.Event")]
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
