@@ -11,8 +11,6 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
-	import feathers.data.VectorCollection;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
@@ -395,10 +393,12 @@ package feathers.controls
 		 */
 		protected var tabBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB_BAR;
 
+		//this would be a VectorCollection with a Vector.<String>, but the ASC1
+		//compiler doesn't like it!
 		/**
 		 * @private
 		 */
-		protected var _tabBarDataProvider:IListCollection = new VectorCollection(new <String>[]);
+		protected var _tabBarDataProvider:IListCollection = new ArrayCollection();
 
 		/**
 		 * @private
