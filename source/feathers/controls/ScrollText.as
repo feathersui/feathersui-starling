@@ -407,6 +407,7 @@ package feathers.controls
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
 
+	[DefaultProperty("text")]
 	/**
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay

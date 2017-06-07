@@ -255,6 +255,7 @@ package feathers.controls
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
 
+	[DefaultProperty("text")]
 	/**
 	 * A text entry control that allows users to enter and edit multiple lines
 	 * of uniformly-formatted text with the ability to scroll.

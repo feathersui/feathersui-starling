@@ -214,6 +214,7 @@ package feathers.controls
 	 */
 	[Style(name="wordWrap",type="Boolean")]
 
+	[DefaultProperty("text")]
 	/**
 	 * Displays text using a text renderer.
 	 *

@@ -125,6 +125,7 @@ package feathers.controls
 	 */
 	[Event(name="close",type="starling.events.Event")]
 	
+	[DefaultProperty("text")]
 	/**
 	 * A special <code>Callout</code> designed to display text.
 	 *

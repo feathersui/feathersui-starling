@@ -595,6 +595,7 @@ package feathers.controls
 	 */
 	[Event(name="longPress",type="starling.events.Event")]
 
+	[DefaultProperty("label")]
 	/**
 	 * A push button control that may be triggered when pressed and released.
 	 *

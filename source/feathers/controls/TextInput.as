@@ -762,6 +762,7 @@ package feathers.controls
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
 
+	[DefaultProperty("text")]
 	/**
 	 * A text entry control that allows users to enter and edit a single line of
 	 * uniformly-formatted text.
