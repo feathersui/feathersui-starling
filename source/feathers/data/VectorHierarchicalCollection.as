@@ -182,6 +182,7 @@ package feathers.data
 	 */
 	[Event(name="updateAll",type="starling.events.Event")]
 
+	[DefaultProperty("vectorData")]
 	/**
 	 * Wraps a <code>Vector</code> data source with a common API for use with
 	 * UI controls that support hierarchical data.

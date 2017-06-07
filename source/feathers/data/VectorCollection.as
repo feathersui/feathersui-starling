@@ -180,6 +180,7 @@ package feathers.data
 	 */
 	[Event(name="updateAll",type="starling.events.Event")]
 
+	[DefaultProperty("vectorData")]
 	/**
 	 * Wraps a <code>Vector</code> in the common <code>IListCollection</code>
 	 * API used by many Feathers UI controls, including <code>List</code> and

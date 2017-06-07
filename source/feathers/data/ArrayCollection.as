@@ -180,6 +180,7 @@ package feathers.data
 	 */
 	[Event(name="updateAll",type="starling.events.Event")]
 
+	[DefaultProperty("arrayData")]
 	/**
 	 *
 	 * Wraps an <code>Array</code> in the common <code>IListCollection</code>

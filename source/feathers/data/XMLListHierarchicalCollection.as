@@ -183,6 +183,7 @@ package feathers.data
 	 */
 	[Event(name="updateAll",type="starling.events.Event")]
 
+	[DefaultProperty("xmlListData")]
 	/**
 	 * Wraps an XML data source with a common API for use with UI controls that
 	 * support hierarchical data.
