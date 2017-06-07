@@ -221,7 +221,7 @@ package feathers.data
 		 */
 		public function get vectorData():Object
 		{
-			return _vectorData;
+			return this._vectorData;
 		}
 
 		/**
