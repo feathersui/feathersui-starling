@@ -106,6 +106,10 @@ package feathers.utils.touch
                     if(touchAID === -1)
                     {
                         touchAID = touch.id;
+                        if(this.moveEnabled)
+                        {
+                            exclusiveTouch.claimTouch(touchAID, this);
+                        }
                     }
                     else if(touchBID === -1)
                     {
