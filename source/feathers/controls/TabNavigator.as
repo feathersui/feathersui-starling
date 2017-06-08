@@ -9,8 +9,8 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.core.IFeathersControl;
-	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
+	import feathers.data.VectorCollection;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
@@ -398,7 +398,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _tabBarDataProvider:IListCollection = new ArrayCollection();
+		protected var _tabBarDataProvider:IListCollection = new VectorCollection(new <String>[]);
 
 		/**
 		 * @private

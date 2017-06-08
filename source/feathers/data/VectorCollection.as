@@ -198,18 +198,24 @@ package feathers.data
 			{
 				data = new <*>[];
 			}
-			this._vectorData = data as Vector.<*>;
+			else if(!(data is Vector.<*>))
+			{
+				throw new ArgumentError("VectorCollection data must be of type Vector");
+			}
+			this._vectorData = data;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _filteredData:Vector.<*>;
+		protected var _filteredData:Object;
 
 		/**
 		 * @private
+		 * Due to bugs in the older ASC1 compiler, we cannot type this variable
+		 * as Vector.<*>. It will result in failures decoding abc bytecode.
 		 */
-		protected var _vectorData:Vector.<*>;
+		protected var _vectorData:Object;
 
 		/**
 		 * The <code>Vector</code> data source for this collection.
@@ -231,6 +237,10 @@ package feathers.data
 			if(this._vectorData === value)
 			{
 				return;
+			}
+			else if(value !== null && !(value is Vector.<*>))
+			{
+				throw new ArgumentError("VectorCollection vectorData must be of type Vector");
 			}
 			this._vectorData = value as Vector.<*>;
 			this.dispatchEventWith(CollectionEventType.RESET);
@@ -301,9 +311,9 @@ package feathers.data
 			}
 			if(this._filteredData !== null)
 			{
-				return this._filteredData.length;
+				return (this._filteredData as Vector.<*>).length;
 			}
-			return this._vectorData.length;
+			return (this._vectorData as Vector.<*>).length;
 		}
 
 		/**
@@ -328,7 +338,7 @@ package feathers.data
 			this._pendingRefresh = false;
 			if(this._filterFunction !== null)
 			{
-				var result:Vector.<*> = this._filteredData;
+				var result:Vector.<*> = this._filteredData as Vector.<*>;
 				if(result !== null)
 				{
 					//reuse the old array to avoid garbage collection
@@ -338,11 +348,12 @@ package feathers.data
 				{
 					result = new <*>[];
 				}
-				var itemCount:int = this._vectorData.length;
+				var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
+				var itemCount:int = vectorData.length;
 				var pushIndex:int = 0;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var item:Object = this._vectorData[i];
+					var item:Object = vectorData[i];
 					if(this._filterFunction(item))
 					{
 						result[pushIndex] = item;
@@ -390,7 +401,7 @@ package feathers.data
 			{
 				return this._filteredData[index];
 			}
-			return this._vectorData[index];
+			return (this._vectorData as Vector.<*>)[index];
 		}
 
 		/**
@@ -404,9 +415,9 @@ package feathers.data
 			}
 			if(this._filteredData !== null)
 			{
-				return this._filteredData.indexOf(item);
+				return (this._filteredData as Vector.<*>).indexOf(item);
 			}
-			return this._vectorData.indexOf(item);
+			return (this._vectorData as Vector.<*>).indexOf(item);
 		}
 
 		/**
@@ -418,23 +429,25 @@ package feathers.data
 			{
 				this.refresh();
 			}
+			var filteredData:Vector.<*> = this._filteredData as Vector.<*>;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
 			if(this._filteredData !== null)
 			{
-				if(index < this._filteredData.length)
+				if(index < filteredData.length)
 				{
 					//find the item at the index in the filtered data, and use
 					//its index from the unfiltered data
-					var oldItem:Object = this._filteredData[index];
-					var unfilteredIndex:int = this._vectorData.indexOf(oldItem);
+					var oldItem:Object = filteredData[index];
+					var unfilteredIndex:int = vectorData.indexOf(oldItem);
 				}
 				else
 				{
 					//if the item is added at the end of the filtered data
 					//then add it at the end of the unfiltered data
-					unfilteredIndex = this._vectorData.length;
+					unfilteredIndex = vectorData.length;
 				}
 				//always add to the original data
-				this._vectorData.insertAt(unfilteredIndex, item);
+				vectorData.insertAt(unfilteredIndex, item);
 				//but check if the item should be in the filtered data
 				var includeItem:Boolean = true;
 				if(this._filterFunction !== null)
@@ -443,7 +456,7 @@ package feathers.data
 				}
 				if(includeItem)
 				{
-					this._filteredData.insertAt(index, item);
+					filteredData.insertAt(index, item);
 					//don't dispatch these events if the item is filtered!
 					this.dispatchEventWith(Event.CHANGE);
 					this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
@@ -451,7 +464,7 @@ package feathers.data
 			}
 			else
 			{
-				this._vectorData.insertAt(index, item);
+				vectorData.insertAt(index, item);
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 			}
@@ -466,15 +479,17 @@ package feathers.data
 			{
 				this.refresh();
 			}
+			var filteredData:Vector.<*> = this._filteredData as Vector.<*>;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
 			if(this._filteredData !== null)
 			{
-				var item:Object = this._filteredData.removeAt(index);
-				var unfilteredIndex:int = this._vectorData.indexOf(item);
-				this._vectorData.removeAt(unfilteredIndex);
+				var item:Object = filteredData.removeAt(index);
+				var unfilteredIndex:int = vectorData.indexOf(item);
+				vectorData.removeAt(unfilteredIndex);
 			}
 			else
 			{
-				item = this._vectorData.removeAt(index);
+				item = vectorData.removeAt(index);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
@@ -508,11 +523,11 @@ package feathers.data
 			}
 			if(this._filteredData !== null)
 			{
-				this._filteredData.length = 0;
+				(this._filteredData as Vector.<*>).length = 0;
 			}
 			else
 			{
-				this._vectorData.length = 0;
+				(this._vectorData as Vector.<*>).length = 0;
 			}
 			this.dispatchEventWith(CollectionEventType.REMOVE_ALL);
 			this.dispatchEventWith(Event.CHANGE);
@@ -527,17 +542,19 @@ package feathers.data
 			{
 				this.refresh();
 			}
+			var filteredData:Vector.<*> = this._filteredData as Vector.<*>;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
 			if(this._filteredData !== null)
 			{
-				var oldItem:Object = this._filteredData[index];
-				var unfilteredIndex:int = this._vectorData.indexOf(oldItem);
-				this._vectorData[unfilteredIndex] = item;
+				var oldItem:Object = filteredData[index];
+				var unfilteredIndex:int = vectorData.indexOf(oldItem);
+				vectorData[unfilteredIndex] = item;
 				if(this._filterFunction !== null)
 				{
 					var includeItem:Boolean = this._filterFunction(item);
 					if(includeItem)
 					{
-						this._filteredData[index] = item;
+						filteredData[index] = item;
 						this.dispatchEventWith(Event.CHANGE);
 						this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 						return;
@@ -546,7 +563,7 @@ package feathers.data
 					{
 						//if the item is excluded, the item at this index is
 						//removed instead of being replaced by the new item
-						this._filteredData.removeAt(index);
+						filteredData.removeAt(index);
 						this.dispatchEventWith(Event.CHANGE);
 						this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 					}
@@ -554,7 +571,7 @@ package feathers.data
 			}
 			else
 			{
-				this._vectorData[index] = item;
+				vectorData[index] = item;
 				this.dispatchEventWith(Event.CHANGE);
 				this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 			}
@@ -584,11 +601,12 @@ package feathers.data
 		public function addAll(collection:IListCollection):void
 		{
 			var otherCollectionLength:int = collection.length;
-			var pushIndex:int = this._vectorData.length;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
+			var pushIndex:int = vectorData.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._vectorData[pushIndex] = item;
+				vectorData[pushIndex] = item;
 				pushIndex++;
 			}
 		}
@@ -600,10 +618,11 @@ package feathers.data
 		{
 			var otherCollectionLength:int = collection.length;
 			var currentIndex:int = index;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._vectorData.insertAt(currentIndex, item);
+				vectorData.insertAt(currentIndex, item);
 				currentIndex++;
 			}
 		}
@@ -613,12 +632,13 @@ package feathers.data
 		 */
 		public function reset(collection:IListCollection):void
 		{
-			this._vectorData.length = 0;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
+			vectorData.length = 0;
 			var otherCollectionLength:int = collection.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
-				this._vectorData[i] = item;
+				vectorData[i] = item;
 			}
 			this.dispatchEventWith(CollectionEventType.RESET);
 			this.dispatchEventWith(Event.CHANGE);
@@ -629,7 +649,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this._vectorData.pop();
+			return (this._vectorData as Vector.<*>).pop();
 		}
 
 		/**
@@ -637,7 +657,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			this._vectorData.unshift(item);
+			(this._vectorData as Vector.<*>).unshift(item);
 		}
 
 		/**
@@ -645,7 +665,7 @@ package feathers.data
 		 */
 		public function shift():Object
 		{
-			return this._vectorData.shift();
+			return (this._vectorData as Vector.<*>).shift();
 		}
 
 		/**
@@ -653,7 +673,7 @@ package feathers.data
 		 */
 		public function contains(item:Object):Boolean
 		{
-			return this._vectorData.indexOf(item) !== -1;
+			return (this._vectorData as Vector.<*>).indexOf(item) !== -1;
 		}
 
 		/**
@@ -669,10 +689,11 @@ package feathers.data
 			this._filterFunction = null;
 			this.refresh();
 
-			var itemCount:int = this._vectorData.length;
+ 			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
+			var itemCount:int = vectorData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:Object = this._vectorData[i];
+				var item:Object = vectorData[i];
 				disposeItem(item);
 			}
 		}
