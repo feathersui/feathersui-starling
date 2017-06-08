@@ -6422,9 +6422,11 @@ package feathers.controls
 						this._targetHorizontalScrollPosition = targetHorizontalScrollPosition;
 						this._horizontalAutoScrollTween = new Tween(this, duration, this._throwEase);
 						this._horizontalAutoScrollTween.animate("horizontalScrollPosition", targetHorizontalScrollPosition);
-						//warning: if you try to set onUpdate here, it may be
-						//replaced elsewhere.
-						this._horizontalAutoScrollTween.onComplete = horizontalAutoScrollTween_onComplete;
+						if(this._snapScrollPositionsToPixels)
+						{
+							this._horizontalAutoScrollTween.onUpdate = this.horizontalAutoScrollTween_onUpdate;
+						}
+						this._horizontalAutoScrollTween.onComplete = this.horizontalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._horizontalAutoScrollTween);
 						this.refreshHorizontalAutoScrollTweenEndRatio();
 					}
@@ -6462,9 +6464,11 @@ package feathers.controls
 						this._targetVerticalScrollPosition = targetVerticalScrollPosition;
 						this._verticalAutoScrollTween = new Tween(this, duration, this._throwEase);
 						this._verticalAutoScrollTween.animate("verticalScrollPosition", targetVerticalScrollPosition);
-						//warning: if you try to set onUpdate here, it may be
-						//replaced elsewhere.
-						this._verticalAutoScrollTween.onComplete = verticalAutoScrollTween_onComplete;
+						if(this._snapScrollPositionsToPixels)
+						{
+							this._verticalAutoScrollTween.onUpdate = this.verticalAutoScrollTween_onUpdate;
+						}
+						this._verticalAutoScrollTween.onComplete = this.verticalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._verticalAutoScrollTween);
 						this.refreshVerticalAutoScrollTweenEndRatio();
 					}
@@ -6943,7 +6947,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function onHorizontalAutoScrollTweenUpdate():void
+		protected function horizontalAutoScrollTween_onUpdateWithEndRatio():void
 		{
 			var ratio:Number = this._horizontalAutoScrollTween.transitionFunc(this._horizontalAutoScrollTween.currentTime / this._horizontalAutoScrollTween.totalTime);
 			if(ratio >= this._horizontalAutoScrollTweenEndRatio)
@@ -6962,13 +6966,18 @@ package feathers.controls
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
 				this.finishScrollingHorizontally();
+				return;
+			}
+			if(this._snapScrollPositionsToPixels)
+			{
+				this.horizontalAutoScrollTween_onUpdate();
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function onVerticalAutoScrollTweenUpdate():void
+		protected function verticalAutoScrollTween_onUpdateWithEndRatio():void
 		{
 			var ratio:Number = this._verticalAutoScrollTween.transitionFunc(this._verticalAutoScrollTween.currentTime / this._verticalAutoScrollTween.totalTime);
 			if(ratio >= this._verticalAutoScrollTweenEndRatio)
@@ -6987,6 +6996,11 @@ package feathers.controls
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
 				this.finishScrollingVertically();
+				return;
+			}
+			if(this._snapScrollPositionsToPixels)
+			{
+				this.verticalAutoScrollTween_onUpdate();
 			}
 		}
 
@@ -7034,11 +7048,11 @@ package feathers.controls
 			{
 				if(this._horizontalAutoScrollTweenEndRatio < 1)
 				{
-					this._horizontalAutoScrollTween.onUpdate = onHorizontalAutoScrollTweenUpdate;
+					this._horizontalAutoScrollTween.onUpdate = this.horizontalAutoScrollTween_onUpdateWithEndRatio;
 				}
-				else
+				else if(this._snapScrollPositionsToPixels)
 				{
-					this._horizontalAutoScrollTween.onUpdate = null;
+					this._horizontalAutoScrollTween.onUpdate = this.horizontalAutoScrollTween_onUpdate;
 				}
 			}
 		}
@@ -7087,11 +7101,11 @@ package feathers.controls
 			{
 				if(this._verticalAutoScrollTweenEndRatio < 1)
 				{
-					this._verticalAutoScrollTween.onUpdate = onVerticalAutoScrollTweenUpdate;
+					this._verticalAutoScrollTween.onUpdate = this.verticalAutoScrollTween_onUpdateWithEndRatio;
 				}
-				else
+				else if(this._snapScrollPositionsToPixels)
 				{
-					this._verticalAutoScrollTween.onUpdate = null;
+					this._verticalAutoScrollTween.onUpdate = this.verticalAutoScrollTween_onUpdate;
 				}
 			}
 		}
@@ -7701,6 +7715,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function horizontalAutoScrollTween_onUpdate():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var pixelSize:Number = 1 / starling.contentScaleFactor;
+			var viewPortX:Number = Math.round((this._leftViewPortOffset - this._horizontalScrollPosition) / pixelSize) * pixelSize;
+			var targetViewPortX:Number = Math.round((this._leftViewPortOffset - this._targetHorizontalScrollPosition) / pixelSize) * pixelSize;
+			if(viewPortX === targetViewPortX)
+			{
+				//we've reached the snapped position, but the tween may not
+				//have ended yet. since the user won't see any further changes,
+				//force the tween to the end.
+				this._horizontalAutoScrollTween.advanceTime(this._horizontalAutoScrollTween.totalTime);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function horizontalAutoScrollTween_onComplete():void
 		{
 			this._horizontalAutoScrollTween = null;
@@ -7708,6 +7740,24 @@ package feathers.controls
 			//need to ensure that it is updated now.
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.finishScrollingHorizontally();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function verticalAutoScrollTween_onUpdate():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var pixelSize:Number = 1 / starling.contentScaleFactor;
+			var viewPortY:Number = Math.round((this._topViewPortOffset - this._verticalScrollPosition) / pixelSize) * pixelSize;
+			var targetViewPortY:Number = Math.round((this._topViewPortOffset - this._targetVerticalScrollPosition) / pixelSize) * pixelSize;
+			if(viewPortY === targetViewPortY)
+			{
+				//we've reached the snapped position, but the tween may not
+				//have ended yet. since the user won't see any further changes,
+				//force the tween to the end.
+				this._verticalAutoScrollTween.advanceTime(this._verticalAutoScrollTween.totalTime);
+			}
 		}
 
 		/**
