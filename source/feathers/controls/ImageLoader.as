@@ -294,8 +294,7 @@ package feathers.controls
 	 * <code>false</code>, or the <code>maintainAspectRatio</code> property
 	 * is set to false, the <code>scaleMode</code> property is ignored.</p>
 	 *
-	 * <p>In the following example, the image loader's aspect ratio is not
-	 * maintained:</p>
+	 * <p>In the following example, the image loader's scale mode is changed:</p>
 	 *
 	 * <listing version="3.0">
 	 * loader.scaleMode = ScaleMode.NO_BORDER;</listing>
