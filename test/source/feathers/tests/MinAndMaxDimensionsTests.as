@@ -207,5 +207,25 @@ package feathers.tests
 			this._control.maxHeight = MAX_SIZE;
 			Assert.assertFalse("The component incorrectly invalidated when setting maxHeight, but component actualHeight is equal", this._control.isInvalid());
 		}
+
+		[Test]
+		public function testInvalidAfterSettingMinWidthLargerThanActualWidth():void
+		{
+			this._control.backgroundSkin = new Quad(40, 50);
+			this._control.validate();
+			this._control.minWidth = 183;
+			Assert.assertTrue("The component failed to set invalidate flag after setting minWidth larger than actualWidth",
+				this._control.isInvalid());
+		}
+
+		[Test]
+		public function testInvalidAfterSettingMinHeightLargerThanActualHeight():void
+		{
+			this._control.backgroundSkin = new Quad(40, 50);
+			this._control.validate();
+			this._control.minHeight = 183;
+			Assert.assertTrue("The component failed to set invalidate flag after setting minHeight larger than actualHeight",
+				this._control.isInvalid());
+		}
 	}
 }
