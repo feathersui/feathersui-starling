@@ -1023,9 +1023,12 @@ package feathers.core
 			}
 			else
 			{
-				this.saveMeasurements(this.actualWidth, this.actualHeight, value, this.actualMinHeight);
+				//saveMeasurements() might change actualWidth, so keep the old
+				//value for the comparisons below
+				var actualWidth:Number = this.actualWidth;
+				this.saveMeasurements(actualWidth, this.actualHeight, value, this.actualMinHeight);
 				if(this._explicitWidth !== this._explicitWidth &&
-					(this.actualWidth < value || this.actualWidth === oldValue))
+					(actualWidth < value || actualWidth === oldValue))
 				{
 					//only invalidate if this change might affect the width
 					//because everything else was handled in saveMeasurements()
@@ -1117,9 +1120,12 @@ package feathers.core
 			}
 			else
 			{
-				this.saveMeasurements(this.actualWidth, this.actualHeight, this.actualMinWidth, value);
+				//saveMeasurements() might change actualHeight, so keep the old
+				//value for the comparisons below
+				var actualHeight:Number = this.actualHeight;
+				this.saveMeasurements(this.actualWidth, actualHeight, this.actualMinWidth, value);
 				if(this._explicitHeight !== this._explicitHeight && //isNaN
-					(this.actualHeight < value || this.actualHeight === oldValue))
+					(actualHeight < value || actualHeight === oldValue))
 				{
 					//only invalidate if this change might affect the height
 					//because everything else was handled in saveMeasurements()
