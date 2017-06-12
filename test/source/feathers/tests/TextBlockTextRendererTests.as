@@ -467,5 +467,19 @@ package feathers.tests
 			Assert.assertStrictlyEquals("TextBlockTextRenderer currentElementFormat.color must be equal to starling.text.TextFormat color",
 				STATE_COLOR, this._textRenderer.currentElementFormat.color);
 		}
+
+		[Test]
+		public function testInvalidAfterChangePropertyOfFontStyles():void
+		{
+			var format:TextFormat = new TextFormat(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+			var fontStyles:FontStylesSet = new FontStylesSet();
+			fontStyles.format = format
+			this._textRenderer.fontStyles = fontStyles;
+			this._textRenderer.text = "Hello World";
+			this._textRenderer.validate();
+			format.color = SELECTED_COLOR;
+			Assert.assertTrue("TextBlockTextRenderer: must be invalid after changing property of font styles.",
+				this._textRenderer.isInvalid());
+		}
 	}
 }

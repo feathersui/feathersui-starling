@@ -1602,6 +1602,11 @@ package feathers.controls.renderers
 				DisplayObject(this.contentLabel).dispose();
 				this.contentLabel = null;
 			}
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
 			super.dispose();
 		}
 

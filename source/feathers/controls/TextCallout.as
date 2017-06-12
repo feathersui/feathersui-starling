@@ -494,6 +494,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);

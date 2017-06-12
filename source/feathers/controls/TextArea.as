@@ -1333,6 +1333,11 @@ package feathers.controls
 					skin.dispose();
 				}
 			}
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
 			super.dispose();
 		}
 

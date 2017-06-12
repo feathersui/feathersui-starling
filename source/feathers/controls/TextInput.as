@@ -2808,6 +2808,16 @@ package feathers.controls
 					icon.dispose();
 				}
 			}
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
+			if(this._promptFontStylesSet !== null)
+			{
+				this._promptFontStylesSet.dispose();
+				this._promptFontStylesSet = null;
+			}
 			super.dispose();
 		}
 
