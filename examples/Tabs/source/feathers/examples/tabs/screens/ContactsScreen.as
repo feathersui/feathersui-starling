@@ -5,7 +5,7 @@ package feathers.examples.tabs.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
-	import feathers.data.HierarchicalCollection;
+	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.examples.tabs.themes.StyleNames;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
