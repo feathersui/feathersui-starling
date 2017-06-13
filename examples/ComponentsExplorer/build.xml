@@ -3,10 +3,11 @@
 	
 	<!-- build.local.properties and sdk.local.proprties are optional files that
 		can be used to override the default properties. -->
-	<property file="./sdk.local.properties"/>
-	<property file="./sdk.properties"/>
 	<property file="./build.local.properties"/>
+	<property file="./sdk.local.properties"/>
 	<property file="./build.properties"/>
+	<!-- inherit SDK properties from the root of the repository -->
+	<property file="../../sdk.properties"/>
 	
 	<fail unless="ios.provision.path"/>
 	<fail unless="ios.certificate.path"/>

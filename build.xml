@@ -81,7 +81,7 @@
 	<target name="-starling" depends="-prepare">
 		<echo message="Building starling.swc"/>
 		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=."/>
 			<arg value="-include-sources+=."/>
@@ -92,7 +92,7 @@
 	<target name="-feathers" depends="-starling">
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-sources+=${source.root}"/>
@@ -106,7 +106,7 @@
 	<target name="-api" depends="-starling">
 		<echo message="Generating API Reference"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg value="+flexlib=${airsdk.framework}"/>
+			<arg value="+flexlib=${flashsdk.framework}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-library-path+=${dependency.output}"/>
@@ -236,7 +236,7 @@
 	<target name="-themes" depends="-feathers">
 		<echo message="Building AeonDesktopTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/AeonDesktopTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/AeonDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/AeonDesktopTheme/source"/>
@@ -247,7 +247,7 @@
 
 		<echo message="Building MetalWorksDesktopTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MetalWorksDesktopTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/MetalWorksDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksDesktopTheme/source"/>
@@ -258,7 +258,7 @@
 
 		<echo message="Building MetalWorksMobileTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MetalWorksMobileTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/MetalWorksMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksMobileTheme/source"/>
@@ -269,7 +269,7 @@
 
 		<echo message="Building MinimalDesktopTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MinimalDesktopTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/MinimalDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalDesktopTheme/source"/>
@@ -280,7 +280,7 @@
 
 		<echo message="Building MinimalMobileTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MinimalMobileTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/MinimalMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalMobileTheme/source"/>
@@ -291,7 +291,7 @@
 
 		<echo message="Building TopcoatLightMobileTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/TopcoatLightMobileTheme" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${airmobile.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${themes.root}/TopcoatLightMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/TopcoatLightMobileTheme/source"/>
@@ -505,7 +505,7 @@
 
 	<target name="-test" depends="-feathers">
 		<java jar="${mxmlc}" dir="${test.root}/source" fork="true" failonerror="true">
-			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-library-path+=${dependency.output}"/>
 			<arg value="-library-path+=${flexunit.root}"/>
