@@ -7,6 +7,7 @@ package feathers.tests
 
 	import org.flexunit.Assert;
 
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 
 	public class CalloutMeasurementTests
@@ -22,6 +23,8 @@ package feathers.tests
 		private static const CONTENT_WIDTH:Number = 210;
 		//note: the content height is purposefully smaller than the background height
 		private static const CONTENT_HEIGHT:Number = 160;
+		private static const SMALL_CONTENT_WIDTH:Number = 50;
+		private static const SMALL_CONTENT_HEIGHT:Number = 60;
 		private static const CONTENT_MIN_WIDTH:Number = 160;
 		private static const CONTENT_MIN_HEIGHT:Number = 150;
 		
@@ -33,8 +36,12 @@ package feathers.tests
 		private static const BOTTOM_ARROW_HEIGHT:Number = 12;
 		private static const LEFT_ARROW_WIDTH:Number = 23;
 		private static const LEFT_ARROW_HEIGHT:Number = 16;
+
+		private static const ORIGIN_WIDTH:Number = 44;
+		private static const ORIGIN_HEIGHT:Number = 42;
 		
 		private var _callout:Callout;
+		private var _origin:DisplayObject;
 
 		[Before]
 		public function prepare():void
@@ -49,6 +56,12 @@ package feathers.tests
 		{
 			this._callout.removeFromParent(true);
 			this._callout = null;
+
+			if(this._origin)
+			{
+				this._origin.removeFromParent(true);
+				this._origin = null;
+			}
 
 			Assert.assertStrictlyEquals("Child not removed from Starling root on cleanup.", 0, TestFeathers.starlingRoot.numChildren);
 		}
@@ -79,6 +92,13 @@ package feathers.tests
 		{
 			this._callout.content = new Quad(CONTENT_WIDTH, CONTENT_HEIGHT);
 		}
+		
+		private function addSmallAutoSizeContent():void
+		{
+			var content:LayoutGroup = new LayoutGroup();
+			content.backgroundSkin = new Quad(SMALL_CONTENT_WIDTH, SMALL_CONTENT_HEIGHT);
+			this._callout.content = content;
+		}
 
 		private function addComplexContent():void
 		{
@@ -87,6 +107,13 @@ package feathers.tests
 			content.minWidth = CONTENT_MIN_WIDTH;
 			content.minHeight = CONTENT_MIN_HEIGHT;
 			this._callout.content = content;
+		}
+		
+		private function addOrigin():void
+		{
+			this._origin = new Quad(ORIGIN_WIDTH, ORIGIN_HEIGHT);
+			TestFeathers.starlingRoot.addChild(this._origin);
+			this._callout.origin = this._origin;
 		}
 
 		[Test]
@@ -282,6 +309,30 @@ package feathers.tests
 				label.numLines > 1);
 			Assert.assertTrue("Callout: when content is set to Label with wordWrap true, the height should be greater than the height for 1 line",
 				label.height > label2.height);
+		}
+
+		[Test]
+		/**
+		 * issue #1573
+		 */
+		public function testMoveOriginAndBackgroundLargerThanContent():void
+		{
+			this.addSimpleBackground();
+			this.addSmallAutoSizeContent();
+			this.addOrigin();
+			this._callout.supportedPositions = new <String>[RelativePosition.RIGHT];
+			this._callout.validate();
+			//make sure that the position of the arrow does not change when
+			//moving the origin, or this test won't be able to catch the bug
+			//that it's trying to catch. the callout cannot invalidate!
+			this._origin.x += 50;
+			this._origin.stage.starling.nextFrame();
+			Assert.assertFalse("Callout: must not be invalid.",
+				this._callout.isInvalid());
+			Assert.assertStrictlyEquals("Callout: content width must be changed if background width is larger",
+				BACKGROUND_WIDTH, this._callout.content.width);
+			Assert.assertStrictlyEquals("Callout: content height must be changed if background height is larger",
+				BACKGROUND_HEIGHT, this._callout.content.height);
 		}
 	}
 }
