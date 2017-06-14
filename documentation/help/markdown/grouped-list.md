@@ -361,7 +361,7 @@ If you are not using a theme, you can use [`itemRendererFactory`](../api-referen
 ``` code
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
-    var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
+    var itemRenderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
 
     //set item renderer styles here, if not using a theme
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -370,7 +370,7 @@ list.itemRendererFactory = function():IGroupedListItemRenderer
     itemRenderer.defaultSkin = skin;
     itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
 
-    return renderer;
+    return itemRenderer;
 }
 ```
 
@@ -391,9 +391,9 @@ Sometimes, you might want to change some properties on each item renderer as it 
 ``` code
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
-    var renderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
-    renderer.exampleProperty = 20;
-    return renderer;
+    var itemRenderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
+    itemRenderer.exampleProperty = 20;
+    return itemRenderer;
 }
 ```
 
@@ -430,9 +430,9 @@ You can also use a [`headerRendererFactory`](../api-reference/feathers/controls/
 ``` code
 list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
 {
-    var renderer:ExampleCustomHeaderRenderer = new ExampleCustomHeaderRenderer();
-    renderer.exampleProperty = 20;
-    return renderer;
+    var headerRenderer:ExampleCustomHeaderRenderer = new ExampleCustomHeaderRenderer();
+    headerRenderer.exampleProperty = 20;
+    return headerRenderer;
 }
 ```
 

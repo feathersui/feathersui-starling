@@ -31,9 +31,9 @@ When it's finished, we'll want to use it like this:
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:CustomLayoutGroupItemRenderer = new CustomLayoutGroupItemRenderer();
-    renderer.padding = 10;
-    return renderer;
+    var itemRenderer:CustomLayoutGroupItemRenderer = new CustomLayoutGroupItemRenderer();
+    itemRenderer.padding = 10;
+    return itemRenderer;
 };
 list.dataProvider = new ArrayCollection(
 [

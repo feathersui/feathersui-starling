@@ -29,9 +29,9 @@ Item renderers are managed by a `List` or `GroupedList` component, and you gener
 ``` code
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-    renderer.labelField = "text";
-    return renderer;
+    var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+    itemRenderer.labelField = "text";
+    return itemRenderer;
 }
 ```
 
@@ -54,7 +54,7 @@ Consider the following item in a data provider:
 For an item renderer to display "Example Item" string, it needs to know about the item's `text` property:
 
 ``` code
-renderer.labelField = "text";
+itemRenderer.labelField = "text";
 ```
 
 The default item renderer also has a [`labelFunction`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelFunction) property that may be used to generate a string dynamically.
@@ -76,7 +76,7 @@ Consider the following item from the data provider:
 For an item renderer to display the texture from the altas, it needs to know about the item's `thumbnail` property:
 
 ``` code
-renderer.iconSourceField = "thumbnail";
+itemRenderer.iconSourceField = "thumbnail";
 ```
 
 Similar to the `labelField` property, the [`iconLabelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconLabelField) property can be used to display a string in another [text renderer](text-renderers.html). This can be a convenient way to display another line of text, or it could even be used to display symbols using icon fonts.
@@ -101,7 +101,7 @@ list.dataProvider = new ArrayCollection(
 For an item renderer to add the display object as a child, it needs to know about the item's `control` property:
 
 ``` code
-renderer.iconField = "control";
+itemRenderer.iconField = "control";
 ```
 
 When using `iconField`, it's important to understand that the display object in the data provider will not be automatically disposed when the item renderer or the list is disposed. This display object may need to be used in another list later, and Feathers cannot know whether it is safe to dispose it, similar to how a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) cannot dispose its [`starling.textures.Texture`](http://doc.starling-framework.org/core/starling/textures/Texture.html). To avoid memory leaks, remember to dispose any display objects included in the list's data provider when the list is disposed. The [`dispose()`](../api-reference/feathers/data/IListCollection.html#dispose()) function on the data provider makes it easy to dispose display objects in an `IListCollection`.

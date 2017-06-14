@@ -29,9 +29,9 @@ When it's finished, we'll want to use it like this:
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:CustomFeathersControlItemRenderer = new CustomFeathersControlItemRenderer();
-    renderer.padding = 10;
-    return renderer;
+    var itemRenderer:CustomFeathersControlItemRenderer = new CustomFeathersControlItemRenderer();
+    itemRenderer.padding = 10;
+    return itemRenderer;
 };
 list.dataProvider = new ArrayCollection(
 [

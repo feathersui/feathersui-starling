@@ -297,7 +297,7 @@ If you are not using a theme, you can use [`itemRendererFactory`](../api-referen
 ``` code
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+    var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 
     //set item renderer styles here, if not using a theme
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -306,7 +306,7 @@ list.itemRendererFactory = function():IListItemRenderer
     itemRenderer.defaultSkin = skin;
     itemRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
 
-    return renderer;
+    return itemRenderer;
 }
 ```
 
@@ -327,9 +327,9 @@ Sometimes, you might want to change some properties on each item renderer as it 
 ``` code
 list.itemRendererFactory = function():IListItemRenderer
 {
-    var renderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
-    renderer.exampleProperty = 20;
-    return renderer;
+    var itemRenderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
+    itemRenderer.exampleProperty = 20;
+    return itemRenderer;
 }
 ```
 
