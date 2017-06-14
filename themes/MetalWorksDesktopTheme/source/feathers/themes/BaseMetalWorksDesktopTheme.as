@@ -1102,8 +1102,8 @@ package feathers.themes
 			backgroundSkin.scale9Grid = SIMPLE_SCALE9_GRID;
 			alert.backgroundSkin = backgroundSkin;
 
-			alert.fontStyles = this.lightFontStyles;
-			alert.disabledFontStyles = this.lightDisabledFontStyles;
+			alert.fontStyles = this.lightFontStyles.clone();
+			alert.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			alert.paddingTop = this.gutterSize;
 			alert.paddingRight = this.gutterSize;
@@ -1175,8 +1175,8 @@ package feathers.themes
 				ToggleButton(button).defaultSelectedSkin = selectedSkin;
 			}
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -1193,8 +1193,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -1226,14 +1226,14 @@ package feathers.themes
 			otherSkin.minWidth = this.controlSize;
 			otherSkin.minHeight = this.controlSize;
 
-			button.fontStyles = this.lightUIFontStyles;
-			button.disabledFontStyles = this.lightDisabledUIFontStyles;
-			button.setFontStylesForState(ButtonState.DOWN, this.darkUIFontStyles);
-			button.setFontStylesForState(ButtonState.DISABLED, this.lightDisabledUIFontStyles);
+			button.fontStyles = this.lightUIFontStyles.clone();
+			button.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.darkUIFontStyles.clone());
+			button.setFontStylesForState(ButtonState.DISABLED, this.lightDisabledUIFontStyles.clone());
 			if(button is ToggleButton)
 			{
-				toggleButton.selectedFontStyles = this.darkUIFontStyles;
-				toggleButton.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles);
+				toggleButton.selectedFontStyles = this.darkUIFontStyles.clone();
+				toggleButton.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles.clone());
 			}
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
@@ -1261,8 +1261,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -1279,8 +1279,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1299,8 +1299,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1339,8 +1339,8 @@ package feathers.themes
 				ToggleButton(button).defaultSelectedSkin = selectedSkin;
 			}
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -1427,8 +1427,8 @@ package feathers.themes
 			check.focusPaddingLeft = this.focusPaddingSize;
 			check.focusPaddingRight = this.focusPaddingSize;
 
-			check.fontStyles = this.lightUIFontStyles;
-			check.disabledFontStyles = this.lightDisabledUIFontStyles;
+			check.fontStyles = this.lightUIFontStyles.clone();
+			check.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
 
 			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.gap = this.smallGutterSize;
@@ -1489,8 +1489,8 @@ package feathers.themes
 		{
 			headerRenderer.backgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
-			headerRenderer.fontStyles = this.lightUIFontStyles;
-			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
+			headerRenderer.fontStyles = this.lightUIFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
 
 			headerRenderer.horizontalAlign = HorizontalAlign.LEFT;
 
@@ -1504,8 +1504,8 @@ package feathers.themes
 		{
 			footerRenderer.backgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_FOOTER_BACKGROUND_COLOR);
 
-			footerRenderer.fontStyles = this.lightFontStyles;
-			footerRenderer.disabledFontStyles = this.lightDisabledFontStyles;
+			footerRenderer.fontStyles = this.lightFontStyles.clone();
+			footerRenderer.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			footerRenderer.horizontalAlign = HorizontalAlign.CENTER;
 
@@ -1528,8 +1528,8 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			header.fontStyles = this.lightFontStyles;
-			header.disabledFontStyles = this.lightDisabledFontStyles;
+			header.fontStyles = this.lightFontStyles.clone();
+			header.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			var backgroundSkin:ImageSkin = new ImageSkin(this.headerBackgroundSkinTexture);
 			backgroundSkin.tileGrid = new Rectangle();
@@ -1546,20 +1546,20 @@ package feathers.themes
 
 		protected function setLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.lightFontStyles;
-			label.disabledFontStyles = this.lightDisabledFontStyles;
+			label.fontStyles = this.lightFontStyles.clone();
+			label.disabledFontStyles = this.lightDisabledFontStyles.clone();
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.largeLightFontStyles;
-			label.disabledFontStyles = this.largeLightDisabledFontStyles;
+			label.fontStyles = this.largeLightFontStyles.clone();
+			label.disabledFontStyles = this.largeLightDisabledFontStyles.clone();
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.smallLightFontStyles;
-			label.disabledFontStyles = this.smallLightDisabledFontStyles;
+			label.fontStyles = this.smallLightFontStyles.clone();
+			label.disabledFontStyles = this.smallLightDisabledFontStyles.clone();
 		}
 
 		protected function setToolTipLabelStyles(label:Label):void
@@ -1568,8 +1568,8 @@ package feathers.themes
 			backgroundSkin.scale9Grid = DEFAULT_SCALE9_GRID;
 			label.backgroundSkin = backgroundSkin;
 
-			label.fontStyles = this.lightFontStyles;
-			label.disabledFontStyles = this.lightDisabledFontStyles;
+			label.fontStyles = this.lightFontStyles.clone();
+			label.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			label.padding = this.smallGutterSize;
 		}
@@ -1635,23 +1635,23 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			itemRenderer.defaultSkin = skin;
 
-			itemRenderer.fontStyles = this.lightFontStyles;
-			itemRenderer.disabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.selectedFontStyles = this.darkFontStyles;
-			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
-			itemRenderer.setFontStylesForState(ButtonState.HOVER, this.darkFontStyles);
+			itemRenderer.fontStyles = this.lightFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.lightDisabledFontStyles.clone();
+			itemRenderer.selectedFontStyles = this.darkFontStyles.clone();
+			itemRenderer.setFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			itemRenderer.setFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
 
-			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
-			itemRenderer.setIconLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles);
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			itemRenderer.iconLabelSelectedFontStyles = this.darkFontStyles.clone();
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			itemRenderer.setIconLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
 
-			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles;
-			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles);
-			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles);
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			itemRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles.clone();
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			itemRenderer.setAccessoryLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
 
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
@@ -1698,12 +1698,12 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DOWN_AND_SELECTED, this.checkSelectedDownIconTexture);
 			itemRenderer.defaultIcon = icon;
 
-			itemRenderer.fontStyles = this.lightFontStyles;
-			itemRenderer.disabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.iconLabelFontStyles = this.lightFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles;
-			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles;
+			itemRenderer.fontStyles = this.lightFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.lightDisabledFontStyles.clone();
+			itemRenderer.iconLabelFontStyles = this.lightFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			itemRenderer.accessoryLabelFontStyles = this.lightFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			itemRenderer.horizontalAlign = HorizontalAlign.LEFT;
 			itemRenderer.paddingTop = this.smallGutterSize;
@@ -1746,8 +1746,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
-			input.fontStyles = this.lightCenteredUIFontStyles;
-			input.disabledFontStyles = this.lightCenteredDisabledUIFontStyles;
+			input.fontStyles = this.lightCenteredUIFontStyles.clone();
+			input.disabledFontStyles = this.lightCenteredDisabledUIFontStyles.clone();
 
 			input.gap = this.smallGutterSize;
 			input.paddingTop = this.smallGutterSize;
@@ -1839,8 +1839,8 @@ package feathers.themes
 			backgroundSkin.minHeight = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
 
-			header.fontStyles = this.lightFontStyles;
-			header.disabledFontStyles = this.lightDisabledFontStyles;
+			header.fontStyles = this.lightFontStyles.clone();
+			header.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			header.paddingTop = this.smallGutterSize;
 			header.paddingBottom = this.smallGutterSize;
@@ -1899,8 +1899,8 @@ package feathers.themes
 			}
 			button.defaultIcon = icon;
 
-			button.fontStyles = this.darkUIFontStyles;
-			button.disabledFontStyles = this.darkDisabledUIFontStyles;
+			button.fontStyles = this.darkUIFontStyles.clone();
+			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1998,8 +1998,8 @@ package feathers.themes
 			radio.focusPaddingLeft = this.focusPaddingSize;
 			radio.focusPaddingRight = this.focusPaddingSize;
 
-			radio.fontStyles = this.lightUIFontStyles;
-			radio.disabledFontStyles = this.lightDisabledUIFontStyles;
+			radio.fontStyles = this.lightUIFontStyles.clone();
+			radio.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
 
 			radio.horizontalAlign = HorizontalAlign.LEFT;
 			radio.gap = this.smallGutterSize;
@@ -2218,8 +2218,8 @@ package feathers.themes
 		{
 			this.setScrollerStyles(text);
 
-			text.fontStyles = this.lightScrollTextFontStyles;
-			text.disabledFontStyles = this.lightDisabledScrollTextFontStyles;
+			text.fontStyles = this.lightScrollTextFontStyles.clone();
+			text.disabledFontStyles = this.lightDisabledScrollTextFontStyles.clone();
 
 			text.padding = this.gutterSize;
 		}
@@ -2395,11 +2395,11 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			tab.defaultSkin = skin;
 
-			tab.fontStyles = this.lightUIFontStyles;
-			tab.selectedFontStyles = this.darkUIFontStyles;
-			tab.setFontStylesForState(ButtonState.DOWN, this.darkUIFontStyles);
-			tab.setFontStylesForState(ButtonState.DISABLED, this.lightDisabledUIFontStyles);
-			tab.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles);
+			tab.fontStyles = this.lightUIFontStyles.clone();
+			tab.selectedFontStyles = this.darkUIFontStyles.clone();
+			tab.setFontStylesForState(ButtonState.DOWN, this.darkUIFontStyles.clone());
+			tab.setFontStylesForState(ButtonState.DISABLED, this.lightDisabledUIFontStyles.clone());
+			tab.setFontStylesForState(ButtonState.DISABLED_AND_SELECTED, this.darkDisabledUIFontStyles.clone());
 
 			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
 			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
@@ -2430,8 +2430,8 @@ package feathers.themes
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
 
-			textArea.fontStyles = this.lightScrollTextFontStyles;
-			textArea.disabledFontStyles = this.lightDisabledScrollTextFontStyles;
+			textArea.fontStyles = this.lightScrollTextFontStyles.clone();
+			textArea.disabledFontStyles = this.lightDisabledScrollTextFontStyles.clone();
 
 			textArea.padding = this.borderSize;
 		}
@@ -2445,8 +2445,8 @@ package feathers.themes
 		{
 			this.setDangerCalloutStyles(callout);
 
-			callout.fontStyles = this.lightFontStyles;
-			callout.disabledFontStyles = this.lightDisabledFontStyles;
+			callout.fontStyles = this.lightFontStyles.clone();
+			callout.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
@@ -2460,8 +2460,8 @@ package feathers.themes
 		{
 			this.setCalloutStyles(callout);
 
-			callout.fontStyles = this.lightFontStyles;
-			callout.disabledFontStyles = this.lightDisabledFontStyles;
+			callout.fontStyles = this.lightFontStyles.clone();
+			callout.disabledFontStyles = this.lightDisabledFontStyles.clone();
 		}
 
 	//-------------------------
@@ -2481,11 +2481,11 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
-			input.fontStyles = this.lightFontStyles;
-			input.disabledFontStyles = this.lightDisabledFontStyles;
+			input.fontStyles = this.lightFontStyles.clone();
+			input.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
-			input.promptFontStyles = this.lightFontStyles;
-			input.promptDisabledFontStyles = this.lightDisabledFontStyles;
+			input.promptFontStyles = this.lightFontStyles.clone();
+			input.promptDisabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			input.gap = this.smallGutterSize;
 			input.paddingTop = this.smallGutterSize;
@@ -2509,8 +2509,8 @@ package feathers.themes
 		{
 			this.setDangerCalloutStyles(callout);
 
-			callout.fontStyles = this.lightFontStyles;
-			callout.disabledFontStyles = this.lightDisabledFontStyles;
+			callout.fontStyles = this.lightFontStyles.clone();
+			callout.disabledFontStyles = this.lightDisabledFontStyles.clone();
 
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
@@ -2538,11 +2538,11 @@ package feathers.themes
 			toggle.focusIndicatorSkin = focusIndicatorSkin;
 			toggle.focusPadding = this.focusPaddingSize;
 
-			toggle.offLabelFontStyles = this.lightUIFontStyles;
-			toggle.offLabelDisabledFontStyles = this.lightDisabledUIFontStyles;
+			toggle.offLabelFontStyles = this.lightUIFontStyles.clone();
+			toggle.offLabelDisabledFontStyles = this.lightDisabledUIFontStyles.clone();
 
-			toggle.onLabelFontStyles = this.selectedUIFontStyles;
-			toggle.onLabelDisabledFontStyles = this.lightDisabledUIFontStyles;
+			toggle.onLabelFontStyles = this.selectedUIFontStyles.clone();
+			toggle.onLabelDisabledFontStyles = this.lightDisabledUIFontStyles.clone();
 		}
 
 		protected function setToggleSwitchThumbStyles(thumb:Button):void

@@ -833,8 +833,8 @@ package feathers.themes
 			backgroundSkin.height = this.controlSize;
 			alert.backgroundSkin = backgroundSkin;
 
-			alert.fontStyles = this.primaryFontStyles;
-			alert.disabledFontStyles = this.disabledFontStyles;
+			alert.fontStyles = this.primaryFontStyles.clone();
+			alert.disabledFontStyles = this.disabledFontStyles.clone();
 
 			alert.paddingTop = this.gutterSize;
 			alert.paddingRight = this.gutterSize;
@@ -899,8 +899,8 @@ package feathers.themes
 			skin.minHeight = this.smallControlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -917,8 +917,8 @@ package feathers.themes
 			skin.minHeight = this.smallControlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -949,8 +949,8 @@ package feathers.themes
 			otherSkin.minWidth = this.controlSize;
 			otherSkin.minHeight = this.controlSize;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -967,8 +967,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.dangerFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.dangerFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 		}
@@ -985,8 +985,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1006,8 +1006,8 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1044,8 +1044,8 @@ package feathers.themes
 			button.minHeight = this.gridSize;
 			button.defaultSkin = skin;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
@@ -1135,8 +1135,8 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.checkSelectedDisabledIconTexture);
 			check.defaultIcon = icon;
 
-			check.fontStyles = this.primaryFontStyles;
-			check.disabledFontStyles = this.disabledFontStyles;
+			check.fontStyles = this.primaryFontStyles.clone();
+			check.disabledFontStyles = this.disabledFontStyles.clone();
 
 			check.gap = this.smallGutterSize;
 			check.horizontalAlign = HorizontalAlign.LEFT;
@@ -1206,8 +1206,8 @@ package feathers.themes
 		{
 			renderer.backgroundSkin = new Quad(1, 1, LIST_HEADER_BACKGROUND_COLOR);
 
-			renderer.fontStyles = this.primaryFontStyles;
-			renderer.disabledFontStyles = this.disabledFontStyles;
+			renderer.fontStyles = this.primaryFontStyles.clone();
+			renderer.disabledFontStyles = this.disabledFontStyles.clone();
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1238,8 +1238,8 @@ package feathers.themes
 			skin.alpha = 0;
 			renderer.backgroundSkin = skin;
 
-			renderer.fontStyles = this.primaryFontStyles;
-			renderer.disabledFontStyles = this.disabledFontStyles;
+			renderer.fontStyles = this.primaryFontStyles.clone();
+			renderer.disabledFontStyles = this.disabledFontStyles.clone();
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1261,8 +1261,8 @@ package feathers.themes
 			backgroundSkin.minHeight = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
 
-			header.fontStyles = this.primaryFontStyles;
-			header.disabledFontStyles = this.disabledFontStyles;
+			header.fontStyles = this.primaryFontStyles.clone();
+			header.disabledFontStyles = this.disabledFontStyles.clone();
 
 			header.padding = this.smallGutterSize;
 			header.gap = this.smallGutterSize;
@@ -1275,20 +1275,20 @@ package feathers.themes
 
 		protected function setLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.primaryFontStyles;
-			label.disabledFontStyles = this.disabledFontStyles;
+			label.fontStyles = this.primaryFontStyles.clone();
+			label.disabledFontStyles = this.disabledFontStyles.clone();
 		}
 
 		protected function setHeadingLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.headingFontStyles;
-			label.disabledFontStyles = this.headingDisabledFontStyles;
+			label.fontStyles = this.headingFontStyles.clone();
+			label.disabledFontStyles = this.headingDisabledFontStyles.clone();
 		}
 
 		protected function setDetailLabelStyles(label:Label):void
 		{
-			label.fontStyles = this.detailFontStyles;
-			label.disabledFontStyles = this.detailDisabledFontStyles;
+			label.fontStyles = this.detailFontStyles.clone();
+			label.disabledFontStyles = this.detailDisabledFontStyles.clone();
 		}
 
 	//-------------------------
@@ -1347,12 +1347,12 @@ package feathers.themes
 			itemRenderer.defaultSelectedSkin = otherSkin;
 			itemRenderer.setSkinForState(ButtonState.DOWN, otherSkin);
 
-			itemRenderer.fontStyles = this.primaryFontStyles;
-			itemRenderer.disabledFontStyles = this.disabledFontStyles;
-			itemRenderer.iconLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles;
-			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles;
+			itemRenderer.fontStyles = this.primaryFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.iconLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
 
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
@@ -1417,12 +1417,12 @@ package feathers.themes
 			defaultIcon.alpha = 0;
 			itemRenderer.defaultIcon = defaultIcon;
 
-			itemRenderer.fontStyles = this.primaryFontStyles;
-			itemRenderer.disabledFontStyles = this.disabledFontStyles;
-			itemRenderer.iconLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles;
-			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles;
+			itemRenderer.fontStyles = this.primaryFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.iconLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
 
 			itemRenderer.itemHasIcon = false;
 
@@ -1463,8 +1463,8 @@ package feathers.themes
 			input.isSelectable = false;
 			input.textEditorFactory = numericStepperTextEditorFactory;
 
-			input.fontStyles = this.centeredFontStyles;
-			input.disabledFontStyles = this.centeredDisabledFontStyles;
+			input.fontStyles = this.centeredFontStyles.clone();
+			input.disabledFontStyles = this.centeredDisabledFontStyles.clone();
 
 			var skin:ImageSkin = new ImageSkin(this.insetBackgroundSkinTexture);
 			skin.setTextureForState(TextInputState.DISABLED, this.insetBackgroundDisabledSkinTexture);
@@ -1525,8 +1525,8 @@ package feathers.themes
 			backgroundSkin.minHeight = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
 
-			header.fontStyles = this.primaryFontStyles;
-			header.disabledFontStyles = this.disabledFontStyles;
+			header.fontStyles = this.primaryFontStyles.clone();
+			header.disabledFontStyles = this.disabledFontStyles.clone();
 
 			header.padding = this.smallGutterSize;
 			header.gap = this.smallGutterSize;
@@ -1611,12 +1611,12 @@ package feathers.themes
 			defaultIcon.alpha = 0;
 			itemRenderer.defaultIcon = defaultIcon;
 
-			itemRenderer.fontStyles = this.primaryFontStyles;
-			itemRenderer.disabledFontStyles = this.disabledFontStyles;
-			itemRenderer.iconLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles;
-			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles;
+			itemRenderer.fontStyles = this.primaryFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.iconLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.accessoryLabelFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
 
 			itemRenderer.itemHasIcon = false;
 
@@ -1656,8 +1656,8 @@ package feathers.themes
 			}
 			button.defaultIcon = icon;
 
-			button.fontStyles = this.primaryFontStyles;
-			button.disabledFontStyles = this.disabledFontStyles;
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.disabledFontStyles.clone();
 
 			this.setBaseButtonStyles(button);
 
@@ -1746,8 +1746,8 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.radioSelectedDisabledIconTexture);
 			radio.defaultIcon = icon;
 
-			radio.fontStyles = this.primaryFontStyles;
-			radio.disabledFontStyles = this.disabledFontStyles;
+			radio.fontStyles = this.primaryFontStyles.clone();
+			radio.disabledFontStyles = this.disabledFontStyles.clone();
 
 			radio.gap = this.smallGutterSize;
 			radio.horizontalAlign = HorizontalAlign.LEFT;
@@ -1803,8 +1803,8 @@ package feathers.themes
 		{
 			this.setScrollerStyles(text);
 
-			text.fontStyles = this.scrollTextFontStyles;
-			text.disabledFontStyles = this.scrollTextDisabledFontStyles;
+			text.fontStyles = this.scrollTextFontStyles.clone();
+			text.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
 			text.padding = this.gutterSize;
 			text.paddingRight = this.gutterSize + this.smallGutterSize;
@@ -1913,15 +1913,15 @@ package feathers.themes
 
 			//if it's not selected, we don't want it to be highlighted, so we're
 			//borrowing the less prominent disabled color
-			itemRenderer.fontStyles = this.disabledFontStyles;
-			itemRenderer.selectedFontStyles = this.primaryFontStyles;
-			itemRenderer.disabledFontStyles = this.disabledFontStyles;
-			itemRenderer.iconLabelFontStyles = this.disabledFontStyles;
-			itemRenderer.iconLabelSelectedFontStyles = this.primaryFontStyles;
-			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles;
-			itemRenderer.accessoryLabelFontStyles = this.disabledFontStyles;
-			itemRenderer.accessoryLabelSelectedFontStyles = this.primaryFontStyles;
-			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles;
+			itemRenderer.fontStyles = this.disabledFontStyles.clone();
+			itemRenderer.selectedFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.iconLabelFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.iconLabelSelectedFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.accessoryLabelFontStyles = this.disabledFontStyles.clone();
+			itemRenderer.accessoryLabelSelectedFontStyles = this.primaryFontStyles.clone();
+			itemRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
 
 			itemRenderer.paddingTop = this.smallGutterSize;
 			itemRenderer.paddingBottom = this.smallGutterSize;
@@ -1969,8 +1969,8 @@ package feathers.themes
 			tab.defaultSelectedSkin = otherSkin;
 			tab.setSkinForState(ButtonState.DOWN, otherSkin);
 
-			tab.fontStyles = this.primaryFontStyles;
-			tab.disabledFontStyles = this.disabledFontStyles;
+			tab.fontStyles = this.primaryFontStyles.clone();
+			tab.disabledFontStyles = this.disabledFontStyles.clone();
 
 			tab.iconPosition = RelativePosition.TOP;
 			tab.padding = this.gutterSize;
@@ -1997,8 +1997,8 @@ package feathers.themes
 			skin.height = this.wideControlSize;
 			textArea.backgroundSkin = skin;
 
-			textArea.fontStyles = this.scrollTextFontStyles;
-			textArea.disabledFontStyles = this.scrollTextDisabledFontStyles;
+			textArea.fontStyles = this.scrollTextFontStyles.clone();
+			textArea.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
@@ -2023,16 +2023,16 @@ package feathers.themes
 		{
 			this.setCalloutStyles(callout);
 
-			callout.fontStyles = this.primaryFontStyles;
-			callout.disabledFontStyles = this.disabledFontStyles;
+			callout.fontStyles = this.primaryFontStyles.clone();
+			callout.disabledFontStyles = this.disabledFontStyles.clone();
 		}
 
 		protected function setDangerTextCalloutStyles(callout:TextCallout):void
 		{
 			this.setDangerCalloutStyles(callout);
 
-			callout.fontStyles = this.dangerFontStyles;
-			callout.disabledFontStyles = this.disabledFontStyles;
+			callout.fontStyles = this.dangerFontStyles.clone();
+			callout.disabledFontStyles = this.disabledFontStyles.clone();
 		}
 
 	//-------------------------
@@ -2062,22 +2062,22 @@ package feathers.themes
 		{
 			this.setBaseTextInputStyles(input);
 
-			input.fontStyles = this.scrollTextFontStyles;
-			input.disabledFontStyles = this.scrollTextDisabledFontStyles;
+			input.fontStyles = this.scrollTextFontStyles.clone();
+			input.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
-			input.promptFontStyles = this.primaryFontStyles;
-			input.promptDisabledFontStyles = this.disabledFontStyles;
+			input.promptFontStyles = this.primaryFontStyles.clone();
+			input.promptDisabledFontStyles = this.disabledFontStyles.clone();
 		}
 
 		protected function setSearchTextInputStyles(input:TextInput):void
 		{
 			this.setBaseTextInputStyles(input);
 
-			input.fontStyles = this.scrollTextFontStyles;
-			input.disabledFontStyles = this.scrollTextDisabledFontStyles;
+			input.fontStyles = this.scrollTextFontStyles.clone();
+			input.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
-			input.promptFontStyles = this.primaryFontStyles;
-			input.promptDisabledFontStyles = this.disabledFontStyles;
+			input.promptFontStyles = this.primaryFontStyles.clone();
+			input.promptDisabledFontStyles = this.disabledFontStyles.clone();
 
 			var icon:ImageSkin = new ImageSkin(this.searchIconTexture);
 			icon.disabledTexture = this.searchIconDisabledTexture;
@@ -2100,10 +2100,10 @@ package feathers.themes
 		{
 			toggleSwitch.trackLayoutMode = TrackLayoutMode.SINGLE;
 
-			toggleSwitch.onLabelFontStyles = this.primaryFontStyles;
-			toggleSwitch.onLabelDisabledFontStyles = this.disabledFontStyles;
-			toggleSwitch.offLabelFontStyles = this.primaryFontStyles;
-			toggleSwitch.offLabelDisabledFontStyles = this.disabledFontStyles;
+			toggleSwitch.onLabelFontStyles = this.primaryFontStyles.clone();
+			toggleSwitch.onLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			toggleSwitch.offLabelFontStyles = this.primaryFontStyles.clone();
+			toggleSwitch.offLabelDisabledFontStyles = this.disabledFontStyles.clone();
 		}
 
 		protected function setToggleSwitchOnTrackStyles(track:Button):void
