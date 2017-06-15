@@ -23,79 +23,29 @@ package feathers.layout
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.utils.Pool;
+	import starling.errors.AbstractClassError;
 
 	/**
-	 * Dispatched when a property of the layout changes, indicating that a
-	 * redraw is probably needed.
+	 * Abstract base class for <code>HorizontalLayout</code> and <code>VerticalLayout</code>.
 	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
+	 * @productversion Feathers 3.3.0
 	 *
-	 * @eventType starling.events.Event.CHANGE
+	 * @see feathers.layout.HorizontalLayout
+	 * @see feathers.layout.VerticalLayout
 	 */
-	[Event(name="change",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the layout would like to adjust the container's scroll
-	 * position. Typically, this is used when the virtual dimensions of an item
-	 * differ from its real dimensions. This event allows the container to
-	 * adjust scrolling so that it appears smooth, without jarring jumps or
-	 * shifts when an item resizes.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>A <code>flash.geom.Point</code> object
-	 *   representing how much the scroll position should be adjusted in both
-	 *   horizontal and vertical directions. Measured in pixels.</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
-	[Event(name="scroll",type="starling.events.Event")]
-
-	/**
-	 * Positions items from top to bottom in a single column.
-	 *
-	 * @see ../../../help/vertical-layout.html How to use VerticalLayout with Feathers containers
-	 *
-	 * @productversion Feathers 1.0.0
-	 */
-	public class LinearLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
+	public class BaseLinearLayout extends BaseVariableVirtualLayout
 	{
 		/**
 		 * Constructor.
 		 */
-		public function LinearLayout()
+		public function BaseLinearLayout()
 		{
 			super();
+			if(Object(this).constructor == BaseLinearLayout)
+			{
+				throw new AbstractClassError()
+			}
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _cache:Array = [];
 
 		/**
 		 * @private
@@ -225,7 +175,7 @@ package feathers.layout
 		protected var _paddingTop:Number = 0;
 
 		/**
-		 * The space, in pixels, that appears on top, before the first item.
+		 * The space, in pixels, that appears on top.
 		 *
 		 * @default 0
 		 */
@@ -281,8 +231,7 @@ package feathers.layout
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The space, in pixels, that appears on the bottom, after the last
-		 * item.
+		 * The space, in pixels, that appears on the bottom.
 		 *
 		 * @default 0
 		 */
@@ -332,22 +281,15 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-
 		/**
 		 * @private
 		 */
 		protected var _verticalAlign:String = VerticalAlign.TOP;
 
-		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
-		 * If the total item height is less than the bounds, the positions of
-		 * the items can be aligned vertically.
+		 * The alignment of the items vertically, on the x-axis.
 		 *
 		 * @default feathers.layout.VerticalAlign.TOP
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -372,25 +314,10 @@ package feathers.layout
 		 */
 		protected var _horizontalAlign:String = HorizontalAlign.LEFT;
 
-		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
 		 *
-		 * <p>If the <code>horizontalAlign</code> property is set to
-		 * <code>VerticalLayout.HorizontalAlign.JUSTIFY</code>, the
-		 * <code>width</code>, <code>minWidth</code>, and <code>maxWidth</code>
-		 * properties of the items may be changed, and their original values
-		 * ignored by the layout. In this situation, if the width needs to be
-		 * constrained, the <code>width</code>, <code>minWidth</code>, or
-		 * <code>maxWidth</code> properties should instead be set on the parent
-		 * container using the layout.</p>
-		 *
 		 * @default feathers.layout.HorizontalAlign.LEFT
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -413,68 +340,10 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _useVirtualLayout:Boolean = true;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * @default true
-		 */
-		public function get useVirtualLayout():Boolean
-		{
-			return this._useVirtualLayout;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set useVirtualLayout(value:Boolean):void
-		{
-			if(this._useVirtualLayout == value)
-			{
-				return;
-			}
-			this._useVirtualLayout = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _hasVariableItemDimensions:Boolean = false;
-
-		/**
-		 * When the layout is virtualized, and this value is true, the items may
-		 * have variable height values. If false, the items will all share the
-		 * same height value with the typical item.
-		 *
-		 * @default false
-		 */
-		public function get hasVariableItemDimensions():Boolean
-		{
-			return this._hasVariableItemDimensions;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set hasVariableItemDimensions(value:Boolean):void
-		{
-			if(this._hasVariableItemDimensions == value)
-			{
-				return;
-			}
-			this._hasVariableItemDimensions = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
 
 		/**
-		 * @inheritDoc
+		 * @copy feathers.layout.ITrimmedLayout#beforeVirtualizedItemCount
 		 */
 		public function get beforeVirtualizedItemCount():int
 		{
@@ -500,7 +369,7 @@ package feathers.layout
 		protected var _afterVirtualizedItemCount:int = 0;
 
 		/**
-		 * @inheritDoc
+		 * @copy feathers.layout.ITrimmedLayout#afterVirtualizedItemCount
 		 */
 		public function get afterVirtualizedItemCount():int
 		{
@@ -517,36 +386,6 @@ package feathers.layout
 				return;
 			}
 			this._afterVirtualizedItemCount = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItem:DisplayObject;
-
-		/**
-		 * @inheritDoc
-		 *
-		 * @see #resetTypicalItemDimensionsOnMeasure
-		 * @see #typicalItemWidth
-		 * @see #typicalItemHeight
-		 */
-		public function get typicalItem():DisplayObject
-		{
-			return this._typicalItem;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalItem(value:DisplayObject):void
-		{
-			if(this._typicalItem == value)
-			{
-				return;
-			}
-			this._typicalItem = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -681,102 +520,5 @@ package feathers.layout
 			this._typicalItemHeight = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get requiresLayoutOnScroll():Boolean
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function resetVariableVirtualCache():void
-		{
-			this._cache.length = 0;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			delete this._cache[index];
-			if(item)
-			{
-				this._cache[index] = item.height;
-				this.dispatchEventWith(Event.CHANGE);
-			}
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			var heightValue:* = item ? item.height : undefined;
-			this._cache.insertAt(index, heightValue);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function removeFromVariableVirtualCacheAtIndex(index:int):void
-		{
-			this._cache.removeAt(index);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
-			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
-		{
-			throw new AbstractMethodError();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
-		{
-			throw new AbstractMethodError();
-		}
-
-
 	}
 }

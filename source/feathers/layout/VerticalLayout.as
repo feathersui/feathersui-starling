@@ -28,7 +28,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class VerticalLayout extends LinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
+	public class VerticalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
 	{
 		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
@@ -120,6 +120,49 @@ package feathers.layout
 		public function VerticalLayout()
 		{
 			super();
+		}
+
+		[Inspectable(type="String",enumeration="left,center,right,justify")]
+		/**
+		 * The alignment of the items horizontally, on the x-axis.
+		 *
+		 * <p>If the <code>horizontalAlign</code> property is set to
+		 * <code>feathers.layout.HorizontalAlign.JUSTIFY</code>, the
+		 * <code>width</code>, <code>minWidth</code>, and <code>maxWidth</code>
+		 * properties of the items may be changed, and their original values
+		 * ignored by the layout. In this situation, if the width needs to be
+		 * constrained, the <code>width</code>, <code>minWidth</code>, or
+		 * <code>maxWidth</code> properties should instead be set on the parent
+		 * container using the layout.</p>
+		 *
+		 * @default feathers.layout.HorizontalAlign.LEFT
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
+		 */
+		override public function get horizontalAlign():String
+		{
+			//this is an override so that this class can have its own documentation.
+			return this._horizontalAlign;
+		}
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * If the total item height is less than the bounds, the positions of
+		 * the items can be aligned vertically, on the y-axis.
+		 *
+		 * @default feathers.layout.VerticalAlign.TOP
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 */
+		override public function get verticalAlign():String
+		{
+			//this is an override so that this class can have its own documentation.
+			return this._verticalAlign;
 		}
 
 		/**
@@ -353,7 +396,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function get requiresLayoutOnScroll():Boolean
+		override public function get requiresLayoutOnScroll():Boolean
 		{
 			return this._useVirtualLayout ||
 				(this._headerIndices && this._stickyHeader); //the header needs to stick!
@@ -362,7 +405,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
+		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
 			//this function is very long because it may be called every frame,
 			//in some situations. testing revealed that splitting this function
@@ -542,7 +585,7 @@ package feathers.layout
 
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedHeight:Number = this._cache[iNormalized];
+					var cachedHeight:Number = this._virtualCache[iNormalized];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -598,7 +641,7 @@ package feathers.layout
 								//the container that the virtualized layout has
 								//changed, and it the view port may need to be
 								//re-measured.
-								this._cache[iNormalized] = itemHeight;
+								this._virtualCache[iNormalized] = itemHeight;
 
 								//attempt to adjust the scroll position so that
 								//it looks like we're scrolling smoothly after
@@ -887,7 +930,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
+		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
 		{
 			if(!result)
 			{
@@ -936,7 +979,7 @@ package feathers.layout
 				{
 					for(var i:int = 0; i < itemCount; i++)
 					{
-						var cachedHeight:Number = this._cache[i];
+						var cachedHeight:Number = this._virtualCache[i];
 						if(cachedHeight !== cachedHeight) //isNaN
 						{
 							positionY += calculatedTypicalItemHeight + this._gap;
@@ -1016,7 +1059,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
 			if(result)
 			{
@@ -1155,7 +1198,7 @@ package feathers.layout
 				{
 					gap = this._lastGap;
 				}
-				var cachedHeight:Number = this._cache[i];
+				var cachedHeight:Number = this._virtualCache[i];
 				if(cachedHeight !== cachedHeight) //isNaN
 				{
 					var itemHeight:Number = calculatedTypicalItemHeight;
@@ -1256,7 +1299,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			var point:Point = Pool.getPoint();
@@ -1270,7 +1313,7 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					var itemHeight:Number = this._cache[index];
+					var itemHeight:Number = this._virtualCache[index];
 					if(itemHeight !== itemHeight) //isNaN
 					{
 						itemHeight = this._typicalItem.height;
@@ -1319,7 +1362,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var itemArrayCount:int = items.length;
 			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
@@ -1359,7 +1402,7 @@ package feathers.layout
 					var iNormalized:int = i + indexOffset;
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
-						var cachedHeight:Number = this._cache[i];
+						var cachedHeight:Number = this._virtualCache[i];
 					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
@@ -1412,7 +1455,7 @@ package feathers.layout
 					iNormalized = i + indexOffset;
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
-						cachedHeight = this._cache[i];
+						cachedHeight = this._virtualCache[i];
 					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
@@ -1494,7 +1537,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			var point:Point = Pool.getPoint();
 			this.calculateScrollRangeOfIndex(index, items, x, y, width, height, point);
@@ -1507,7 +1550,7 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					var itemHeight:Number = this._cache[index];
+					var itemHeight:Number = this._virtualCache[index];
 					if(itemHeight !== itemHeight) //isNaN
 					{
 						itemHeight = this._typicalItem.height;
@@ -1998,7 +2041,7 @@ package feathers.layout
 				}
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedHeight:Number = this._cache[iNormalized];
+					var cachedHeight:Number = this._virtualCache[iNormalized];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -2021,7 +2064,7 @@ package feathers.layout
 						{
 							if(itemHeight != cachedHeight)
 							{
-								this._cache[iNormalized] = itemHeight;
+								this._virtualCache[iNormalized] = itemHeight;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}

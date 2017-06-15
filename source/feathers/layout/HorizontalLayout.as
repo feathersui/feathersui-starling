@@ -26,7 +26,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class HorizontalLayout extends LinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout
+	public class HorizontalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
 		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
@@ -118,6 +118,48 @@ package feathers.layout
 		public function HorizontalLayout()
 		{
 			super();
+		}
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * If the total item width is less than the bounds, the positions of
+		 * the items can be aligned horizontally, on the x-axis.
+		 *
+		 * @default feathers.layout.HorizontalAlign.LEFT
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 */
+		override public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		/**
+		 * The alignment of the items vertically, on the y-axis.
+		 *
+		 * <p>If the <code>verticalAlign</code> property is set to
+		 * <code>feathers.layout.VerticalAlign.JUSTIFY</code>, the
+		 * <code>height</code>, <code>minHeight</code>, and
+		 * <code>maxHeight</code> properties of the items may be changed, and
+		 * their original values ignored by the layout. In this situation, if
+		 * the height needs to be constrained, the <code>height</code>,
+		 * <code>minHeight</code>, or <code>maxHeight</code> properties should
+		 * instead be set on the parent container that is using this layout.</p>
+		 *
+		 * @default feathers.layout.VerticalAlign.TOP
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
+		 */
+		override public function get verticalAlign():String
+		{
+			//this is an override so that this class can have its own documentation.
+			return this._verticalAlign;
 		}
 
 		/**
@@ -260,15 +302,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function get requiresLayoutOnScroll():Boolean
-		{
-			return this._useVirtualLayout;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public override function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
+		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
 			//this function is very long because it may be called every frame,
 			//in some situations. testing revealed that splitting this function
@@ -405,7 +439,7 @@ package feathers.layout
 
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedWidth:Number = this._cache[iNormalized];
+					var cachedWidth:Number = this._virtualCache[iNormalized];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -461,7 +495,7 @@ package feathers.layout
 								//the container that the virtualized layout has
 								//changed, and it the view port may need to be
 								//re-measured.
-								this._cache[iNormalized] = itemWidth;
+								this._virtualCache[iNormalized] = itemWidth;
 
 								//attempt to adjust the scroll position so that
 								//it looks like we're scrolling smoothly after
@@ -740,7 +774,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
+		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
 		{
 			if(!result)
 			{
@@ -789,7 +823,7 @@ package feathers.layout
 				{
 					for(var i:int = 0; i < itemCount; i++)
 					{
-						var cachedWidth:Number = this._cache[i];
+						var cachedWidth:Number = this._virtualCache[i];
 						if(cachedWidth !== cachedWidth) //isNaN
 						{
 							positionX += calculatedTypicalItemWidth + this._gap;
@@ -868,7 +902,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
 			if(result)
 			{
@@ -969,7 +1003,7 @@ package feathers.layout
 				{
 					gap = this._lastGap;
 				}
-				var cachedWidth:Number = this._cache[i];
+				var cachedWidth:Number = this._virtualCache[i];
 				if(cachedWidth !== cachedWidth) //isNaN
 				{
 					var itemWidth:Number = calculatedTypicalItemWidth;
@@ -1035,7 +1069,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
 			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			var maxScrollX:Number = this.calculateMaxScrollXOfIndex(index, items, x, y, width, height);
@@ -1044,7 +1078,7 @@ package feathers.layout
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					var itemWidth:Number = this._cache[index];
+					var itemWidth:Number = this._virtualCache[index];
 					if(itemWidth !== itemWidth)
 					{
 						itemWidth = this._typicalItem.width;
@@ -1093,7 +1127,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var itemArrayCount:int = items.length;
 			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
@@ -1130,7 +1164,7 @@ package feathers.layout
 					var iNormalized:int = i + indexOffset;
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
-						var cachedWidth:Number = this._cache[i];
+						var cachedWidth:Number = this._virtualCache[i];
 					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
@@ -1183,7 +1217,7 @@ package feathers.layout
 					iNormalized = i + indexOffset;
 					if(this._useVirtualLayout && this._hasVariableItemDimensions)
 					{
-						cachedWidth = this._cache[i];
+						cachedWidth = this._virtualCache[i];
 					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
@@ -1245,14 +1279,14 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public override function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			var maxScrollX:Number = this.calculateMaxScrollXOfIndex(index, items, x, y, width, height);
 			if(this._useVirtualLayout)
 			{
 				if(this._hasVariableItemDimensions)
 				{
-					var itemWidth:Number = this._cache[index];
+					var itemWidth:Number = this._virtualCache[index];
 					if(itemWidth !== itemWidth)
 					{
 						itemWidth = this._typicalItem.width;
@@ -1724,7 +1758,7 @@ package feathers.layout
 				}
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedWidth:Number = this._cache[iNormalized];
+					var cachedWidth:Number = this._virtualCache[iNormalized];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -1747,7 +1781,7 @@ package feathers.layout
 						{
 							if(itemWidth != cachedWidth)
 							{
-								this._cache[iNormalized] = itemWidth;
+								this._virtualCache[iNormalized] = itemWidth;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
