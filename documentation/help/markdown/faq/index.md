@@ -119,7 +119,7 @@ Drawing text in the GPU involves many tradeoffs. Sometimes it is impossible to a
 
 ### Why do my custom item renderers show the wrong data?
 
-`List` and `GroupedList` components use something called *layout virtualization* to minimize the number of item renderers that need to be created at any time. Additionally, lists will reuse item renderers when they scroll off screen to display different data that has scrolled on screen. This provides a significant performance boost, especially on mobile.
+The `List`, `Tree`, and `GroupedList` components use something called *layout virtualization* to minimize the number of item renderers that need to be created at any time. Additionally, lists will reuse item renderers when they scroll off screen to display different data that has scrolled on screen. This provides a significant performance boost, especially on mobile.
 
 When you create a custom item renderer, you need to ensure that it is designed to properly update when the list asks it to display a different item from the data provider. Please see [this detailed explanation](layout-virtualization.html) for more information.
 

@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `GroupedList` component
 
-The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the [`List`](list.html) component.
+The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class renders groups of items from a hierarchical data source. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers, similar to the [`List`](list.html) or [`Tree`](tree.html) components.
 
 <figure>
 <img src="images/grouped-list.png" srcset="images/grouped-list@2x.png 2x" alt="Screenshot of Feathers a GroupedList component" />
@@ -39,10 +39,10 @@ list.height = 300;
 this.addChild( list );
 ```
 
-Next, we want the grouped list to display some items, so let's create a [`HierarchicalCollection`](../api-reference/feathers/data/HierarchicalCollection.html) as its data provider. In the example below, a specially-formatted set of objects is passed to the `HierarchicalCollection`:
+Next, we want the grouped list to display some items, so let's create a [`ArrayHierarchicalCollection`](../api-reference/feathers/data/ArrayHierarchicalCollection.html) as its data provider. In the example below, a specially-formatted set of objects is passed to the `ArrayHierarchicalCollection`:
 
 ``` code
-var groceryList:HierarchicalCollection = new HierarchicalCollection(
+var groceryList:ArrayHierarchicalCollection = new ArrayHierarchicalCollection(
 [
     {
         header: { text: "Dairy" },
@@ -72,7 +72,15 @@ var groceryList:HierarchicalCollection = new HierarchicalCollection(
 list.dataProvider = groceryList;
 ```
 
-`HierarchicalCollection` wraps any type of data to provide a common API that the `GroupedList` component can understand. Out of the box, `HierarchicalCollection` automatically supports an `Array` of objects representing each group. Each group object has a `children` property (you can [customize this property name](../api-reference/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField), if you prefer) that contains an `Array` of objects in the group. Each group can contain extra data for the header and footer, as we'll see in more detail shortly. It's even possible to support custom types of data, if needed.
+`ArrayHierarchicalCollection` wraps a regular ActionScript `Array`, and it adds special events and things that the `GroupedList` uses to add, update, and remove item renderers in real time. The wrapped `Array` contains objects that represent the individual groups to display. Each group object has a `children` property (you can [customize this property name](../api-reference/feathers/data/ArrayChildrenHierarchicalCollectionDataDescriptor.html#childrenField), if you prefer) that contains another `Array` of the child objects in the group. Each group can also contain extra data for its header and footer, as we'll see in more detail shortly.
+
+<aside class="info">`ArrayHierarchicalCollection` is one of multiple classes that implement the `IHierarchicalCollection` interface. `IHierarchicalCollection` wraps any type of data to provide a common API that the `GroupedList` component can understand. Out of the box, we may use these collection implementations: 
+
+* [`ArrayHierarchicalCollection`](../api-reference/feathers/data/ArrayHierarchicalCollection.html) for data based on an [`Array`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/Array.html)
+* [`VectorHierarchicalCollection`](../api-reference/feathers/data/VectorHierarchicalCollection.html) for data based on a [`Vector`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/Vector.html)
+* [`XMLListHierarchicalCollection`](../api-reference/feathers/data/XMLListHierarchicalCollection.html) for data based on an [`XMLList`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/XMLList.html)
+ 
+It's even possible for anyone to create new `IHierarhicalCollection` implementations to display custom data types, if needed.</aside>
 
 Now, we need to tell the item renderer how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
@@ -98,7 +106,7 @@ list.itemRendererFactory = function():IGroupedListItemRenderer
 
 When using the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField), the default item renderer will automatically create a [text renderer](text-renderers.html) to display the string. Similarly, when you use the [`iconSourceField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField), the item renderer will automatically create an [`ImageLoader`](image-loader.html) to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property of the `ImageLoader`.
 
-The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for complete details.
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for complete details.
 
 ## Headers and Footers
 
@@ -240,8 +248,7 @@ The default layout for a grouped list is to display the items vertically one aft
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.verticalAlign = VerticalAlign.JUSTIFY;
 layout.gap = 10;
-layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-    layout.paddingLeft = 15;
+layout.padding = 15;
 list.layout = layout;
 ```
 
@@ -314,7 +321,7 @@ list.horizontalScrollBarFactory = function():ScrollBar
 
 ### Skinning the Item Renderers
 
-This section only explains how to access the item renderer sub-components. Please read [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+This section only explains how to access the item renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
 
 [Custom item renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the `DefaultGroupedListItemRenderer` class in the code below with references to your custom item renderer class.
 
@@ -521,6 +528,6 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 
 -   [`feathers.controls.GroupedList` API Documentation](../api-reference/feathers/controls/GroupedList.html)
 
--   [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
+-   [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html)
 
--   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
+-   [Creating custom item renderers for the Feathers `List`, `Tree`, and `GroupedList` components](item-renderers.html)

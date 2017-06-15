@@ -3,17 +3,23 @@ title: Creating custom item renderers with FeathersControl and IListItemRenderer
 author: Josh Tynjala
 
 ---
-# Creating custom item renderers with `FeathersControl` and `IListItemRenderer`
+# Creating custom item renderers with `FeathersControl` and `IListItemRenderer`, `ITreeItemRenderer`, or `IGroupedListItemRenderer`
 
-The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a [`List`](list.html) or [`GroupedList`](grouped-list.html), you're actually going to create a [custom Feathers component](index.html#custom-components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
+The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a [`List`](list.html), [`Tree`](tree.html) or [`GroupedList`](grouped-list.html), you're actually going to create a [custom Feathers component](index.html#custom-components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
 
-Feathers includes three interfaces that define the API used by the `List` or `GroupedList` components to communicate with their item renderers.
+Feathers includes three interfaces that define the API used by the `List`, `Tree`, or `GroupedList` components to communicate with their item renderers.
 
--   [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) can be used to implement an item renderer in [`List`](list.html).
+-   [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) can be used to implement an item renderer for [`List`](list.html).
 
--   [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) can be used to implement an item renderer in [`GroupedList`](grouped-list.html).
+-   [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) can be used to implement an item renderer for [`Tree`](tree.html).
 
--   [`IGroupedListHeaderOrFooterItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) can be used to implement either a header renderer or a footer renderer in [`GroupedList`](grouped-list.html).
+-   [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) can be used to implement an item renderer for [`GroupedList`](grouped-list.html).
+
+Additionally, `GroupedList` has two more interfaces for its headers and footers.
+
+-   [`IGroupedListHeaderRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderRenderer.html) can be used to implement a header renderer for [`GroupedList`](grouped-list.html).
+
+-   [`IGroupedListFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListFooterRenderer.html) can be used to implement a footer renderer for [`GroupedList`](grouped-list.html).
 
 Below, we will look at how to create a simple custom item renderer using one of these interfaces. We'll also be taking peek at many aspects of the core architecture used by the Feathers components. At the very end, the complete source code for a simple custom item renderer will be provided to offer a starting point for other custom item renderers.
 
@@ -48,7 +54,7 @@ Notice that we set a `padding` property to adjust the layout. The item renderer 
 
 We could go crazy and add background skins, icons, the ability to customize the which field from the item that the label text comes from, and many more things. We're going to keep it simple for now to avoid making thing confusing with extra complexity.
 
-For this example, we're creating an item renderer for a [`List`](list.html) component, but it will be virtually the exact same process to create an item renderer, header renderer, or footer renderer for a [`GroupedList`](grouped-list.html) component. You simply need to change the interface that you implement. For example, instead of the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, you might implement the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface.
+For this example, we're creating an item renderer for a [`List`](list.html) component, but it will be virtually the exact same process to create an item renderer for a [`Tree`](tree.html) or [`GroupedList`](grouped-list.html) component (or even a header renderer or footer renderer for a [`GroupedList`](grouped-list.html)). You simply need to change the interface that you implement. For example, instead of the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, you might implement the [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) or [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface.
 
 ## Implementation Details
 
@@ -176,9 +182,9 @@ public function set isSelected(value:Boolean):void
 
 The `isSelected` property indicates if the item has been selected. It's common for an item to be selected when it is touched, but that's not required.
 
-<aside class="info">The [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface is very similar. Instead of an `index` property, this type of item renderer has [`groupIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#groupIndex) and [`itemIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#itemIndex) properties to specify where in the data provider the item is located. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout, including headers and footers. The `owner` property should be typed as `GroupedList` instead of `List`, obviously.</aside>
+<aside class="info">The [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) and [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interfaces are very similar. Instead of an `index` property, thes type of item renderer has different properties to specify where in the hierarchical data provider the item is located. `Tree` has a `location` property, and `GroupedList` has `groupIndex` and `itemIndex` properties. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout. The `owner` property should be typed as `Tree` or `GroupedList` instead of `List`, obviously.</aside>
 
-<aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderOrFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) interface. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
+<aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) and [`IGroupedListFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListFooterRenderer.html) interfaces. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
 
 ### Adding Children
 
@@ -573,6 +579,8 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [`feathers.controls.renderers.IListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IListItemRenderer.html)
+
+-   [`feathers.controls.renderers.ITreeItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html)
 
 -   [`feathers.controls.renderers.IGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html)
 

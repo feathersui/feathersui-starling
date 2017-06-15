@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # What is layout virtualization?
 
-By default, all built-in layout classes in Feathers have *layout virtualization* enabled when used in a component that supports this type of layout. For instance, this feature is used by the [`List`](../list.html) and [`GroupedList`](../grouped-list.html) components to limit the number of item renderer instances that are created at any given time. This means that a list with one thousand items can perform nearly as fast as a list with only ten items because only the visible item renderers will be created.
+By default, all built-in layout classes in Feathers have *layout virtualization* enabled when used in a component that supports this type of layout. For instance, this feature is used by the [`List`](../list.html), [`Tree`](tree.html), and [`GroupedList`](../grouped-list.html) components to limit the number of item renderer instances that are created at any given time. This means that a list with one thousand items can perform nearly as fast as a list with only ten items because only the visible item renderers will be created.
 
 The list will also **reuse** the item renderers as the list scrolls and different items come into view. If you need to create a custom item renderer, you are responsible for ensuring that the item renderer will handle the situation where it is currently displaying one item from the data provider, and the list asks it to display a completely different item. You should not assume that the first item an item renderer receives in its `data` setter will be only item it will ever need to display.
 

@@ -71,7 +71,7 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`DateTimeSpinner`](date-time-spinner.html)
 
--   [`DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
+-   [Item Renderers](default-item-renderers.html)
 
 -   [`Drawers`](drawers.html)
 
@@ -136,6 +136,8 @@ A more detailed look at each of the components that Feathers provides.
 -   [`ToggleButton`](toggle-button.html)
 
 -   [`ToggleSwitch`](toggle-switch.html)
+
+-   [`Tree`](tree.html)
 
 -   [`VideoPlayer`](video-player.html)
 

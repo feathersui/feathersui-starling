@@ -18,7 +18,7 @@ Using [`AnchorLayoutData`](../api-reference/feathers/layout/AnchorLayoutData.htm
 -  [`horizontalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#horizontalCenter)
 -  [`verticalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#verticalCenter)
 
-`AnchorLayout` is not officially supported by [`List`](list.html), [`GroupedList`](grouped-list.html), and other controls that support data providers and layouts. This layout is meant for more fundamental layout containers like [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html).
+`AnchorLayout` is not officially supported by [`List`](list.html), [`Tree`](tree.html), [`GroupedList`](grouped-list.html), and other controls that support data providers and layouts. This layout is meant for more fundamental layout containers like [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.html).
 
 ## Anchoring Relative to the Parent Container
 

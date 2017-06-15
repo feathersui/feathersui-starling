@@ -65,7 +65,7 @@ Similarly, you may listen for [`Event.SECURITY_ERROR`](../api-reference/feathers
 
 ### Caching Textures
 
-By default, the `ImageLoader` will always create a new texture every time that it loads a source from a URL. In components like [`List`](list.html) and [`GroupedList`](grouped-list.html), it's common for the same URL to be loaded multiple times by one or more `ImageLoader` components. This can use extra bandwidth and affect performance.
+By default, the `ImageLoader` will always create a new texture every time that it loads a source from a URL. In components like [`List`](list.html), [`Tree`](tree.html), and [`GroupedList`](grouped-list.html), it's common for the same URL to be loaded multiple times by one or more `ImageLoader` components. This can use extra bandwidth and affect performance.
 
 If enough memory is available, it's possible to store the loaded textures without disposing them. An instance of the [`feathers.utils.textures.TextureCache`](../api-reference/feathers/utils/textures/TextureCache.html) class can be shared by multiple `ImageLoader` components, and if a URL has already been loaded, the texture will be taken from the cache instead of reloading the image file and creating a new texture.
 

@@ -5,11 +5,13 @@ author: Josh Tynjala
 ---
 # Creating custom item renderers with the `LayoutGroup` container
 
-The [`LayoutGroup`](layout-group.html) container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom-components), but it's especially useful for custom item renderers in the [`List`](list.html) and [`GroupedList`](grouped-list.html) components.
+The [`LayoutGroup`](layout-group.html) container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom-components), but it's especially useful for custom item renderers in the [`List`](list.html), [`Tree`](tree.html) and [`GroupedList`](grouped-list.html) components.
 
 Feathers includes three subclasses of `LayoutGroup` that are designed specifically to help you get started creating custom item renderers.
 
 -   [`LayoutGroupListItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html) can be used as an item renderer in a [`List`](list.html).
+
+-   [`LayoutGroupTreeItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupTreeItemRenderer.html) can be used as an item renderer in a [`Tree`](tree.html).
 
 -   [`LayoutGroupGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html) can be used as an item renderer in a [`GroupedList`](grouped-list.html).
 
@@ -50,7 +52,7 @@ Notice that we set a `padding` property to adjust the layout. The item renderer 
 
 We could go crazy and add background skins, icons, the ability to customize the which field from the item that the label text comes from, and many more things. We're going to keep it simple for now because this is just a basic example.
 
-For this example, we're creating an item renderer for a [`List`](list.html) component, but it will be virtually the exact same process to create an item renderer, header renderer, or footer renderer for a `GroupedList` component. You simply need to change the class that you extend.
+For this example, we're creating an item renderer for a [`List`](list.html) component, but it will be virtually the exact same process to create an item renderer for a `Tree` or `GroupedList` component, or a header renderer or footer renderer for a `GroupedList` component. You simply need to change the class that you extend.
 
 ## Implementation Details
 
@@ -276,6 +278,8 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [`feathers.controls.renderers.LayoutGroupListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
+
+-   [`feathers.controls.renderers.LayoutGroupTreeItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupTreeItemRenderer.html)
 
 -   [`feathers.controls.renderers.LayoutGroupGroupedListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupGroupedListItemRenderer.html)
 

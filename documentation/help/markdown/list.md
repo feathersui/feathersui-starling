@@ -37,7 +37,7 @@ list.height = 300;
 this.addChild( list );
 ```
 
-Next, we want the list to display some items, so let's create an [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) implementation as its data provider.
+Next, we want the list to display some items, so let's create an [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) as its data provider.
 
 ``` code
 var groceryList:ArrayCollection = new ArrayCollection(
@@ -50,7 +50,15 @@ var groceryList:ArrayCollection = new ArrayCollection(
 list.dataProvider = groceryList;
 ```
 
-The [`IListCollection`](../api-reference/feathers/data/IListCollection.html) interface may wrap any type of data to provide a common API that the `List` component can understand. Out of the box, we may use [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html), [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), and [`XMLListCollection`](../api-reference/feathers/data/XMLListCollection.html). It's even possible to create new `IListCollection` implementations to display custom data types, if needed.
+`ArrayCollection` wraps a regular ActionScript `Array`, and it adds special events and things that the `List` uses to add, update, and remove item renderers in real time.
+
+<aside class="info">`ArrayCollection` is one of multiple classes that implement the [`IListCollection`](../api-reference/feathers/data/IListCollection.html) interface. `IListCollection` may wrap any type of data to provide a common API that the `List` component can understand. Out of the box, we may use these collection implementations: 
+
+* [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) for data based on an [`Array`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/Array.html)
+* [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html) for data based on a [`Vector`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/Vector.html)
+* [`XMLListCollection`](../api-reference/feathers/data/XMLListCollection.html) for data based on an [`XMLList`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/XMLList.html)
+
+It's even possible for anyone to create new `IListCollection` implementations to display custom data types, if needed.</aside>
 
 Now, we need to tell the item renderer how to display the data. The list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
@@ -76,7 +84,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
 When using the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField), the default item renderer will automatically create a [text renderer](text-renderers.html) to display the string. Similarly, when you use the [`iconSourceField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField), the item renderer will automatically create an [`ImageLoader`](image-loader.html) to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property of the `ImageLoader`.
 
-The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for complete details.
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for complete details.
 
 ## Selection
 
@@ -179,8 +187,7 @@ The default layout for a list is to display the items vertically one after the o
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.verticalAlign = VerticalAlign.JUSTIFY;
 layout.gap = 10;
-layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-    layout.paddingLeft = 15;
+layout.padding = 15;
 list.layout = layout;
 ```
 
@@ -253,7 +260,7 @@ list.horizontalScrollBarFactory = function():ScrollBar
 
 ### Skinning the Item Renderers
 
-This section only explains how to access the item renderer sub-components. Please read [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+This section only explains how to access the item renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
 [Custom item renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class in the code below with references to your custom item renderer class.
 
 #### With a Theme
@@ -484,6 +491,6 @@ The following properties are available on some layouts:
 
 -   [`feathers.controls.List` API Documentation](../api-reference/feathers/controls/List.html)
 
--   [How to use the Feathers `DefaultListItemRenderer` and `DefaultGroupedListItemRenderer`](default-item-renderers.html)
+-   [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html)
 
--   [Creating custom item renderers for the Feathers `List` and `GroupedList` components](item-renderers.html)
+-   [Creating custom item renderers for the Feathers `List`, `Tree`, and `GroupedList` components](item-renderers.html)

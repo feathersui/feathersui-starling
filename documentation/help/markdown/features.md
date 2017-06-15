@@ -71,9 +71,9 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   The [`List`](list.html) component supports displaying a data provider using item renderers inside a scrollable container.
 
--   Support for hierarchical data using [`GroupedList`](grouped-list.html).
+-   Support for hierarchical data using [`Tree`](tree.html) and [`GroupedList`](grouped-list.html).
 
--   [`PickerList`](picker-list.html) supports displaying a list as a drop-down triggered by a [`Button`](button.html).
+-   [`PickerList`](picker-list.html) supports displaying a list as a pop-up triggered by a [`Button`](button.html).
 
 -   Several built-in layouts, including [`VerticalLayout`](vertical-layout.html), [`HorizontalLayout`](horizontal-layout.html), and [`TiledRowsLayout`](tiled-rows-layout.html).
 
