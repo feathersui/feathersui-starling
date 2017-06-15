@@ -27,5 +27,12 @@ package feathers.layout
 		 * @productversion Feathers 3.0.0
 		 */
 		public static const HORIZONTAL:String = "horizontal";
+
+		/**
+		 * The object will be oriented in no particular direction.
+		 *
+		 * @productversion Feathers 3.3.0
+		 */
+		public static const NONE:String = "none";
 	}
 }
