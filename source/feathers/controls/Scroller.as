@@ -5419,15 +5419,22 @@ package feathers.controls
 			if(this.horizontalScrollBar && (this._measureViewPort || useActualBounds))
 			{
 				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this._explicitWidth;
+				if(!useActualBounds && !forceScrollBars &&
+					scrollerWidth !== scrollerWidth) //isNaN
+				{
+					//even if explicitWidth is NaN, the view port might measure
+					//a view port width smaller than its content width
+					scrollerWidth = this._viewPort.visibleWidth + this._topViewPortOffset + this._bottomViewPortOffset;
+				}
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
-				if(forceScrollBars || this._horizontalScrollPolicy == ScrollPolicy.ON ||
+				if(forceScrollBars || this._horizontalScrollPolicy === ScrollPolicy.ON ||
 					((totalWidth > scrollerWidth || totalWidth > this._explicitMaxWidth) &&
-						this._horizontalScrollPolicy != ScrollPolicy.OFF))
+						this._horizontalScrollPolicy !== ScrollPolicy.OFF))
 				{
 					this._hasHorizontalScrollBar = true;
-					if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
+					if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
 					{
-						if(this._horizontalScrollBarPosition == RelativePosition.TOP)
+						if(this._horizontalScrollBarPosition === RelativePosition.TOP)
 						{
 							this._topViewPortOffset += this.horizontalScrollBar.height;
 						}
@@ -5456,15 +5463,22 @@ package feathers.controls
 			if(this.verticalScrollBar && (this._measureViewPort || useActualBounds))
 			{
 				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this._explicitHeight;
+				if(!useActualBounds && !forceScrollBars &&
+					scrollerHeight !== scrollerHeight) //isNaN
+				{
+					//even if explicitHeight is NaN, the view port might measure
+					//a view port height smaller than its content height
+					scrollerHeight = this._viewPort.visibleHeight + this._topViewPortOffset + this._bottomViewPortOffset;
+				}
 				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
-				if(forceScrollBars || this._verticalScrollPolicy == ScrollPolicy.ON ||
+				if(forceScrollBars || this._verticalScrollPolicy === ScrollPolicy.ON ||
 					((totalHeight > scrollerHeight || totalHeight > this._explicitMaxHeight) &&
-						this._verticalScrollPolicy != ScrollPolicy.OFF))
+						this._verticalScrollPolicy !== ScrollPolicy.OFF))
 				{
 					this._hasVerticalScrollBar = true;
-					if(this._scrollBarDisplayMode == ScrollBarDisplayMode.FIXED)
+					if(this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED)
 					{
-						if(this._verticalScrollBarPosition == RelativePosition.LEFT)
+						if(this._verticalScrollBarPosition === RelativePosition.LEFT)
 						{
 							this._leftViewPortOffset += this.verticalScrollBar.width;
 						}
