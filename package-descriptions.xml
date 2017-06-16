@@ -87,5 +87,8 @@
 		<package name="feathers.utils.touch"> 
 			<shortDescription><![CDATA[Utilities for working with touches.]]></shortDescription>
 		</package>
+		<package name="feathers.utils.xml"> 
+			<shortDescription><![CDATA[Utilities for working with XML and E4X.]]></shortDescription>
+		</package>
 	</packages>
 </overviews>
