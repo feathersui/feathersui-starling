@@ -259,9 +259,9 @@ package feathers.controls
 	 *         text: "Node 3",
 	 *         children:
 	 *         [
-	 *             { text: "Node 4A" },
-	 *             { text: "Node 4B" },
-	 *             { text: "Node 4C" },
+	 *             { text: "Node 3A" },
+	 *             { text: "Node 3B" },
+	 *             { text: "Node 3C" },
 	 *         ]
 	 *     }
 	 * ]);
@@ -361,9 +361,9 @@ package feathers.controls
 		 *         text: "Node 3",
 		 *         children:
 		 *         [
-		 *             { text: "Node 4A" },
-		 *             { text: "Node 4B" },
-		 *             { text: "Node 4C" },
+		 *             { text: "Node 3A" },
+		 *             { text: "Node 3B" },
+		 *             { text: "Node 3C" },
 		 *         ]
 		 *     }
 		 * ]);
@@ -483,6 +483,43 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _helperLocation:Vector.<int> = new <int>[];
+
+		/**
+		 * The currently selected location. Returns an empty
+		 * <code>Vector.&lt;int&gt;</code> if no item is selected.
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected location:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tree_changeHandler( event:Event ):void
+		 * {
+		 *     var tree:Tree = Tree( event.currentTarget );
+		 *     var location:Vector.&lt;int&gt; = tree.selectedLocation;
+		 *
+		 * }
+		 * tree.addEventListener( Event.CHANGE, tree_changeHandler );</listing>
+		 *
+		 * <p>Alternatively, you may use the <code>getSelectedLocation()</code>
+		 * method to get the selected location without creating a new
+		 * <code>Vector.&lt;int&gt;</code> instance, to avoid garbage
+		 * collection of temporary objects.</p>
+		 *
+		 * @see #getSelectedLocation()
+		 */
+		public function get selectedLocation():Vector.<int>
+		{
+			return this.getSelectedLocation();
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedLocation(value:Vector.<int>):void
+		{
+			var item:Object = this._dataProvider.getItemAtLocation(value);
+			this.selectedItem = item;
+		}
 
 		/**
 		 * @private
@@ -968,6 +1005,42 @@ package feathers.controls
 				return false;
 			}
 			return this._openBranches.getItemIndex(branch) !== -1;
+		}
+
+		/**
+		 * Returns the currently selected location, or an empty
+		 * <code>Vector.&lt;int&gt;</code>, if no item is currently selected.
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected location:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tree_changeHandler( event:Event ):void
+		 * {
+		 *     var tree:Tree = Tree( event.currentTarget );
+		 *     var result:Vector.&lt;int&gt; = new &lt;int&gt;[];
+		 *     var location:Vector.&lt;int&gt; = tree.getSelectedLocation(result);
+		 * }
+		 * tree.addEventListener( Event.CHANGE, tree_changeHandler );</listing>
+		 *
+		 * @see #selectedItem
+		 * @see #selectedLocation
+		 */
+		public function getSelectedLocation(result:Vector.<int> = null):Vector.<int>
+		{
+			if(result === null)
+			{
+				result = new <int>[];
+			}
+			else
+			{
+				result.length = 0;
+			}
+			if(this._dataProvider === null || this._selectedItem === null)
+			{
+				return result;
+			}
+			return this._dataProvider.getItemLocation(this._selectedItem, result);
 		}
 
 		/**
