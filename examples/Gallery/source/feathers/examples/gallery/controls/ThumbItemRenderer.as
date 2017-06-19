@@ -279,7 +279,14 @@ package feathers.examples.gallery.controls
 				return false;
 			}
 
-			this.image.width = this.image.height = NaN;
+			//pass all of these values down to the ImageLoader
+			//because they can affect its measured dimensions
+			this.image.width = this._explicitWidth;
+			this.image.height = this._explicitHeight;
+			this.image.minWidth = this._explicitMinWidth;
+			this.image.minHeight = this._explicitMinHeight;
+			this.image.maxWidth = this._explicitMaxWidth;
+			this.image.maxHeight = this._explicitMaxHeight;
 			this.image.validate();
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)

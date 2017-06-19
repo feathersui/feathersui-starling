@@ -153,6 +153,9 @@ package feathers.examples.gallery
 			var itemRenderer:ThumbItemRenderer = new ThumbItemRenderer();
 			//cache the textures so that they don't need to be reloaded from URLs
 			itemRenderer.textureCache = this.thumbnailTextureCache;
+			//limit how large these item renderers can be
+			itemRenderer.maxWidth = 100;
+			itemRenderer.maxHeight = 100;
 			return itemRenderer;
 		}
 
