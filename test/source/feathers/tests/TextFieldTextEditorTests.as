@@ -326,5 +326,19 @@ package feathers.tests
 			Assert.assertStrictlyEquals("TextFieldTextEditor currentTextFormat.color must be equal to starling.text.TextFormat color",
 				STATE_COLOR, this._textEditor.currentTextFormat.color);
 		}
+
+		[Test]
+		public function testInvalidAfterChangePropertyOfFontStyles():void
+		{
+			var format:starling.text.TextFormat = new starling.text.TextFormat(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE, DEFAULT_COLOR);
+			var fontStyles:FontStylesSet = new FontStylesSet();
+			fontStyles.format = format
+			this._textEditor.fontStyles = fontStyles;
+			this._textEditor.text = "Hello World";
+			this._textEditor.validate();
+			format.color = DISABLED_COLOR;
+			Assert.assertTrue("TextFieldTextEditor: must be invalid after changing property of font styles.",
+				this._textEditor.isInvalid());
+		}
 	}
 }

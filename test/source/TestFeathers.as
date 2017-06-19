@@ -33,6 +33,7 @@ package
 	import feathers.tests.FlowLayoutTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
+	import feathers.tests.FontStylesSetTests;
 	import feathers.tests.FunctionStyleProviderTests;
 	import feathers.tests.GroupedListDataProviderTests;
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
@@ -89,10 +90,10 @@ package
 	import feathers.tests.ScrollerTests;
 	import feathers.tests.SimpleScrollBarHorizontalTests;
 	import feathers.tests.SimpleScrollBarMeasurementTests;
+	import feathers.tests.SlideShowLayoutTests;
 	import feathers.tests.SliderHorizontalMeasurementTests;
 	import feathers.tests.SliderHorizontalTests;
 	import feathers.tests.SliderVerticalMeasurementTests;
-	import feathers.tests.SlideShowLayoutTests;
 	import feathers.tests.SpinnerListTests;
 	import feathers.tests.StackScreenNavigatorMeasurementTests;
 	import feathers.tests.StackScreenNavigatorTests;
@@ -346,6 +347,7 @@ package
 				VerticalCenteredPopUpContentManagerTests,
 				CalloutPopUpContentManagerTests,
 				XMLListInsertAtTests,
+				FontStylesSetTests,
 			]);
 		}
 

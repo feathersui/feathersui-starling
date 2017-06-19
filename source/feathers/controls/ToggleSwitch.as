@@ -2505,6 +2505,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			if(this._onLabelFontStylesSet !== null)
+			{
+				this._onLabelFontStylesSet.dispose();
+				this._onLabelFontStylesSet = null;
+			}
+			if(this._offLabelFontStylesSet !== null)
+			{
+				this._offLabelFontStylesSet.dispose();
+				this._offLabelFontStylesSet = null;
+			}
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);

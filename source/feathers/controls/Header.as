@@ -1553,6 +1553,11 @@ package feathers.controls
 			this.leftItems = null;
 			this.rightItems = null;
 			this.centerItems = null;
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
 			super.dispose();
 		}
 

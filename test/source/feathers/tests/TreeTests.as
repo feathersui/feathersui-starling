@@ -86,8 +86,9 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testProgrammaticSelectionChange():void
+		public function testProgrammaticSelectedItemChange():void
 		{
+			var beforeSelectedLocation:Vector.<int> = this._tree.selectedLocation;
 			var beforeSelectedItem:Object = this._tree.selectedItem;
 			var hasChanged:Boolean = false;
 			this._tree.addEventListener(Event.CHANGE, function(event:Event):void
@@ -98,6 +99,30 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on set selectedItem", hasChanged);
 			Assert.assertFalse("Tree: the selectedItem property was not changed",
 				beforeSelectedItem === this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				1, this._tree.selectedLocation.length);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				0, this._tree.selectedLocation[0]);
+		}
+
+		[Test]
+		public function testProgrammaticSelectedLocationChange():void
+		{
+			var beforeSelectedLocation:Vector.<int> = this._tree.selectedLocation;
+			var beforeSelectedItem:Object = this._tree.selectedItem;
+			var hasChanged:Boolean = false;
+			this._tree.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tree.selectedLocation = new <int>[0];
+			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on set selectedItem", hasChanged);
+			Assert.assertFalse("Tree: the selectedItem property was not changed",
+				beforeSelectedItem === this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				1, this._tree.selectedLocation.length);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				0, this._tree.selectedLocation[0]);
 		}
 
 		[Test]
@@ -125,6 +150,10 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on touch to change selection", hasChanged);
 			Assert.assertFalse("Tree: the selectedItem property was not changed",
 				beforeSelectedItem === this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				1, this._tree.selectedLocation.length);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed",
+				1, this._tree.selectedLocation[0]);
 		}
 
 		[Test]
@@ -141,6 +170,10 @@ package feathers.tests
 			Assert.assertFalse("Tree: Event.CHANGE was incorrectly dispatched", hasChanged);
 			Assert.assertStrictlyEquals("Tree: the selectedItem property was incorrectly changed",
 				beforeSelectedItem, this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was incorrectly changed",
+				1, this._tree.selectedLocation.length);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was incorrectly changed",
+				1, this._tree.selectedLocation[0]);
 		}
 
 		[Test]
@@ -157,6 +190,8 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on remove selected item", hasChanged);
 			Assert.assertStrictlyEquals("Tree: the selectedItem property was not changed to null",
 				null, this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed to an empty vector",
+				0, this._tree.selectedLocation.length);
 		}
 
 		[Test]
@@ -173,6 +208,8 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on replace selected item", hasChanged);
 			Assert.assertStrictlyEquals("Tree: the selectedItem property was not changed to null",
 				null, this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed to an empty vector",
+				0, this._tree.selectedLocation.length);
 		}
 
 		[Test]
@@ -189,6 +226,8 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on set dataProvider to null", hasChanged);
 			Assert.assertStrictlyEquals("Tree: the selectedItem property was not set to null",
 				null, this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed to an empty vector",
+				0, this._tree.selectedLocation.length);
 		}
 
 		[Test]
@@ -205,6 +244,8 @@ package feathers.tests
 			Assert.assertTrue("Tree: Event.CHANGE was not dispatched on dataProvider.removeAll()", hasChanged);
 			Assert.assertStrictlyEquals("Tree: the selectedItem property was not set to null",
 				null, this._tree.selectedItem);
+			Assert.assertStrictlyEquals("Tree: the selectedLocation property was not changed to an empty vector",
+				0, this._tree.selectedLocation.length);
 		}
 
 		[Test]

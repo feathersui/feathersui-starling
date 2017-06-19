@@ -3940,6 +3940,16 @@ package feathers.controls.renderers
 			{
 				this.replaceSkin(null);
 			}
+			if(this._iconLabelFontStylesSet !== null)
+			{
+				this._iconLabelFontStylesSet.dispose();
+				this._iconLabelFontStylesSet = null;
+			}
+			if(this._accessoryLabelFontStylesSet !== null)
+			{
+				this._accessoryLabelFontStylesSet.dispose();
+				this._accessoryLabelFontStylesSet = null;
+			}
 			super.dispose();
 		}
 

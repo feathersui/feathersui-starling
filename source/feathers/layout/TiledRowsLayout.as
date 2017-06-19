@@ -18,29 +18,6 @@ package feathers.layout
 	import starling.events.EventDispatcher;
 
 	/**
-	 * Dispatched when a property of the layout changes, indicating that a
-	 * redraw is probably needed.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType starling.events.Event.CHANGE
-	 */
-	[Event(name="change",type="starling.events.Event")]
-
-	/**
 	 * Positions items as tiles (equal width and height) from left to right
 	 * in multiple rows. Constrained to the suggested width, the tiled rows
 	 * layout will change in height as the number of items increases or
@@ -50,7 +27,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class TiledRowsLayout extends EventDispatcher implements IVirtualLayout
+	public class TiledRowsLayout extends BaseTiledLayout implements IVirtualLayout
 	{
 		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
@@ -220,25 +197,39 @@ package feathers.layout
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
+		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.3.0")]
 		/**
-		 * The items will be positioned in pages horizontally from left to right.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
 		 *
-		 * @see #paging
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.3. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const PAGING_HORIZONTAL:String = "horizontal";
 
+		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.3.0")]
 		/**
-		 * The items will be positioned in pages vertically from top to bottom.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
 		 *
-		 * @see #paging
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.3. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const PAGING_VERTICAL:String = "vertical";
 
+		[Deprecated(replacement="feathers.layout.Direction.NONE",since="3.3.0")]
 		/**
-		 * The items will not be paged. In other words, they will be positioned
-		 * in a continuous set of rows without gaps.
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.NONE</code>.
 		 *
-		 * @see #paging
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.3. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
 		public static const PAGING_NONE:String = "none";
 
@@ -249,246 +240,6 @@ package feathers.layout
 		{
 			super();
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
-
-		[Bindable(event="change")]
-		/**
-		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
-		 * to the same value. The <code>gap</code> getter always returns the
-		 * value of <code>horizontalGap</code>, but the value of
-		 * <code>verticalGap</code> may be different.
-		 *
-		 * @default 0
-		 *
-		 * @see #horizontalGap
-		 * @see #verticalGap
-		 */
-		public function get gap():Number
-		{
-			return this._horizontalGap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set gap(value:Number):void
-		{
-			this.horizontalGap = value;
-			this.verticalGap = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalGap:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The horizontal space, in pixels, between tiles.
-		 *
-		 * @default 0
-		 */
-		public function get horizontalGap():Number
-		{
-			return this._horizontalGap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set horizontalGap(value:Number):void
-		{
-			if(this._horizontalGap == value)
-			{
-				return;
-			}
-			this._horizontalGap = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalGap:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The vertical space, in pixels, between tiles.
-		 *
-		 * @default 0
-		 */
-		public function get verticalGap():Number
-		{
-			return this._verticalGap;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set verticalGap(value:Number):void
-		{
-			if(this._verticalGap == value)
-			{
-				return;
-			}
-			this._verticalGap = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		[Bindable(event="change")]
-		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 *
-		 * @default 0
-		 *
-		 * @see #paddingTop
-		 * @see #paddingRight
-		 * @see #paddingBottom
-		 * @see #paddingLeft
-		 */
-		public function get padding():Number
-		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set padding(value:Number):void
-		{
-			this.paddingTop = value;
-			this.paddingRight = value;
-			this.paddingBottom = value;
-			this.paddingLeft = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingTop:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The space, in pixels, above of items.
-		 *
-		 * @default 0
-		 */
-		public function get paddingTop():Number
-		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingTop(value:Number):void
-		{
-			if(this._paddingTop == value)
-			{
-				return;
-			}
-			this._paddingTop = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingRight:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The space, in pixels, to the right of the items.
-		 *
-		 * @default 0
-		 */
-		public function get paddingRight():Number
-		{
-			return this._paddingRight;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingRight(value:Number):void
-		{
-			if(this._paddingRight == value)
-			{
-				return;
-			}
-			this._paddingRight = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingBottom:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The space, in pixels, below the items.
-		 *
-		 * @default 0
-		 */
-		public function get paddingBottom():Number
-		{
-			return this._paddingBottom;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingBottom(value:Number):void
-		{
-			if(this._paddingBottom == value)
-			{
-				return;
-			}
-			this._paddingBottom = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingLeft:Number = 0;
-
-		[Bindable(event="change")]
-		/**
-		 * The space, in pixels, to the left of the items.
-		 *
-		 * @default 0
-		 */
-		public function get paddingLeft():Number
-		{
-			return this._paddingLeft;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingLeft(value:Number):void
-		{
-			if(this._paddingLeft == value)
-			{
-				return;
-			}
-			this._paddingLeft = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _requestedColumnCount:int = 0;
 
 		[Bindable(event="change")]
 		/**
@@ -510,32 +261,11 @@ package feathers.layout
 		 *
 		 * @default 0
 		 */
-		public function get requestedColumnCount():int
+		override public function get requestedColumnCount():int
 		{
+			//this is an override so that this class can have its own documentation.
 			return this._requestedColumnCount;
 		}
-
-		/**
-		 * @private
-		 */
-		public function set requestedColumnCount(value:int):void
-		{
-			if(value < 0)
-			{
-				throw RangeError("requestedColumnCount requires a value >= 0");
-			}
-			if(this._requestedColumnCount == value)
-			{
-				return;
-			}
-			this._requestedColumnCount = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _requestedRowCount:int = 0;
 
 		[Bindable(event="change")]
 		/**
@@ -552,174 +282,11 @@ package feathers.layout
 		 *
 		 * @default 0
 		 */
-		public function get requestedRowCount():int
+		override public function get requestedRowCount():int
 		{
+			//this is an override so that this class can have its own documentation.
 			return this._requestedRowCount;
 		}
-
-		/**
-		 * @private
-		 */
-		public function set requestedRowCount(value:int):void
-		{
-			if(value < 0)
-			{
-				throw RangeError("requestedRowCount requires a value >= 0");
-			}
-			if(this._requestedRowCount == value)
-			{
-				return;
-			}
-			this._requestedRowCount = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalAlign:String = VerticalAlign.TOP;
-
-		[Bindable(event="change")]
-		[Inspectable(type="String",enumeration="top,middle,bottom")]
-		/**
-		 * If the total column height is less than the bounds, the items in the
-		 * column can be aligned vertically.
-		 *
-		 * @default feathers.layout.VerticalAlign.TOP
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 */
-		public function get verticalAlign():String
-		{
-			return this._verticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set verticalAlign(value:String):void
-		{
-			if(this._verticalAlign == value)
-			{
-				return;
-			}
-			this._verticalAlign = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
-
-		[Bindable(event="change")]
-		[Inspectable(type="String",enumeration="left,center,right")]
-		/**
-		 * If the total row width is less than the bounds, the items in the row
-		 * can be aligned horizontally.
-		 *
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 */
-		public function get horizontalAlign():String
-		{
-			return this._horizontalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set horizontalAlign(value:String):void
-		{
-			if(this._horizontalAlign == value)
-			{
-				return;
-			}
-			this._horizontalAlign = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _tileVerticalAlign:String = VerticalAlign.MIDDLE;
-
-		[Bindable(event="change")]
-		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
-		/**
-		 * If an item's height is less than the tile bounds, the position of the
-		 * item can be aligned vertically.
-		 *
-		 * @default feathers.layout.VerticalAlign.MIDDLE
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 * @see feathers.layout.VerticalAlign#JUSTIFY
-		 */
-		public function get tileVerticalAlign():String
-		{
-			return this._tileVerticalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tileVerticalAlign(value:String):void
-		{
-			if(this._tileVerticalAlign == value)
-			{
-				return;
-			}
-			this._tileVerticalAlign = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _tileHorizontalAlign:String = HorizontalAlign.CENTER;
-
-		[Bindable(event="change")]
-		[Inspectable(type="String",enumeration="left,center,right,justify")]
-		/**
-		 * If the item's width is less than the tile bounds, the position of the
-		 * item can be aligned horizontally.
-		 *
-		 * @default feathers.layout.HorizontalAlign.CENTER
-		 *
-		 * @see feathers.layout.HorizontalAlign#LEFT
-		 * @see feathers.layout.HorizontalAlign#CENTER
-		 * @see feathers.layout.HorizontalAlign#RIGHT
-		 * @see feathers.layout.HorizontalAlign#JUSTIFY
-		 */
-		public function get tileHorizontalAlign():String
-		{
-			return this._tileHorizontalAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tileHorizontalAlign(value:String):void
-		{
-			if(this._tileHorizontalAlign == value)
-			{
-				return;
-			}
-			this._tileHorizontalAlign = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paging:String = PAGING_NONE;
 
 		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="horizontal,vertical,none")]
@@ -729,64 +296,17 @@ package feathers.layout
 		 * page is filled with the maximum number of rows that may be displayed
 		 * without cutting off any items.
 		 *
-		 * @default TiledRowsLayout.PAGING_NONE
+		 * @default feathers.layout.Direction.NONE
 		 *
-		 * @see #PAGING_NONE
-		 * @see #PAGING_HORIZONTAL
-		 * @see #PAGING_VERTICAL
+		 * @see feathers.layout.Direction#NONE
+		 * @see feathers.layout.Direction#HORIZONTAL
+		 * @see feathers.layout.Direction#VERTICAL
 		 */
-		public function get paging():String
+		override public function get paging():String
 		{
+			//this is an override so that this class can have its own documentation.
 			return this._paging;
 		}
-
-		/**
-		 * @private
-		 */
-		public function set paging(value:String):void
-		{
-			if(this._paging == value)
-			{
-				return;
-			}
-			this._paging = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _useSquareTiles:Boolean = true;
-
-		[Bindable(event="change")]
-		/**
-		 * Determines if the tiles must be square or if their width and height
-		 * may have different values.
-		 *
-		 * @default true
-		 */
-		public function get useSquareTiles():Boolean
-		{
-			return this._useSquareTiles;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set useSquareTiles(value:Boolean):void
-		{
-			if(this._useSquareTiles == value)
-			{
-				return;
-			}
-			this._useSquareTiles = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _distributeWidths:Boolean = false;
 
 		/**
 		 * If the total width of the tiles in a row (minus padding and gap)
@@ -801,28 +321,11 @@ package feathers.layout
 		 * 
 		 * @see #requestedColumnCount
 		 */
-		public function get distributeWidths():Boolean
+		override public function get distributeWidths():Boolean
 		{
+			//this is an override so that this class can have its own documentation.
 			return this._distributeWidths;
 		}
-
-		/**
-		 * @private
-		 */
-		public function set distributeWidths(value:Boolean):void
-		{
-			if(this._distributeWidths === value)
-			{
-				return;
-			}
-			this._distributeWidths = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _distributeHeights:Boolean = false;
 
 		/**
 		 * If the total height of the tiles in a column (minus padding and gap)
@@ -841,222 +344,10 @@ package feathers.layout
 		 * @see #requestedRowCount
 		 * @see #useSquareTiles
 		 */
-		public function get distributeHeights():Boolean
+		override public function get distributeHeights():Boolean
 		{
+			//this is an override so that this class can have its own documentation.
 			return this._distributeHeights;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set distributeHeights(value:Boolean):void
-		{
-			if(this._distributeHeights === value)
-			{
-				return;
-			}
-			this._distributeHeights = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _useVirtualLayout:Boolean = true;
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 *
-		 * @default true
-		 */
-		public function get useVirtualLayout():Boolean
-		{
-			return this._useVirtualLayout;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set useVirtualLayout(value:Boolean):void
-		{
-			if(this._useVirtualLayout == value)
-			{
-				return;
-			}
-			this._useVirtualLayout = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItem:DisplayObject;
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 */
-		public function get typicalItem():DisplayObject
-		{
-			return this._typicalItem;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalItem(value:DisplayObject):void
-		{
-			if(this._typicalItem == value)
-			{
-				return;
-			}
-			this._typicalItem = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
-
-		[Bindable(event="change")]
-		/**
-		 * If set to <code>true</code>, the width and height of the
-		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
-		 * and <code>typicalItemHeight</code>, respectively, whenever the
-		 * typical item needs to be measured. The measured dimensions of the
-		 * typical item are used to fill in the blanks of a virtualized layout
-		 * for virtual items that don't have their own display objects to
-		 * measure yet.
-		 *
-		 * @default false
-		 *
-		 * @see #typicalItemWidth
-		 * @see #typicalItemHeight
-		 * @see #typicalItem
-		 */
-		public function get resetTypicalItemDimensionsOnMeasure():Boolean
-		{
-			return this._resetTypicalItemDimensionsOnMeasure;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set resetTypicalItemDimensionsOnMeasure(value:Boolean):void
-		{
-			if(this._resetTypicalItemDimensionsOnMeasure == value)
-			{
-				return;
-			}
-			this._resetTypicalItemDimensionsOnMeasure = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItemWidth:Number = NaN;
-
-		[Bindable(event="change")]
-		/**
-		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
-		 * for measurement. The measured dimensions of the typical item are used
-		 * to fill in the blanks of a virtualized layout for virtual items that
-		 * don't have their own display objects to measure yet.
-		 *
-		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
-		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
-		 * is set to <code>false</code>, this value will be ignored and the
-		 * <code>typicalItem</code> dimensions will not be reset before
-		 * measurement.</p>
-		 *
-		 * <p>If <code>typicalItemWidth</code> is set to <code>NaN</code>, the
-		 * typical item will auto-size itself to its preferred width. If you
-		 * pass a valid <code>Number</code> value, the typical item's width will
-		 * be set to a fixed size. May be used in combination with
-		 * <code>typicalItemHeight</code>.</p>
-		 *
-		 * @default NaN
-		 *
-		 * @see #resetTypicalItemDimensionsOnMeasure
-		 * @see #typicalItemHeight
-		 * @see #typicalItem
-		 */
-		public function get typicalItemWidth():Number
-		{
-			return this._typicalItemWidth;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalItemWidth(value:Number):void
-		{
-			if(this._typicalItemWidth == value)
-			{
-				return;
-			}
-			this._typicalItemWidth = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItemHeight:Number = NaN;
-
-		[Bindable(event="change")]
-		/**
-		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
-		 * for measurement. The measured dimensions of the typical item are used
-		 * to fill in the blanks of a virtualized layout for virtual items that
-		 * don't have their own display objects to measure yet.
-		 *
-		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
-		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
-		 * is set to <code>false</code>, this value will be ignored and the
-		 * <code>typicalItem</code> dimensions will not be reset before
-		 * measurement.</p>
-		 *
-		 * <p>If <code>typicalItemHeight</code> is set to <code>NaN</code>, the
-		 * typical item will auto-size itself to its preferred height. If you
-		 * pass a valid <code>Number</code> value, the typical item's height will
-		 * be set to a fixed size. May be used in combination with
-		 * <code>typicalItemWidth</code>.</p>
-		 *
-		 * @default NaN
-		 *
-		 * @see #resetTypicalItemDimensionsOnMeasure
-		 * @see #typicalItemWidth
-		 * @see #typicalItem
-		 */
-		public function get typicalItemHeight():Number
-		{
-			return this._typicalItemHeight;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalItemHeight(value:Number):void
-		{
-			if(this._typicalItemHeight == value)
-			{
-				return;
-			}
-			this._typicalItemHeight = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 */
-		public function get requiresLayoutOnScroll():Boolean
-		{
-			return this._useVirtualLayout;
 		}
 
 		/**
@@ -1240,7 +531,7 @@ package feathers.layout
 				{
 					//we're starting a new page, so handle alignment of the
 					//items on the current page and update the positions
-					if(this._paging !== PAGING_NONE)
+					if(this._paging !== Direction.NONE)
 					{
 						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (itemIndex - perPage);
@@ -1256,12 +547,12 @@ package feathers.layout
 					//we can use availableWidth and availableHeight here without
 					//checking if they're NaN because we will never reach a
 					//new page without them already being calculated.
-					if(this._paging === PAGING_HORIZONTAL)
+					if(this._paging === Direction.HORIZONTAL)
 					{
 						positionX = pageStartX = startX + availableWidth * pageIndex;
 						positionY = startY;
 					}
-					else if(this._paging === PAGING_VERTICAL)
+					else if(this._paging === Direction.VERTICAL)
 					{
 						positionY = startY + availableHeight * pageIndex;
 					}
@@ -1324,7 +615,7 @@ package feathers.layout
 				itemIndex++;
 			}
 			//align the last page
-			if(this._paging !== PAGING_NONE)
+			if(this._paging !== Direction.NONE)
 			{
 				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsFirstIndex = this._useVirtualLayout ? 0 : (nextPageStartIndex - perPage);
@@ -1333,7 +624,7 @@ package feathers.layout
 				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageContentHeight, availableHeight);
 			}
 
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				var totalWidth:Number = Math.ceil(itemCount / perPage) * availableWidth;
 			}
@@ -1341,11 +632,11 @@ package feathers.layout
 			{
 				totalWidth = totalPageContentWidth;
 			}
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				var totalHeight:Number = availableHeight;
 			}
-			else if(this._paging === PAGING_VERTICAL)
+			else if(this._paging === Direction.VERTICAL)
 			{
 				totalHeight = Math.ceil(itemCount / perPage) * availableHeight;
 			}
@@ -1358,7 +649,7 @@ package feathers.layout
 				}
 			}
 
-			if(this._paging === PAGING_NONE)
+			if(this._paging === Direction.NONE)
 			{
 				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsLastIndex = discoveredItems.length - 1;
@@ -1501,19 +792,19 @@ package feathers.layout
 					//we can use availableWidth and availableHeight here without
 					//checking if they're NaN because we will never reach a
 					//new page without them already being calculated.
-					if(this._paging === PAGING_HORIZONTAL)
+					if(this._paging === Direction.HORIZONTAL)
 					{
 						positionX = pageStartX = startX + availableWidth * pageIndex;
 						positionY = startY;
 					}
-					else if(this._paging === PAGING_VERTICAL)
+					else if(this._paging === Direction.VERTICAL)
 					{
 						positionY = startY + availableHeight * pageIndex;
 					}
 				}
 			}
 
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				var totalWidth:Number = Math.ceil(itemCount / perPage) * availableWidth;
 			}
@@ -1521,11 +812,11 @@ package feathers.layout
 			{
 				totalWidth = totalPageContentWidth;
 			}
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				var totalHeight:Number = availableHeight;
 			}
-			else if(this._paging === PAGING_VERTICAL)
+			else if(this._paging === Direction.VERTICAL)
 			{
 				totalHeight = Math.ceil(itemCount / perPage) * availableHeight;
 			}
@@ -1593,11 +884,11 @@ package feathers.layout
 				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
 			}
 
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				this.getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX, scrollY, width, height, itemCount, result);
 			}
-			else if(this._paging === PAGING_VERTICAL)
+			else if(this._paging === Direction.VERTICAL)
 			{
 				this.getVisibleIndicesAtScrollPositionWithVerticalPaging(scrollX, scrollY, width, height, itemCount, result);
 			}
@@ -1701,7 +992,7 @@ package feathers.layout
 			var verticalTileCount:int = Math.ceil(itemCount / horizontalTileCount);
 			var rowIndex:int = index / pageHorizontalTileCount;
 			var columnIndex:int = index % pageHorizontalTileCount;
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				verticalTileCount = pageVerticalTileCount;
 				var perPage:Number = pageHorizontalTileCount * pageVerticalTileCount;
@@ -1716,7 +1007,7 @@ package feathers.layout
 
 			if(keyCode === Keyboard.PAGE_UP)
 			{
-				if(this._paging === PAGING_HORIZONTAL)
+				if(this._paging === Direction.HORIZONTAL)
 				{
 					columnIndex -= pageHorizontalTileCount;
 				}
@@ -1727,7 +1018,7 @@ package feathers.layout
 			}
 			else if(keyCode === Keyboard.PAGE_DOWN)
 			{
-				if(this._paging === PAGING_HORIZONTAL)
+				if(this._paging === Direction.HORIZONTAL)
 				{
 					columnIndex += pageHorizontalTileCount;
 				}
@@ -1768,7 +1059,7 @@ package feathers.layout
 			{
 				columnIndex = horizontalTileCount - 1;
 			}
-			if(this._paging === PAGING_HORIZONTAL)
+			if(this._paging === Direction.HORIZONTAL)
 			{
 				while(columnIndex >= pageHorizontalTileCount)
 				{
@@ -2344,7 +1635,7 @@ package feathers.layout
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
-			if(this._paging !== PAGING_NONE)
+			if(this._paging !== Direction.NONE)
 			{
 				var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 				if(verticalTileCount < 1)
@@ -2353,7 +1644,7 @@ package feathers.layout
 				}
 				var perPage:Number = horizontalTileCount * verticalTileCount;
 				var pageIndex:int = index / perPage;
-				if(this._paging === PAGING_HORIZONTAL)
+				if(this._paging === Direction.HORIZONTAL)
 				{
 					result.x = pageIndex * width;
 					result.y = 0;

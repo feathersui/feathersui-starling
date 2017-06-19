@@ -50,7 +50,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 2.2.0
 	 */
-	public class FlowLayout extends EventDispatcher implements IVariableVirtualLayout
+	public class FlowLayout extends BaseVariableVirtualLayout implements IVariableVirtualLayout
 	{
 		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
 		/**
@@ -130,6 +130,7 @@ package feathers.layout
 		public function FlowLayout()
 		{
 			super();
+			this._hasVariableItemDimensions = true;
 		}
 
 		/**
@@ -541,102 +542,6 @@ package feathers.layout
 			}
 			this._rowVerticalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _useVirtualLayout:Boolean = true;
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 *
-		 * @default true
-		 */
-		public function get useVirtualLayout():Boolean
-		{
-			return this._useVirtualLayout;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set useVirtualLayout(value:Boolean):void
-		{
-			if(this._useVirtualLayout == value)
-			{
-				return;
-			}
-			this._useVirtualLayout = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalItem:DisplayObject;
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 */
-		public function get typicalItem():DisplayObject
-		{
-			return this._typicalItem;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalItem(value:DisplayObject):void
-		{
-			if(this._typicalItem == value)
-			{
-				return;
-			}
-			this._typicalItem = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _hasVariableItemDimensions:Boolean = true;
-
-		[Bindable(event="change")]
-		/**
-		 * When the layout is virtualized, and this value is true, the items may
-		 * have variable width and height values. If false, the items will all
-		 * share the same dimensions with the typical item.
-		 *
-		 * @default true
-		 */
-		public function get hasVariableItemDimensions():Boolean
-		{
-			return this._hasVariableItemDimensions;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set hasVariableItemDimensions(value:Boolean):void
-		{
-			if(this._hasVariableItemDimensions == value)
-			{
-				return;
-			}
-			this._hasVariableItemDimensions = value;
-			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		[Bindable(event="change")]
-		/**
-		 * @inheritDoc
-		 */
-		public function get requiresLayoutOnScroll():Boolean
-		{
-			return this._useVirtualLayout;
 		}
 
 		/**
@@ -1322,7 +1227,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function resetVariableVirtualCache():void
+		override public function resetVariableVirtualCache():void
 		{
 			this._widthCache.length = 0;
 			this._heightCache.length = 0;
@@ -1331,7 +1236,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		override public function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			delete this._widthCache[index];
 			delete this._heightCache[index];
@@ -1346,10 +1251,10 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		override public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
-			var widthValue:* = item ? item.width: undefined;
-			var heightValue:* = item ? item.height : undefined;
+			var widthValue:* = (item !== null) ? item.width : undefined;
+			var heightValue:* = (item !== null) ? item.height : undefined;
 			this._widthCache.insertAt(index, widthValue);
 			this._heightCache.insertAt(index, heightValue);
 		}
@@ -1357,7 +1262,7 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function removeFromVariableVirtualCacheAtIndex(index:int):void
+		override public function removeFromVariableVirtualCacheAtIndex(index:int):void
 		{
 			this._widthCache.removeAt(index);
 			this._heightCache.removeAt(index);

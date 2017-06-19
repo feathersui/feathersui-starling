@@ -105,7 +105,7 @@ package feathers.text
 			{
 				if(this._format === null)
 				{
-					this._format = value.clone();
+					this._format = value;
 					this._format.addEventListener(Event.CHANGE, format_changeHandler);
 				}
 				else
@@ -151,7 +151,7 @@ package feathers.text
 			{
 				if(this._disabledFormat === null)
 				{
-					this._disabledFormat = value.clone();
+					this._disabledFormat = value;
 					this._disabledFormat.addEventListener(Event.CHANGE, format_changeHandler);
 				}
 				else
@@ -197,7 +197,7 @@ package feathers.text
 			{
 				if(this._selectedFormat === null)
 				{
-					this._selectedFormat = value.clone();
+					this._selectedFormat = value;
 					this._selectedFormat.addEventListener(Event.CHANGE, format_changeHandler);
 				}
 				else
@@ -206,6 +206,20 @@ package feathers.text
 				}
 			}
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * Cleans up all TextFormat objects.
+		 */
+		public function dispose():void
+		{
+			this.format = null;
+			this.disabledFormat = null;
+			this.selectedFormat = null;
+			for(var state:String in this._stateToFormat)
+			{
+				this.setFormatForState(state, null);
+			}
 		}
 
 		/**
@@ -246,7 +260,7 @@ package feathers.text
 				}
 				if(oldFormat === null)
 				{
-					oldFormat = value.clone();
+					oldFormat = value;
 					oldFormat.addEventListener(Event.CHANGE, format_changeHandler);
 					this._stateToFormat[state] = oldFormat;
 				}

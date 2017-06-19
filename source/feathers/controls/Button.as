@@ -2386,6 +2386,11 @@ package feathers.controls
 			{
 				this.keyToTrigger.target = null;
 			}
+			if(this._fontStylesSet !== null)
+			{
+				this._fontStylesSet.dispose();
+				this._fontStylesSet = null;
+			}
 			super.dispose();
 		}
 

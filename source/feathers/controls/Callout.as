@@ -2303,6 +2303,12 @@ package feathers.controls
 			//similarly to a background skin
 			var oldIgnoreContentResize:Boolean = this._ignoreContentResize;
 			this._ignoreContentResize = true;
+			if(this._content !== null)
+			{
+				//we need to restore these after measurement
+				var oldContentWidth:Number = this._content.width;
+				var oldContentHeight:Number = this._content.height;
+			}
 			var measureContent:IMeasureDisplayObject = this._content as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this._content,
 				this._explicitWidth - leftOrRightArrowWidth - this._paddingLeft - this._paddingRight,
@@ -2452,6 +2458,14 @@ package feathers.controls
 			{
 				this._backgroundSkin.width = oldBackgroundWidth;
 				this._backgroundSkin.height = oldBackgroundHeight;
+			}
+			if(this._content !== null)
+			{
+				oldIgnoreContentResize = this._ignoreContentResize;
+				this._ignoreContentResize = true;
+				this._content.width = oldContentWidth;
+				this._content.height = oldContentHeight;
+				this._ignoreContentResize = oldIgnoreContentResize
 			}
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
