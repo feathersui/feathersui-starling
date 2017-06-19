@@ -123,24 +123,6 @@ package feathers.layout
 		}
 
 		[Bindable(event="change")]
-		[Inspectable(type="String",enumeration="top,middle,bottom")]
-		/**
-		 * If the total item height is less than the bounds, the positions of
-		 * the items can be aligned vertically.
-		 *
-		 * @default feathers.layout.VerticalAlign.TOP
-		 *
-		 * @see feathers.layout.VerticalAlign#TOP
-		 * @see feathers.layout.VerticalAlign#MIDDLE
-		 * @see feathers.layout.VerticalAlign#BOTTOM
-		 */
-		public function get verticalAlign():String
-		{
-			//this is an override so that this class can have its own documentation.
-			return this._verticalAlign;
-		}
-
-		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
@@ -167,6 +149,8 @@ package feathers.layout
 			return this._horizontalAlign;
 		}
 
+
+		[Bindable(event="change")]
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total item height is less than the bounds, the positions of
