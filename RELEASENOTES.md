@@ -4,6 +4,46 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.3.0 - In Development
 
+* New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.
+* New Layout: SlideShowLayout is designed for displaying one image at a time in a gallery.
+* BaseDefaultItemRenderer: fixed issue in skinSourceField where the wrong variable was checked to determine if the property has changed.
+* BaseLinearLayout: new abstract base class for HorizontalLayout and VerticalLayout that shares common code.
+* BaseTiledLayout: new abstract base class for TiledRowsLayout and TiledColumnsLayout that shares common code.
+* BottomDrawerPopUpContentManager, CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where the content was not scaled the same as the origin.
+* Callout: fixed issue where stage dimensions were not accounted for when calculating maximum dimensions of content.
+* Callout: fixed issue where moving origin when content is smaller than background skin could cause content to be rendered at incorrect size.
+* DateTimeSpinner: fixed issue where you could not set the itemRendererFactory directly on the inner SpinnerLists when the DateTimeSpinner itemRendererFactory was null.
+* Direction: added NONE constant that may be used in some situations.
+* DropDownPopUpContentManager: fixed issue where the delegate used for animation was not scaled by the same amount as the content it mirrored.
+* DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where content was not positioned or resized correctly if PopUpManager.root is scaled.
+* FeathersControl: throws an error if validate() is called during initialize() because it was not clear that this previously returned without doing anything.
+* FeathersControl: fixed issue where setting minWidth or minHeight that is larger than the actualWidth and actualHeight might fail to invalidate the component.
+* FocusManager: fixed issue where getFocusManagerForStage() threw a RangeError if stack size is 0 instead of returning null.
+* FontStylesSet: added dispose() method to make sure event listeners are removed (to be called by the parent of the text renderer/editor).
+* FontStylesSet: no longer calls clone() on starling.text.TextFormat because this prevents detection of changes to original TextFormat object. This reverts a change in Feathers 3.1.2 and goes back to previous behavior (while still fixing the memory leak that prompted the change).
+* GroupedList: fixed issue where first/last/single item renderer factories were not used as fallbacks when factoryIDFunction returns null.
+* GroupedList, List: fixed issue where mouse wheel did not work when useVirtualLayout is false in layout.
+* ILayout: added calculateNavigationDestination() to allow custom behavior for keyboard navigation.
+* IListCollection: new interface to support custom collection implementations, and added ArrayCollection, VectorCollection, and XMLListCollection.
+* IHierarchicalCollection: new interface to support custom hierarchical collection implementations, and added ArrayHierarchicalCollection, VectorHierarchicalCollection, and XMLListHierarchicalCollection.
+* ImageLoader: fixed issue where originalSourceWidth and originalSourceHeight properties returned the wrong value in an Event.COMPLETE listener.
+* LayoutGroup, ScrollContainer: in a subclass that overrides draw(), if a child is resized or has changes to its layoutData before super.draw() is called, the container will not be invalidated to avoid the "returned to validation queue too many times during validation" error.
+* SoundPlayer: added soundLoaderContext property to allow a flash.media.SoundLoaderContext to be passed in for the internal load() call.
+* Scroller: added horizontalPageIndex and verticalPageIndex setters so that you can change pages without calling scrollToPageIndex() (which is meant for animation).
+* Scroller: fixed issue where scroll bar would fade out immediately when beyond the minimum or maximum scroll position instead of waiting until after the scroller snaps back into range.
+* Scroller: if hasElasticEdges is false, does not consider itself dragged if already at the minimum or maximum and can't be scrolled further.
+* Scroller: fixed issue with snapScrollPositionToPixels where the animation would appear to complete because it had already snapped to the final pixel, but there could still be more time left on the animation.
+* Scroller: fixed issue where measured view port dimensions (such as those from a layout) that are smaller than content dimensions would cause the full dimensions to exclude the scroll bars. This would sometimes cause both horizontal and vertical scroll bars to appear when only one should be required.
+* ScrollContainer: fixed issue where children positioned at negative coordinates did not affect the minimum scroll position.
+* ScrollContainer: fixed issue where pivotX and pivotY were not scaled when calculating item position.
+* SpinnerList: fixed issue where an item renderer that is disabled could be incorrectly selected. Returns to the previously selected index if the scroll position lands on a disabled item renderer.
+* TextArea: fixed issue where runtime error would be thrown in measureViewPort is true.
+* TextFieldTextEditor: fixed issue where state changes in the parent component would not always update the font styles when using starling.text.TextFormat.
+* Text Renderers/Editors: if they have a texture snapshot, optimized to avoid updating the snapshot until render() is called, in case it needs to validate() multiple times per frame (which is common in lists).
+* TiledColumnsLayout, TiledRowsLayout: deprecated PAGING_NONE, PAGING_HORIZONTAL, and PAGING_VERTICAL in favor of Direction.NONE, Direction.HORIZONTAL, and Direction.VERTICAL.
+* ToggleSwitch: now uses ExclusiveTouch so that parent containers cannot scroll while dragging thumb.
+* Gallery Example: replaced full size image with a List that uses SlideShowLayout, and the full size image may be resized with a gesture.
+
 ## 3.2.0 - April 2017
 
 * PullToRefresh: new example that demonstrates how to support the popular "pull to refresh" gesture with Feathers lists and other scrolling containers.
