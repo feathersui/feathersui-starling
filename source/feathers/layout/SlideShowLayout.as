@@ -8,6 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IValidating;
+	import feathers.layout.Direction;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -17,9 +20,6 @@ package feathers.layout
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.utils.Pool;
-	import feathers.layout.Direction;
-	import feathers.layout.HorizontalAlign;
-	import feathers.layout.VerticalAlign;
 
 	/**
 	 * Dispatched when a property of the layout changes, indicating that a

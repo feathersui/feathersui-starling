@@ -7,21 +7,23 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.Scroller;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
+	import feathers.controls.renderers.ITreeItemRenderer;
 	import feathers.controls.supportClasses.TreeDataViewPort;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IHierarchicalCollection;
 	import feathers.events.CollectionEventType;
-	import starling.events.Event;
-	import feathers.controls.Scroller;
-	import feathers.layout.IVariableVirtualLayout;
-	import feathers.layout.ILayout;
-	import feathers.layout.VerticalLayout;
 	import feathers.layout.HorizontalAlign;
+	import feathers.layout.ILayout;
+	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalAlign;
-	import flash.geom.Point;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.controls.renderers.ITreeItemRenderer;
-	import feathers.controls.renderers.DefaultTreeItemRenderer;
-	import feathers.data.ArrayCollection;
+
+	import flash.geom.Point;
+
+	import starling.events.Event;
 
 	/**
 	 * A style name to add to all item renderers in this tree. Typically

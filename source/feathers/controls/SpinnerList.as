@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.IValidating;
 	import feathers.data.IListCollection;
 	import feathers.events.FeathersEventType;
@@ -21,7 +22,6 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
-	import feathers.controls.renderers.IListItemRenderer;
 
 	/**
 	 * An optional skin to display in the horizontal or vertical center of

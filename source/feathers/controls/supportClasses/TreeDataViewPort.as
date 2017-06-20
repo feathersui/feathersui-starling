@@ -7,17 +7,18 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.IFeathersControl;
-	import feathers.core.IValidating;
 	import feathers.controls.Scroller;
 	import feathers.controls.Tree;
 	import feathers.controls.renderers.ITreeItemRenderer;
+	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.data.IHierarchicalCollection;
-	import feathers.events.FeathersEventType;
+	import feathers.data.IListCollection;
 	import feathers.events.CollectionEventType;
-	import feathers.layout.IVariableVirtualLayout;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -26,10 +27,9 @@ package feathers.controls.supportClasses
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
-	import starling.events.Event;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.utils.Pool;
-	import feathers.data.IListCollection;
 
 	/**
 	 * @private
