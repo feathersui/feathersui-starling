@@ -2477,10 +2477,15 @@ package feathers.themes
 
 			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
 			disclosureOpenIcon.selectedTexture = this.treeDisclosureOpenSelectedIconTexture;
+			//make sure the hit area is large enough for touch screens
+			disclosureOpenIcon.minTouchWidth = this.gridSize;
+			disclosureOpenIcon.minTouchHeight = this.gridSize;
 			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
 
 			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
 			disclosureClosedIcon.selectedTexture = this.treeDisclosureClosedSelectedIconTexture;
+			disclosureClosedIcon.minTouchWidth = this.gridSize;
+			disclosureClosedIcon.minTouchHeight = this.gridSize;
 			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 

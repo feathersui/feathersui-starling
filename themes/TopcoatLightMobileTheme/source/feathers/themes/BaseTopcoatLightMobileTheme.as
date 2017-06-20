@@ -1900,8 +1900,16 @@ package feathers.themes
 
 			itemRenderer.indentation = this.treeDisclosureOpenIconTexture.width;
 
-			itemRenderer.disclosureOpenIcon = new ImageSkin(this.treeDisclosureOpenIconTexture);
-			itemRenderer.disclosureClosedIcon = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
+			//make sure the hit area is large enough for touch screens
+			disclosureOpenIcon.minTouchWidth = this.gridSize;
+			disclosureOpenIcon.minTouchHeight = this.gridSize;
+			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
+
+			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
+			disclosureClosedIcon.minTouchWidth = this.gridSize;
+			disclosureClosedIcon.minTouchHeight = this.gridSize;
+			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 
 	}
