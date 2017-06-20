@@ -7,6 +7,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.
 * New Layout: SlideShowLayout is designed for displaying one image at a time in a gallery.
 * BaseDefaultItemRenderer: fixed issue in skinSourceField where the wrong variable was checked to determine if the property has changed.
+* BaseDefaultItemRenderer: fixed issue where icon or accessory dimensions were not accounted for in measurement if item renderer does not have a label.
 * BaseLinearLayout: new abstract base class for HorizontalLayout and VerticalLayout that shares common code.
 * BaseTiledLayout: new abstract base class for TiledRowsLayout and TiledColumnsLayout that shares common code.
 * BottomDrawerPopUpContentManager, CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where the content was not scaled the same as the origin.
