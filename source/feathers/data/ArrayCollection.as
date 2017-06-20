@@ -628,7 +628,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this._arrayData.pop();
+			return this.removeItemAt(this.length - 1);
 		}
 
 		/**
@@ -636,7 +636,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			this._arrayData.unshift(item);
+			return this.addItemAt(item, 0);
 		}
 
 		/**
@@ -644,7 +644,7 @@ package feathers.data
 		 */
 		public function shift():Object
 		{
-			return this._arrayData.shift();
+			return this.removeItemAt(0);
 		}
 
 		/**

@@ -115,6 +115,64 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testShift():void
+		{
+			var itemToRemove:Object = this._collection.getItemAt(0);
+			var originalLength:int = this._collection.length;
+			var expectedIndex:int = 0;
+			var hasChanged:Boolean = false;
+			this._collection.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var hasRemovedItem:Boolean = false;
+			var indexFromEvent:int = -1;
+			this._collection.addEventListener(CollectionEventType.REMOVE_ITEM, function(event:Event, index:int):void
+			{
+				hasRemovedItem = true;
+				indexFromEvent = index;
+			});
+			this._collection.shift();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertTrue("CollectionEventType.REMOVE_ITEM was not dispatched", hasRemovedItem);
+			Assert.assertStrictlyEquals("The length property was not changed",
+				originalLength - 1, this._collection.length);
+			Assert.assertStrictlyEquals("The item was not removed",
+				-1, this._collection.getItemIndex(itemToRemove));
+			Assert.assertStrictlyEquals("The CollectionEventType.REMOVE_ITEM event data was not the correct index",
+				expectedIndex, indexFromEvent);
+		}
+
+		[Test]
+		public function testPop():void
+		{
+			var originalLength:int = this._collection.length;
+			var itemToRemove:Object = this._collection.getItemAt(originalLength - 1);
+			var expectedIndex:int = originalLength - 1;
+			var hasChanged:Boolean = false;
+			this._collection.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var hasRemovedItem:Boolean = false;
+			var indexFromEvent:int = -1;
+			this._collection.addEventListener(CollectionEventType.REMOVE_ITEM, function(event:Event, index:int):void
+			{
+				hasRemovedItem = true;
+				indexFromEvent = index;
+			});
+			this._collection.pop();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertTrue("CollectionEventType.REMOVE_ITEM was not dispatched", hasRemovedItem);
+			Assert.assertStrictlyEquals("The length property was not changed",
+				originalLength - 1, this._collection.length);
+			Assert.assertStrictlyEquals("The item was not removed",
+				-1, this._collection.getItemIndex(itemToRemove));
+			Assert.assertStrictlyEquals("The CollectionEventType.REMOVE_ITEM event data was not the correct index",
+				expectedIndex, indexFromEvent);
+		}
+
+		[Test]
 		public function testAddItem():void
 		{
 			var itemToAdd:XML = <item label="New Item"/>;
@@ -162,6 +220,64 @@ package feathers.tests
 				indexFromEvent = index;
 			});
 			this._collection.addItemAt(itemToAdd, expectedIndex);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertTrue("CollectionEventType.ADD_ITEM was not dispatched", hasAddedItem);
+			Assert.assertStrictlyEquals("The length property was not changed",
+				originalLength + 1, this._collection.length);
+			Assert.assertStrictlyEquals("The item was not added at the correct index",
+				expectedIndex, this._collection.getItemIndex(itemToAdd));
+			Assert.assertStrictlyEquals("The CollectionEventType.ADD_ITEM event data was not the correct index",
+				expectedIndex, indexFromEvent);
+		}
+
+		[Test]
+		public function testUnshift():void
+		{
+			var itemToAdd:XML = <item label="New Item"/>;
+			var expectedIndex:int = 0;
+			var originalLength:int = this._collection.length;
+			var hasChanged:Boolean = false;
+			this._collection.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var hasAddedItem:Boolean = false;
+			var indexFromEvent:int = -1;
+			this._collection.addEventListener(CollectionEventType.ADD_ITEM, function(event:Event, index:int):void
+			{
+				hasAddedItem = true;
+				indexFromEvent = index;
+			});
+			this._collection.unshift(itemToAdd);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertTrue("CollectionEventType.ADD_ITEM was not dispatched", hasAddedItem);
+			Assert.assertStrictlyEquals("The length property was not changed",
+				originalLength + 1, this._collection.length);
+			Assert.assertStrictlyEquals("The item was not added at the correct index",
+				expectedIndex, this._collection.getItemIndex(itemToAdd));
+			Assert.assertStrictlyEquals("The CollectionEventType.ADD_ITEM event data was not the correct index",
+				expectedIndex, indexFromEvent);
+		}
+
+		[Test]
+		public function testPush():void
+		{
+			var itemToAdd:XML = <item label="New Item"/>;
+			var originalLength:int = this._collection.length;
+			var expectedIndex:int = originalLength;
+			var hasChanged:Boolean = false;
+			this._collection.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var hasAddedItem:Boolean = false;
+			var indexFromEvent:int = -1;
+			this._collection.addEventListener(CollectionEventType.ADD_ITEM, function(event:Event, index:int):void
+			{
+				hasAddedItem = true;
+				indexFromEvent = index;
+			});
+			this._collection.push(itemToAdd);
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertTrue("CollectionEventType.ADD_ITEM was not dispatched", hasAddedItem);
 			Assert.assertStrictlyEquals("The length property was not changed",

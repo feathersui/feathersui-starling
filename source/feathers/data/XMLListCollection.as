@@ -629,7 +629,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this.removeItemAt(this._xmlListData.length - 1);
+			return this.removeItemAt(this.length - 1);
 		}
 
 		/**
