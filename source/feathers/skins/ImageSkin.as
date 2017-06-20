@@ -14,9 +14,14 @@ package feathers.skins
 	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.utils.Pool;
 
 	/**
 	 * A skin for Feathers components that displays a texture. Has the ability
@@ -653,6 +658,64 @@ package feathers.skins
 		/**
 		 * @private
 		 */
+		protected var _minTouchWidth:Number = 0;
+
+		/**
+		 * If the skin's width is smaller than this value, the hit area will be expanded.
+		 *
+		 * <p>In the following example, the minimum width of the hit area is
+		 * set to 120 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * skin.minTouchWidth = 120;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get minTouchWidth():Number
+		{
+			return this._minTouchWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minTouchWidth(value:Number):void
+		{
+			this._minTouchWidth = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minTouchHeight:Number = 0;
+
+		/**
+		 * If the skin's height is smaller than this value, the hit area will be expanded.
+		 *
+		 * <p>In the following example, the minimum height of the hit area is
+		 * set to 120 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * skin.minTouchHeight = 120;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get minTouchHeight():Number
+		{
+			return this._minTouchHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minTouchHeight(value:Number):void
+		{
+			this._minTouchHeight = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _stateToTexture:Object = {};
 
 		/**
@@ -754,6 +817,42 @@ package feathers.skins
 			{
 				super.height = this._explicitHeight;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point):DisplayObject
+		{
+			if(this._minTouchWidth > 0 || this._minTouchHeight > 0)
+			{
+				if(!this.visible || !this.touchable)
+				{
+					return null;
+				}
+				if(this.mask && !this.hitTestMask(localPoint))
+				{
+					return null;
+				}
+				var rect:Rectangle = Pool.getRectangle();
+				this.getBounds(this, rect);
+				if(rect.width < this._minTouchWidth)
+				{
+					var difference:Number = this._minTouchWidth - rect.width;
+					rect.width += difference;
+					rect.x -= difference / 2;
+				}
+				if(rect.height < this._minTouchHeight)
+				{
+					difference = this._minTouchHeight - rect.height;
+					rect.height += difference;
+					rect.y -= difference / 2;
+				}
+				var result:Boolean = rect.containsPoint(localPoint);
+				Pool.putRectangle(rect);
+				return result ? this : null;
+			}
+			return super.hitTest(localPoint);
 		}
 
 		/**
