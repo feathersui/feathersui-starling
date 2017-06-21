@@ -2155,11 +2155,16 @@ package feathers.themes
 			var disclosureOpenIcon:ImageSkin = new ImageSkin(this.treeDisclosureOpenIconTexture);
 			disclosureOpenIcon.textureSmoothing = TextureSmoothing.NONE;
 			disclosureOpenIcon.pixelSnapping = true;
+			//make sure the hit area is large enough for touch screens
+			disclosureOpenIcon.minTouchWidth = this.gridSize;
+			disclosureOpenIcon.minTouchHeight = this.gridSize;
 			itemRenderer.disclosureOpenIcon = disclosureOpenIcon;
 
 			var disclosureClosedIcon:ImageSkin = new ImageSkin(this.treeDisclosureClosedIconTexture);
 			disclosureClosedIcon.textureSmoothing = TextureSmoothing.NONE;
-			disclosureOpenIcon.pixelSnapping = true;
+			disclosureClosedIcon.pixelSnapping = true;
+			disclosureClosedIcon.minTouchWidth = this.gridSize;
+			disclosureClosedIcon.minTouchHeight = this.gridSize;
 			itemRenderer.disclosureClosedIcon = disclosureClosedIcon;
 		}
 

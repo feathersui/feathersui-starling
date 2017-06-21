@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IValidating;
+	import feathers.layout.Direction;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -16,7 +17,6 @@ package feathers.layout
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	import feathers.layout.Direction;
 
 	/**
 	 * Positions items as tiles (equal width and height) from top to bottom

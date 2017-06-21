@@ -16,14 +16,13 @@ package feathers.layout
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.errors.AbstractClassError;
 	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.utils.Pool;
-	import starling.errors.AbstractClassError;
 
 	/**
 	 * Abstract base class for <code>HorizontalLayout</code> and <code>VerticalLayout</code>.

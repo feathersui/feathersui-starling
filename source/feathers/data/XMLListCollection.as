@@ -7,10 +7,11 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.data
 {
-	import starling.events.EventDispatcher;
-	import starling.events.Event;
 	import feathers.events.CollectionEventType;
 	import feathers.utils.xml.xmlListInsertAt;
+
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	[Exclude(name="data",kind="property")]
 
@@ -629,7 +630,7 @@ package feathers.data
 		 */
 		public function pop():Object
 		{
-			return this.removeItemAt(this._xmlListData.length - 1);
+			return this.removeItemAt(this.length - 1);
 		}
 
 		/**

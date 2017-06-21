@@ -31,7 +31,6 @@ package feathers.tests
 			this._itemRenderer.index = 0;
 			this._itemRenderer.data = {};
 			this._itemRenderer.useStateDelayTimer = false;
-			this._itemRenderer.paddingLeft = 100;
 			TestFeathers.starlingRoot.addChild(this._itemRenderer);
 		}
 

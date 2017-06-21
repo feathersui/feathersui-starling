@@ -264,6 +264,10 @@ package feathers.controls.renderers
 		 */
 		override protected function draw():void
 		{
+			//children are allowed to change during draw() in a subclass up
+			//until it calls super.draw().
+			this._ignoreChildChangesButSetFlags = false;
+
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);

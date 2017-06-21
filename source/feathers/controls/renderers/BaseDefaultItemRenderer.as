@@ -4525,6 +4525,14 @@ package feathers.controls.renderers
 				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
+			if(this.currentIcon is IValidating)
+			{
+				IValidating(this.currentIcon).validate();
+			}
+			if(this.currentAccessory is IValidating)
+			{
+				IValidating(this.currentAccessory).validate();
+			}
 			
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,

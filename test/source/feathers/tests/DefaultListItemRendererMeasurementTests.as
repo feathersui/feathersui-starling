@@ -106,6 +106,14 @@ package feathers.tests
 			this._itemRenderer.defaultAccessory = icon;
 		}
 
+		private function addComplexAutoSizingAccessory():void
+		{
+			this._itemRenderer.itemHasAccessory = false;
+			var icon:LayoutGroup = new LayoutGroup();
+			icon.backgroundSkin = new Quad(COMPLEX_ACCESSORY_WIDTH, COMPLEX_ACCESSORY_HEIGHT);
+			this._itemRenderer.defaultAccessory = icon;
+		}
+
 		private function addSmallSimpleIcon():void
 		{
 			this._itemRenderer.itemHasIcon = false;
@@ -126,6 +134,14 @@ package feathers.tests
 			icon.height = COMPLEX_ICON_HEIGHT;
 			icon.minWidth = COMPLEX_ICON_MIN_WIDTH;
 			icon.minHeight = COMPLEX_ICON_MIN_HEIGHT;
+			this._itemRenderer.defaultIcon = icon;
+		}
+
+		private function addComplexAutoSizingIcon():void
+		{
+			this._itemRenderer.itemHasIcon = false;
+			var icon:LayoutGroup = new LayoutGroup();
+			icon.backgroundSkin = new Quad(COMPLEX_ICON_WIDTH, COMPLEX_ICON_HEIGHT);
 			this._itemRenderer.defaultIcon = icon;
 		}
 
@@ -331,6 +347,26 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeWithComplexAutoSizingIcon():void
+		{
+			this.addComplexAutoSizingIcon();
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			Assert.assertStrictlyEquals("The width of the DefaultListItemRenderer was not calculated correctly based on the complex icon width.",
+				COMPLEX_ICON_WIDTH, this._itemRenderer.width);
+			Assert.assertStrictlyEquals("The height of the DefaultListItemRenderer was not calculated correctly based on the complex icon height.",
+				COMPLEX_ICON_HEIGHT, this._itemRenderer.height);
+			
+			//the item renderer never resizes the icon, so we ignore its
+			//minimum dimensions
+			Assert.assertStrictlyEquals("The minWidth of the DefaultListItemRenderer was not calculated correctly based on the complex icon minWidth.",
+				COMPLEX_ICON_WIDTH, this._itemRenderer.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the DefaultListItemRenderer was not calculated correctly based on the complex icon minHeight.",
+				COMPLEX_ICON_HEIGHT, this._itemRenderer.minHeight);
+		}
+
+		[Test]
 		public function testAutoSizeWithSimpleAccessory():void
 		{
 			this.addLargeSimpleAccessory();
@@ -351,6 +387,26 @@ package feathers.tests
 		public function testAutoSizeWithComplexAccessory():void
 		{
 			this.addComplexAccessory();
+			this._itemRenderer.hasLabelTextRenderer = false;
+			this._itemRenderer.validate();
+
+			Assert.assertStrictlyEquals("The width of the DefaultListItemRenderer was not calculated correctly based on the complex accessory width.",
+				COMPLEX_ACCESSORY_WIDTH, this._itemRenderer.width);
+			Assert.assertStrictlyEquals("The height of the DefaultListItemRenderer was not calculated correctly based on the complex accessory height.",
+				COMPLEX_ACCESSORY_HEIGHT, this._itemRenderer.height);
+			
+			//the item renderer never resizes the accessory, so we ignore its
+			//minimum dimensions
+			Assert.assertStrictlyEquals("The minWidth of the DefaultListItemRenderer was not calculated correctly based on the complex accessory minWidth.",
+				COMPLEX_ACCESSORY_WIDTH, this._itemRenderer.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the DefaultListItemRenderer was not calculated correctly based on the complex accessory minHeight.",
+				COMPLEX_ACCESSORY_HEIGHT, this._itemRenderer.minHeight);
+		}
+
+		[Test]
+		public function testAutoSizeWithComplexAutoSizingAccessory():void
+		{
+			this.addComplexAutoSizingAccessory();
 			this._itemRenderer.hasLabelTextRenderer = false;
 			this._itemRenderer.validate();
 

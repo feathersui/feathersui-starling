@@ -7,10 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
-	import starling.events.EventDispatcher;
-	import starling.errors.AbstractClassError;
 	import starling.display.DisplayObject;
+	import starling.errors.AbstractClassError;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Dispatched when a property of the layout changes, indicating that a

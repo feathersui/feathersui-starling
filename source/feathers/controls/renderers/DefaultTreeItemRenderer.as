@@ -7,19 +7,21 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.renderers.ITreeItemRenderer;
-	import feathers.skins.IStyleProvider;
-	import feathers.events.FeathersEventType;
-	import feathers.controls.Tree;
 	import feathers.controls.BasicButton;
-	import starling.display.DisplayObject;
-	import starling.events.Event;
-	import feathers.utils.touch.TapToTrigger;
-	import feathers.core.IValidating;
-	import flash.geom.Point;
-	import starling.display.DisplayObjectContainer;
+	import feathers.controls.Tree;
+	import feathers.controls.renderers.ITreeItemRenderer;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IStateObserver;
+	import feathers.core.IValidating;
+	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
+	import feathers.utils.touch.TapToTrigger;
+
+	import flash.geom.Point;
+
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.events.Event;
 
 	/**
 	 * The icon used to indicate if the tree item is a branch.

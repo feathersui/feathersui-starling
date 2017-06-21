@@ -511,6 +511,13 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * This is similar to _ignoreChildChanges, but setInvalidationFlag()
+		 * may still be called.
+		 */
+		protected var _ignoreChildChangesButSetFlags:Boolean = false;
+
+		/**
+		 * @private
 		 */
 		override public function get numChildren():int
 		{
@@ -827,12 +834,12 @@ package feathers.controls
 			//for the start of validation, we're going to ignore when children
 			//resize or dispatch changes to layout data. this allows subclasses
 			//to modify children in draw() before the layout is applied.
-			var oldIgnoreChildChanges:Boolean = this._ignoreChildChanges;
-			this._ignoreChildChanges = true;
+			var oldIgnoreChildChanges:Boolean = this._ignoreChildChangesButSetFlags;
+			this._ignoreChildChangesButSetFlags = true;
 			super.validate();
 			//if super.validate() returns without calling draw(), the flag
 			//won't be reset before layout is called, so we need reset manually.
-			this._ignoreChildChanges = oldIgnoreChildChanges;
+			this._ignoreChildChangesButSetFlags = oldIgnoreChildChanges;
 		}
 
 		/**
@@ -861,7 +868,7 @@ package feathers.controls
 		{
 			//children are allowed to change during draw() in a subclass up
 			//until it calls super.draw().
-			this._ignoreChildChanges = false;
+			this._ignoreChildChangesButSetFlags = false;
 
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
@@ -960,6 +967,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._ignoreChildChangesButSetFlags)
+			{
+				this.setInvalidationFlag(INVALIDATION_FLAG_SIZE);
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -970,6 +982,11 @@ package feathers.controls
 		{
 			if(this._ignoreChildChanges)
 			{
+				return;
+			}
+			if(this._ignoreChildChangesButSetFlags)
+			{
+				this.setInvalidationFlag(INVALIDATION_FLAG_SIZE);
 				return;
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
