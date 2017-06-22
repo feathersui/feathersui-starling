@@ -38,6 +38,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * ScrollContainer: fixed issue where children positioned at negative coordinates did not affect the minimum scroll position.
 * ScrollContainer: fixed issue where pivotX and pivotY were not scaled when calculating item position.
 * SpinnerList: fixed issue where an item renderer that is disabled could be incorrectly selected. Returns to the previously selected index if the scroll position lands on a disabled item renderer.
+* TabNavigator: fixed issue where isSwipeEnabled getter returned incorrect value.
 * TextArea: fixed issue where runtime error would be thrown in measureViewPort is true.
 * TextFieldTextEditor: fixed issue where state changes in the parent component would not always update the font styles when using starling.text.TextFormat.
 * Text Renderers/Editors: if they have a texture snapshot, optimized to avoid updating the snapshot until render() is called, in case it needs to validate() multiple times per frame (which is common in lists).
