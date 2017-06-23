@@ -956,7 +956,7 @@ package feathers.controls
 		 */
 		public function get scaleFactor():Number
 		{
-			return this._textureScale;
+			return this._scaleFactor;
 		}
 
 		/**

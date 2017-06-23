@@ -28,6 +28,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * IListCollection: new interface to support custom collection implementations, and added ArrayCollection, VectorCollection, and XMLListCollection.
 * IHierarchicalCollection: new interface to support custom hierarchical collection implementations, and added ArrayHierarchicalCollection, VectorHierarchicalCollection, and XMLListHierarchicalCollection.
 * ImageLoader: fixed issue where originalSourceWidth and originalSourceHeight properties returned the wrong value in an Event.COMPLETE listener.
+* ImageLoader: fixed issue where scaleFactor getter returned incorrect value.
 * LayoutGroup, ScrollContainer: in a subclass that overrides draw(), if a child is resized or has changes to its layoutData before super.draw() is called, the container will not be invalidated to avoid the "returned to validation queue too many times during validation" error.
 * SoundPlayer: added soundLoaderContext property to allow a flash.media.SoundLoaderContext to be passed in for the internal load() call.
 * Scroller: added horizontalPageIndex and verticalPageIndex setters so that you can change pages without calling scrollToPageIndex() (which is meant for animation).
