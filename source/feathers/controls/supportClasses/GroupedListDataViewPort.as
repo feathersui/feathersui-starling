@@ -1086,7 +1086,6 @@ package feathers.controls.supportClasses
 			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
 			var newDisplayIndex:int = this._layout.calculateNavigationDestination(this._layoutItems, displayIndex, keyCode, this._layoutResult);
 			this.displayIndexToLocation(newDisplayIndex, result);
-			trace(displayIndex, newDisplayIndex, result);
 		}
 
 		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
