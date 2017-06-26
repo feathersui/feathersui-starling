@@ -1086,7 +1086,6 @@ package feathers.controls.supportClasses
 			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
 			var newDisplayIndex:int = this._layout.calculateNavigationDestination(this._layoutItems, displayIndex, keyCode, this._layoutResult);
 			this.displayIndexToLocation(newDisplayIndex, result);
-			trace(displayIndex, newDisplayIndex, result);
 		}
 
 		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
@@ -2468,6 +2467,7 @@ package feathers.controls.supportClasses
 			var groupCount:int = this._dataProvider.getLengthAtLocation();
 			for(var i:int = 0; i < groupCount; i++)
 			{
+				LOCATION_HELPER_VECTOR[0] = i;
 				var group:Object = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
 				var header:Object = this._owner.groupToHeaderData(group);
 				if(header !== null)
