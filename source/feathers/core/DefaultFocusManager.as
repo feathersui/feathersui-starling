@@ -146,7 +146,7 @@ package feathers.core
 				this._root.removeEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				this._root.removeEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				this._starling.nativeStage.removeEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler);
-				this._starling.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler);
+				this._starling.nativeStage.removeEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler);
 				var focusToSave:IFocusDisplayObject = this.focus;
 				this.focus = null;
 				this._savedFocus = focusToSave;
