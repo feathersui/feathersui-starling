@@ -24,6 +24,17 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
+	 * Determines if the <code>selectionOverlaySkin</code> is hidden when
+	 * the list is not focused.
+	 *
+	 * <listing version="3.0">
+	 * list.hideSelectionOverlayUnlessFocused = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="hideSelectionOverlayUnlessFocused",type="Boolean")]
+
+	/**
 	 * An optional skin to display in the horizontal or vertical center of
 	 * the list to highlight the currently selected item. If the list
 	 * scrolls vertically, the <code>selectionOverlaySkin</code> will fill
@@ -275,6 +286,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _hideSelectionOverlayUnlessFocused:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get hideSelectionOverlayUnlessFocused():Boolean
+		{
+			return this._hideSelectionOverlayUnlessFocused;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideSelectionOverlayUnlessFocused(value:Boolean):void
+		{
+			if(this._hideSelectionOverlayUnlessFocused === value)
+			{
+				return;
+			}
+			this._hideSelectionOverlayUnlessFocused = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			//SpinnerList has a different default layout than its superclass,
@@ -370,6 +407,14 @@ package feathers.controls
 
 			if(this._selectionOverlaySkin)
 			{
+				if(this._hideSelectionOverlayUnlessFocused && this._focusManager !== null && this._isFocusEnabled)
+				{
+					this._selectionOverlaySkin.visible = this._hasFocus;
+				}
+				else
+				{
+					this._selectionOverlaySkin.visible = true;
+				}
 				if(this._selectionOverlaySkin is IValidating)
 				{
 					IValidating(this._selectionOverlaySkin).validate();
