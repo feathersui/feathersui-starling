@@ -17,11 +17,11 @@ package feathers.controls
 	import feathers.layout.VerticalSpinnerLayout;
 	import feathers.skins.IStyleProvider;
 
+	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 
 	/**
 	 * An optional skin to display in the horizontal or vertical center of
@@ -540,8 +540,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			if(!this._dataProvider)
 			{
 				return;
@@ -556,11 +560,13 @@ package feathers.controls
 				{
 					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 					{
+						event.preventDefault();
 						var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
 						this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
 					}
 					else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 					{
+						event.preventDefault();
 						pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
 						this.throwToPage(pageIndex, this._verticalPageIndex);
 					}

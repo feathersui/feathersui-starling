@@ -22,12 +22,13 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.utils.Pool;
 
 	/**
@@ -1609,8 +1610,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(!this._isSelectable)
+			{
+				//not selectable, but should scroll
+				super.nativeStage_keyDownHandler(event);
+				return;
+			}
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			if(!this._dataProvider)
 			{
 				return;
@@ -1623,6 +1634,7 @@ package feathers.controls
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex !== newIndex)
 				{
+					event.preventDefault();
 					this.selectedIndex = newIndex;
 					var point:Point = Pool.getPoint();
 					this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);

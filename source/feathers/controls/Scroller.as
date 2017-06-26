@@ -19,12 +19,14 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.errors.IllegalOperationError;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -38,7 +40,6 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -8453,7 +8454,10 @@ package feathers.controls
 		override protected function focusInHandler(event:Event):void
 		{
 			super.focusInHandler(event);
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			//using priority here is a hack so that objects deeper in the
+			//display list have a chance to cancel the event first.
+			var priority:int = getDisplayObjectDepthFromStage(this);
+			this.stage.starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -8462,45 +8466,61 @@ package feathers.controls
 		override protected function focusOutHandler(event:Event):void
 		{
 			super.focusOutHandler(event);
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
+			var newHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+			var newVerticalScrollPosition:Number = this._verticalScrollPosition;
 			if(event.keyCode == Keyboard.HOME)
 			{
-				this.verticalScrollPosition = this._minVerticalScrollPosition;
+				newVerticalScrollPosition = this._minVerticalScrollPosition;
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
-				this.verticalScrollPosition = this._maxVerticalScrollPosition;
+				newVerticalScrollPosition = this._maxVerticalScrollPosition;
 			}
 			else if(event.keyCode == Keyboard.PAGE_UP)
 			{
-				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.viewPort.visibleHeight);
+				newVerticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.viewPort.visibleHeight);
 			}
 			else if(event.keyCode == Keyboard.PAGE_DOWN)
 			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.viewPort.visibleHeight);
+				newVerticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.viewPort.visibleHeight);
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
-				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
+				newVerticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
+				newVerticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
-				this.horizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+				newHorizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.RIGHT)
 			{
-				this.horizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
+				newHorizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
+			}
+			if(this._horizontalScrollPosition !== newHorizontalScrollPosition)
+			{
+				event.preventDefault();
+				this.horizontalScrollPosition = newHorizontalScrollPosition;
+			}
+			if(this._verticalScrollPosition !== newVerticalScrollPosition)
+			{
+				event.preventDefault();
+				this.verticalScrollPosition = newVerticalScrollPosition;
 			}
 		}
 	}
