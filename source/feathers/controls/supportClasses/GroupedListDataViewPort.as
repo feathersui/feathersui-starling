@@ -2467,6 +2467,7 @@ package feathers.controls.supportClasses
 			var groupCount:int = this._dataProvider.getLengthAtLocation();
 			for(var i:int = 0; i < groupCount; i++)
 			{
+				LOCATION_HELPER_VECTOR[0] = i;
 				var group:Object = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
 				var header:Object = this._owner.groupToHeaderData(group);
 				if(header !== null)
