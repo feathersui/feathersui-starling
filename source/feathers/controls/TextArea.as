@@ -1618,7 +1618,7 @@ package feathers.controls
 		override protected function refreshBackgroundSkin():void
 		{
 			var oldSkin:DisplayObject = this.currentBackgroundSkin;
-			this.currentBackgroundSkin = this.getCurrentSkin();
+			this.currentBackgroundSkin = this.getCurrentBackgroundSkin();
 			if(oldSkin !== this.currentBackgroundSkin)
 			{
 				if(oldSkin !== null)
@@ -1662,7 +1662,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function getCurrentSkin():DisplayObject
+		override protected function getCurrentBackgroundSkin():DisplayObject
 		{
 			if(this._stateToSkinFunction != null)
 			{

@@ -4698,11 +4698,7 @@ package feathers.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
-			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
-			{
-				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
-			}
+			var newCurrentBackgroundSkin:DisplayObject = this.getCurrentBackgroundSkin();
 			if(this.currentBackgroundSkin !== newCurrentBackgroundSkin)
 			{
 				this.removeCurrentBackgroundSkin(this.currentBackgroundSkin);
@@ -4735,6 +4731,19 @@ package feathers.controls
 					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentBackgroundSkin():DisplayObject
+		{
+			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
+			if(!this._isEnabled && this._backgroundDisabledSkin !== null)
+			{
+				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			return newCurrentBackgroundSkin;
 		}
 
 		/**
