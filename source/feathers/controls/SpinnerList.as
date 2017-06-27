@@ -567,6 +567,8 @@ package feathers.controls
 		protected function spinnerList_triggeredHandler(event:Event, item:Object):void
 		{
 			var itemIndex:int = this._dataProvider.getItemIndex(item);
+			//property must change immediately, but the animation can take longer
+			this.selectedIndex = itemIndex;
 			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
 				itemIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
@@ -652,6 +654,8 @@ package feathers.controls
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex !== newIndex)
 				{
+					//property must change immediately, but the animation can take longer
+					this.selectedIndex = newIndex;
 					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 					{
 						event.preventDefault();
