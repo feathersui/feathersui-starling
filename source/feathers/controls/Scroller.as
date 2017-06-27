@@ -1037,11 +1037,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const FUZZY_PAGE_SIZE_PADDING:Number = 0.000001;
-
-		/**
-		 * @private
-		 */
 		protected static const PAGE_INDEX_EPSILON:Number = 0.01;
 
 		/**
@@ -5172,14 +5167,20 @@ package feathers.controls
 				else
 				{
 					this._minHorizontalPageIndex = 0;
-					//floating point errors could result in the max page index
-					//being 1 larger than it should be.
-					var roundedDownRange:Number = roundDownToNearest(horizontalScrollRange, this.actualPageWidth);
-					if((horizontalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					var unroundedPageIndex:Number = horizontalScrollRange / this.actualPageWidth;
+					var nearestPageIndex:int = Math.round(unroundedPageIndex);
+					if(MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 					{
-						horizontalScrollRange = roundedDownRange;
+						//we almost always want to round up, but a
+						//floating point math error, or a page width that
+						//isn't an integer (when snapping to pixels) could
+						//cause the page index to be off by one
+						this._maxHorizontalPageIndex = nearestPageIndex;
 					}
-					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth);
+					else
+					{
+						this._maxHorizontalPageIndex = Math.ceil(unroundedPageIndex);
+					}
 				}
 
 				var verticalScrollRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
@@ -5200,14 +5201,20 @@ package feathers.controls
 				else
 				{
 					this._minVerticalPageIndex = 0;
-					//floating point errors could result in the max page index
-					//being 1 larger than it should be.
-					roundedDownRange = roundDownToNearest(verticalScrollRange, this.actualPageHeight);
-					if((verticalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					unroundedPageIndex = verticalScrollRange / this.actualPageHeight;
+					nearestPageIndex = Math.round(unroundedPageIndex);
+					if(MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 					{
-						verticalScrollRange = roundedDownRange;
+						//we almost always want to round up, but a
+						//floating point math error, or a page height that
+						//isn't an integer (when snapping to pixels) could
+						//cause the page index to be off by one
+						this._maxVerticalPageIndex = nearestPageIndex;
 					}
-					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight);
+					else
+					{
+						this._maxVerticalPageIndex = Math.ceil(unroundedPageIndex);
+					}
 				}
 			}
 			else
