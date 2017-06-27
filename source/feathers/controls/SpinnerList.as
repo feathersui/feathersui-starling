@@ -30,7 +30,14 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * list.hideSelectionOverlayUnlessFocused = true;</listing>
 	 *
+	 * <p>Note: If the <code>showSelectionOverlay</code> property is
+	 * <code>false</code>, the <code>selectionOverlaySkin</code> will always
+	 * be hidden.</p>
+	 *
 	 * @default false
+	 *
+	 * @see #style:selectionOverlaySkin
+	 * @see #style:showSelectionOverlay
 	 */
 	[Style(name="hideSelectionOverlayUnlessFocused",type="Boolean")]
 
@@ -52,6 +59,21 @@ package feathers.controls
 	 * @default null
 	 */
 	[Style(name="selectionOverlaySkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines if the <code>selectionOverlaySkin</code> is visible or hidden.
+	 *
+	 * <p>The following example hides the selection overlay skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.showSelectionOverlay = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:selectionOverlaySkin
+	 * @see #style:hideSelectionOverlayUnlessFocused
+	 */
+	[Style(name="showSelectionOverlay",type="Boolean")]
 
 	/**
 	 * A customized <code>List</code> component where scrolling updates the
@@ -286,6 +308,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _showSelectionOverlay:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		public function get showSelectionOverlay():Boolean
+		{
+			return this._showSelectionOverlay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set showSelectionOverlay(value:Boolean):void
+		{
+			if(this._showSelectionOverlay === value)
+			{
+				return;
+			}
+			this._showSelectionOverlay = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _hideSelectionOverlayUnlessFocused:Boolean = false;
 
 		/**
@@ -407,13 +455,14 @@ package feathers.controls
 
 			if(this._selectionOverlaySkin)
 			{
-				if(this._hideSelectionOverlayUnlessFocused && this._focusManager !== null && this._isFocusEnabled)
+				if(this._showSelectionOverlay && this._hideSelectionOverlayUnlessFocused &&
+					this._focusManager !== null && this._isFocusEnabled)
 				{
 					this._selectionOverlaySkin.visible = this._hasFocus;
 				}
 				else
 				{
-					this._selectionOverlaySkin.visible = true;
+					this._selectionOverlaySkin.visible = this._showSelectionOverlay;
 				}
 				if(this._selectionOverlaySkin is IValidating)
 				{
