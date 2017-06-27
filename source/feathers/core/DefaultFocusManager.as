@@ -8,14 +8,22 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IFocusContainer;
+	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IFocusExtras;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
 	import feathers.utils.display.stageToStarling;
+	import feathers.utils.focus.isBetterFocusForRelativePosition;
 
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
 	import flash.errors.IllegalOperationError;
 	import flash.events.FocusEvent;
 	import flash.events.IEventDispatcher;
+	import flash.events.KeyboardEvent;
+	import flash.geom.Rectangle;
+	import flash.ui.KeyLocation;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -26,6 +34,7 @@ package feathers.core
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * The default <code>IFocusManager</code> implementation.
@@ -126,6 +135,7 @@ package feathers.core
 				this._root.addEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				this._starling.nativeStage.addEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler, false, 0, true);
 				this._starling.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler, false, 0, true);
+				this._starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
 				if(this._savedFocus && !this._savedFocus.stage)
 				{
 					this._savedFocus = null;
@@ -277,6 +287,41 @@ package feathers.core
 			{
 				this._savedFocus = value;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _simulateDPad:Boolean = false;
+
+		/**
+		 * Indicates if the arrow keys on a standard keyboard are treated the
+		 * same as a d-pad. If <code>true</code>, focus may be controlled with
+		 * a standard keyboard.
+		 *
+		 * <p>In the following example, the D-Pad is simulated:</p>
+		 *
+		 * <listing version="3.0">
+		 * FocusManager.focusManagerFactory = function(root:DisplayObjectContainer):IFocusManager
+		 * {
+		 *    var focusManager:DefaultFocusManager = new DefaultFocusManager(root);
+		 *    focusManager.simulateDPad = true;
+		 *    return focusManager;
+		 * }</listing>
+		 *
+		 * @default false
+		 */
+		public function get simulateDPad():Boolean
+		{
+			return this._simulateDPad;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set simulateDPad(value:Boolean):void
+		{
+			this._simulateDPad = value;
 		}
 
 		/**
@@ -641,6 +686,113 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected function findFocusAtRelativePosition(container:DisplayObjectContainer, position:String):IFocusDisplayObject
+		{
+			var focusableObjects:Vector.<IFocusDisplayObject> = new <IFocusDisplayObject>[];
+			findAllFocusableObjects(container, focusableObjects);
+			if(this._focus === null)
+			{
+				if(focusableObjects.length > 0)
+				{
+					return focusableObjects[0];
+				}
+				return null;
+			}
+			var focusedRect:Rectangle = this._focus.getBounds(this._focus.stage, Pool.getRectangle());
+			var result:IFocusDisplayObject = null;
+			var count:int = focusableObjects.length;
+			for(var i:int = 0; i < count; i++)
+			{
+				var focusableObject:IFocusDisplayObject = focusableObjects[i];
+				if(focusableObject === this._focus)
+				{
+					continue;
+				}
+				if(isBetterFocusForRelativePosition(focusableObject, result, focusedRect, position))
+				{
+					result = focusableObject;
+				}
+			}
+			Pool.putRectangle(focusedRect);
+			if(result === null)
+			{
+				//default to keeping the current focus
+				return this._focus;
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findFocusableChildren(child:DisplayObject, result:Vector.<IFocusDisplayObject>):void
+		{
+			if(child is IFocusDisplayObject)
+			{
+				var focusableObject:IFocusDisplayObject = IFocusDisplayObject(child);
+				if(isValidFocus(focusableObject))
+				{
+					result[result.length] = focusableObject;
+				}
+			}
+			if(child is IFocusExtras)
+			{
+				var focusExtras:IFocusExtras = IFocusExtras(child);
+				var extras:Vector.<DisplayObject> = focusExtras.focusExtrasBefore;
+				var extrasCount:int = extras.length;
+				for(var j:int = 0; j < extrasCount; j++)
+				{
+					var extra:DisplayObject = extras[j];
+					findFocusableChildren(extra, result);
+				}
+			}
+			if(child is IFocusDisplayObject)
+			{
+				if(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled)
+				{
+					var beforeCount:int = result.length;
+					var otherContainer:DisplayObjectContainer = DisplayObjectContainer(child);
+					findAllFocusableObjects(otherContainer, result);
+					if(beforeCount < result.length)
+					{
+						//don't let this container gain focus
+						result.removeAt(beforeCount - 1);
+					}
+				}
+			}
+			else if(child is DisplayObjectContainer)
+			{
+				otherContainer = DisplayObjectContainer(child);
+				findAllFocusableObjects(otherContainer, result);
+			}
+			if(child is IFocusExtras)
+			{
+				extras = focusExtras.focusExtrasAfter;
+				extrasCount = extras.length;
+				for(j = 0; j < extrasCount; j++)
+				{
+					extra = extras[j];
+					findFocusableChildren(extra, result);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findAllFocusableObjects(container:DisplayObjectContainer, result:Vector.<IFocusDisplayObject>):void
+		{
+			var childCount:int = container.numChildren;
+			for(var i:int = 0; i < childCount; i++)
+			{
+				var child:DisplayObject = container.getChildAt(i);
+				findFocusableChildren(child, result);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function isValidFocus(child:IFocusDisplayObject):Boolean
 		{
 			if(!child || !child.isFocusEnabled || child.focusManager != this)
@@ -669,6 +821,72 @@ package feathers.core
 				return;
 			}
 			event.preventDefault();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyLocation !== KeyLocation.D_PAD && !this._simulateDPad)
+			{
+				//focus is controlled only with a d-pad and not the regular
+				//keyboard arrow keys
+				return;
+			}
+			if(event.keyCode !== Keyboard.UP && event.keyCode !== Keyboard.DOWN &&
+				event.keyCode !== Keyboard.LEFT && event.keyCode !== Keyboard.RIGHT)
+			{
+				return;
+			}
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this keyboard event
+				return;
+			}
+			var newFocus:IFocusDisplayObject;
+			var currentFocus:IFocusDisplayObject = this._focus;
+			if(currentFocus && currentFocus.focusOwner)
+			{
+				newFocus = currentFocus.focusOwner;
+			}
+			else
+			{
+				var position:String = RelativePosition.RIGHT;
+				switch(event.keyCode)
+				{
+					case Keyboard.UP:
+					{
+						position = RelativePosition.TOP;
+						break;
+					}
+					case Keyboard.RIGHT:
+					{
+						position = RelativePosition.RIGHT;
+						break;
+					}
+					case Keyboard.DOWN:
+					{
+						position = RelativePosition.BOTTOM;
+						break;
+					}
+					case Keyboard.LEFT:
+					{
+						position = RelativePosition.LEFT;
+						break;
+					}
+				}
+				newFocus = findFocusAtRelativePosition(this._root, position);
+			}
+			if(newFocus !== this._focus)
+			{
+				event.preventDefault();
+				this.focus = newFocus;
+			}
+			if(this._focus)
+			{
+				this._focus.showFocus();
+			}
 		}
 
 		/**
