@@ -779,11 +779,6 @@ package feathers.core
 					var beforeCount:int = result.length;
 					var otherContainer:DisplayObjectContainer = DisplayObjectContainer(child);
 					findAllFocusableObjects(otherContainer, result);
-					if(beforeCount < result.length)
-					{
-						//don't let this container gain focus
-						result.removeAt(beforeCount - 1);
-					}
 				}
 			}
 			else if(child is DisplayObjectContainer)
