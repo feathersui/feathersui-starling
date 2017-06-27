@@ -190,11 +190,7 @@ package feathers.examples.trainTimes.themes
 			this.stationListNameTextFormat.italic = true;
 			this.stationListDetailTextFormat = new TextFormat(boldFontName, 12, DETAIL_TEXT_COLOR, Align.LEFT, Align.TOP);
 			this.stationListDetailTextFormat.bold = true;
-			if("letterSpacing" in this.stationListDetailTextFormat)
-			{
-				//for Starling 2.1 compatibility, we need this check
-				this.stationListDetailTextFormat["letterSpacing"] = 3;
-			}
+			this.stationListDetailTextFormat.letterSpacing = 3;
 		}
 
 		protected function initializeStyleProviders():void
