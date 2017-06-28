@@ -770,7 +770,11 @@ package feathers.layout
 				}
 			}
 
-			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight;
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(availableHeight / (calculatedTypicalItemHeight + gap)) + 1;
+			var minTotalHeightForRepeat:Number = maxVisibleTypicalItemCount * (calculatedTypicalItemHeight + gap) - gap;
+			var canRepeatItems:Boolean = this._repeatItems && totalHeight >= minTotalHeightForRepeat;
 			if(canRepeatItems)
 			{
 				totalHeight += gap;
@@ -1010,15 +1014,16 @@ package feathers.layout
 			var gap:Number = this._gap;
 
 			var resultLastIndex:int = 0;
-			//we add one extra here because the first item renderer in view may
-			//be partially obscured, which would reveal an extra item renderer.
-			var maxVisibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + gap)) + 1;
 
 			var totalItemHeight:Number = itemCount * (calculatedTypicalItemHeight + gap) - gap;
 
 			scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
 
-			var canRepeatItems:Boolean = this._repeatItems && totalItemHeight > height;
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + gap)) + 1;
+			var minTotalHeightForRepeat:Number = maxVisibleTypicalItemCount * (calculatedTypicalItemHeight + gap) - gap;
+			var canRepeatItems:Boolean = this._repeatItems && totalItemHeight >= minTotalHeightForRepeat;
 			if(canRepeatItems)
 			{
 				//if we're repeating, then there's an extra gap
