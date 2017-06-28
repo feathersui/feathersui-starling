@@ -254,6 +254,39 @@ package feathers.layout
 			this._horizontalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
+		
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VerticalAlign.TOP;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * The alignment of the items vertically, on the y-axis.
+		 *
+		 * @default feathers.layout.VerticalAlign.MIDDLE
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 */
+		public function get verticalAlign():String
+		{
+			return this._verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
 
 		/**
 		 * @private
@@ -745,19 +778,30 @@ package feathers.layout
 
 			//in this section, we handle vertical alignment. the selected item
 			//needs to be centered vertically.
-			var verticalAlignOffsetY:Number = Math.round((availableHeight - calculatedTypicalItemHeight) / 2);
+			var verticalAlignOffsetY:Number = 0;
+			if(this._verticalAlign === VerticalAlign.BOTTOM)
+			{
+				verticalAlignOffsetY = availableHeight - calculatedTypicalItemHeight;
+			}
+			else if(this._verticalAlign === VerticalAlign.MIDDLE)
+			{
+				verticalAlignOffsetY = Math.round((availableHeight - calculatedTypicalItemHeight) / 2);
+			}
 			if(!canRepeatItems)
 			{
-				totalHeight += 2 * verticalAlignOffsetY;
+				totalHeight += verticalAlignOffsetY + (availableHeight - calculatedTypicalItemHeight - verticalAlignOffsetY);
 			}
-			for(i = 0; i < discoveredItemCount; i++)
+			if(verticalAlignOffsetY !== 0)
 			{
-				item = discoveredItems[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				for(i = 0; i < discoveredItemCount; i++)
 				{
-					continue;
+					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					item.y += verticalAlignOffsetY;
 				}
-				item.y += verticalAlignOffsetY;
 			}
 
 			for(i = 0; i < discoveredItemCount; i++)
