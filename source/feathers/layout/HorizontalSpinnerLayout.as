@@ -224,6 +224,39 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * The alignment of the items horizontally, on the x-axis.
+		 *
+		 * @default feathers.layout.HorizontalAlign.CENTER
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+		
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VerticalAlign.TOP;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
@@ -743,21 +776,32 @@ package feathers.layout
 				totalWidth += gap;
 			}
 
-			//in this section, we handle vertical alignment. the selected item
-			//needs to be centered vertically.
-			var horizontalAlignOffsetX:Number = Math.round((availableWidth - calculatedTypicalItemWidth) / 2);
+			//in this section, we handle horizontal alignment. the selected item
+			//needs to be centered horizontally.
+			var horizontalAlignOffsetX:Number = 0;
+			if(this._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				horizontalAlignOffsetX = availableWidth - calculatedTypicalItemWidth;
+			}
+			else if(this._horizontalAlign === HorizontalAlign.CENTER)
+			{
+				horizontalAlignOffsetX = Math.round((availableWidth - calculatedTypicalItemWidth) / 2);
+			}
 			if(!canRepeatItems)
 			{
-				totalWidth += 2 * horizontalAlignOffsetX;
+				totalWidth += horizontalAlignOffsetX + (availableWidth - calculatedTypicalItemWidth - horizontalAlignOffsetX);
 			}
-			for(i = 0; i < discoveredItemCount; i++)
+			if(horizontalAlignOffsetX !== 0)
 			{
-				item = discoveredItems[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				for(i = 0; i < discoveredItemCount; i++)
 				{
-					continue;
+					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					item.x += horizontalAlignOffsetX;
 				}
-				item.x += horizontalAlignOffsetX;
 			}
 
 			for(i = 0; i < discoveredItemCount; i++)
