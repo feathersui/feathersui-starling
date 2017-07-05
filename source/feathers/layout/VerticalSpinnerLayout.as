@@ -168,6 +168,39 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, above the items, if they
+		 * do not repeat. If items repeat, <code>paddingTop</code> will
+		 * only be used if <code>verticalAlign</code> is set to
+		 * <code>VerticalAlign.TOP</code>. In this case, the first item,
+		 * starting from the top, will be offset by the value of
+		 * <code>paddingTop</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _paddingRight:Number = 0;
 
 		/**
@@ -190,6 +223,39 @@ package feathers.layout
 				return;
 			}
 			this._paddingRight = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, below the items, if they
+		 * do not repeat. If items repeat, <code>paddingBottom</code> will
+		 * only be used if <code>verticalAlign</code> is set to
+		 * <code>VerticalAlign.BOTTOM</code>. In this case, the first item,
+		 * starting from the bottom, will be offset by the value of
+		 * <code>paddingBottom</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -780,16 +846,15 @@ package feathers.layout
 				totalHeight += gap;
 			}
 
-			//in this section, we handle vertical alignment. the selected item
-			//needs to be centered vertically.
-			var verticalAlignOffsetY:Number = 0;
+			//in this section, we handle vertical alignment
+			var verticalAlignOffsetY:Number = this._paddingTop;
 			if(this._verticalAlign === VerticalAlign.BOTTOM)
 			{
-				verticalAlignOffsetY = availableHeight - calculatedTypicalItemHeight;
+				verticalAlignOffsetY = availableHeight - this._paddingBottom - calculatedTypicalItemHeight;
 			}
 			else if(this._verticalAlign === VerticalAlign.MIDDLE)
 			{
-				verticalAlignOffsetY = Math.round((availableHeight - calculatedTypicalItemHeight) / 2);
+				verticalAlignOffsetY = this._paddingTop + Math.round((availableHeight - this._paddingTop - this._paddingBottom - calculatedTypicalItemHeight) / 2);
 			}
 			if(!canRepeatItems)
 			{

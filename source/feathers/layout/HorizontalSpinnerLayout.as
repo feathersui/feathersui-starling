@@ -196,6 +196,39 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the right of the items, if they
+		 * do not repeat. If items repeat, <code>paddingRight</code> will
+		 * only be used if <code>horizontalAlign</code> is set to
+		 * <code>HorizontalAlign.RIGHT</code>. In this case, the first item,
+		 * starting from the right, will be offset by the value of
+		 * <code>paddingRight</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _paddingBottom:Number = 0;
 
 		/**
@@ -218,6 +251,39 @@ package feathers.layout
 				return;
 			}
 			this._paddingBottom = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the right of the items, if they
+		 * do not repeat. If items repeat, <code>paddingLeft</code> will
+		 * only be used if <code>horizontalAlign</code> is set to
+		 * <code>HorizontalAlign.LEFT</code>. In this case, the first item,
+		 * starting from the left, will be offset by the value of
+		 * <code>paddingLeft</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 		
@@ -780,16 +846,15 @@ package feathers.layout
 				totalWidth += gap;
 			}
 
-			//in this section, we handle horizontal alignment. the selected item
-			//needs to be centered horizontally.
-			var horizontalAlignOffsetX:Number = 0;
+			//in this section, we handle horizontal alignment
+			var horizontalAlignOffsetX:Number = this._paddingLeft;
 			if(this._horizontalAlign === HorizontalAlign.RIGHT)
 			{
-				horizontalAlignOffsetX = availableWidth - calculatedTypicalItemWidth;
+				horizontalAlignOffsetX = availableWidth - this._paddingRight - calculatedTypicalItemWidth;
 			}
 			else if(this._horizontalAlign === HorizontalAlign.CENTER)
 			{
-				horizontalAlignOffsetX = Math.round((availableWidth - calculatedTypicalItemWidth) / 2);
+				horizontalAlignOffsetX = this._paddingLeft + Math.round((availableWidth - this._paddingLeft - this._paddingRight - calculatedTypicalItemWidth) / 2);
 			}
 			if(!canRepeatItems)
 			{
