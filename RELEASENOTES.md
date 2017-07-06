@@ -21,6 +21,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where content was not positioned or resized correctly if PopUpManager.root is scaled.
 * FeathersControl: throws an error if validate() is called during initialize() because it was not clear that this previously returned without doing anything.
 * FeathersControl: fixed issue where setting minWidth or minHeight that is larger than the actualWidth and actualHeight might fail to invalidate the component.
+* FeathersControl: fixed issue where setting the validation queue before initialization could cause a navigator to trigger validation when showing a screen during initialization and validate something too early.
 * FocusManager: fixed issue where getFocusManagerForStage() threw a RangeError if stack size is 0 instead of returning null.
 * FontStylesSet: added dispose() method to make sure event listeners are removed (to be called by the parent of the text renderer/editor).
 * FontStylesSet: no longer calls clone() on starling.text.TextFormat because this prevents detection of changes to original TextFormat object. This reverts a change in Feathers 3.1.2 and goes back to previous behavior (while still fixing the memory leak that prompted the change).
