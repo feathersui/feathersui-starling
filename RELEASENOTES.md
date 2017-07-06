@@ -13,6 +13,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BottomDrawerPopUpContentManager, CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where the content was not scaled the same as the origin.
 * Callout: fixed issue where stage dimensions were not accounted for when calculating maximum dimensions of content.
 * Callout: fixed issue where moving origin when content is smaller than background skin could cause content to be rendered at incorrect size.
+* Cover, Reveal, Wipe: fixed issue where runtime error could be thrown if mask was unexpectedly removed from display objects.
 * DateTimeSpinner: fixed issue where you could not set the itemRendererFactory directly on the inner SpinnerLists when the DateTimeSpinner itemRendererFactory was null.
 * DefaultFocusManager: fixed issue where addEventListener() was called where removeEventListener() should have been called, potentially causing a memory leak.
 * Direction: added NONE constant that may be used in some situations.

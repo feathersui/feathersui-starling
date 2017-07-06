@@ -280,7 +280,7 @@ class CoverTween extends Tween
 
 	private function updateNewScreen():void
 	{
-		var mask:Quad = Quad(this._temporaryParent.mask);
+		var mask:Quad = Quad(this.target);
 		if(this._savedXOffset < 0)
 		{
 			this._savedNewScreen.x = mask.width;

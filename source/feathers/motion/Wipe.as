@@ -168,6 +168,7 @@ class WipeTween extends Tween
 			this._newScreenDelegate.scaleX = newScreen.scaleX;
 			this._newScreenDelegate.scaleY = newScreen.scaleY;
 			this._newScreenDelegate.mask = mask;
+			this._newScreenClipRect = mask;
 			newScreen.parent.addChild(this._newScreenDelegate);
 			newScreen.parent.addChild(mask);
 			newScreen.visible = false;
@@ -257,6 +258,7 @@ class WipeTween extends Tween
 
 	private var _oldScreenDelegate:RenderDelegate;
 	private var _newScreenDelegate:RenderDelegate;
+	private var _newScreenClipRect:Quad;
 	private var _savedOldScreen:DisplayObject;
 	private var _savedNewScreen:DisplayObject;
 	private var _savedXOffset:Number;
@@ -266,24 +268,23 @@ class WipeTween extends Tween
 	private function updateNewScreen():void
 	{
 		var oldScreenClipRect:Quad = Quad(this.target);
-		var newScreenClipRect:Quad = Quad(this._newScreenDelegate.mask);
 		if(this._savedXOffset < 0)
 		{
-			newScreenClipRect.x = oldScreenClipRect.width;
-			newScreenClipRect.width = this._savedNewScreen.width - newScreenClipRect.x;
+			this._newScreenClipRect.x = oldScreenClipRect.width;
+			this._newScreenClipRect.width = this._savedNewScreen.width - this._newScreenClipRect.x;
 		}
 		else if(this._savedXOffset > 0)
 		{
-			newScreenClipRect.width = oldScreenClipRect.x;
+			this._newScreenClipRect.width = oldScreenClipRect.x;
 		}
 		if(this._savedYOffset < 0)
 		{
-			newScreenClipRect.y = oldScreenClipRect.height;
-			newScreenClipRect.height = this._savedNewScreen.height - newScreenClipRect.y;
+			this._newScreenClipRect.y = oldScreenClipRect.height;
+			this._newScreenClipRect.height = this._savedNewScreen.height - this._newScreenClipRect.y;
 		}
 		else if(this._savedYOffset > 0)
 		{
-			newScreenClipRect.height = oldScreenClipRect.y;
+			this._newScreenClipRect.height = oldScreenClipRect.y;
 		}
 	}
 
@@ -291,13 +292,14 @@ class WipeTween extends Tween
 	{
 		if(this._oldScreenDelegate)
 		{
-			this._oldScreenDelegate.mask.removeFromParent(true);
+			Quad(this.target).removeFromParent(true);
 			this._oldScreenDelegate.removeFromParent(true);
 			this._oldScreenDelegate = null;
 		}
 		if(this._newScreenDelegate)
 		{
-			this._newScreenDelegate.mask.removeFromParent(true);
+			this._newScreenClipRect.removeFromParent(true);
+			this._newScreenClipRect = null;
 			this._newScreenDelegate.removeFromParent(true);
 			this._newScreenDelegate = null;
 		}
