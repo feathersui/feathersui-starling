@@ -129,7 +129,19 @@ package feathers.controls.popups
 		 *
 		 * @default null
 		 */
-		public var customPanelStyleName:String;
+		public var customPanelStyleName:String = null;
+
+		/**
+		 * Adds a style name to the close button.
+		 *
+		 * <p>In the following example, a custom style name is provided:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.customCloseButtonStyleName = "my-custom-close-button";</listing>
+		 *
+		 * @default null
+		 */
+		public var customCloseButtonStyleName:String = null;
 
 		/**
 		 * @private
@@ -407,6 +419,10 @@ package feathers.controls.popups
 		{
 			var header:Header = new Header();
 			var closeButton:Button = new Button();
+			if(this.customCloseButtonStyleName !== null)
+			{
+				closeButton.styleNameList.add(this.customCloseButtonStyleName);
+			}
 			closeButton.label = this.closeButtonLabel;
 			closeButton.addEventListener(Event.TRIGGERED, closeButton_triggeredHandler);
 			header.rightItems = new <DisplayObject>[closeButton];

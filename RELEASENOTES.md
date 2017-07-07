@@ -10,6 +10,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BaseDefaultItemRenderer: fixed issue where icon or accessory dimensions were not accounted for in measurement if item renderer does not have a label.
 * BaseLinearLayout: new abstract base class for HorizontalLayout and VerticalLayout that shares common code.
 * BaseTiledLayout: new abstract base class for TiledRowsLayout and TiledColumnsLayout that shares common code.
+* BottomDrawerPopUpContentManager: added customCloseButtonStyleName to customize the style name of the close button in the theme.
 * BottomDrawerPopUpContentManager, CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where the content was not scaled the same as the origin.
 * Callout: fixed issue where stage dimensions were not accounted for when calculating maximum dimensions of content.
 * Callout: fixed issue where moving origin when content is smaller than background skin could cause content to be rendered at incorrect size.
