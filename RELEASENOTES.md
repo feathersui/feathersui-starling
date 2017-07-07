@@ -42,6 +42,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Scroller: fixed issue with snapScrollPositionToPixels where the animation would appear to complete because it had already snapped to the final pixel, but there could still be more time left on the animation.
 * Scroller: fixed issue where measured view port dimensions (such as those from a layout) that are smaller than content dimensions would cause the full dimensions to exclude the scroll bars. This would sometimes cause both horizontal and vertical scroll bars to appear when only one should be required.
 * Scroller: fixed incorrect maximum page index calculation caused by floating point math error and Math.ceil.
+* Scroller: fixed issue where pull views with pivots were not masked correctly.
 * ScrollContainer: fixed issue where children positioned at negative coordinates did not affect the minimum scroll position.
 * ScrollContainer: fixed issue where pivotX and pivotY were not scaled when calculating item position.
 * SpinnerList: fixed issue where an item renderer that is disabled could be incorrectly selected. Returns to the previously selected index if the scroll position lands on a disabled item renderer.

@@ -5988,7 +5988,7 @@ package feathers.controls
 		{
 			var pullViewHeight:Number = this._topPullView.height / this._topPullView.scaleY;
 			var mask:DisplayObject = this._topPullView.mask;
-			var maskHeight:Number = pullViewHeight + ((this._topPullView.y - this._paddingTop) / this._topPullView.scaleY);
+			var maskHeight:Number = pullViewHeight + ((this._topPullView.y - this._topPullView.pivotY * this._topPullView.scaleY - this._paddingTop) / this._topPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -6010,7 +6010,7 @@ package feathers.controls
 		{
 			var pullViewWidth:Number = this._rightPullView.width / this._rightPullView.scaleX;
 			var mask:DisplayObject = this._rightPullView.mask;
-			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - (this._rightPullView.x / this._rightPullView.scaleX);
+			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - ((this._rightPullView.x - this._rightPullView.pivotX / this._rightPullView.scaleX) / this._rightPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
@@ -6032,7 +6032,7 @@ package feathers.controls
 		{
 			var pullViewHeight:Number = this._bottomPullView.height / this._bottomPullView.scaleY;
 			var mask:DisplayObject = this._bottomPullView.mask;
-			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - (this._bottomPullView.y / this._bottomPullView.scaleY);
+			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - ((this._bottomPullView.y - this._bottomPullView.pivotY / this._bottomPullView.scaleY) / this._bottomPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -6054,7 +6054,7 @@ package feathers.controls
 		{
 			var pullViewWidth:Number = this._leftPullView.width / this._leftPullView.scaleX;
 			var mask:DisplayObject = this._leftPullView.mask;
-			var maskWidth:Number = pullViewWidth + ((this._leftPullView.x - this._paddingLeft) / this._leftPullView.scaleX);
+			var maskWidth:Number = pullViewWidth + ((this._leftPullView.x - this._leftPullView.pivotX * this._leftPullView.scaleX - this._paddingLeft) / this._leftPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
