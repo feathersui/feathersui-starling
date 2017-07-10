@@ -19,6 +19,20 @@ package feathers.system
 	public class DeviceCapabilities
 	{
 		/**
+		 * Indicates if the arrow and enter keys on a standard keyboard are
+		 * treated the same as a d-pad. If <code>true</code>, focus and other
+		 * behaviors may be controlled with a standard keyboard.
+		 *
+		 * <p>In the following example, the D-Pad is simulated:</p>
+		 *
+		 * <listing version="3.0">
+		 * DeviceCapabilities.simulateDPad = true;</listing>
+		 *
+		 * @default false
+		 */
+		public static var simulateDPad:Boolean = false;
+
+		/**
 		 * The minimum physical size, in inches, of the device's larger side to
 		 * be considered a tablet.
 		 *

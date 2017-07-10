@@ -36,6 +36,7 @@ package feathers.core
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatched when the value of the <code>focus</code> property changes.
@@ -313,41 +314,6 @@ package feathers.core
 				this._savedFocus = value;
 			}
 			this.dispatchEventWith(Event.CHANGE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _simulateDPad:Boolean = false;
-
-		/**
-		 * Indicates if the arrow keys on a standard keyboard are treated the
-		 * same as a d-pad. If <code>true</code>, focus may be controlled with
-		 * a standard keyboard.
-		 *
-		 * <p>In the following example, the D-Pad is simulated:</p>
-		 *
-		 * <listing version="3.0">
-		 * FocusManager.focusManagerFactory = function(root:DisplayObjectContainer):IFocusManager
-		 * {
-		 *    var focusManager:DefaultFocusManager = new DefaultFocusManager(root);
-		 *    focusManager.simulateDPad = true;
-		 *    return focusManager;
-		 * }</listing>
-		 *
-		 * @default false
-		 */
-		public function get simulateDPad():Boolean
-		{
-			return this._simulateDPad;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set simulateDPad(value:Boolean):void
-		{
-			this._simulateDPad = value;
 		}
 
 		/**
@@ -849,7 +815,7 @@ package feathers.core
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyLocation !== KeyLocation.D_PAD && !this._simulateDPad)
+			if(event.keyLocation !== KeyLocation.D_PAD && !DeviceCapabilities.simulateDPad)
 			{
 				//focus is controlled only with a d-pad and not the regular
 				//keyboard arrow keys
