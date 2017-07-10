@@ -484,8 +484,9 @@ package feathers.controls
 	 * button.scaleWhenDown = 0.9;</listing>
 	 *
 	 * @default 1
-	 * 
-	 * @see #style:scaleWhenHovering
+	 *
+	 * @see #getScaleForState()
+	 * @see #setScaleForState()
 	 */
 	[Style(name="scaleWhenDown",type="Number")]
 
@@ -499,7 +500,8 @@ package feathers.controls
 	 *
 	 * @default 1
 	 *
-	 * @see #style:scaleWhenDown
+	 * @see #getScaleForState()
+	 * @see #setScaleForState()
 	 */
 	[Style(name="scaleWhenHovering",type="Number")]
 
@@ -2241,14 +2243,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _scaleWhenDown:Number = 1;
+		protected var _stateToScale:Object = {};
 
 		/**
 		 * @private
 		 */
 		public function get scaleWhenDown():Number
 		{
-			return this._scaleWhenDown;
+			return this.getScaleForState(ButtonState.DOWN);
 		}
 
 		/**
@@ -2256,28 +2258,15 @@ package feathers.controls
 		 */
 		public function set scaleWhenDown(value:Number):void
 		{
-			if(this.processStyleRestriction(arguments.callee))
-			{
-				return;
-			}
-			if(this._scaleWhenDown === value)
-			{
-				return;
-			}
-			this._scaleWhenDown = value;
+			this.setScaleForState(ButtonState.DOWN, value);
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _scaleWhenHovering:Number = 1;
 
 		/**
 		 * @private
 		 */
 		public function get scaleWhenHovering():Number
 		{
-			return this._scaleWhenHovering;
+			return this.getScaleForState(ButtonState.HOVER);
 		}
 
 		/**
@@ -2285,15 +2274,7 @@ package feathers.controls
 		 */
 		public function set scaleWhenHovering(value:Number):void
 		{
-			if(this.processStyleRestriction(arguments.callee))
-			{
-				return;
-			}
-			if(this._scaleWhenHovering === value)
-			{
-				return;
-			}
-			this._scaleWhenHovering = value;
+			this.setScaleForState(ButtonState.HOVER, value);
 		}
 
 		/**
@@ -2334,15 +2315,7 @@ package feathers.controls
 		 */
 		override public function render(painter:Painter):void
 		{
-			var scale:Number = 1;
-			if(this._currentState === ButtonState.DOWN)
-			{
-				scale = this._scaleWhenDown;
-			}
-			else if(this._currentState === ButtonState.HOVER)
-			{
-				scale = this._scaleWhenHovering;
-			}
+			var scale:Number = this.getCurrentScale();
 			if(scale !== 1)
 			{
 				var matrix:Matrix = Pool.getMatrix();
@@ -2494,6 +2467,51 @@ package feathers.controls
 				delete this._stateToIcon[state];
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Gets the scale to be used by the button when the button's
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If a scale is not defined for a specific state, returns
+		 * <code>NaN</code>.</p>
+		 *
+		 * @see #setScaleForState()
+		 */
+		public function getScaleForState(state:String):Number
+		{
+			if(state in this._stateToScale)
+			{
+				return this._stateToScale[state] as Number;
+			}
+			return NaN;
+		}
+
+		/**
+		 * Sets the scale to be used by the button when the button's
+		 * <code>currentState</code> property matches the specified state value.
+		 *
+		 * <p>If an icon is not defined for a specific state, the value of the
+		 * <code>defaultIcon</code> property will be used instead.</p>
+		 *
+		 * @see #getScaleForState()
+		 * @see feathers.controls.ButtonState
+		 */
+		public function setScaleForState(state:String, scale:Number):void
+		{
+			var key:String = "setScaleForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
+			if(scale === scale) //!isNaN
+			{
+				this._stateToScale[state] = scale;
+			}
+			else
+			{
+				delete this._stateToScale[state];
+			}
 		}
 
 		/**
@@ -2845,13 +2863,7 @@ package feathers.controls
 				return;
 			}
 			super.changeState(state);
-			if(this._scaleWhenHovering !== 1 &&
-				(state === ButtonState.HOVER || oldState === ButtonState.HOVER))
-			{
-				this.setRequiresRedraw();
-			}
-			else if(this._scaleWhenDown !== 1 &&
-				(state === ButtonState.DOWN || oldState === ButtonState.DOWN))
+			if(this.getCurrentScale() !== 1)
 			{
 				this.setRequiresRedraw();
 			}
@@ -2999,6 +3011,18 @@ package feathers.controls
 				return result;
 			}
 			return this._defaultIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getCurrentScale():Number
+		{
+			if(this._currentState in this._stateToScale)
+			{
+				return this._stateToScale[this._currentState];
+			}
+			return 1;
 		}
 
 		/**

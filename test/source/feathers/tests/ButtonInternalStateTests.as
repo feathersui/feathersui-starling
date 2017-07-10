@@ -250,6 +250,136 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Button state is not ButtonState.DOWN on TouchPhase.BEGAN", ButtonState.DOWN, this._button.currentState);
 			Assert.assertStrictlyEquals("Button icon label font size does not match format set with downLabelProperties when currentState is ButtonState.DOWN and icon not provided for this state", downFontSize, textRenderer.textFormat.size);
 		}
+
+		[Test]
+		public function testGetScaleForStateWithoutSetSkinForState():void
+		{
+			Assert.assertTrue("Button getScaleForState(ButtonState.UP) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.UP)));
+			Assert.assertTrue("Button getScaleForState(ButtonState.HOVER) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.HOVER)));
+			Assert.assertTrue("Button getScaleForState(ButtonState.DOWN) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DOWN)));
+			Assert.assertTrue("Button getScaleForState(ButtonState.DISABLED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DISABLED)));
+		}
+
+		[Test]
+		public function testGetScaleForState():void
+		{
+			var upScale:Number = 1.1;
+			this._button.setScaleForState(ButtonState.UP, upScale);
+
+			var hoverScale:Number = 1.2;
+			this._button.setScaleForState(ButtonState.HOVER, hoverScale);
+
+			var downScale:Number = 1.3;
+			this._button.setScaleForState(ButtonState.DOWN, downScale);
+
+			var disabledScale:Number = 1.4;
+			this._button.setScaleForState(ButtonState.DISABLED, disabledScale);
+
+			Assert.assertStrictlyEquals("Button getScaleForState(ButtonState.UP) does not match value passed to setScaleForState()", upScale, this._button.getScaleForState(ButtonState.UP));
+			Assert.assertStrictlyEquals("Button getScaleForState(ButtonState.HOVER) does not match value passed to setScaleForState()", hoverScale, this._button.getScaleForState(ButtonState.HOVER));
+			Assert.assertStrictlyEquals("Button getScaleForState(ButtonState.DOWN) does not match value passed to setScaleForState()", downScale, this._button.getScaleForState(ButtonState.DOWN));
+			Assert.assertStrictlyEquals("Button getScaleForState(ButtonState.DISABLED) does not match value passed to setScaleForState()", disabledScale, this._button.getScaleForState(ButtonState.DISABLED));
+		}
+
+		[Test]
+		public function testDefaultCurrentScale():void
+		{
+			this._button.defaultSkin = new Quad(200, 200);
+
+			this._button.isEnabled = false;
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.DISABLED when isEnabled is false",
+				ButtonState.DISABLED, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale is not 1 when currentState is ButtonState.DISABLED and scale not provided for this state",
+				1, this._button.currentScaleInternal);
+
+			this._button.isEnabled = true;
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be button", this._button, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.HOVER on TouchPhase.HOVER",
+				ButtonState.HOVER, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale is not 1 when currentState is ButtonState.HOVER and scale not provided for this state",
+				1, this._button.currentScaleInternal);
+
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.DOWN on TouchPhase.BEGAN",
+				ButtonState.DOWN, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale is not 1 when currentState is ButtonState.DOWN and scale not provided for this state",
+				1, this._button.currentScaleInternal);
+		}
+
+		[Test]
+		public function testCurrentScaleWithSetScaleForState():void
+		{
+			this._button.defaultSkin = new Quad(200, 200);
+
+			var upScale:Number = 1.1;
+			this._button.setScaleForState(ButtonState.UP, upScale);
+
+			var hoverScale:Number = 1.2;
+			this._button.setScaleForState(ButtonState.HOVER, hoverScale);
+
+			var downScale:Number = 1.3;
+			this._button.setScaleForState(ButtonState.DOWN, downScale);
+
+			var disabledScale:Number = 1.4;
+			this._button.setScaleForState(ButtonState.DISABLED, disabledScale);
+
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.UP with no touch",
+				ButtonState.UP, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale does not match scale set with setScaleForState() when currentState is ButtonState.UP",
+				upScale, this._button.currentScaleInternal);
+
+			this._button.isEnabled = false;
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.DISABLED when isEnabled is false",
+				ButtonState.DISABLED, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale does not match scale set with setScaleForState() when currentState is ButtonState.DISABLED",
+				disabledScale, this._button.currentScaleInternal);
+
+			this._button.isEnabled = true;
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be button", this._button, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.HOVER on TouchPhase.HOVER",
+				ButtonState.HOVER, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale does not match scale set with setScaleForState() when currentState is ButtonState.HOVER and scale not provided for this state",
+				hoverScale, this._button.currentScaleInternal);
+
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("Button state is not ButtonState.DOWN on TouchPhase.BEGAN",
+				ButtonState.DOWN, this._button.currentState);
+			Assert.assertStrictlyEquals("Button scale does not match scale set with setScaleForState() when currentState is ButtonState.DOWN and scale not provided for this state",
+				downScale, this._button.currentScaleInternal);
+		}
 	}
 }
 
@@ -273,5 +403,10 @@ class ButtonWithInternalState extends Button
 	public function get currentIconInternal():DisplayObject
 	{
 		return this.currentIcon;
+	}
+
+	public function get currentScaleInternal():Number
+	{
+		return this.getCurrentScale();
 	}
 }

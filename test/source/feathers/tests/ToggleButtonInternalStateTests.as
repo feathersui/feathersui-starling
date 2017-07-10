@@ -318,7 +318,7 @@ package feathers.tests
 			var touches:Vector.<Touch> = new <Touch>[touch];
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			this._button.validate();
-			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.HOVER_AND_SELECTED on TouchPhase.HOVER_AND_SELECTED and isSelected is true", ButtonState.HOVER_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.HOVER_AND_SELECTED on TouchPhase.HOVER and isSelected is true", ButtonState.HOVER_AND_SELECTED, this._button.currentState);
 			Assert.assertStrictlyEquals("ToggleButton icon does not match icon set with setIconForState() when currentState is ButtonState.HOVER_AND_SELECTED and icon not provided for this state", selectedHoverIcon, this._button.currentIconInternal);
 
 			touch.phase = TouchPhase.BEGAN;
@@ -326,6 +326,163 @@ package feathers.tests
 			this._button.validate();
 			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.DOWN_AND_SELECTED on TouchPhase.BEGAN and isSelected is true", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
 			Assert.assertStrictlyEquals("ToggleButton icon does not match icon set with setIconForState() when currentState is ButtonState.DOWN_AND_SELECTED and icon not provided for this state", selectedDownIcon, this._button.currentIconInternal);
+		}
+
+		[Test]
+		public function testGetScaleForStateWithoutSetSkinForState():void
+		{
+			Assert.assertStrictlyEquals("ToggleButton scaleWhenSelected must be NaN by default",
+				1, this._button.scaleWhenSelected);
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.UP) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.UP)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.HOVER) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.HOVER)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.DOWN) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DOWN)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.DISABLED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DISABLED)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.UP_AND_SELECTED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.UP_AND_SELECTED)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.HOVER_AND_SELECTED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.HOVER_AND_SELECTED)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.DOWN_AND_SELECTED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DOWN_AND_SELECTED)));
+			Assert.assertTrue("ToggleButton getScaleForState(ButtonState.DISABLED_AND_SELECTED) must be NaN when setScaleForState() is not called",
+				isNaN(this._button.getScaleForState(ButtonState.DISABLED_AND_SELECTED)));
+		}
+
+		[Test]
+		public function testGetScaleForState():void
+		{
+			var upScale:Number = 1.1;
+			this._button.setScaleForState(ButtonState.UP, upScale);
+
+			var hoverScale:Number = 1.2;
+			this._button.setScaleForState(ButtonState.HOVER, hoverScale);
+
+			var downScale:Number = 1.3;
+			this._button.setScaleForState(ButtonState.DOWN, downScale);
+
+			var disabledScale:Number = 1.4;
+			this._button.setScaleForState(ButtonState.DISABLED, disabledScale);
+
+			var scaleWhenSelected:Number = 1.5;
+			this._button.scaleWhenSelected = scaleWhenSelected;
+
+			var selectedUpScale:Number = 1.6;
+			this._button.setScaleForState(ButtonState.UP_AND_SELECTED, selectedUpScale);
+
+			var selectedHoverScale:Number = 1.7;
+			this._button.setScaleForState(ButtonState.HOVER_AND_SELECTED, selectedHoverScale);
+
+			var selectedDownScale:Number = 1.8;
+			this._button.setScaleForState(ButtonState.DOWN_AND_SELECTED, selectedDownScale);
+
+			var selectedDisabledScale:Number = 1.9;
+			this._button.setScaleForState(ButtonState.DISABLED_AND_SELECTED, selectedDisabledScale);
+
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.UP) does not match value passed to setScaleForState()", upScale, this._button.getScaleForState(ButtonState.UP));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.HOVER) does not match value passed to setScaleForState()", hoverScale, this._button.getScaleForState(ButtonState.HOVER));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.DOWN) does not match value passed to setScaleForState()", downScale, this._button.getScaleForState(ButtonState.DOWN));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.DISABLED) does not match value passed to setScaleForState()", disabledScale, this._button.getScaleForState(ButtonState.DISABLED));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.UP_AND_SELECTED) does not match value passed to setScaleForState()", selectedUpScale, this._button.getScaleForState(ButtonState.UP_AND_SELECTED));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.HOVER_AND_SELECTED) does not match value passed to setScaleForState()", selectedHoverScale, this._button.getScaleForState(ButtonState.HOVER_AND_SELECTED));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.DOWN_AND_SELECTED) does not match value passed to setScaleForState()", selectedDownScale, this._button.getScaleForState(ButtonState.DOWN_AND_SELECTED));
+			Assert.assertStrictlyEquals("ToggleButton getScaleForState(ButtonState.DISABLED_AND_SELECTED) does not match value passed to setScaleForState()", selectedDisabledScale, this._button.getScaleForState(ButtonState.DISABLED_AND_SELECTED));
+		}
+
+		[Test]
+		public function testDefaultCurrentScale():void
+		{
+			this._button.defaultSkin = new Quad(200, 200);
+			this._button.isSelected = true;
+
+			var scaleWhenSelected:Number = 1.5;
+			this._button.scaleWhenSelected = scaleWhenSelected;
+
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.UP_AND_SELECTED with no touch and isSelected is true", ButtonState.UP_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale is not scaleWhenSelected when currentState is ButtonState.UP_AND_SELECTED and scale not provided for this state", scaleWhenSelected, this._button.currentScaleInternal);
+
+			this._button.isEnabled = false;
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.DISABLED_AND_SELECTED when isEnabled is false and isSelected is true", ButtonState.DISABLED_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale is not scaleWhenSelected when currentState is ButtonState.DISABLED_AND_SELECTED and scale not provided for this state", scaleWhenSelected, this._button.currentScaleInternal);
+
+			this._button.isEnabled = true;
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be button", this._button, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.HOVER_AND_SELECTED on TouchPhase.HOVER and isSelected is true", ButtonState.HOVER_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale is not scaleWhenSelected when currentState is ButtonState.HOVER and scale not provided for this state", scaleWhenSelected, this._button.currentScaleInternal);
+
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.DOWN_AND_SELECTED on TouchPhase.BEGAN and isSelected is true", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale is not scaleWhenSelected when currentState is ButtonState.DOWN and scale not provided for this state", scaleWhenSelected, this._button.currentScaleInternal);
+		}
+
+		[Test]
+		public function testCurrentScaleWithSetScaleForState():void
+		{
+			this._button.defaultSkin = new Quad(200, 200);
+			this._button.isSelected = true;
+			
+			var scaleWhenSelected:Number = 2.0;
+			this._button.scaleWhenSelected = scaleWhenSelected;
+
+			var selectedUpScale:Number = 1.1;
+			this._button.setScaleForState(ButtonState.UP_AND_SELECTED, selectedUpScale);
+
+			var selectedHoverScale:Number = 1.2;
+			this._button.setScaleForState(ButtonState.HOVER_AND_SELECTED, selectedHoverScale);
+
+			var selectedDownScale:Number = 1.3;
+			this._button.setScaleForState(ButtonState.DOWN_AND_SELECTED, selectedDownScale);
+
+			var selectedDisabledScale:Number = 1.4;
+			this._button.setScaleForState(ButtonState.DISABLED_AND_SELECTED, selectedDisabledScale);
+
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.UP_AND_SELECTED with no touch and isSelected is true", ButtonState.UP_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale does not match scale set with setScaleForState() when currentState is ButtonState.UP_AND_SELECTED", selectedUpScale, this._button.currentScaleInternal);
+
+			this._button.isEnabled = false;
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.DISABLED_AND_SELECTED when isEnabled is false and isSelected is true", ButtonState.DISABLED_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale does not match scale set with setScaleForState() when currentState is ButtonState.DISABLED_AND_SELECTED", selectedDisabledScale, this._button.currentScaleInternal);
+
+			this._button.isEnabled = true;
+
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position);
+			Assert.assertStrictlyEquals("Touch target must be button", this._button, target);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.HOVER_AND_SELECTED on TouchPhase.HOVER and isSelected is true", ButtonState.HOVER_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale does not match scale set with setScaleForState() when currentState is ButtonState.HOVER_AND_SELECTED and scale not provided for this state", selectedHoverScale, this._button.currentScaleInternal);
+
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			this._button.validate();
+			Assert.assertStrictlyEquals("ToggleButton state is not ButtonState.DOWN_AND_SELECTED on TouchPhase.BEGAN and isSelected is true", ButtonState.DOWN_AND_SELECTED, this._button.currentState);
+			Assert.assertStrictlyEquals("ToggleButton scale does not match scale set with setScaleForState() when currentState is ButtonState.DOWN_AND_SELECTED and scale not provided for this state", selectedDownScale, this._button.currentScaleInternal);
 		}
 	}
 }
@@ -355,5 +512,10 @@ class ToggleButtonWithInternalState extends ToggleButton
 	public function get currentIconInternal():DisplayObject
 	{
 		return this.currentIcon;
+	}
+
+	public function get currentScaleInternal():Number
+	{
+		return this.getCurrentScale();
 	}
 }

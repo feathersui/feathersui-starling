@@ -70,6 +70,23 @@ package feathers.controls
 	[Style(name="defaultSelectedSkin",type="starling.display.DisplayObject")]
 
 	/**
+	 * If not <code>NaN</code>, the button renders at this scale when selected.
+	 * Otherwise, defaults to <code>1</code>.
+	 *
+	 * <p>The following example scales the button when selected:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.scaleWhenSelected = 0.9;</listing>
+	 *
+	 * @default 1
+	 * 
+	 * @see #isSelected
+	 * @see #getScaleForState()
+	 * @see #setScaleForState()
+	 */
+	[Style(name="scaleWhenSelected",type="Number")]
+
+	/**
 	 * The icon used for the button's disabled state when the button is
 	 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
 	 * is used instead. If <code>defaultSelectedIcon</code> is also
@@ -1274,6 +1291,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scaleWhenSelected:Number = 1;
+
+		/**
+		 * @private
+		 */
+		public function get scaleWhenSelected():Number
+		{
+			return this._scaleWhenSelected;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleWhenSelected(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._scaleWhenSelected === value)
+			{
+				return;
+			}
+			this._scaleWhenSelected = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._defaultSelectedSkin && this._defaultSelectedSkin.parent !== this)
@@ -1374,6 +1420,23 @@ package feathers.controls
 				return this._defaultIcon;
 			}
 			return super.getCurrentIcon();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function getCurrentScale():Number
+		{
+			var state:String = this.currentState;
+			if(state in this._stateToScale)
+			{
+				return this._stateToScale[state];
+			}
+			else if(this._isSelected)
+			{
+				return this._scaleWhenSelected;
+			}
+			return 1;
 		}
 
 		/**
