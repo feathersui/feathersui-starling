@@ -15,6 +15,9 @@ package feathers.utils.keyboard
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.core.IFocusManager;
+	import feathers.core.DefaultFocusManager;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatches an event from the target when a key is pressed and released
@@ -224,6 +227,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusInHandler(event:Event):void
 		{
+			var focusManager:DefaultFocusManager = this._target.focusManager as DefaultFocusManager;
 			this._stage = this._target.stage;
 			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
@@ -273,7 +277,7 @@ package feathers.utils.keyboard
 				return;
 			}
 			if(this._keyLocation !== uint.MAX_VALUE &&
-				event.keyLocation !== this._keyLocation)
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
 			{
 				return;	
 			}
@@ -294,9 +298,9 @@ package feathers.utils.keyboard
 				return;
 			}
 			if(this._keyLocation !== uint.MAX_VALUE &&
-				event.keyLocation !== this._keyLocation)
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;
+				return;	
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

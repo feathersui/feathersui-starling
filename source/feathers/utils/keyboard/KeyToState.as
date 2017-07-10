@@ -16,6 +16,7 @@ package feathers.utils.keyboard
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Changes a target's state when a key is pressed or released on the
@@ -359,7 +360,7 @@ package feathers.utils.keyboard
 				return;
 			}
 			if(this._keyLocation !== uint.MAX_VALUE &&
-				event.keyLocation !== this._keyLocation)
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
 			{
 				return;	
 			}
@@ -381,7 +382,7 @@ package feathers.utils.keyboard
 				return;
 			}
 			if(this._keyLocation !== uint.MAX_VALUE &&
-				event.keyLocation !== this._keyLocation)
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
 			{
 				return;	
 			}
