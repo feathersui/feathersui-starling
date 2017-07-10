@@ -10,6 +10,7 @@ package feathers.utils.keyboard
 	import feathers.core.IFocusDisplayObject;
 
 	import starling.events.Event;
+	import flash.ui.Keyboard;
 
 	/**
 	 * Dispatches <code>Event.TRIGGERED</code> from the target when a key is
@@ -26,7 +27,7 @@ package feathers.utils.keyboard
 	 *     {
 	 *         super();
 	 *         this._keyToTrigger = new KeyToTrigger(this);
-	 *         this._keyToTrigger.keyCode = Keyboard.SPACE;
+	 *         this._keyToTrigger.keyCode = Keyboard.ENTER;
 	 *     }
 	 *     
 	 *     private var _keyToTrigger:KeyToTrigger;
@@ -48,9 +49,9 @@ package feathers.utils.keyboard
 		/**
 		 * Constructor.
 		 */
-		public function KeyToTrigger(target:IFocusDisplayObject = null)
+		public function KeyToTrigger(target:IFocusDisplayObject = null, keyCode:uint = Keyboard.SPACE)
 		{
-			super(target, Event.TRIGGERED);
+			super(target, keyCode, Event.TRIGGERED);
 		}
 	}
 }

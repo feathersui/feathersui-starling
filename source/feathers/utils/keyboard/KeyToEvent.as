@@ -47,9 +47,10 @@ package feathers.utils.keyboard
 		/**
 		 * Constructor.
 		 */
-		public function KeyToEvent(target:IFocusDisplayObject = null, eventType:String = null)
+		public function KeyToEvent(target:IFocusDisplayObject = null, keyCode:uint = Keyboard.SPACE, eventType:String = null)
 		{
 			this.target = target;
+			this.keyCode = keyCode;
 			this.eventType = eventType;
 		}
 
@@ -109,7 +110,7 @@ package feathers.utils.keyboard
 		protected var _keyCode:uint = Keyboard.SPACE;
 
 		/**
-		 * The key that will trigger the target, when pressed.
+		 * The key that will dispatch the event, when pressed.
 		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
@@ -132,7 +133,7 @@ package feathers.utils.keyboard
 		protected var _cancelKeyCode:uint = Keyboard.ESCAPE;
 
 		/**
-		 * The key that will cancel the trigger if the key is down.
+		 * The key that will cancel the event if the key is down.
 		 *
 		 * @default flash.ui.Keyboard.ESCAPE
 		 */
@@ -147,6 +148,32 @@ package feathers.utils.keyboard
 		public function set cancelKeyCode(value:uint):void
 		{
 			this._cancelKeyCode = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _keyLocation:uint = uint.MAX_VALUE;
+
+		/**
+		 * The location of the key that will dispatch the event, when pressed.
+		 * If <code>uint.MAX_VALUE</code>, then any key location is allowed.
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see flash.ui.KeyLocation
+		 */
+		public function get keyLocation():uint
+		{
+			return this._keyLocation;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyLocation(value:uint):void
+		{
+			this._keyLocation = value;
 		}
 
 		/**
@@ -239,11 +266,18 @@ package feathers.utils.keyboard
 			if(event.keyCode === this._cancelKeyCode)
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				return;
 			}
-			else if(event.keyCode === this._keyCode)
+			if(event.keyCode !== this._keyCode)
 			{
-				this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				return;
 			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				event.keyLocation !== this._keyLocation)
+			{
+				return;	
+			}
+			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
 
 		/**
@@ -256,6 +290,11 @@ package feathers.utils.keyboard
 				return;
 			}
 			if(event.keyCode !== this._keyCode)
+			{
+				return;
+			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				event.keyLocation !== this._keyLocation)
 			{
 				return;
 			}
