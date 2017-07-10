@@ -18,6 +18,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.text.TextFormat;
+	import flash.ui.Keyboard;
 
 	[Exclude(name="defaultSelectedLabelProperties",kind="property")]
 	[Exclude(name="selectedUpLabelProperties",kind="property")]
@@ -695,6 +696,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var dpadEnterKeyToSelect:KeyToSelect;
+
+		/**
+		 * @private
+		 */
 		protected var _isToggle:Boolean = true;
 
 		/**
@@ -1336,6 +1342,10 @@ package feathers.controls
 				//other clean up that is needed
 				this.keyToSelect.target = null;
 			}
+			if(this.dpadEnterKeyToSelect !== null)
+			{
+				this.dpadEnterKeyToSelect.target = null;
+			}
 			if(this.tapToSelect !== null)
 			{
 				this.tapToSelect.target = null;
@@ -1357,6 +1367,11 @@ package feathers.controls
 			if(!this.keyToSelect)
 			{
 				this.keyToSelect = new KeyToSelect(this);
+			}
+			if(!this.dpadEnterKeyToSelect)
+			{
+				this.dpadEnterKeyToSelect = new KeyToSelect(this, Keyboard.ENTER);
+				this.dpadEnterKeyToState.keyLocation = 4; //KeyLocation.D_PAD is only in AIR
 			}
 		}
 
@@ -1471,6 +1486,8 @@ package feathers.controls
 			this.tapToSelect.tapToDeselect = this._isToggle;
 			this.keyToSelect.isEnabled = this._isEnabled && this._isToggle;
 			this.keyToSelect.keyToDeselect = this._isToggle;
+			this.dpadEnterKeyToSelect.isEnabled = this._isEnabled && this._isToggle;
+			this.dpadEnterKeyToSelect.keyToDeselect = this._isToggle;
 		}
 	}
 }

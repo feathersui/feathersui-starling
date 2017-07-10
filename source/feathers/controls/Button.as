@@ -35,6 +35,7 @@ package feathers.controls
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
+	import flash.ui.Keyboard;
 
 	[Exclude(name="stateToIconFunction",kind="property")]
 	[Exclude(name="stateToLabelPropertiesFunction",kind="property")]
@@ -1060,6 +1061,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var longPress:LongPress;
+
+		/**
+		 * @private
+		 */
+		protected var dpadEnterKeyToTrigger:KeyToTrigger;
+
+		/**
+		 * @private
+		 */
+		protected var dpadEnterKeyToState:KeyToState;
 
 		/**
 		 * @private
@@ -2358,6 +2369,14 @@ package feathers.controls
 			{
 				this.keyToTrigger.target = null;
 			}
+			if(this.dpadEnterKeyToState !== null)
+			{
+				this.dpadEnterKeyToState.target = null;
+			}
+			if(this.dpadEnterKeyToTrigger !== null)
+			{
+				this.dpadEnterKeyToTrigger.target = null;
+			}
 			if(this._fontStylesSet !== null)
 			{
 				this._fontStylesSet.dispose();
@@ -2531,6 +2550,17 @@ package feathers.controls
 			if(this.longPress === null)
 			{
 				this.longPress = new LongPress(this);
+			}
+			if(this.dpadEnterKeyToState === null)
+			{
+				this.dpadEnterKeyToState = new KeyToState(this, this.changeState);
+				this.dpadEnterKeyToState.keyCode = Keyboard.ENTER;
+				this.dpadEnterKeyToState.keyLocation = 4; //KeyLocation.D_PAD is only in AIR
+			}
+			if(this.dpadEnterKeyToTrigger === null)
+			{
+				this.dpadEnterKeyToTrigger = new KeyToTrigger(this, Keyboard.ENTER);
+				this.dpadEnterKeyToTrigger.keyLocation = 4; //KeyLocation.D_PAD is only in AIR
 			}
 			this.longPress.tapToTrigger = this.tapToTrigger;
 		}
@@ -3068,6 +3098,7 @@ package feathers.controls
 		{
 			super.refreshTriggeredEvents();
 			this.keyToTrigger.isEnabled = this._isEnabled;
+			this.dpadEnterKeyToTrigger.isEnabled = this._isEnabled;
 		}
 
 		/**
