@@ -46,6 +46,11 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _hasFocus:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _target:IFocusDisplayObject;
 
 		/**
@@ -282,6 +287,29 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _focusedState:String = ButtonState.FOCUSED;
+
+		/**
+		 * The value for the "focused" state.
+		 *
+		 * @default feathers.controls.ButtonState.FOCUSED
+		 */
+		public function get focusedState():String
+		{
+			return this._focusedState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusedState(value:String):void
+		{
+			this._focusedState = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function changeState(value:String):void
 		{
 			if(this._currentState === value)
@@ -298,9 +326,31 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected function focusOut():void
+		{
+			this._hasFocus = false;
+			if(this._stage !== null)
+			{
+				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage = null;
+			}
+			this.resetState();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function resetState():void
 		{
-			this.changeState(this._upState);
+			if(this._hasFocus)
+			{
+				this.changeState(this._focusedState);
+			}
+			else
+			{
+				this.changeState(this._upState);
+			}
 		}
 
 		/**
@@ -308,8 +358,10 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusInHandler(event:Event):void
 		{
+			this._hasFocus = true;
 			this._stage = this._target.stage;
 			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.resetState();
 		}
 
 		/**
@@ -317,13 +369,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusOutHandler(event:Event):void
 		{
-			if(this._stage !== null)
-			{
-				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this._stage = null;
-			}
-			this.resetState();
+			this.focusOut();
 		}
 
 		/**
@@ -331,13 +377,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_removedFromStageHandler(event:Event):void
 		{
-			if(this._stage !== null)
-			{
-				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this._stage = null;
-			}
-			this.resetState();
+			this.focusOut();
 		}
 
 		/**
