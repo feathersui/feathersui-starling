@@ -30,6 +30,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -1625,6 +1626,11 @@ package feathers.controls
 			if(!this._dataProvider)
 			{
 				return;
+			}
+			if(this._selectedIndex !== -1 && (event.keyCode === Keyboard.SPACE ||
+				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			{
+				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
 				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||

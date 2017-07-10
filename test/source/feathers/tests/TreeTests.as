@@ -268,5 +268,33 @@ package feathers.tests
 			this._tree.layout = new AssertViewPortBoundsLayout();
 			this._tree.validate();
 		}
+
+		[Test]
+		public function testTriggeredByTap():void
+		{
+			var hasTriggered:Boolean = false;
+			var triggeredItem:Object = null;
+			this._tree.addEventListener(Event.TRIGGERED, function(event:Event, item:Object):void
+			{
+				hasTriggered = true;
+				triggeredItem = item;
+			});
+			var position:Point = new Point(10, 210);
+			var target:DisplayObject = this._tree.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			//this touch does not move at all, so it should result in triggering
+			//the button.
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
+			Assert.assertStrictlyEquals("Incorrect item passed to Event.TRIGGERED listener",
+				this._tree.dataProvider.getItemAt(1), triggeredItem);
+		}
 	}
 }
