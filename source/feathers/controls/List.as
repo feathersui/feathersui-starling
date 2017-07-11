@@ -22,15 +22,16 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -1647,6 +1648,50 @@ package feathers.controls
 					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
 					Pool.putPoint(point);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this event
+				return;
+			}
+			var keyCode:uint = int.MAX_VALUE;
+			if(event.offsetY < 0)
+			{
+				keyCode = Keyboard.UP;
+			}
+			else if(event.offsetY > 0)
+			{
+				keyCode = Keyboard.DOWN;
+			}
+			else if(event.offsetX > 0)
+			{
+				keyCode = Keyboard.RIGHT;
+			}
+			else if(event.offsetX < 0)
+			{
+				keyCode = Keyboard.LEFT;
+			}
+			if(keyCode === int.MAX_VALUE)
+			{
+				return;
+			}
+			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
+			if(this.selectedIndex !== newIndex)
+			{
+				event.stopImmediatePropagation();
+				//event.preventDefault();
+				this.selectedIndex = newIndex;
+				var point:Point = Pool.getPoint();
+				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
+				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+				Pool.putPoint(point);
 			}
 		}
 

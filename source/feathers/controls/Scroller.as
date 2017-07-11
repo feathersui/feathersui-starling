@@ -28,6 +28,7 @@ package feathers.controls
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
@@ -8467,6 +8468,7 @@ package feathers.controls
 			//display list have a chance to cancel the event first.
 			var priority:int = getDisplayObjectDepthFromStage(this);
 			this.stage.starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
+			this.stage.starling.nativeStage.addEventListener("gestureDirectionalTap", stage_gestureDirectionalTapHandler, false, priority, true);
 		}
 
 		/**
@@ -8476,6 +8478,7 @@ package feathers.controls
 		{
 			super.focusOutHandler(event);
 			this.stage.starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			this.stage.starling.nativeStage.removeEventListener("gestureDirectionalTap", stage_gestureDirectionalTapHandler);
 		}
 
 		/**
@@ -8529,6 +8532,47 @@ package feathers.controls
 			if(this._verticalScrollPosition !== newVerticalScrollPosition)
 			{
 				event.preventDefault();
+				this.verticalScrollPosition = newVerticalScrollPosition;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
+			var newHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+			var newVerticalScrollPosition:Number = this._verticalScrollPosition;
+			if(event.offsetY < 0)
+			{
+				newVerticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
+			}
+			else if(event.offsetY > 0)
+			{
+				newVerticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
+			}
+			else if(event.offsetX < 0)
+			{
+				newHorizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+			}
+			else if(event.offsetX > 0)
+			{
+				newHorizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
+			}
+			if(this._horizontalScrollPosition !== newHorizontalScrollPosition)
+			{
+				event.stopImmediatePropagation();
+				//event.preventDefault();
+				this.horizontalScrollPosition = newHorizontalScrollPosition;
+			}
+			if(this._verticalScrollPosition !== newVerticalScrollPosition)
+			{
+				event.stopImmediatePropagation();
+				//event.preventDefault();
 				this.verticalScrollPosition = newVerticalScrollPosition;
 			}
 		}

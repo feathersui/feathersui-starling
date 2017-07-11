@@ -13,6 +13,7 @@ package feathers.core
 	import feathers.core.IFocusExtras;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.RelativePosition;
+	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.stageToStarling;
 	import feathers.utils.focus.isBetterFocusForRelativePosition;
 
@@ -22,6 +23,7 @@ package feathers.core
 	import flash.events.FocusEvent;
 	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.KeyLocation;
 	import flash.ui.Keyboard;
@@ -36,7 +38,6 @@ package feathers.core
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatched when the value of the <code>focus</code> property changes.
@@ -162,6 +163,9 @@ package feathers.core
 				this._starling.nativeStage.addEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler, false, 0, true);
 				this._starling.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler, false, 0, true);
 				this._starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
+				//TransformGestureEvent.GESTURE_DIRECTIONAL_TAP requires
+				//AIR 24, but we want to support older versions too
+				this._starling.nativeStage.addEventListener("gestureDirectionalTap", stage_gestureDirectionalTapHandler, false, 0, true);
 				if(this._savedFocus && !this._savedFocus.stage)
 				{
 					this._savedFocus = null;
@@ -183,6 +187,8 @@ package feathers.core
 				this._root.removeEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				this._starling.nativeStage.removeEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler);
 				this._starling.nativeStage.removeEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler);
+				this._starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._starling.nativeStage.removeEventListener("gestureDirectionalTap", stage_gestureDirectionalTapHandler);
 				var focusToSave:IFocusDisplayObject = this.focus;
 				this.focus = null;
 				this._savedFocus = focusToSave;
@@ -865,6 +871,49 @@ package feathers.core
 				}
 				newFocus = findFocusAtRelativePosition(this._root, position);
 			}
+			if(newFocus !== this._focus)
+			{
+				event.preventDefault();
+				this.focus = newFocus;
+			}
+			if(this._focus)
+			{
+				this._focus.showFocus();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this event
+				return;
+			}
+			var position:String = null;
+			if(event.offsetY < 0)
+			{
+				position = RelativePosition.TOP;
+			}
+			else if(event.offsetY > 0)
+			{
+				position = RelativePosition.BOTTOM;
+			}
+			else if(event.offsetX > 0)
+			{
+				position = RelativePosition.RIGHT;
+			}
+			else if(event.offsetX < 0)
+			{
+				position = RelativePosition.LEFT;
+			}
+			if(position === null)
+			{
+				return;
+			}
+			var newFocus:IFocusDisplayObject = findFocusAtRelativePosition(this._root, position);
 			if(newFocus !== this._focus)
 			{
 				event.preventDefault();

@@ -18,6 +18,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 
 	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -656,18 +657,71 @@ package feathers.controls
 				{
 					//property must change immediately, but the animation can take longer
 					this.selectedIndex = newIndex;
-					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+					if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
 					{
 						event.preventDefault();
 						var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
 						this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
 					}
-					else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+					else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
 					{
 						event.preventDefault();
 						pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
 						this.throwToPage(pageIndex, this._verticalPageIndex, this._pageThrowDuration);
 					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this event
+				return;
+			}
+			var keyCode:uint = int.MAX_VALUE;
+			if(event.offsetY < 0)
+			{
+				keyCode = Keyboard.UP;
+			}
+			else if(event.offsetY > 0)
+			{
+				keyCode = Keyboard.DOWN;
+			}
+			else if(event.offsetX > 0)
+			{
+				keyCode = Keyboard.RIGHT;
+			}
+			else if(event.offsetX < 0)
+			{
+				keyCode = Keyboard.LEFT;
+			}
+			if(keyCode === int.MAX_VALUE)
+			{
+				return;
+			}
+			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
+			if(this.selectedIndex !== newIndex)
+			{
+				//property must change immediately, but the animation can take longer
+				this.selectedIndex = newIndex;
+				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				{
+					event.stopImmediatePropagation();
+					//event.preventDefault();
+					var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
+				}
+				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				{
+					event.stopImmediatePropagation();
+					//event.preventDefault();
+					pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this.throwToPage(pageIndex, this._verticalPageIndex, this._pageThrowDuration);
 				}
 			}
 		}
