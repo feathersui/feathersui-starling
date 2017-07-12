@@ -1039,11 +1039,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const FUZZY_PAGE_SIZE_PADDING:Number = 0.000001;
-
-		/**
-		 * @private
-		 */
 		protected static const PAGE_INDEX_EPSILON:Number = 0.01;
 
 		/**
@@ -5183,14 +5178,20 @@ package feathers.controls
 				else
 				{
 					this._minHorizontalPageIndex = 0;
-					//floating point errors could result in the max page index
-					//being 1 larger than it should be.
-					var roundedDownRange:Number = roundDownToNearest(horizontalScrollRange, this.actualPageWidth);
-					if((horizontalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					var unroundedPageIndex:Number = horizontalScrollRange / this.actualPageWidth;
+					var nearestPageIndex:int = Math.round(unroundedPageIndex);
+					if(MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 					{
-						horizontalScrollRange = roundedDownRange;
+						//we almost always want to round up, but a
+						//floating point math error, or a page width that
+						//isn't an integer (when snapping to pixels) could
+						//cause the page index to be off by one
+						this._maxHorizontalPageIndex = nearestPageIndex;
 					}
-					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth);
+					else
+					{
+						this._maxHorizontalPageIndex = Math.ceil(unroundedPageIndex);
+					}
 				}
 
 				var verticalScrollRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
@@ -5211,14 +5212,20 @@ package feathers.controls
 				else
 				{
 					this._minVerticalPageIndex = 0;
-					//floating point errors could result in the max page index
-					//being 1 larger than it should be.
-					roundedDownRange = roundDownToNearest(verticalScrollRange, this.actualPageHeight);
-					if((verticalScrollRange - roundedDownRange) < FUZZY_PAGE_SIZE_PADDING)
+					unroundedPageIndex = verticalScrollRange / this.actualPageHeight;
+					nearestPageIndex = Math.round(unroundedPageIndex);
+					if(MathUtil.isEquivalent(unroundedPageIndex, nearestPageIndex, PAGE_INDEX_EPSILON))
 					{
-						verticalScrollRange = roundedDownRange;
+						//we almost always want to round up, but a
+						//floating point math error, or a page height that
+						//isn't an integer (when snapping to pixels) could
+						//cause the page index to be off by one
+						this._maxVerticalPageIndex = nearestPageIndex;
 					}
-					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight);
+					else
+					{
+						this._maxVerticalPageIndex = Math.ceil(unroundedPageIndex);
+					}
 				}
 			}
 			else
@@ -5992,7 +5999,7 @@ package feathers.controls
 		{
 			var pullViewHeight:Number = this._topPullView.height / this._topPullView.scaleY;
 			var mask:DisplayObject = this._topPullView.mask;
-			var maskHeight:Number = pullViewHeight + ((this._topPullView.y - this._paddingTop) / this._topPullView.scaleY);
+			var maskHeight:Number = pullViewHeight + ((this._topPullView.y - this._topPullView.pivotY * this._topPullView.scaleY - this._paddingTop) / this._topPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -6014,7 +6021,7 @@ package feathers.controls
 		{
 			var pullViewWidth:Number = this._rightPullView.width / this._rightPullView.scaleX;
 			var mask:DisplayObject = this._rightPullView.mask;
-			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - (this._rightPullView.x / this._rightPullView.scaleX);
+			var maskWidth:Number = this.actualWidth - this._rightViewPortOffset - ((this._rightPullView.x - this._rightPullView.pivotX / this._rightPullView.scaleX) / this._rightPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
@@ -6036,7 +6043,7 @@ package feathers.controls
 		{
 			var pullViewHeight:Number = this._bottomPullView.height / this._bottomPullView.scaleY;
 			var mask:DisplayObject = this._bottomPullView.mask;
-			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - (this._bottomPullView.y / this._bottomPullView.scaleY);
+			var maskHeight:Number = this.actualHeight - this._bottomViewPortOffset - ((this._bottomPullView.y - this._bottomPullView.pivotY / this._bottomPullView.scaleY) / this._bottomPullView.scaleY);
 			if(maskHeight < 0)
 			{
 				maskHeight = 0;
@@ -6058,7 +6065,7 @@ package feathers.controls
 		{
 			var pullViewWidth:Number = this._leftPullView.width / this._leftPullView.scaleX;
 			var mask:DisplayObject = this._leftPullView.mask;
-			var maskWidth:Number = pullViewWidth + ((this._leftPullView.x - this._paddingLeft) / this._leftPullView.scaleX);
+			var maskWidth:Number = pullViewWidth + ((this._leftPullView.x - this._leftPullView.pivotX * this._leftPullView.scaleX - this._paddingLeft) / this._leftPullView.scaleX);
 			if(maskWidth < 0)
 			{
 				maskWidth = 0;
@@ -7746,6 +7753,10 @@ package feathers.controls
 		 */
 		protected function horizontalAutoScrollTween_onComplete():void
 		{
+			//because the onUpdate callback may call advanceTime(), remove
+			//the callbacks to be sure that they aren't called too many times.
+			this._horizontalAutoScrollTween.onUpdate = null;
+			this._horizontalAutoScrollTween.onComplete = null;
 			this._horizontalAutoScrollTween = null;
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.
@@ -7776,6 +7787,10 @@ package feathers.controls
 		 */
 		protected function verticalAutoScrollTween_onComplete():void
 		{
+			//because the onUpdate callback may call advanceTime(), remove
+			//the callbacks to be sure that they aren't called too many times.
+			this._verticalAutoScrollTween.onUpdate = null;
+			this._verticalAutoScrollTween.onComplete = null;
 			this._verticalAutoScrollTween = null;
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.

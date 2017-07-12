@@ -10,20 +10,26 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BaseDefaultItemRenderer: fixed issue where icon or accessory dimensions were not accounted for in measurement if item renderer does not have a label.
 * BaseLinearLayout: new abstract base class for HorizontalLayout and VerticalLayout that shares common code.
 * BaseTiledLayout: new abstract base class for TiledRowsLayout and TiledColumnsLayout that shares common code.
+* BottomDrawerPopUpContentManager: added customCloseButtonStyleName to customize the style name of the close button in the theme.
 * BottomDrawerPopUpContentManager, CalloutPopUpContentManager, DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where the content was not scaled the same as the origin.
 * Callout: fixed issue where stage dimensions were not accounted for when calculating maximum dimensions of content.
 * Callout: fixed issue where moving origin when content is smaller than background skin could cause content to be rendered at incorrect size.
+* Cover, Reveal, Wipe: fixed issue where runtime error could be thrown if mask was unexpectedly removed from display objects.
 * DateTimeSpinner: fixed issue where you could not set the itemRendererFactory directly on the inner SpinnerLists when the DateTimeSpinner itemRendererFactory was null.
+* DefaultFocusManager: fixed issue where addEventListener() was called where removeEventListener() should have been called, potentially causing a memory leak.
 * Direction: added NONE constant that may be used in some situations.
 * DropDownPopUpContentManager: fixed issue where the delegate used for animation was not scaled by the same amount as the content it mirrored.
 * DropDownPopUpContentManager, VerticalCenteredPopUpContentManager: fixed issue where content was not positioned or resized correctly if PopUpManager.root is scaled.
 * FeathersControl: throws an error if validate() is called during initialize() because it was not clear that this previously returned without doing anything.
 * FeathersControl: fixed issue where setting minWidth or minHeight that is larger than the actualWidth and actualHeight might fail to invalidate the component.
+* FeathersControl: fixed issue where setting the validation queue before initialization could cause a navigator to trigger validation when showing a screen during initialization and validate something too early.
 * FocusManager: fixed issue where getFocusManagerForStage() threw a RangeError if stack size is 0 instead of returning null.
 * FontStylesSet: added dispose() method to make sure event listeners are removed (to be called by the parent of the text renderer/editor).
 * FontStylesSet: no longer calls clone() on starling.text.TextFormat because this prevents detection of changes to original TextFormat object. This reverts a change in Feathers 3.1.2 and goes back to previous behavior (while still fixing the memory leak that prompted the change).
 * GroupedList: fixed issue where first/last/single item renderer factories were not used as fallbacks when factoryIDFunction returns null.
 * GroupedList, List: fixed issue where mouse wheel did not work when useVirtualLayout is false in layout.
+* GroupedList: fixed issue where keyboard navigation failed after multiple groups.
+* HorizontalSpinnerLayout, VerticalSpinnerLayout: fixed issue where keyboard navigation did not loop when items are repeated.
 * ILayout: added calculateNavigationDestination() to allow custom behavior for keyboard navigation.
 * IListCollection: new interface to support custom collection implementations, and added ArrayCollection, VectorCollection, and XMLListCollection.
 * IHierarchicalCollection: new interface to support custom hierarchical collection implementations, and added ArrayHierarchicalCollection, VectorHierarchicalCollection, and XMLListHierarchicalCollection.
@@ -36,9 +42,12 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * Scroller: if hasElasticEdges is false, does not consider itself dragged if already at the minimum or maximum and can't be scrolled further.
 * Scroller: fixed issue with snapScrollPositionToPixels where the animation would appear to complete because it had already snapped to the final pixel, but there could still be more time left on the animation.
 * Scroller: fixed issue where measured view port dimensions (such as those from a layout) that are smaller than content dimensions would cause the full dimensions to exclude the scroll bars. This would sometimes cause both horizontal and vertical scroll bars to appear when only one should be required.
+* Scroller: fixed incorrect maximum page index calculation caused by floating point math error and Math.ceil.
+* Scroller: fixed issue where pull views with pivots were not masked correctly.
 * ScrollContainer: fixed issue where children positioned at negative coordinates did not affect the minimum scroll position.
 * ScrollContainer: fixed issue where pivotX and pivotY were not scaled when calculating item position.
 * SpinnerList: fixed issue where an item renderer that is disabled could be incorrectly selected. Returns to the previously selected index if the scroll position lands on a disabled item renderer.
+* SpinnerList: fixed issue where pageThrowDuration property was ignored when scrolling horizontally.
 * TabNavigator: fixed issue where isSwipeEnabled getter returned incorrect value.
 * TextArea: fixed issue where runtime error would be thrown in measureViewPort is true.
 * TextFieldTextEditor: fixed issue where state changes in the parent component would not always update the font styles when using starling.text.TextFormat.
