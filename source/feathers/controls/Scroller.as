@@ -7742,6 +7742,10 @@ package feathers.controls
 		 */
 		protected function horizontalAutoScrollTween_onComplete():void
 		{
+			//because the onUpdate callback may call advanceTime(), remove
+			//the callbacks to be sure that they aren't called too many times.
+			this._horizontalAutoScrollTween.onUpdate = null;
+			this._horizontalAutoScrollTween.onComplete = null;
 			this._horizontalAutoScrollTween = null;
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.
@@ -7772,6 +7776,10 @@ package feathers.controls
 		 */
 		protected function verticalAutoScrollTween_onComplete():void
 		{
+			//because the onUpdate callback may call advanceTime(), remove
+			//the callbacks to be sure that they aren't called too many times.
+			this._verticalAutoScrollTween.onUpdate = null;
+			this._verticalAutoScrollTween.onComplete = null;
 			this._verticalAutoScrollTween = null;
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.
