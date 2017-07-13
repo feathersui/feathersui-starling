@@ -723,7 +723,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function findFocusableChildren(child:DisplayObject, result:Vector.<IFocusDisplayObject>):void
+		protected function findAllFocusableObjects(child:DisplayObject, result:Vector.<IFocusDisplayObject>):void
 		{
 			if(child is IFocusDisplayObject)
 			{
@@ -737,49 +737,45 @@ package feathers.core
 			{
 				var focusExtras:IFocusExtras = IFocusExtras(child);
 				var extras:Vector.<DisplayObject> = focusExtras.focusExtrasBefore;
-				var extrasCount:int = extras.length;
-				for(var j:int = 0; j < extrasCount; j++)
+				var count:int = extras.length;
+				for(var i:int = 0; i < count; i++)
 				{
-					var extra:DisplayObject = extras[j];
-					findFocusableChildren(extra, result);
+					var childOfChild:DisplayObject = extras[i];
+					findAllFocusableObjects(childOfChild, result);
 				}
 			}
 			if(child is IFocusDisplayObject)
 			{
 				if(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled)
 				{
-					var beforeCount:int = result.length;
 					var otherContainer:DisplayObjectContainer = DisplayObjectContainer(child);
-					findAllFocusableObjects(otherContainer, result);
+					count = otherContainer.numChildren;
+					for(i = 0; i < count; i++)
+					{
+						childOfChild = otherContainer.getChildAt(i);
+						findAllFocusableObjects(childOfChild, result);
+					}
 				}
 			}
 			else if(child is DisplayObjectContainer)
 			{
 				otherContainer = DisplayObjectContainer(child);
-				findAllFocusableObjects(otherContainer, result);
+				count = otherContainer.numChildren;
+				for(i = 0; i < count; i++)
+				{
+					childOfChild = otherContainer.getChildAt(i);
+					findAllFocusableObjects(childOfChild, result);
+				}
 			}
 			if(child is IFocusExtras)
 			{
 				extras = focusExtras.focusExtrasAfter;
-				extrasCount = extras.length;
-				for(j = 0; j < extrasCount; j++)
+				count = extras.length;
+				for(i = 0; i < count; i++)
 				{
-					extra = extras[j];
-					findFocusableChildren(extra, result);
+					childOfChild = extras[i];
+					findAllFocusableObjects(childOfChild, result);
 				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function findAllFocusableObjects(container:DisplayObjectContainer, result:Vector.<IFocusDisplayObject>):void
-		{
-			var childCount:int = container.numChildren;
-			for(var i:int = 0; i < childCount; i++)
-			{
-				var child:DisplayObject = container.getChildAt(i);
-				findFocusableChildren(child, result);
 			}
 		}
 
