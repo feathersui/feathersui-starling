@@ -50,6 +50,8 @@ package feathers.controls.text
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 	import starling.utils.SystemUtil;
+	import flash.ui.KeyLocation;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -2322,6 +2324,15 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function dispatchKeyboardEventToStage(event:KeyboardEvent):void
+		{
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.dispatchEvent(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
 			//remove this from the stage, if needed
@@ -2445,10 +2456,19 @@ package feathers.controls.text
 				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 				starling.nativeStage.focus = starling.nativeStage;
 			}
-			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
+			if(FocusManager.isEnabledForStage(this.stage))
 			{
-				event.preventDefault();
-				this.dispatchKeyFocusChangeEvent(event);
+				if(event.keyCode === Keyboard.TAB)
+				{
+					event.preventDefault();
+					this.dispatchKeyFocusChangeEvent(event);
+				}
+				if((event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
+					(event.keyCode === Keyboard.UP || event.keyCode === Keyboard.DOWN))
+				{
+					event.preventDefault();
+					this.dispatchKeyboardEventToStage(event);
+				}
 			}
 		}
 
