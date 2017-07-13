@@ -645,6 +645,37 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _useLeftAndRightKeys:Boolean = false;
+
+		/**
+		 * Indicates if the <code>Keyboard.LEFT</code> and
+		 * <code>Keyboard.RIGHT</code> keys should be used to change the value
+		 * of the stepper, instead of the default <code>Keyboard.DOWN</code> and
+		 * <code>Keyboard.UP</code> keys.
+		 *
+		 * <p>In the following example, the left and right keys are preferred:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.useLeftAndRightKeys = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get useLeftAndRightKeys():Boolean
+		{
+			return this._useLeftAndRightKeys;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useLeftAndRightKeys(newValue:Boolean):void
+		{
+			this._useLeftAndRightKeys = newValue;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _valueFormatFunction:Function;
 
 		/**
@@ -2253,25 +2284,40 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.HOME)
+			if(event.keyCode === Keyboard.HOME)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
 				this.toMinimum();
 			}
-			else if(event.keyCode == Keyboard.END)
+			else if(event.keyCode === Keyboard.END)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
 				this.toMaximum();
 			}
-			else if(event.keyCode == Keyboard.UP)
+			else if(this._useLeftAndRightKeys)
+			{
+				if(event.keyCode === Keyboard.RIGHT)
+				{
+					//prevent default so that text input selection doesn't change
+					event.preventDefault();
+					this.increment();
+				}
+				else if(event.keyCode === Keyboard.LEFT)
+				{
+					//prevent default so that text input selection doesn't change
+					event.preventDefault();
+					this.decrement();
+				}
+			}
+			else if(event.keyCode === Keyboard.UP)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
 				this.increment();
 			}
-			else if(event.keyCode == Keyboard.DOWN)
+			else if(event.keyCode === Keyboard.DOWN)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
