@@ -2756,11 +2756,13 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.HOME)
 			{
+				event.preventDefault();
 				this.value = this._minimum;
 				return;
 			}
 			if(event.keyCode == Keyboard.END)
 			{
+				event.preventDefault();
 				this.value = this._maximum;
 				return;
 			}
@@ -2773,6 +2775,7 @@ package feathers.controls
 			{
 				if(event.keyCode == Keyboard.UP)
 				{
+					event.preventDefault();
 					if(event.shiftKey)
 					{
 						this.value += page;
@@ -2784,6 +2787,7 @@ package feathers.controls
 				}
 				else if(event.keyCode == Keyboard.DOWN)
 				{
+					event.preventDefault();
 					if(event.shiftKey)
 					{
 						this.value -= page;
@@ -2798,6 +2802,7 @@ package feathers.controls
 			{
 				if(event.keyCode == Keyboard.LEFT)
 				{
+					event.preventDefault();
 					if(event.shiftKey)
 					{
 						this.value -= page;
@@ -2809,6 +2814,7 @@ package feathers.controls
 				}
 				else if(event.keyCode == Keyboard.RIGHT)
 				{
+					event.preventDefault();
 					if(event.shiftKey)
 					{
 						this.value += page;
