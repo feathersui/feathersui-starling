@@ -324,7 +324,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VerticalAlign.TOP;
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
