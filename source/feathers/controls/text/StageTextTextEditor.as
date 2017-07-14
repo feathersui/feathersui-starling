@@ -2464,7 +2464,7 @@ package feathers.controls.text
 					this.dispatchKeyFocusChangeEvent(event);
 				}
 				if((event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
-					(event.keyCode === Keyboard.UP || event.keyCode === Keyboard.DOWN))
+					(event.keyCode === Keyboard.ENTER || event.keyCode === Keyboard.UP || event.keyCode === Keyboard.DOWN))
 				{
 					event.preventDefault();
 					this.dispatchKeyboardEventToStage(event);
