@@ -1326,9 +1326,9 @@ package feathers.controls
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
-			if(this._focusManager)
+			if(this.list.focusManager)
 			{
-				this._focusManager.focus = this.list;
+				this.list.focusManager.focus = this.list;
 				this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
