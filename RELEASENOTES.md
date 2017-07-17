@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.3.0 - In Development
+## 3.3.0 - July 2017
 
 * New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.
 * New Layout: SlideShowLayout is designed for displaying one image at a time in a gallery.
