@@ -200,11 +200,18 @@ package feathers.utils
 			}
 			var nativeStage:Stage = this._starling.nativeStage;
 			var screenDensity:Number = DeviceCapabilities.dpi;
-			//workaround because these rules derived from Android's behavior
-			//would "incorrectly" give iPads a lower scale factor than iPhones
-			//when both devices have the same scale factor natively.
-			if(Capabilities.version.indexOf("IOS") >= 0 && DeviceCapabilities.isTablet(nativeStage))
+			if(Capabilities.os.indexOf("tvOS") !== -1)
 			{
+				//tvOS devices report a lower DPI of Android TV devices
+				//for the same resolution
+				screenDensity *= 2;
+			}
+			else if(Capabilities.version.indexOf("IOS") !== -1 &&
+				DeviceCapabilities.isTablet(nativeStage))
+			{
+				//workaround because these rules derived from Android's behavior
+				//would "incorrectly" give iPads a lower scale factor than iPhones
+				//when both devices have the same scale factor natively.
 				screenDensity *= IOS_TABLET_DENSITY_SCALE_FACTOR;
 			}
 			return this._scaleSelector.getScale(screenDensity);

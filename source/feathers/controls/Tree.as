@@ -24,6 +24,9 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * A style name to add to all item renderers in this tree. Typically
@@ -1224,6 +1227,33 @@ package feathers.controls
 			{
 				this._targetVerticalScrollPosition += scrollOffsetY;
 				this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._isSelectable)
+			{
+				//not selectable, but should scroll
+				super.nativeStage_keyDownHandler(event);
+				return;
+			}
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
+			if(!this._dataProvider)
+			{
+				return;
+			}
+			if(this._selectedItem !== null &&
+				(event.keyCode === Keyboard.SPACE ||
+				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			{
+				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 		}
 	}

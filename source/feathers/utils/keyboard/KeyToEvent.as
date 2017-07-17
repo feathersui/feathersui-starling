@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.utils.keyboard
 {
 	import feathers.core.IFocusDisplayObject;
-	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 
 	import flash.ui.Keyboard;
@@ -16,16 +15,17 @@ package feathers.utils.keyboard
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.core.IFocusManager;
+	import feathers.core.DefaultFocusManager;
 	import feathers.system.DeviceCapabilities;
 
 	/**
-	 * Changes the <code>isSelected</code> property of the target when a key is
-	 * pressed and released while the target has focus. The target will
-	 * dispatch <code>Event.CHANGE</code>. Conveniently handles all
+	 * Dispatches an event from the target when a key is pressed and released
+	 * and the target has focus. Conveniently handles all
 	 * <code>KeyboardEvent</code> listeners automatically.
 	 *
-	 * <p>In the following example, a custom component will be selected when a
-	 * key is pressed and released:</p>
+	 * <p>In the following example, a custom item renderer will be triggered
+	 * when a key is pressed and released:</p>
 	 *
 	 * <listing version="3.0">
 	 * public class CustomComponent extends FeathersControl implements IFocusDisplayObject
@@ -33,32 +33,28 @@ package feathers.utils.keyboard
 	 *     public function CustomComponent()
 	 *     {
 	 *         super();
-	 *         this._keyToSelect = new KeyToSelect(this);
-	 *         this._keyToSelect.keyCode = Keyboard.SPACE;
+	 *         this._keyToEvent = new KeyToEvent(this, Event.TRIGGERED);
+	 *         this._keyToEvent.keyCode = Keyboard.SPACE;
 	 *     }
 	 *     
-	 *     private var _keyToSelect:KeyToSelect;
+	 *     private var _keyToEvent:KeyToEvent;
 	 * // ...</listing>
 	 *
-	 * <p>Note: When combined with a <code>KeyToTrigger</code> instance, the
-	 * <code>KeyToSelect</code> instance should be created second because
-	 * <code>Event.TRIGGERED</code> should be dispatched before
-	 * <code>Event.CHANGE</code>.</p>
-	 *
 	 * @see feathers.utils.keyboard.KeyToTrigger
-	 * @see feathers.utils.touch.TapToSelect
+	 * @see feathers.utils.keyboard.KeyToSelect
 	 *
-	 * @productversion Feathers 3.0.0
+	 * @productversion Feathers 3.4.0
 	 */
-	public class KeyToSelect
+	public class KeyToEvent
 	{
 		/**
 		 * Constructor.
 		 */
-		public function KeyToSelect(target:IToggle = null, keyCode:uint = Keyboard.SPACE)
+		public function KeyToEvent(target:IFocusDisplayObject = null, keyCode:uint = Keyboard.SPACE, eventType:String = null)
 		{
 			this.target = target;
 			this.keyCode = keyCode;
+			this.eventType = eventType;
 		}
 
 		/**
@@ -69,12 +65,12 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		protected var _target:IToggle;
+		protected var _target:IFocusDisplayObject;
 
 		/**
 		 * The target component that should be selected when a key is pressed.
 		 */
-		public function get target():IToggle
+		public function get target():IFocusDisplayObject
 		{
 			return this._target;
 		}
@@ -82,15 +78,11 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		public function set target(value:IToggle):void
+		public function set target(value:IFocusDisplayObject):void
 		{
 			if(this._target === value)
 			{
 				return;
-			}
-			if(value !== null && !(value is IFocusDisplayObject))
-			{
-				throw new ArgumentError("Target of KeyToSelect must implement IFocusDisplayObject");
 			}
 			if(this._stage !== null)
 			{
@@ -121,8 +113,8 @@ package feathers.utils.keyboard
 		protected var _keyCode:uint = Keyboard.SPACE;
 
 		/**
-		 * The key that will select the target, when pressed.
-		 * 
+		 * The key that will dispatch the event, when pressed.
+		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
 		public function get keyCode():uint
@@ -144,7 +136,7 @@ package feathers.utils.keyboard
 		protected var _cancelKeyCode:uint = Keyboard.ESCAPE;
 
 		/**
-		 * The key that will cancel the selection if the key is down.
+		 * The key that will cancel the event if the key is down.
 		 *
 		 * @default flash.ui.Keyboard.ESCAPE
 		 */
@@ -164,34 +156,10 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		protected var _keyToDeselect:Boolean = false;
-
-		/**
-		 * May be set to <code>true</code> to allow the target to be deselected
-		 * when the key is pressed.
-		 *
-		 * @default false
-		 */
-		public function get keyToDeselect():Boolean
-		{
-			return this._keyToDeselect;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set keyToDeselect(value:Boolean):void
-		{
-			this._keyToDeselect = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _keyLocation:uint = uint.MAX_VALUE;
 
 		/**
-		 * The location of the key that will select the target, when pressed.
+		 * The location of the key that will dispatch the event, when pressed.
 		 * If <code>uint.MAX_VALUE</code>, then any key location is allowed.
 		 *
 		 * @default uint.MAX_VALUE
@@ -214,11 +182,32 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _eventType:String = null;
+
+		/**
+		 * The event type that will be dispatched when pressed.
+		 */
+		public function get eventType():String
+		{
+			return this._eventType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set eventType(value:String):void
+		{
+			this._eventType = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isEnabled:Boolean = true;
 
 		/**
-		 * May be set to <code>false</code> to disable selection temporarily
-		 * until set back to <code>true</code>.
+		 * May be set to <code>false</code> to disable event dispatching
+		 * temporarily until set back to <code>true</code>.
 		 */
 		public function get isEnabled():Boolean
 		{
@@ -238,6 +227,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusInHandler(event:Event):void
 		{
+			var focusManager:DefaultFocusManager = this._target.focusManager as DefaultFocusManager;
 			this._stage = this._target.stage;
 			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
@@ -318,14 +308,7 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
-			if(this._keyToDeselect)
-			{
-				this._target.isSelected = !this._target.isSelected;
-			}
-			else
-			{
-				this._target.isSelected = true;
-			}
+			this._target.dispatchEventWith(this._eventType);
 		}
 	}
 }

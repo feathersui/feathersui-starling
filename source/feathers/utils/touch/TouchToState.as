@@ -264,6 +264,11 @@ package feathers.utils.touch
 		/**
 		 * @private
 		 */
+		protected var _hoverBeforeBegan:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _keepDownStateOnRollOut:Boolean = false;
 
 		/**
@@ -325,6 +330,7 @@ package feathers.utils.touch
 		 */
 		protected function resetTouchState():void
 		{
+			this._hoverBeforeBegan = false;
 			this._touchPointID = -1;
 			this.changeState(this._upState);
 		}
@@ -392,7 +398,20 @@ package feathers.utils.touch
 					}
 					else if(touch.phase === TouchPhase.ENDED)
 					{
-						this.resetTouchState();
+						if(isInBounds && this._hoverBeforeBegan)
+						{
+							//if the mouse is over the target on ended, return
+							//to the hover state, but only if there was a hover
+							//state before began.
+							//this ensures that the hover state is not
+							//unexpectedly entered on a touch screen.
+							this._touchPointID = -1;
+							this.changeState(this._hoverState);
+						}
+						else
+						{
+							this.resetTouchState();
+						}
 						return;
 					}
 				}
@@ -410,6 +429,7 @@ package feathers.utils.touch
 				touch = event.getTouch(this._target, TouchPhase.HOVER);
 				if(touch !== null && this.handleCustomHitTest(touch))
 				{
+					this._hoverBeforeBegan = true;
 					this.changeState(this._hoverState);
 					return;
 				}

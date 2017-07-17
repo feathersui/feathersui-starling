@@ -21,13 +21,13 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
 
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -1618,7 +1618,7 @@ package feathers.controls
 		override protected function refreshBackgroundSkin():void
 		{
 			var oldSkin:DisplayObject = this.currentBackgroundSkin;
-			this.currentBackgroundSkin = this.getCurrentSkin();
+			this.currentBackgroundSkin = this.getCurrentBackgroundSkin();
 			if(oldSkin !== this.currentBackgroundSkin)
 			{
 				if(oldSkin !== null)
@@ -1662,7 +1662,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function getCurrentSkin():DisplayObject
+		override protected function getCurrentBackgroundSkin():DisplayObject
 		{
 			if(this._stateToSkinFunction != null)
 			{
@@ -1875,13 +1875,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(this._isEditable)
 			{
 				return;
 			}
-			super.stage_keyDownHandler(event);
+			super.nativeStage_keyDownHandler(event);
 		}
 
 		/**

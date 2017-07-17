@@ -18,6 +18,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.text.TextFormat;
+	import flash.ui.Keyboard;
 
 	[Exclude(name="defaultSelectedLabelProperties",kind="property")]
 	[Exclude(name="selectedUpLabelProperties",kind="property")]
@@ -68,6 +69,23 @@ package feathers.controls
 	 * @see #setSkinForState()
 	 */
 	[Style(name="defaultSelectedSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * If not <code>NaN</code>, the button renders at this scale when selected.
+	 * Otherwise, defaults to <code>1</code>.
+	 *
+	 * <p>The following example scales the button when selected:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.scaleWhenSelected = 0.9;</listing>
+	 *
+	 * @default 1
+	 * 
+	 * @see #isSelected
+	 * @see #getScaleForState()
+	 * @see #setScaleForState()
+	 */
+	[Style(name="scaleWhenSelected",type="Number")]
 
 	/**
 	 * The icon used for the button's disabled state when the button is
@@ -678,6 +696,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var dpadEnterKeyToSelect:KeyToSelect;
+
+		/**
+		 * @private
+		 */
 		protected var _isToggle:Boolean = true;
 
 		/**
@@ -1274,6 +1297,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scaleWhenSelected:Number = 1;
+
+		/**
+		 * @private
+		 */
+		public function get scaleWhenSelected():Number
+		{
+			return this._scaleWhenSelected;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleWhenSelected(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._scaleWhenSelected === value)
+			{
+				return;
+			}
+			this._scaleWhenSelected = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._defaultSelectedSkin && this._defaultSelectedSkin.parent !== this)
@@ -1289,6 +1341,10 @@ package feathers.controls
 				//setting the target to null will remove listeners and do any
 				//other clean up that is needed
 				this.keyToSelect.target = null;
+			}
+			if(this.dpadEnterKeyToSelect !== null)
+			{
+				this.dpadEnterKeyToSelect.target = null;
 			}
 			if(this.tapToSelect !== null)
 			{
@@ -1311,6 +1367,11 @@ package feathers.controls
 			if(!this.keyToSelect)
 			{
 				this.keyToSelect = new KeyToSelect(this);
+			}
+			if(!this.dpadEnterKeyToSelect)
+			{
+				this.dpadEnterKeyToSelect = new KeyToSelect(this, Keyboard.ENTER);
+				this.dpadEnterKeyToState.keyLocation = 4; //KeyLocation.D_PAD is only in AIR
 			}
 		}
 
@@ -1379,6 +1440,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function getCurrentScale():Number
+		{
+			var state:String = this.currentState;
+			if(state in this._stateToScale)
+			{
+				return this._stateToScale[state];
+			}
+			else if(this._isSelected)
+			{
+				return this._scaleWhenSelected;
+			}
+			return 1;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function getCurrentLabelProperties():Object
 		{
 			if(this._stateToLabelPropertiesFunction === null)
@@ -1408,6 +1486,8 @@ package feathers.controls
 			this.tapToSelect.tapToDeselect = this._isToggle;
 			this.keyToSelect.isEnabled = this._isEnabled && this._isToggle;
 			this.keyToSelect.keyToDeselect = this._isToggle;
+			this.dpadEnterKeyToSelect.isEnabled = this._isEnabled && this._isToggle;
+			this.dpadEnterKeyToSelect.keyToDeselect = this._isToggle;
 		}
 	}
 }

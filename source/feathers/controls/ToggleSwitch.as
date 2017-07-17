@@ -38,6 +38,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.text.TextFormat;
 	import starling.utils.SystemUtil;
+	import flash.ui.KeyLocation;
 
 	/**
 	 * A style name to add to the toggle switch's on label text renderer
@@ -3478,11 +3479,11 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.ESCAPE)
+			if(event.keyCode === Keyboard.ESCAPE)
 			{
 				this._touchPointID = -1;
 			}
-			if(this._touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
+			if(this._touchPointID !== -1 || !(event.keyCode === Keyboard.SPACE || (event.keyCode === Keyboard.ENTER && (event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad))))
 			{
 				return;
 			}
@@ -3494,7 +3495,7 @@ package feathers.controls
 		 */
 		protected function stage_keyUpHandler(event:KeyboardEvent):void
 		{
-			if(this._touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
+			if(this._touchPointID !== int.MAX_VALUE || !(event.keyCode === Keyboard.SPACE || (event.keyCode === Keyboard.ENTER && (event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad))))
 			{
 				return;
 			}

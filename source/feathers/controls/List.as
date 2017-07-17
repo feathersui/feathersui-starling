@@ -22,12 +22,15 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
+	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.utils.Pool;
 
 	/**
@@ -1609,11 +1612,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(!this._isSelectable)
+			{
+				//not selectable, but should scroll
+				super.nativeStage_keyDownHandler(event);
+				return;
+			}
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			if(!this._dataProvider)
 			{
 				return;
+			}
+			if(this._selectedIndex !== -1 && (event.keyCode === Keyboard.SPACE ||
+				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			{
+				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
 				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
@@ -1623,12 +1641,57 @@ package feathers.controls
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex !== newIndex)
 				{
+					event.preventDefault();
 					this.selectedIndex = newIndex;
 					var point:Point = Pool.getPoint();
 					this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
 					this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
 					Pool.putPoint(point);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this event
+				return;
+			}
+			var keyCode:uint = int.MAX_VALUE;
+			if(event.offsetY < 0)
+			{
+				keyCode = Keyboard.UP;
+			}
+			else if(event.offsetY > 0)
+			{
+				keyCode = Keyboard.DOWN;
+			}
+			else if(event.offsetX > 0)
+			{
+				keyCode = Keyboard.RIGHT;
+			}
+			else if(event.offsetX < 0)
+			{
+				keyCode = Keyboard.LEFT;
+			}
+			if(keyCode === int.MAX_VALUE)
+			{
+				return;
+			}
+			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
+			if(this.selectedIndex !== newIndex)
+			{
+				event.stopImmediatePropagation();
+				//event.preventDefault();
+				this.selectedIndex = newIndex;
+				var point:Point = Pool.getPoint();
+				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, point);
+				this.scrollToPosition(point.x, point.y, this._keyScrollDuration);
+				Pool.putPoint(point);
 			}
 		}
 

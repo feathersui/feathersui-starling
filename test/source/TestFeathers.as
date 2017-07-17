@@ -153,6 +153,9 @@ package
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import feathers.tests.ListFocusTests;
+	import feathers.tests.GroupedListFocusTests;
+	import feathers.tests.TreeFocusTests;
 
 	[SWF(width="960",height="640",frameRate="60",backgroundColor="#4a4137")]
 	public class TestFeathers extends flash.display.Sprite
@@ -218,6 +221,7 @@ package
 				DrawersTests,
 				DrawersMeasurementTests,
 				GroupedListTests,
+				GroupedListFocusTests,
 				GroupedListDataProviderTests,
 				GroupedListFactoryIDFunctionTests,
 				GroupedListRendererAddRemoveTests,
@@ -233,6 +237,7 @@ package
 				LayoutGroupMeasurementTests,
 				LayoutGroupValidationTests,
 				ListTests,
+				ListFocusTests,
 				ListFactoryIDFunctionTests,
 				ListRendererAddRemoveTests,
 				NumericStepperMeasurementTests,
@@ -277,6 +282,7 @@ package
 				ToggleSwitchTests,
 				ToggleSwitchMeasurementTests,
 				TreeTests,
+				TreeFocusTests,
 
 				//media tests
 				TimeLabelTests,

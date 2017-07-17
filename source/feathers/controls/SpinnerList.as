@@ -17,11 +17,30 @@ package feathers.controls
 	import feathers.layout.VerticalSpinnerLayout;
 	import feathers.skins.IStyleProvider;
 
+	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
+
+	/**
+	 * Determines if the <code>selectionOverlaySkin</code> is hidden when
+	 * the list is not focused.
+	 *
+	 * <listing version="3.0">
+	 * list.hideSelectionOverlayUnlessFocused = true;</listing>
+	 *
+	 * <p>Note: If the <code>showSelectionOverlay</code> property is
+	 * <code>false</code>, the <code>selectionOverlaySkin</code> will always
+	 * be hidden.</p>
+	 *
+	 * @default false
+	 *
+	 * @see #style:selectionOverlaySkin
+	 * @see #style:showSelectionOverlay
+	 */
+	[Style(name="hideSelectionOverlayUnlessFocused",type="Boolean")]
 
 	/**
 	 * An optional skin to display in the horizontal or vertical center of
@@ -41,6 +60,21 @@ package feathers.controls
 	 * @default null
 	 */
 	[Style(name="selectionOverlaySkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * Determines if the <code>selectionOverlaySkin</code> is visible or hidden.
+	 *
+	 * <p>The following example hides the selection overlay skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.showSelectionOverlay = false;</listing>
+	 *
+	 * @default true
+	 *
+	 * @see #style:selectionOverlaySkin
+	 * @see #style:hideSelectionOverlayUnlessFocused
+	 */
+	[Style(name="showSelectionOverlay",type="Boolean")]
 
 	/**
 	 * A customized <code>List</code> component where scrolling updates the
@@ -275,6 +309,58 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _showSelectionOverlay:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		public function get showSelectionOverlay():Boolean
+		{
+			return this._showSelectionOverlay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set showSelectionOverlay(value:Boolean):void
+		{
+			if(this._showSelectionOverlay === value)
+			{
+				return;
+			}
+			this._showSelectionOverlay = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hideSelectionOverlayUnlessFocused:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get hideSelectionOverlayUnlessFocused():Boolean
+		{
+			return this._hideSelectionOverlayUnlessFocused;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideSelectionOverlayUnlessFocused(value:Boolean):void
+		{
+			if(this._hideSelectionOverlayUnlessFocused === value)
+			{
+				return;
+			}
+			this._hideSelectionOverlayUnlessFocused = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			//SpinnerList has a different default layout than its superclass,
@@ -370,6 +456,15 @@ package feathers.controls
 
 			if(this._selectionOverlaySkin)
 			{
+				if(this._showSelectionOverlay && this._hideSelectionOverlayUnlessFocused &&
+					this._focusManager !== null && this._isFocusEnabled)
+				{
+					this._selectionOverlaySkin.visible = this._hasFocus;
+				}
+				else
+				{
+					this._selectionOverlaySkin.visible = this._showSelectionOverlay;
+				}
 				if(this._selectionOverlaySkin is IValidating)
 				{
 					IValidating(this._selectionOverlaySkin).validate();
@@ -473,6 +568,8 @@ package feathers.controls
 		protected function spinnerList_triggeredHandler(event:Event, item:Object):void
 		{
 			var itemIndex:int = this._dataProvider.getItemIndex(item);
+			//property must change immediately, but the animation can take longer
+			this.selectedIndex = itemIndex;
 			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
 				itemIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
@@ -540,8 +637,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			if(!this._dataProvider)
 			{
 				return;
@@ -554,16 +655,73 @@ package feathers.controls
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex !== newIndex)
 				{
-					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
+					//property must change immediately, but the animation can take longer
+					this.selectedIndex = newIndex;
+					if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
 					{
+						event.preventDefault();
 						var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
 						this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
 					}
-					else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
+					else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
 					{
+						event.preventDefault();
 						pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
 						this.throwToPage(pageIndex, this._verticalPageIndex, this._pageThrowDuration);
 					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function stage_gestureDirectionalTapHandler(event:TransformGestureEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//something else has already handled this event
+				return;
+			}
+			var keyCode:uint = int.MAX_VALUE;
+			if(event.offsetY < 0)
+			{
+				keyCode = Keyboard.UP;
+			}
+			else if(event.offsetY > 0)
+			{
+				keyCode = Keyboard.DOWN;
+			}
+			else if(event.offsetX > 0)
+			{
+				keyCode = Keyboard.RIGHT;
+			}
+			else if(event.offsetX < 0)
+			{
+				keyCode = Keyboard.LEFT;
+			}
+			if(keyCode === int.MAX_VALUE)
+			{
+				return;
+			}
+			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
+			if(this.selectedIndex !== newIndex)
+			{
+				//property must change immediately, but the animation can take longer
+				this.selectedIndex = newIndex;
+				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				{
+					event.stopImmediatePropagation();
+					//event.preventDefault();
+					var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
+				}
+				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				{
+					event.stopImmediatePropagation();
+					//event.preventDefault();
+					pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this.throwToPage(pageIndex, this._verticalPageIndex, this._pageThrowDuration);
 				}
 			}
 		}

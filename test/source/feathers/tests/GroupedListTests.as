@@ -905,5 +905,33 @@ package feathers.tests
 			Assert.assertTrue("GroupedList: scrollToDisplayIndex() with duration 0 did not dispatch FeathersEventType.SCROLL_COMPLETE",
 				hasDispatchedScrollComplete);
 		}
+
+		[Test]
+		public function testTriggeredByTap():void
+		{
+			var hasTriggered:Boolean = false;
+			var triggeredItem:Object = null;
+			this._list.addEventListener(Event.TRIGGERED, function(event:Event, item:Object):void
+			{
+				hasTriggered = true;
+				triggeredItem = item;
+			});
+			var position:Point = new Point(10, 410);
+			var target:DisplayObject = this._list.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			//this touch does not move at all, so it should result in triggering
+			//the button.
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("Event.TRIGGERED was not dispatched", hasTriggered);
+			Assert.assertStrictlyEquals("Incorrect item passed to Event.TRIGGERED listener",
+				this._list.dataProvider.getItemAt(0, 1), triggeredItem);
+		}
 	}
 }

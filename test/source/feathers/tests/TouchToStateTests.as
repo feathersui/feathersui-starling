@@ -142,7 +142,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testUpStateOnTouchPhaseEnded():void
+		public function testUpStateOnTouchEndedIfNoHoverBeforeBegan():void
 		{
 			var position:Point = new Point(10, 10);
 			var target:DisplayObject = this._target.stage.hitTest(position);
@@ -316,6 +316,36 @@ package feathers.tests
 				hasCalledCallback);
 			Assert.assertStrictlyEquals("TouchToState must not change state on TouchPhase.MOVED outside when keepDownStateOnRollOut is true",
 				ButtonState.DOWN, this._touchToState.currentState);
+		}
+
+		[Test]
+		public function testHoverStateOnTouchEndedIfHoverBeforeBegan():void
+		{
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._target.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.HOVER;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			touch.phase = TouchPhase.BEGAN;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			var currentState:String = ButtonState.DOWN;
+			this._touchToState.callback = function(value:String):void
+			{
+				if(currentState === value)
+				{
+					return;
+				}
+				currentState = value;
+			};
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			Assert.assertStrictlyEquals("TouchToState must change state to ButtonState.HOVER on TouchPhase.ENDED if TouchPhase.HOVER is dispatched before TouchPhase.BEGAN",
+				ButtonState.HOVER, this._touchToState.currentState);
 		}
 	}
 }

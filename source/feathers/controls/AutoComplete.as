@@ -29,6 +29,8 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import feathers.system.DeviceCapabilities;
+	import flash.ui.KeyLocation;
 
 	/**
 	 * A style name to add to the list sub-component of the
@@ -917,6 +919,13 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				return;
+			}
+			if(this._touchPointID === -1)
+			{
+				//triggered by keyboard
+				this.closeList();
+				this.selectRange(this.text.length, this.text.length);
 				return;
 			}
 			this._triggered = true;
