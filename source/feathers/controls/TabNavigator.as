@@ -617,7 +617,7 @@ package feathers.controls
 		 */
 		public function get isSwipeEnabled():Boolean
 		{
-			return this._swipeDuration;
+			return this._isSwipeEnabled;
 		}
 
 		/**

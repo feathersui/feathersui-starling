@@ -2618,13 +2618,16 @@ package feathers.core
 		 */
 		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
-			this._depth = getDisplayObjectDepthFromStage(this);
-			var starling:Starling = stageToStarling(this.stage);
-			this._validationQueue = ValidationQueue.forStarling(starling);
+			//initialize before setting the validation queue to avoid
+			//getting added to the validation queue before initialization
+			//completes.
 			if(!this._isInitialized)
 			{
 				this.initializeNow();
 			}
+			this._depth = getDisplayObjectDepthFromStage(this);
+			var starling:Starling = stageToStarling(this.stage);
+			this._validationQueue = ValidationQueue.forStarling(starling);
 			if(this.isInvalid())
 			{
 				this._invalidateCount = 0;

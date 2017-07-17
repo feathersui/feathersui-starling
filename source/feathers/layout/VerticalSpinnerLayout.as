@@ -1102,7 +1102,19 @@ package feathers.layout
 			{
 				result++;
 			}
-			if(result < 0)
+			var canRepeatItems:Boolean = this._repeatItems && bounds.contentHeight === Number.POSITIVE_INFINITY;
+			if(canRepeatItems)
+			{
+				while(result < 0)
+				{
+					result += itemCount;
+				}
+				while(result >= itemCount)
+				{
+					result -= itemCount;
+				}
+			}
+			else if(result < 0)
 			{
 				return 0;
 			}

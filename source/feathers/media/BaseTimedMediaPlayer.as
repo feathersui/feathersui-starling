@@ -82,7 +82,7 @@ package feathers.media
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
 	 */
-	[Event(name="playbackStageChange",type="starling.events.Event")]
+	[Event(name="playbackStateChange",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the media completes playback because the current time has
