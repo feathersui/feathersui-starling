@@ -18,26 +18,10 @@
 
 	<fail unless="flickr.api.key"/>
 
-	<target name="build" depends="build-web,build-android,build-ios"/>
+	<target name="build" depends="build-android,build-ios"/>
 
 	<target name="prepare">
 		<delete dir="${output.path}"/>
-	</target>
-
-	<target name="build-web" depends="prepare">
-		<echo message="Building GalleryWeb.swf"/>
-		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg value="-load-config=${flashplayer.config}"/>
-			<arg value="-swf-version=${swf.version}"/>
-			<arg value="--define+=CONFIG::FLICKR_API_KEY,'${flickr.api.key}'"/>
-			<arg value="-frame=two,feathers.examples.gallery.Main"/>
-			<arg value="-source-path+=source"/>
-			<arg value="-source-path+=${starling.root}"/>
-			<arg value="-source-path+=${feathers.root}"/>
-			<arg value="-source-path+=${theme.root}"/>
-			<arg value="source/GalleryWeb.as"/>
-			<arg value="-output=${output.path}/GalleryWeb.swf"/>
-		</java>
 	</target>
 
 	<target name="build-air-swf" depends="prepare">
