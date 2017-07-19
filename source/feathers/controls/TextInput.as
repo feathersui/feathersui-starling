@@ -2475,12 +2475,14 @@ package feathers.controls
 			if(!value)
 			{
 				this._isWaitingToSetFocus = false;
-				if(this._textEditorHasFocus)
-				{
-					this.textEditor.clearFocus();
-				}
 			}
 			super.visible = value;
+			//call clearFocus() after setting super.visible because the text
+			//editor may check the visible property
+			if(!value && this._textEditorHasFocus)
+			{
+				this.textEditor.clearFocus();
+			}
 		}
 
 		/**
