@@ -46,13 +46,32 @@ A callout may be closed manually by calling the [`close()`](../api-reference/fea
 
 Additional arguments are available for `Callout.show()`. Let's take a look at those.
 
-### Direction
+### Position
 
-The next is the callout's direction, which is where the callout appears relative to its origin. By default, this is [`Callout.DIRECTION_ANY`](../api-reference/feathers/controls/Callout.html#DIRECTION_ANY) which means that the callout may open [above](../api-reference/feathers/controls/Callout.html#DIRECTION_UP), [below](../api-reference/feathers/controls/Callout.html#DIRECTION_DOWN), to the [left](../api-reference/feathers/controls/Callout.html#DIRECTION_LEFT), or to the [right](../api-reference/feathers/controls/Callout.html#DIRECTION_RIGHT) of the origin. The exact direction will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to select a specific direction if you never want the callout to open in one of the other directions.
+The next is the callout's position, which is where the callout appears relative to its origin. By default, if this value is `null`, the callout may open on any of the four sides of the origin.
+
+The positions should be passed in as a `Vector.<String>`, so the following value could be used instead of `null` to get the same behavior: 
+
+``` code
+new <String>[RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.BOTTOM, RelativePosition.LEFT]
+```
+
+The exact position will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to allow fewer positions if you never want the callout to open on certain sides of the origin. For instance, if you always wanted the callout to appear to the top of the origin, you would pass in the following value:
+
+``` code
+new <String>[RelativePosition.TOP]
+```
+
+Use the following constants on the [`feathers.layout.RelativePosition`](../api-reference/feathers/layout/RelativePosition.html) class to position the callout.
+
+* [`RelativePosition.TOP`](../api-reference/feathers/layout/RelativePosition.html#TOP)
+* [`RelativePosition.BOTTOM`](../api-reference/feathers/layout/RelativePosition.html#BOTTOM)
+* [`RelativePosition.LEFT`](../api-reference/feathers/layout/RelativePosition.html#LEFT)
+* [`RelativePosition.RIGHT`](../api-reference/feathers/layout/RelativePosition.html#RIGHT)
 
 ### Modality
 
-Following the direction is the `isModal` parameter. This determines whether there is an overlay between the callout and the rest of the display list. When a callout is modal, the overlay blocks touches to everything that appears under the callout. The callout may be closed by touching outside the bounds of the callout, or by calling `close()` on the `Callout` instance. If the callout isn't modal, the callout will still close when the user touches something outside of the callout (the same as a modal callout), but there will be no overlay to block the touch, and anything below the callout will remain interactive.
+Following the position is the `isModal` parameter. This determines whether there is an overlay between the callout and the rest of the display list. When a callout is modal, the overlay blocks touches to everything that appears under the callout. The callout may be closed by touching outside the bounds of the callout, or by calling `close()` on the `Callout` instance. If the callout isn't modal, the callout will still close when the user touches something outside of the callout (the same as a modal callout), but there will be no overlay to block the touch, and anything below the callout will remain interactive.
 
 Callouts are displayed using the [`PopUpManager`](pop-ups.html). By default, modal overlays are managed by the `PopUpManager`, but you can give a custom overlay to callouts (that will be different from other modal pop-ups) when you set the static property, [`calloutOverlayFactory`](../api-reference/feathers/controls/Callout.html#calloutOverlayFactory):
 
@@ -99,7 +118,7 @@ callout.backgroundSkin = skin;
 
 It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Callout.html#backgroundSkin) property.
 
-You may also skin the callout's arrow that points to its origin. Depending on which direction to callout opens relative to the origin, the arrow may be on any of the callout's four sides.
+You may also skin the callout's arrow that points to its origin. Depending on which position the callout opens relative to the origin, the arrow may be on any of the callout's four sides.
 
 ``` code
 callout.topArrowSkin = new Image( topArrowTexture );
@@ -108,7 +127,7 @@ callout.bottomArrowSkin = new Image( bottomArrowTexture );
 callout.leftArrowSkin = new Image( leftArrowTexture );
 ```
 
-If you know that the callout will always open in one direction, you can provide a single arrow skin. Otherwise, it's a good idea to provide all four.
+If you know that the callout will always open in one position, you can provide a single arrow skin. Otherwise, it's a good idea to provide all four.
 
 ### Layout
 
@@ -171,7 +190,7 @@ function skinnedCalloutFactory():Callout
     // etc...
     return callout;
 };
-Callout.show( content, origin, directions, isModal, skinnedCalloutFactory );
+Callout.show( content, origin, positions, isModal, skinnedCalloutFactory );
 ```
 
 You should generally always skin the callouts with a factory or with a theme instead of passing the skins to the `Callout` instance returned by calling `Callout.show()`. If you skin an callout after `Callout.show()` is called, it may not necessarily be positioned or sized correctly.
