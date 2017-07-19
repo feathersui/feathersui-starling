@@ -97,7 +97,7 @@ function customCalloutFactory():Callout
     callout.styleNameList.add( "custom-callout" );
     return callout;
 };
-Callout.show( content, origin, Callout.DIRECTION_ANY, true, customCalloutFactory );
+Callout.show( content, origin, null, true, customCalloutFactory );
 ```
 
 If you've created a [custom theme](custom-themes.html), you can set a styling function for a `Callout` with the style name `"custom-callout"` to provide different skins for this callout.
