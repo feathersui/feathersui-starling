@@ -1406,6 +1406,12 @@ package feathers.controls.text
 			//nativeStage, focus will be removed from the StageText, but the
 			//soft keyboard will incorrectly remain open.
 			starling.nativeStage.focus = null;
+			if(!this.isParentChainVisible())
+			{
+				//this normally happens in render(), but if we're not visible,
+				//we need to hide the StageText manually.
+				this.stageText.visible = false;
+			}
 		}
 
 		/**
@@ -2333,6 +2339,24 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function isParentChainVisible():Boolean
+		{
+			var target:DisplayObject = this;
+			do
+			{
+				if(!target.visible)
+				{
+					return false;
+				}
+				target = target.parent;
+			}
+			while(target)
+			return true;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
 			//remove this from the stage, if needed
@@ -2407,17 +2431,10 @@ package feathers.controls.text
 		{
 			if(this._stageTextHasFocus)
 			{
-				var target:DisplayObject = this;
-				do
+				if(!this.isParentChainVisible())
 				{
-					if(!target.visible)
-					{
-						this.stageText.stage.focus = null;
-						break;
-					}
-					target = target.parent;
+					this.stageText.stage.focus = null;
 				}
-				while(target)
 			}
 			else
 			{
