@@ -9,6 +9,7 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.VerticalAlign;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -1082,7 +1083,17 @@ package feathers.layout
 
 			var totalItemHeight:Number = itemCount * (calculatedTypicalItemHeight + gap) - gap;
 
-			scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
+			//the actual code that figures out which items are visible assumes
+			//that alignment is top. to make it work with other alignments, we
+			//can simply adjust the scroll position!
+			if(this._verticalAlign === VerticalAlign.MIDDLE)
+			{
+				scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
+			}
+			else if(this._verticalAlign === VerticalAlign.BOTTOM)
+			{
+				scrollY -= (height - calculatedTypicalItemHeight);
+			}
 
 			//we add one extra here because the first item renderer in view may
 			//be partially obscured, which would reveal an extra item renderer.
