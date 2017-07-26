@@ -13,6 +13,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -687,6 +688,19 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _selectionBounds:Rectangle = new Rectangle();
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionBounds():Rectangle
+		{
+			return this._selectionBounds;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
@@ -946,6 +960,12 @@ package feathers.layout
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._discoveredItemsCache.length = 0;
+
+			//calculate the bounds of the selection rectangle
+			this._selectionBounds.x = horizontalAlignOffsetX;
+			this._selectionBounds.y = 0;
+			this._selectionBounds.width = calculatedTypicalItemWidth;
+			this._selectionBounds.height = availableHeight;
 
 			//finally, we want to calculate the result so that the container
 			//can use it to adjust its viewport and determine the minimum and

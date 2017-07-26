@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import flash.geom.Rectangle;
+
 	/**
 	 * A layout for the <code>SpinnerList</code> component.
 	 *
@@ -20,5 +22,11 @@ package feathers.layout
 		 * The interval, in pixels, between snapping points.
 		 */
 		function get snapInterval():Number;
+
+		/**
+		 * A rectangle indicating the bounds of the selected item. Used by the
+		 * <code>SpinnerList</code> to position its selection overlay skin.
+		 */
+		function get selectionBounds():Rectangle;
 	}
 }

@@ -19,6 +19,7 @@ package feathers.controls
 
 	import flash.events.KeyboardEvent;
 	import flash.events.TransformGestureEvent;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -199,6 +200,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _spinnerLayout:ISpinnerLayout;
+
+		/**
+		 * @private
+		 */
 		override public function set layout(value:ILayout):void
 		{
 			if(value && !(value is ISpinnerLayout))
@@ -206,6 +212,7 @@ package feathers.controls
 				throw new ArgumentError("SpinnerList requires layouts to implement the ISpinnerLayout interface.");
 			}
 			super.layout = value;
+			this._spinnerLayout = ISpinnerLayout(value);
 		}
 
 		/**
@@ -267,7 +274,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _selectionOverlaySkin:DisplayObject;
+		protected var _selectionOverlaySkin:DisplayObject = null;
 
 		/**
 		 * @private
@@ -399,7 +406,7 @@ package feathers.controls
 			super.refreshMinAndMaxScrollPositions();
 			if(this._maxVerticalScrollPosition !== this._minVerticalScrollPosition)
 			{
-				this.actualPageHeight = ISpinnerLayout(this._layout).snapInterval;
+				this.actualPageHeight = this._spinnerLayout.snapInterval;
 				if(!this.isScrolling && this.pendingItemIndex === -1 &&
 					this.actualPageHeight !== oldActualPageHeight)
 				{
@@ -414,7 +421,7 @@ package feathers.controls
 			}
 			else if(this._maxHorizontalScrollPosition !== this._minHorizontalScrollPosition)
 			{
-				this.actualPageWidth = ISpinnerLayout(this._layout).snapInterval;
+				this.actualPageWidth = this._spinnerLayout.snapInterval;
 				if(!this.isScrolling && this.pendingItemIndex === -1 &&
 					this.actualPageWidth !== oldActualPageWidth)
 				{
@@ -454,7 +461,7 @@ package feathers.controls
 		{
 			super.layoutChildren();
 
-			if(this._selectionOverlaySkin)
+			if(this._selectionOverlaySkin !== null)
 			{
 				if(this._showSelectionOverlay && this._hideSelectionOverlayUnlessFocused &&
 					this._focusManager !== null && this._isFocusEnabled)
@@ -465,33 +472,14 @@ package feathers.controls
 				{
 					this._selectionOverlaySkin.visible = this._showSelectionOverlay;
 				}
+				var selectionBounds:Rectangle = this._spinnerLayout.selectionBounds;
+				this._selectionOverlaySkin.x = this._leftViewPortOffset + selectionBounds.x;
+				this._selectionOverlaySkin.y = this._topViewPortOffset + selectionBounds.y;
+				this._selectionOverlaySkin.width = selectionBounds.width;
+				this._selectionOverlaySkin.height = selectionBounds.height;
 				if(this._selectionOverlaySkin is IValidating)
 				{
 					IValidating(this._selectionOverlaySkin).validate();
-				}
-				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
-				{
-					this._selectionOverlaySkin.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-					var overlayHeight:Number = this.actualPageHeight;
-					if(overlayHeight > this.actualHeight)
-					{
-						overlayHeight = this.actualHeight;
-					}
-					this._selectionOverlaySkin.height = overlayHeight;
-					this._selectionOverlaySkin.x = this._leftViewPortOffset;
-					this._selectionOverlaySkin.y = Math.round(this._topViewPortOffset + (this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - overlayHeight) / 2);
-				}
-				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
-				{
-					var overlayWidth:Number = this.actualPageWidth;
-					if(overlayWidth > this.actualWidth)
-					{
-						overlayWidth = this.actualWidth;
-					}
-					this._selectionOverlaySkin.width = overlayWidth;
-					this._selectionOverlaySkin.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
-					this._selectionOverlaySkin.x = Math.round(this._leftViewPortOffset + (this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - overlayWidth) / 2);
-					this._selectionOverlaySkin.y = this._topViewPortOffset;
 				}
 			}
 		}
