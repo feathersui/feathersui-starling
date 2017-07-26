@@ -1108,11 +1108,15 @@ package feathers.layout
 			//can simply adjust the scroll position!
 			if(this._verticalAlign === VerticalAlign.MIDDLE)
 			{
-				scrollY -= Math.round((height - calculatedTypicalItemHeight) / 2);
+				scrollY -= Math.round(this._paddingTop + (height - calculatedTypicalItemHeight) / 2);
 			}
 			else if(this._verticalAlign === VerticalAlign.BOTTOM)
 			{
-				scrollY -= (height - calculatedTypicalItemHeight);
+				scrollY -= (height - calculatedTypicalItemHeight - this._paddingBottom);
+			}
+			else //top
+			{
+				scrollY -= this._paddingTop;
 			}
 
 			//we add one extra here because the first item renderer in view may

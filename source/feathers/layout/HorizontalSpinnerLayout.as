@@ -1108,11 +1108,15 @@ package feathers.layout
 			//can simply adjust the scroll position!
 			if(this._horizontalAlign === HorizontalAlign.CENTER)
 			{
-				scrollX -= Math.round((width - calculatedTypicalItemWidth) / 2);
+				scrollX -= (this._paddingLeft + Math.round((width - calculatedTypicalItemWidth) / 2));
 			}
 			else if(this._horizontalAlign === HorizontalAlign.RIGHT)
 			{
-				scrollX -= (width - calculatedTypicalItemWidth);
+				scrollX -= (width - calculatedTypicalItemWidth - this._paddingRight);
+			}
+			else //left
+			{
+				scrollX -= this._paddingLeft;
 			}
 
 			//we add one extra here because the first item renderer in view may
