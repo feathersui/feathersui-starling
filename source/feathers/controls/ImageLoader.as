@@ -2574,7 +2574,7 @@ package feathers.controls
 			//(perhaps with some kind of AIR version detection, though)
 			var canReuseTexture:Boolean =
 				this._texture !== null &&
-				(!this._asyncTextureUpload || this._texture.root.uploadBitmapData.length === 1) &&
+				(!Texture.asyncBitmapUploadEnabled || !this._asyncTextureUpload) &&
 				this._texture.nativeWidth === bitmapData.width &&
 				this._texture.nativeHeight === bitmapData.height &&
 				this._texture.scale === this._scaleFactor &&
