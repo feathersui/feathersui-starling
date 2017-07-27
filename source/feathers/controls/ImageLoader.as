@@ -2582,6 +2582,15 @@ package feathers.controls
 			if(!canReuseTexture)
 			{
 				this.cleanupTexture();
+				if(this._textureCache)
+				{
+					//we need to replace the current texture in the cache,
+					//so we need to remove the old one so that the cache
+					//doesn't throw an error because there's already a
+					//texture with this key.
+					var key:String = this.sourceToTextureCacheKey(this._source);
+					this._textureCache.removeTexture(key);
+				}
 			}
 			if(this._delayTextureCreation && !this._isRestoringTexture)
 			{
