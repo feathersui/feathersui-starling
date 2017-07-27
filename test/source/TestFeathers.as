@@ -31,6 +31,7 @@ package
 	import feathers.tests.DrawersTests;
 	import feathers.tests.DropDownPopUpContentManagerTests;
 	import feathers.tests.FlowLayoutTests;
+	import feathers.tests.FocusIndicatorTests;
 	import feathers.tests.FocusManagerEnabledTests;
 	import feathers.tests.FocusManagerTests;
 	import feathers.tests.FontStylesSetTests;
@@ -200,6 +201,7 @@ package
 				ComponentLifecycleTests,
 				ScaleTests,
 				RestrictedStyleTests,
+				FocusIndicatorTests,
 
 				//individual component tests
 				AlertMeasurementTests,

@@ -1898,6 +1898,12 @@ package feathers.core
 		 */
 		override public function dispose():void
 		{
+			//we don't dispose it if this is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._focusIndicatorSkin !== null && this._focusIndicatorSkin.parent !== this)
+			{
+				this._focusIndicatorSkin.dispose();
+			}
 			this._isDisposed = true;
 			this._validationQueue = null;
 			this.layoutData = null;
