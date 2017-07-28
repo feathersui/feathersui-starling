@@ -2244,10 +2244,20 @@ package feathers.controls
 			{
 				//skip Texture.fromBitmapData() because we don't want
 				//it to create an onRestore function that will be
-				//immediately discarded for garbage collection. 
-				this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
-					bitmapData.height / this._scaleFactor, true, false, false,
-					this._scaleFactor, this._textureFormat);
+				//immediately discarded for garbage collection.
+				try
+				{
+					this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
+						bitmapData.height / this._scaleFactor, true, false, false,
+						this._scaleFactor, this._textureFormat);
+				}
+				catch(error:Error)
+				{
+					this.cleanupTexture();
+					this.invalidate(INVALIDATION_FLAG_DATA);
+					this.dispatchEventWith(starling.events.Event.IO_ERROR, false, new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, error.toString()));
+					return;
+				}
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
@@ -2343,7 +2353,17 @@ package feathers.controls
 			}
 			else
 			{
-				this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				try
+				{
+					this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				}
+				catch(error:Error)
+				{
+					this.cleanupTexture();
+					this.invalidate(INVALIDATION_FLAG_DATA);
+					this.dispatchEventWith(starling.events.Event.IO_ERROR, false, new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, error.toString()));
+					return;
+				}
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
