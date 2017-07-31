@@ -15,13 +15,13 @@ Get started with [Feathers](http://feathersui.com/), the open source library of 
 
 -   Set up Starling and Feathers in your preferred development environment:
 
-    -   [Flash Builder](flash-builder.html)
+    -   [Adobe Flash Builder](flash-builder.html)
 
     -   [IntelliJ IDEA](intellij-idea.html)
 
     -   [FlashDevelop](flashdevelop.html)
 
-    -   [Flash Professional](flash-pro.html)
+    -   [Adobe Animate CC](flash-pro.html)
 
 -   Follow the instructions in [Getting Started with Feathers](getting-started.html) to create your first "Hello World" app using Feathers.
 
