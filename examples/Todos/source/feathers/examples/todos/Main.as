@@ -6,6 +6,7 @@ package feathers.examples.todos
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.TabBar;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.text.StageTextTextEditor;
@@ -16,6 +17,7 @@ package feathers.examples.todos
 	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.todos.TodoItem;
 	import feathers.examples.todos.controls.TodoItemRenderer;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -39,10 +41,12 @@ package feathers.examples.todos
 		}
 
 		private var _list:List;
+		private var _tabs:TabBar;
 		private var _toolbar:LayoutGroup;
 		private var _input:TextInput;
 		private var _clearButton:Button;
 		private var _editButton:ToggleButton;
+		private var _items:VectorCollection;
 		
 		private var _touchID:int = -1;
 		private var _previousGlobalTouchY:Number;
@@ -81,9 +85,21 @@ package feathers.examples.todos
 
 			this.headerFactory = this.customHeaderFactory;
 
+			this._tabs = new TabBar();
+			this._tabs.dataProvider = new ArrayCollection(
+			[
+				{label: "All"},
+				{label: "Active"},
+				{label: "Completed"},
+			]);
+			this._tabs.addEventListener(Event.CHANGE, tabs_changeHandler);
+			this.addChild(this._tabs);
+
+			this._items = new VectorCollection(new <TodoItem>[]);
+
 			this._list = new List();
 			this._list.isSelectable = false;
-			this._list.dataProvider = new VectorCollection(new <TodoItem>[]);
+			this._list.dataProvider = this._items;
 			this._list.itemRendererType = TodoItemRenderer;
 			this.addChild(this._list);
 
@@ -93,7 +109,7 @@ package feathers.examples.todos
 
 			this._clearButton = new Button();
 			this._clearButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON);
-			this._clearButton.label = "Delete All Checked Items";
+			this._clearButton.label = "Clear All Completed Items";
 			this._clearButton.includeInLayout = false;
 			this._clearButton.visible = false;
 			this._clearButton.addEventListener(Event.TRIGGERED, clearButton_triggeredHandler);
@@ -124,11 +140,18 @@ package feathers.examples.todos
 			toolbarLayoutData.left = 0;
 			this._toolbar.layoutData = toolbarLayoutData;
 
+			var tabsLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			tabsLayoutData.bottom = 0;
+			tabsLayoutData.right = 0;
+			tabsLayoutData.left = 0;
+			this._tabs.layoutData = tabsLayoutData;
+
 			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			listLayoutData.top = 0;
 			listLayoutData.topAnchorDisplayObject = this._toolbar;
 			listLayoutData.right = 0;
 			listLayoutData.bottom = 0;
+			listLayoutData.bottomAnchorDisplayObject = this._tabs;
 			listLayoutData.left = 0;
 			this._list.layoutData = listLayoutData;
 			this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
@@ -153,6 +176,32 @@ package feathers.examples.todos
 			headerLayoutData.top = newPosition;
 		}
 
+		private function includeActiveItems(item:TodoItem):Boolean
+		{
+			return !item.isCompleted;
+		}
+
+		private function includeCompletedItems(item:TodoItem):Boolean
+		{
+			return item.isCompleted;
+		}
+
+		private function refreshFilterFunction():void
+		{
+			if(this._tabs.selectedIndex === 1)
+			{
+				this._items.filterFunction = this.includeActiveItems;
+			}
+			else if(this._tabs.selectedIndex === 2)
+			{
+				this._items.filterFunction = this.includeCompletedItems;
+			}
+			else
+			{
+				this._items.filterFunction = null;
+			}
+		}
+
 		private function addedToStageHandler():void
 		{
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
@@ -170,7 +219,7 @@ package feathers.examples.todos
 				return;
 			}
 
-			this._list.dataProvider.addItem(new TodoItem(this._input.text));
+			this._items.addItem(new TodoItem(this._input.text));
 			this._input.text = "";
 		}
 
@@ -186,23 +235,28 @@ package feathers.examples.todos
 
 		private function clearButton_triggeredHandler(event:Event):void
 		{
+			//the completed items may currently be filtered, so temporarily
+			//disable the filter.
+			this._items.filterFunction = null;
 			var hasCompletedItem:Boolean = false;
-			var itemCount:int = this._list.dataProvider.length;
+			var itemCount:int = this._items.length;
 			for(var i:int = itemCount - 1; i >= 0; i--)
 			{
-				var item:TodoItem = TodoItem(this._list.dataProvider.getItemAt(i));
+				var item:TodoItem = TodoItem(this._items.getItemAt(i));
 				if(item.isCompleted)
 				{
 					hasCompletedItem = true;
 					break;
 				}
 			}
+			//be sure to restore the filter
+			this.refreshFilterFunction();
 			if(!hasCompletedItem)
 			{
 				return;
 			}
 
-			Alert.show("Are you sure that you want to delete all checked items? This action cannot be undone.", "Confirm delete",
+			Alert.show("Are you sure that you want to delete all completed items? This action cannot be undone.", "Confirm delete",
 				new ArrayCollection(
 				[
 					{ label: "Cancel" },
@@ -212,15 +266,20 @@ package feathers.examples.todos
 
 		private function confirmButton_triggeredHandler(event:Event):void
 		{
-			var itemCount:int = this._list.dataProvider.length;
+			//the completed items may currently be filtered, so temporarily
+			//disable the filter.
+			this._items.filterFunction = null;
+			var itemCount:int = this._items.length;
 			for(var i:int = itemCount - 1; i >= 0; i--)
 			{
-				var item:TodoItem = TodoItem(this._list.dataProvider.getItemAt(i));
+				var item:TodoItem = TodoItem(this._items.getItemAt(i));
 				if(item.isCompleted)
 				{
-					this._list.dataProvider.removeItemAt(i);
+					this._items.removeItemAt(i);
 				}
 			}
+			//be sure to restore the filter
+			this.refreshFilterFunction();
 		}
 
 		private function stage_resizeHandler():void
@@ -257,6 +316,11 @@ package feathers.examples.todos
 				this._touchID = touch.id;
 				this._previousGlobalTouchY = touch.globalY;
 			}
+		}
+
+		private function tabs_changeHandler(event:Event):void
+		{
+			this.refreshFilterFunction();
 		}
 	}
 }
