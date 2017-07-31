@@ -1,17 +1,17 @@
 ---
-title: Setting up Feathers in Adobe Flash Professional  
+title: Setting up Feathers in Adobe Animate CC  
 author: Josh Tynjala
 
 ---
-# Setting up Feathers in Adobe Flash Professional
+# Setting up Feathers in Adobe Animate CC
 
-Let's get your [Flash Professional](http://www.adobe.com/products/flash.html) development environment ready to use Feathers.
+Let's get your [Adobe Animate](https://www.adobe.com/products/animate.html) development environment ready to use Feathers.
 
-<aside class="info">These instructions apply to Flash Professional CC. Minor variations may exist between different versions of Flash Professional.</aside>
+<aside class="info">These instructions apply to Animate CC. Minor variations may exist between different versions of Animate (or older versions of Flash Professional).</aside>
 
 1. Download the latest stable versions of [Feathers](http://feathersui.com/download/) and [Starling Framework](http://gamua.com/starling/download/).
 
-2. In Flash Professional, create a new project. For mobile, you will want to create an **AIR for Android** or **AIR for iOS** project. For desktop, you will want to create an **AIR** project. For Flash Player in the browser, you will want to create an **ActionScript 3.0** project.
+2. In Animate, create a new project. For mobile, you will want to create an **AIR for Android** or **AIR for iOS** project. For desktop, you will want to create an **AIR** project. For Flash Player in the browser, you will want to create an **ActionScript 3.0** project.
 
 3. In the **Properties** panel, ensure that the **Target** is set to an appropriate version of the Flash runtime that you are targeting. Please check the Feathers README file to see which versions of the Flash runtimes are required for the version of Feathers that you are using.
 
@@ -29,6 +29,6 @@ Let's get your [Flash Professional](http://www.adobe.com/products/flash.html) de
 
 Your project is ready. If you're unsure how to proceed, start by using the code in the **Create your Game** section of the [Starling First Steps Tutorial](http://gamua.com/starling/first-steps/). Then take a look at the [Feathers Getting Started Tutorial](getting-started.html).
 
-<aside class="warn">Flash Professional's ability to properly simulate devices on AIR is limited compared to other development environments. Flash Professional's AIR simulator does not provide the correct screen DPI/PPI for the mobile device that it is simulating. The value of `Capabilities.screenDPI` is used by Feathers themes to scale skins to an appropriate physical size for each device.
+<aside class="warn">Animate's ability to properly simulate devices on AIR is limited compared to other development environments. Animate's AIR simulator does not provide the correct screen DPI/PPI for the mobile device that it is simulating. The value of `Capabilities.screenDPI` is used by Feathers themes to scale skins to an appropriate physical size for each device.
 
 In order to use the DPI scaling capabilities of Feathers themes, you will need to run **ADL** from the AIR SDK on the command line or test on a real device. For more details, see [Why do the Feathers component skins and font sizes appear very small?](faq/display-density.html) in the [Feathers FAQ](faq/index.html).</aside>
