@@ -1555,6 +1555,8 @@ package feathers.core
 		 * @default null
 		 *
 		 * @see feathers.core.IFocusDisplayObject
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		public function get nextUpFocus():IFocusDisplayObject
 		{
@@ -1588,6 +1590,8 @@ package feathers.core
 		 * @default null
 		 *
 		 * @see feathers.core.IFocusDisplayObject
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		public function get nextRightFocus():IFocusDisplayObject
 		{
@@ -1621,6 +1625,8 @@ package feathers.core
 		 * @default null
 		 *
 		 * @see feathers.core.IFocusDisplayObject
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		public function get nextDownFocus():IFocusDisplayObject
 		{
@@ -1654,6 +1660,8 @@ package feathers.core
 		 * @default null
 		 *
 		 * @see feathers.core.IFocusDisplayObject
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		public function get nextLeftFocus():IFocusDisplayObject
 		{

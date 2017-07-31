@@ -64,7 +64,16 @@ package feathers.core
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * The default <code>IFocusManager</code> implementation.
+	 * The default <code>IFocusManager</code> implementation. This focus
+	 * manager is designed to work on both desktop and mobile. Focus may be
+	 * controlled by <code>Keyboard.TAB</code> (including going
+	 * backwards when holding the shift key) or with the arrow keys on a d-pad
+	 * (such as those that appear on a smart TV remote control and some game
+	 * controllers).
+	 * 
+	 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
+	 * Launcher on desktop for debugging purposes, set
+	 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
 	 *
 	 * @see ../../../help/focus.html Keyboard focus management in Feathers
 	 * @see feathers.core.FocusManager

@@ -138,6 +138,8 @@ package feathers.core
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
 		 * 
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		function get nextUpFocus():IFocusDisplayObject;
 
@@ -163,6 +165,8 @@ package feathers.core
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
 		 * 
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		function get nextRightFocus():IFocusDisplayObject;
 
@@ -188,6 +192,8 @@ package feathers.core
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
 		 * 
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		function get nextDownFocus():IFocusDisplayObject;
 
@@ -213,6 +219,8 @@ package feathers.core
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
 		 * 
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		function get nextLeftFocus():IFocusDisplayObject;
 

@@ -29,6 +29,8 @@ package feathers.system
 		 * DeviceCapabilities.simulateDPad = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @productversion Feathers 3.4.0
 		 */
 		public static var simulateDPad:Boolean = false;
 

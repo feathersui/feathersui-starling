@@ -202,7 +202,7 @@ package feathers.utils
 			var screenDensity:Number = DeviceCapabilities.dpi;
 			if(Capabilities.os.indexOf("tvOS") !== -1)
 			{
-				//tvOS devices report a lower DPI of Android TV devices
+				//tvOS devices report a lower DPI than Android TV devices
 				//for the same resolution
 				screenDensity *= 2;
 			}
