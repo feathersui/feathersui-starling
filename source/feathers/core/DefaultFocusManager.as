@@ -835,7 +835,7 @@ package feathers.core
 			}
 			var newFocus:IFocusDisplayObject;
 			var currentFocus:IFocusDisplayObject = this._focus;
-			if(currentFocus && currentFocus.focusOwner)
+			if(currentFocus !== null && currentFocus.focusOwner !== null)
 			{
 				newFocus = currentFocus.focusOwner;
 			}
@@ -847,25 +847,44 @@ package feathers.core
 					case Keyboard.UP:
 					{
 						position = RelativePosition.TOP;
+						if(currentFocus !== null && currentFocus.nextUpFocus !== null)
+						{
+							newFocus = currentFocus.nextUpFocus;
+						}
 						break;
 					}
 					case Keyboard.RIGHT:
 					{
 						position = RelativePosition.RIGHT;
+						if(currentFocus !== null && currentFocus.nextRightFocus !== null)
+						{
+							newFocus = currentFocus.nextRightFocus;
+						}
 						break;
 					}
 					case Keyboard.DOWN:
 					{
 						position = RelativePosition.BOTTOM;
+						if(currentFocus !== null && currentFocus.nextDownFocus !== null)
+						{
+							newFocus = currentFocus.nextDownFocus;
+						}
 						break;
 					}
 					case Keyboard.LEFT:
 					{
 						position = RelativePosition.LEFT;
+						if(currentFocus !== null && currentFocus.nextLeftFocus !== null)
+						{
+							newFocus = currentFocus.nextLeftFocus;
+						}
 						break;
 					}
 				}
-				newFocus = findFocusAtRelativePosition(this._root, position);
+				if(newFocus === null)
+				{
+					newFocus = findFocusAtRelativePosition(this._root, position);
+				}
 			}
 			if(newFocus !== this._focus)
 			{

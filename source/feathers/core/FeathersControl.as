@@ -1477,7 +1477,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _nextTabFocus:IFocusDisplayObject;
+		protected var _nextTabFocus:IFocusDisplayObject = null;
 
 		/**
 		 * <p>The implementation of this property is provided for convenience,
@@ -1502,7 +1502,7 @@ package feathers.core
 		{
 			if(!(this is IFocusDisplayObject))
 			{
-				throw new IllegalOperationError("Cannot set next tab focus on a component that does not implement feathers.core.IFocusDisplayObject");
+				throw new IllegalOperationError("Cannot set nextTabFocus on a component that does not implement feathers.core.IFocusDisplayObject");
 			}
 			this._nextTabFocus = value;
 		}
@@ -1510,7 +1510,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _previousTabFocus:IFocusDisplayObject;
+		protected var _previousTabFocus:IFocusDisplayObject = null;
 
 		/**
 		 * <p>The implementation of this property is provided for convenience,
@@ -1535,9 +1535,141 @@ package feathers.core
 		{
 			if(!(this is IFocusDisplayObject))
 			{
-				throw new IllegalOperationError("Cannot set previous tab focus on a component that does not implement feathers.core.IFocusDisplayObject");
+				throw new IllegalOperationError("Cannot set previousTabFocus on a component that does not implement feathers.core.IFocusDisplayObject");
 			}
 			this._previousTabFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _nextUpFocus:IFocusDisplayObject = null;
+
+		/**
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
+		 * @copy feathers.core.IFocusDisplayObject#nextUpFocus
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
+		 */
+		public function get nextUpFocus():IFocusDisplayObject
+		{
+			return this._nextUpFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nextUpFocus(value:IFocusDisplayObject):void
+		{
+			if(!(this is IFocusDisplayObject))
+			{
+				throw new IllegalOperationError("Cannot set nextUpFocus on a component that does not implement feathers.core.IFocusDisplayObject");
+			}
+			this._nextUpFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _nextRightFocus:IFocusDisplayObject = null;
+
+		/**
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
+		 * @copy feathers.core.IFocusDisplayObject#nextRightFocus
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
+		 */
+		public function get nextRightFocus():IFocusDisplayObject
+		{
+			return this._nextRightFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nextRightFocus(value:IFocusDisplayObject):void
+		{
+			if(!(this is IFocusDisplayObject))
+			{
+				throw new IllegalOperationError("Cannot set nextRightFocus on a component that does not implement feathers.core.IFocusDisplayObject");
+			}
+			this._nextRightFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _nextDownFocus:IFocusDisplayObject = null;
+
+		/**
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
+		 * @copy feathers.core.IFocusDisplayObject#nextDownFocus
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
+		 */
+		public function get nextDownFocus():IFocusDisplayObject
+		{
+			return this._nextDownFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nextDownFocus(value:IFocusDisplayObject):void
+		{
+			if(!(this is IFocusDisplayObject))
+			{
+				throw new IllegalOperationError("Cannot set nextDownFocus on a component that does not implement feathers.core.IFocusDisplayObject");
+			}
+			this._nextDownFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _nextLeftFocus:IFocusDisplayObject = null;
+
+		/**
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
+		 * @copy feathers.core.IFocusDisplayObject#nextLeftFocus
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.IFocusDisplayObject
+		 */
+		public function get nextLeftFocus():IFocusDisplayObject
+		{
+			return this._nextLeftFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nextLeftFocus(value:IFocusDisplayObject):void
+		{
+			if(!(this is IFocusDisplayObject))
+			{
+				throw new IllegalOperationError("Cannot set nextLeftFocus on a component that does not implement feathers.core.IFocusDisplayObject");
+			}
+			this._nextLeftFocus = value;
 		}
 
 		/**
