@@ -105,6 +105,8 @@ package feathers.themes
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
+	import starling.display.Stage;
+	import feathers.core.FocusManager;
 
 	/**
 	 * The base class for the "Minimal" theme for mobile Feathers apps. Handles
@@ -173,6 +175,7 @@ package feathers.themes
 		protected static const SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID:Rectangle = new Rectangle(0, 2, 2, 10);
 		protected static const BACK_BUTTON_SCALE9_GRID:Rectangle = new Rectangle(16, 0, 1, 28);
 		protected static const FORWARD_BUTTON_SCALE9_GRID:Rectangle = new Rectangle(3, 0, 1, 28);
+		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const LIST_BACKGROUND_COLOR:uint = 0xf8f8f8;
@@ -289,6 +292,8 @@ package feathers.themes
 		 * variable before calling <code>initialize()</code>.
 		 */
 		protected var atlas:TextureAtlas;
+
+		protected var focusIndicatorSkinTexture:Texture;
 
 		protected var buttonUpSkinTexture:Texture;
 		protected var buttonDownSkinTexture:Texture;
@@ -420,6 +425,7 @@ package feathers.themes
 		protected var calloutTopLeftArrowOverlapGapSize:int = -4;
 		protected var popUpFillSize:int = 276;
 		protected var dropShadowSize:int = 6;
+		protected var focusPaddingSize:int = -4;
 
 		protected var primaryFontStyles:TextFormat;
 		protected var disabledFontStyles:TextFormat;
@@ -486,6 +492,9 @@ package feathers.themes
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
+
+			var stage:Stage = this.starling.stage;
+			FocusManager.setEnabledForStage(stage, true);
 		}
 
 		/**
@@ -494,6 +503,8 @@ package feathers.themes
 		 */
 		protected function initializeTextures():void
 		{
+			this.focusIndicatorSkinTexture = this.atlas.getTexture("focus-indicator-skin0000");
+
 			this.buttonUpSkinTexture = this.atlas.getTexture("button-up-skin0000");
 			this.buttonDownSkinTexture = this.atlas.getTexture("button-down-skin0000");
 			this.buttonDisabledSkinTexture = this.atlas.getTexture("button-disabled-skin0000");
@@ -806,6 +817,11 @@ package feathers.themes
 		{
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			scroller.focusIndicatorSkin = focusIndicatorSkin;
+			scroller.focusPadding = 0;
 		}
 
 		protected function setDropDownListStyles(list:List):void
@@ -869,6 +885,11 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
 			button.paddingLeft = this.gutterSize;
@@ -1044,6 +1065,11 @@ package feathers.themes
 			button.minHeight = this.gridSize;
 			button.defaultSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			button.fontStyles = this.primaryFontStyles.clone();
 			button.disabledFontStyles = this.disabledFontStyles.clone();
 
@@ -1134,6 +1160,12 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED, this.checkDisabledIconTexture);
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.checkSelectedDisabledIconTexture);
 			check.defaultIcon = icon;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			check.focusIndicatorSkin = focusIndicatorSkin;
+			check.focusPaddingLeft = this.focusPaddingSize;
+			check.focusPaddingRight = this.focusPaddingSize;
 
 			check.fontStyles = this.primaryFontStyles.clone();
 			check.disabledFontStyles = this.disabledFontStyles.clone();
@@ -1451,6 +1483,13 @@ package feathers.themes
 			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
+
+			stepper.useLeftAndRightKeys = true;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			stepper.focusIndicatorSkin = focusIndicatorSkin;
+			stepper.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setNumericStepperTextInputStyles(input:TextInput):void
@@ -1746,6 +1785,11 @@ package feathers.themes
 			icon.setTextureForState(ButtonState.DISABLED_AND_SELECTED, this.radioSelectedDisabledIconTexture);
 			radio.defaultIcon = icon;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			radio.focusIndicatorSkin = focusIndicatorSkin;
+			radio.focusPadding = this.focusPaddingSize;
+
 			radio.fontStyles = this.primaryFontStyles.clone();
 			radio.disabledFontStyles = this.disabledFontStyles.clone();
 
@@ -1844,6 +1888,11 @@ package feathers.themes
 			{
 				slider.customMinimumTrackStyleName = THEME_STYLE_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 			}
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			slider.focusIndicatorSkin = focusIndicatorSkin;
+			slider.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
@@ -2052,6 +2101,11 @@ package feathers.themes
 			skin.minHeight = this.controlSize;
 			input.backgroundSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			input.focusIndicatorSkin = focusIndicatorSkin;
+			input.focusPadding = this.focusPaddingSize;
+
 			input.minTouchWidth = this.gridSize;
 			input.minTouchHeight = this.gridSize;
 			input.gap = this.smallGutterSize;
@@ -2099,6 +2153,11 @@ package feathers.themes
 		protected function setToggleSwitchStyles(toggleSwitch:ToggleSwitch):void
 		{
 			toggleSwitch.trackLayoutMode = TrackLayoutMode.SINGLE;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			toggleSwitch.focusIndicatorSkin = focusIndicatorSkin;
+			toggleSwitch.focusPadding = this.focusPaddingSize;
 
 			toggleSwitch.onLabelFontStyles = this.primaryFontStyles.clone();
 			toggleSwitch.onLabelDisabledFontStyles = this.disabledFontStyles.clone();
@@ -2197,6 +2256,11 @@ package feathers.themes
 			button.setSkinForState(ButtonState.DOWN, otherSkin);
 			button.setSkinForState(ButtonState.DOWN_AND_SELECTED, otherSkin);
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			var icon:ImageSkin = new ImageSkin(this.playPauseButtonPlayUpIconTexture);
 			icon.selectedTexture = this.playPauseButtonPauseUpIconTexture;
 			icon.textureSmoothing = TextureSmoothing.NONE;
@@ -2249,6 +2313,11 @@ package feathers.themes
 			button.setSkinForState(ButtonState.DOWN, otherSkin);
 			button.setSkinForState(ButtonState.DOWN_AND_SELECTED, otherSkin);
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			var icon:ImageSkin = new ImageSkin(this.fullScreenToggleButtonEnterUpIconTexture);
 			icon.selectedTexture = this.fullScreenToggleButtonExitUpIconTexture;
 			icon.textureSmoothing = TextureSmoothing.NONE;
@@ -2280,6 +2349,11 @@ package feathers.themes
 			otherSkin.minHeight = this.controlSize;
 			button.setSkinForState(ButtonState.DOWN, otherSkin);
 			button.setSkinForState(ButtonState.DOWN_AND_SELECTED, otherSkin);
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
 
 			var icon:ImageSkin = new ImageSkin(this.muteToggleButtonLoudUpIconTexture);
 			icon.selectedTexture = this.muteToggleButtonMutedUpIconTexture;
