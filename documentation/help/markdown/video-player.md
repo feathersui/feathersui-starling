@@ -139,7 +139,7 @@ loader.layoutData = loaderLayoutData;
 Then, we want the toolbar to fill the entire width of the `VideoPlayer`:
 
 ``` code
-var controlsLayoutData:VerticalLayoutData();
+var controlsLayoutData:VerticalLayoutData = new VerticalLayoutData();
 controlsLayoutData.percentWidth = 100;
 controls.layoutData = controlsLayoutData;
 ```
