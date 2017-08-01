@@ -195,6 +195,8 @@ A detailed look at each of the layout algorithms that Feathers provides out-of-t
 
 -   [`VerticalSpinnerLayout`](vertical-spinner-layout.html)
 
+-   [`SlideShowLayout`](slide-show-layout.html)
+
 -   [`TiledColumnsLayout`](tiled-columns-layout.html)
 
 -   [`TiledRowsLayout`](tiled-rows-layout.html)
