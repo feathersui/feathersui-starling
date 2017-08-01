@@ -151,6 +151,29 @@ package feathers.utils.touch
 		/**
 		 * @private
 		 */
+		protected var _tapCount:int = -1;
+
+		/**
+		 * The number of times a component must be tapped before the event will
+		 * be dispatched. If the value of <code>tapCount</code> is <code>-1</code>,
+		 * the event will be dispatched for every tap.
+		 */
+		public function get tapCount():int
+		{
+			return this._tapCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set tapCount(value:int):void
+		{
+			this._tapCount = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customHitTest:Function;
 
 		/**
@@ -215,7 +238,7 @@ package feathers.utils.touch
 							isInBounds = this._target === stage.hitTest(point);
 						}
 						Pool.putPoint(point);
-						if(isInBounds)
+						if(isInBounds && (this._tapCount === -1 || this._tapCount === touch.tapCount))
 						{
 							this._target.dispatchEventWith(this._eventType);
 						}
