@@ -390,7 +390,7 @@ package feathers.controls
 		 *
 		 * <p><em>Warning:</em> A tree's data provider cannot contain duplicate
 		 * items. To display the same item in multiple item renderers, you must
-		 * create separate objects with the same properties. This limitation
+		 * create separate objects with the same properties. This restriction
 		 * exists because it significantly improves performance.</p>
 		 *
 		 * <p><em>Warning:</em> If the data provider contains display objects,

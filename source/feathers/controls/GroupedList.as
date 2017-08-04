@@ -861,7 +861,7 @@ package feathers.controls
 		 * <p><em>Warning:</em> A grouped list's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item renderers,
 		 * you must create separate objects with the same properties. This
-		 * limitation exists because it significantly improves performance.</p>
+		 * restriction exists because it significantly improves performance.</p>
 		 *
 		 * <p><em>Warning:</em> If the data provider contains display objects,
 		 * concrete textures, or anything that needs to be disposed, those
