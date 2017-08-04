@@ -485,7 +485,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
@@ -494,7 +494,7 @@ package feathers.controls.supportClasses
 				{
 					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
 				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
