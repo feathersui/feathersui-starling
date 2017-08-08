@@ -73,7 +73,7 @@ package feathers.controls.renderers
 		/**
 		 * The index of the item within the layout.
 		 *
-		 * <p>This property is set by the tree, and should not be set manually.</p>
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get layoutIndex():int;
 		
