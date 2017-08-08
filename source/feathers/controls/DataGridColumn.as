@@ -12,6 +12,8 @@ package feathers.controls
 	import starling.events.Event;
 	import feathers.controls.renderers.IDataGridItemRenderer;
 	import feathers.controls.renderers.DefaultDataGridItemRenderer;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 
 	/**
 	 * Dispatched when a property of the column changes.
@@ -41,18 +43,63 @@ package feathers.controls
 	 */
 	public class DataGridColumn extends EventDispatcher
 	{
+		/**
+		 * @private
+		 */
 		public static function defaultItemRendererFactory():IDataGridItemRenderer
 		{
 			return new DefaultDataGridItemRenderer();
 		}
 
 		/**
+		 * @private
+		 */
+		public static function defaultHeaderRendererFactory():IDataGridHeaderRenderer
+		{
+			return new DefaultDataGridHeaderRenderer();
+		}
+
+		/**
 		 * Constructor.
 		 */
-		public function DataGridColumn(dataField:String = null)
+		public function DataGridColumn(dataField:String = null, headerText:String = null)
 		{
 			super();
 			this.dataField = dataField;
+			this.headerText = headerText;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerText:String = null;
+
+		/**
+		 * The text to display in the column's header.
+		 *
+		 * <p>In the following example, the header text is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * column.headerText = "Customer Name";</listing>
+		 *
+		 * @default null
+		 */
+		public function get headerText():String
+		{
+			return this._headerText;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerText(value:String):void
+		{
+			if(this._headerText === value)
+			{
+				return;
+			}
+			this._headerText = value;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -69,7 +116,7 @@ package feathers.controls
 		 * <p>In the following example, the data field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * renderer.dataField = "name";</listing>
+		 * column.dataField = "name";</listing>
 		 *
 		 * @default null
 		 */
@@ -106,11 +153,11 @@ package feathers.controls
 		 * <p>The following example provides a factory for the item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * grid.itemRendererFactory = function():IDataGridItemRenderer
+		 * column.itemRendererFactory = function():IDataGridItemRenderer
 		 * {
-		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
-		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
-		 *     return renderer;
+		 *     var itemRenderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     itemRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return itemRenderer;
 		 * };</listing>
 		 *
 		 * @default null
@@ -180,7 +227,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _headerRendererFactory:Function = null;
+		protected var _headerRendererFactory:Function = defaultHeaderRendererFactory;
 		
 		/**
 		 * A function called that is expected to return a new header renderer.
@@ -192,11 +239,11 @@ package feathers.controls
 		 * <p>The following example provides a factory for the item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * grid.headerRendererFactory = function():IDataGridHeaderRenderer
+		 * column.headerRendererFactory = function():IDataGridHeaderRenderer
 		 * {
-		 *     var renderer:CustomHeaderRendererClass = new CustomHeaderRendererClass();
-		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
-		 *     return renderer;
+		 *     var headerRenderer:CustomHeaderRendererClass = new CustomHeaderRendererClass();
+		 *     headerRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return headerRenderer;
 		 * };</listing>
 		 *
 		 * @default null
@@ -260,6 +307,76 @@ package feathers.controls
 				return;
 			}
 			this._customHeaderRendererStyleName = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minWidth:Number = NaN;
+
+		/**
+		 * The minimum width of the column, in pixels. If the
+		 * <code>minWidth</code> is set to <code>NaN</code>, the column's
+		 * minimum width will be determined automatically by the data grid's layout.
+		 *
+		 * <p>The following example sets the column minimum width:</p>
+		 *
+		 * <listing version="3.0">
+		 * column.minWidth = 200;</listing>
+		 *
+		 * @default NaN
+		 */
+		public function get minWidth():Number
+		{
+			return this._minWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minWidth(value:Number):void
+		{
+			if(this._minWidth === value)
+			{
+				return;
+			}
+			this._minWidth = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _width:Number = NaN;
+
+		/**
+		 * The width of the column, in pixels. If the width is set to
+		 * <code>NaN</code>, the column will be sized automatically by the
+		 * data grid's layout.
+		 *
+		 * <p>The following example sets the column width:</p>
+		 *
+		 * <listing version="3.0">
+		 * column.width = 200;</listing>
+		 *
+		 * @default NaN
+		 */
+		public function get width():Number
+		{
+			return this._width;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set width(value:Number):void
+		{
+			if(this._width === value)
+			{
+				return;
+			}
+			this._width = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 	}

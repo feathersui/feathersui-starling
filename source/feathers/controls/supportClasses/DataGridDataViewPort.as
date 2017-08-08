@@ -31,6 +31,10 @@ package feathers.controls.supportClasses
 	import feathers.controls.DataGridColumn;
 	import feathers.layout.ITrimmedVirtualLayout;
 	import starling.utils.Pool;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.HorizontalLayoutData;
 
 	/**
 	 * 
@@ -52,11 +56,15 @@ package feathers.controls.supportClasses
 		private var _typicalItemIsInDataProvider:Boolean = false;
 		private var _typicalItemRenderer:IDataGridItemRenderer;
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
+		private var _headerRendererMap:Dictionary = new Dictionary(true);
+		private var _unrenderedHeaders:Vector.<int> = new <int>[];
+		private var _headerStorage:HeaderRendererFactoryStorage = new HeaderRendererFactoryStorage();
 		private var _itemRendererMaps:Vector.<Dictionary> = new <Dictionary>[];
 		private var _unrenderedItems:Vector.<int> = new <int>[];
 		private var _itemStorage:Vector.<ItemRendererFactoryStorage> = new <ItemRendererFactoryStorage>[];
 		private var _minimumItemCount:int;
-		private var _layoutIndexOffset:int = 0;
+
+		private var _headerGroup:LayoutGroup;
 
 		private var _actualMinVisibleWidth:Number = 0;
 
@@ -603,6 +611,18 @@ package feathers.controls.supportClasses
 			super.dispose();
 		}
 
+		override protected function initialize():void
+		{
+			super.initialize();
+
+			if(this._headerGroup === null)
+			{
+				this._headerGroup = new LayoutGroup();
+				this._headerGroup.layout = new HorizontalLayout();
+				this.addChild(this._headerGroup);
+			}
+		}
+
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -629,6 +649,7 @@ package feathers.controls.supportClasses
 
 			if(scrollInvalid || sizeInvalid)
 			{
+				this.refreshHeaders();
 				this.refreshViewPortBounds();
 			}
 			if(basicsInvalid)
@@ -684,12 +705,20 @@ package feathers.controls.supportClasses
 			this.validateRenderers();
 		}
 
+		private function refreshHeaders():void
+		{
+			this._headerGroup.y = this._verticalScrollPosition;
+			this._headerGroup.width = this.actualWidth;
+			this.setChildIndex(this._headerGroup, this.numChildren - 1);
+		}
+
 		private function refreshViewPortBounds():void
 		{
+			this._headerGroup.validate();
 			var needsMinWidth:Boolean = this._explicitMinVisibleWidth !== this._explicitMinVisibleWidth; //isNaN
 			var needsMinHeight:Boolean = this._explicitMinVisibleHeight !== this._explicitMinVisibleHeight; //isNaN
 			this._viewPortBounds.x = 0;
-			this._viewPortBounds.y = 0;
+			this._viewPortBounds.y = this._headerGroup.height;
 			this._viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this._viewPortBounds.scrollY = this._verticalScrollPosition;
 			this._viewPortBounds.explicitWidth = this._explicitVisibleWidth;
@@ -896,6 +925,61 @@ package feathers.controls.supportClasses
 			this.removeChild(DisplayObject(itemRenderer), true);
 		}
 
+		private function createHeaderRenderer(column:DataGridColumn, columnIndex:int):IDataGridHeaderRenderer
+		{
+			var headerRendererFactory:Function = column.headerRendererFactory;
+			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
+			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
+			var headerRenderer:IDataGridHeaderRenderer;
+			do
+			{
+				if(inactiveHeaderRenderers.length === 0)
+				{
+					headerRenderer = IDataGridHeaderRenderer(headerRendererFactory());
+					if(customHeaderRendererStyleName !== null && customHeaderRendererStyleName.length > 0)
+					{
+						headerRenderer.styleNameList.add(customHeaderRendererStyleName);
+					}
+					this._headerGroup.addChild(DisplayObject(headerRenderer));
+				}
+				else
+				{
+					headerRenderer = inactiveHeaderRenderers.shift();
+				}
+			}
+			while(!headerRenderer)
+			headerRenderer.data = column;
+			headerRenderer.layoutIndex = columnIndex;
+			headerRenderer.owner = this._owner;
+			if(column.width === column.width) //!isNaN
+			{
+				headerRenderer.width = column.width;
+				headerRenderer.layoutData = null;
+			}
+			else if(headerRenderer.layoutData === null)
+			{
+				headerRenderer.layoutData = new HorizontalLayoutData(100);
+			}
+			headerRenderer.minWidth = column.minWidth;
+
+			this._headerRendererMap[column] = headerRenderer;
+			activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
+			headerRenderer.addEventListener(FeathersEventType.RESIZE, headerRenderer_resizeHandler);
+			this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, headerRenderer);
+
+			return headerRenderer;
+		}
+
+		private function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
+		{
+			headerRenderer.removeEventListener(FeathersEventType.RESIZE, headerRenderer_resizeHandler);
+			headerRenderer.owner = null;
+			headerRenderer.data = null;
+			headerRenderer.layoutIndex = -1;
+			this._headerGroup.removeChild(DisplayObject(headerRenderer), true);
+		}
+
 		private function refreshLayoutTypicalItem():void
 		{
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
@@ -1070,12 +1154,17 @@ package feathers.controls.supportClasses
 
 		private function findUnrenderedData():void
 		{
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
 			var itemCount:int = 0;
 			if(this._dataProvider !== null)
 			{
 				itemCount = this._dataProvider.length;
 			}
-			itemCount *= this._columns.length;
+			itemCount *= columnCount;
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -1084,6 +1173,49 @@ package feathers.controls.supportClasses
 				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, point);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, point.x, point.y, itemCount, HELPER_VECTOR);
 				Pool.putPoint(point);
+			}
+
+			this._layoutItems.length = itemCount;
+
+			var unrenderedDataLastIndex:int = this._unrenderedHeaders.length;
+			for(var i:int = 0; i < columnCount; i++)
+			{
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
+				var headerRenderer:IDataGridHeaderRenderer = this._headerRendererMap[column] as IDataGridHeaderRenderer;
+				if(headerRenderer !== null)
+				{
+					headerRenderer.layoutIndex = i;
+					if(column.width === column.width) //!isNaN
+					{
+						headerRenderer.width = column.width;
+						headerRenderer.layoutData = null;
+					}
+					else if(headerRenderer.layoutData === null)
+					{
+						headerRenderer.layoutData = new HorizontalLayoutData(100);
+					}
+					headerRenderer.minWidth = column.minWidth;
+					headerRenderer.visible = true;
+					if(this._updateForDataReset)
+					{
+						//similar to calling updateItemAt(), replacing the data
+						//provider or resetting its source means that we should
+						//trick the item renderer into thinking it has new data.
+						//many developers seem to expect this behavior, so while
+						//it's not the most optimal for performance, it saves on
+						//support time in the forums. thankfully, it's still
+						//somewhat optimized since the same item renderer will
+						//receive the same data, and the children generally
+						//won't have changed much, if at all.
+						headerRenderer.data = null;
+						headerRenderer.data = column;
+					}
+				}
+				else
+				{
+					this._unrenderedHeaders[unrenderedDataLastIndex] = i;
+					unrenderedDataLastIndex++;
+				}
 			}
 
 			var unrenderedItemCount:int = itemCount;
@@ -1103,51 +1235,19 @@ package feathers.controls.supportClasses
 			{
 				this._minimumItemCount = unrenderedItemCount;
 			}
-			var canUseBeforeAndAfter:Boolean = this._layout is ITrimmedVirtualLayout && useVirtualLayout &&
-				(!(this._layout is IVariableVirtualLayout) || !IVariableVirtualLayout(this._layout).hasVariableItemDimensions) &&
-				unrenderedItemCount > 0;
-			if(canUseBeforeAndAfter)
-			{
-				var minIndex:int = HELPER_VECTOR[0];
-				var maxIndex:int = minIndex;
-				for(var i:int = 1; i < unrenderedItemCount; i++)
-				{
-					var index:int = HELPER_VECTOR[i];
-					if(index < minIndex)
-					{
-						minIndex = index;
-					}
-					if(index > maxIndex)
-					{
-						maxIndex = index;
-					}
-				}
-				var beforeItemCount:int = minIndex - 1;
-				if(beforeItemCount < 0)
-				{
-					beforeItemCount = 0;
-				}
-				var afterItemCount:int = itemCount - 1 - maxIndex;
-				var sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
-				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
-				sequentialVirtualLayout.afterVirtualizedItemCount = afterItemCount;
-				this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
-				this._layoutIndexOffset = -beforeItemCount;
-			}
-			else
-			{
-				this._layoutIndexOffset = 0;
-				this._layoutItems.length = itemCount;
-			}
-			
-			var columnCount:int = this._columns.length;
-			var unrenderedDataLastIndex:int = this._unrenderedItems.length;
+
+			unrenderedDataLastIndex = this._unrenderedItems.length;
 			for(i = 0; i < unrenderedItemCount; i++)
 			{
-				index = i;
+				var index:int = i;
 				if(useVirtualLayout)
 				{
 					index = HELPER_VECTOR[i];
+					if(index < 0)
+					{
+						//this index is a header, so ignore it
+						continue;
+					}
 				}
 				if(index < 0 || index >= itemCount)
 				{
@@ -1172,7 +1272,7 @@ package feathers.controls.supportClasses
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					itemRenderer.index = rowIndex;
-					itemRenderer.layoutIndex = index + this._layoutIndexOffset;
+					itemRenderer.layoutIndex = index;
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!
 					itemRenderer.visible = true;
@@ -1210,7 +1310,7 @@ package feathers.controls.supportClasses
 							throw new IllegalOperationError("DataGridDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 						}
 					}
-					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(itemRenderer);
+					this._layoutItems[index] = DisplayObject(itemRenderer);
 				}
 				else
 				{
@@ -1218,7 +1318,7 @@ package feathers.controls.supportClasses
 					unrenderedDataLastIndex++;
 					this._unrenderedItems[unrenderedDataLastIndex] = columnIndex;
 					unrenderedDataLastIndex++;
-					this._unrenderedItems[unrenderedDataLastIndex] = index + this._layoutIndexOffset;
+					this._unrenderedItems[unrenderedDataLastIndex] = index;
 					unrenderedDataLastIndex++;
 				}
 			}
@@ -1253,11 +1353,19 @@ package feathers.controls.supportClasses
 
 		private function renderUnrenderedData():void
 		{
-			var rendererCount:int = this._unrenderedItems.length;
-			for(var i:int = 0; i < rendererCount; i += 3)
+			var rendererCount:int = this._unrenderedHeaders.length;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var columnIndex:int = this._unrenderedHeaders.shift();
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(columnIndex));
+				var headerRenderer:IDataGridHeaderRenderer = this.createHeaderRenderer(column, columnIndex);
+				headerRenderer.visible = true;
+			}
+			rendererCount = this._unrenderedItems.length;
+			for(i = 0; i < rendererCount; i += 3)
 			{
 				var rowIndex:int = this._unrenderedItems.shift();
-				var columnIndex:int = this._unrenderedItems.shift();
+				columnIndex = this._unrenderedItems.shift();
 				var layoutIndex:int = this._unrenderedItems.shift();
 				var item:Object = this._dataProvider.getItemAt(rowIndex);
 				var itemRenderer:IDataGridItemRenderer = this.createItemRenderer(
@@ -1293,10 +1401,20 @@ package feathers.controls.supportClasses
 
 		private function validateRenderers():void
 		{
-			var itemCount:int = this._layoutItems.length;
+			var headerRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
+			var itemCount:int = headerRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:IValidating = this._layoutItems[i] as IValidating;
+				var item:IValidating = headerRenderers[i] as IValidating;
+				if(item !== null)
+				{
+					item.validate();
+				}
+			}
+			itemCount = this._layoutItems.length;
+			for(i = 0; i < itemCount; i++)
+			{
+				item = this._layoutItems[i] as IValidating;
 				if(item !== null)
 				{
 					item.validate();
@@ -1480,6 +1598,23 @@ package feathers.controls.supportClasses
 			layout.resetVariableVirtualCacheAtIndex(itemRenderer.layoutIndex, DisplayObject(itemRenderer));
 		}
 
+		private function headerRenderer_resizeHandler(event:Event):void
+		{
+			if(this._ignoreRendererResizing)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(event.currentTarget);
+			layout.resetVariableVirtualCacheAtIndex(headerRenderer.layoutIndex, DisplayObject(headerRenderer));
+		}
+
 		private function layout_changeHandler(event:Event):void
 		{
 			if(this._ignoreLayoutChanges)
@@ -1498,6 +1633,7 @@ package feathers.controls.supportClasses
 }
 
 import feathers.controls.renderers.IDataGridItemRenderer;
+import feathers.controls.renderers.IDataGridHeaderRenderer;
 
 class ItemRendererFactoryStorage
 {
@@ -1510,5 +1646,19 @@ class ItemRendererFactoryStorage
 	public var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = new <IDataGridItemRenderer>[];
 	public var factory:Function = null;
 	public var customItemRendererStyleName:String = null;
+	public var columnIndex:int = -1;
+}
+
+class HeaderRendererFactoryStorage
+{
+	public function HeaderRendererFactoryStorage()
+	{
+
+	}
+	
+	public var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
+	public var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
+	public var factory:Function = null;
+	public var customHeaderRendererStyleName:String = null;
 	public var columnIndex:int = -1;
 }

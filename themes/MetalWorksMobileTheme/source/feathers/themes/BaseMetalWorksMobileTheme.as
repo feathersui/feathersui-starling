@@ -106,6 +106,7 @@ package feathers.themes
 	import starling.display.Stage;
 	import feathers.controls.renderers.DefaultDataGridItemRenderer;
 	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for mobile Feathers apps.
@@ -880,6 +881,7 @@ package feathers.themes
 			//data grid
 			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
 			this.getStyleProviderForClass(DefaultDataGridItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1470,6 +1472,15 @@ package feathers.themes
 			this.setScrollerStyles(grid);
 			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
 			grid.backgroundSkin = backgroundSkin;
+		}
+
+		protected function setDataGridHeaderStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			headerRenderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			headerRenderer.fontStyles = this.lightUIFontStyles;
+			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
+			headerRenderer.padding = this.smallGutterSize;
 		}
 
 	//-------------------------
