@@ -104,6 +104,9 @@ package feathers.themes
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridItemRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for desktop Feathers apps.
@@ -875,6 +878,9 @@ package feathers.themes
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 
+			//data grid (see also: item renderers)
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER, this.setDateTimeSpinnerListItemRendererStyles);
@@ -892,6 +898,9 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
 			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER, this.setGroupedListFooterRendererStyles);
 
+			//header renderers for data grid
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
+
 			//item renderers for lists
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(DefaultGroupedListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
@@ -899,6 +908,7 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
+			this.getStyleProviderForClass(DefaultDataGridItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 
 			//labels
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
@@ -1432,6 +1442,48 @@ package feathers.themes
 
 			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.gap = this.smallGutterSize;
+		}
+
+	//-------------------------
+	// DataGrid
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+
+			grid.padding = this.borderSize;
+
+			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			grid.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Image = new Image(this.backgroundDisabledSkinTexture);
+			backgroundDisabledSkin.scale9Grid = DEFAULT_SCALE9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
+			grid.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			grid.headerBackgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
+		}
+
+		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			headerRenderer.backgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			headerRenderer.fontStyles = this.lightUIFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
+
+			headerRenderer.horizontalAlign = HorizontalAlign.LEFT;
+
+			headerRenderer.paddingTop = this.smallGutterSize;
+			headerRenderer.paddingBottom = this.smallGutterSize;
+			headerRenderer.paddingLeft = this.gutterSize;
+			headerRenderer.paddingRight = this.gutterSize;
 		}
 
 	//-------------------------
