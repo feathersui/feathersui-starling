@@ -8,22 +8,61 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.Scroller;
-	import feathers.events.CollectionEventType;
-	import starling.events.Event;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.controls.supportClasses.DataGridDataViewPort;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
-	import starling.utils.Pool;
-	import feathers.skins.IStyleProvider;
-	import feathers.layout.IVariableVirtualLayout;
-	import flash.geom.Point;
+	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
+	import feathers.layout.FlowLayout;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
-	import feathers.controls.supportClasses.DataGridDataViewPort;
-	import flash.events.KeyboardEvent;
-	import flash.ui.Keyboard;
-	import feathers.system.DeviceCapabilities;
-	import flash.events.TransformGestureEvent;
+	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
+
+	import flash.events.KeyboardEvent;
+	import flash.events.TransformGestureEvent;
+	import flash.geom.Point;
+	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
+
+	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.utils.Pool;
+	import feathers.layout.HorizontalAlign;
+
+	/**
+	 * The default background to display in the data grid's header.
+	 *
+	 * <p>In the following example, the data grid's header is given a background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * scroller.headerBackgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:headerBackgroundDisabledSkin
+	 */
+	[Style(name="headerBackgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A background to display in the data grid's header when the container is
+	 * disabled.
+	 *
+	 * <p>In the following example, the data grid's header is given a disabled background skin:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.headerBackgroundDisabledSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #style:headerBackgroundSkin
+	 */
+	[Style(name="headerBackgroundDisabledSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The duration, in seconds, of the animation when the selected item is
@@ -93,6 +132,31 @@ package feathers.controls
 		 * The guts of the DataGrid's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:DataGridDataViewPort;
+
+		/**
+		 * @private
+		 */
+		protected var _headerGroup:LayoutGroup = null;
+
+		/**
+		 * @private
+		 */
+		protected var _headerLayout:HorizontalLayout = null;
+
+		/**
+		 * @private
+		 */
+		protected var _headerRendererMap:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		protected var _unrenderedHeaders:Vector.<int> = new <int>[];
+
+		/**
+		 * @private
+		 */
+		protected var _headerStorage:HeaderRendererFactoryStorage = new HeaderRendererFactoryStorage();
 
 		/**
 		 * @private
@@ -174,6 +238,11 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		};
+
+		/**
+		 * @private
+		 */
+		protected var _updateForDataReset:Boolean = false;
 
 		/**
 		 * @private
@@ -284,11 +353,15 @@ package feathers.controls
 			if(this._columns)
 			{
 				this._columns.removeEventListener(Event.CHANGE, columns_changeHandler);
+				this._columns.removeEventListener(CollectionEventType.RESET, columns_resetHandler);
+				this._columns.removeEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
 			}
 			this._columns = value;
 			if(this._columns)
 			{
 				this._columns.addEventListener(Event.CHANGE, columns_changeHandler);
+				this._columns.addEventListener(CollectionEventType.RESET, columns_resetHandler);
+				this._columns.addEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
 			}
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -733,6 +806,74 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _headerBackgroundSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get headerBackgroundSkin():DisplayObject
+		{
+			return this._headerBackgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerBackgroundSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._headerBackgroundSkin === value)
+			{
+				return;
+			}
+			this._headerBackgroundSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerBackgroundDisabledSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get headerBackgroundDisabledSkin():DisplayObject
+		{
+			return this._headerBackgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerBackgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._headerBackgroundDisabledSkin === value)
+			{
+				return;
+			}
+			this._headerBackgroundDisabledSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -831,6 +972,19 @@ package feathers.controls
 				this.viewPort = this.dataViewPort;
 			}
 
+			if(this._headerLayout === null)
+			{
+				this._headerLayout = new HorizontalLayout();
+			}
+
+			if(this._headerGroup === null)
+			{
+				this._headerGroup = new LayoutGroup();
+				this.addChild(this._headerGroup);
+			}
+
+			this._headerGroup.layout = this._headerLayout;
+
 			if(!hasLayout)
 			{
 				if(this._hasElasticEdges &&
@@ -843,8 +997,8 @@ package feathers.controls
 				}
 
 				var layout:VerticalLayout = new VerticalLayout();
-				//var layout:DataGridLayout = new DataGridLayout();
 				layout.useVirtualLayout = true;
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 				this.ignoreNextStyleRestriction();
 				this.layout = layout;
 			}
@@ -855,8 +1009,225 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+
+			if(stylesInvalid)
+			{
+				this.refreshHeaderStyles();
+			}
+
+			this.refreshHeaderRenderers();
 			this.refreshDataViewPortProperties();
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHeaderStyles():void
+		{
+			this._headerGroup.backgroundSkin = this._headerBackgroundSkin;
+			this._headerGroup.backgroundDisabledSkin = this._headerBackgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
+		{
+			super.calculateViewPortOffsets(forceScrollBars, useActualBounds);
+
+			this._headerLayout.paddingRight = this._rightViewPortOffset;
+			if(useActualBounds)
+			{
+				this._headerGroup.width = this.actualWidth;
+			}
+			else
+			{
+				this._headerGroup.width = this._explicitWidth;
+			}
+			this._headerGroup.validate();
+			this._topViewPortOffset += this._headerGroup.height;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutChildren():void
+		{
+			this._headerLayout.paddingRight = this._rightViewPortOffset;
+			this._headerGroup.width = this.actualWidth;
+			this._headerGroup.validate();
+			this._headerGroup.x = 0;
+			this._headerGroup.y = this._topViewPortOffset - this._headerGroup.height;
+
+			super.layoutChildren();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHeaderRenderers():void
+		{
+			this.findUnrenderedData();
+			this.recoverInactiveHeaderRenderers();
+			this.renderUnrenderedData();
+			this.freeInactiveHeaderRenderers();
+			this._updateForDataReset = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findUnrenderedData():void
+		{
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
+
+			var unrenderedDataLastIndex:int = this._unrenderedHeaders.length;
+			for(var i:int = 0; i < columnCount; i++)
+			{
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
+				var headerRenderer:IDataGridHeaderRenderer = this._headerRendererMap[column] as IDataGridHeaderRenderer;
+				if(headerRenderer !== null)
+				{
+					headerRenderer.layoutIndex = i;
+					if(column.width === column.width) //!isNaN
+					{
+						headerRenderer.width = column.width;
+						headerRenderer.layoutData = null;
+					}
+					else if(headerRenderer.layoutData === null)
+					{
+						headerRenderer.layoutData = new HorizontalLayoutData(100);
+					}
+					headerRenderer.minWidth = column.minWidth;
+					headerRenderer.visible = true;
+					if(this._updateForDataReset)
+					{
+						//similar to calling updateItemAt(), replacing the data
+						//provider or resetting its source means that we should
+						//trick the item renderer into thinking it has new data.
+						//many developers seem to expect this behavior, so while
+						//it's not the most optimal for performance, it saves on
+						//support time in the forums. thankfully, it's still
+						//somewhat optimized since the same item renderer will
+						//receive the same data, and the children generally
+						//won't have changed much, if at all.
+						headerRenderer.data = null;
+						headerRenderer.data = column;
+					}
+				}
+				else
+				{
+					this._unrenderedHeaders[unrenderedDataLastIndex] = i;
+					unrenderedDataLastIndex++;
+				}
+			}
+		}
+
+		private function recoverInactiveHeaderRenderers():void
+		{
+			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+			var count:int = inactiveHeaderRenderers.length;
+			for(var i:int = 0; i < count; i++)
+			{
+				var headerRenderer:IDataGridHeaderRenderer = inactiveHeaderRenderers[i];
+				if(headerRenderer === null || headerRenderer.data === null)
+				{
+					continue;
+				}
+				this.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, headerRenderer);
+				delete this._headerRendererMap[headerRenderer.data];
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function renderUnrenderedData():void
+		{
+			var headerRendererCount:int = this._unrenderedHeaders.length;
+			for(var i:int = 0; i < headerRendererCount; i++)
+			{
+				var columnIndex:int = this._unrenderedHeaders.shift();
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(columnIndex));
+				this.createHeaderRenderer(column, columnIndex);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function freeInactiveHeaderRenderers():void
+		{
+			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+			var count:int = inactiveHeaderRenderers.length;
+			for(var i:int = 0; i < count; i++)
+			{
+				var headerRenderer:IDataGridHeaderRenderer = inactiveHeaderRenderers.shift();
+				if(headerRenderer === null)
+				{
+					continue;
+				}
+				this.destroyHeaderRenderer(headerRenderer);
+			}
+		}
+
+		private function createHeaderRenderer(column:DataGridColumn, columnIndex:int):IDataGridHeaderRenderer
+		{
+			var headerRendererFactory:Function = column.headerRendererFactory;
+			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
+			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
+			var headerRenderer:IDataGridHeaderRenderer;
+			do
+			{
+				if(inactiveHeaderRenderers.length === 0)
+				{
+					headerRenderer = IDataGridHeaderRenderer(headerRendererFactory());
+					if(customHeaderRendererStyleName !== null && customHeaderRendererStyleName.length > 0)
+					{
+						headerRenderer.styleNameList.add(customHeaderRendererStyleName);
+					}
+					this._headerGroup.addChild(DisplayObject(headerRenderer));
+				}
+				else
+				{
+					headerRenderer = inactiveHeaderRenderers.shift();
+				}
+			}
+			while(!headerRenderer)
+			headerRenderer.data = column;
+			headerRenderer.layoutIndex = columnIndex;
+			headerRenderer.owner = this;
+			if(column.width === column.width) //!isNaN
+			{
+				headerRenderer.width = column.width;
+				headerRenderer.layoutData = null;
+			}
+			else if(headerRenderer.layoutData === null)
+			{
+				headerRenderer.layoutData = new HorizontalLayoutData(100);
+			}
+			headerRenderer.minWidth = column.minWidth;
+
+			this._headerRendererMap[column] = headerRenderer;
+			activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
+			this.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, headerRenderer);
+
+			return headerRenderer;
+		}
+
+		private function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
+		{
+			headerRenderer.owner = null;
+			headerRenderer.data = null;
+			headerRenderer.layoutIndex = -1;
+			this._headerGroup.removeChild(DisplayObject(headerRenderer), true);
 		}
 
 		/**
@@ -1008,6 +1379,26 @@ package feathers.controls
 		protected function columns_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function columns_resetHandler(event:Event):void
+		{
+			this._updateForDataReset = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function columns_updateAllHandler(event:Event):void
+		{
+			//we're treating this similar to the RESET event because enough
+			//users are treating UPDATE_ALL similarly. technically, UPDATE_ALL
+			//is supposed to affect only existing items, but it's confusing when
+			//new items are added and not displayed.
+			this._updateForDataReset = true;
 		}
 
 		/**
@@ -1209,4 +1600,20 @@ package feathers.controls
 			}
 		}
 	}
+}
+
+import feathers.controls.renderers.IDataGridHeaderRenderer;
+
+class HeaderRendererFactoryStorage
+{
+	public function HeaderRendererFactoryStorage()
+	{
+
+	}
+	
+	public var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
+	public var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
+	public var factory:Function = null;
+	public var customHeaderRendererStyleName:String = null;
+	public var columnIndex:int = -1;
 }
