@@ -18,7 +18,6 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
@@ -697,10 +696,9 @@ package feathers.controls
 		{
 			if(this.stage !== null)
 			{
-				var starling:Starling = stageToStarling(this.stage);
 				//we use starling.root because a pop-up's root and the stage
 				//root may be different.
-				if(starling.root === this)
+				if(this.stage.starling.root === this)
 				{
 					this.autoSizeMode = AutoSizeMode.STAGE;
 				}

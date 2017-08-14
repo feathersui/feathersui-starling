@@ -14,7 +14,6 @@ package feathers.core
 	import feathers.events.FeathersEventType;
 	import feathers.layout.RelativePosition;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.focus.isBetterFocusForRelativePosition;
 
 	import flash.display.InteractiveObject;
@@ -97,7 +96,7 @@ package feathers.core
 				throw new ArgumentError("Focus manager root must be added to the stage.");
 			}
 			this._root = root;
-			this._starling = stageToStarling(root.stage);
+			this._starling = root.stage.starling;
 		}
 
 		/**

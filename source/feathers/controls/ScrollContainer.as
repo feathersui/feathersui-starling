@@ -15,7 +15,6 @@ package feathers.controls
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -801,10 +800,9 @@ package feathers.controls
 		{
 			if(this.stage !== null)
 			{
-				var starling:Starling = stageToStarling(this.stage);
 				//we use starling.root because a pop-up's root and the stage
 				//root may be different.
-				if(starling.root === this)
+				if(this.stage.starling.root === this)
 				{
 					this.autoSizeMode = AutoSizeMode.STAGE;
 				}

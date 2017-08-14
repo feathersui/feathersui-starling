@@ -14,7 +14,6 @@ package feathers.core
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
-	import feathers.utils.display.stageToStarling;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
@@ -2743,8 +2742,7 @@ package feathers.core
 				this.initializeNow();
 			}
 			this._depth = getDisplayObjectDepthFromStage(this);
-			var starling:Starling = stageToStarling(this.stage);
-			this._validationQueue = ValidationQueue.forStarling(starling);
+			this._validationQueue = ValidationQueue.forStarling(this.stage.starling);
 			if(this.isInvalid())
 			{
 				this._invalidateCount = 0;

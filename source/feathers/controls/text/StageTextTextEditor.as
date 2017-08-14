@@ -14,7 +14,6 @@ package feathers.controls.text
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.StageTextField;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -2322,9 +2321,8 @@ package feathers.controls.text
 		 */
 		protected function dispatchKeyFocusChangeEvent(event:KeyboardEvent):void
 		{
-			var starling:Starling = stageToStarling(this.stage);
 			var focusEvent:FocusEvent = new FocusEvent(FocusEvent.KEY_FOCUS_CHANGE, true, false, null, event.shiftKey, event.keyCode);
-			starling.nativeStage.dispatchEvent(focusEvent);
+			this.stage.starling.nativeStage.dispatchEvent(focusEvent);
 		}
 
 		/**
@@ -2332,8 +2330,7 @@ package feathers.controls.text
 		 */
 		protected function dispatchKeyboardEventToStage(event:KeyboardEvent):void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			starling.nativeStage.dispatchEvent(event);
+			this.stage.starling.nativeStage.dispatchEvent(event);
 		}
 
 		/**
