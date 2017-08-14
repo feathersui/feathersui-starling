@@ -426,6 +426,7 @@ package feathers.themes
 		protected var popUpFillSize:int = 276;
 		protected var dropShadowSize:int = 6;
 		protected var focusPaddingSize:int = -4;
+		protected var tabFocusPaddingSize:int = 4;
 
 		protected var primaryFontStyles:TextFormat;
 		protected var disabledFontStyles:TextFormat;
@@ -2017,6 +2018,11 @@ package feathers.themes
 			otherSkin.minHeight = this.gridSize;
 			tab.defaultSelectedSkin = otherSkin;
 			tab.setSkinForState(ButtonState.DOWN, otherSkin);
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			tab.focusIndicatorSkin = focusIndicatorSkin;
+			tab.focusPadding = this.tabFocusPaddingSize;
 
 			tab.fontStyles = this.primaryFontStyles.clone();
 			tab.disabledFontStyles = this.disabledFontStyles.clone();

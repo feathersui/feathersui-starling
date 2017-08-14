@@ -368,6 +368,7 @@ package feathers.themes
 		protected var calloutArrowOverlapGap:int = -2;
 		protected var scrollBarGutterSize:int = 2;
 		protected var focusPaddingSize:int = -1;
+		protected var tabFocusPaddingSize:int = 4;
 
 		/**
 		 * The font styles for standard-sized, light text.
@@ -2387,6 +2388,11 @@ package feathers.themes
 			skin.minWidth = this.gridSize;
 			skin.minHeight = this.gridSize;
 			tab.defaultSkin = skin;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			tab.focusIndicatorSkin = focusIndicatorSkin;
+			tab.focusPadding = this.tabFocusPaddingSize;
 
 			tab.fontStyles = this.lightUIFontStyles.clone();
 			tab.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
