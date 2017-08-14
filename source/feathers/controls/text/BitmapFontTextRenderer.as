@@ -440,6 +440,43 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _breakLongWords:Boolean = false;
+
+		/**
+		 * If <code>wordWrap</code> is <code>true</code>, determines if words
+		 * longer than the width of the text renderer will break in the middle
+		 * or if the word will extend outside the edges until it ends.
+		 *
+		 * <p>In the following example, the text will break long words:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.breakLongWords = true;</listing>
+		 *
+		 * @default false
+		 * 
+		 * @see #wordWrap
+		 */
+		public function get breakLongWords():Boolean
+		{
+			return _breakLongWords;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set breakLongWords(value:Boolean):void
+		{
+			if(this._breakLongWords === value)
+			{
+				return;
+			}
+			this._breakLongWords = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _truncateToFit:Boolean = true;
 
 		/**
@@ -750,8 +787,18 @@ package feathers.controls.text
 					}
 
 					var charWidth:Number = charData.width * scale;
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + charWidth) > maxLineWidth)
+					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && (currentX + charWidth) > maxLineWidth)
 					{
+						if(wordCountForLine === 0)
+						{
+							//if we're breaking long words, this is where we break
+							startXOfPreviousWord = currentX;
+							if(previousCharID === previousCharID) //!isNaN
+							{
+								previousCharData = font.getChar(previousCharID);
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+							}
+						}
 						//we're just reusing this variable to avoid creating a
 						//new one. it'll be reset to 0 in a moment.
 						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
@@ -1127,8 +1174,25 @@ package feathers.controls.text
 					//so we're going to be a little bit fuzzy on the greater
 					//than check. such tiny numbers shouldn't break anything.
 					var charWidth:Number = charData.width * scale;
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
+					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
+						if(wordCountForLine === 0)
+						{
+							//if we're breaking long words, this is where we break.
+							//we need to pretend that there's a word before this one.
+							wordLength = 0;
+							startXOfPreviousWord = currentX;
+							widthOfWhitespaceAfterWord = 0;
+							if(previousCharID === previousCharID) //!isNaN
+							{
+								previousCharData = font.getChar(previousCharID);
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+							}
+							if(!isAligned)
+							{
+								this.addBufferToBatch(0);
+							}
+						}
 						if(isAligned)
 						{
 							this.trimBuffer(wordLength);
