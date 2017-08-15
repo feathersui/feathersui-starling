@@ -247,6 +247,21 @@ package feathers.core
 		function set focusOwner(value:IFocusDisplayObject):void;
 
 		/**
+		 * Indicates if the <code>showFocus()</code> method has been called on
+		 * the object when it has focus.
+		 *
+		 * <listing version="3.0">
+		 * if(object.isShowingFocus)
+		 * {
+		 * 
+		 * }</listing>
+		 *
+		 * @see #showFocus()
+		 * @see #hideFocus()
+		 */
+		function get isShowingFocus():Boolean;
+
+		/**
 		 * If the object has focus, an additional visual indicator may
 		 * optionally be displayed to highlight the object. Calling this
 		 * function may have no effect. It's merely a suggestion to the object.

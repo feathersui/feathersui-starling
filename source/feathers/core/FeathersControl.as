@@ -2285,6 +2285,22 @@ package feathers.core
 		 * it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
+		 * @copy feathers.core.IFocusDisplayObject#isShowingFocus
+		 *
+		 * @see feathers.core.IFocusDisplayObject#showFocus()
+		 * @see feathers.core.IFocusDisplayObject#hideFocus()
+		 * @see feathers.core.IFocusDisplayObject
+		 */
+		public function get isShowingFocus():Boolean
+		{
+			return this._showFocus;
+		}
+
+		/**
+		 * <p>The implementation of this method is provided for convenience, but
+		 * it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#showFocus()
 		 *
 		 * @see feathers.core.IFocusDisplayObject
