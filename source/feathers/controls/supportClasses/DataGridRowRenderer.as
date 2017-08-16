@@ -316,7 +316,7 @@ package feathers.controls.supportClasses
 						layoutData.percentHeight = NaN;
 					}
 				}
-				this._cellRenderers[i] = cellRenderer;
+				this._cellRenderers[i] = DisplayObject(cellRenderer);
 			}
 		}
 	}
