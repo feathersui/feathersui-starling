@@ -106,7 +106,7 @@ package feathers.themes
 	import starling.textures.TextureAtlas;
 	import feathers.controls.DataGrid;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
-	import feathers.controls.renderers.DefaultDataGridItemRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for desktop Feathers apps.
@@ -349,7 +349,7 @@ package feathers.themes
 		 * The size, in pixels, of major regions in the grid. Used for sizing
 		 * containers and larger UI controls.
 		 */
-		protected var gridSize:int = 30;
+		protected var gridSize:int = 32;
 
 		/**
 		 * The size, in pixels, of minor regions in the grid. Used for larger
@@ -381,7 +381,7 @@ package feathers.themes
 		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
-		protected var controlSize:int = 22;
+		protected var controlSize:int = 26;
 
 		/**
 		 * The size, in pixels, of smaller UI controls.
@@ -908,7 +908,7 @@ package feathers.themes
 			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
-			this.getStyleProviderForClass(DefaultDataGridItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setDataGridCellRendererStyles;
 
 			//labels
 			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
@@ -1469,6 +1469,51 @@ package feathers.themes
 			grid.headerBackgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 
 			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
+		}
+
+		protected function setDataGridCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedUpSkinTexture;
+			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedUpSkinTexture);
+			skin.width = this.controlSize;
+			skin.height = this.controlSize;
+			skin.minWidth = this.controlSize;
+			skin.minHeight = this.controlSize;
+			cellRenderer.defaultSkin = skin;
+
+			cellRenderer.fontStyles = this.lightFontStyles.clone();
+			cellRenderer.disabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.selectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			cellRenderer.setFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
+
+			cellRenderer.iconLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.iconLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			cellRenderer.setIconLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
+
+			cellRenderer.accessoryLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+			cellRenderer.setAccessoryLabelFontStylesForState(ButtonState.HOVER, this.darkFontStyles.clone());
+
+			cellRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			cellRenderer.paddingTop = this.smallGutterSize;
+			cellRenderer.paddingBottom = this.smallGutterSize;
+			cellRenderer.paddingLeft = this.gutterSize;
+			cellRenderer.paddingRight = this.gutterSize;
+			cellRenderer.gap = this.smallGutterSize;
+			cellRenderer.minGap = this.smallGutterSize;
+			cellRenderer.iconPosition = RelativePosition.LEFT;
+			cellRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			cellRenderer.minAccessoryGap = this.smallGutterSize;
+			cellRenderer.accessoryPosition = RelativePosition.RIGHT;
+
+			cellRenderer.useStateDelayTimer = false;
 		}
 
 		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void

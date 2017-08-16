@@ -7,13 +7,14 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.core.FeathersControl;
-	import starling.events.EventDispatcher;
-	import starling.events.Event;
-	import feathers.controls.renderers.IDataGridItemRenderer;
-	import feathers.controls.renderers.DefaultDataGridItemRenderer;
-	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.IDataGridCellRenderer;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.core.FeathersControl;
+
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Dispatched when a property of the column changes.
@@ -46,9 +47,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public static function defaultItemRendererFactory():IDataGridItemRenderer
+		public static function defaultCellRendererFactory():IDataGridCellRenderer
 		{
-			return new DefaultDataGridItemRenderer();
+			return new DefaultDataGridCellRenderer();
 		}
 
 		/**
@@ -109,7 +110,7 @@ package feathers.controls
 
 		/**
 		 * The field in the item that contains the data to be displayed by
-		 * the item renderers in this column. If the item does not have this
+		 * the cell renderers in this column. If the item does not have this
 		 * field, then the renderer may default to calling <code>toString()</code>
 		 * on the item.
 		 *
@@ -141,86 +142,86 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _itemRendererFactory:Function = defaultItemRendererFactory;
+		protected var _cellRendererFactory:Function = defaultCellRendererFactory;
 		
 		/**
-		 * A function called that is expected to return a new item renderer.
+		 * A function called that is expected to return a new cell renderer.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 *
-		 * <pre>function():IDataGridItemRenderer</pre>
+		 * <pre>function():IDataGridCellRenderer</pre>
 		 *
-		 * <p>The following example provides a factory for the item renderer:</p>
+		 * <p>The following example provides a factory for the cell renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * column.itemRendererFactory = function():IDataGridItemRenderer
+		 * column.cellRendererFactory = function():IDataGridCellRenderer
 		 * {
-		 *     var itemRenderer:CustomItemRendererClass = new CustomItemRendererClass();
-		 *     itemRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
-		 *     return itemRenderer;
+		 *     var cellRenderer:CustomCellRendererClass = new CustomCellRendererClass();
+		 *     cellRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return cellRenderer;
 		 * };</listing>
 		 *
 		 * @default null
 		 *
-		 * @see feathers.controls.renderers.IDataGridItemRenderer
+		 * @see feathers.controls.renderers.IDataGridCellRenderer
 		 */
-		public function get itemRendererFactory():Function
+		public function get cellRendererFactory():Function
 		{
-			return this._itemRendererFactory;
+			return this._cellRendererFactory;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set itemRendererFactory(value:Function):void
+		public function set cellRendererFactory(value:Function):void
 		{
-			if(this._itemRendererFactory === value)
+			if(this._cellRendererFactory === value)
 			{
 				return;
 			}
-			this._itemRendererFactory = value;
+			this._cellRendererFactory = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customItemRendererStyleName:String = null;
+		protected var _customCellRendererStyleName:String = null;
 
 		/**
-		 * A style name to add to all item renderers in this column. Typically
+		 * A style name to add to all cell renderers in this column. Typically
 		 * used by a theme to provide different skins to different columns.
 		 *
-		 * <p>The following example sets the item renderer name:</p>
+		 * <p>The following example sets the cell renderer name:</p>
 		 *
 		 * <listing version="3.0">
-		 * column.customItemRendererStyleName = "my-custom-item-renderer";</listing>
+		 * column.customCellRendererStyleName = "my-custom-cell-renderer";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * getStyleProviderForClass( DefaultDataGridItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
+		 * getStyleProviderForClass( DefaultDataGridCellRenderer ).setFunctionForStyleName( "my-custom-cell-renderer", setCustomCellRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public function get customItemRendererStyleName():String
+		public function get customCellRendererStyleName():String
 		{
-			return this._customItemRendererStyleName;
+			return this._customCellRendererStyleName;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set customItemRendererStyleName(value:String):void
+		public function set customCellRendererStyleName(value:String):void
 		{
-			if(this._customItemRendererStyleName === value)
+			if(this._customCellRendererStyleName === value)
 			{
 				return;
 			}
-			this._customItemRendererStyleName = value;
+			this._customCellRendererStyleName = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -236,7 +237,7 @@ package feathers.controls
 		 *
 		 * <pre>function():IDataGridHeaderRenderer</pre>
 		 *
-		 * <p>The following example provides a factory for the item renderer:</p>
+		 * <p>The following example provides a factory for the header renderer:</p>
 		 *
 		 * <listing version="3.0">
 		 * column.headerRendererFactory = function():IDataGridHeaderRenderer
@@ -280,13 +281,13 @@ package feathers.controls
 		 * <p>The following example sets the header renderer name:</p>
 		 *
 		 * <listing version="3.0">
-		 * column.customHeaderRendererStyleName = "my-header-item-renderer";</listing>
+		 * column.customHeaderRendererStyleName = "my-custom-header-renderer";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * getStyleProviderForClass( DefaultDataGridHeaderRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomHeaderRendererStyles );</listing>
+		 * getStyleProviderForClass( DefaultDataGridHeaderRenderer ).setFunctionForStyleName( "my-custom-header-renderer", setCustomHeaderRendererStyles );</listing>
 		 *
 		 * @default null
 		 *

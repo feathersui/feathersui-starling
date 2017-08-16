@@ -7,8 +7,11 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
+	import feathers.controls.DataGrid;
+	import feathers.controls.DataGridColumn;
 	import feathers.controls.GroupedList;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
@@ -26,9 +29,6 @@ package feathers.controls.renderers
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.text.TextFormat;
-	import feathers.controls.renderers.IDataGridHeaderRenderer;
-	import feathers.controls.DataGridColumn;
-	import feathers.controls.DataGrid;
 	import starling.utils.Pool;
 
 	/**

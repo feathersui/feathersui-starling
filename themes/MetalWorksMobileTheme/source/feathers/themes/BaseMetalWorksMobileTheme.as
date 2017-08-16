@@ -104,9 +104,9 @@ package feathers.themes
 	import starling.textures.TextureAtlas;
 	import feathers.core.FocusManager;
 	import starling.display.Stage;
-	import feathers.controls.renderers.DefaultDataGridItemRenderer;
 	import feathers.controls.DataGrid;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for mobile Feathers apps.
@@ -881,7 +881,7 @@ package feathers.themes
 
 			//data grid
 			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
-			this.getStyleProviderForClass(DefaultDataGridItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setDataGridCellRendererStyles;
 			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderStyles;
 
 			//date time spinner
@@ -1482,6 +1482,48 @@ package feathers.themes
 			headerRenderer.fontStyles = this.lightUIFontStyles;
 			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
 			headerRenderer.padding = this.smallGutterSize;
+		}
+
+		protected function setDataGridCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedSkinTexture;
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
+			skin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
+			skin.width = this.gridSize;
+			skin.height = this.gridSize;
+			skin.minWidth = this.gridSize;
+			skin.minHeight = this.gridSize;
+			cellRenderer.defaultSkin = skin;
+
+			cellRenderer.fontStyles = this.largeLightFontStyles.clone();
+			cellRenderer.disabledFontStyles = this.largeLightDisabledFontStyles.clone();
+			cellRenderer.selectedFontStyles = this.largeDarkFontStyles.clone();
+			cellRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles.clone());
+
+			cellRenderer.iconLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.iconLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+
+			cellRenderer.accessoryLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+
+			cellRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			cellRenderer.paddingTop = this.smallGutterSize;
+			cellRenderer.paddingBottom = this.smallGutterSize;
+			cellRenderer.paddingLeft = this.gutterSize;
+			cellRenderer.paddingRight = this.gutterSize;
+			cellRenderer.gap = this.gutterSize;
+			cellRenderer.minGap = this.gutterSize;
+			cellRenderer.iconPosition = RelativePosition.LEFT;
+			cellRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			cellRenderer.minAccessoryGap = this.gutterSize;
+			cellRenderer.accessoryPosition = RelativePosition.RIGHT;
+			cellRenderer.minTouchWidth = this.gridSize;
+			cellRenderer.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------

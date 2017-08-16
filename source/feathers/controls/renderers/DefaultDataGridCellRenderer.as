@@ -12,7 +12,7 @@ package feathers.controls.renderers
 	import feathers.skins.IStyleProvider;
 
 	/**
-	 * The default item renderer for the <code>DataGrid</code> component.
+	 * The default cell renderer for the <code>DataGrid</code> component.
 	 * Supports up to three optional sub-views, including a label to display
 	 * text, an icon to display an image, and an "accessory" to display a UI
 	 * component or another display object (with shortcuts for including a
@@ -22,7 +22,7 @@ package feathers.controls.renderers
 	 *
 	 * @productversion Feathers 3.4.0
 	 */
-	public class DefaultDataGridItemRenderer extends BaseDefaultItemRenderer implements IDataGridItemRenderer
+	public class DefaultDataGridCellRenderer extends BaseDefaultItemRenderer implements IDataGridCellRenderer
 	{
 		/**
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_CHECK
@@ -63,7 +63,7 @@ package feathers.controls.renderers
 		/**
 		 * Constructor.
 		 */
-		public function DefaultDataGridItemRenderer()
+		public function DefaultDataGridCellRenderer()
 		{
 			super();
 		}
@@ -73,49 +73,59 @@ package feathers.controls.renderers
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return DefaultDataGridItemRenderer.globalStyleProvider;
+			return DefaultDataGridCellRenderer.globalStyleProvider;
 		}
 		
 		/**
 		 * @private
 		 */
-		protected var _index:int = -1;
+		protected var _rowIndex:int = -1;
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function get index():int
+		public function get rowIndex():int
 		{
-			return this._index;
+			return this._rowIndex;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set index(value:int):void
+		public function set rowIndex(value:int):void
 		{
-			this._index = value;
+			if(this._rowIndex === value)
+			{
+				return;
+			}
+			this._rowIndex = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _layoutIndex:int = -1;
+		protected var _columnIndex:int = -1;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get layoutIndex():int
+		public function get columnIndex():int
 		{
-			return this._layoutIndex;
+			return this._columnIndex;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set layoutIndex(value:int):void
+		public function set columnIndex(value:int):void
 		{
-			this._layoutIndex = value;
+			if(this._columnIndex === value)
+			{
+				return;
+			}
+			this._columnIndex = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
 		/**
@@ -136,7 +146,12 @@ package feathers.controls.renderers
 		 */
 		public function set dataField(value:String):void
 		{
+			if(this._dataField === value)
+			{
+				return;
+			}
 			this._dataField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
 		/**
@@ -152,7 +167,7 @@ package feathers.controls.renderers
 		 */
 		public function set owner(value:DataGrid):void
 		{
-			if(this._owner == value)
+			if(this._owner === value)
 			{
 				return;
 			}
@@ -184,6 +199,17 @@ package feathers.controls.renderers
 		{
 			this.owner = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			//every cell in a row should be affected by touches anywhere
+			//in the row, so use the parent as the target
+			this.touchToState.target = this.parent;
 		}
 
 		/**

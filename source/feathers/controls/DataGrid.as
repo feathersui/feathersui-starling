@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.FlowLayout;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
@@ -33,7 +34,6 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import feathers.layout.HorizontalAlign;
 
 	/**
 	 * The default background to display in the data grid's header.

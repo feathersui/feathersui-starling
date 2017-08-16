@@ -7,40 +7,48 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
-	import feathers.core.FeathersControl;
-	import feathers.controls.supportClasses.IViewPort;
 	import feathers.controls.DataGrid;
-	import feathers.layout.LayoutBoundsResult;
-	import feathers.layout.ViewPortBounds;
-	import feathers.layout.IVirtualLayout;
-	import starling.display.DisplayObject;
-	import feathers.layout.ILayout;
-	import starling.events.Event;
-	import feathers.layout.IVariableVirtualLayout;
-	import flash.geom.Point;
-	import feathers.data.ListCollection;
-	import feathers.controls.renderers.IDataGridItemRenderer;
-	import feathers.controls.Scroller;
-	import feathers.events.CollectionEventType;
-	import feathers.data.IListCollection;
-	import flash.utils.Dictionary;
-	import feathers.core.IValidating;
-	import feathers.core.IFeathersControl;
-	import flash.errors.IllegalOperationError;
-	import feathers.events.FeathersEventType;
 	import feathers.controls.DataGridColumn;
-	import feathers.layout.ITrimmedVirtualLayout;
-	import starling.utils.Pool;
 	import feathers.controls.LayoutGroup;
+	import feathers.controls.Scroller;
+	import feathers.controls.renderers.IDataGridCellRenderer;
+	import feathers.controls.supportClasses.DataGridRowRenderer;
+	import feathers.controls.supportClasses.IViewPort;
+	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
+	import feathers.data.IListCollection;
+	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
+	import feathers.layout.ILayout;
+	import feathers.layout.ITrimmedVirtualLayout;
+	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.IVirtualLayout;
+	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.ViewPortBounds;
+
+	import flash.errors.IllegalOperationError;
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+
+	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.utils.Pool;
 
 	/**
+	 * @private
+	 * Used internally by DataGrid. Not meant to be used on its own.
+	 * 
+	 * @see feathers.controls.DataGrid
 	 * 
 	 * @productversion Feathers 3.4.0
 	 */
 	public class DataGridDataViewPort extends FeathersControl implements IViewPort
 	{
+		private static const INVALIDATION_FLAG_ROW_RENDERER_FACTORY:String = "rowRendererFactory";
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function DataGridDataViewPort()
@@ -52,13 +60,13 @@ package feathers.controls.supportClasses
 
 		private var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
 
-		private var _typicalItemIsInDataProvider:Boolean = false;
-		private var _typicalItemRenderer:IDataGridItemRenderer;
-		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
-		private var _itemRendererMaps:Vector.<Dictionary> = new <Dictionary>[];
-		private var _unrenderedItems:Vector.<int> = new <int>[];
-		private var _itemStorage:Vector.<ItemRendererFactoryStorage> = new <ItemRendererFactoryStorage>[];
-		private var _minimumItemCount:int;
+		private var _typicalRowIsInDataProvider:Boolean = false;
+		private var _typicalRowRenderer:DataGridRowRenderer;
+		private var _rows:Vector.<DisplayObject> = new <DisplayObject>[];
+		private var _rowRendererMap:Dictionary = new Dictionary(true);
+		private var _unrenderedRows:Vector.<int> = new <int>[];
+		private var _rowStorage:RowRendererFactoryStorage = new RowRendererFactoryStorage();
+		private var _minimumRowCount:int = 0;
 
 		private var _actualMinVisibleWidth:Number = 0;
 
@@ -298,58 +306,58 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			var itemRenderer:DisplayObject = null;
+			var rowRenderer:DisplayObject = null;
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
 			{
-				if(this._layoutItems.length > 0)
+				if(this._rows.length > 0)
 				{
-					itemRenderer = this._layoutItems[0] as DisplayObject;
+					rowRenderer = this._rows[0] as DisplayObject;
 				}
 			}
-			if(itemRenderer === null)
+			if(rowRenderer === null)
 			{
-				itemRenderer = this._typicalItemRenderer as DisplayObject;
+				rowRenderer = this._typicalRowRenderer as DisplayObject;
 			}
-			if(itemRenderer === null)
+			if(rowRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = itemRenderer.width;
-			var itemRendererHeight:Number = itemRenderer.height;
-			if(itemRendererWidth < itemRendererHeight)
+			var rowRendererWidth:Number = rowRenderer.width;
+			var rowRendererHeight:Number = rowRenderer.height;
+			if(rowRendererWidth < rowRendererHeight)
 			{
-				return itemRendererWidth;
+				return rowRendererWidth;
 			}
-			return itemRendererHeight;
+			return rowRendererHeight;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			var itemRenderer:DisplayObject = null;
+			var rowRenderer:DisplayObject = null;
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
 			{
-				if(this._layoutItems.length > 0)
+				if(this._rows.length > 0)
 				{
-					itemRenderer = this._layoutItems[0] as DisplayObject;
+					rowRenderer = this._rows[0] as DisplayObject;
 				}
 			}
-			if(itemRenderer === null)
+			if(rowRenderer === null)
 			{
-				itemRenderer = this._typicalItemRenderer as DisplayObject;
+				rowRenderer = this._typicalRowRenderer as DisplayObject;
 			}
-			if(itemRenderer === null)
+			if(rowRenderer === null)
 			{
 				return 0;
 			}
-			var itemRendererWidth:Number = itemRenderer.width;
-			var itemRendererHeight:Number = itemRenderer.height;
-			if(itemRendererWidth < itemRendererHeight)
+			var rowRendererWidth:Number = rowRenderer.width;
+			var rowRendererHeight:Number = rowRenderer.height;
+			if(rowRendererWidth < rowRendererHeight)
 			{
-				return itemRendererWidth;
+				return rowRendererWidth;
 			}
-			return itemRendererHeight;
+			return rowRendererHeight;
 		}
 
 		private var _owner:DataGrid = null;
@@ -553,7 +561,7 @@ package feathers.controls.supportClasses
 
 		public function calculateNavigationDestination(index:int, keyCode:uint):int
 		{
-			return this._layout.calculateNavigationDestination(this._layoutItems, index, keyCode, this._layoutResult);
+			return this._layout.calculateNavigationDestination(this._rows, index, keyCode, this._layoutResult);
 		}
 
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
@@ -562,7 +570,7 @@ package feathers.controls.supportClasses
 			{
 				result = new Point();
 			}
-			return this._layout.getScrollPositionForIndex(index, this._layoutItems,
+			return this._layout.getScrollPositionForIndex(index, this._rows,
 				0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
 		}
 
@@ -574,30 +582,22 @@ package feathers.controls.supportClasses
 			}
 			return this._layout.getNearestScrollPositionForIndex(index,
 				this._horizontalScrollPosition, this._verticalScrollPosition,
-				this._layoutItems, 0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
+				this._rows, 0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
 		}
 		
-		public function itemToItemRenderer(item:Object, columnIndex:int):IDataGridItemRenderer
+		public function itemToCellRenderer(item:Object, columnIndex:int):IDataGridCellRenderer
 		{
-			var map:Dictionary = null;
-			if(this._itemRendererMaps.length > columnIndex)
-			{
-				map = this._itemRendererMaps[columnIndex] as Dictionary;
-			}
-			if(map === null)
+			var rowRenderer:DataGridRowRenderer = this._rowRendererMap[item] as DataGridRowRenderer;
+			if(rowRenderer === null)
 			{
 				return null;
 			}
-			return map[item] as IDataGridItemRenderer;
+			return rowRenderer.getCellRendererForColumn(columnIndex);
 		}
 
 		override public function dispose():void
 		{
-			var count:int = this._itemStorage.length;
-			for(var i:int = 0; i < count; i++)
-			{
-				this.refreshInactiveItemRenderers(i, true);
-			}
+			this.refreshInactiveRowRenderers(true);
 			this.owner = null;
 			this.layout = null;
 			this.dataProvider = null;
@@ -611,7 +611,7 @@ package feathers.controls.supportClasses
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			var itemRendererInvalid:Boolean = false;//this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
+			var rowRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ROW_RENDERER_FACTORY);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
@@ -622,7 +622,7 @@ package feathers.controls.supportClasses
 				layoutInvalid = true;
 			}
 
-			var basicsInvalid:Boolean = sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid;
+			var basicsInvalid:Boolean = sizeInvalid || dataInvalid || layoutInvalid || rowRendererInvalid;
 
 			var oldIgnoreRendererResizing:Boolean = this._ignoreRendererResizing;
 			this._ignoreRendererResizing = true;
@@ -635,19 +635,15 @@ package feathers.controls.supportClasses
 			}
 			if(basicsInvalid)
 			{
-				var count:int = this._itemStorage.length;
-				for(var i:int = 0; i < count; i++)
-				{
-					this.refreshInactiveItemRenderers(i, false);
-				}
+				this.refreshInactiveRowRenderers(false);
 			}
-			if(dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(dataInvalid || layoutInvalid || rowRendererInvalid)
 			{
 				this.refreshLayoutTypicalItem();
 			}
 			if(basicsInvalid)
 			{
-				this.refreshItemRenderers();
+				this.refreshRowRenderers();
 			}
 			if(selectionInvalid || basicsInvalid)
 			{
@@ -668,7 +664,7 @@ package feathers.controls.supportClasses
 
 			if(stateInvalid || selectionInvalid || stylesInvalid || basicsInvalid)
 			{
-				this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
+				this._layout.layout(this._rows, this._viewPortBounds, this._layoutResult);
 			}
 
 			this._ignoreRendererResizing = oldIgnoreRendererResizing;
@@ -683,7 +679,7 @@ package feathers.controls.supportClasses
 			this._actualMinVisibleHeight = this._layoutResult.viewPortHeight;
 
 			//final validation to avoid juggler next frame issues
-			this.validateItemRenderers();
+			this.validateRowRenderers();
 		}
 
 		private function refreshViewPortBounds():void
@@ -716,78 +712,67 @@ package feathers.controls.supportClasses
 			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
-		private function refreshInactiveItemRenderers(columnIndex:int, forceCleanup:Boolean):void
+		private function refreshInactiveRowRenderers(forceCleanup:Boolean):void
 		{
-			var storage:ItemRendererFactoryStorage = ItemRendererFactoryStorage(this._itemStorage[columnIndex]);
-			var temp:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-			storage.inactiveItemRenderers = storage.activeItemRenderers;
-			storage.activeItemRenderers = temp;
-			if(storage.activeItemRenderers.length > 0)
+			var temp:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+			this._rowStorage.inactiveRowRenderers = this._rowStorage.activeRowRenderers;
+			this._rowStorage.activeRowRenderers = temp;
+			if(this._rowStorage.activeRowRenderers.length > 0)
 			{
-				throw new IllegalOperationError("DataGridDataViewPort: active renderers should be empty.");
+				throw new IllegalOperationError("DataGridDataViewPort: active row renderers should be empty.");
 			}
-			var column:DataGridColumn = null;
-			if(this._columns !== null && columnIndex < this._columns.length)
+			if(forceCleanup)
 			{
-				column = DataGridColumn(this._columns.getItemAt(columnIndex));
-			}
-			if(forceCleanup || column === null || column.itemRendererFactory !== storage.factory ||
-				column.customItemRendererStyleName !== storage.customItemRendererStyleName)
-			{
-				this.recoverInactiveItemRenderers(storage);
-				this.freeInactiveItemRenderers(storage, 0);
-				if(this._typicalItemRenderer !== null)
+				this.recoverInactiveRowRenderers();
+				this.freeInactiveRowRenderers(0);
+				if(this._typicalRowRenderer !== null)
 				{
-					if(this._typicalItemIsInDataProvider)
+					if(this._typicalRowIsInDataProvider)
 					{
-						var map:Dictionary = this._itemRendererMaps[storage.columnIndex] as Dictionary;
-						delete map[this._typicalItemRenderer.data];
+						delete this._rowRendererMap[this._typicalRowRenderer.data];
 					}
-					this.destroyItemRenderer(this._typicalItemRenderer);
-					this._typicalItemRenderer = null;
-					this._typicalItemIsInDataProvider = false;
+					this.destroyRowRenderer(this._typicalRowRenderer);
+					this._typicalRowRenderer = null;
+					this._typicalRowIsInDataProvider = false;
 				}
 			}
-
-			this._layoutItems.length = 0;
+			this._rows.length = 0;
 		}
 
-		private function recoverInactiveItemRenderers(storage:ItemRendererFactoryStorage):void
+		private function recoverInactiveRowRenderers():void
 		{
-			var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-			
-			var itemCount:int = inactiveItemRenderers.length;
+			var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+			var itemCount:int = inactiveRowRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var itemRenderer:IDataGridItemRenderer = inactiveItemRenderers[i];
-				if(itemRenderer === null || itemRenderer.data === null)
+				var rowRenderer:DataGridRowRenderer = inactiveRowRenderers[i];
+				if(rowRenderer === null || rowRenderer.data === null)
 				{
 					continue;
 				}
-				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
-				var map:Dictionary = this._itemRendererMaps[storage.columnIndex] as Dictionary;
-				delete map[itemRenderer.data];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, rowRenderer);
+				delete this._rowRendererMap[rowRenderer.data];
 			}
 		}
 
-		private function freeInactiveItemRenderers(storage:ItemRendererFactoryStorage, minimumItemCount:int):void
+		private function freeInactiveRowRenderers(minimumItemCount:int):void
 		{
-			var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-			var activeItemRenderers:Vector.<IDataGridItemRenderer> = storage.activeItemRenderers;
-			var activeItemRenderersCount:int = activeItemRenderers.length;
+			var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+			var activeRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.activeRowRenderers;
+			var activeRowRenderersCount:int = activeRowRenderers.length;
 			
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
-			var itemCount:int = inactiveItemRenderers.length;
-			var keepCount:int = minimumItemCount - activeItemRenderersCount;
+			var itemCount:int = inactiveRowRenderers.length;
+			var keepCount:int = minimumItemCount - activeRowRenderersCount;
 			if(keepCount > itemCount)
 			{
 				keepCount = itemCount;
 			}
 			for(var i:int = 0; i < keepCount; i++)
 			{
-				var itemRenderer:IDataGridItemRenderer = inactiveItemRenderers.shift();
-				if(!itemRenderer)
+				var rowRenderer:DataGridRowRenderer = inactiveRowRenderers.shift();
+				if(rowRenderer === null)
 				{
 					keepCount++;
 					if(itemCount < keepCount)
@@ -796,106 +781,72 @@ package feathers.controls.supportClasses
 					}
 					continue;
 				}
-				itemRenderer.data = null;
-				itemRenderer.index = -1;
-				itemRenderer.layoutIndex = -1;
-				itemRenderer.visible = false;
-				activeItemRenderers[activeItemRenderersCount] = itemRenderer;
-				activeItemRenderersCount++;
+				rowRenderer.data = null;
+				rowRenderer.index = -1;
+				rowRenderer.visible = false;
+				activeRowRenderers[activeRowRenderersCount] = rowRenderer;
+				activeRowRenderersCount++;
 			}
 			itemCount -= keepCount;
 			for(i = 0; i < itemCount; i++)
 			{
-				itemRenderer = inactiveItemRenderers.shift();
-				if(!itemRenderer)
+				rowRenderer = inactiveRowRenderers.shift();
+				if(rowRenderer === null)
 				{
 					continue;
 				}
-				this.destroyItemRenderer(itemRenderer);
+				this.destroyRowRenderer(rowRenderer);
 			}
 		}
 
-		private function createItemRenderer(item:Object, rowIndex:int, columnIndex:int, layoutIndex:int, useCache:Boolean, isTemporary:Boolean):IDataGridItemRenderer
+		private function createRowRenderer(item:Object, rowIndex:int, useCache:Boolean, isTemporary:Boolean):DataGridRowRenderer
 		{
-			var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(columnIndex));
-			var itemRendererFactory:Function = column.itemRendererFactory;
-			var customItemRendererStyleName:String = column.customItemRendererStyleName;
-			var storage:ItemRendererFactoryStorage = null;
-			if(columnIndex < this._itemStorage.length)
-			{
-				storage = this._itemStorage[columnIndex];
-			}
-			else
-			{
-				storage = new ItemRendererFactoryStorage();
-				storage.columnIndex = columnIndex;
-				storage.factory = column.itemRendererFactory;
-				storage.customItemRendererStyleName = column.customItemRendererStyleName;
-				this._itemStorage[columnIndex] = storage;
-			}
-			var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-			var activeItemRenderers:Vector.<IDataGridItemRenderer> = storage.activeItemRenderers;
-			var itemRenderer:IDataGridItemRenderer;
+			var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+			var activeRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.activeRowRenderers;
+			var rowRenderer:DataGridRowRenderer = null;
 			do
 			{
-				if(!useCache || isTemporary || inactiveItemRenderers.length === 0)
+				if(!useCache || isTemporary || inactiveRowRenderers.length === 0)
 				{
-					itemRenderer = IDataGridItemRenderer(itemRendererFactory());
-					if(customItemRendererStyleName !== null && customItemRendererStyleName.length > 0)
-					{
-						itemRenderer.styleNameList.add(customItemRendererStyleName);
-					}
-					this.addChild(DisplayObject(itemRenderer));
+					rowRenderer = new DataGridRowRenderer();
+					this.addChild(DisplayObject(rowRenderer));
 				}
 				else
 				{
-					itemRenderer = inactiveItemRenderers.shift();
+					rowRenderer = inactiveRowRenderers.shift();
 				}
 				//wondering why this all is in a loop?
 				//_inactiveRenderers.shift() may return null because we're
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(!itemRenderer)
-			itemRenderer.data = item;
-			itemRenderer.index = rowIndex;
-			itemRenderer.dataField = column.dataField;
-			itemRenderer.layoutIndex = layoutIndex;
-			itemRenderer.owner = this._owner;
+			while(rowRenderer === null)
+			rowRenderer.data = item;
+			rowRenderer.index = rowIndex;
+			rowRenderer.owner = this._owner;
 
 			if(!isTemporary)
 			{
-				var map:Dictionary = null;
-				if(this._itemRendererMaps.length > columnIndex)
-				{
-					map = this._itemRendererMaps[columnIndex] as Dictionary;
-				}
-				if(map === null)
-				{
-					map = new Dictionary(true);
-					this._itemRendererMaps[columnIndex] = map;
-				}
-				map[item] = itemRenderer;
-				activeItemRenderers[activeItemRenderers.length] = itemRenderer;
-				itemRenderer.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
-				itemRenderer.addEventListener(Event.CHANGE, itemRenderer_changeHandler);
-				itemRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
-				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, itemRenderer);
+				this._rowRendererMap[item] = rowRenderer;
+				activeRowRenderers[activeRowRenderers.length] = rowRenderer;
+				rowRenderer.addEventListener(Event.TRIGGERED, rowRenderer_triggeredHandler);
+				rowRenderer.addEventListener(Event.CHANGE, rowRenderer_changeHandler);
+				rowRenderer.addEventListener(FeathersEventType.RESIZE, rowRenderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, rowRenderer);
 			}
 
-			return itemRenderer;
+			return rowRenderer;
 		}
 
-		private function destroyItemRenderer(itemRenderer:IDataGridItemRenderer):void
+		private function destroyRowRenderer(rowRenderer:DataGridRowRenderer):void
 		{
-			itemRenderer.removeEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
-			itemRenderer.removeEventListener(Event.CHANGE, itemRenderer_changeHandler);
-			itemRenderer.removeEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
-			itemRenderer.owner = null;
-			itemRenderer.data = null;
-			itemRenderer.index = -1;
-			itemRenderer.layoutIndex = -1;
-			this.removeChild(DisplayObject(itemRenderer), true);
+			rowRenderer.removeEventListener(Event.TRIGGERED, rowRenderer_triggeredHandler);
+			rowRenderer.removeEventListener(Event.CHANGE, rowRenderer_changeHandler);
+			rowRenderer.removeEventListener(FeathersEventType.RESIZE, rowRenderer_resizeHandler);
+			rowRenderer.owner = null;
+			rowRenderer.data = null;
+			rowRenderer.index = -1;
+			this.removeChild(DisplayObject(rowRenderer), true);
 		}
 
 		private function refreshLayoutTypicalItem():void
@@ -904,11 +855,11 @@ package feathers.controls.supportClasses
 			if(virtualLayout === null || !virtualLayout.useVirtualLayout)
 			{
 				//the old layout was virtual, but this one isn't
-				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer !== null)
+				if(!this._typicalRowIsInDataProvider && this._typicalRowRenderer !== null)
 				{
 					//it's safe to destroy this renderer
-					this.destroyItemRenderer(this._typicalItemRenderer);
-					this._typicalItemRenderer = null;
+					this.destroyRowRenderer(this._typicalRowRenderer);
+					this._typicalRowRenderer = null;
 				}
 				return;
 			}
@@ -938,19 +889,10 @@ package feathers.controls.supportClasses
 
 			if(typicalItem !== null)
 			{
-				var typicalRenderer:IDataGridItemRenderer = null;
-				var map:Dictionary = null;
-				if(this._itemRendererMaps.length > 0)
-				{
-					map = this._itemRendererMaps[0] as Dictionary;
-				}
-				if(map !== null)
-				{
-					typicalRenderer = map[typicalItem] as IDataGridItemRenderer;
-				}
+				var typicalRenderer:DataGridRowRenderer = this._rowRendererMap[typicalItem] as DataGridRowRenderer;
 				if(typicalRenderer !== null)
 				{
-					//at this point, the item already has an item renderer.
+					//at this point, the item already has a row renderer.
 					//(this doesn't necessarily mean that the current typical
 					//item was the typical item last time this function was
 					//called)
@@ -959,18 +901,18 @@ package feathers.controls.supportClasses
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
 				}
-				if(typicalRenderer === null && this._typicalItemRenderer)
+				if(typicalRenderer === null && this._typicalRowRenderer !== null)
 				{
-					//the typical item has changed, and doesn't have an item
-					//renderer yet. the previous typical item had an item
+					//the typical item has changed, and doesn't have a row
+					//renderer yet. the previous typical item had a row
 					//renderer, so we will try to reuse it.
 					
-					//we can reuse the existing typical item renderer if the old
+					//we can reuse the existing typical row renderer if the old
 					//typical item wasn't in the data provider. otherwise, it
 					//may still be needed for the same item.
-					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
-					var oldTypicalItemRemoved:Boolean = this._typicalItemIsInDataProvider &&
-						this._dataProvider && this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
+					var canReuse:Boolean = !this._typicalRowIsInDataProvider;
+					var oldTypicalItemRemoved:Boolean = this._typicalRowIsInDataProvider &&
+						this._dataProvider && this._dataProvider.getItemIndex(this._typicalRowRenderer.data) < 0;
 					if(!canReuse && oldTypicalItemRemoved)
 					{
 						//special case: if the old typical item was in the data
@@ -984,105 +926,86 @@ package feathers.controls.supportClasses
 						
 						//if the old typical item was in the data provider,
 						//remove it from the renderer map.
-						if(this._typicalItemIsInDataProvider)
+						if(this._typicalRowIsInDataProvider)
 						{
-							delete map[this._typicalItemRenderer.data];
+							delete this._rowRendererMap[this._typicalRowRenderer.data];
 						}
-						typicalRenderer = this._typicalItemRenderer;
+						typicalRenderer = this._typicalRowRenderer;
 						typicalRenderer.data = typicalItem;
 						typicalRenderer.index = typicalItemIndex;
-						var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(0));
-						typicalRenderer.dataField = column.dataField;
 						//if the new typical item is in the data provider, add it
 						//to the renderer map.
 						if(newTypicalItemIsInDataProvider)
 						{
-							map[typicalItem] = typicalRenderer;
+							this._rowRendererMap[typicalItem] = typicalRenderer;
 						}
 					}
 				}
 				if(typicalRenderer === null)
 				{
-					//if we still don't have a typical item renderer, we need to
+					//if we still don't have a typical row renderer, we need to
 					//create a new one.
-					typicalRenderer = this.createItemRenderer(typicalItem, typicalItemIndex, 0, 0, false, !newTypicalItemIsInDataProvider);
-					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer !== null)
+					typicalRenderer = this.createRowRenderer(typicalItem, typicalItemIndex, false, !newTypicalItemIsInDataProvider);
+					if(!this._typicalRowIsInDataProvider && this._typicalRowRenderer !== null)
 					{
-						//get rid of the old typical item renderer if it isn't
+						//get rid of the old typical row renderer if it isn't
 						//needed anymore.  since it was not in the data
 						//provider, we don't need to mess with the renderer map
 						//dictionary or dispatch any events.
-						this.destroyItemRenderer(this._typicalItemRenderer);
-						this._typicalItemRenderer = null;
+						this.destroyRowRenderer(this._typicalRowRenderer);
+						this._typicalRowRenderer = null;
 					}
 				}
 			}
 
 			virtualLayout.typicalItem = DisplayObject(typicalRenderer);
-			this._typicalItemRenderer = typicalRenderer;
-			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
-			if(this._typicalItemRenderer !== null && !this._typicalItemIsInDataProvider)
+			this._typicalRowRenderer = typicalRenderer;
+			this._typicalRowIsInDataProvider = newTypicalItemIsInDataProvider;
+			if(this._typicalRowRenderer !== null && !this._typicalRowIsInDataProvider)
 			{
 				//we need to know if this item renderer resizes to adjust the
 				//layout because the layout may use this item renderer to resize
 				//the other item renderers
-				this._typicalItemRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+				this._typicalRowRenderer.addEventListener(FeathersEventType.RESIZE, rowRenderer_resizeHandler);
 			}
 		}
 
-		private function refreshItemRenderers():void
+		private function refreshRowRenderers():void
 		{
-			if(this._typicalItemRenderer !== null && this._typicalItemIsInDataProvider)
+			if(this._typicalRowRenderer !== null && this._typicalRowIsInDataProvider)
 			{
-				var storage:ItemRendererFactoryStorage = this._itemStorage[0];
-				var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-				var activeItemRenderers:Vector.<IDataGridItemRenderer> = storage.activeItemRenderers;
+				var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+				var activeRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.activeRowRenderers;
 				//this renderer is already is use by the typical item, so we
 				//don't want to allow it to be used by other items.
-				var inactiveIndex:int = inactiveItemRenderers.indexOf(this._typicalItemRenderer);
+				var inactiveIndex:int = inactiveRowRenderers.indexOf(this._typicalRowRenderer);
 				if(inactiveIndex >= 0)
 				{
-					inactiveItemRenderers[inactiveIndex] = null;
+					inactiveRowRenderers[inactiveIndex] = null;
 				}
 				//if refreshLayoutTypicalItem() was called, it will have already
-				//added the typical item renderer to the active renderers. if
+				//added the typical row renderer to the active renderers. if
 				//not, we need to do it here.
-				var activeRendererCount:int = activeItemRenderers.length;
+				var activeRendererCount:int = activeRowRenderers.length;
 				if(activeRendererCount === 0)
 				{
-					activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
+					activeRowRenderers[activeRendererCount] = this._typicalRowRenderer;
 				}
 			}
 
-			this.findUnrenderedData();
-			var count:int = this._itemStorage.length;
-			for(var i:int = 0; i < count; i++)
-			{
-				storage = this._itemStorage[i];
-				this.recoverInactiveItemRenderers(storage);
-			}
-			this.renderUnrenderedData();
-			for(i = 0; i < count; i++)
-			{
-				storage = this._itemStorage[i];
-				this.freeInactiveItemRenderers(storage, this._minimumItemCount);
-			}
-			this._updateForDataReset = false;
+			this.findUnrenderedRowData();
+			this.recoverInactiveRowRenderers();
+			this.renderUnrenderedRowData();
+			this.freeInactiveRowRenderers(this._minimumRowCount);
 		}
 
-		private function findUnrenderedData():void
+		private function findUnrenderedRowData():void
 		{
-			var columnCount:int = 0;
-			if(this._columns !== null)
-			{
-				columnCount = this._columns.length;
-			}
 			var itemCount:int = 0;
 			if(this._dataProvider !== null)
 			{
 				itemCount = this._dataProvider.length;
 			}
-			itemCount *= columnCount;
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			var useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -1093,27 +1016,27 @@ package feathers.controls.supportClasses
 				Pool.putPoint(point);
 			}
 
-			this._layoutItems.length = itemCount;
+			this._rows.length = itemCount;
 
 			var unrenderedItemCount:int = itemCount;
 			if(useVirtualLayout)
 			{
 				unrenderedItemCount = HELPER_VECTOR.length;
 			}
-			if(useVirtualLayout && this._typicalItemIsInDataProvider && this._typicalItemRenderer &&
-				HELPER_VECTOR.indexOf(this._typicalItemRenderer.index) >= 0)
+			if(useVirtualLayout && this._typicalRowIsInDataProvider && this._typicalRowRenderer &&
+				HELPER_VECTOR.indexOf(this._typicalRowRenderer.index) >= 0)
 			{
 				//add an extra item renderer if the typical item is from the
 				//data provider and it is visible. this helps keep the number of
 				//item renderers constant!
-				this._minimumItemCount = unrenderedItemCount + 1;
+				this._minimumRowCount = unrenderedItemCount + 1;
 			}
 			else
 			{
-				this._minimumItemCount = unrenderedItemCount;
+				this._minimumRowCount = unrenderedItemCount;
 			}
 
-			var unrenderedDataLastIndex:int = this._unrenderedItems.length;
+			var unrenderedDataLastIndex:int = this._unrenderedRows.length;
 			for(var i:int = 0; i < unrenderedItemCount; i++)
 			{
 				var index:int = i;
@@ -1125,29 +1048,16 @@ package feathers.controls.supportClasses
 				{
 					continue;
 				}
-				var rowIndex:int = index / columnCount;
-				var columnIndex:int = index % columnCount;
-				var item:Object = this._dataProvider.getItemAt(rowIndex);
-
-				var itemRenderer:IDataGridItemRenderer = null;
-				var map:Dictionary = null;
-				if(this._itemRendererMaps.length > columnIndex)
-				{
-					map = this._itemRendererMaps[columnIndex] as Dictionary;
-				}
-				if(map !== null)
-				{
-					itemRenderer = map[item] as IDataGridItemRenderer;
-				}
-				if(itemRenderer !== null)
+				var item:Object = this._dataProvider.getItemAt(index);
+				var rowRenderer:DataGridRowRenderer = this._rowRendererMap[item] as DataGridRowRenderer;
+				if(rowRenderer !== null)
 				{
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
-					itemRenderer.index = rowIndex;
-					itemRenderer.layoutIndex = index;
-					//if this item renderer used to be the typical item
+					rowRenderer.index = index;
+					//if this row renderer used to be the typical row
 					//renderer, but it isn't anymore, it may have been set invisible!
-					itemRenderer.visible = true;
+					rowRenderer.visible = true;
 					if(this._updateForDataReset)
 					{
 						//similar to calling updateItemAt(), replacing the data
@@ -1159,103 +1069,98 @@ package feathers.controls.supportClasses
 						//somewhat optimized since the same item renderer will
 						//receive the same data, and the children generally
 						//won't have changed much, if at all.
-						itemRenderer.data = null;
-						itemRenderer.data = item;
+						rowRenderer.data = null;
+						rowRenderer.data = item;
 					}
 
-					//the typical item renderer is a special case, and we will
+					//the typical row renderer is a special case, and we will
 					//have already put it into the active renderers, so we don't
 					//want to do it again!
-					if(this._typicalItemRenderer !== itemRenderer)
+					if(this._typicalRowRenderer !== rowRenderer)
 					{
-						var storage:ItemRendererFactoryStorage = this._itemStorage[columnIndex];
-						var activeItemRenderers:Vector.<IDataGridItemRenderer> = storage.activeItemRenderers;
-						var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = storage.inactiveItemRenderers;
-						activeItemRenderers[activeItemRenderers.length] = itemRenderer;
-						var inactiveIndex:int = inactiveItemRenderers.indexOf(itemRenderer);
+						var activeRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.activeRowRenderers;
+						var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
+						activeRowRenderers[activeRowRenderers.length] = rowRenderer;
+						var inactiveIndex:int = inactiveRowRenderers.indexOf(rowRenderer);
 						if(inactiveIndex >= 0)
 						{
-							inactiveItemRenderers[inactiveIndex] = null;
+							inactiveRowRenderers[inactiveIndex] = null;
 						}
 						else
 						{
-							throw new IllegalOperationError("DataGridDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
+							throw new IllegalOperationError("DataGridDataViewPort: row renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 						}
 					}
-					this._layoutItems[index] = DisplayObject(itemRenderer);
+					this._rows[index] = DisplayObject(rowRenderer);
 				}
 				else
 				{
-					this._unrenderedItems[unrenderedDataLastIndex] = rowIndex;
-					unrenderedDataLastIndex++;
-					this._unrenderedItems[unrenderedDataLastIndex] = columnIndex;
-					unrenderedDataLastIndex++;
-					this._unrenderedItems[unrenderedDataLastIndex] = index;
+					this._unrenderedRows[unrenderedDataLastIndex] = index;
 					unrenderedDataLastIndex++;
 				}
 			}
-			//update the typical item renderer's visibility
-			if(this._typicalItemRenderer !== null)
+			//update the typical row renderer's visibility
+			if(this._typicalRowRenderer !== null)
 			{
-				if(useVirtualLayout && this._typicalItemIsInDataProvider)
+				if(useVirtualLayout && this._typicalRowIsInDataProvider)
 				{
-					index = HELPER_VECTOR.indexOf(this._typicalItemRenderer.index);
+					index = HELPER_VECTOR.indexOf(this._typicalRowRenderer.index);
 					if(index >= 0)
 					{
-						this._typicalItemRenderer.visible = true;
+						this._typicalRowRenderer.visible = true;
 					}
 					else
 					{
-						this._typicalItemRenderer.visible = false;
+						this._typicalRowRenderer.visible = false;
 
-						//uncomment these lines to see a hidden typical item for
+						//uncomment these lines to see a hidden typical row for
 						//debugging purposes...
-						/*this._typicalItemRenderer.visible = true;
-						this._typicalItemRenderer.x = this._horizontalScrollPosition;
-						this._typicalItemRenderer.y = this._verticalScrollPosition;*/
+						/*this._typicalRowRenderer.visible = true;
+						this._typicalRowRenderer.x = this._horizontalScrollPosition;
+						this._typicalRowRenderer.y = this._verticalScrollPosition;*/
 					}
 				}
 				else
 				{
-					this._typicalItemRenderer.visible = this._typicalItemIsInDataProvider;
+					this._typicalRowRenderer.visible = this._typicalRowIsInDataProvider;
 				}
 			}
 			HELPER_VECTOR.length = 0;
 		}
 
-		private function renderUnrenderedData():void
+		private function renderUnrenderedRowData():void
 		{
-			var itemRendererCount:int = this._unrenderedItems.length;
-			for(var i:int = 0; i < itemRendererCount; i += 3)
+			var rowRendererCount:int = this._unrenderedRows.length;
+			for(var i:int = 0; i < rowRendererCount; i++)
 			{
-				var rowIndex:int = this._unrenderedItems.shift();
-				var columnIndex:int = this._unrenderedItems.shift();
-				var layoutIndex:int = this._unrenderedItems.shift();
+				var rowIndex:int = this._unrenderedRows.shift();
 				var item:Object = this._dataProvider.getItemAt(rowIndex);
-				var itemRenderer:IDataGridItemRenderer = this.createItemRenderer(
-					item, rowIndex, columnIndex, layoutIndex, true, false);
-				itemRenderer.visible = true;
-				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
+				var rowRenderer:DataGridRowRenderer = this.createRowRenderer(
+					item, rowIndex, true, false);
+				rowRenderer.visible = true;
+				this._rows[rowIndex] = DisplayObject(rowRenderer);
 			}
 		}
 
 		private function refreshSelection():void
 		{
-			for each(var item:DisplayObject in this._layoutItems)
+			var itemCount:int = this._rows.length;
+			for(var i:int = 0; i < itemCount; i++)
 			{
-				var itemRenderer:IDataGridItemRenderer = item as IDataGridItemRenderer;
-				if(itemRenderer !== null)
+				var rowRenderer:DataGridRowRenderer = this._rows[i] as DataGridRowRenderer;
+				if(rowRenderer !== null)
 				{
-					itemRenderer.isSelected = this._selectedIndices.getItemIndex(itemRenderer.index) >= 0;
+					rowRenderer.isSelected = this._selectedIndices.getItemIndex(rowRenderer.index) >= 0;
 				}
 			}
 		}
 
 		private function refreshEnabled():void
 		{
-			for each(var item:DisplayObject in this._layoutItems)
+			var itemCount:int = this._rows.length;
+			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = item as IFeathersControl;
+				var control:IFeathersControl = this._rows[i] as IFeathersControl;
 				if(control !== null)
 				{
 					control.isEnabled = this._isEnabled;
@@ -1263,12 +1168,12 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function validateItemRenderers():void
+		private function validateRowRenderers():void
 		{
-			var itemCount:int = this._layoutItems.length;
+			var itemCount:int = this._rows.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:IValidating = this._layoutItems[i] as IValidating;
+				var item:IValidating = this._rows[i] as IValidating;
 				if(item !== null)
 				{
 					item.validate();
@@ -1348,28 +1253,22 @@ package feathers.controls.supportClasses
 		private function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
 			var item:Object = this._dataProvider.getItemAt(index);
-			/*var map:Dictionary = this._itemRendererMaps[columnIndex] as Dictionary;
-			var itemRenderers:Vector.<IDataGridItemRenderer> = this._itemRendererMap[item] as Vector.<IDataGridItemRenderer>;
-			if(itemRenderers === null)
+			var rowRenderer:DataGridRowRenderer = this._rowRendererMap[item] as DataGridRowRenderer;
+			if(rowRenderer === null)
 			{
 				return;
 			}
-			var count:int = itemRenderers.length;
-			for(var i:int = 0; i < count; i++)
-			{
-				//in order to display the same item with modified properties, this
-				//hack tricks the item renderer into thinking that it has been given
-				//a different item to render.
-				var itemRenderer:IDataGridItemRenderer = itemRenderers[i];
-				itemRenderer.data = null;
-				itemRenderer.data = item;
-			}
+			//in order to display the same item with modified properties, this
+			//hack tricks the item renderer into thinking that it has been given
+			//a different item to render.
+			rowRenderer.data = null;
+			rowRenderer.data = item;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
 				this._explicitVisibleHeight !== this._explicitVisibleHeight)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 				this.invalidateParent(INVALIDATION_FLAG_SIZE);
-			}*/
+			}
 		}
 
 		private function dataProvider_updateAllHandler(event:Event):void
@@ -1389,26 +1288,26 @@ package feathers.controls.supportClasses
 			layout.resetVariableVirtualCache();
 		}
 
-		private function itemRenderer_triggeredHandler(event:Event):void
+		private function rowRenderer_triggeredHandler(event:Event):void
 		{
-			var itemRenderer:IDataGridItemRenderer = IDataGridItemRenderer(event.currentTarget);
-			this.parent.dispatchEventWith(Event.TRIGGERED, false, itemRenderer.data);
+			var rowRenderer:DataGridRowRenderer = DataGridRowRenderer(event.currentTarget);
+			this.parent.dispatchEventWith(Event.TRIGGERED, false, rowRenderer.data);
 		}
 
-		private function itemRenderer_changeHandler(event:Event):void
+		private function rowRenderer_changeHandler(event:Event):void
 		{
 			if(this._ignoreSelectionChanges)
 			{
 				return;
 			}
-			var itemRenderer:IDataGridItemRenderer = IDataGridItemRenderer(event.currentTarget);
+			var rowRenderer:DataGridRowRenderer = DataGridRowRenderer(event.currentTarget);
 			if(!this._isSelectable || this._owner.isScrolling)
 			{
-				itemRenderer.isSelected = false;
+				rowRenderer.isSelected = false;
 				return;
 			}
-			var isSelected:Boolean = itemRenderer.isSelected;
-			var index:int = itemRenderer.index;
+			var isSelected:Boolean = rowRenderer.isSelected;
+			var index:int = rowRenderer.index;
 			if(this._allowMultipleSelection)
 			{
 				var indexOfIndex:int = this._selectedIndices.getItemIndex(index);
@@ -1431,7 +1330,7 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function itemRenderer_resizeHandler(event:Event):void
+		private function rowRenderer_resizeHandler(event:Event):void
 		{
 			if(this._ignoreRendererResizing)
 			{
@@ -1439,7 +1338,7 @@ package feathers.controls.supportClasses
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
-			if(event.currentTarget === this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
+			if(event.currentTarget === this._typicalRowRenderer && !this._typicalRowIsInDataProvider)
 			{
 				return;
 			}
@@ -1448,8 +1347,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			var itemRenderer:IDataGridItemRenderer = IDataGridItemRenderer(event.currentTarget);
-			layout.resetVariableVirtualCacheAtIndex(itemRenderer.layoutIndex, DisplayObject(itemRenderer));
+			var rowRenderer:DataGridRowRenderer = DataGridRowRenderer(event.currentTarget);
+			layout.resetVariableVirtualCacheAtIndex(rowRenderer.index, DisplayObject(rowRenderer));
 		}
 
 		private function layout_changeHandler(event:Event):void
@@ -1469,18 +1368,15 @@ package feathers.controls.supportClasses
 	}
 }
 
-import feathers.controls.renderers.IDataGridItemRenderer;
+import feathers.controls.supportClasses.DataGridRowRenderer;
 
-class ItemRendererFactoryStorage
+class RowRendererFactoryStorage
 {
-	public function ItemRendererFactoryStorage()
+	public function RowRendererFactoryStorage()
 	{
 
 	}
 	
-	public var activeItemRenderers:Vector.<IDataGridItemRenderer> = new <IDataGridItemRenderer>[];
-	public var inactiveItemRenderers:Vector.<IDataGridItemRenderer> = new <IDataGridItemRenderer>[];
-	public var factory:Function = null;
-	public var customItemRendererStyleName:String = null;
-	public var columnIndex:int = -1;
+	public var activeRowRenderers:Vector.<DataGridRowRenderer> = new <DataGridRowRenderer>[];
+	public var inactiveRowRenderers:Vector.<DataGridRowRenderer> = new <DataGridRowRenderer>[];
 }
