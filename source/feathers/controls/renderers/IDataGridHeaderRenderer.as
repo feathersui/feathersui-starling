@@ -63,12 +63,12 @@ package feathers.controls.renderers
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
-		function get layoutIndex():int;
+		function get columnIndex():int;
 		
 		/**
 		 * @private
 		 */
-		function set layoutIndex(value:int):void;
+		function set columnIndex(value:int):void;
 		
 		/**
 		 * The data grid that contains this header renderer.

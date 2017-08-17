@@ -80,7 +80,10 @@ package feathers.controls.supportClasses
 		protected var _index:int = -1;
 
 		/**
-		 * @inheritDoc
+		 * The index (numeric position, starting from zero) of the item within
+		 * the data grid's dat provider.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		public function get index():int
 		{
@@ -106,7 +109,9 @@ package feathers.controls.supportClasses
 		protected var _owner:DataGrid = null;
 
 		/**
-		 * @inheritDoc
+		 * The <code>DataGrid</code> component that owns this row renderer.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		public function get owner():DataGrid
 		{
@@ -132,7 +137,9 @@ package feathers.controls.supportClasses
 		protected var _data:Object = null;
 
 		/**
-		 * @inheritDoc
+		 * The item from the data provider that is rendered by this row.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		public function get data():Object
 		{
@@ -158,7 +165,9 @@ package feathers.controls.supportClasses
 		protected var _isSelected:Boolean;
 
 		/**
-		 * @inheritDoc
+		 * Indicates if the row is selected or not.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		public function get isSelected():Boolean
 		{
@@ -180,11 +189,16 @@ package feathers.controls.supportClasses
 		}
 
 		/**
-		 * @inheritDoc
+		 * Returns the cell renderer for the specified column index, or
+		 * <code>null</code>, if no cell renderer can be found.
 		 */
 		public function getCellRendererForColumn(columnIndex:int):IDataGridCellRenderer
 		{
-			return null;
+			if(columnIndex < 0 || columnIndex > this._cellRenderers.length)
+			{
+				return null;
+			}
+			return IDataGridCellRenderer(this._cellRenderers[columnIndex]);
 		}
 
 		/**

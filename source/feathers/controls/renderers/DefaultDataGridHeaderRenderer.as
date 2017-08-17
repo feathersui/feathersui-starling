@@ -364,22 +364,22 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _layoutIndex:int = -1;
+		protected var _columnIndex:int = -1;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get layoutIndex():int
+		public function get columnIndex():int
 		{
-			return this._layoutIndex;
+			return this._columnIndex;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set layoutIndex(value:int):void
+		public function set columnIndex(value:int):void
 		{
-			this._layoutIndex = value;
+			this._columnIndex = value;
 		}
 
 		/**

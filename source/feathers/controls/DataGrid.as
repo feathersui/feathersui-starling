@@ -7,12 +7,21 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.DataGrid;
+	import feathers.controls.DataGridColumn;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
+	import feathers.core.IValidating;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.display.RenderDelegate;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.DragDropManager;
+	import feathers.dragDrop.IDragSource;
+	import feathers.dragDrop.IDropTarget;
 	import feathers.events.CollectionEventType;
+	import feathers.events.DragDropEvent;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
@@ -32,8 +41,26 @@ package feathers.controls
 	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+
+	/**
+	 * Determines if the height of the header drag indicator is equal to the
+	 * height of the headers, or if it extends to the full height of the data
+	 * grid's view port.
+	 *
+	 * <p>In the following example, the data grid's header drag indicator is extended:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.extendedHeaderDragIndicator = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="extendedHeaderDragIndicator",type="Boolean")]
 
 	/**
 	 * The default background to display in the data grid's header.
@@ -63,6 +90,31 @@ package feathers.controls
 	 * @see #style:headerBackgroundSkin
 	 */
 	[Style(name="headerBackgroundDisabledSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * The alpha value used for the header's drag avatar.
+	 *
+	 * <p>In the following example, the data grid's header drag avatar alpha value is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.headerDragAvatarAlpha = 0.5;</listing>
+	 *
+	 * @default 0.8
+	 */
+	[Style(name="headerDragAvatarAlpha",type="Number")]
+
+	/**
+	 * A skin to display when dragging one of the data grid's headers to indicate where
+	 * it can be dropped.
+	 *
+	 * <p>In the following example, the data grid's header drag indicator is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.headerDragIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="headerDragIndicatorSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The duration, in seconds, of the animation when the selected item is
@@ -107,8 +159,13 @@ package feathers.controls
 	 * 
 	 * @productversion Feathers 3.4.0
 	 */
-	public class DataGrid extends Scroller
+	public class DataGrid extends Scroller implements IDragSource, IDropTarget
 	{
+		/**
+		 * @private
+		 */
+		protected static const DATA_GRID_HEADER_DRAG_FORMAT:String = "feathers-data-grid-header";
+
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>List</code>
 		 * components.
@@ -124,6 +181,9 @@ package feathers.controls
 		public function DataGrid()
 		{
 			super();
+			this.addEventListener(DragDropEvent.DRAG_ENTER, dataGrid_dragEnterHandler);
+			this.addEventListener(DragDropEvent.DRAG_MOVE, dataGrid_dragMoveHandler);
+			this.addEventListener(DragDropEvent.DRAG_DROP, dataGrid_dragDropHandler);
 			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 
@@ -204,7 +264,86 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _layout:ILayout
+		protected var _headerDragIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get headerDragIndicatorSkin():DisplayObject
+		{
+			return this._headerDragIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerDragIndicatorSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._headerDragIndicatorSkin = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerDragAvatarAlpha:Number = 0.8;
+
+		/**
+		 * @private
+		 */
+		public function get headerDragAvatarAlpha():Number
+		{
+			return this._headerDragAvatarAlpha;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerDragAvatarAlpha(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._headerDragAvatarAlpha = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _extendedHeaderDragIndicator:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get extendedHeaderDragIndicator():Boolean
+		{
+			return this._extendedHeaderDragIndicator;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set extendedHeaderDragIndicator(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			this._extendedHeaderDragIndicator = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _layout:ILayout = null;
 
 		/**
 		 * @private
@@ -237,7 +376,7 @@ package feathers.controls
 				this._layout.addEventListener(Event.SCROLL, layout_scrollHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
-		};
+		}
 
 		/**
 		 * @private
@@ -329,12 +468,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _columns:IListCollection;
+		protected var _columns:IListCollection = null;
 
 		/**
 		 * 
 		 *
 		 * @default null
+		 * 
+		 * @see #dataProvider
 		 */
 		public function get columns():IListCollection
 		{
@@ -346,18 +487,18 @@ package feathers.controls
 		 */
 		public function set columns(value:IListCollection):void
 		{
-			if(this._columns == value)
+			if(this._columns === value)
 			{
 				return;
 			}
-			if(this._columns)
+			if(this._columns !== null)
 			{
 				this._columns.removeEventListener(Event.CHANGE, columns_changeHandler);
 				this._columns.removeEventListener(CollectionEventType.RESET, columns_resetHandler);
 				this._columns.removeEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
 			}
 			this._columns = value;
-			if(this._columns)
+			if(this._columns !== null)
 			{
 				this._columns.addEventListener(Event.CHANGE, columns_changeHandler);
 				this._columns.addEventListener(CollectionEventType.RESET, columns_resetHandler);
@@ -874,6 +1015,26 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _draggedHeaderIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _headerTouchID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _headerTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _headerTouchY:Number;
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -946,6 +1107,12 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this._headerDragIndicatorSkin !== null &&
+				this._headerDragIndicatorSkin.parent === null)
+			{
+				this._headerDragIndicatorSkin.dispose();
+				this._headerDragIndicatorSkin = null;
+			}
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndices.removeEventListeners();
@@ -1094,7 +1261,7 @@ package feathers.controls
 				var headerRenderer:IDataGridHeaderRenderer = this._headerRendererMap[column] as IDataGridHeaderRenderer;
 				if(headerRenderer !== null)
 				{
-					headerRenderer.layoutIndex = i;
+					headerRenderer.columnIndex = i;
 					if(column.width === column.width) //!isNaN
 					{
 						headerRenderer.width = column.width;
@@ -1106,6 +1273,7 @@ package feathers.controls
 					}
 					headerRenderer.minWidth = column.minWidth;
 					headerRenderer.visible = true;
+					this._headerGroup.setChildIndex(DisplayObject(headerRenderer), i);
 					if(this._updateForDataReset)
 					{
 						//similar to calling updateItemAt(), replacing the data
@@ -1129,7 +1297,10 @@ package feathers.controls
 			}
 		}
 
-		private function recoverInactiveHeaderRenderers():void
+		/**
+		 * @private
+		 */
+		protected function recoverInactiveHeaderRenderers():void
 		{
 			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
 			var count:int = inactiveHeaderRenderers.length;
@@ -1177,7 +1348,10 @@ package feathers.controls
 			}
 		}
 
-		private function createHeaderRenderer(column:DataGridColumn, columnIndex:int):IDataGridHeaderRenderer
+		/**
+		 * @private
+		 */
+		protected function createHeaderRenderer(column:DataGridColumn, columnIndex:int):IDataGridHeaderRenderer
 		{
 			var headerRendererFactory:Function = column.headerRendererFactory;
 			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
@@ -1189,6 +1363,7 @@ package feathers.controls
 				if(inactiveHeaderRenderers.length === 0)
 				{
 					headerRenderer = IDataGridHeaderRenderer(headerRendererFactory());
+					headerRenderer.addEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
 					if(customHeaderRendererStyleName !== null && customHeaderRendererStyleName.length > 0)
 					{
 						headerRenderer.styleNameList.add(customHeaderRendererStyleName);
@@ -1202,7 +1377,7 @@ package feathers.controls
 			}
 			while(!headerRenderer)
 			headerRenderer.data = column;
-			headerRenderer.layoutIndex = columnIndex;
+			headerRenderer.columnIndex = columnIndex;
 			headerRenderer.owner = this;
 			if(column.width === column.width) //!isNaN
 			{
@@ -1222,11 +1397,15 @@ package feathers.controls
 			return headerRenderer;
 		}
 
-		private function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
+		/**
+		 * @private
+		 */
+		protected function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
 		{
+			headerRenderer.removeEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
 			headerRenderer.owner = null;
 			headerRenderer.data = null;
-			headerRenderer.layoutIndex = -1;
+			headerRenderer.columnIndex = -1;
 			this._headerGroup.removeChild(DisplayObject(headerRenderer), true);
 		}
 
@@ -1573,7 +1752,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function layout_scrollHandler(event:Event, scrollOffset:Point):void
+		protected function layout_scrollHandler(event:Event, scrollOffset:Point):void
 		{
 			var layout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout);
 			if(!this.isScrolling || !layout.useVirtualLayout || !layout.hasVariableItemDimensions)
@@ -1598,6 +1777,182 @@ package feathers.controls
 				this._targetVerticalScrollPosition += scrollOffsetY;
 				this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function headerRenderer_touchHandler(event:TouchEvent):void
+		{
+			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(event.currentTarget);
+			if(!this._isEnabled)
+			{
+				this._headerTouchID = -1;
+				return;
+			}
+			if(this._headerTouchID !== -1)
+			{
+				//a touch has begun, so we'll ignore all other touches.
+				var touch:Touch = event.getTouch(DisplayObject(headerRenderer), null, this._headerTouchID);
+				if(touch === null)
+				{
+					//this should not happen.
+					return;
+				}
+
+				if(touch.phase === TouchPhase.ENDED)
+				{
+					if(this._headerDragIndicatorSkin !== null &&
+						this._headerDragIndicatorSkin.parent !== null)
+					{
+						this._headerDragIndicatorSkin.removeFromParent(false);
+					}
+					this._headerTouchID = -1;
+				}
+				else if(touch.phase === TouchPhase.MOVED)
+				{
+					if(!DragDropManager.isDragging)
+					{
+						var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(headerRenderer.columnIndex));
+						var dragData:DragData = new DragData();
+						dragData.setDataForFormat(DATA_GRID_HEADER_DRAG_FORMAT, column);
+						var self:DataGrid = this;
+						var avatar:RenderDelegate = new RenderDelegate(DisplayObject(headerRenderer));
+						avatar.alpha = this._headerDragAvatarAlpha;
+						DragDropManager.startDrag(this, touch, dragData, avatar);
+					}
+				}
+			}
+			else if(!DragDropManager.isDragging)
+			{
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(DisplayObject(headerRenderer), TouchPhase.BEGAN);
+				if(touch === null)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				this._headerTouchID = touch.id;
+				this._headerTouchX = touch.globalX;
+				this._headerTouchY = touch.globalX;
+				this._draggedHeaderIndex = headerRenderer.columnIndex;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getHeaderDropIndex(globalX:Number):int
+		{
+			var headerCount:int = this._headerGroup.numChildren;
+			for(var i:int = 0; i < headerCount; i++)
+			{
+				var header:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
+				var point:Point = Pool.getPoint(header.width / 2, 0);
+				header.localToGlobal(point, point);
+				var headerGlobalMiddleX:Number = point.x;
+				Pool.putPoint(point);
+				if(globalX < headerGlobalMiddleX)
+				{
+					return i;
+				}
+			}
+			return headerCount;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataGrid_dragEnterHandler(event:DragDropEvent):void
+		{
+			if(DragDropManager.dragSource !== this || !event.dragData.hasDataForFormat(DATA_GRID_HEADER_DRAG_FORMAT))
+			{
+				return;
+			}
+			DragDropManager.acceptDrag(this);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataGrid_dragMoveHandler(event:DragDropEvent):void
+		{
+			if(DragDropManager.dragSource !== this || !event.dragData.hasDataForFormat(DATA_GRID_HEADER_DRAG_FORMAT))
+			{
+				return;
+			}
+			var point:Point = Pool.getPoint(event.localX, event.localY);
+			this.localToGlobal(point, point);
+			var globalDropX:Number = point.x;
+			Pool.putPoint(point);
+			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
+			var showDragIndicator:Boolean = dropIndex !== this._draggedHeaderIndex &&
+				dropIndex !== (this._draggedHeaderIndex + 1);
+			if(this._headerDragIndicatorSkin !== null)
+			{
+				this._headerDragIndicatorSkin.visible = showDragIndicator;
+				if(showDragIndicator)
+				{
+					if(this._headerDragIndicatorSkin.parent === null)
+					{
+						this.addChild(this._headerDragIndicatorSkin);
+					}
+					if(this._extendedHeaderDragIndicator)
+					{
+						this._headerDragIndicatorSkin.height = this._headerGroup.height + this._viewPort.visibleHeight;
+					}
+					else
+					{
+						this._headerDragIndicatorSkin.height = this._headerGroup.height;
+					}
+					if(this._headerDragIndicatorSkin is IValidating)
+					{
+						IValidating(this._headerDragIndicatorSkin).validate();
+					}
+					var dragIndicatorX:Number = 0;
+					if(dropIndex === this._columns.length)
+					{
+						var header:DisplayObject = this._headerGroup.getChildAt(dropIndex - 1);
+						dragIndicatorX = header.x + header.width;
+					}
+					else
+					{
+						header = this._headerGroup.getChildAt(dropIndex);
+						dragIndicatorX = header.x;
+					}
+					this._headerDragIndicatorSkin.x = this._headerGroup.x + dragIndicatorX - (this._headerDragIndicatorSkin.width / 2);
+					this._headerDragIndicatorSkin.y = this._headerGroup.y;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataGrid_dragDropHandler(event:DragDropEvent):void
+		{
+			if(DragDropManager.dragSource !== this || !event.dragData.hasDataForFormat(DATA_GRID_HEADER_DRAG_FORMAT))
+			{
+				return;
+			}
+			var point:Point = Pool.getPoint(event.localX, event.localY);
+			this.localToGlobal(point, point);
+			var globalDropX:Number = point.x;
+			Pool.putPoint(point);
+			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
+			if(dropIndex === this._draggedHeaderIndex ||
+				(dropIndex === (this._draggedHeaderIndex + 1)))
+			{
+				//it's the same position, so do nothing
+				return;
+			}
+			if(dropIndex > this._draggedHeaderIndex)
+			{
+				dropIndex--;
+			}
+			var column:DataGridColumn = DataGridColumn(this._columns.removeItemAt(this._draggedHeaderIndex));
+			this._columns.addItemAt(column, dropIndex);
 		}
 	}
 }
