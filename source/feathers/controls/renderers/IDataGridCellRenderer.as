@@ -10,6 +10,7 @@ package feathers.controls.renderers
 	import feathers.controls.DataGrid;
 	import feathers.core.IToggle;
 	import feathers.layout.ILayoutDisplayObject;
+	import feathers.controls.DataGridColumn;
 
 	/**
 	 * Interface to implement a renderer for a data grid cell.
@@ -33,6 +34,18 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set data(value:Object):void;
+
+		/**
+		 * The column where the cell is rendered in the data grid.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
+		 */
+		function get column():DataGridColumn;
+		
+		/**
+		 * @private
+		 */
+		function set column(value:DataGridColumn):void;
 		
 		/**
 		 * The index (numeric position, starting from zero) of the item within

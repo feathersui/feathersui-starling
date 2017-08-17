@@ -10,6 +10,7 @@ package feathers.controls.renderers
 	import feathers.controls.DataGrid;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.controls.DataGridColumn;
 
 	/**
 	 * The default cell renderer for the <code>DataGrid</code> component.
@@ -151,6 +152,32 @@ package feathers.controls.renderers
 				return;
 			}
 			this._dataField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _column:DataGridColumn = null;
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get column():DataGridColumn
+		{
+			return this._column;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set column(value:DataGridColumn):void
+		{
+			if(this._column === value)
+			{
+				return;
+			}
+			this._column = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		

@@ -782,6 +782,7 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				rowRenderer.data = null;
+				rowRenderer.columns = null;
 				rowRenderer.index = -1;
 				rowRenderer.visible = false;
 				activeRowRenderers[activeRowRenderersCount] = rowRenderer;
@@ -822,6 +823,7 @@ package feathers.controls.supportClasses
 			}
 			while(rowRenderer === null)
 			rowRenderer.data = item;
+			rowRenderer.columns = this._columns;
 			rowRenderer.index = rowIndex;
 			rowRenderer.owner = this._owner;
 
@@ -845,6 +847,7 @@ package feathers.controls.supportClasses
 			rowRenderer.removeEventListener(FeathersEventType.RESIZE, rowRenderer_resizeHandler);
 			rowRenderer.owner = null;
 			rowRenderer.data = null;
+			rowRenderer.columns = null;
 			rowRenderer.index = -1;
 			this.removeChild(DisplayObject(rowRenderer), true);
 		}

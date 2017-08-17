@@ -30,6 +30,9 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import flash.utils.Dictionary;
+	import flash.errors.IllegalOperationError;
+	import feathers.events.CollectionEventType;
 
 	/**
 	 * @private
@@ -62,17 +65,22 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected var _cellRenderers:Vector.<DisplayObject> = new <DisplayObject>[];
+		protected var _unrenderedData:Vector.<int> = new <int>[];
 
 		/**
 		 * @private
 		 */
-		protected var _factories:Vector.<Function> = new <Function>[];
+		protected var _cellRendererMap:Dictionary = new Dictionary(true);
 
 		/**
 		 * @private
 		 */
-		protected var _styleNames:Vector.<String> = new <String>[];
+		protected var _inactiveCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
+
+		/**
+		 * @private
+		 */
+		protected var _activeCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
 
 		/**
 		 * @private
@@ -156,6 +164,58 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._data = value;
+			if(value === null)
+			{
+				//ensure that the data property of each cell renderer
+				//is set to null before being set to any new value
+				this._updateForDataReset = true;
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _updateForDataReset:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _columns:IListCollection = null;
+
+		/**
+		 * The columns from the data grid.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
+		 */
+		public function get columns():IListCollection
+		{
+			return this._columns;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set columns(value:IListCollection):void
+		{
+			if(this._columns === value)
+			{
+				return;
+			}
+			if(this._columns !== null)
+			{
+				this._columns.removeEventListener(Event.CHANGE, columns_changeHandler);
+				this._columns.removeEventListener(CollectionEventType.RESET, columns_resetHandler);
+				this._columns.removeEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
+			}
+			this._columns = value;
+			if(this._columns !== null)
+			{
+				this._columns.addEventListener(Event.CHANGE, columns_changeHandler);
+				this._columns.addEventListener(CollectionEventType.RESET, columns_resetHandler);
+				this._columns.addEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
+			}
+			this._updateForDataReset = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -194,11 +254,11 @@ package feathers.controls.supportClasses
 		 */
 		public function getCellRendererForColumn(columnIndex:int):IDataGridCellRenderer
 		{
-			if(columnIndex < 0 || columnIndex > this._cellRenderers.length)
+			if(columnIndex < 0 || columnIndex > this._activeCellRenderers.length)
 			{
 				return null;
 			}
-			return IDataGridCellRenderer(this._cellRenderers[columnIndex]);
+			return IDataGridCellRenderer(this._activeCellRenderers[columnIndex]);
 		}
 
 		/**
@@ -206,7 +266,10 @@ package feathers.controls.supportClasses
 		 */
 		override public function dispose():void
 		{
+			this.refreshInactiveCellRenderers(true);
 			this.owner = null;
+			this.data = null;
+			this.columns = null;
 			super.dispose();
 		}
 
@@ -254,84 +317,244 @@ package feathers.controls.supportClasses
 		 */
 		protected function preLayout():void
 		{
-			var columnCount:int = 0;
-			if(this._owner !== null)
+			this.refreshInactiveCellRenderers(false);
+			this.findUnrenderedData();
+			this.recoverInactiveCellRenderers();
+			this.renderUnrenderedData();
+			this.freeInactiveCellRenderers()
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createCellRenderer(columnIndex:int, column:DataGridColumn):IDataGridCellRenderer
+		{
+			var cellRenderer:IDataGridCellRenderer = null;
+			do
 			{
-				var columns:IListCollection = this._owner.columns;
-				columnCount = columns.length;
-			}
-			var cellRendererCount:int = this._cellRenderers.length;
-			if(cellRendererCount > columnCount)
-			{
-				for(var i:int = columnCount; i < cellRendererCount; i++)
+				if(this._inactiveCellRenderers.length === 0)
 				{
-					var cellRenderer:IDataGridCellRenderer = IDataGridCellRenderer(this._cellRenderers[i]);
-					this.removeChild(DisplayObject(cellRenderer), true);
-				}
-			}
-			if(this._data === null || this._owner === null)
-			{
-				return;
-			}
-			this._cellRenderers.length = columnCount;
-			this._factories.length = columnCount;
-			this._styleNames.length = columnCount;
-			for(i = 0; i < columnCount; i++)
-			{
-				var column:DataGridColumn = DataGridColumn(columns.getItemAt(i));
-				cellRenderer = null;
-				var oldFactory:Function = null;
-				var oldStyleName:String = null;
-				if(this._cellRenderers.length > i)
-				{
-					cellRenderer = IDataGridCellRenderer(this._cellRenderers[i]);
-					oldFactory = this._factories[i];
-					oldStyleName = this._styleNames[i];
-				}
-				if(cellRenderer !== null &&
-					(column.cellRendererFactory !== oldFactory || column.customCellRendererStyleName !== oldStyleName))
-				{
-					this.removeChild(DisplayObject(cellRenderer), true);
-					cellRenderer = null;
-				}
-				this._factories[i] = column.cellRendererFactory;
-				this._styleNames[i] = column.customCellRendererStyleName;
-				if(cellRenderer === null)
-				{
-					cellRenderer = IDataGridCellRenderer(column.cellRendererFactory());
-					if(column.customCellRendererStyleName !== null)
-					{
-						cellRenderer.styleNameList.add(column.customCellRendererStyleName);
-					}
-					cellRenderer.owner = this._owner;
-					this.addChild(DisplayObject(cellRenderer));
-				}
-				cellRenderer.data = this._data;
-				cellRenderer.rowIndex = this._index;
-				cellRenderer.columnIndex = i;
-				cellRenderer.isSelected = this._isSelected;
-				cellRenderer.dataField = column.dataField;
-				cellRenderer.minWidth = column.minWidth;
-				if(column.width === column.width) //!isNaN
-				{
-					cellRenderer.width = column.width;
-					cellRenderer.layoutData = null;
+					var cellRendererFactory:Function = column.cellRendererFactory;
+					cellRenderer = IDataGridCellRenderer(cellRendererFactory());
+					this.addChildAt(DisplayObject(cellRenderer), columnIndex);
 				}
 				else
 				{
-					var layoutData:HorizontalLayoutData = cellRenderer.layoutData as HorizontalLayoutData;
-					if(layoutData === null)
+					cellRenderer = this._inactiveCellRenderers.shift();
+				}
+				//wondering why this all is in a loop?
+				//_inactiveRenderers.shift() may return null because we're
+				//storing null values instead of calling splice() to improve
+				//performance.
+			}
+			while(cellRenderer === null)
+			this.refreshCellRendererProperties(cellRenderer, columnIndex, column);
+
+			this._cellRendererMap[column] = cellRenderer;
+			this._activeCellRenderers[this._activeCellRenderers.length] = cellRenderer;
+			this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, cellRenderer);
+
+			return cellRenderer;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function destroyCellRenderer(cellRenderer:IDataGridCellRenderer):void
+		{
+			cellRenderer.data = null;
+			cellRenderer.owner = null;
+			cellRenderer.rowIndex = -1;
+			cellRenderer.columnIndex = -1;
+			this.removeChild(DisplayObject(cellRenderer), true);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshInactiveCellRenderers(forceCleanup:Boolean):void
+		{
+			var temp:Vector.<IDataGridCellRenderer> = this._inactiveCellRenderers;
+			this._inactiveCellRenderers = this._activeCellRenderers;
+			this._activeCellRenderers = temp;
+			if(this._activeCellRenderers.length > 0)
+			{
+				throw new IllegalOperationError("DataGridRowRenderer: active cell renderers should be empty.");
+			}
+			if(forceCleanup)
+			{
+				this.recoverInactiveCellRenderers();
+				this.freeInactiveCellRenderers()
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findUnrenderedData():void
+		{
+			var columns:IListCollection = this._owner.columns;
+			var columnCount:int = columns.length;
+			var unrenderedDataLastIndex:int = this._unrenderedData.length;
+			for(var i:int = 0; i < columnCount; i++)
+			{
+				if(i < 0 || i >= columnCount)
+				{
+					continue;
+				}
+				var column:DataGridColumn = DataGridColumn(columns.getItemAt(i));
+				var cellRenderer:IDataGridCellRenderer = this._cellRendererMap[column] as IDataGridCellRenderer;
+				if(cellRenderer !== null)
+				{
+					//the properties may have changed if items were added, removed or
+					//reordered in the data provider
+					this.refreshCellRendererProperties(cellRenderer, i, column);
+
+					this._activeCellRenderers[this._activeCellRenderers.length] = cellRenderer;
+					var inactiveIndex:int = this._inactiveCellRenderers.indexOf(cellRenderer);
+					if(inactiveIndex >= 0)
 					{
-						cellRenderer.layoutData = new HorizontalLayoutData(100, NaN);
+						this._inactiveCellRenderers[inactiveIndex] = null;
 					}
 					else
 					{
-						layoutData.percentWidth = 100;
-						layoutData.percentHeight = NaN;
+						throw new IllegalOperationError("DataGridRowRenderer: cell renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 					}
 				}
-				this._cellRenderers[i] = DisplayObject(cellRenderer);
+				else
+				{
+					this._unrenderedData[unrenderedDataLastIndex] = i;
+					unrenderedDataLastIndex++;
+				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function recoverInactiveCellRenderers():void
+		{
+			var itemCount:int = this._inactiveCellRenderers.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var cellRenderer:IDataGridCellRenderer = this._inactiveCellRenderers[i];
+				if(cellRenderer === null || cellRenderer.column === null)
+				{
+					continue;
+				}
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, cellRenderer);
+				delete this._cellRendererMap[cellRenderer.column];
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function renderUnrenderedData():void
+		{
+			var columns:IListCollection = this._owner.columns;
+			var cellRendererCount:int = this._unrenderedData.length;
+			for(var i:int = 0; i < cellRendererCount; i++)
+			{
+				var columnIndex:int = this._unrenderedData.shift();
+				var column:DataGridColumn = DataGridColumn(columns.getItemAt(i));
+				var cellRenderer:IDataGridCellRenderer = this.createCellRenderer(columnIndex, column);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function freeInactiveCellRenderers():void
+		{
+			var activeCellRenderersCount:int = this._activeCellRenderers.length;
+			var itemCount:int = this._inactiveCellRenderers.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var cellRenderer:IDataGridCellRenderer = this._inactiveCellRenderers.shift();
+				if(cellRenderer === null)
+				{
+					continue;
+				}
+				this.destroyCellRenderer(cellRenderer);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshCellRendererProperties(cellRenderer:IDataGridCellRenderer, columnIndex:int, column:DataGridColumn):void
+		{
+			if(this._updateForDataReset)
+			{
+				//similar to calling updateItemAt(), replacing the data
+				//provider or resetting its source means that we should
+				//trick the item renderer into thinking it has new data.
+				//many developers seem to expect this behavior, so while
+				//it's not the most optimal for performance, it saves on
+				//support time in the forums. thankfully, it's still
+				//somewhat optimized since the same item renderer will
+				//receive the same data, and the children generally
+				//won't have changed much, if at all.
+				cellRenderer.data = null;
+				cellRenderer.column = null;
+			}
+			cellRenderer.owner = this._owner;
+			cellRenderer.data = this._data;
+			cellRenderer.rowIndex = this._index;
+			cellRenderer.column = column;
+			cellRenderer.columnIndex = columnIndex;
+			cellRenderer.isSelected = this._isSelected;
+			cellRenderer.dataField = column.dataField;
+			cellRenderer.minWidth = column.minWidth;
+			if(column.width === column.width) //!isNaN
+			{
+				cellRenderer.width = column.width;
+				cellRenderer.layoutData = null;
+			}
+			else
+			{
+				var layoutData:HorizontalLayoutData = cellRenderer.layoutData as HorizontalLayoutData;
+				if(layoutData === null)
+				{
+					cellRenderer.layoutData = new HorizontalLayoutData(100, NaN);
+				}
+				else
+				{
+					layoutData.percentWidth = 100;
+					layoutData.percentHeight = NaN;
+				}
+			}
+			this.setChildIndex(DisplayObject(cellRenderer), columnIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function columns_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function columns_resetHandler(event:Event):void
+		{
+			this._updateForDataReset = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function columns_updateAllHandler(event:Event):void
+		{
+			//we're treating this similar to the RESET event because enough
+			//users are treating UPDATE_ALL similarly. technically, UPDATE_ALL
+			//is supposed to affect only existing items, but it's confusing when
+			//new items are added and not displayed.
+			this._updateForDataReset = true;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
 }
