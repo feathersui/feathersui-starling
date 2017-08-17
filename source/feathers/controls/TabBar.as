@@ -2962,6 +2962,9 @@ package feathers.controls
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _focusedTabIndex:int = -1;
 
 		/**
