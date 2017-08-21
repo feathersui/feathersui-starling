@@ -106,6 +106,10 @@ package feathers.themes
 	import starling.textures.TextureAtlas;
 	import feathers.controls.renderers.DefaultTreeItemRenderer;
 	import feathers.controls.Tree;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.themes.BaseAeonDesktopTheme;
 
 	/**
 	 * The base class for the "Aeon" theme for desktop Feathers apps. Handles
@@ -502,6 +506,9 @@ package feathers.themes
 		protected var itemRendererHoverSkinTexture:Texture;
 		protected var itemRendererSelectedUpSkinTexture:Texture;
 
+		protected var dataGridHeaderBackgroundSkinTexture:Texture;
+		protected var dataGridDragIndicatorSkinTexture:Texture;
+
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var groupedListHeaderBackgroundSkinTexture:Texture;
 
@@ -830,6 +837,9 @@ package feathers.themes
 			this.treeLeafIconTexture = this.atlas.getTexture("tree-leaf-icon0000");
 			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
+
+			this.dataGridDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-drag-indicator-skin0000");
+			this.dataGridHeaderBackgroundSkinTexture = this.atlas.getTexture("data-grid-header-background-skin0000");
 		}
 
 		/**
@@ -862,6 +872,11 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+
+			//data grid
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setDataGridCellRendererStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1343,6 +1358,83 @@ package feathers.themes
 			check.verticalAlign = VerticalAlign.MIDDLE;
 
 			check.gap = this.smallGutterSize;
+		}
+
+	//-------------------------
+	// List
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+
+			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:ImageSkin = new ImageSkin(this.simpleBorderBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = SIMPLE_BORDER_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			grid.backgroundSkin = backgroundSkin;
+
+			var headerBackgroundSkin:ImageSkin = new ImageSkin(this.dataGridHeaderBackgroundSkinTexture);
+			headerBackgroundSkin.width = this.controlSize;
+			headerBackgroundSkin.height = this.controlSize;
+			grid.headerBackgroundSkin = headerBackgroundSkin;
+
+			var headerDragIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridDragIndicatorSkinTexture);
+			grid.headerDragIndicatorSkin = headerDragIndicatorSkin;
+			grid.extendedHeaderDragIndicator = true;
+
+			var headerDragColumnOverlaySkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
+			headerDragColumnOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			grid.headerDragColumnOverlaySkin = headerDragColumnOverlaySkin;
+
+			grid.padding = this.borderSize;
+		}
+
+		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			headerRenderer.fontStyles = this.defaultFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+
+			headerRenderer.paddingTop = this.extraSmallGutterSize;
+			headerRenderer.paddingBottom = this.extraSmallGutterSize;
+			headerRenderer.paddingLeft = this.smallGutterSize;
+			headerRenderer.paddingRight = this.smallGutterSize;
+		}
+
+		protected function setDataGridCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedUpSkinTexture;
+			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedUpSkinTexture);
+			skin.minWidth = this.controlSize;
+			skin.minHeight = this.controlSize;
+			cellRenderer.defaultSkin = skin;
+
+			cellRenderer.fontStyles = this.defaultFontStyles.clone();
+			cellRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			cellRenderer.iconLabelFontStyles = this.defaultFontStyles.clone();
+			cellRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			cellRenderer.accessoryLabelFontStyles = this.defaultFontStyles.clone();
+			cellRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
+
+			cellRenderer.horizontalAlign = HorizontalAlign.LEFT;
+
+			cellRenderer.iconPosition = RelativePosition.LEFT;
+			cellRenderer.accessoryPosition = RelativePosition.RIGHT;
+
+			cellRenderer.paddingTop = this.extraSmallGutterSize;
+			cellRenderer.paddingBottom = this.extraSmallGutterSize;
+			cellRenderer.paddingRight = this.smallGutterSize;
+			cellRenderer.paddingLeft = this.smallGutterSize;
+			cellRenderer.gap = this.extraSmallGutterSize;
+			cellRenderer.minGap = this.extraSmallGutterSize;
+			cellRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			cellRenderer.minAccessoryGap = this.smallGutterSize;
+
+			cellRenderer.useStateDelayTimer = false;
 		}
 
 	//-------------------------
