@@ -104,6 +104,21 @@ package feathers.controls
 	[Style(name="headerDragAvatarAlpha",type="Number")]
 
 	/**
+	 * A skin to display when dragging one of the data grid's headers to
+	 * highlight the column where it was orignally located.
+	 *
+	 * <p>In the following example, the data grid's column overlay skin is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Quad = new Quad(1, 1, 0x999999);
+	 * skin.alpha = 0.5;
+	 * grid.headerDragColumnOverlaySkin = skin;</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="headerDragColumnOverlaySkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * A skin to display when dragging one of the data grid's headers to indicate where
 	 * it can be dropped.
 	 *
@@ -288,6 +303,35 @@ package feathers.controls
 				return;
 			}
 			this._headerDragIndicatorSkin = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerDragColumnOverlaySkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get headerDragColumnOverlaySkin():DisplayObject
+		{
+			return this._headerDragColumnOverlaySkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerDragColumnOverlaySkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._headerDragColumnOverlaySkin = value;
 		}
 
 		/**
@@ -1113,6 +1157,12 @@ package feathers.controls
 				this._headerDragIndicatorSkin.dispose();
 				this._headerDragIndicatorSkin = null;
 			}
+			if(this._headerDragColumnOverlaySkin !== null &&
+				this._headerDragColumnOverlaySkin.parent === null)
+			{
+				this._headerDragColumnOverlaySkin.dispose();
+				this._headerDragColumnOverlaySkin = null;
+			}
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndices.removeEventListeners();
@@ -1807,6 +1857,11 @@ package feathers.controls
 					{
 						this._headerDragIndicatorSkin.removeFromParent(false);
 					}
+					if(this._headerDragColumnOverlaySkin !== null &&
+						this._headerDragColumnOverlaySkin.parent !== null)
+					{
+						this._headerDragColumnOverlaySkin.removeFromParent(false);
+					}
 					this._headerTouchID = -1;
 				}
 				else if(touch.phase === TouchPhase.MOVED)
@@ -1820,6 +1875,15 @@ package feathers.controls
 						var avatar:RenderDelegate = new RenderDelegate(DisplayObject(headerRenderer));
 						avatar.alpha = this._headerDragAvatarAlpha;
 						DragDropManager.startDrag(this, touch, dragData, avatar);
+
+						if(this._headerDragColumnOverlaySkin !== null)
+						{
+							this._headerDragColumnOverlaySkin.x = this._headerGroup.x + headerRenderer.x;
+							this._headerDragColumnOverlaySkin.y = this._headerGroup.y + headerRenderer.y;
+							this._headerDragColumnOverlaySkin.width = headerRenderer.width;
+							this._headerDragColumnOverlaySkin.height = this._viewPort.y + this._viewPort.height - this._headerGroup.y;
+							this.addChild(this._headerDragColumnOverlaySkin);
+						}
 					}
 				}
 			}
