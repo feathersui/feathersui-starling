@@ -100,6 +100,8 @@ package feathers.controls
 	 * grid.headerDragAvatarAlpha = 0.5;</listing>
 	 *
 	 * @default 0.8
+	 * 
+	 * @see #reorderColumns
 	 */
 	[Style(name="headerDragAvatarAlpha",type="Number")]
 
@@ -115,6 +117,8 @@ package feathers.controls
 	 * grid.headerDragColumnOverlaySkin = skin;</listing>
 	 *
 	 * @default null
+	 * 
+	 * @see #reorderColumns
 	 */
 	[Style(name="headerDragColumnOverlaySkin",type="starling.display.DisplayObject")]
 
@@ -128,6 +132,8 @@ package feathers.controls
 	 * grid.headerDragIndicatorSkin = new Image( texture );</listing>
 	 *
 	 * @default null
+	 * 
+	 * @see #reorderColumns
 	 */
 	[Style(name="headerDragIndicatorSkin",type="starling.display.DisplayObject")]
 
@@ -274,6 +280,35 @@ package feathers.controls
 		public function set isChildFocusEnabled(value:Boolean):void
 		{
 			this._isChildFocusEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _reorderColumns:Boolean = false;
+
+		/**
+		 * Determines if the data grid's columns may be reordered using drag
+		 * and drop.
+		 *
+		 * <p>The following example enables colum reordering:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.reorderColumns = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get reorderColumns():Boolean
+		{
+			return this._reorderColumns;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set reorderColumns(value:Boolean):void
+		{
+			this._reorderColumns = value;
 		}
 
 		/**
@@ -1866,7 +1901,7 @@ package feathers.controls
 				}
 				else if(touch.phase === TouchPhase.MOVED)
 				{
-					if(!DragDropManager.isDragging)
+					if(!DragDropManager.isDragging && this._reorderColumns)
 					{
 						var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(headerRenderer.columnIndex));
 						var dragData:DragData = new DragData();
@@ -1887,7 +1922,7 @@ package feathers.controls
 					}
 				}
 			}
-			else if(!DragDropManager.isDragging)
+			else if(!DragDropManager.isDragging && this._reorderColumns)
 			{
 				//we aren't tracking another touch, so let's look for a new one.
 				touch = event.getTouch(DisplayObject(headerRenderer), TouchPhase.BEGAN);
