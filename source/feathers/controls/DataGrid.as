@@ -1916,7 +1916,7 @@ package feathers.controls
 							this._headerDragColumnOverlaySkin.x = this._headerGroup.x + headerRenderer.x;
 							this._headerDragColumnOverlaySkin.y = this._headerGroup.y + headerRenderer.y;
 							this._headerDragColumnOverlaySkin.width = headerRenderer.width;
-							this._headerDragColumnOverlaySkin.height = this._viewPort.y + this._viewPort.height - this._headerGroup.y;
+							this._headerDragColumnOverlaySkin.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y;
 							this.addChild(this._headerDragColumnOverlaySkin);
 						}
 					}
