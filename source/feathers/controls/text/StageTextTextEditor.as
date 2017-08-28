@@ -1650,6 +1650,13 @@ package feathers.controls.text
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
+				if(!this.isParentChainVisible())
+				{
+					//issue #1620
+					//our parent has been hidden, so our render() method won't
+					//be called, and we need to hide the StageText.
+					this.stageText.visible = false;
+				}
 				//we're going to update the texture in render() because 
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
