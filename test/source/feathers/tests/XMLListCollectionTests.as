@@ -11,15 +11,23 @@ package feathers.tests
 	public class XMLListCollectionTests
 	{
 		private var _collection:XMLListCollection;
+		private var _a:XML;
+		private var _b:XML;
+		private var _c:XML;
+		private var _d:XML;
 
 		[Before]
 		public function prepare():void
 		{
-			var xml:XML = <items>
-				<item label="One"/>
-				<item label="Two"/>
-				<item label="Three"/>
-			</items>;
+			this._a = <item label="One" value="0"/>;
+			this._b = <item label="Two" value="2"/>;
+			this._c = <item label="Three" value="3"/>;
+			this._d = <item label="Four" value="1"/>;
+			var xml:XML = <items/>;
+			xml.appendChild(this._a);
+			xml.appendChild(this._b);
+			xml.appendChild(this._c);
+			xml.appendChild(this._d);
 			this._collection = new XMLListCollection(xml.elements());
 		}
 
@@ -27,6 +35,30 @@ package feathers.tests
 		public function cleanup():void
 		{
 			this._collection = null;
+		}
+
+		private function filterFunction(item:Object):Boolean
+		{
+			if(item === this._a || item === this._c)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		private function sortCompareFunction(a:Object, b:Object):int
+		{
+			var valueA:Number = parseFloat(a.@value.toString());
+			var valueB:Number = parseFloat(b.@value.toString());
+			if(valueA < valueB)
+			{
+				return -1;
+			}
+			if(valueA > valueB)
+			{
+				return 1;
+			}
+			return 0;
 		}
 
 		[Test]
@@ -392,6 +424,33 @@ package feathers.tests
 				var item:Object = this._collection.getItemAt(i);
 				Assert.assertTrue("Item was not included when calling dispose() on ArrayCollection", item.isDisposed);
 			}
+		}
+
+		[Test]
+		public function testSortCompareFunction():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect.",
+				this._b, this._collection.getItemAt(2));
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect.",
+				this._c, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionAndFilterFunction():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.filterFunction = this.filterFunction;
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction and filterFunction length is incorrect.",
+				2, this._collection.length);
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect with filterFunction.",
+				this._d, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: sortCompareFunction order is incorrect with filterFunction.",
+				this._b, this._collection.getItemAt(1));
 		}
 	}
 }

@@ -379,10 +379,10 @@ package feathers.tests
 				0, this._collection.getItemIndex(this._addedExcludedItem));
 		}
 
-	//-- refreshFilter()
+	//-- refresh()
 
 		[Test]
-		public function testRefreshFilter():void
+		public function testRefresh():void
 		{
 			var searchText:String = "Included";
 			this._collection.filterFunction = function(item:Object):Boolean
@@ -393,10 +393,10 @@ package feathers.tests
 			this._collection.getItemAt(0);
 			//change this variable, but the collection doesn't know about it yet
 			searchText = "Excluded";
-			Assert.assertStrictlyEquals("ListCollection incorrectly updated before calling refreshFilter().",
+			Assert.assertStrictlyEquals("ListCollection incorrectly updated before calling refresh().",
 				this._includedItem, this._collection.getItemAt(0));
-			this._collection.refreshFilter();
-			Assert.assertStrictlyEquals("ListCollection failed to update after calling refreshFilter().",
+			this._collection.refresh();
+			Assert.assertStrictlyEquals("ListCollection failed to update after calling refresh().",
 				this._excludedItem, this._collection.getItemAt(0));
 		}
 
@@ -404,8 +404,8 @@ package feathers.tests
 		public function testRefreshFilterWithNoFilterFunction():void
 		{
 			this._collection.filterFunction = null;
-			this._collection.refreshFilter();
-			Assert.assertStrictlyEquals("ListCollection refreshFilter() should not filter items if filterFunction is null.",
+			this._collection.refresh();
+			Assert.assertStrictlyEquals("ListCollection refresh() should not filter items if filterFunction is null.",
 				2, this._collection.length);
 		}
 	}

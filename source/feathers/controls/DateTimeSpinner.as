@@ -2892,6 +2892,16 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 		throw new Error("Not implemented");
 	}
 
+	public function get sortCompareFunction():Function
+	{
+		return null;
+	}
+
+	public function set sortCompareFunction(value:Function):void
+	{
+		throw new Error("Not implemented");
+	}
+
 	public function get data():Object
 	{
 		return null;
@@ -2939,6 +2949,11 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 	}
 
 	public function refreshFilter():void
+	{
+		throw new Error("Not implemented");
+	}
+
+	public function refresh():void
 	{
 		throw new Error("Not implemented");
 	}

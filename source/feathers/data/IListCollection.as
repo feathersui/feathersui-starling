@@ -126,7 +126,7 @@ package feathers.data
 
 	/**
 	 * Dispatched when the <code>updateItemAt()</code> function is called on the
-	 * <code>ListCollection</code>.
+	 * <code>IListCollection</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -152,7 +152,7 @@ package feathers.data
 
 	/**
 	 * Dispatched when the <code>updateAll()</code> function is called on the
-	 * <code>ListCollection</code>.
+	 * <code>IListCollection</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -174,6 +174,58 @@ package feathers.data
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ALL
 	 */
 	[Event(name="updateAll",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>filterFunction</code> property changes or the
+	 * <code>refresh()</code> function is called on the <code>IListCollection</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #filterFunction
+	 * @see #refresh()
+	 *
+	 * @eventType feathers.events.CollectionEventType.FILTER_CHANGE
+	 */
+	[Event(name="filterChange",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>sortCompareFunction</code> property changes or
+	 * the <code>refresh()</code> function is called on the <code>IListCollection</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #sortCompareFunction
+	 * @see #refresh()
+	 *
+	 * @eventType feathers.events.CollectionEventType.SORT_CHANGE
+	 */
+	[Event(name="sortChange",type="starling.events.Event")]
 
 	/**
 	 * Interface for list collections.
@@ -243,16 +295,23 @@ package feathers.data
 		 */
 		function set filterFunction(value:Function):void;
 
+		[Deprecated(message="Use refresh() instead of refreshFilter().")]
 		/**
-		 * Refreshes the collection using the <code>filterFunction</code>
-		 * without passing in a new <code>filterFunction</code>. Useful when the
-		 * filter function relies on external variables that have changed.
+		 * @private
 		 */
 		function refreshFilter():void;
 
 		/**
+		 * Refreshes the collection using the <code>filterFunction</code>
+		 * or <code>sortCompareFunction</code> without passing in a new values
+		 * for these properties. Useful when either of these functions relies
+		 * on external variables that have changed.
+		 */
+		function refresh():void;
+
+		/**
 		 * Call <code>updateItemAt()</code> to manually inform any component
-		 * rendering the <code>ListCollection</code> that the properties of a
+		 * rendering the <code>IListCollection</code> that the properties of a
 		 * single item in the collection have changed, and that any views
 		 * associated with the item should be updated. The collection will
 		 * dispatch the <code>CollectionEventType.UPDATE_ITEM</code> event.
@@ -267,7 +326,7 @@ package feathers.data
 
 		/**
 		 * Call <code>updateAll()</code> to manually inform any component
-		 * rendering the <code>ListCollection</code> that the properties of all,
+		 * rendering the <code>IListCollection</code> that the properties of all,
 		 * or many, of the collection's items have changed, and that any
 		 * rendered views should be updated. The collection will dispatch the
 		 * <code>CollectionEventType.UPDATE_ALL</code> event.
