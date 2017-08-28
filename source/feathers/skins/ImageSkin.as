@@ -22,6 +22,7 @@ package feathers.skins
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.Pool;
+	import flash.errors.IllegalOperationError;
 
 	[Exclude(name="color",kind="property")]
 
@@ -52,8 +53,16 @@ package feathers.skins
 		public function ImageSkin(defaultTexture:Texture = null)
 		{
 			super(defaultTexture);
+			//the super constructor sets the color property, so we need to wait
+			//before restricting it
+			this._restrictColor = true;
 			this.defaultTexture = defaultTexture;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _restrictColor:Boolean = false;
 
 		/**
 		 * @private
@@ -197,6 +206,27 @@ package feathers.skins
 			}
 			this._selectedTexture = value;
 			this.updateTextureFromContext();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set color(value:uint):void
+		{
+			if(this._restrictColor)
+			{
+				throw new IllegalOperationError("To set the color of an ImageSkin, use defaultColor or setColorForState().");
+			}
+			this.$color = value;
+		}
+
+		/**
+		 * @private
+		 * Subclasses may use this setter to change the color.
+		 */
+		protected function set $color(value:uint):void
+		{
+			super.color = value;
 		}
 
 		/**
@@ -906,7 +936,7 @@ package feathers.skins
 			{
 				if(this._defaultColor !== uint.MAX_VALUE)
 				{
-					this.color = this._defaultColor;
+					this.$color = this._defaultColor;
 				}
 				return;
 			}
@@ -935,7 +965,7 @@ package feathers.skins
 			}
 			if(color !== uint.MAX_VALUE)
 			{
-				this.color = color;
+				this.$color = color;
 			}
 		}
 
