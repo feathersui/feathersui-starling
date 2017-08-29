@@ -452,6 +452,35 @@ package feathers.tests
 			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect with filterFunction.",
 				this._b, this._collection.getItemAt(1));
 		}
+
+		[Test]
+		public function testSetSortCompareFunctionToNull():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			//get an item so that we know the sorting was applied
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._c, this._collection.getItemAt(3));
+
+			this._collection.sortCompareFunction = null;
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._b, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._c, this._collection.getItemAt(2));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._d, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithAddItem():void
+		{
+			var newItem:Object = { label: "New Item", value: 1.5 };
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.addItem(newItem);
+			Assert.assertStrictlyEquals("VectorCollection: addItem() with sortCompareFunction does not add at correctly sorted index.",
+				newItem, this._collection.getItemAt(2));
+		}
 	}
 }
 

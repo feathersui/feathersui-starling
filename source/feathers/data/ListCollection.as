@@ -612,13 +612,30 @@ package feathers.data
 				}
 				if(includeItem)
 				{
-					this._localDataDescriptor.addItemAt(this._localData, item, index);
+					var sortedIndex:int = index;
+					if(this._sortCompareFunction !== null)
+					{
+						var itemCount:int = this._localDataDescriptor.getLength(this._localData);
+						//default to end, but compare to other items
+						sortedIndex = itemCount;
+						for(var i:int = 0; i < itemCount; i++)
+						{
+							var otherItem:Object = this._localDataDescriptor.getItemAt(this._localData, i);
+							var result:int = this._sortCompareFunction(item, otherItem);
+							if(result < 1)
+							{
+								sortedIndex = i;
+								break;
+							}
+						}
+					}
+					this._localDataDescriptor.addItemAt(this._localData, item, sortedIndex);
 					//don't dispatch these events if the item is filtered!
 					this.dispatchEventWith(Event.CHANGE);
-					this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
+					this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, sortedIndex);
 				}
 			}
-			else
+			else //no filter or sort
 			{
 				this._dataDescriptor.addItemAt(this._data, item, index);
 				this.dispatchEventWith(Event.CHANGE);
