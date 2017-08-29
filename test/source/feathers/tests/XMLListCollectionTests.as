@@ -392,12 +392,12 @@ package feathers.tests
 				item.isDisposed = true;
 				disposedCount++;
 			});
-			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on ArrayCollection",
+			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on XMLListCollection",
 				itemCount, disposedCount);
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._collection.getItemAt(i);
-				Assert.assertTrue("Item was not included when calling dispose() on ArrayCollection", item.isDisposed);
+				Assert.assertTrue("Item was not included when calling dispose() on XMLListCollection", item.isDisposed);
 			}
 		}
 
@@ -417,12 +417,12 @@ package feathers.tests
 				item.isDisposed = true;
 				disposedCount++;
 			});
-			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on ArrayCollection",
+			Assert.assertStrictlyEquals("Incorrect number of items disposed when calling dispose() on XMLListCollection",
 				itemCount, disposedCount);
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._collection.getItemAt(i);
-				Assert.assertTrue("Item was not included when calling dispose() on ArrayCollection", item.isDisposed);
+				Assert.assertTrue("Item was not included when calling dispose() on XMLListCollection", item.isDisposed);
 			}
 		}
 
@@ -478,8 +478,104 @@ package feathers.tests
 			var newItem:XML = <item label="New Item" value="1.5" />;
 			this._collection.sortCompareFunction = this.sortCompareFunction;
 			this._collection.addItem(newItem);
-			Assert.assertStrictlyEquals("XMLListCollection: addItem() with sortCompareFunction does not add at correctly sorted index.",
+
+			Assert.assertStrictlyEquals("XMLListCollection: addItem() with sortCompareFunction does not add at correct sorted index.",
 				newItem, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("XMLListCollection: addItem() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(4));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithAddItemAt():void
+		{
+			var newItem:XML = <item label="New Item" value="1.5" />;
+			var newIndex:int = 1;
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.addItemAt(newItem, newIndex);
+
+			//the index we passed in isn't necessarily the same while sorted
+			Assert.assertStrictlyEquals("XMLListCollection: addItemAt() with sortCompareFunction does not add at correct sorted index.",
+				newItem, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			//and it might not even be the same while unsorted!
+			//that's because, in the unsorted data, it will be placed relative
+			//to the item in the sorted data that was at the index passed to
+			//addItemAt(). confusing, but it's consistent with setItemAt() and
+			//filtered collections
+			Assert.assertStrictlyEquals("XMLListCollection: addItemAt() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithRemoveItemAt():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.removeItemAt(2);
+
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._c, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._c, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._d, this._collection.getItemAt(2));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithRemoveItem():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.removeItem(this._b);
+
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._c, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._c, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("XMLListCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._d, this._collection.getItemAt(2));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithSetItemAt():void
+		{
+			var newItem:XML = <item label="New Item" value="1.5" />;
+			var newIndex:int = 0;
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.setItemAt(newItem, newIndex);
+
+			//the index we passed in isn't necessarily the same while sorted
+			Assert.assertStrictlyEquals("XMLListCollection: setItemAt() with sortCompareFunction does not add at correct sorted index.",
+				newItem, this._collection.getItemAt(1));
+			Assert.assertFalse("XMLListCollection: setItemAt() with sortCompareFunction does not replace correct item.",
+				this._collection.contains(this._a));
+
+			this._collection.sortCompareFunction = null;
+
+			//however, that index should be the same when the collection is unsorted
+			Assert.assertStrictlyEquals("XMLListCollection: setItemAt() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(newIndex));
 		}
 	}
 }

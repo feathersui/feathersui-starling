@@ -615,19 +615,7 @@ package feathers.data
 					var sortedIndex:int = index;
 					if(this._sortCompareFunction !== null)
 					{
-						var itemCount:int = this._localDataDescriptor.getLength(this._localData);
-						//default to end, but compare to other items
-						sortedIndex = itemCount;
-						for(var i:int = 0; i < itemCount; i++)
-						{
-							var otherItem:Object = this._localDataDescriptor.getItemAt(this._localData, i);
-							var result:int = this._sortCompareFunction(item, otherItem);
-							if(result < 1)
-							{
-								sortedIndex = i;
-								break;
-							}
-						}
+						sortedIndex = this.getSortedInsertionIndex(item);
 					}
 					this._localDataDescriptor.addItemAt(this._localData, item, sortedIndex);
 					//don't dispatch these events if the item is filtered!
@@ -737,8 +725,19 @@ package feathers.data
 						this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 					}
 				}
+				else if(this._sortCompareFunction !== null)
+				{
+					//remove the old item first!
+					this._localDataDescriptor.removeItemAt(this._localData, index);
+					//then try to figure out where the new item goes when inserted
+					var sortedIndex:int = this.getSortedInsertionIndex(item);
+					this._localDataDescriptor.setItemAt(this._localData, item, sortedIndex);
+					this.dispatchEventWith(Event.CHANGE);
+					this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
+					return;
+				}
 			}
-			else
+			else //no filter or sort
 			{
 				this._dataDescriptor.setItemAt(this._data, item, index);
 				this.dispatchEventWith(Event.CHANGE);
@@ -859,6 +858,28 @@ package feathers.data
 				var item:Object = this.getItemAt(i);
 				disposeItem(item);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getSortedInsertionIndex(item:Object):int
+		{
+			var itemCount:int = this._localDataDescriptor.getLength(this._localData);
+			if(this._sortCompareFunction === null)
+			{
+				return itemCount;
+			}
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var otherItem:Object = this._localDataDescriptor.getItemAt(this._localData, i);
+				var result:int = this._sortCompareFunction(item, otherItem);
+				if(result < 1)
+				{
+					return i;
+				}
+			}
+			return itemCount;
 		}
 	}
 }

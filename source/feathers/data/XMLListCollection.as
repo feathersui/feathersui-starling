@@ -561,19 +561,7 @@ package feathers.data
 					var sortedIndex:int = index;
 					if(this._sortCompareFunction !== null)
 					{
-						var itemCount:int = this._filterAndSortData.length;
-						//default to end, but compare to other items
-						sortedIndex = itemCount;
-						for(var i:int = 0; i < itemCount; i++)
-						{
-							var otherItem:Object = this._filterAndSortData[i];
-							var result:int = this._sortCompareFunction(item, otherItem);
-							if(result < 1)
-							{
-								sortedIndex = i;
-								break;
-							}
-						}
+						sortedIndex = this.getSortedInsertionIndex(item);
 					}
 					this._filterAndSortData.insertAt(sortedIndex, item);
 					//don't dispatch these events if the item is filtered!
@@ -682,10 +670,22 @@ package feathers.data
 						this._filterAndSortData.removeAt(index);
 						this.dispatchEventWith(Event.CHANGE);
 						this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
+						return;
 					}
 				}
+				else if(this._sortCompareFunction !== null)
+				{
+					//remove the old item first!
+					this._filterAndSortData.removeAt(index);
+					//then try to figure out where the new item goes when inserted
+					var sortedIndex:int = this.getSortedInsertionIndex(item);
+					this._filterAndSortData[sortedIndex] = item;
+					this.dispatchEventWith(Event.CHANGE);
+					this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
+					return;
+				}
 			}
-			else
+			else //no filter or sort
 			{
 				this._xmlListData[index] = item;
 				this.dispatchEventWith(Event.CHANGE);
@@ -837,6 +837,28 @@ package feathers.data
 			{
 				delete this._xmlListData[0];
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getSortedInsertionIndex(item:Object):int
+		{
+			var itemCount:int = this._filterAndSortData.length;
+			if(this._sortCompareFunction === null)
+			{
+				return itemCount;
+			}
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var otherItem:Object = this._filterAndSortData[i];
+				var result:int = this._sortCompareFunction(item, otherItem);
+				if(result < 1)
+				{
+					return i;
+				}
+			}
+			return itemCount;
 		}
 	}
 }
