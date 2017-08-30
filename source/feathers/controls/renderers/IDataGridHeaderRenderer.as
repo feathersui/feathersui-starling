@@ -34,6 +34,8 @@ package feathers.controls.renderers
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
+	 * 
+	 * @see feathers.utils.touch.TapToTrigger
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
 
