@@ -12,11 +12,13 @@ package feathers.controls.supportClasses
 	import feathers.controls.DataGridColumn;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 	import feathers.controls.renderers.IDataGridCellRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IToggle;
 	import feathers.data.IListCollection;
+	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
@@ -28,11 +30,11 @@ package feathers.controls.supportClasses
 	import feathers.utils.touch.TapToSelect;
 	import feathers.utils.touch.TapToTrigger;
 
+	import flash.errors.IllegalOperationError;
+	import flash.utils.Dictionary;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import flash.utils.Dictionary;
-	import flash.errors.IllegalOperationError;
-	import feathers.events.CollectionEventType;
 
 	/**
 	 * @private
@@ -44,6 +46,14 @@ package feathers.controls.supportClasses
 	 */
 	public class DataGridRowRenderer extends LayoutGroup implements IToggle
 	{
+		/**
+		 * @private
+		 */
+		protected static function defaultCellRendererFactory():IDataGridCellRenderer
+		{
+			return new DefaultDataGridCellRenderer();
+		}
+
 		/**
 		 * Constructor.
 		 */
@@ -335,6 +345,10 @@ package feathers.controls.supportClasses
 				if(this._inactiveCellRenderers.length === 0)
 				{
 					var cellRendererFactory:Function = column.cellRendererFactory;
+					if(cellRendererFactory === null)
+					{
+						cellRendererFactory = defaultCellRendererFactory;
+					}
 					cellRenderer = IDataGridCellRenderer(cellRendererFactory());
 					this.addChildAt(DisplayObject(cellRenderer), columnIndex);
 				}

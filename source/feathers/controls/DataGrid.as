@@ -11,10 +11,12 @@ package feathers.controls
 	import feathers.controls.DataGridColumn;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
 	import feathers.core.IValidating;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.data.SortOrder;
 	import feathers.display.RenderDelegate;
 	import feathers.dragDrop.DragData;
 	import feathers.dragDrop.DragDropManager;
@@ -182,6 +184,32 @@ package feathers.controls
 	 */
 	public class DataGrid extends Scroller implements IDragSource, IDropTarget
 	{
+		/**
+		 * @private
+		 */
+		protected static function defaultSortCompareFunction(a:Object, b:Object):int
+		{
+			var aString:String = a.toString().toLowerCase();
+			var bString:String = b.toString().toLowerCase();
+			if(aString < bString)
+			{
+				return -1;
+			}
+			if(aString > bString)
+			{
+				return 1;
+			}
+			return 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultHeaderRendererFactory():IDataGridHeaderRenderer
+		{
+			return new DefaultDataGridHeaderRenderer();
+		}
+
 		/**
 		 * @private
 		 */
@@ -514,6 +542,7 @@ package feathers.controls
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
@@ -525,6 +554,7 @@ package feathers.controls
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
@@ -1358,6 +1388,21 @@ package feathers.controls
 					}
 					headerRenderer.minWidth = column.minWidth;
 					headerRenderer.visible = true;
+					if(column === this._sortedColumn)
+					{
+						if(this._reverseSort)
+						{
+							headerRenderer.sortOrder = SortOrder.DESCENDING;
+						}
+						else
+						{
+							headerRenderer.sortOrder = SortOrder.ASCENDING;
+						}
+					}
+					else
+					{
+						headerRenderer.sortOrder = SortOrder.NONE;
+					}
 					this._headerGroup.setChildIndex(DisplayObject(headerRenderer), i);
 					if(this._updateForDataReset)
 					{
@@ -1439,6 +1484,10 @@ package feathers.controls
 		protected function createHeaderRenderer(column:DataGridColumn, columnIndex:int):IDataGridHeaderRenderer
 		{
 			var headerRendererFactory:Function = column.headerRendererFactory;
+			if(headerRendererFactory === null)
+			{
+				headerRendererFactory = defaultHeaderRendererFactory;
+			}
 			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
 			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
@@ -1449,6 +1498,7 @@ package feathers.controls
 				{
 					headerRenderer = IDataGridHeaderRenderer(headerRendererFactory());
 					headerRenderer.addEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
+					headerRenderer.addEventListener(Event.TRIGGERED, headerRenderer_triggeredHandler);
 					if(customHeaderRendererStyleName !== null && customHeaderRendererStyleName.length > 0)
 					{
 						headerRenderer.styleNameList.add(customHeaderRendererStyleName);
@@ -1487,6 +1537,7 @@ package feathers.controls
 		 */
 		protected function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
 		{
+			headerRenderer.removeEventListener(Event.TRIGGERED, headerRenderer_triggeredHandler);
 			headerRenderer.removeEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
 			headerRenderer.owner = null;
 			headerRenderer.data = null;
@@ -1759,6 +1810,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function dataProvider_sortChangeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function dataProvider_filterChangeHandler(event:Event):void
 		{
 			if(this._selectedIndex === -1)
@@ -1862,6 +1921,72 @@ package feathers.controls
 				this._targetVerticalScrollPosition += scrollOffsetY;
 				this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function headerRenderer_triggeredHandler(event:Event):void
+		{
+			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(event.currentTarget);
+			var column:DataGridColumn = headerRenderer.data;
+			if(column.sortOrder === SortOrder.NONE)
+			{
+				return;
+			}
+			if(this._sortedColumn !== column)
+			{
+				this._sortedColumn = column;
+				this._reverseSort = column.sortOrder === SortOrder.DESCENDING;
+			}
+			else
+			{
+				this._reverseSort = !this._reverseSort;
+			}
+			if(this._reverseSort)
+			{
+				this._dataProvider.sortCompareFunction = this.reverseSortCompareFunction;
+			}
+			else
+			{
+				this._dataProvider.sortCompareFunction = this.sortCompareFunction;
+			}
+			//the sortCompareFunction might not have changed if we're sorting a
+			//different column, so force a refresh.
+			this._dataProvider.refresh();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _reverseSort:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _sortedColumn:DataGridColumn = null;
+
+		/**
+		 * @private
+		 */
+		protected function reverseSortCompareFunction(a:Object, b:Object):int
+		{
+			return -this.sortCompareFunction(a, b);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function sortCompareFunction(a:Object, b:Object):int
+		{
+			var aField:Object = a[this._sortedColumn.dataField];
+			var bField:Object = b[this._sortedColumn.dataField];
+			var sortCompareFunction:Function = this._sortedColumn.sortCompareFunction;
+			if(sortCompareFunction === null)
+			{
+				sortCompareFunction = defaultSortCompareFunction;
+			}
+			return sortCompareFunction(aField, bField);
 		}
 
 		/**

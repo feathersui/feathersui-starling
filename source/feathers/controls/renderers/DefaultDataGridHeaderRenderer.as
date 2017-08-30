@@ -30,6 +30,8 @@ package feathers.controls.renderers
 	import starling.events.Event;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
+	import feathers.utils.touch.TapToTrigger;
+	import feathers.data.SortOrder;
 
 	/**
 	 * A background to behind the header renderer's content.
@@ -261,9 +263,33 @@ package feathers.controls.renderers
 	[Style(name="wordWrap",type="Boolean")]
 
 	/**
-	 * The default renderer used for headers in a <code>DataGrid</code> component.
+	 * Dispatched when the the user taps or clicks the header renderer. The touch
+	 * must remain within the bounds of the header renderer on release to register
+	 * as a tap or a click.
 	 *
-	 * @see feathers.controls.GroupedList
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered",type="starling.events.Event")]
+
+	/**
+	 * The default renderer used for headers in a <code>DataGrid</code> component.
+	 * 
+	 * @see feathers.controls.DataGrid
 	 *
 	 * @productversion Feathers 3.4.0
 	 */
@@ -306,6 +332,11 @@ package feathers.controls.renderers
 				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _tapToTrigger:TapToTrigger = null;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the text
@@ -411,9 +442,35 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _sortOrder:String = SortOrder.NONE;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get sortOrder():String
+		{
+			return this._sortOrder;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortOrder(value:String):void
+		{
+			if(this._sortOrder === value)
+			{
+				return;
+			}
+			this._sortOrder = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalAlign:String = HorizontalAlign.LEFT;
 
-		[Inspectable(type="String",enumeration="left,center,right,justify")]
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * @private
 		 */
@@ -444,7 +501,7 @@ package feathers.controls.renderers
 		 */
 		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
 
-		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * @private
 		 */
@@ -764,6 +821,91 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var currentSortIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		protected var _sortAscendingIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get sortAscendingIcon():DisplayObject
+		{
+			return this._sortAscendingIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortAscendingIcon(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._sortAscendingIcon === value)
+			{
+				return;
+			}
+			if(this._sortAscendingIcon !== null &&
+				this.currentSortIcon === this._sortAscendingIcon)
+			{
+				this.removeCurrentSortIcon(this._sortAscendingIcon);
+				this.currentSortIcon = null;
+			}
+			this._sortAscendingIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _sortDescendingIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get sortDescendingIcon():DisplayObject
+		{
+			return this._sortDescendingIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortDescendingIcon(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._sortDescendingIcon === value)
+			{
+				return;
+			}
+			if(this._sortDescendingIcon !== null &&
+				this.currentSortIcon === this._sortDescendingIcon)
+			{
+				this.removeCurrentSortIcon(this._sortDescendingIcon);
+				this.currentSortIcon = null;
+			}
+			this._sortDescendingIcon = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		public function get padding():Number
 		{
 			return this._paddingTop;
@@ -964,6 +1106,19 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+
+			if(this._tapToTrigger === null)
+			{
+				this._tapToTrigger = new TapToTrigger(this);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -975,6 +1130,11 @@ package feathers.controls.renderers
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
+			}
+
+			if(stylesInvalid || dataInvalid)
+			{
+				this.refreshSortIcon();
 			}
 
 			if(textRendererInvalid)
@@ -1165,6 +1325,31 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function refreshSortIcon():void
+		{
+			var oldSortIcon:DisplayObject = this.currentSortIcon;
+			this.currentSortIcon = null;
+			if(this._sortOrder === SortOrder.ASCENDING)
+			{
+				this.currentSortIcon = this._sortAscendingIcon;
+			}
+			else if(this._sortOrder === SortOrder.DESCENDING)
+			{
+				this.currentSortIcon = this._sortDescendingIcon;
+			}
+			if(oldSortIcon !== this.currentSortIcon)
+			{
+				this.removeCurrentSortIcon(oldSortIcon);
+				if(this.currentSortIcon !== null)
+				{
+					this.addChild(this.currentSortIcon);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function removeCurrentBackgroundSkin(skin:DisplayObject):void
 		{
 			if(skin === null)
@@ -1186,6 +1371,21 @@ package feathers.controls.renderers
 					measureSkin.maxHeight = this._explicitBackgroundMaxHeight;
 				}
 				skin.removeFromParent(false);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeCurrentSortIcon(icon:DisplayObject):void
+		{
+			if(icon === null)
+			{
+				return;
+			}
+			if(icon.parent === this)
+			{
+				icon.removeFromParent(false);
 			}
 		}
 
@@ -1258,25 +1458,34 @@ package feathers.controls.renderers
 				this.currentBackgroundSkin.height = this.actualHeight;
 			}
 
-			this.textRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+			if(this.currentSortIcon is IValidating)
+			{
+				IValidating(this.currentSortIcon).validate();
+			}
+			var availableTextWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			if(this.currentSortIcon)
+			{
+				availableTextWidth -= this.currentSortIcon.width;
+			}
+
+			this.textRenderer.width = this._explicitTextRendererWidth;
+			this.textRenderer.height = this._explicitTextRendererHeight;
+			this.textRenderer.minWidth = this._explicitTextRendererMinWidth;
+			this.textRenderer.minHeight = this._explicitTextRendererMinHeight;
+			this.textRenderer.maxWidth = availableTextWidth;
+			this.textRenderer.maxHeight = this._explicitTextRendererMaxHeight;
 			this.textRenderer.validate();
 
 			switch(this._horizontalAlign)
 			{
 				case HorizontalAlign.CENTER:
 				{
-					this.textRenderer.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.textRenderer.width) / 2;
+					this.textRenderer.x = this._paddingLeft + (availableTextWidth - this.textRenderer.width) / 2;
 					break;
 				}
 				case HorizontalAlign.RIGHT:
 				{
-					this.textRenderer.x = this.actualWidth - this._paddingRight - this.textRenderer.width;
-					break;
-				}
-				case HorizontalAlign.JUSTIFY:
-				{
-					this.textRenderer.x = this._paddingLeft;
-					this.textRenderer.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+					this.textRenderer.x = this._paddingLeft + availableTextWidth - this.textRenderer.width;
 					break;
 				}
 				default: //left
@@ -1284,28 +1493,38 @@ package feathers.controls.renderers
 					this.textRenderer.x = this._paddingLeft;
 				}
 			}
+			if(this.currentSortIcon !== null)
+			{
+				this.currentSortIcon.x = this.actualWidth - this._paddingRight - this.currentSortIcon.width;
+			}
 
 			switch(this._verticalAlign)
 			{
 				case VerticalAlign.TOP:
 				{
 					this.textRenderer.y = this._paddingTop;
+					if(this.currentSortIcon !== null)
+					{
+						this.currentSortIcon.y = this._paddingTop;
+					}
 					break;
 				}
 				case VerticalAlign.BOTTOM:
 				{
 					this.textRenderer.y = this.actualHeight - this._paddingBottom - this.textRenderer.height;
-					break;
-				}
-				case VerticalAlign.JUSTIFY:
-				{
-					this.textRenderer.y = this._paddingTop;
-					this.textRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					if(this.currentSortIcon !== null)
+					{
+						this.currentSortIcon.y = this.actualHeight - this._paddingBottom - this.currentSortIcon.height;
+					}
 					break;
 				}
 				default: //middle
 				{
 					this.textRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.textRenderer.height) / 2;
+					if(this.currentSortIcon !== null)
+					{
+						this.currentSortIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentSortIcon.height) / 2;
+					}
 				}
 			}
 

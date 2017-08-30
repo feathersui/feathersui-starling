@@ -83,5 +83,19 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set owner(value:DataGrid):void;
+		
+		/**
+		 * Indicates if this column is sorted.
+		 *
+		 * <p>This property is set by the data grid, and should not be set manually.</p>
+		 * 
+		 * @see feathers.data.SortOrder
+		 */
+		function get sortOrder():String;
+		
+		/**
+		 * @private
+		 */
+		function set sortOrder(value:String):void;
 	}
 }

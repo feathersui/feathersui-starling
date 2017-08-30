@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.controls.renderers.IDataGridCellRenderer;
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.data.SortOrder;
 
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -39,27 +40,14 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Configures a column in a <code>DataGrid</code> component.
+	 * 
+	 * @see feathers.controls.DataGrid
 	 * 
 	 * @productversion Feathers 3.4.0
 	 */
 	public class DataGridColumn extends EventDispatcher
 	{
-		/**
-		 * @private
-		 */
-		public static function defaultCellRendererFactory():IDataGridCellRenderer
-		{
-			return new DefaultDataGridCellRenderer();
-		}
-
-		/**
-		 * @private
-		 */
-		public static function defaultHeaderRendererFactory():IDataGridHeaderRenderer
-		{
-			return new DefaultDataGridHeaderRenderer();
-		}
-
 		/**
 		 * Constructor.
 		 */
@@ -142,7 +130,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _cellRendererFactory:Function = defaultCellRendererFactory;
+		protected var _cellRendererFactory:Function = null;
 		
 		/**
 		 * A function called that is expected to return a new cell renderer.
@@ -228,7 +216,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _headerRendererFactory:Function = defaultHeaderRendererFactory;
+		protected var _headerRendererFactory:Function = null;
 		
 		/**
 		 * A function called that is expected to return a new header renderer.
@@ -378,6 +366,90 @@ package feathers.controls
 				return;
 			}
 			this._width = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _sortCompareFunction:Function = null;
+
+		/**
+		 * A function to compare each item in the collection to determine the
+		 * order when sorted.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( a:Object, b:Object ):int</pre>
+		 * 
+		 * <p>The return value should be <code>-1</code> if the first item
+		 * should appear before the second item when the collection is sorted.
+		 * The return value should be <code>1</code> if the first item should
+		 * appear after the second item when the collection in sorted. Finally,
+		 * the return value should be <code>0</code> if both items have the
+		 * same sort order.</p>
+		 * 
+		 * @default null
+		 * 
+		 * @see #sortOrder
+		 */
+		public function get sortCompareFunction():Function
+		{
+			return this._sortCompareFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortCompareFunction(value:Function):void
+		{
+			if(this._sortCompareFunction === value)
+			{
+				return;
+			}
+			this._sortCompareFunction = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _sortOrder:String = SortOrder.ASCENDING;
+
+		/**
+		 * Indicates if the column may be sorted by triggering the
+		 * header renderer, and which direction it should be sorted
+		 * by default (ascending or descending).
+		 * 
+		 * <p>Setting this property will not start a sort. It only provides the
+		 * initial order of the sort when triggered by the user.</p>
+		 *
+		 * <p>The following example disables sorting:</p>
+		 *
+		 * <listing version="3.0">
+		 * column.sortOrder = SortOrder.NONE;</listing>
+		 *
+		 * @default feathers.data.SortOrder.ASCENDING
+		 * 
+		 * @see #sortCompareFunction
+		 * @see feathers.data.SortOrder#ASCENDING
+		 * @see feathers.data.SortOrder#DESCENDING
+		 * @see feathers.data.SortOrder#NONE
+		 */
+		public function get sortOrder():String
+		{
+			return this._sortOrder;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortOrder(value:String):void
+		{
+			if(this._sortOrder === value)
+			{
+				return;
+			}
+			this._sortOrder = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
