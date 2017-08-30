@@ -2085,7 +2085,15 @@ package feathers.controls
 			{
 				if(this._isTextureOwner)
 				{
-					this._texture.dispose();
+					if(!SystemUtil.isDesktop && !SystemUtil.isApplicationActive)
+					{
+						//avoiding stage3d calls when a mobile application isn't active
+						SystemUtil.executeWhenApplicationIsActive(this._texture.dispose);
+					}
+					else
+					{
+						this._texture.dispose();
+					}
 				}
 				else if(this._textureCache !== null)
 				{
