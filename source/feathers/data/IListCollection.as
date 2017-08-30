@@ -295,6 +295,29 @@ package feathers.data
 		 */
 		function set filterFunction(value:Function):void;
 
+		/**
+		 * A function to compare each item in the collection to determine the
+		 * order when sorted.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( a:Object, b:Object ):int</pre>
+		 * 
+		 * <p>The return value should be <code>-1</code> if the first item
+		 * should appear before the second item when the collection is sorted.
+		 * The return value should be <code>1</code> if the first item should
+		 * appear after the second item when the collection in sorted. Finally,
+		 * the return value should be <code>0</code> if both items have the
+		 * same sort order.</p>
+		 *
+		 * @default null
+		 */
+		function get sortCompareFunction():Function;
+
+		/**
+		 * @private
+		 */
+		function set sortCompareFunction(value:Function):void;
+
 		[Deprecated(message="Use refresh() instead of refreshFilter().")]
 		/**
 		 * @private
