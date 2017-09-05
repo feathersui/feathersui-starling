@@ -326,6 +326,7 @@ package feathers.controls.renderers
 		public function DefaultDataGridHeaderRenderer()
 		{
 			super();
+			this.isQuickHitAreaEnabled = true;
 			if(this._fontStylesSet === null)
 			{
 				this._fontStylesSet = new FontStylesSet();
