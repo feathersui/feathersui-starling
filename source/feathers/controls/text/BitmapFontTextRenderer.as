@@ -29,6 +29,7 @@ package feathers.controls.text
 	import starling.textures.TextureSmoothing;
 	import starling.utils.Align;
 	import starling.utils.MathUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Renders text using
@@ -54,16 +55,6 @@ package feathers.controls.text
 	 */
 	public class BitmapFontTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
-		/**
-		 * @private
-		 */
-		private static var HELPER_IMAGE:Image;
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -649,6 +640,11 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 */
+		protected var _image:Image = null;
+
+		/**
+		 * @private
 		 * This function is here to work around a bug in the Flex 4.6 SDK
 		 * compiler. For explanation, see the places where it gets called.
 		 */
@@ -1057,12 +1053,14 @@ package feathers.controls.text
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this._currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
-			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
+			if(isAligned && maxLineWidth === Number.POSITIVE_INFINITY)
 			{
 				//we need to measure the text to get the maximum line width
 				//so that we can align the text
-				this.measureText(HELPER_POINT);
-				maxLineWidth = HELPER_POINT.x;
+				var point:Point = Pool.getPoint();
+				this.measureText(point);
+				maxLineWidth = point.x;
+				Pool.putPoint(point);
 			}
 			var textToDraw:String = this._text;
 			if(this._truncateToFit)
@@ -1390,36 +1388,34 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(!HELPER_IMAGE)
+			if(this._image === null)
 			{
-				HELPER_IMAGE = new Image(texture);
+				this._image = new Image(texture);
 			}
 			else
 			{
-				HELPER_IMAGE.texture = texture;
-				HELPER_IMAGE.readjustSize();
+				this._image.texture = texture;
+				this._image.readjustSize();
 			}
-			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
-			HELPER_IMAGE.x = x;
-			HELPER_IMAGE.y = y;
-			HELPER_IMAGE.color = this._currentTextFormat.color;
-			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
-			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
-			if(this._style !== null)
-			{
-				HELPER_IMAGE.style = this._style;
-			}
+			this._image.scaleX = scale;
+			this._image.scaleY = scale;
+			this._image.x = x;
+			this._image.y = y;
+			this._image.color = this._currentTextFormat.color;
+			this._image.textureSmoothing = this._textureSmoothing;
+			this._image.pixelSnapping = this._pixelSnapping;
+			this._image.style = this._style;
 
 			if(painter !== null)
 			{
 				painter.pushState();
-				painter.setStateTo(HELPER_IMAGE.transformationMatrix);
-				painter.batchMesh(HELPER_IMAGE);
+				painter.setStateTo(this._image.transformationMatrix);
+				painter.batchMesh(this._image);
 				painter.popState();
 			}
 			else
 			{
-				this._characterBatch.addMesh(HELPER_IMAGE);
+				this._characterBatch.addMesh(this._image);
 			}
 		}
 
@@ -1531,7 +1527,7 @@ package feathers.controls.text
 			}
 
 			//if the width is infinity or the string is multiline, don't allow truncation
-			if(width == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
+			if(width === Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
 			{
 				return this._text;
 			}
