@@ -9,6 +9,7 @@ package feathers.system
 {
 	import flash.display.Stage;
 	import flash.system.Capabilities;
+	import starling.core.Starling;
 
 	/**
 	 * Using values from the Stage and Capabilities classes, makes educated
@@ -97,8 +98,12 @@ package feathers.system
 		 * @see #screenPixelHeight
 		 * @see #isPhone()
 		 */
-		public static function isTablet(stage:Stage):Boolean
+		public static function isTablet(stage:Stage = null):Boolean
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenWidth:Number = screenPixelWidth;
 			if(screenWidth !== screenWidth) //isNaN
 			{
@@ -123,7 +128,7 @@ package feathers.system
 		 *
 		 * @see #isTablet()
 		 */
-		public static function isPhone(stage:Stage):Boolean
+		public static function isPhone(stage:Stage = null):Boolean
 		{
 			return !isTablet(stage);
 		}
@@ -134,8 +139,12 @@ package feathers.system
 		 *
 		 * @see #screenPixelWidth
 		 */
-		public static function screenInchesX(stage:Stage):Number
+		public static function screenInchesX(stage:Stage = null):Number
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenWidth:Number = screenPixelWidth;
 			if(screenWidth !== screenWidth) //isNaN
 			{
@@ -150,8 +159,12 @@ package feathers.system
 		 *
 		 * @see #screenPixelHeight
 		 */
-		public static function screenInchesY(stage:Stage):Number
+		public static function screenInchesY(stage:Stage = null):Number
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenHeight:Number = screenPixelHeight;
 			if(screenHeight !== screenHeight) //isNaN
 			{
