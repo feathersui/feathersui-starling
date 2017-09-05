@@ -845,11 +845,11 @@ package feathers.controls.supportClasses
 			rowRenderer.removeEventListener(Event.TRIGGERED, rowRenderer_triggeredHandler);
 			rowRenderer.removeEventListener(Event.CHANGE, rowRenderer_changeHandler);
 			rowRenderer.removeEventListener(FeathersEventType.RESIZE, rowRenderer_resizeHandler);
-			rowRenderer.owner = null;
 			rowRenderer.data = null;
 			rowRenderer.columns = null;
 			rowRenderer.index = -1;
 			this.removeChild(DisplayObject(rowRenderer), true);
+			rowRenderer.owner = null;
 		}
 
 		private function refreshLayoutTypicalItem():void
