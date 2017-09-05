@@ -507,6 +507,9 @@ package feathers.themes
 		protected var itemRendererSelectedUpSkinTexture:Texture;
 
 		protected var dataGridHeaderBackgroundSkinTexture:Texture;
+		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dataGridHeaderSortAscendingIconTexture:Texture;
+		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 		protected var dataGridDragIndicatorSkinTexture:Texture;
 
 		protected var headerBackgroundSkinTexture:Texture;
@@ -840,6 +843,9 @@ package feathers.themes
 
 			this.dataGridDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-drag-indicator-skin0000");
 			this.dataGridHeaderBackgroundSkinTexture = this.atlas.getTexture("data-grid-header-background-skin0000");
+			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
+			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
 		}
 
 		/**
@@ -1053,6 +1059,11 @@ package feathers.themes
 		protected function pageIndicatorSelectedSymbolFactory():Image
 		{
 			return new Image(this.pageIndicatorSelectedSkinTexture);
+		}
+
+		protected function dataGridHeaderDividerFactory():DisplayObject
+		{
+			return new ImageSkin(this.dataGridHeaderDividerSkinTexture);
 		}
 
 	//-------------------------
@@ -1389,11 +1400,16 @@ package feathers.themes
 			headerDragColumnOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
 			grid.headerDragColumnOverlaySkin = headerDragColumnOverlaySkin;
 
+			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
+
 			grid.padding = this.borderSize;
 		}
 
 		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
 		{
+			headerRenderer.sortAscendingIcon = new ImageSkin(this.dataGridHeaderSortAscendingIconTexture);
+			headerRenderer.sortDescendingIcon = new ImageSkin(this.dataGridHeaderSortDescendingIconTexture);
+
 			headerRenderer.fontStyles = this.defaultFontStyles.clone();
 			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
 
