@@ -79,6 +79,27 @@ package feathers.controls
 	[Style(name="headerBackgroundSkin",type="starling.display.DisplayObject")]
 
 	/**
+	 * A function called that is expected to return a new divider to appear
+	 * between header renderers. If <code>null</code>, no dividers will
+	 * appear between header renderers.
+	 *
+	 * <p>The function is expected to have the following signature:</p>
+	 * 
+	 * <pre>function():DisplayObject</pre>
+	 *
+	 * <p>The following example provides a factory for the header dividers:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.headerDividerFactory = function():DisplayObject
+	 * {
+	 *     return = new ImageSkin( texture );
+	 * };</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="headerDividerFactory",type="Function")]
+
+	/**
 	 * A background to display in the data grid's header when the container is
 	 * disabled.
 	 *
@@ -266,6 +287,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _headerStorage:HeaderRendererFactoryStorage = new HeaderRendererFactoryStorage();
+
+		/**
+		 * @private
+		 */
+		protected var _activeDividers:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @private
+		 */
+		protected var _inactiveDividers:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * @private
@@ -1126,6 +1157,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _headerDividerFactory:Function = null;
+
+		/**
+		 * @private
+		 */
+		public function get headerDividerFactory():Function
+		{
+			return this._headerDividerFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerDividerFactory(value:Function):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._headerDividerFactory === value)
+			{
+				return;
+			}
+			this._headerDividerFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _draggedHeaderIndex:int = -1;
 
 		/**
@@ -1257,6 +1318,7 @@ package feathers.controls
 			if(this._headerLayout === null)
 			{
 				this._headerLayout = new HorizontalLayout();
+				this._headerLayout.useVirtualLayout = false;
 			}
 
 			if(this._headerGroup === null)
@@ -1344,6 +1406,60 @@ package feathers.controls
 			this._headerGroup.y = this._topViewPortOffset - this._headerGroup.height;
 
 			super.layoutChildren();
+
+			this.refreshDividers();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDividers():void
+		{
+			var columnCount:int = this._columns.length;
+			var dividerCount:int = 0;
+			if(this._headerDividerFactory !== null)
+			{
+				dividerCount = columnCount;
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
+					this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+				{
+					dividerCount--;
+				}
+			}
+
+			this._headerGroup.validate();
+			var temp:Vector.<DisplayObject> = this._inactiveDividers;
+			this._inactiveDividers = this._activeDividers;
+			this._activeDividers = temp;
+			for(var i:int = 0; i < dividerCount; i++)
+			{
+				var divider:DisplayObject = null;
+				if(this._inactiveDividers.length > 0)
+				{
+					divider = this._inactiveDividers.shift();
+					this.setChildIndex(divider, this.getChildIndex(this._headerGroup) + 1);
+				}
+				else
+				{
+					divider = DisplayObject(this._headerDividerFactory());
+					this.addChild(divider);
+				}
+				this._activeDividers[i] = divider;
+				var headerRenderer:IDataGridHeaderRenderer = this._headerStorage.activeHeaderRenderers[i];
+				divider.height = headerRenderer.height;
+				if(divider is IValidating)
+				{
+					IValidating(divider).validate();
+				}
+				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
+				divider.y = this._headerGroup.y + headerRenderer.y;
+			}
+			dividerCount = this._inactiveDividers.length;
+			for(i = 0; i < dividerCount; i++)
+			{
+				divider = this._inactiveDividers.shift();
+				divider.removeFromParent(true);
+			}
 		}
 
 		/**
@@ -1384,7 +1500,7 @@ package feathers.controls
 					}
 					else if(headerRenderer.layoutData === null)
 					{
-						headerRenderer.layoutData = new HorizontalLayoutData(100);
+						headerRenderer.layoutData = new HorizontalLayoutData(100, 100);
 					}
 					headerRenderer.minWidth = column.minWidth;
 					headerRenderer.visible = true;
@@ -1521,7 +1637,7 @@ package feathers.controls
 			}
 			else if(headerRenderer.layoutData === null)
 			{
-				headerRenderer.layoutData = new HorizontalLayoutData(100);
+				headerRenderer.layoutData = new HorizontalLayoutData(100, 100);
 			}
 			headerRenderer.minWidth = column.minWidth;
 
@@ -2187,7 +2303,6 @@ class HeaderRendererFactoryStorage
 {
 	public function HeaderRendererFactoryStorage()
 	{
-
 	}
 	
 	public var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
