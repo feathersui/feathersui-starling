@@ -506,6 +506,7 @@ package feathers.themes
 		protected var itemRendererHoverSkinTexture:Texture;
 		protected var itemRendererSelectedUpSkinTexture:Texture;
 
+		protected var dataGridVerticalDividerSkinTexture:Texture;
 		protected var dataGridHeaderBackgroundSkinTexture:Texture;
 		protected var dataGridHeaderDividerSkinTexture:Texture;
 		protected var dataGridHeaderSortAscendingIconTexture:Texture;
@@ -841,6 +842,7 @@ package feathers.themes
 			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 
+			this.dataGridVerticalDividerSkinTexture = this.atlas.getTexture("data-grid-vertical-divider-skin0000");
 			this.dataGridDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-drag-indicator-skin0000");
 			this.dataGridHeaderBackgroundSkinTexture = this.atlas.getTexture("data-grid-header-background-skin0000");
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
@@ -1064,6 +1066,11 @@ package feathers.themes
 		protected function dataGridHeaderDividerFactory():DisplayObject
 		{
 			return new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+		}
+
+		protected function dataGridVerticalDividerFactory():DisplayObject
+		{
+			return new ImageSkin(this.dataGridVerticalDividerSkinTexture);
 		}
 
 	//-------------------------
@@ -1400,6 +1407,7 @@ package feathers.themes
 			headerDragColumnOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
 			grid.headerDragColumnOverlaySkin = headerDragColumnOverlaySkin;
 
+			grid.verticalDividerFactory = this.dataGridVerticalDividerFactory;
 			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
 
 			grid.padding = this.borderSize;
