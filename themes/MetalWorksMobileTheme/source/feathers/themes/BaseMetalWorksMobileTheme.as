@@ -592,6 +592,8 @@ package feathers.themes
 		protected var treeDisclosureOpenSelectedIconTexture:Texture;
 		protected var treeDisclosureClosedIconTexture:Texture;
 		protected var treeDisclosureClosedSelectedIconTexture:Texture;
+		protected var dataGridHeaderSortAscendingIconTexture:Texture;
+		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -825,6 +827,9 @@ package feathers.themes
 			this.treeDisclosureOpenSelectedIconTexture = this.atlas.getTexture("tree-disclosure-open-selected-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 			this.treeDisclosureClosedSelectedIconTexture = this.atlas.getTexture("tree-disclosure-closed-selected-icon0000");
+
+			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
+			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
 			
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -1478,6 +1483,9 @@ package feathers.themes
 		protected function setDataGridHeaderStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
 		{
 			headerRenderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			headerRenderer.sortAscendingIcon = new ImageSkin(this.dataGridHeaderSortAscendingIconTexture);
+			headerRenderer.sortDescendingIcon = new ImageSkin(this.dataGridHeaderSortDescendingIconTexture);
 
 			headerRenderer.fontStyles = this.lightUIFontStyles;
 			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
