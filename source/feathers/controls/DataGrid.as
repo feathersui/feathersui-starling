@@ -10,8 +10,8 @@ package feathers.controls
 	import feathers.controls.DataGrid;
 	import feathers.controls.DataGridColumn;
 	import feathers.controls.Scroller;
-	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
 	import feathers.core.IValidating;
 	import feathers.data.IListCollection;
@@ -79,9 +79,9 @@ package feathers.controls
 	[Style(name="headerBackgroundSkin",type="starling.display.DisplayObject")]
 
 	/**
-	 * A function called that is expected to return a new divider to appear
-	 * between header renderers. If <code>null</code>, no dividers will
-	 * appear between header renderers.
+	 * A function that returns new dividers that separate each of the data
+	 * grid's header renderers. If <code>null</code>, no dividers will appear
+	 * between the header renderers.
 	 *
 	 * <p>The function is expected to have the following signature:</p>
 	 * 
@@ -173,6 +173,27 @@ package feathers.controls
 	 * @default 0.25
 	 */
 	[Style(name="keyScrollDuration",type="Number")]
+
+	/**
+	 * A function that returns new dividers that separate each of the data
+	 * grid's columns. If <code>null</code>, no dividers will appear between
+	 * columns.
+	 *
+	 * <p>The function is expected to have the following signature:</p>
+	 * 
+	 * <pre>function():DisplayObject</pre>
+	 *
+	 * <p>The following example provides a factory for the vertical dividers:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.verticalDividerFactory = function():DisplayObject
+	 * {
+	 *     return = new ImageSkin( texture );
+	 * };</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="verticalDividerFactory",type="Function")]
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -291,12 +312,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _activeDividers:Vector.<DisplayObject> = new <DisplayObject>[];
+		protected var _headerDividerStorage:DividerFactoryStorage = new DividerFactoryStorage();
 
 		/**
 		 * @private
 		 */
-		protected var _inactiveDividers:Vector.<DisplayObject> = new <DisplayObject>[];
+		protected var _verticalDividerStorage:DividerFactoryStorage = new DividerFactoryStorage();
 
 		/**
 		 * @private
@@ -1157,6 +1178,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _verticalDividerFactory:Function = null;
+
+		/**
+		 * @private
+		 */
+		public function get verticalDividerFactory():Function
+		{
+			return this._verticalDividerFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalDividerFactory(value:Function):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalDividerFactory === value)
+			{
+				return;
+			}
+			this._verticalDividerFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _headerDividerFactory:Function = null;
 
 		/**
@@ -1407,13 +1458,63 @@ package feathers.controls
 
 			super.layoutChildren();
 
-			this.refreshDividers();
+			this.refreshHeaderDividers();
+			this.refreshVerticalDividers();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refreshDividers():void
+		protected function refreshVerticalDividers():void
+		{
+			var columnCount:int = this._columns.length;
+			var dividerCount:int = 0;
+			if(this._verticalDividerFactory !== null)
+			{
+				dividerCount = columnCount - 1;
+			}
+
+			this._headerGroup.validate();
+			var temp:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
+			this._verticalDividerStorage.inactiveDividers = this._verticalDividerStorage.activeDividers;
+			this._verticalDividerStorage.activeDividers = temp;
+			var activeDividers:Vector.<DisplayObject> = this._verticalDividerStorage.activeDividers;
+			var inactiveDividers:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
+			for(var i:int = 0; i < dividerCount; i++)
+			{
+				var divider:DisplayObject = null;
+				if(inactiveDividers.length > 0)
+				{
+					divider = inactiveDividers.shift();
+					this.setChildIndex(divider, this.getChildIndex(this._headerGroup) + 1);
+				}
+				else
+				{
+					divider = DisplayObject(this._headerDividerFactory());
+					this.addChild(divider);
+				}
+				activeDividers[i] = divider;
+				divider.height = this._viewPort.visibleHeight;
+				if(divider is IValidating)
+				{
+					IValidating(divider).validate();
+				}
+				var headerRenderer:IDataGridHeaderRenderer = this._headerStorage.activeHeaderRenderers[i];
+				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
+				divider.y = this._topViewPortOffset;
+			}
+			dividerCount = inactiveDividers.length;
+			for(i = 0; i < dividerCount; i++)
+			{
+				divider = inactiveDividers.shift();
+				divider.removeFromParent(true);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHeaderDividers():void
 		{
 			var columnCount:int = this._columns.length;
 			var dividerCount:int = 0;
@@ -1428,15 +1529,17 @@ package feathers.controls
 			}
 
 			this._headerGroup.validate();
-			var temp:Vector.<DisplayObject> = this._inactiveDividers;
-			this._inactiveDividers = this._activeDividers;
-			this._activeDividers = temp;
+			var temp:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
+			this._headerDividerStorage.inactiveDividers = this._headerDividerStorage.activeDividers;
+			this._headerDividerStorage.activeDividers = temp;
+			var activeDividers:Vector.<DisplayObject> = this._headerDividerStorage.activeDividers;
+			var inactiveDividers:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
 			for(var i:int = 0; i < dividerCount; i++)
 			{
 				var divider:DisplayObject = null;
-				if(this._inactiveDividers.length > 0)
+				if(inactiveDividers.length > 0)
 				{
-					divider = this._inactiveDividers.shift();
+					divider = inactiveDividers.shift();
 					this.setChildIndex(divider, this.getChildIndex(this._headerGroup) + 1);
 				}
 				else
@@ -1444,7 +1547,7 @@ package feathers.controls
 					divider = DisplayObject(this._headerDividerFactory());
 					this.addChild(divider);
 				}
-				this._activeDividers[i] = divider;
+				activeDividers[i] = divider;
 				var headerRenderer:IDataGridHeaderRenderer = this._headerStorage.activeHeaderRenderers[i];
 				divider.height = headerRenderer.height;
 				if(divider is IValidating)
@@ -1454,10 +1557,10 @@ package feathers.controls
 				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
 				divider.y = this._headerGroup.y + headerRenderer.y;
 			}
-			dividerCount = this._inactiveDividers.length;
+			dividerCount = inactiveDividers.length;
 			for(i = 0; i < dividerCount; i++)
 			{
-				divider = this._inactiveDividers.shift();
+				divider = inactiveDividers.shift();
 				divider.removeFromParent(true);
 			}
 		}
@@ -2299,15 +2402,19 @@ package feathers.controls
 
 import feathers.controls.renderers.IDataGridHeaderRenderer;
 
+import starling.display.DisplayObject;
+
 class HeaderRendererFactoryStorage
 {
-	public function HeaderRendererFactoryStorage()
-	{
-	}
-	
 	public var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
 	public var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = new <IDataGridHeaderRenderer>[];
 	public var factory:Function = null;
 	public var customHeaderRendererStyleName:String = null;
 	public var columnIndex:int = -1;
+}
+
+class DividerFactoryStorage
+{
+	public var activeDividers:Vector.<DisplayObject> = new <DisplayObject>[];
+	public var inactiveDividers:Vector.<DisplayObject> = new <DisplayObject>[];
 }
