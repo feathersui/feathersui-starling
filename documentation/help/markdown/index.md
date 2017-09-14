@@ -73,6 +73,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`Check`](check.html)
 
+-   [`DataGrid`](data-grid.html)
+
 -   [`DateTimeSpinner`](date-time-spinner.html)
 
 -   [Item Renderers](default-item-renderers.html)
