@@ -54,6 +54,7 @@ package feathers.examples.componentsExplorer
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import feathers.examples.componentsExplorer.screens.DataGridScreen;
 
 	public class Main extends Drawers
 	{
@@ -100,6 +101,10 @@ package feathers.examples.componentsExplorer
 			var checkItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CheckScreen);
 			checkItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ScreenID.CHECK, checkItem);
+
+			var dataGridItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DataGridScreen);
+			dataGridItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ScreenID.DATA_GRID, dataGridItem);
 
 			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
 			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
