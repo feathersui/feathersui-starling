@@ -1499,7 +1499,7 @@ package feathers.controls
 				{
 					IValidating(divider).validate();
 				}
-				var headerRenderer:IDataGridHeaderRenderer = this._headerStorage.activeHeaderRenderers[i];
+				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
 				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
 				divider.y = this._topViewPortOffset;
 			}
@@ -1548,7 +1548,7 @@ package feathers.controls
 					this.addChild(divider);
 				}
 				activeDividers[i] = divider;
-				var headerRenderer:IDataGridHeaderRenderer = this._headerStorage.activeHeaderRenderers[i];
+				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
 				divider.height = headerRenderer.height;
 				if(divider is IValidating)
 				{
