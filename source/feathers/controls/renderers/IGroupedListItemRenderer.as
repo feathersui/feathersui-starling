@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.*;
+	import feathers.controls.GroupedList;
 	import feathers.core.IToggle;
 
 	/**
