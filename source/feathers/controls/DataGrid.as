@@ -25,17 +25,16 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.events.DragDropEvent;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.FlowLayout;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
-	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
+	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
@@ -43,7 +42,6 @@ package feathers.controls
 	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -1582,12 +1580,20 @@ package feathers.controls
 		 */
 		protected function findUnrenderedData():void
 		{
+			var temp:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+			this._headerStorage.inactiveHeaderRenderers = this._headerStorage.activeHeaderRenderers;
+			this._headerStorage.activeHeaderRenderers = temp;
+
+			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
+			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
+
 			var columnCount:int = 0;
 			if(this._columns !== null)
 			{
 				columnCount = this._columns.length;
 			}
 
+			var activePushIndex:int = activeHeaderRenderers.length;
 			var unrenderedDataLastIndex:int = this._unrenderedHeaders.length;
 			for(var i:int = 0; i < columnCount; i++)
 			{
@@ -1636,6 +1642,18 @@ package feathers.controls
 						//won't have changed much, if at all.
 						headerRenderer.data = null;
 						headerRenderer.data = column;
+					}
+					activeHeaderRenderers[activePushIndex] = headerRenderer;
+					activePushIndex++;
+
+					var inactiveIndex:int = inactiveHeaderRenderers.indexOf(headerRenderer);
+					if(inactiveIndex >= 0)
+					{
+						inactiveHeaderRenderers[inactiveIndex] = null;
+					}
+					else
+					{
+						throw new IllegalOperationError("DataGrid: header renderer map contains bad data. This may be caused by duplicate items in the columns collection, which is not allowed.");
 					}
 				}
 				else
