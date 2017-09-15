@@ -5442,7 +5442,7 @@ package feathers.controls
 				{
 					//even if explicitWidth is NaN, the view port might measure
 					//a view port width smaller than its content width
-					scrollerWidth = this._viewPort.visibleWidth + this._topViewPortOffset + this._bottomViewPortOffset;
+					scrollerWidth = this._viewPort.visibleWidth + this._leftViewPortOffset + this._rightViewPortOffset;
 				}
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy === ScrollPolicy.ON ||
