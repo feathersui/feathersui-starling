@@ -180,7 +180,7 @@ package feathers.controls
 		 * A style name to add to all cell renderers in this column. Typically
 		 * used by a theme to provide different skins to different columns.
 		 *
-		 * <p>The following example sets the cell renderer name:</p>
+		 * <p>The following example sets the cell renderer style name:</p>
 		 *
 		 * <listing version="3.0">
 		 * column.customCellRendererStyleName = "my-custom-cell-renderer";</listing>

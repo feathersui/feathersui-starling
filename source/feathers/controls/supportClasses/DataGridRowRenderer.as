@@ -347,9 +347,22 @@ package feathers.controls.supportClasses
 					var cellRendererFactory:Function = column.cellRendererFactory;
 					if(cellRendererFactory === null)
 					{
+						cellRendererFactory = this._owner.cellRendererFactory;
+					}
+					if(cellRendererFactory === null)
+					{
 						cellRendererFactory = defaultCellRendererFactory;
 					}
 					cellRenderer = IDataGridCellRenderer(cellRendererFactory());
+					var customCellRendererStyleName:String = column.customCellRendererStyleName;
+					if(customCellRendererStyleName === null)
+					{
+						customCellRendererStyleName = this._owner.customCellRendererStyleName;
+					}
+					if(customCellRendererStyleName !== null && customCellRendererStyleName.length > 0)
+					{
+						cellRenderer.styleNameList.add(customCellRendererStyleName);
+					}
 					this.addChildAt(DisplayObject(cellRenderer), columnIndex);
 				}
 				else

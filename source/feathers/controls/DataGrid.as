@@ -49,6 +49,28 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * Specifies a custom style name for cell renderers that will be used if
+	 * the <code>customCellRendererStyleName</code> property from a
+	 * <code>DataGridColumn</code> is <code>null</code>.
+	 *
+	 * <p>The following example sets the cell renderer style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * column.customCellRendererStyleName = "my-custom-cell-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component name to provide
+	 * different skins than the default style:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( DefaultDataGridCellRenderer ).setFunctionForStyleName( "my-custom-cell-renderer", setCustomCellRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customCellRendererStyleName",type="String")]
+
+	/**
 	 * Determines if the height of the header drag indicator is equal to the
 	 * height of the headers, or if it extends to the full height of the data
 	 * grid's view port.
@@ -1231,6 +1253,80 @@ package feathers.controls
 			}
 			this._headerDividerFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _cellRendererFactory:Function = null;
+		
+		/**
+		 * Specifies a default factory for cell renderers that will be used if
+		 * the <code>cellRendererFactory</code> from a
+		 * <code>DataGridColumn</code> is <code>null</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IDataGridCellRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the data grid:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.cellRendererFactory = function():IDataGridCellRenderer
+		 * {
+		 *     var cellRenderer:CustomCellRendererClass = new CustomCellRendererClass();
+		 *     cellRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return cellRenderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IDataGridCellRenderer
+		 */
+		public function get cellRendererFactory():Function
+		{
+			return this._cellRendererFactory;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set cellRendererFactory(value:Function):void
+		{
+			if(this._cellRendererFactory === value)
+			{
+				return;
+			}
+			this._cellRendererFactory = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customCellRendererStyleName:String = null;
+
+		/**
+		 * @private
+		 * 
+		 * @see #style:customCellRendererStyleName
+		 */
+		public function get customCellRendererStyleName():String
+		{
+			return this._customCellRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customCellRendererStyleName(value:String):void
+		{
+			if(this._customCellRendererStyleName === value)
+			{
+				return;
+			}
+			this._customCellRendererStyleName = value;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
