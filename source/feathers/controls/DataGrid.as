@@ -1590,7 +1590,7 @@ package feathers.controls
 				}
 				else
 				{
-					divider = DisplayObject(this._headerDividerFactory());
+					divider = DisplayObject(this._verticalDividerFactory());
 					this.addChild(divider);
 				}
 				activeDividers[i] = divider;
