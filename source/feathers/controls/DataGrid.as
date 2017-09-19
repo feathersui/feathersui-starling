@@ -42,6 +42,7 @@ package feathers.controls
 	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -439,6 +440,11 @@ package feathers.controls
 			}
 			this._headerDragIndicatorSkin = value;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _dataGridColumnTouchBlocker:Quad = null;
 
 		/**
 		 * @private
@@ -2325,6 +2331,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function dataGrid_touchHandler(event:TouchEvent):void
+		{
+			if(this._headerTouchID !== -1)
+			{
+				//a touch has begun, so we'll ignore all other touches.
+				var touch:Touch = event.getTouch(this, null, this._headerTouchID);
+				if(touch === null)
+				{
+					//this should not happen.
+					return;
+				}
+
+				if(touch.phase === TouchPhase.ENDED)
+				{
+					this.removeEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
+					trace("ended1");
+					if(this._headerDragIndicatorSkin !== null &&
+						this._headerDragIndicatorSkin.parent !== null)
+					{
+						this._headerDragIndicatorSkin.removeFromParent(false);
+					}
+					if(this._headerDragColumnOverlaySkin !== null &&
+						this._headerDragColumnOverlaySkin.parent !== null)
+					{
+						this._headerDragColumnOverlaySkin.removeFromParent(false);
+					}
+					if(this._dataGridColumnTouchBlocker !== null &&
+						this._dataGridColumnTouchBlocker.parent !== null)
+					{
+						this._dataGridColumnTouchBlocker.removeFromParent(false);
+					}
+					this._headerTouchID = -1;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function headerRenderer_touchHandler(event:TouchEvent):void
 		{
 			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(event.currentTarget);
@@ -2343,21 +2388,7 @@ package feathers.controls
 					return;
 				}
 
-				if(touch.phase === TouchPhase.ENDED)
-				{
-					if(this._headerDragIndicatorSkin !== null &&
-						this._headerDragIndicatorSkin.parent !== null)
-					{
-						this._headerDragIndicatorSkin.removeFromParent(false);
-					}
-					if(this._headerDragColumnOverlaySkin !== null &&
-						this._headerDragColumnOverlaySkin.parent !== null)
-					{
-						this._headerDragColumnOverlaySkin.removeFromParent(false);
-					}
-					this._headerTouchID = -1;
-				}
-				else if(touch.phase === TouchPhase.MOVED)
+				if(touch.phase === TouchPhase.MOVED)
 				{
 					if(!DragDropManager.isDragging && this._reorderColumns)
 					{
@@ -2377,6 +2408,19 @@ package feathers.controls
 							this._headerDragColumnOverlaySkin.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y;
 							this.addChild(this._headerDragColumnOverlaySkin);
 						}
+						else
+						{
+							if(this._dataGridColumnTouchBlocker === null)
+							{
+								this._dataGridColumnTouchBlocker = new Quad(1, 1, 0xff00ff);
+							}
+							this._dataGridColumnTouchBlocker.alpha = 0;
+							this._dataGridColumnTouchBlocker.x = this._headerGroup.x + headerRenderer.x;
+							this._dataGridColumnTouchBlocker.y = this._headerGroup.y + headerRenderer.y;
+							this._dataGridColumnTouchBlocker.width = headerRenderer.width;
+							this._dataGridColumnTouchBlocker.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y
+							this.addChild(this._dataGridColumnTouchBlocker);
+						}
 					}
 				}
 			}
@@ -2394,6 +2438,9 @@ package feathers.controls
 				this._headerTouchX = touch.globalX;
 				this._headerTouchY = touch.globalX;
 				this._draggedHeaderIndex = headerRenderer.columnIndex;
+				//we want to check for TouchPhase.ENDED after it's bubbled
+				//beyond the header renderer
+				this.addEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
 			}
 		}
 
