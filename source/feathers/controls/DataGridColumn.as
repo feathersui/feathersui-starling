@@ -302,19 +302,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _minWidth:Number = NaN;
+		protected var _minWidth:Number = 10;
 
 		/**
-		 * The minimum width of the column, in pixels. If the
-		 * <code>minWidth</code> is set to <code>NaN</code>, the column's
-		 * minimum width will be determined automatically by the data grid's layout.
+		 * The minimum width of the column, in pixels.
 		 *
 		 * <p>The following example sets the column minimum width:</p>
 		 *
 		 * <listing version="3.0">
 		 * column.minWidth = 200;</listing>
 		 *
-		 * @default NaN
+		 * @default 10
 		 */
 		public function get minWidth():Number
 		{
