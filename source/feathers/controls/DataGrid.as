@@ -2482,10 +2482,17 @@ package feathers.controls
 				if(touch.phase === TouchPhase.ENDED)
 				{
 					this.removeEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
-					this._currentHeaderDragIndicatorSkin.removeFromParent(this._currentHeaderDragIndicatorSkin !== this._headerDragIndicatorSkin);
-					this._currentHeaderDragIndicatorSkin = null;
-					this._currentColumnDragOverlaySkin.removeFromParent(this._currentColumnDragOverlaySkin !== this._columnDragOverlaySkin);
-					this._currentColumnDragOverlaySkin = null;
+					//these might be null if there was no TouchPhase.MOVED
+					if(this._currentHeaderDragIndicatorSkin !== null)
+					{
+						this._currentHeaderDragIndicatorSkin.removeFromParent(this._currentHeaderDragIndicatorSkin !== this._headerDragIndicatorSkin);
+						this._currentHeaderDragIndicatorSkin = null;
+					}
+					if(this._currentColumnDragOverlaySkin !== null)
+					{
+						this._currentColumnDragOverlaySkin.removeFromParent(this._currentColumnDragOverlaySkin !== this._columnDragOverlaySkin);
+						this._currentColumnDragOverlaySkin = null;
+					}
 					this._headerTouchID = -1;
 				}
 			}
