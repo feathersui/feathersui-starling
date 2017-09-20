@@ -1403,9 +1403,9 @@ package feathers.themes
 			grid.headerDragIndicatorSkin = headerDragIndicatorSkin;
 			grid.extendedHeaderDragIndicator = true;
 
-			var headerDragColumnOverlaySkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
-			headerDragColumnOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
-			grid.headerDragColumnOverlaySkin = headerDragColumnOverlaySkin;
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
 
 			grid.verticalDividerFactory = this.dataGridVerticalDividerFactory;
 			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;

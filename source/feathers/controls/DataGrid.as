@@ -50,6 +50,23 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A skin to display when dragging one of the data grid's headers to
+	 * highlight the column where it was orignally located.
+	 *
+	 * <p>In the following example, the data grid's column overlay skin is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * var skin:Quad = new Quad(1, 1, 0x999999);
+	 * skin.alpha = 0.5;
+	 * grid.columnDragOverlaySkin = skin;</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #reorderColumns
+	 */
+	[Style(name="columnDragOverlaySkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * A skin to display when resizing one of the data grid's headers to
 	 * indicate how it will be resized.
 	 *
@@ -167,23 +184,6 @@ package feathers.controls
 	 * @see #reorderColumns
 	 */
 	[Style(name="headerDragAvatarAlpha",type="Number")]
-
-	/**
-	 * A skin to display when dragging one of the data grid's headers to
-	 * highlight the column where it was orignally located.
-	 *
-	 * <p>In the following example, the data grid's column overlay skin is provided:</p>
-	 *
-	 * <listing version="3.0">
-	 * var skin:Quad = new Quad(1, 1, 0x999999);
-	 * skin.alpha = 0.5;
-	 * grid.headerDragColumnOverlaySkin = skin;</listing>
-	 *
-	 * @default null
-	 * 
-	 * @see #reorderColumns
-	 */
-	[Style(name="headerDragColumnOverlaySkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to indicate where
@@ -495,6 +495,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _currentHeaderDragIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
 		protected var _headerDragIndicatorSkin:DisplayObject = null;
 
 		/**
@@ -558,25 +563,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _dataGridColumnTouchBlocker:Quad = null;
+		protected var _currentColumnDragOverlaySkin:DisplayObject = null;
 
 		/**
 		 * @private
 		 */
-		protected var _headerDragColumnOverlaySkin:DisplayObject = null;
+		protected var _columnDragOverlaySkin:DisplayObject = null;
 
 		/**
 		 * @private
 		 */
-		public function get headerDragColumnOverlaySkin():DisplayObject
+		public function get columnDragOverlaySkin():DisplayObject
 		{
-			return this._headerDragColumnOverlaySkin;
+			return this._columnDragOverlaySkin;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set headerDragColumnOverlaySkin(value:DisplayObject):void
+		public function set columnDragOverlaySkin(value:DisplayObject):void
 		{
 			if(this.processStyleRestriction(arguments.callee))
 			{
@@ -586,7 +591,7 @@ package feathers.controls
 				}
 				return;
 			}
-			this._headerDragColumnOverlaySkin = value;
+			this._columnDragOverlaySkin = value;
 		}
 
 		/**
@@ -1563,11 +1568,11 @@ package feathers.controls
 				this._headerDragIndicatorSkin.dispose();
 				this._headerDragIndicatorSkin = null;
 			}
-			if(this._headerDragColumnOverlaySkin !== null &&
-				this._headerDragColumnOverlaySkin.parent === null)
+			if(this._columnDragOverlaySkin !== null &&
+				this._columnDragOverlaySkin.parent === null)
 			{
-				this._headerDragColumnOverlaySkin.dispose();
-				this._headerDragColumnOverlaySkin = null;
+				this._columnDragOverlaySkin.dispose();
+				this._columnDragOverlaySkin = null;
 			}
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
@@ -2477,21 +2482,10 @@ package feathers.controls
 				if(touch.phase === TouchPhase.ENDED)
 				{
 					this.removeEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
-					if(this._headerDragIndicatorSkin !== null &&
-						this._headerDragIndicatorSkin.parent !== null)
-					{
-						this._headerDragIndicatorSkin.removeFromParent(false);
-					}
-					if(this._headerDragColumnOverlaySkin !== null &&
-						this._headerDragColumnOverlaySkin.parent !== null)
-					{
-						this._headerDragColumnOverlaySkin.removeFromParent(false);
-					}
-					if(this._dataGridColumnTouchBlocker !== null &&
-						this._dataGridColumnTouchBlocker.parent !== null)
-					{
-						this._dataGridColumnTouchBlocker.removeFromParent(false);
-					}
+					this._currentHeaderDragIndicatorSkin.removeFromParent(this._currentHeaderDragIndicatorSkin !== this._headerDragIndicatorSkin);
+					this._currentHeaderDragIndicatorSkin = null;
+					this._currentColumnDragOverlaySkin.removeFromParent(this._currentColumnDragOverlaySkin !== this._columnDragOverlaySkin);
+					this._currentColumnDragOverlaySkin = null;
 					this._headerTouchID = -1;
 				}
 			}
@@ -2529,28 +2523,32 @@ package feathers.controls
 						var avatar:RenderDelegate = new RenderDelegate(DisplayObject(headerRenderer));
 						avatar.alpha = this._headerDragAvatarAlpha;
 						DragDropManager.startDrag(this, touch, dragData, avatar);
-
-						if(this._headerDragColumnOverlaySkin !== null)
+						if(this._headerDragIndicatorSkin === null)
 						{
-							this._headerDragColumnOverlaySkin.x = this._headerGroup.x + headerRenderer.x;
-							this._headerDragColumnOverlaySkin.y = this._headerGroup.y + headerRenderer.y;
-							this._headerDragColumnOverlaySkin.width = headerRenderer.width;
-							this._headerDragColumnOverlaySkin.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y;
-							this.addChild(this._headerDragColumnOverlaySkin);
+							this._currentHeaderDragIndicatorSkin = new Quad(1, 1, 0x000000);
+						}
+						if(this._headerDragIndicatorSkin !== null)
+						{
+							this._currentHeaderDragIndicatorSkin = this._headerDragIndicatorSkin;
+						}
+						//start out invisible and TouchPhase.MOVED will reveal it, if necessary
+						this._currentHeaderDragIndicatorSkin.visible = false;
+						this.addChild(this._currentHeaderDragIndicatorSkin);
+
+						if(this._columnDragOverlaySkin === null)
+						{
+							this._currentColumnDragOverlaySkin = new Quad(1, 1, 0xff00ff);
+							this._currentColumnDragOverlaySkin.alpha = 0;
 						}
 						else
 						{
-							if(this._dataGridColumnTouchBlocker === null)
-							{
-								this._dataGridColumnTouchBlocker = new Quad(1, 1, 0xff00ff);
-							}
-							this._dataGridColumnTouchBlocker.alpha = 0;
-							this._dataGridColumnTouchBlocker.x = this._headerGroup.x + headerRenderer.x;
-							this._dataGridColumnTouchBlocker.y = this._headerGroup.y + headerRenderer.y;
-							this._dataGridColumnTouchBlocker.width = headerRenderer.width;
-							this._dataGridColumnTouchBlocker.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y
-							this.addChild(this._dataGridColumnTouchBlocker);
+							this._currentColumnDragOverlaySkin = this._columnDragOverlaySkin;
 						}
+						this._currentColumnDragOverlaySkin.x = this._headerGroup.x + headerRenderer.x;
+						this._currentColumnDragOverlaySkin.y = this._headerGroup.y + headerRenderer.y;
+						this._currentColumnDragOverlaySkin.width = headerRenderer.width;
+						this._currentColumnDragOverlaySkin.height = this._viewPort.y + this._viewPort.visibleHeight - this._headerGroup.y;
+						this.addChild(this._currentColumnDragOverlaySkin);
 					}
 				}
 			}
@@ -2623,42 +2621,36 @@ package feathers.controls
 			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
 			var showDragIndicator:Boolean = dropIndex !== this._draggedHeaderIndex &&
 				dropIndex !== (this._draggedHeaderIndex + 1);
-			if(this._headerDragIndicatorSkin !== null)
+			this._currentHeaderDragIndicatorSkin.visible = showDragIndicator;
+			if(!showDragIndicator)
 			{
-				this._headerDragIndicatorSkin.visible = showDragIndicator;
-				if(showDragIndicator)
-				{
-					if(this._headerDragIndicatorSkin.parent === null)
-					{
-						this.addChild(this._headerDragIndicatorSkin);
-					}
-					if(this._extendedHeaderDragIndicator)
-					{
-						this._headerDragIndicatorSkin.height = this._headerGroup.height + this._viewPort.visibleHeight;
-					}
-					else
-					{
-						this._headerDragIndicatorSkin.height = this._headerGroup.height;
-					}
-					if(this._headerDragIndicatorSkin is IValidating)
-					{
-						IValidating(this._headerDragIndicatorSkin).validate();
-					}
-					var dragIndicatorX:Number = 0;
-					if(dropIndex === this._columns.length)
-					{
-						var header:DisplayObject = this._headerGroup.getChildAt(dropIndex - 1);
-						dragIndicatorX = header.x + header.width;
-					}
-					else
-					{
-						header = this._headerGroup.getChildAt(dropIndex);
-						dragIndicatorX = header.x;
-					}
-					this._headerDragIndicatorSkin.x = this._headerGroup.x + dragIndicatorX - (this._headerDragIndicatorSkin.width / 2);
-					this._headerDragIndicatorSkin.y = this._headerGroup.y;
-				}
+				return;
 			}
+			if(this._extendedHeaderDragIndicator)
+			{
+				this._currentHeaderDragIndicatorSkin.height = this._headerGroup.height + this._viewPort.visibleHeight;
+			}
+			else
+			{
+				this._currentHeaderDragIndicatorSkin.height = this._headerGroup.height;
+			}
+			if(this._currentHeaderDragIndicatorSkin is IValidating)
+			{
+				IValidating(this._currentHeaderDragIndicatorSkin).validate();
+			}
+			var dragIndicatorX:Number = 0;
+			if(dropIndex === this._columns.length)
+			{
+				var header:DisplayObject = this._headerGroup.getChildAt(dropIndex - 1);
+				dragIndicatorX = header.x + header.width;
+			}
+			else
+			{
+				header = this._headerGroup.getChildAt(dropIndex);
+				dragIndicatorX = header.x;
+			}
+			this._currentHeaderDragIndicatorSkin.x = this._headerGroup.x + dragIndicatorX - (this._currentHeaderDragIndicatorSkin.width / 2);
+			this._currentHeaderDragIndicatorSkin.y = this._headerGroup.y;
 		}
 
 		/**
