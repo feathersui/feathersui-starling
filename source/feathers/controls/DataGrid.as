@@ -2699,6 +2699,14 @@ package feathers.controls
 				this._headerDividerTouchID = -1;
 				return;
 			}
+			var dividerIndex:int = this._headerDividerStorage.activeDividers.indexOf(divider);
+			if(dividerIndex === (this._headerDividerStorage.activeDividers.length - 1) &&
+				this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED &&
+					this._minVerticalScrollPosition !== this._maxVerticalScrollPosition)
+			{
+				//no resizing!
+				return;
+			}
 			if(this._headerDividerTouchID !== -1)
 			{
 				//a touch has begun, so we'll ignore all other touches.
@@ -2743,13 +2751,12 @@ package feathers.controls
 				{
 					return;
 				}
-				var index:int = this._headerDividerStorage.activeDividers.indexOf(divider);
-				column = DataGridColumn(this._columns.getItemAt(index));
+				column = DataGridColumn(this._columns.getItemAt(dividerIndex));
 				if(!column.resizable)
 				{
 					return;
 				}
-				this._resizingColumnIndex = index;
+				this._resizingColumnIndex = dividerIndex;
 				this._headerDividerTouchID = touch.id;
 				this._headerDividerTouchX = touch.globalX;
 				if(this._columnResizeSkin === null)
