@@ -50,6 +50,22 @@ package feathers.controls
 	import starling.utils.Pool;
 
 	/**
+	 * A skin to display when resizing one of the data grid's headers to
+	 * indicate how it will be resized.
+	 *
+	 * <p>In the following example, the data grid's column resize skin is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * grid.columnResizeSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #resizableColumns
+	 * @see feathers.controls.DataGridColumn#resizable
+	 */
+	[Style(name="columnResizeSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * Specifies a custom style name for cell renderers that will be used if
 	 * the <code>customCellRendererStyleName</code> property from a
 	 * <code>DataGridColumn</code> is <code>null</code>.
@@ -82,6 +98,9 @@ package feathers.controls
 	 * grid.extendedHeaderDragIndicator = true;</listing>
 	 *
 	 * @default false
+	 * 
+	 * @see #reorderColumns
+	 * @see #style:headerDragIndicatorSkin
 	 */
 	[Style(name="extendedHeaderDragIndicator",type="Boolean")]
 
@@ -178,6 +197,7 @@ package feathers.controls
 	 * @default null
 	 * 
 	 * @see #reorderColumns
+	 * @see #style:extendedHeaderDragIndicator
 	 */
 	[Style(name="headerDragIndicatorSkin",type="starling.display.DisplayObject")]
 
@@ -392,7 +412,7 @@ package feathers.controls
 		 * Determines if the data grid's columns may be reordered using drag
 		 * and drop.
 		 *
-		 * <p>The following example enables colum reordering:</p>
+		 * <p>The following example enables column reordering:</p>
 		 *
 		 * <listing version="3.0">
 		 * grid.reorderColumns = true;</listing>
@@ -410,6 +430,66 @@ package feathers.controls
 		public function set reorderColumns(value:Boolean):void
 		{
 			this._reorderColumns = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _sortableColumns:Boolean = false;
+
+		/**
+		 * Determines if the data grid's columns may be sorted.
+		 *
+		 * <p>The following example enables column sorting:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.sortableColumns = true;</listing>
+		 *
+		 * @default false
+		 * 
+		 * @see feathers.controls.DataGridColumn#sortOrder
+		 */
+		public function get sortableColumns():Boolean
+		{
+			return this._sortableColumns;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortableColumns(value:Boolean):void
+		{
+			this._sortableColumns = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _resizableColumns:Boolean = false;
+
+		/**
+		 * Determines if the data grid's columns may be resized.
+		 *
+		 * <p>The following example enables column resizing:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.resizableColumns = true;</listing>
+		 *
+		 * @default false
+		 * 
+		 * @see #style:columnResizeSkin
+		 */
+		public function get resizableColumns():Boolean
+		{
+			return this._resizableColumns;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resizableColumns(value:Boolean):void
+		{
+			this._resizableColumns = value;
 		}
 
 		/**
@@ -439,6 +519,40 @@ package feathers.controls
 				return;
 			}
 			this._headerDragIndicatorSkin = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _currentColumnResizeSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		protected var _columnResizeSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get columnResizeSkin():DisplayObject
+		{
+			return this._columnResizeSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set columnResizeSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._columnResizeSkin = value;
 		}
 
 		/**
@@ -1356,6 +1470,21 @@ package feathers.controls
 		protected var _headerTouchY:Number;
 
 		/**
+		 * @private
+		 */
+		protected var _headerDividerTouchID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _headerDividerTouchX:Number;
+		
+		/**
+		 * @private
+		 */
+		protected var _resizingColumnIndex:int = -1;
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1645,6 +1774,7 @@ package feathers.controls
 				else
 				{
 					divider = DisplayObject(this._headerDividerFactory());
+					divider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
 					this.addChild(divider);
 				}
 				activeDividers[i] = divider;
@@ -1661,6 +1791,7 @@ package feathers.controls
 			for(i = 0; i < dividerCount; i++)
 			{
 				divider = inactiveDividers.shift();
+				divider.removeEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
 				divider.removeFromParent(true);
 			}
 		}
@@ -2269,7 +2400,7 @@ package feathers.controls
 		{
 			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(event.currentTarget);
 			var column:DataGridColumn = headerRenderer.data;
-			if(column.sortOrder === SortOrder.NONE)
+			if(!this._sortableColumns || column.sortOrder === SortOrder.NONE)
 			{
 				return;
 			}
@@ -2346,7 +2477,6 @@ package feathers.controls
 				if(touch.phase === TouchPhase.ENDED)
 				{
 					this.removeEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
-					trace("ended1");
 					if(this._headerDragIndicatorSkin !== null &&
 						this._headerDragIndicatorSkin.parent !== null)
 					{
@@ -2557,6 +2687,84 @@ package feathers.controls
 			}
 			var column:DataGridColumn = DataGridColumn(this._columns.removeItemAt(this._draggedHeaderIndex));
 			this._columns.addItemAt(column, dropIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function headerDivider_touchHandler(event:TouchEvent):void
+		{
+			var divider:DisplayObject = DisplayObject(event.currentTarget);
+			if(!this._isEnabled)
+			{
+				this._headerDividerTouchID = -1;
+				return;
+			}
+			if(this._headerDividerTouchID !== -1)
+			{
+				//a touch has begun, so we'll ignore all other touches.
+				var touch:Touch = event.getTouch(divider, null, this._headerDividerTouchID);
+				if(touch === null)
+				{
+					//this should not happen.
+					return;
+				}
+
+				if(touch.phase === TouchPhase.ENDED)
+				{
+					this.removeChild(this._currentColumnResizeSkin, this._currentColumnResizeSkin !== this._columnResizeSkin);
+					this._currentColumnResizeSkin = null;
+					this._headerDividerTouchID = -1;
+				}
+				else if(touch.phase === TouchPhase.MOVED)
+				{
+					var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(this._resizingColumnIndex));
+					var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(this._resizingColumnIndex));
+					var minX:Number = headerRenderer.x + column.minWidth;
+					var maxX:Number = this.actualWidth - this._currentColumnResizeSkin.width - this._rightViewPortOffset;
+					var difference:Number = touch.globalX - this._headerDividerTouchX;
+					var newX:Number = divider.x + difference;
+					if(newX < minX)
+					{
+						newX = minX;
+					}
+					else if(newX > maxX)
+					{
+						newX = maxX;
+					}
+					this._currentColumnResizeSkin.x = newX;
+					this._currentColumnResizeSkin.height = this.actualHeight;
+				}
+			}
+			else if(this._resizableColumns)
+			{
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(divider, TouchPhase.BEGAN);
+				if(touch === null)
+				{
+					return;
+				}
+				var index:int = this._headerDividerStorage.activeDividers.indexOf(divider);
+				column = DataGridColumn(this._columns.getItemAt(index));
+				if(!column.resizable)
+				{
+					return;
+				}
+				this._resizingColumnIndex = index;
+				this._headerDividerTouchID = touch.id;
+				this._headerDividerTouchX = touch.globalX;
+				if(this._columnResizeSkin === null)
+				{
+					this._currentColumnResizeSkin = new Quad(1, 1, 0x000000);
+				}
+				else
+				{
+					this._currentColumnResizeSkin = this._columnResizeSkin;
+				}
+				this._currentColumnResizeSkin.x = divider.x;
+				this._currentColumnResizeSkin.height = this.actualHeight;
+				this.addChild(this._currentColumnResizeSkin);
+			}
 		}
 	}
 }

@@ -420,6 +420,10 @@ package feathers.controls
 		 * 
 		 * <p>Setting this property will not start a sort. It only provides the
 		 * initial order of the sort when triggered by the user.</p>
+		 * 
+		 * <p>If the <code>sortableColumns</code> property of the
+		 * <code>DataGrid</code> is <code>false</code>, it takes precendence
+		 * over this property, and the column will not be sortable.</p>
 		 *
 		 * <p>The following example disables sorting:</p>
 		 *
@@ -428,6 +432,7 @@ package feathers.controls
 		 *
 		 * @default feathers.data.SortOrder.ASCENDING
 		 * 
+		 * @see feathers.controls.DataGrid#sortableColumns
 		 * @see #sortCompareFunction
 		 * @see feathers.data.SortOrder#ASCENDING
 		 * @see feathers.data.SortOrder#DESCENDING
@@ -448,6 +453,45 @@ package feathers.controls
 				return;
 			}
 			this._sortOrder = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _resizable:Boolean = true;
+
+		/**
+		 * Indicates if the column may be resized by dragging from its right edge.
+		 * 
+		 * <p>If the <code>resizableColumns</code> property of the
+		 * <code>DataGrid</code> is <code>false</code>, it takes precendence
+		 * over this property, and the column will not be resizable.</p>
+		 *
+		 * <p>The following example disables resizing:</p>
+		 *
+		 * <listing version="3.0">
+		 * column.resizable = false;</listing>
+		 *
+		 * @default true
+		 * 
+		 * @see feathers.controls.DataGrid#resizableColumns
+		 */
+		public function get resizable():Boolean
+		{
+			return this._resizable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resizable(value:Boolean):void
+		{
+			if(this._resizable === value)
+			{
+				return;
+			}
+			this._resizable = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
