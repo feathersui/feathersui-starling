@@ -1490,6 +1490,11 @@ package feathers.controls
 		protected var _resizingColumnIndex:int = -1;
 
 		/**
+		 * @private
+		 */
+		protected var _customColumnSizes:Vector.<Number> = null;
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1666,6 +1671,7 @@ package feathers.controls
 		{
 			super.calculateViewPortOffsets(forceScrollBars, useActualBounds);
 
+			this._headerLayout.paddingLeft = this._leftViewPortOffset;
 			this._headerLayout.paddingRight = this._rightViewPortOffset;
 			if(useActualBounds)
 			{
@@ -1684,6 +1690,7 @@ package feathers.controls
 		 */
 		override protected function layoutChildren():void
 		{
+			this._headerLayout.paddingLeft = this._leftViewPortOffset;
 			this._headerLayout.paddingRight = this._rightViewPortOffset;
 			this._headerGroup.width = this.actualWidth;
 			this._headerGroup.validate();
@@ -1845,6 +1852,11 @@ package feathers.controls
 						headerRenderer.width = column.width;
 						headerRenderer.layoutData = null;
 					}
+					else if(this._customColumnSizes !== null && i < this._customColumnSizes.length)
+					{
+						headerRenderer.width = this._customColumnSizes[i];
+						headerRenderer.layoutData = null;
+					}
 					else if(headerRenderer.layoutData === null)
 					{
 						headerRenderer.layoutData = new HorizontalLayoutData(100, 100);
@@ -1966,7 +1978,7 @@ package feathers.controls
 			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
 			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
-			var headerRenderer:IDataGridHeaderRenderer;
+			var headerRenderer:IDataGridHeaderRenderer = null;
 			do
 			{
 				if(inactiveHeaderRenderers.length === 0)
@@ -1985,13 +1997,18 @@ package feathers.controls
 					headerRenderer = inactiveHeaderRenderers.shift();
 				}
 			}
-			while(!headerRenderer)
+			while(headerRenderer === null)
 			headerRenderer.data = column;
 			headerRenderer.columnIndex = columnIndex;
 			headerRenderer.owner = this;
 			if(column.width === column.width) //!isNaN
 			{
 				headerRenderer.width = column.width;
+				headerRenderer.layoutData = null;
+			}
+			else if(this._customColumnSizes !== null && columnIndex < this._customColumnSizes.length)
+			{
+				headerRenderer.width = this._customColumnSizes[columnIndex];
 				headerRenderer.layoutData = null;
 			}
 			else if(headerRenderer.layoutData === null)
@@ -2004,6 +2021,8 @@ package feathers.controls
 			activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
 			this.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, headerRenderer);
 
+			column.addEventListener(Event.CHANGE, column_changeHandler);
+
 			return headerRenderer;
 		}
 
@@ -2012,6 +2031,7 @@ package feathers.controls
 		 */
 		protected function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
 		{
+			headerRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
 			headerRenderer.removeEventListener(Event.TRIGGERED, headerRenderer_triggeredHandler);
 			headerRenderer.removeEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
 			headerRenderer.owner = null;
@@ -2032,6 +2052,7 @@ package feathers.controls
 			this.dataViewPort.columns = this._columns;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
+			this.dataViewPort.customColumnSizes = this._customColumnSizes;
 		}
 
 		/**
@@ -2075,6 +2096,14 @@ package feathers.controls
 				}
 			}
 			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function column_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -2719,6 +2748,9 @@ package feathers.controls
 
 				if(touch.phase === TouchPhase.ENDED)
 				{
+					this.calculateResizedColumnWidth();
+					this._resizingColumnIndex = -1;
+
 					this.removeChild(this._currentColumnResizeSkin, this._currentColumnResizeSkin !== this._columnResizeSkin);
 					this._currentColumnResizeSkin = null;
 					this._headerDividerTouchID = -1;
@@ -2771,6 +2803,89 @@ package feathers.controls
 				this._currentColumnResizeSkin.height = this.actualHeight;
 				this.addChild(this._currentColumnResizeSkin);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateResizedColumnWidth():void
+		{
+			var columnCount:int = this._columns.length;
+			var minColumnCount:int = this._resizingColumnIndex + 1;
+			if(this._customColumnSizes === null)
+			{
+				this._customColumnSizes = new Vector.<Number>(columnCount);
+			}
+			else
+			{
+				//try to keep any column widths we already saved
+				this._customColumnSizes = this._customColumnSizes.slice();
+				if(this._customColumnSizes.length < minColumnCount)
+				{
+					this._customColumnSizes.length = minColumnCount;
+				}
+				else if(this._customColumnSizes.length > columnCount)
+				{
+					this._customColumnSizes.length = columnCount;
+				}
+			}
+			var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(this._resizingColumnIndex));
+			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(this._resizingColumnIndex));
+			var preferredWidth:Number = this._currentColumnResizeSkin.x - headerRenderer.x;
+			var totalMinWidth:Number = 0;
+			var totalCustomSizesAfter:Number = 0;
+			for(var i:int = 0; i < columnCount; i++)
+			{
+				var currentColumn:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
+				if(i === this._resizingColumnIndex)
+				{
+					continue;
+				}
+				else if(i < this._resizingColumnIndex)
+				{
+					//we want these columns to maintain their width so that the
+					//resized one will start at the same x position
+					//however, we're not setting the width property on the
+					//DataGridColumn because we want them to be able to resize
+					//later if the whole DataGrid resizes.
+					headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
+					this._customColumnSizes[i] = headerRenderer.width;
+					totalMinWidth += headerRenderer.width;
+				}
+				else if(currentColumn.width === currentColumn.width) //!isNaN
+				{
+					totalMinWidth += currentColumn.width;
+				}
+				else
+				{
+					totalMinWidth += currentColumn.minWidth;
+				}
+				if(i > this._resizingColumnIndex)
+				{
+					if(this._customColumnSizes.length > i)
+					{
+						totalCustomSizesAfter += this._customColumnSizes[i];
+					}
+					else
+					{
+						headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
+						totalCustomSizesAfter = headerRenderer.width;
+					}
+				}
+			}
+			var newWidth:Number = preferredWidth;
+			var maxWidth:Number = this._headerGroup.width - totalMinWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			if(newWidth > maxWidth)
+			{
+				newWidth = maxWidth;
+			}
+			if(newWidth < column.minWidth)
+			{
+				newWidth = column.minWidth;
+			}
+			this._customColumnSizes[this._resizingColumnIndex] = newWidth;
+			this._customColumnSizes.length = minColumnCount;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
 }

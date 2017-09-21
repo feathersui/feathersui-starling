@@ -259,6 +259,32 @@ package feathers.controls.supportClasses
 		}
 
 		/**
+		 * @private
+		 */
+		private var _customColumnSizes:Vector.<Number> = null;
+
+		/**
+		 * @private
+		 */
+		public function get customColumnSizes():Vector.<Number>
+		{
+			return this._customColumnSizes;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customColumnSizes(value:Vector.<Number>):void
+		{
+			if(this._customColumnSizes === value)
+			{
+				return;
+			}
+			this._customColumnSizes = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
 		 * Returns the cell renderer for the specified column index, or
 		 * <code>null</code>, if no cell renderer can be found.
 		 */
@@ -377,6 +403,8 @@ package feathers.controls.supportClasses
 			while(cellRenderer === null)
 			this.refreshCellRendererProperties(cellRenderer, columnIndex, column);
 
+			column.addEventListener(Event.CHANGE, column_changeHandler);
+
 			this._cellRendererMap[column] = cellRenderer;
 			this._activeCellRenderers[this._activeCellRenderers.length] = cellRenderer;
 			this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, cellRenderer);
@@ -389,6 +417,7 @@ package feathers.controls.supportClasses
 		 */
 		protected function destroyCellRenderer(cellRenderer:IDataGridCellRenderer):void
 		{
+			cellRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
 			cellRenderer.data = null;
 			cellRenderer.owner = null;
 			cellRenderer.rowIndex = -1;
@@ -539,6 +568,11 @@ package feathers.controls.supportClasses
 				cellRenderer.width = column.width;
 				cellRenderer.layoutData = null;
 			}
+			else if(this._customColumnSizes !== null && columnIndex < this._customColumnSizes.length)
+			{
+				cellRenderer.width = this._customColumnSizes[columnIndex];
+				cellRenderer.layoutData = null;
+			}
 			else
 			{
 				var layoutData:HorizontalLayoutData = cellRenderer.layoutData as HorizontalLayoutData;
@@ -582,6 +616,17 @@ package feathers.controls.supportClasses
 			//new items are added and not displayed.
 			this._updateForDataReset = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function column_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			//since we extend LayoutGroup, and the DataGridColumn includes some
+			//layout information, we need to use this flag too
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
 }
