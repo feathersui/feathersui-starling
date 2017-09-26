@@ -2811,29 +2811,24 @@ package feathers.controls
 		protected function calculateResizedColumnWidth():void
 		{
 			var columnCount:int = this._columns.length;
-			var minColumnCount:int = this._resizingColumnIndex + 1;
 			if(this._customColumnSizes === null)
 			{
 				this._customColumnSizes = new Vector.<Number>(columnCount);
 			}
 			else
 			{
-				//try to keep any column widths we already saved
+				//make a copy so that it will be detected as a change
 				this._customColumnSizes = this._customColumnSizes.slice();
-				if(this._customColumnSizes.length < minColumnCount)
-				{
-					this._customColumnSizes.length = minColumnCount;
-				}
-				else if(this._customColumnSizes.length > columnCount)
-				{
-					this._customColumnSizes.length = columnCount;
-				}
+				//try to keep any column widths we already saved
+				this._customColumnSizes.length = columnCount;
 			}
 			var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(this._resizingColumnIndex));
 			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(this._resizingColumnIndex));
 			var preferredWidth:Number = this._currentColumnResizeSkin.x - headerRenderer.x;
 			var totalMinWidth:Number = 0;
-			var totalCustomSizesAfter:Number = 0;
+			var originalWidth:Number = headerRenderer.width;
+			var totalWidthAfter:Number = 0;
+			var indicesAfter:Vector.<Number> = new <Number>[];
 			for(var i:int = 0; i < columnCount; i++)
 			{
 				var currentColumn:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
@@ -2852,25 +2847,21 @@ package feathers.controls
 					this._customColumnSizes[i] = headerRenderer.width;
 					totalMinWidth += headerRenderer.width;
 				}
-				else if(currentColumn.width === currentColumn.width) //!isNaN
-				{
-					totalMinWidth += currentColumn.width;
-				}
 				else
 				{
-					totalMinWidth += currentColumn.minWidth;
-				}
-				if(i > this._resizingColumnIndex)
-				{
-					if(this._customColumnSizes.length > i)
+					if(currentColumn.width === currentColumn.width) //!isNaN
 					{
-						totalCustomSizesAfter += this._customColumnSizes[i];
+						totalMinWidth += currentColumn.width;
 					}
 					else
 					{
-						headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
-						totalCustomSizesAfter = headerRenderer.width;
+						totalMinWidth += currentColumn.minWidth;
 					}
+					headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
+					var columnWidth:Number = headerRenderer.width;
+					totalWidthAfter += columnWidth;
+					this._customColumnSizes[i] = columnWidth;
+					indicesAfter[indicesAfter.length] = i;
 				}
 			}
 			var newWidth:Number = preferredWidth;
@@ -2884,7 +2875,46 @@ package feathers.controls
 				newWidth = column.minWidth;
 			}
 			this._customColumnSizes[this._resizingColumnIndex] = newWidth;
-			this._customColumnSizes.length = minColumnCount;
+
+			//the width to distribute may be positive or negative, depending on
+			//whether the resized column was made smaller or larger
+			var widthToDistribute:Number = originalWidth - newWidth;
+			while(Math.abs(widthToDistribute) > 1)
+			{
+				//this will be the store value if we need to loop again
+				var nextWidthToDistribute:Number = widthToDistribute;
+				var customSizesIndicesCount:int = indicesAfter.length;
+				for(i = customSizesIndicesCount - 1; i >= 0; i--)
+				{
+					var index:int = indicesAfter[i];
+					headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(index));
+					columnWidth = headerRenderer.width;
+					var percent:Number = columnWidth / totalWidthAfter;
+					var offset:Number = widthToDistribute * percent;
+					newWidth = this._customColumnSizes[index] + offset;
+					if(newWidth < column.minWidth)
+					{
+						offset += (column.minWidth - newWidth);
+						newWidth = column.minWidth;
+						//we've hit the minimum, so skip it if we loop again
+						indicesAfter.removeAt(i);
+						//also readjust the total to exclude this column
+						//so that the percentages still add up to 100%
+						totalWidthAfter -= columnWidth;
+					}
+					this._customColumnSizes[index] = newWidth;
+					nextWidthToDistribute -= offset;
+				}
+				widthToDistribute = nextWidthToDistribute;
+			}
+
+			if(widthToDistribute !== 0)
+			{
+				//if we have less than a pixel left, just add it to the
+				//final column and exit the loop
+				this._customColumnSizes[this._customColumnSizes.length - 1] += widthToDistribute;
+			}
+
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
