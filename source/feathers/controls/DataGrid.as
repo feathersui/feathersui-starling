@@ -2823,6 +2823,8 @@ package feathers.controls
 				this._customColumnSizes.length = columnCount;
 			}
 			var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(this._resizingColumnIndex));
+			//clear the explicit width because the user resized it
+			column.width = NaN;
 			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(this._resizingColumnIndex));
 			var preferredWidth:Number = this._currentColumnResizeSkin.x - headerRenderer.x;
 			var totalMinWidth:Number = 0;
@@ -2852,6 +2854,7 @@ package feathers.controls
 					if(currentColumn.width === currentColumn.width) //!isNaN
 					{
 						totalMinWidth += currentColumn.width;
+						continue;
 					}
 					else
 					{
@@ -2863,6 +2866,19 @@ package feathers.controls
 					this._customColumnSizes[i] = columnWidth;
 					indicesAfter[indicesAfter.length] = i;
 				}
+			}
+			if(indicesAfter.length === 0)
+			{
+				//if all of the columns after the resizing one have explicit
+				//widths, we need to force one to be resized
+				var index:int = this._resizingColumnIndex + 1;
+				indicesAfter[0] = index;
+				column = DataGridColumn(this._columns.getItemAt(index));
+				totalWidthAfter = column.width;
+				totalMinWidth -= totalWidthAfter;
+				totalMinWidth += column.minWidth;
+				this._customColumnSizes[index] = totalWidthAfter;
+				column.width = NaN;
 			}
 			var newWidth:Number = preferredWidth;
 			var maxWidth:Number = this._headerGroup.width - totalMinWidth - this._leftViewPortOffset - this._rightViewPortOffset;
@@ -2886,7 +2902,7 @@ package feathers.controls
 				var customSizesIndicesCount:int = indicesAfter.length;
 				for(i = customSizesIndicesCount - 1; i >= 0; i--)
 				{
-					var index:int = indicesAfter[i];
+					index = indicesAfter[i];
 					headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(index));
 					columnWidth = headerRenderer.width;
 					var percent:Number = columnWidth / totalWidthAfter;
