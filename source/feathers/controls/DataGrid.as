@@ -48,6 +48,7 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import feathers.layout.VerticalAlign;
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to
@@ -1609,6 +1610,7 @@ package feathers.controls
 			{
 				this._headerLayout = new HorizontalLayout();
 				this._headerLayout.useVirtualLayout = false;
+				this._headerLayout.verticalAlign = VerticalAlign.JUSTIFY;
 			}
 
 			if(this._headerGroup === null)
@@ -1859,7 +1861,7 @@ package feathers.controls
 					}
 					else if(headerRenderer.layoutData === null)
 					{
-						headerRenderer.layoutData = new HorizontalLayoutData(100, 100);
+						headerRenderer.layoutData = new HorizontalLayoutData(100);
 					}
 					headerRenderer.minWidth = column.minWidth;
 					headerRenderer.visible = true;
@@ -2013,7 +2015,7 @@ package feathers.controls
 			}
 			else if(headerRenderer.layoutData === null)
 			{
-				headerRenderer.layoutData = new HorizontalLayoutData(100, 100);
+				headerRenderer.layoutData = new HorizontalLayoutData(100);
 			}
 			headerRenderer.minWidth = column.minWidth;
 
