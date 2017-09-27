@@ -2033,7 +2033,10 @@ package feathers.controls
 		 */
 		protected function destroyHeaderRenderer(headerRenderer:IDataGridHeaderRenderer):void
 		{
-			headerRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
+			if(headerRenderer.data !== null)
+			{
+				headerRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
+			}
 			headerRenderer.removeEventListener(Event.TRIGGERED, headerRenderer_triggeredHandler);
 			headerRenderer.removeEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
 			headerRenderer.owner = null;

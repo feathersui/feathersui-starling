@@ -85,12 +85,7 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected var _inactiveCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
-
-		/**
-		 * @private
-		 */
-		protected var _activeCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
+		protected var _defaultStorage:CellRendererFactoryStorage = new CellRendererFactoryStorage();
 
 		/**
 		 * @private
@@ -290,11 +285,12 @@ package feathers.controls.supportClasses
 		 */
 		public function getCellRendererForColumn(columnIndex:int):IDataGridCellRenderer
 		{
-			if(columnIndex < 0 || columnIndex > this._activeCellRenderers.length)
+			var activeCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.activeCellRenderers;
+			if(columnIndex < 0 || columnIndex > activeCellRenderers.length)
 			{
 				return null;
 			}
-			return IDataGridCellRenderer(this._activeCellRenderers[columnIndex]);
+			return IDataGridCellRenderer(activeCellRenderers[columnIndex]);
 		}
 
 		/**
@@ -366,9 +362,11 @@ package feathers.controls.supportClasses
 		protected function createCellRenderer(columnIndex:int, column:DataGridColumn):IDataGridCellRenderer
 		{
 			var cellRenderer:IDataGridCellRenderer = null;
+			var activeCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.activeCellRenderers;
+			var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.inactiveCellRenderers;
 			do
 			{
-				if(this._inactiveCellRenderers.length === 0)
+				if(inactiveCellRenderers.length === 0)
 				{
 					var cellRendererFactory:Function = column.cellRendererFactory;
 					if(cellRendererFactory === null)
@@ -393,7 +391,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					cellRenderer = this._inactiveCellRenderers.shift();
+					cellRenderer = inactiveCellRenderers.shift();
 				}
 				//wondering why this all is in a loop?
 				//_inactiveRenderers.shift() may return null because we're
@@ -406,7 +404,7 @@ package feathers.controls.supportClasses
 			column.addEventListener(Event.CHANGE, column_changeHandler);
 
 			this._cellRendererMap[column] = cellRenderer;
-			this._activeCellRenderers[this._activeCellRenderers.length] = cellRenderer;
+			activeCellRenderers[activeCellRenderers.length] = cellRenderer;
 			this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, cellRenderer);
 
 			return cellRenderer;
@@ -417,7 +415,10 @@ package feathers.controls.supportClasses
 		 */
 		protected function destroyCellRenderer(cellRenderer:IDataGridCellRenderer):void
 		{
-			cellRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
+			if(cellRenderer.data !== null)
+			{
+				cellRenderer.data.removeEventListener(Event.CHANGE, column_changeHandler);
+			}
 			cellRenderer.data = null;
 			cellRenderer.owner = null;
 			cellRenderer.rowIndex = -1;
@@ -430,10 +431,10 @@ package feathers.controls.supportClasses
 		 */
 		protected function refreshInactiveCellRenderers(forceCleanup:Boolean):void
 		{
-			var temp:Vector.<IDataGridCellRenderer> = this._inactiveCellRenderers;
-			this._inactiveCellRenderers = this._activeCellRenderers;
-			this._activeCellRenderers = temp;
-			if(this._activeCellRenderers.length > 0)
+			var temp:Vector.<IDataGridCellRenderer> = this._defaultStorage.inactiveCellRenderers;
+			this._defaultStorage.inactiveCellRenderers = this._defaultStorage.activeCellRenderers;
+			this._defaultStorage.activeCellRenderers = temp;
+			if(this._defaultStorage.activeCellRenderers.length > 0)
 			{
 				throw new IllegalOperationError("DataGridRowRenderer: active cell renderers should be empty.");
 			}
@@ -466,11 +467,14 @@ package feathers.controls.supportClasses
 					//reordered in the data provider
 					this.refreshCellRendererProperties(cellRenderer, i, column);
 
-					this._activeCellRenderers[this._activeCellRenderers.length] = cellRenderer;
-					var inactiveIndex:int = this._inactiveCellRenderers.indexOf(cellRenderer);
+					var activeCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.activeCellRenderers;
+					var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.inactiveCellRenderers;
+
+					activeCellRenderers[activeCellRenderers.length] = cellRenderer;
+					var inactiveIndex:int = inactiveCellRenderers.indexOf(cellRenderer);
 					if(inactiveIndex >= 0)
 					{
-						this._inactiveCellRenderers[inactiveIndex] = null;
+						inactiveCellRenderers[inactiveIndex] = null;
 					}
 					else
 					{
@@ -490,10 +494,11 @@ package feathers.controls.supportClasses
 		 */
 		protected function recoverInactiveCellRenderers():void
 		{
-			var itemCount:int = this._inactiveCellRenderers.length;
+			var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.inactiveCellRenderers;
+			var itemCount:int = inactiveCellRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var cellRenderer:IDataGridCellRenderer = this._inactiveCellRenderers[i];
+				var cellRenderer:IDataGridCellRenderer = inactiveCellRenderers[i];
 				if(cellRenderer === null || cellRenderer.column === null)
 				{
 					continue;
@@ -523,11 +528,13 @@ package feathers.controls.supportClasses
 		 */
 		protected function freeInactiveCellRenderers():void
 		{
-			var activeCellRenderersCount:int = this._activeCellRenderers.length;
-			var itemCount:int = this._inactiveCellRenderers.length;
+			var activeCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.activeCellRenderers;
+			var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = this._defaultStorage.inactiveCellRenderers;
+			var activeCellRenderersCount:int = activeCellRenderers.length;
+			var itemCount:int = inactiveCellRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var cellRenderer:IDataGridCellRenderer = this._inactiveCellRenderers.shift();
+				var cellRenderer:IDataGridCellRenderer = inactiveCellRenderers.shift();
 				if(cellRenderer === null)
 				{
 					continue;
@@ -629,4 +636,18 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
+}
+
+import feathers.controls.renderers.IDataGridCellRenderer;
+
+class CellRendererFactoryStorage
+{
+	public function CellRendererFactoryStorage()
+	{
+		
+	}
+	
+	public var activeCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
+	public var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
+	public var factory:Function;
 }
