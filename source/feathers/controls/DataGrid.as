@@ -2808,7 +2808,8 @@ package feathers.controls
 						newX = maxX;
 					}
 					this._currentColumnResizeSkin.x = newX;
-					this._currentColumnResizeSkin.height = this.actualHeight;
+					this._currentColumnResizeSkin.y = this._headerGroup.y;
+					this._currentColumnResizeSkin.height = this.actualHeight - this._bottomViewPortOffset - this._currentColumnResizeSkin.y;
 				}
 			}
 			else if(this._resizableColumns)
