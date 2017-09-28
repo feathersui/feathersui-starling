@@ -334,6 +334,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _headerDividerGroup:LayoutGroup = null;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalDividerGroup:LayoutGroup = null;
+
+		/**
+		 * @private
+		 */
 		protected var _headerLayout:HorizontalLayout = null;
 
 		/**
@@ -1606,6 +1616,13 @@ package feathers.controls
 				this.viewPort = this.dataViewPort;
 			}
 
+			if(this._verticalDividerGroup === null)
+			{
+				this._verticalDividerGroup = new LayoutGroup();
+				this._verticalDividerGroup.touchable = false;
+				this.addChild(this._verticalDividerGroup);
+			}
+
 			if(this._headerLayout === null)
 			{
 				this._headerLayout = new HorizontalLayout();
@@ -1620,6 +1637,12 @@ package feathers.controls
 			}
 
 			this._headerGroup.layout = this._headerLayout;
+
+			if(this._headerDividerGroup === null)
+			{
+				this._headerDividerGroup = new LayoutGroup();
+				this.addChild(this._headerDividerGroup);
+			}
 
 			if(!hasLayout)
 			{
@@ -1698,8 +1721,16 @@ package feathers.controls
 			this._headerGroup.validate();
 			this._headerGroup.x = 0;
 			this._headerGroup.y = this._topViewPortOffset - this._headerGroup.height;
+			this._headerDividerGroup.x = this._headerGroup.x;
+			this._headerDividerGroup.y = this._headerGroup.y;
+			this._headerDividerGroup.width = this._headerGroup.width;
 
 			super.layoutChildren();
+
+			this._verticalDividerGroup.x = this._headerGroup.x;
+			this._verticalDividerGroup.y = this._headerGroup.y + this._headerGroup.height;
+			this._verticalDividerGroup.width = this._headerGroup.width;
+			this._verticalDividerGroup.height = this.viewPort.visibleHeight;
 
 			this.refreshHeaderDividers();
 			this.refreshVerticalDividers();
@@ -1725,32 +1756,32 @@ package feathers.controls
 			var inactiveDividers:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
 			for(var i:int = 0; i < dividerCount; i++)
 			{
-				var divider:DisplayObject = null;
+				var verticalDivider:DisplayObject = null;
 				if(inactiveDividers.length > 0)
 				{
-					divider = inactiveDividers.shift();
-					this.setChildIndex(divider, this.getChildIndex(this._headerGroup) + 1);
+					verticalDivider = inactiveDividers.shift();
+					this._verticalDividerGroup.setChildIndex(verticalDivider, i);
 				}
 				else
 				{
-					divider = DisplayObject(this._verticalDividerFactory());
-					this.addChild(divider);
+					verticalDivider = DisplayObject(this._verticalDividerFactory());
+					this._verticalDividerGroup.addChildAt(verticalDivider, i);
 				}
-				activeDividers[i] = divider;
-				divider.height = this._viewPort.visibleHeight;
-				if(divider is IValidating)
+				activeDividers[i] = verticalDivider;
+				verticalDivider.height = this._viewPort.visibleHeight;
+				if(verticalDivider is IValidating)
 				{
-					IValidating(divider).validate();
+					IValidating(verticalDivider).validate();
 				}
 				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
-				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
-				divider.y = this._topViewPortOffset;
+				verticalDivider.x = headerRenderer.x + headerRenderer.width - (verticalDivider.width / 2);
+				verticalDivider.y = 0;
 			}
 			dividerCount = inactiveDividers.length;
 			for(i = 0; i < dividerCount; i++)
 			{
-				divider = inactiveDividers.shift();
-				divider.removeFromParent(true);
+				verticalDivider = inactiveDividers.shift();
+				verticalDivider.removeFromParent(true);
 			}
 		}
 
@@ -1779,34 +1810,34 @@ package feathers.controls
 			var inactiveDividers:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
 			for(var i:int = 0; i < dividerCount; i++)
 			{
-				var divider:DisplayObject = null;
+				var headerDivider:DisplayObject = null;
 				if(inactiveDividers.length > 0)
 				{
-					divider = inactiveDividers.shift();
-					this.setChildIndex(divider, this.getChildIndex(this._headerGroup) + 1);
+					headerDivider = inactiveDividers.shift();
+					this._headerDividerGroup.setChildIndex(headerDivider, i);
 				}
 				else
 				{
-					divider = DisplayObject(this._headerDividerFactory());
-					divider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
-					this.addChild(divider);
+					headerDivider = DisplayObject(this._headerDividerFactory());
+					headerDivider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
+					this._headerDividerGroup.addChildAt(headerDivider, i);
 				}
-				activeDividers[i] = divider;
+				activeDividers[i] = headerDivider;
 				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
-				divider.height = headerRenderer.height;
-				if(divider is IValidating)
+				headerDivider.height = headerRenderer.height;
+				if(headerDivider is IValidating)
 				{
-					IValidating(divider).validate();
+					IValidating(headerDivider).validate();
 				}
-				divider.x = this._headerGroup.x + headerRenderer.x + headerRenderer.width - (divider.width / 2);
-				divider.y = this._headerGroup.y + headerRenderer.y;
+				headerDivider.x = headerRenderer.x + headerRenderer.width - (headerDivider.width / 2);
+				headerDivider.y = headerRenderer.y;
 			}
 			dividerCount = inactiveDividers.length;
 			for(i = 0; i < dividerCount; i++)
 			{
-				divider = inactiveDividers.shift();
-				divider.removeEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
-				divider.removeFromParent(true);
+				headerDivider = inactiveDividers.shift();
+				headerDivider.removeEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
+				headerDivider.removeFromParent(true);
 			}
 		}
 
@@ -2756,7 +2787,7 @@ package feathers.controls
 					this.calculateResizedColumnWidth();
 					this._resizingColumnIndex = -1;
 
-					this.removeChild(this._currentColumnResizeSkin, this._currentColumnResizeSkin !== this._columnResizeSkin);
+					this._currentColumnResizeSkin.removeFromParent(this._currentColumnResizeSkin !== this._columnResizeSkin);
 					this._currentColumnResizeSkin = null;
 					this._headerDividerTouchID = -1;
 				}
