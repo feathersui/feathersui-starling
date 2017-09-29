@@ -1404,6 +1404,12 @@ package feathers.controls.text
 			//nativeStage, focus will be removed from the StageText, but the
 			//soft keyboard will incorrectly remain open.
 			starling.nativeStage.focus = null;
+			if(!this.isParentChainVisible())
+			{
+				//this normally happens in render(), but if we're not visible,
+				//we need to hide the StageText manually.
+				this.stageText.visible = false;
+			}
 		}
 
 		/**
@@ -1643,6 +1649,13 @@ package feathers.controls.text
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
+				if(!this.isParentChainVisible())
+				{
+					//issue #1620
+					//our parent has been hidden, so our render() method won't
+					//be called, and we need to hide the StageText.
+					this.stageText.visible = false;
+				}
 				//we're going to update the texture in render() because 
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
@@ -2322,6 +2335,33 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function dispatchKeyboardEventToStage(event:KeyboardEvent):void
+		{
+			var starling:Starling = stageToStarling(this.stage);
+			starling.nativeStage.dispatchEvent(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function isParentChainVisible():Boolean
+		{
+			var target:DisplayObject = this;
+			do
+			{
+				if(!target.visible)
+				{
+					return false;
+				}
+				target = target.parent;
+			}
+			while(target)
+			return true;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
 			//remove this from the stage, if needed
@@ -2396,17 +2436,10 @@ package feathers.controls.text
 		{
 			if(this._stageTextHasFocus)
 			{
-				var target:DisplayObject = this;
-				do
+				if(!this.isParentChainVisible())
 				{
-					if(!target.visible)
-					{
-						this.stageText.stage.focus = null;
-						break;
-					}
-					target = target.parent;
+					this.stageText.stage.focus = null;
 				}
-				while(target)
 			}
 			else
 			{

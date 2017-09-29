@@ -56,6 +56,14 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		public function get nativeFocus():TextField
+		{
+			return this._textField;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _text:String = "";
 
 		/**

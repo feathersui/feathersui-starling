@@ -541,7 +541,7 @@ package feathers.core
 
 		/**
 		 * When the <code>FeathersControl</code> constructor is called, the
-		 * <code>globalStyleProvider</code> property is set to this value. May be
+		 * <code>styleProvider</code> property is set to this value. May be
 		 * <code>null</code>.
 		 *
 		 * <p>Typically, a subclass of <code>FeathersControl</code> will
@@ -1927,6 +1927,12 @@ package feathers.core
 		 */
 		override public function dispose():void
 		{
+			//we don't dispose it if this is the parent because it'll
+			//already get disposed in super.dispose()
+			if(this._focusIndicatorSkin !== null && this._focusIndicatorSkin.parent !== this)
+			{
+				this._focusIndicatorSkin.dispose();
+			}
 			this._isDisposed = true;
 			this._validationQueue = null;
 			this.layoutData = null;

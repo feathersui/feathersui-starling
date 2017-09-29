@@ -2085,7 +2085,15 @@ package feathers.controls
 			{
 				if(this._isTextureOwner)
 				{
-					this._texture.dispose();
+					if(!SystemUtil.isDesktop && !SystemUtil.isApplicationActive)
+					{
+						//avoiding stage3d calls when a mobile application isn't active
+						SystemUtil.executeWhenApplicationIsActive(this._texture.dispose);
+					}
+					else
+					{
+						this._texture.dispose();
+					}
 				}
 				else if(this._textureCache !== null)
 				{
@@ -2574,7 +2582,7 @@ package feathers.controls
 			//(perhaps with some kind of AIR version detection, though)
 			var canReuseTexture:Boolean =
 				this._texture !== null &&
-				(!this._asyncTextureUpload || this._texture.root.uploadBitmapData.length === 1) &&
+				(!Texture.asyncBitmapUploadEnabled || !this._asyncTextureUpload) &&
 				this._texture.nativeWidth === bitmapData.width &&
 				this._texture.nativeHeight === bitmapData.height &&
 				this._texture.scale === this._scaleFactor &&
@@ -2582,6 +2590,15 @@ package feathers.controls
 			if(!canReuseTexture)
 			{
 				this.cleanupTexture();
+				if(this._textureCache)
+				{
+					//we need to replace the current texture in the cache,
+					//so we need to remove the old one so that the cache
+					//doesn't throw an error because there's already a
+					//texture with this key.
+					var key:String = this.sourceToTextureCacheKey(this._source);
+					this._textureCache.removeTexture(key);
+				}
 			}
 			if(this._delayTextureCreation && !this._isRestoringTexture)
 			{

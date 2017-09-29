@@ -18,6 +18,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.text.TextFormat;
+	import feathers.core.INativeFocusOwner;
 
 	/**
 	 * The type of anti-aliasing used for this text field, defined as
@@ -435,7 +436,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class ScrollText extends Scroller
+	public class ScrollText extends Scroller implements INativeFocusOwner
 	{
 		[Deprecated(replacement="feathers.controls.ScrollPolicy.AUTO",since="3.0.0")]
 		/**
@@ -665,6 +666,18 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ScrollText.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		public function get nativeFocus():Object
+		{
+			if(this.viewPort === null)
+			{
+				return null;
+			}
+			return this.textViewPort.nativeFocus;
 		}
 
 		/**

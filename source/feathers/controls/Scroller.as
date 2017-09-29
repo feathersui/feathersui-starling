@@ -5445,7 +5445,7 @@ package feathers.controls
 				{
 					//even if explicitWidth is NaN, the view port might measure
 					//a view port width smaller than its content width
-					scrollerWidth = this._viewPort.visibleWidth + this._topViewPortOffset + this._bottomViewPortOffset;
+					scrollerWidth = this._viewPort.visibleWidth + this._leftViewPortOffset + this._rightViewPortOffset;
 				}
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy === ScrollPolicy.ON ||
@@ -7536,8 +7536,8 @@ package feathers.controls
 					(this._rightPullView !== null && (this._currentTouchX < this._startTouchX || this._horizontalScrollPosition > this._minHorizontalScrollPosition))
 				) &&
 				(
-					((horizontalInchesMoved <= -this._minimumDragDistance) && (this._hasElasticEdges || this._horizontalScrollPosition < this._maxHorizontalScrollPosition)) ||
-					((horizontalInchesMoved >= this._minimumDragDistance) && (this._hasElasticEdges || this._horizontalScrollPosition > this._minHorizontalScrollPosition))
+					((horizontalInchesMoved <= -this._minimumDragDistance) && (this._hasElasticEdges || this._horizontalScrollPosition < this._maxHorizontalScrollPosition || this._rightPullView !== null)) ||
+					((horizontalInchesMoved >= this._minimumDragDistance) && (this._hasElasticEdges || this._horizontalScrollPosition > this._minHorizontalScrollPosition || this._leftPullView !== null))
 				))
 			{
 				if(this.horizontalScrollBar)
@@ -7566,8 +7566,8 @@ package feathers.controls
 					(this._bottomPullView !== null && (this._currentTouchY < this._startTouchY || this._verticalScrollPosition > this._minVerticalScrollPosition))
 				) &&
 				(
-					((verticalInchesMoved <= -this._minimumDragDistance) && (this._hasElasticEdges || this._verticalScrollPosition < this._maxVerticalScrollPosition)) ||
-					((verticalInchesMoved >= this._minimumDragDistance) && (this._hasElasticEdges || this._verticalScrollPosition > this._minVerticalScrollPosition))
+					((verticalInchesMoved <= -this._minimumDragDistance) && (this._hasElasticEdges || this._verticalScrollPosition < this._maxVerticalScrollPosition || this._bottomPullView !== null)) ||
+					((verticalInchesMoved >= this._minimumDragDistance) && (this._hasElasticEdges || this._verticalScrollPosition > this._minVerticalScrollPosition || this._topPullView !== null))
 				))
 			{
 				if(this.verticalScrollBar)
