@@ -2,6 +2,8 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.3.1 - September 2017
+
 ## 3.3.0 - July 2017
 
 * New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.
