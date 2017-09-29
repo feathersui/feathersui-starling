@@ -38,7 +38,6 @@ package
 	import feathers.tests.FunctionStyleProviderTests;
 	import feathers.tests.GroupedListDataProviderTests;
 	import feathers.tests.GroupedListFactoryIDFunctionTests;
-	import feathers.tests.GroupedListFocusTests;
 	import feathers.tests.GroupedListRendererAddRemoveTests;
 	import feathers.tests.GroupedListTests;
 	import feathers.tests.HeaderInternalStateTests;
@@ -64,7 +63,6 @@ package
 	import feathers.tests.ListCollectionFilterTests;
 	import feathers.tests.ListCollectionWithArrayTests;
 	import feathers.tests.ListFactoryIDFunctionTests;
-	import feathers.tests.ListFocusTests;
 	import feathers.tests.ListRendererAddRemoveTests;
 	import feathers.tests.ListTests;
 	import feathers.tests.LongPressTests;
@@ -134,7 +132,6 @@ package
 	import feathers.tests.ToggleSwitchTests;
 	import feathers.tests.TokenListTests;
 	import feathers.tests.TouchToStateTests;
-	import feathers.tests.TreeFocusTests;
 	import feathers.tests.TreeTests;
 	import feathers.tests.VectorCollectionTests;
 	import feathers.tests.VectorHierarchicalCollectionTests;
