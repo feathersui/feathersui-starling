@@ -18,13 +18,12 @@ Say hello to [Feathers UI](https://feathersui.com/), a library of light-weight, 
 
 ### News and Updates
 
-* [Like on Facebook](https://facebook.com/feathersui)
 * [Follow on Twitter](https://twitter.com/feathersui)
-* [Find on Google+](https://www.google.com/+feathersui)
+* [Like on Facebook](https://facebook.com/feathersui)
 
 ## Minimum Requirements
 
-* Adobe AIR 26.0 for desktop or mobile apps
+* Adobe AIR 27.0 for desktop or mobile apps
 * Adobe Flash Player 19.0 for web browsers
 * Starling Framework 2.2
 
