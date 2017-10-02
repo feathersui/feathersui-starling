@@ -13,7 +13,6 @@ package feathers.controls
 	import feathers.data.ArrayCollection;
 	import feathers.data.IAutoCompleteSource;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.stageToStarling;

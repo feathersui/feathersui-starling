@@ -7,22 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
-	import feathers.core.IFeathersControl;
-	import feathers.core.IMeasureDisplayObject;
-	import feathers.core.IValidating;
-
-	import flash.errors.IllegalOperationError;
-	import flash.geom.Point;
-	import flash.ui.Keyboard;
-
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.errors.AbstractClassError;
-	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
-	import starling.utils.Pool;
 
 	/**
 	 * Abstract base class for <code>HorizontalLayout</code> and <code>VerticalLayout</code>.

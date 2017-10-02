@@ -15,8 +15,6 @@ package feathers.layout
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
-	import starling.events.Event;
-	import starling.events.EventDispatcher;
 
 	/**
 	 * Positions items as tiles (equal width and height) from top to bottom

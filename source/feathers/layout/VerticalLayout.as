@@ -18,7 +18,6 @@ package feathers.layout
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 	import starling.utils.Pool;
 
 	/**

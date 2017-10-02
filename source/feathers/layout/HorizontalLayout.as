@@ -17,7 +17,6 @@ package feathers.layout
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 
 	/**
 	 * Positions items from left to right in a single row.
