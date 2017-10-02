@@ -15,7 +15,6 @@ package feathers.controls.supportClasses
 	import feathers.core.IValidating;
 	import feathers.data.IHierarchicalCollection;
 	import feathers.data.IListCollection;
-	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
