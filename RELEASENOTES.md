@@ -4,6 +4,22 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.4.0 - In Development
 
+## 3.3.1 - October 2017
+
+* BitmapFontTextRenderer: fixed issue where multiple text renderers with multiple custom mesh styles would incorrectly share a single style.
+* FeathersControl: fixed issue where focusIndicatorSkin was not always disposed.
+* FontStylesSet: fixed issue where properties from a new starling.text.TextFormat were incorrectly copied to the old TextFormat, which could cause other components to change font styles too.
+* ImageLoader: fixed issue where texture would not be reused when starling.textures.Texture.asyncBitmapUploadEnabled is false.
+* ImageLoader: fixed issue where error was thrown if using texture cache and the texture could not be reused in its current state on restoration.
+* ImageLoader: fixed issue where a runtime error could be thrown if the texture is disposed while the application is deactivated on mobile.
+* Scroller: fixed issue where top and bottom offsets were used instead of left and right when determining if the horizontal scroll bar should be displayed.
+* Scroller: fixed issue where pull views would not work sometimes if hasElasticEdges is false.
+* ScrollText: fixed issue where Event.TRIGGERED would not work if FocusManager is enabled because it didn't implement INativeFocusOwner to return its TextField.
+* StageTextTextEditor: fixed issue where setting the parent TextInput's visible property to false inside a FeathersEventType.FOCUS_OUT listener would hide the background, but not the StageText.
+* StageTextTextEditor: fixed issue where calling clearFocus() after setting the parent TextInput's visible property to false would hide the background, but not the StageText.
+* TabNavigator: fixed issue where the previous screen was incorrectly recreated if isSwipeEnabled is true and a swipe transition is cancelled.
+* TextInputRestrict: fixed issue where -, ^, and \ characters could not be escaped. Used by BitmapFontTextEditor and TextBlockTextEditor.
+
 ## 3.3.0 - July 2017
 
 * New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.

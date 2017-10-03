@@ -493,6 +493,23 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		private var _customColumnSizes:Vector.<Number> = null;
+
+		public function get customColumnSizes():Vector.<Number>
+		{
+			return this._customColumnSizes;
+		}
+
+		public function set customColumnSizes(value:Vector.<Number>):void
+		{
+			if(this._customColumnSizes === value)
+			{
+				return;
+			}
+			this._customColumnSizes = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
 		private var _ignoreSelectionChanges:Boolean = false;
 
 		private var _isSelectable:Boolean = true;
@@ -785,6 +802,7 @@ package feathers.controls.supportClasses
 				rowRenderer.columns = null;
 				rowRenderer.index = -1;
 				rowRenderer.visible = false;
+				rowRenderer.customColumnSizes = null;
 				activeRowRenderers[activeRowRenderersCount] = rowRenderer;
 				activeRowRenderersCount++;
 			}
@@ -826,6 +844,7 @@ package feathers.controls.supportClasses
 			rowRenderer.columns = this._columns;
 			rowRenderer.index = rowIndex;
 			rowRenderer.owner = this._owner;
+			rowRenderer.customColumnSizes = this._customColumnSizes;
 
 			if(!isTemporary)
 			{
@@ -1061,6 +1080,7 @@ package feathers.controls.supportClasses
 					//if this row renderer used to be the typical row
 					//renderer, but it isn't anymore, it may have been set invisible!
 					rowRenderer.visible = true;
+					rowRenderer.customColumnSizes = this._customColumnSizes;
 					if(this._updateForDataReset)
 					{
 						//similar to calling updateItemAt(), replacing the data

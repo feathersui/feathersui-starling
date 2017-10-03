@@ -517,7 +517,7 @@ package feathers.core
 
 		/**
 		 * When the <code>FeathersControl</code> constructor is called, the
-		 * <code>globalStyleProvider</code> property is set to this value. May be
+		 * <code>styleProvider</code> property is set to this value. May be
 		 * <code>null</code>.
 		 *
 		 * <p>Typically, a subclass of <code>FeathersControl</code> will

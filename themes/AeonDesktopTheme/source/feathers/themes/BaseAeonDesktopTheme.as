@@ -273,6 +273,8 @@ package feathers.themes
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 2, 28);
 		protected static const SEEK_SLIDER_MINIMUM_TRACK_SCALE_9_GRID:Rectangle = new Rectangle(3, 0, 1, 4);
 		protected static const SEEK_SLIDER_MAXIMUM_TRACK_SCALE_9_GRID:Rectangle = new Rectangle(1, 0, 1, 4);
+		protected static const DATA_GRID_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 1, 2);
+		protected static const DATA_GRID_WIDE_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 3, 2);
 		
 		protected static const ITEM_RENDERER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 4, 4);
 		protected static const PROGRESS_BAR_FILL_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 4, 4);
@@ -512,6 +514,7 @@ package feathers.themes
 		protected var dataGridHeaderSortAscendingIconTexture:Texture;
 		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 		protected var dataGridDragIndicatorSkinTexture:Texture;
+		protected var dataGridColumnResizeSkinTexture:Texture;
 
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var groupedListHeaderBackgroundSkinTexture:Texture;
@@ -844,6 +847,7 @@ package feathers.themes
 
 			this.dataGridVerticalDividerSkinTexture = this.atlas.getTexture("data-grid-vertical-divider-skin0000");
 			this.dataGridDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-drag-indicator-skin0000");
+			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
 			this.dataGridHeaderBackgroundSkinTexture = this.atlas.getTexture("data-grid-header-background-skin0000");
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
 			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
@@ -1065,12 +1069,16 @@ package feathers.themes
 
 		protected function dataGridHeaderDividerFactory():DisplayObject
 		{
-			return new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_WIDE_DIVIDER_SCALE_9_GRID;
+			return skin;
 		}
 
 		protected function dataGridVerticalDividerFactory():DisplayObject
 		{
-			return new ImageSkin(this.dataGridVerticalDividerSkinTexture);
+			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_DIVIDER_SCALE_9_GRID;
+			return skin;
 		}
 
 	//-------------------------
@@ -1399,13 +1407,18 @@ package feathers.themes
 			headerBackgroundSkin.height = this.controlSize;
 			grid.headerBackgroundSkin = headerBackgroundSkin;
 
+			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
+			columnResizeSkin.scale9Grid = DATA_GRID_DIVIDER_SCALE_9_GRID;
+			grid.columnResizeSkin = columnResizeSkin;
+
 			var headerDragIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridDragIndicatorSkinTexture);
+			headerDragIndicatorSkin.scale9Grid = DATA_GRID_WIDE_DIVIDER_SCALE_9_GRID;
 			grid.headerDragIndicatorSkin = headerDragIndicatorSkin;
 			grid.extendedHeaderDragIndicator = true;
 
-			var headerDragColumnOverlaySkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
-			headerDragColumnOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
-			grid.headerDragColumnOverlaySkin = headerDragColumnOverlaySkin;
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
 
 			grid.verticalDividerFactory = this.dataGridVerticalDividerFactory;
 			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;

@@ -231,6 +231,34 @@ package feathers.controls.renderers
 	[Style(name="paddingLeft",type="Number")]
 
 	/**
+	 * An icon to display when the column is sorted in ascending order.
+	 *
+	 * <p>In the following example, sort ascending icon is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * headerRenderer.sortAscendingIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:sortDescendingIcon
+	 */
+	[Style(name="sortAscendingIcon",type="starling.display.DisplayObject")]
+
+	/**
+	 * An icon to display when the column is sorted in descending order.
+	 *
+	 * <p>In the following example, the sort descending icon is customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * headerRenderer.sortDescendingIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 * 
+	 * @see #style:sortAscendingIcon
+	 */
+	[Style(name="sortDescendingIcon",type="starling.display.DisplayObject")]
+
+	/**
 	 * The location where the header renderer's content is aligned vertically
 	 * (on the y-axis).
 	 *
