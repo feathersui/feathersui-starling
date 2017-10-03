@@ -2,10 +2,12 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.DataGrid;
+	import feathers.controls.DataGridColumn;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.data.ArrayCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.componentsExplorer.data.DataGridSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.system.DeviceCapabilities;
@@ -13,16 +15,20 @@ package feathers.examples.componentsExplorer.screens
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import feathers.controls.DataGridColumn;
 
 	[Event(name="complete",type="starling.events.Event")]
+	[Event(name="showSettings",type="starling.events.Event")]
 
 	public class DataGridScreen extends PanelScreen
 	{
+		public static const SHOW_SETTINGS:String = "showSettings";
+
 		public function DataGridScreen()
 		{
 			super();
 		}
+
+		public var settings:DataGridSettings;
 
 		private var _grid:DataGrid;
 
@@ -56,6 +62,11 @@ package feathers.examples.componentsExplorer.screens
 			this._grid = new DataGrid();
 			this._grid.dataProvider = new ArrayCollection(items);
 			this._grid.columns = new ArrayCollection(columns);
+
+			this._grid.sortableColumns = this.settings.sortableColumns;
+			this._grid.resizableColumns = this.settings.resizableColumns;
+			this._grid.reorderColumns = this.settings.reorderColumns;
+
 			//optimization: since this grid fills the entire screen, there's no
 			//need for clipping. clipping should not be disabled if there's a
 			//chance that item renderers could be visible if they appear outside
@@ -96,6 +107,13 @@ package feathers.examples.componentsExplorer.screens
 					backButton
 				];
 			}
+			var settingsButton:Button = new Button();
+			settingsButton.label = "Settings";
+			settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
+			header.rightItems = new <DisplayObject>
+			[
+				settingsButton
+			];
 			return header;
 		}
 		
@@ -112,6 +130,11 @@ package feathers.examples.componentsExplorer.screens
 		private function backButton_triggeredHandler(event:Event):void
 		{
 			this.onBackButton();
+		}
+
+		private function settingsButton_triggeredHandler(event:Event):void
+		{
+			this.dispatchEventWith(SHOW_SETTINGS);
 		}
 
 		private function list_changeHandler(event:Event):void

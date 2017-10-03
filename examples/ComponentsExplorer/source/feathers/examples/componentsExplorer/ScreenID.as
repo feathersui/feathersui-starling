@@ -10,6 +10,7 @@ package feathers.examples.componentsExplorer
 		public static const CALLOUT:String = "callout";
 		public static const CHECK:String = "check";
 		public static const DATA_GRID:String = "dataGrid";
+		public static const DATA_GRID_SETTINGS:String = "dataGridSettings";
 		public static const DATE_TIME_SPINNER:String = "dateTimeSpinner";
 		public static const DATE_TIME_SPINNER_SETTINGS:String = "dateTimeSpinnerSettings";
 		public static const GROUPED_LIST:String = "groupedList";

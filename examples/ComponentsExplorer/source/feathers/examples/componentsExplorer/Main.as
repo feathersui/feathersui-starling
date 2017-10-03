@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
+	import feathers.examples.componentsExplorer.data.DataGridSettings;
 	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
@@ -16,6 +17,8 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
 	import feathers.examples.componentsExplorer.screens.CheckScreen;
+	import feathers.examples.componentsExplorer.screens.DataGridScreen;
+	import feathers.examples.componentsExplorer.screens.DataGridSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerScreen;
 	import feathers.examples.componentsExplorer.screens.DateTimeSpinnerSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
@@ -54,7 +57,6 @@ package feathers.examples.componentsExplorer
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	import feathers.examples.componentsExplorer.screens.DataGridScreen;
 
 	public class Main extends Drawers
 	{
@@ -102,9 +104,20 @@ package feathers.examples.componentsExplorer
 			checkItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ScreenID.CHECK, checkItem);
 
+			var dataGridSettings:DataGridSettings = new DataGridSettings();
 			var dataGridItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DataGridScreen);
+			dataGridItem.setScreenIDForPushEvent(DataGridScreen.SHOW_SETTINGS, ScreenID.DATA_GRID_SETTINGS);
 			dataGridItem.addPopEvent(Event.COMPLETE);
+			dataGridItem.properties.settings = dataGridSettings;
 			this._navigator.addScreen(ScreenID.DATA_GRID, dataGridItem);
+
+			var dataGridSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DataGridSettingsScreen);
+			dataGridSettingsItem.addPopEvent(Event.COMPLETE);
+			dataGridSettingsItem.properties.settings = dataGridSettings;
+			//custom push and pop transitions for this settings screen
+			dataGridSettingsItem.pushTransition = Cover.createCoverUpTransition();
+			dataGridSettingsItem.popTransition = Reveal.createRevealDownTransition();
+			this._navigator.addScreen(ScreenID.DATA_GRID_SETTINGS, dataGridSettingsItem);
 
 			var dateTimeSpinnerSettings:DateTimeSpinnerSettings = new DateTimeSpinnerSettings();
 			var dateTimeSpinnerItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(DateTimeSpinnerScreen);
