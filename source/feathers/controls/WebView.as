@@ -568,7 +568,7 @@ package feathers.controls
 		 */
 		protected function stageWebView_locationChangeHandler(event:flash.events.Event):void
 		{
-			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGE);
+			this.dispatchEventWith(FeathersEventType.LOCATION_CHANGE, false, event);
 		}
 
 		/**
@@ -584,7 +584,7 @@ package feathers.controls
 		 */
 		protected function stageWebView_completeHandler(event:flash.events.Event):void
 		{
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE, false, event);
 		}
 	}
 }
