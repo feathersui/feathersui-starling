@@ -1590,6 +1590,8 @@ package feathers.controls
 				this._columnDragOverlaySkin.dispose();
 				this._columnDragOverlaySkin = null;
 			}
+			this.refreshInactiveHeaderDividers(true);
+			this.refreshInactiveVerticalDividers(true);
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndices.removeEventListeners();
@@ -1741,6 +1743,9 @@ package feathers.controls
 		 */
 		protected function refreshVerticalDividers():void
 		{
+			this.refreshInactiveVerticalDividers(this._verticalDividerStorage.factory !== this._verticalDividerFactory);
+			this._verticalDividerStorage.factory = this._verticalDividerFactory;
+
 			var columnCount:int = this._columns.length;
 			var dividerCount:int = 0;
 			if(this._verticalDividerFactory !== null)
@@ -1749,9 +1754,6 @@ package feathers.controls
 			}
 
 			this._headerGroup.validate();
-			var temp:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
-			this._verticalDividerStorage.inactiveDividers = this._verticalDividerStorage.activeDividers;
-			this._verticalDividerStorage.activeDividers = temp;
 			var activeDividers:Vector.<DisplayObject> = this._verticalDividerStorage.activeDividers;
 			var inactiveDividers:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
 			for(var i:int = 0; i < dividerCount; i++)
@@ -1777,10 +1779,33 @@ package feathers.controls
 				verticalDivider.x = headerRenderer.x + headerRenderer.width - (verticalDivider.width / 2);
 				verticalDivider.y = 0;
 			}
-			dividerCount = inactiveDividers.length;
-			for(i = 0; i < dividerCount; i++)
+			this.freeInactiveVerticalDividers();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshInactiveVerticalDividers(forceCleanup:Boolean):void
+		{
+			var temp:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
+			this._verticalDividerStorage.inactiveDividers = this._verticalDividerStorage.activeDividers;
+			this._verticalDividerStorage.activeDividers = temp;
+			if(forceCleanup)
 			{
-				verticalDivider = inactiveDividers.shift();
+				this.freeInactiveVerticalDividers();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function freeInactiveVerticalDividers():void
+		{
+			var inactiveDividers:Vector.<DisplayObject> = this._verticalDividerStorage.inactiveDividers;
+			var dividerCount:int = inactiveDividers.length;
+			for(var i:int = 0; i < dividerCount; i++)
+			{
+				var verticalDivider:DisplayObject = inactiveDividers.shift();
 				verticalDivider.removeFromParent(true);
 			}
 		}
@@ -1790,6 +1815,9 @@ package feathers.controls
 		 */
 		protected function refreshHeaderDividers():void
 		{
+			this.refreshInactiveHeaderDividers(this._headerDividerStorage.factory !== this._headerDividerFactory);
+			this._headerDividerStorage.factory = this._headerDividerFactory;
+
 			var columnCount:int = this._columns.length;
 			var dividerCount:int = 0;
 			if(this._headerDividerFactory !== null)
@@ -1803,9 +1831,6 @@ package feathers.controls
 			}
 
 			this._headerGroup.validate();
-			var temp:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
-			this._headerDividerStorage.inactiveDividers = this._headerDividerStorage.activeDividers;
-			this._headerDividerStorage.activeDividers = temp;
 			var activeDividers:Vector.<DisplayObject> = this._headerDividerStorage.activeDividers;
 			var inactiveDividers:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
 			for(var i:int = 0; i < dividerCount; i++)
@@ -1832,10 +1857,33 @@ package feathers.controls
 				headerDivider.x = headerRenderer.x + headerRenderer.width - (headerDivider.width / 2);
 				headerDivider.y = headerRenderer.y;
 			}
-			dividerCount = inactiveDividers.length;
-			for(i = 0; i < dividerCount; i++)
+			this.freeInactiveHeaderDividers();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshInactiveHeaderDividers(forceCleanup:Boolean):void
+		{
+			var temp:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
+			this._headerDividerStorage.inactiveDividers = this._headerDividerStorage.activeDividers;
+			this._headerDividerStorage.activeDividers = temp;
+			if(forceCleanup)
 			{
-				headerDivider = inactiveDividers.shift();
+				this.freeInactiveHeaderDividers();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function freeInactiveHeaderDividers():void
+		{
+			var inactiveDividers:Vector.<DisplayObject> = this._headerDividerStorage.inactiveDividers;
+			var dividerCount:int = inactiveDividers.length;
+			for(var i:int = 0; i < dividerCount; i++)
+			{
+				var headerDivider:DisplayObject = inactiveDividers.shift();
 				headerDivider.removeEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
 				headerDivider.removeFromParent(true);
 			}
@@ -2990,4 +3038,5 @@ class DividerFactoryStorage
 {
 	public var activeDividers:Vector.<DisplayObject> = new <DisplayObject>[];
 	public var inactiveDividers:Vector.<DisplayObject> = new <DisplayObject>[];
+	public var factory:Function = null;
 }
