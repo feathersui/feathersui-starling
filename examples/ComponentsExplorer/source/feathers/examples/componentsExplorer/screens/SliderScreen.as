@@ -52,6 +52,7 @@ package feathers.examples.componentsExplorer.screens
 			this._horizontalSlider.step = this.settings.step;
 			this._horizontalSlider.page = this.settings.page;
 			this._horizontalSlider.liveDragging = this.settings.liveDragging;
+			this._horizontalSlider.trackInteractionMode = this.settings.trackInteractionMode;
 			this._horizontalSlider.addEventListener(Event.CHANGE, horizontalSlider_changeHandler);
 			this.addChild(this._horizontalSlider);
 
@@ -63,6 +64,7 @@ package feathers.examples.componentsExplorer.screens
 			this._verticalSlider.step = this.settings.step;
 			this._verticalSlider.page = this.settings.page;
 			this._verticalSlider.liveDragging = this.settings.liveDragging;
+			this._verticalSlider.trackInteractionMode = this.settings.trackInteractionMode;
 			this.addChild(this._verticalSlider);
 
 			this.headerFactory = this.customHeaderFactory;

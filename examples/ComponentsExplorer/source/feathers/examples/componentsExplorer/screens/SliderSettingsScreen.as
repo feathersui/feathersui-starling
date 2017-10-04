@@ -14,6 +14,8 @@ package feathers.examples.componentsExplorer.screens
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import feathers.controls.PickerList;
+	import feathers.controls.TrackInteractionMode;
 
 	[Event(name="complete",type="starling.events.Event")]
 
@@ -30,6 +32,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _liveDraggingToggle:ToggleSwitch;
 		private var _stepStepper:NumericStepper;
 		private var _pageStepper:NumericStepper;
+		private var _trackInteractionModePicker:PickerList;
 
 		override public function dispose():void
 		{
@@ -64,6 +67,16 @@ package feathers.examples.componentsExplorer.screens
 			this._stepStepper.value = this.settings.step;
 			this._stepStepper.addEventListener(Event.CHANGE, stepStepper_changeHandler);
 
+			this._trackInteractionModePicker = new PickerList();
+			this._trackInteractionModePicker.typicalItem = TrackInteractionMode.TO_VALUE;
+			this._trackInteractionModePicker.dataProvider = new ArrayCollection(
+			[
+				TrackInteractionMode.TO_VALUE,
+				TrackInteractionMode.BY_PAGE,
+			]);
+			this._trackInteractionModePicker.selectedItem = this.settings.trackInteractionMode;
+			this._trackInteractionModePicker.addEventListener(Event.CHANGE, trackInteractionModePicker_changeHandler);
+
 			this._pageStepper = new NumericStepper();
 			this._pageStepper.minimum = 1;
 			this._pageStepper.maximum = 20;
@@ -77,6 +90,7 @@ package feathers.examples.componentsExplorer.screens
 			[
 				{ label: "liveDragging", accessory: this._liveDraggingToggle },
 				{ label: "step", accessory: this._stepStepper },
+				{ label: "trackInteractionMode", accessory: this._trackInteractionModePicker },
 				{ label: "page", accessory: this._pageStepper },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
@@ -125,6 +139,11 @@ package feathers.examples.componentsExplorer.screens
 		private function pageStepper_changeHandler(event:Event):void
 		{
 			this.settings.page = this._pageStepper.value;
+		}
+
+		private function trackInteractionModePicker_changeHandler(event:Event):void
+		{
+			this.settings.trackInteractionMode = this._trackInteractionModePicker.selectedItem as String;
 		}
 
 		private function doneButton_triggeredHandler(event:Event):void
