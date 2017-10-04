@@ -1818,16 +1818,11 @@ package feathers.controls
 			this.refreshInactiveHeaderDividers(this._headerDividerStorage.factory !== this._headerDividerFactory);
 			this._headerDividerStorage.factory = this._headerDividerFactory;
 
-			var columnCount:int = this._columns.length;
-			var dividerCount:int = 0;
-			if(this._headerDividerFactory !== null)
+			var dividerCount:int = this._columns.length;
+			if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
+				this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
 			{
-				dividerCount = columnCount;
-				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
-					this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
-				{
-					dividerCount--;
-				}
+				dividerCount--;
 			}
 
 			this._headerGroup.validate();
@@ -1841,9 +1836,16 @@ package feathers.controls
 					headerDivider = inactiveDividers.shift();
 					this._headerDividerGroup.setChildIndex(headerDivider, i);
 				}
-				else
+				else if(this._headerDividerFactory !== null)
 				{
 					headerDivider = DisplayObject(this._headerDividerFactory());
+					headerDivider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
+					this._headerDividerGroup.addChildAt(headerDivider, i);
+				}
+				else
+				{
+					headerDivider = new Quad(3, 1, 0xff00ff);
+					headerDivider.alpha = 0;
 					headerDivider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
 					this._headerDividerGroup.addChildAt(headerDivider, i);
 				}
