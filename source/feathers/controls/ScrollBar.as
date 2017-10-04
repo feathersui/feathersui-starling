@@ -17,7 +17,9 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
+	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
+	import feathers.utils.math.roundUpToNearest;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -28,6 +30,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to the scroll bar's decrement button
@@ -366,11 +369,6 @@ package feathers.controls
 	 */
 	public class ScrollBar extends FeathersControl implements IDirectionalScrollBar
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -1988,6 +1986,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _pageStartValue:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _touchValue:Number;
 
 		/**
@@ -3107,7 +3110,7 @@ package feathers.controls
 		{
 			var range:Number = this._maximum - this._minimum;
 			var adjustedPage:Number = this._page;
-			if(this._page == 0)
+			if(this._page === 0)
 			{
 				adjustedPage = this._step;
 			}
@@ -3115,21 +3118,21 @@ package feathers.controls
 			{
 				adjustedPage = range;
 			}
-			if(this._touchValue < this._value)
+			if(this._touchValue < this._pageStartValue)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - adjustedPage);
-				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
+				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
 				{
-					newValue = roundToNearest(newValue, this._step);
+					newValue = roundDownToNearest(newValue, this._step);
 				}
 				this.value = newValue;
 			}
-			else if(this._touchValue > this._value)
+			else if(this._touchValue > this._pageStartValue)
 			{
 				newValue = Math.min(this._touchValue, this._value + adjustedPage);
-				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
+				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
 				{
-					newValue = roundToNearest(newValue, this._step);
+					newValue = roundUpToNearest(newValue, this._step);
 				}
 				this.value = newValue;
 			}
@@ -3223,30 +3226,41 @@ package feathers.controls
 			var track:DisplayObject = DisplayObject(event.currentTarget);
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch = event.getTouch(track, TouchPhase.ENDED, this._touchPointID);
-				if(!touch)
+				var touch:Touch = event.getTouch(track, null, this._touchPointID);
+				if(touch === null)
 				{
 					return;
 				}
-				this._touchPointID = -1;
-				this._repeatTimer.stop();
-				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+				if(touch.phase === TouchPhase.MOVED)
+				{
+					var location:Point = touch.getLocation(this, Pool.getPoint());
+					this._touchValue = this.locationToValue(location);
+					Pool.putPoint(location);
+				}
+				else if(touch.phase === TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this._repeatTimer.stop();
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+				}
 			}
 			else
 			{
 				touch = event.getTouch(track, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
 				this._touchPointID = touch.id;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-				touch.getLocation(this, HELPER_POINT);
-				this._touchStartX = HELPER_POINT.x;
-				this._touchStartY = HELPER_POINT.y;
-				this._thumbStartX = HELPER_POINT.x;
-				this._thumbStartY = HELPER_POINT.y;
-				this._touchValue = this.locationToValue(HELPER_POINT);
+				location = touch.getLocation(this, Pool.getPoint());
+				this._touchStartX = location.x;
+				this._touchStartY = location.y;
+				this._thumbStartX = this._touchStartX;
+				this._thumbStartY = this._touchStartY;
+				this._touchValue = this.locationToValue(location);
+				Pool.putPoint(location);
+				this._pageStartValue = this._value;
 				this.adjustPage();
 				this.startRepeatTimer(this.adjustPage);
 			}
@@ -3266,21 +3280,22 @@ package feathers.controls
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
-				if(touch.phase == TouchPhase.MOVED)
+				if(touch.phase === TouchPhase.MOVED)
 				{
-					touch.getLocation(this, HELPER_POINT);
-					var newValue:Number = this.locationToValue(HELPER_POINT);
+					var location:Point = touch.getLocation(this, Pool.getPoint());
+					var newValue:Number = this.locationToValue(location);
+					Pool.putPoint(location);
 					if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 					{
 						newValue = roundToNearest(newValue, this._step);
 					}
 					this.value = newValue;
 				}
-				else if(touch.phase == TouchPhase.ENDED)
+				else if(touch.phase === TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
 					this.isDragging = false;
@@ -3294,16 +3309,17 @@ package feathers.controls
 			else
 			{
 				touch = event.getTouch(this.thumb, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
-				touch.getLocation(this, HELPER_POINT);
+				location = touch.getLocation(this, Pool.getPoint());
 				this._touchPointID = touch.id;
 				this._thumbStartX = this.thumb.x;
 				this._thumbStartY = this.thumb.y;
-				this._touchStartX = HELPER_POINT.x;
-				this._touchStartY = HELPER_POINT.y;
+				this._touchStartX = location.x;
+				this._touchStartY = location.y;
+				Pool.putPoint(location);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
@@ -3323,7 +3339,7 @@ package feathers.controls
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this.decrementButton, TouchPhase.ENDED, this._touchPointID);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
@@ -3334,7 +3350,7 @@ package feathers.controls
 			else //if we get here, we don't have a saved touch ID yet
 			{
 				touch = event.getTouch(this.decrementButton, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
@@ -3359,7 +3375,7 @@ package feathers.controls
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this.incrementButton, TouchPhase.ENDED, this._touchPointID);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
@@ -3370,7 +3386,7 @@ package feathers.controls
 			else //if we get here, we don't have a saved touch ID yet
 			{
 				touch = event.getTouch(this.incrementButton, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}

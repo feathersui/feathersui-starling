@@ -18,7 +18,9 @@ package feathers.controls
 	import feathers.layout.Direction;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
+	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
+	import feathers.utils.math.roundUpToNearest;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -31,6 +33,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to the slider's maximum track sub-component.
@@ -330,11 +333,6 @@ package feathers.controls
 	 */
 	public class Slider extends FeathersControl implements IDirectionalScrollBar, IFocusDisplayObject
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -1672,6 +1670,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _pageStartValue:Number;
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(this._value < this._minimum)
@@ -2558,13 +2561,23 @@ package feathers.controls
 			{
 				page = this._step;
 			}
-			if(this._touchValue < this._value)
+			if(this._touchValue < this._pageStartValue)
 			{
-				this.value = Math.max(this._touchValue, this._value - page);
+				var newValue:Number = Math.max(this._touchValue, this._value - page);
+				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				{
+					newValue = roundDownToNearest(newValue, this._step);
+				}
+				this.value = newValue;
 			}
-			else if(this._touchValue > this._value)
+			else if(this._touchValue > this._pageStartValue)
 			{
-				this.value = Math.min(this._touchValue, this._value + page);
+				newValue = Math.min(this._touchValue, this._value + page);
+				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				{
+					newValue = roundUpToNearest(newValue, this._step);
+				}
+				this.value = newValue;
 			}
 		}
 
@@ -2623,18 +2636,23 @@ package feathers.controls
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(track, null, this._touchPointID);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
 				if(touch.phase === TouchPhase.MOVED)
 				{
-					touch.getLocation(this, HELPER_POINT);
-					this.value = this.locationToValue(HELPER_POINT);
+					var location:Point = touch.getLocation(this, Pool.getPoint());
+					this._touchValue = this.locationToValue(location);
+					Pool.putPoint(location);
+					if(!this._showThumb || this._trackInteractionMode !== TrackInteractionMode.BY_PAGE)
+					{
+						this.value = this._touchValue;
+					}
 				}
 				else if(touch.phase === TouchPhase.ENDED)
 				{
-					if(this._repeatTimer)
+					if(this._repeatTimer !== null)
 					{
 						this._repeatTimer.stop();
 					}
@@ -2650,25 +2668,27 @@ package feathers.controls
 			else
 			{
 				touch = event.getTouch(track, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
-				touch.getLocation(this, HELPER_POINT);
+				location = touch.getLocation(this, Pool.getPoint());
 				this._touchPointID = touch.id;
 				if(this._direction == Direction.VERTICAL)
 				{
-					this._thumbStartX = HELPER_POINT.x;
-					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
+					this._thumbStartX = location.x;
+					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
 				}
 				else //horizontal
 				{
-					this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, HELPER_POINT.x - this.thumb.width / 2));
-					this._thumbStartY = HELPER_POINT.y;
+					this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
+					this._thumbStartY = location.y;
 				}
-				this._touchStartX = HELPER_POINT.x;
-				this._touchStartY = HELPER_POINT.y;
-				this._touchValue = this.locationToValue(HELPER_POINT);
+				this._touchStartX = location.x;
+				this._touchStartY = location.y;
+				this._touchValue = this.locationToValue(location);
+				Pool.putPoint(location);
+				this._pageStartValue = this._value;
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 				if(this._showThumb && this._trackInteractionMode === TrackInteractionMode.BY_PAGE)
@@ -2697,11 +2717,11 @@ package feathers.controls
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
-				if(touch.phase == TouchPhase.MOVED)
+				if(touch.phase === TouchPhase.MOVED)
 				{
 					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 					var claim:DisplayObject = exclusiveTouch.getClaim(this._touchPointID);
@@ -2717,10 +2737,11 @@ package feathers.controls
 							exclusiveTouch.claimTouch(this._touchPointID, this);
 						}
 					}
-					touch.getLocation(this, HELPER_POINT);
-					this.value = this.locationToValue(HELPER_POINT);
+					var location:Point = touch.getLocation(this, Pool.getPoint());
+					this.value = this.locationToValue(location);
+					Pool.putPoint(location);
 				}
-				else if(touch.phase == TouchPhase.ENDED)
+				else if(touch.phase === TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
 					this.isDragging = false;
@@ -2734,16 +2755,17 @@ package feathers.controls
 			else
 			{
 				touch = event.getTouch(this.thumb, TouchPhase.BEGAN);
-				if(!touch)
+				if(touch === null)
 				{
 					return;
 				}
-				touch.getLocation(this, HELPER_POINT);
+				location = touch.getLocation(this, Pool.getPoint());
 				this._touchPointID = touch.id;
 				this._thumbStartX = this.thumb.x;
 				this._thumbStartY = this.thumb.y;
-				this._touchStartX = HELPER_POINT.x;
-				this._touchStartY = HELPER_POINT.y;
+				this._touchStartX = location.x;
+				this._touchStartY = location.y;
+				Pool.putPoint(location);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
