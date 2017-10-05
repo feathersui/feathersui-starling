@@ -1717,6 +1717,9 @@ package feathers.controls
 		 */
 		override protected function layoutChildren():void
 		{
+			this.validateCustomColumnSizes();
+			this.layoutHeaderRenderers();
+
 			this._headerLayout.paddingLeft = this._leftViewPortOffset;
 			this._headerLayout.paddingRight = this._rightViewPortOffset;
 			this._headerGroup.width = this.actualWidth;
@@ -1736,6 +1739,117 @@ package feathers.controls
 
 			this.refreshHeaderDividers();
 			this.refreshVerticalDividers();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateCustomColumnSizes():void
+		{
+			if(this._customColumnSizes === null || this._customColumnSizes.length < this._columns.length)
+			{
+				return;
+			}
+
+			var availableWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+			var count:int = this._customColumnSizes.length;
+			var totalWidth:Number = 0;
+			var indices:Vector.<int> = new <int>[];
+			for(var i:int = 0; i < count; i++)
+			{
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
+				if(column.width === column.width) //!isNaN
+				{
+					//if the width is set explicitly, skip it!
+					availableWidth -= column.width;
+					continue;
+				}
+				var size:Number = this._customColumnSizes[i];
+				totalWidth += size;
+				indices[i] = i;
+			}
+			if(totalWidth === availableWidth)
+			{
+				return;
+			}
+
+			//make a copy so that this is detected as a change
+			this._customColumnSizes = this._customColumnSizes.slice();
+
+			var widthToDistribute:Number = availableWidth - totalWidth;
+			this.distributeWidthToIndices(widthToDistribute, indices, totalWidth);
+			this.dataViewPort.customColumnSizes = this._customColumnSizes;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function distributeWidthToIndices(widthToDistribute:Number, indices:Vector.<int>, totalWidthOfIndices:Number):void
+		{
+			while(Math.abs(widthToDistribute) > 1)
+			{
+				//this will be the store value if we need to loop again
+				var nextWidthToDistribute:Number = widthToDistribute;
+				var count:int = indices.length;
+				for(var i:int = count - 1; i >= 0; i--)
+				{
+					var index:int = indices[i];
+					var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(index));
+					var columnWidth:Number = headerRenderer.width;
+					var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(index));
+					var percent:Number = columnWidth / totalWidthOfIndices;
+					var offset:Number = widthToDistribute * percent;
+					var newWidth:Number = this._customColumnSizes[index] + offset;
+					if(newWidth < column.minWidth)
+					{
+						offset += (column.minWidth - newWidth);
+						newWidth = column.minWidth;
+						//we've hit the minimum, so skip it if we loop again
+						indices.removeAt(i);
+						//also readjust the total to exclude this column
+						//so that the percentages still add up to 100%
+						totalWidthOfIndices -= columnWidth;
+					}
+					this._customColumnSizes[index] = newWidth;
+					nextWidthToDistribute -= offset;
+				}
+				widthToDistribute = nextWidthToDistribute;
+			}
+
+			if(widthToDistribute !== 0)
+			{
+				//if we have less than a pixel left, just add it to the
+				//final column and exit the loop
+				this._customColumnSizes[this._customColumnSizes.length - 1] += widthToDistribute;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutHeaderRenderers():void
+		{
+			var columnCount:int = this._columns.length;
+			for(var i:int = 0; i < columnCount; i++)
+			{
+				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
+				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
+				if(column.width === column.width) //!isNaN
+				{
+					headerRenderer.width = column.width;
+					headerRenderer.layoutData = null;
+				}
+				else if(this._customColumnSizes !== null && i < this._customColumnSizes.length)
+				{
+					headerRenderer.width = this._customColumnSizes[i];
+					headerRenderer.layoutData = null;
+				}
+				else if(headerRenderer.layoutData === null)
+				{
+					headerRenderer.layoutData = new HorizontalLayoutData(100);
+				}
+				headerRenderer.minWidth = column.minWidth;
+			}
 		}
 
 		/**
@@ -1930,21 +2044,6 @@ package feathers.controls
 				if(headerRenderer !== null)
 				{
 					headerRenderer.columnIndex = i;
-					if(column.width === column.width) //!isNaN
-					{
-						headerRenderer.width = column.width;
-						headerRenderer.layoutData = null;
-					}
-					else if(this._customColumnSizes !== null && i < this._customColumnSizes.length)
-					{
-						headerRenderer.width = this._customColumnSizes[i];
-						headerRenderer.layoutData = null;
-					}
-					else if(headerRenderer.layoutData === null)
-					{
-						headerRenderer.layoutData = new HorizontalLayoutData(100);
-					}
-					headerRenderer.minWidth = column.minWidth;
 					headerRenderer.visible = true;
 					if(column === this._sortedColumn)
 					{
@@ -2084,21 +2183,6 @@ package feathers.controls
 			headerRenderer.data = column;
 			headerRenderer.columnIndex = columnIndex;
 			headerRenderer.owner = this;
-			if(column.width === column.width) //!isNaN
-			{
-				headerRenderer.width = column.width;
-				headerRenderer.layoutData = null;
-			}
-			else if(this._customColumnSizes !== null && columnIndex < this._customColumnSizes.length)
-			{
-				headerRenderer.width = this._customColumnSizes[columnIndex];
-				headerRenderer.layoutData = null;
-			}
-			else if(headerRenderer.layoutData === null)
-			{
-				headerRenderer.layoutData = new HorizontalLayoutData(100);
-			}
-			headerRenderer.minWidth = column.minWidth;
 
 			this._headerRendererMap[column] = headerRenderer;
 			activeHeaderRenderers[activeHeaderRenderers.length] = headerRenderer;
@@ -2917,7 +3001,7 @@ package feathers.controls
 			var totalMinWidth:Number = 0;
 			var originalWidth:Number = headerRenderer.width;
 			var totalWidthAfter:Number = 0;
-			var indicesAfter:Vector.<Number> = new <Number>[];
+			var indicesAfter:Vector.<int> = new <int>[];
 			for(var i:int = 0; i < columnCount; i++)
 			{
 				var currentColumn:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
@@ -2982,42 +3066,7 @@ package feathers.controls
 			//the width to distribute may be positive or negative, depending on
 			//whether the resized column was made smaller or larger
 			var widthToDistribute:Number = originalWidth - newWidth;
-			while(Math.abs(widthToDistribute) > 1)
-			{
-				//this will be the store value if we need to loop again
-				var nextWidthToDistribute:Number = widthToDistribute;
-				var customSizesIndicesCount:int = indicesAfter.length;
-				for(i = customSizesIndicesCount - 1; i >= 0; i--)
-				{
-					index = indicesAfter[i];
-					headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(index));
-					columnWidth = headerRenderer.width;
-					var percent:Number = columnWidth / totalWidthAfter;
-					var offset:Number = widthToDistribute * percent;
-					newWidth = this._customColumnSizes[index] + offset;
-					if(newWidth < column.minWidth)
-					{
-						offset += (column.minWidth - newWidth);
-						newWidth = column.minWidth;
-						//we've hit the minimum, so skip it if we loop again
-						indicesAfter.removeAt(i);
-						//also readjust the total to exclude this column
-						//so that the percentages still add up to 100%
-						totalWidthAfter -= columnWidth;
-					}
-					this._customColumnSizes[index] = newWidth;
-					nextWidthToDistribute -= offset;
-				}
-				widthToDistribute = nextWidthToDistribute;
-			}
-
-			if(widthToDistribute !== 0)
-			{
-				//if we have less than a pixel left, just add it to the
-				//final column and exit the loop
-				this._customColumnSizes[this._customColumnSizes.length - 1] += widthToDistribute;
-			}
-
+			this.distributeWidthToIndices(widthToDistribute, indicesAfter, totalWidthAfter);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
