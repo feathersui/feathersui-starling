@@ -1425,6 +1425,13 @@ package feathers.controls
 			{
 				this.handlePendingScroll();
 			}
+			
+			for (var i:uint = 0; i<this.listGroup.numChildren; i++)
+			{
+				var control :FeathersControl = this.listGroup.getChildAt (i) as FeathersControl;
+				control.isEnabled = _isEnabled;
+			}
+			
 		}
 
 		/**
