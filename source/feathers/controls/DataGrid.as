@@ -2962,6 +2962,7 @@ package feathers.controls
 				this._resizingColumnIndex = dividerIndex;
 				this._headerDividerTouchID = touch.id;
 				this._headerDividerTouchX = touch.globalX;
+				headerRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(dividerIndex));
 				if(this._columnResizeSkin === null)
 				{
 					this._currentColumnResizeSkin = new Quad(1, 1, 0x000000);
@@ -2970,9 +2971,13 @@ package feathers.controls
 				{
 					this._currentColumnResizeSkin = this._columnResizeSkin;
 				}
-				this._currentColumnResizeSkin.x = divider.x;
 				this._currentColumnResizeSkin.height = this.actualHeight;
 				this.addChild(this._currentColumnResizeSkin);
+				if(this._currentColumnResizeSkin is IValidating)
+				{
+					IValidating(this._currentColumnResizeSkin).validate();
+				}
+				this._currentColumnResizeSkin.x = headerRenderer.x + headerRenderer.width - (this._currentColumnResizeSkin.width / 2);
 			}
 		}
 
@@ -2997,7 +3002,7 @@ package feathers.controls
 			//clear the explicit width because the user resized it
 			column.width = NaN;
 			var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(this._resizingColumnIndex));
-			var preferredWidth:Number = this._currentColumnResizeSkin.x - headerRenderer.x;
+			var preferredWidth:Number = this._currentColumnResizeSkin.x + (this._currentColumnResizeSkin.width / 2) - headerRenderer.x;
 			var totalMinWidth:Number = 0;
 			var originalWidth:Number = headerRenderer.width;
 			var totalWidthAfter:Number = 0;
