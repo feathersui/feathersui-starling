@@ -151,6 +151,8 @@ package feathers.themes
 		protected static const DRAWER_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0x1a1816;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
+		protected static const DATA_GRID_COLUMN_OVERLAY_COLOR:uint = 0x383430;
+		protected static const DATA_GRID_COLUMN_OVERLAY_ALPHA:Number = 0.4;
 
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(3, 3, 1, 1);
 		protected static const SIMPLE_SCALE9_GRID:Rectangle = new Rectangle(2, 2, 1, 1);
@@ -164,6 +166,10 @@ package feathers.themes
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(7, 7, 1, 11);
 		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE_9_GRID:Rectangle = new Rectangle(5, 0, 14, 10);
 		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID:Rectangle = new Rectangle(0, 5, 10, 14);
+		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 2, 4);
+		protected static const DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 4);
+		protected static const DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
+		protected static const DATA_GRID_DRAG_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 4);
 		
 		protected static const ITEM_RENDERER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 1);
 		protected static const ITEM_RENDERER_SELECTED_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 22);
@@ -594,6 +600,10 @@ package feathers.themes
 		protected var treeDisclosureClosedSelectedIconTexture:Texture;
 		protected var dataGridHeaderSortAscendingIconTexture:Texture;
 		protected var dataGridHeaderSortDescendingIconTexture:Texture;
+		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dataGridVerticalDividerSkinTexture:Texture;
+		protected var dataGridColumnResizeSkinTexture:Texture;
+		protected var dataGridHeaderDragIndicatorSkinTexture:Texture;
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -829,6 +839,10 @@ package feathers.themes
 
 			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
 			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
+			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+			this.dataGridVerticalDividerSkinTexture = this.atlas.getTexture("data-grid-vertical-divider-skin0000");
+			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
+			this.dataGridHeaderDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-header-drag-indicator-skin0000");
 
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -1071,6 +1085,20 @@ package feathers.themes
 			var symbol:ImageLoader = new ImageLoader();
 			symbol.source = this.pageIndicatorSelectedSkinTexture;
 			return symbol;
+		}
+
+		protected function dataGridHeaderDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
+			return skin;
+		}
+
+		protected function dataGridVerticalDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
+			return skin;
 		}
 
 	//-------------------------
@@ -1472,6 +1500,21 @@ package feathers.themes
 			grid.backgroundDisabledSkin = backgroundDisabledSkin;
 
 			grid.headerBackgroundSkin = new Quad(this.controlSize, this.controlSize, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
+			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID;
+			grid.columnResizeSkin = columnResizeSkin;
+
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+
+			var headerDragIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridHeaderDragIndicatorSkinTexture);
+			headerDragIndicatorSkin.scale9Grid = DATA_GRID_DRAG_INDICATOR_SCALE_9_GRID;
+			grid.headerDragIndicatorSkin = headerDragIndicatorSkin;
+
+			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
+			grid.verticalDividerFactory = this.dataGridVerticalDividerFactory;
 
 			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
 		}
