@@ -107,6 +107,9 @@ package feathers.themes
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Minimal" theme for desktop Feathers apps. Handles
@@ -217,6 +220,8 @@ package feathers.themes
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0xcccccc;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
+		protected static const DATA_GRID_COLUMN_OVERLAY_COLOR:uint = 0xeeeeee;
+		protected static const DATA_GRID_COLUMN_OVERLAY_ALPHA:Number = 0.6;
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -672,6 +677,11 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+
+			//data grid
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setItemRendererStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1211,6 +1221,54 @@ package feathers.themes
 			check.gap = this.smallGutterSize;
 			check.horizontalAlign = HorizontalAlign.LEFT;
 			check.verticalAlign = VerticalAlign.MIDDLE;
+		}
+
+	//-------------------------
+	// DataGrid
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+
+			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:Image = new Image(this.listBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			grid.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Image = new Image(this.buttonDisabledSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
+			grid.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+
+			grid.padding = this.borderSize;
+			grid.paddingRight = 0;
+		}
+
+		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			var backgroundSkin:ImageSkin = new ImageSkin(this.headerRendererSkin);
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			backgroundSkin.minWidth = this.controlSize;
+			backgroundSkin.minHeight = this.controlSize;
+			headerRenderer.backgroundSkin = backgroundSkin;
+
+			headerRenderer.fontStyles = this.primaryFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+
+			headerRenderer.paddingTop = this.smallGutterSize;
+			headerRenderer.paddingBottom = this.smallGutterSize;
+			headerRenderer.paddingLeft = this.gutterSize;
+			headerRenderer.paddingRight = this.gutterSize;
 		}
 
 	//-------------------------

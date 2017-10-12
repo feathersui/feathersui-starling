@@ -107,6 +107,9 @@ package feathers.themes
 	import starling.textures.TextureSmoothing;
 	import starling.display.Stage;
 	import feathers.core.FocusManager;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 
 	/**
 	 * The base class for the "Minimal" theme for mobile Feathers apps. Handles
@@ -188,6 +191,8 @@ package feathers.themes
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0xcccccc;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
+		protected static const DATA_GRID_COLUMN_OVERLAY_COLOR:uint = 0xeeeeee;
+		protected static const DATA_GRID_COLUMN_OVERLAY_ALPHA:Number = 0.6;
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -644,6 +649,11 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+
+			//data grid
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setItemRendererStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1176,6 +1186,36 @@ package feathers.themes
 			check.verticalAlign = VerticalAlign.MIDDLE;
 			check.minTouchWidth = this.gridSize;
 			check.minTouchHeight = this.gridSize;
+		}
+
+	//-------------------------
+	// DataGrid
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+
+			grid.backgroundSkin = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+		}
+
+		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			headerRenderer.backgroundSkin = new Quad(1, 1, LIST_HEADER_BACKGROUND_COLOR);
+
+			headerRenderer.fontStyles = this.primaryFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+
+			headerRenderer.paddingTop = this.smallGutterSize;
+			headerRenderer.paddingBottom = this.smallGutterSize;
+			headerRenderer.paddingLeft = this.gutterSize;
+			headerRenderer.paddingRight = this.gutterSize;
+			//headerRenderer.gap = this.gutterSize;
+			//headerRenderer.minGap = this.gutterSize;
 		}
 
 	//-------------------------
