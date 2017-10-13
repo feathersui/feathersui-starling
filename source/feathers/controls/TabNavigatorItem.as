@@ -11,6 +11,9 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	//it's required by IScreenNavigatorItem, but we always return null
+	[Exclude(name="transitionDelayEvent",kind="property")]
+
 	/**
 	 * Data for an individual tab that will be displayed by a
 	 * <code>TabNavigator</code> component.
@@ -316,6 +319,14 @@ package feathers.controls
 		public function get canDispose():Boolean
 		{
 			return this._screenDisplayObject === null;
+		}
+
+		/**
+		 * @private
+		 */
+		public function get transitionDelayEvent():String
+		{
+			return null;
 		}
 
 		/**

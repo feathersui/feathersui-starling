@@ -390,6 +390,27 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _transitionDelayEvent:String = null;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get transitionDelayEvent():String
+		{
+			return this._transitionDelayEvent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set transitionDelayEvent(value:String):void
+		{
+			this._transitionDelayEvent = value;
+		}
+
+		/**
 		 * Specifies a function to call when an event is dispatched by the
 		 * screen.
 		 *
