@@ -2932,7 +2932,7 @@ package feathers.controls
 					var minX:Number = headerRenderer.x + column.minWidth;
 					var maxX:Number = this.actualWidth - this._currentColumnResizeSkin.width - this._rightViewPortOffset;
 					var difference:Number = touch.globalX - this._headerDividerTouchX;
-					var newX:Number = divider.x + difference;
+					var newX:Number = divider.x + (divider.width / 2) - (this._currentColumnResizeSkin.width / 2) + difference;
 					if(newX < minX)
 					{
 						newX = minX;
@@ -2977,7 +2977,7 @@ package feathers.controls
 				{
 					IValidating(this._currentColumnResizeSkin).validate();
 				}
-				this._currentColumnResizeSkin.x = headerRenderer.x + headerRenderer.width - (this._currentColumnResizeSkin.width / 2);
+				this._currentColumnResizeSkin.x = divider.x + (divider.width / 2) - (this._currentColumnResizeSkin.width / 2);
 			}
 		}
 
