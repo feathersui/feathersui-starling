@@ -106,21 +106,21 @@ package feathers.controls
 	[Style(name="customCellRendererStyleName",type="String")]
 
 	/**
-	 * Determines if the height of the header drag indicator is equal to the
+	 * Determines if the height of the column drop indicator is equal to the
 	 * height of the headers, or if it extends to the full height of the data
 	 * grid's view port.
 	 *
-	 * <p>In the following example, the data grid's header drag indicator is extended:</p>
+	 * <p>In the following example, the data grid's column drop skin is extended:</p>
 	 *
 	 * <listing version="3.0">
-	 * grid.extendedHeaderDragIndicator = true;</listing>
+	 * grid.extendedColumnDropIndicator = true;</listing>
 	 *
 	 * @default false
 	 * 
 	 * @see #reorderColumns
-	 * @see #style:headerDragIndicatorSkin
+	 * @see #style:columnDropIndicatorSkin
 	 */
-	[Style(name="extendedHeaderDragIndicator",type="Boolean")]
+	[Style(name="extendedColumnDropIndicator",type="Boolean")]
 
 	/**
 	 * The default background to display in the data grid's header.
@@ -173,18 +173,18 @@ package feathers.controls
 	[Style(name="headerBackgroundDisabledSkin",type="starling.display.DisplayObject")]
 
 	/**
-	 * The alpha value used for the header's drag avatar.
+	 * The alpha value used for the column's drag avatar.
 	 *
-	 * <p>In the following example, the data grid's header drag avatar alpha value is customized:</p>
+	 * <p>In the following example, the data grid's column drag avatar alpha value is customized:</p>
 	 *
 	 * <listing version="3.0">
-	 * grid.headerDragAvatarAlpha = 0.5;</listing>
+	 * grid.columnDragAvatarAlpha = 0.5;</listing>
 	 *
 	 * @default 0.8
 	 * 
 	 * @see #reorderColumns
 	 */
-	[Style(name="headerDragAvatarAlpha",type="Number")]
+	[Style(name="columnDragAvatarAlpha",type="Number")]
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to indicate where
@@ -193,14 +193,14 @@ package feathers.controls
 	 * <p>In the following example, the data grid's header drag indicator is provided:</p>
 	 *
 	 * <listing version="3.0">
-	 * grid.headerDragIndicatorSkin = new Image( texture );</listing>
+	 * grid.columnDropIndicatorSkin = new Image( texture );</listing>
 	 *
 	 * @default null
 	 * 
 	 * @see #reorderColumns
-	 * @see #style:extendedHeaderDragIndicator
+	 * @see #style:extendedColumnDropIndicator
 	 */
-	[Style(name="headerDragIndicatorSkin",type="starling.display.DisplayObject")]
+	[Style(name="columnDropIndicatorSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The duration, in seconds, of the animation when the selected item is
@@ -506,25 +506,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _currentHeaderDragIndicatorSkin:DisplayObject = null;
+		protected var _currentColumnDropIndicatorSkin:DisplayObject = null;
 
 		/**
 		 * @private
 		 */
-		protected var _headerDragIndicatorSkin:DisplayObject = null;
+		protected var _columnDropIndicatorSkin:DisplayObject = null;
 
 		/**
 		 * @private
 		 */
-		public function get headerDragIndicatorSkin():DisplayObject
+		public function get columnDropIndicatorSkin():DisplayObject
 		{
-			return this._headerDragIndicatorSkin;
+			return this._columnDropIndicatorSkin;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set headerDragIndicatorSkin(value:DisplayObject):void
+		public function set columnDropIndicatorSkin(value:DisplayObject):void
 		{
 			if(this.processStyleRestriction(arguments.callee))
 			{
@@ -534,7 +534,7 @@ package feathers.controls
 				}
 				return;
 			}
-			this._headerDragIndicatorSkin = value;
+			this._columnDropIndicatorSkin = value;
 		}
 
 		/**
@@ -608,51 +608,51 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _headerDragAvatarAlpha:Number = 0.8;
+		protected var _columnDragAvatarAlpha:Number = 0.8;
 
 		/**
 		 * @private
 		 */
-		public function get headerDragAvatarAlpha():Number
+		public function get columnDragAvatarAlpha():Number
 		{
-			return this._headerDragAvatarAlpha;
+			return this._columnDragAvatarAlpha;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set headerDragAvatarAlpha(value:Number):void
+		public function set columnDragAvatarAlpha(value:Number):void
 		{
 			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this._headerDragAvatarAlpha = value;
+			this._columnDragAvatarAlpha = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _extendedHeaderDragIndicator:Boolean = false;
+		protected var _extendedColumnDropIndicator:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		public function get extendedHeaderDragIndicator():Boolean
+		public function get extendedColumnDropIndicator():Boolean
 		{
-			return this._extendedHeaderDragIndicator;
+			return this._extendedColumnDropIndicator;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set extendedHeaderDragIndicator(value:Boolean):void
+		public function set extendedColumnDropIndicator(value:Boolean):void
 		{
 			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			this._extendedHeaderDragIndicator = value;
+			this._extendedColumnDropIndicator = value;
 		}
 
 		/**
@@ -1578,11 +1578,11 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-			if(this._headerDragIndicatorSkin !== null &&
-				this._headerDragIndicatorSkin.parent === null)
+			if(this._columnDropIndicatorSkin !== null &&
+				this._columnDropIndicatorSkin.parent === null)
 			{
-				this._headerDragIndicatorSkin.dispose();
-				this._headerDragIndicatorSkin = null;
+				this._columnDropIndicatorSkin.dispose();
+				this._columnDropIndicatorSkin = null;
 			}
 			if(this._columnDragOverlaySkin !== null &&
 				this._columnDragOverlaySkin.parent === null)
@@ -2682,10 +2682,10 @@ package feathers.controls
 				{
 					this.removeEventListener(TouchEvent.TOUCH, dataGrid_touchHandler);
 					//these might be null if there was no TouchPhase.MOVED
-					if(this._currentHeaderDragIndicatorSkin !== null)
+					if(this._currentColumnDropIndicatorSkin !== null)
 					{
-						this._currentHeaderDragIndicatorSkin.removeFromParent(this._currentHeaderDragIndicatorSkin !== this._headerDragIndicatorSkin);
-						this._currentHeaderDragIndicatorSkin = null;
+						this._currentColumnDropIndicatorSkin.removeFromParent(this._currentColumnDropIndicatorSkin !== this._columnDropIndicatorSkin);
+						this._currentColumnDropIndicatorSkin = null;
 					}
 					if(this._currentColumnDragOverlaySkin !== null)
 					{
@@ -2727,19 +2727,19 @@ package feathers.controls
 						dragData.setDataForFormat(DATA_GRID_HEADER_DRAG_FORMAT, column);
 						var self:DataGrid = this;
 						var avatar:RenderDelegate = new RenderDelegate(DisplayObject(headerRenderer));
-						avatar.alpha = this._headerDragAvatarAlpha;
+						avatar.alpha = this._columnDragAvatarAlpha;
 						DragDropManager.startDrag(this, touch, dragData, avatar);
-						if(this._headerDragIndicatorSkin === null)
+						if(this._columnDropIndicatorSkin === null)
 						{
-							this._currentHeaderDragIndicatorSkin = new Quad(1, 1, 0x000000);
+							this._currentColumnDropIndicatorSkin = new Quad(1, 1, 0x000000);
 						}
-						if(this._headerDragIndicatorSkin !== null)
+						if(this._columnDropIndicatorSkin !== null)
 						{
-							this._currentHeaderDragIndicatorSkin = this._headerDragIndicatorSkin;
+							this._currentColumnDropIndicatorSkin = this._columnDropIndicatorSkin;
 						}
 						//start out invisible and TouchPhase.MOVED will reveal it, if necessary
-						this._currentHeaderDragIndicatorSkin.visible = false;
-						this.addChild(this._currentHeaderDragIndicatorSkin);
+						this._currentColumnDropIndicatorSkin.visible = false;
+						this.addChild(this._currentColumnDropIndicatorSkin);
 
 						if(this._columnDragOverlaySkin === null)
 						{
@@ -2825,38 +2825,38 @@ package feathers.controls
 			var globalDropX:Number = point.x;
 			Pool.putPoint(point);
 			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
-			var showDragIndicator:Boolean = dropIndex !== this._draggedHeaderIndex &&
+			var showDropIndicator:Boolean = dropIndex !== this._draggedHeaderIndex &&
 				dropIndex !== (this._draggedHeaderIndex + 1);
-			this._currentHeaderDragIndicatorSkin.visible = showDragIndicator;
-			if(!showDragIndicator)
+			this._currentColumnDropIndicatorSkin.visible = showDropIndicator;
+			if(!showDropIndicator)
 			{
 				return;
 			}
-			if(this._extendedHeaderDragIndicator)
+			if(this._extendedColumnDropIndicator)
 			{
-				this._currentHeaderDragIndicatorSkin.height = this._headerGroup.height + this._viewPort.visibleHeight;
+				this._currentColumnDropIndicatorSkin.height = this._headerGroup.height + this._viewPort.visibleHeight;
 			}
 			else
 			{
-				this._currentHeaderDragIndicatorSkin.height = this._headerGroup.height;
+				this._currentColumnDropIndicatorSkin.height = this._headerGroup.height;
 			}
-			if(this._currentHeaderDragIndicatorSkin is IValidating)
+			if(this._currentColumnDropIndicatorSkin is IValidating)
 			{
-				IValidating(this._currentHeaderDragIndicatorSkin).validate();
+				IValidating(this._currentColumnDropIndicatorSkin).validate();
 			}
-			var dragIndicatorX:Number = 0;
+			var dropIndicatorX:Number = 0;
 			if(dropIndex === this._columns.length)
 			{
 				var header:DisplayObject = this._headerGroup.getChildAt(dropIndex - 1);
-				dragIndicatorX = header.x + header.width;
+				dropIndicatorX = header.x + header.width;
 			}
 			else
 			{
 				header = this._headerGroup.getChildAt(dropIndex);
-				dragIndicatorX = header.x;
+				dropIndicatorX = header.x;
 			}
-			this._currentHeaderDragIndicatorSkin.x = this._headerGroup.x + dragIndicatorX - (this._currentHeaderDragIndicatorSkin.width / 2);
-			this._currentHeaderDragIndicatorSkin.y = this._headerGroup.y;
+			this._currentColumnDropIndicatorSkin.x = this._headerGroup.x + dropIndicatorX - (this._currentColumnDropIndicatorSkin.width / 2);
+			this._currentColumnDropIndicatorSkin.y = this._headerGroup.y;
 		}
 
 		/**

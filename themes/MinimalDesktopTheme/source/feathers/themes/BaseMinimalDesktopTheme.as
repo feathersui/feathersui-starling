@@ -214,7 +214,7 @@ package feathers.themes
 		protected static const DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 3);
 		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 3);
 		protected static const DATA_GRID_HEADER_RENDERER_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 1, 1);
-		protected static const DATA_GRID_COLUMN_DROP_SKIN_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 3);
+		protected static const DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 3);
 
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
@@ -445,7 +445,7 @@ package feathers.themes
 		protected var dataGridHeaderRendererSkinTexture:Texture;
 		protected var dataGridColumnResizeSkinTexture:Texture;
 		protected var dataGridHeaderDividerSkinTexture:Texture;
-		protected var dataGridColumnDropSkinTexture:Texture;
+		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		protected var dataGridHeaderSortAscendingIconTexture:Texture;
 		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 
@@ -641,7 +641,7 @@ package feathers.themes
 			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
 			this.dataGridHeaderRendererSkinTexture = this.atlas.getTexture("data-grid-header-renderer-skin0000");
-			this.dataGridColumnDropSkinTexture = this.atlas.getTexture("data-grid-column-drop-skin0000");
+			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
 			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
 		}
@@ -1278,9 +1278,9 @@ package feathers.themes
 			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID;
 			grid.columnResizeSkin = columnResizeSkin;
 
-			var columnDropSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropSkinTexture);
-			columnDropSkin.scale9Grid = DATA_GRID_COLUMN_DROP_SKIN_SCALE_9_GRID;
-			grid.headerDragIndicatorSkin = columnDropSkin;
+			var columnDropIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropIndicatorSkinTexture);
+			columnDropIndicatorSkin.scale9Grid = DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID;
+			grid.columnDropIndicatorSkin = columnDropIndicatorSkin;
 
 			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
 

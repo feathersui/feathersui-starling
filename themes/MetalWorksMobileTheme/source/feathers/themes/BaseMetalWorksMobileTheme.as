@@ -170,7 +170,7 @@ package feathers.themes
 		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 2, 4);
 		protected static const DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 4);
 		protected static const DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
-		protected static const DATA_GRID_DRAG_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
+		protected static const DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
 
 		protected static const HEADER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 128, 64);
 		protected static const TAB_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 0, 22, 44);
@@ -603,7 +603,7 @@ package feathers.themes
 		protected var dataGridHeaderDividerSkinTexture:Texture;
 		protected var dataGridVerticalDividerSkinTexture:Texture;
 		protected var dataGridColumnResizeSkinTexture:Texture;
-		protected var dataGridHeaderDragIndicatorSkinTexture:Texture;
+		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -843,7 +843,7 @@ package feathers.themes
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
 			this.dataGridVerticalDividerSkinTexture = this.atlas.getTexture("data-grid-vertical-divider-skin0000");
 			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
-			this.dataGridHeaderDragIndicatorSkinTexture = this.atlas.getTexture("data-grid-header-drag-indicator-skin0000");
+			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -1511,10 +1511,10 @@ package feathers.themes
 			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID;
 			grid.columnResizeSkin = columnResizeSkin;
 
-			var headerDragIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridHeaderDragIndicatorSkinTexture);
-			headerDragIndicatorSkin.scale9Grid = DATA_GRID_DRAG_INDICATOR_SCALE_9_GRID;
-			grid.headerDragIndicatorSkin = headerDragIndicatorSkin;
-			grid.extendedHeaderDragIndicator = true;
+			var columnDropIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropIndicatorSkinTexture);
+			columnDropIndicatorSkin.scale9Grid = DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID;
+			grid.columnDropIndicatorSkin = columnDropIndicatorSkin;
+			grid.extendedColumnDropIndicator = true;
 
 			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
 			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
