@@ -179,6 +179,10 @@ package feathers.themes
 		protected static const BACK_BUTTON_SCALE9_GRID:Rectangle = new Rectangle(16, 0, 1, 28);
 		protected static const FORWARD_BUTTON_SCALE9_GRID:Rectangle = new Rectangle(3, 0, 1, 28);
 		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
+		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 4, 3);
+		protected static const DATA_GRID_HEADER_RENDERER_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 1, 1);
+		protected static const DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 2, 3);
+		protected static const DATA_GRID_COLUMN_DROP_SKIN_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 2, 3);
 
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const LIST_BACKGROUND_COLOR:uint = 0xf8f8f8;
@@ -385,6 +389,13 @@ package feathers.themes
 
 		protected var treeDisclosureOpenIconTexture:Texture;
 		protected var treeDisclosureClosedIconTexture:Texture;
+
+		protected var dataGridHeaderRendererSkinTexture:Texture;
+		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dataGridColumnResizeSkinTexture:Texture;
+		protected var dataGridColumnDropSkinTexture:Texture;
+		protected var dataGridHeaderSortDescendingIconTexture:Texture;
+		protected var dataGridHeaderSortAscendingIconTexture:Texture;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
@@ -596,6 +607,13 @@ package feathers.themes
 
 			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
+
+			this.dataGridHeaderRendererSkinTexture = this.atlas.getTexture("data-grid-header-renderer-skin0000");
+			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
+			this.dataGridColumnDropSkinTexture = this.atlas.getTexture("data-grid-column-drop-skin0000");
+			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
+			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
 		}
 
 		/**
@@ -811,6 +829,13 @@ package feathers.themes
 		protected function pageIndicatorSelectedSymbolFactory():DisplayObject
 		{
 			return new Image(this.pageIndicatorSelectedSkinTexture);
+		}
+
+		protected function dataGridHeaderDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
+			return skin;
 		}
 
 	//-------------------------
@@ -1201,11 +1226,30 @@ package feathers.themes
 			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
 			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
 			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+
+			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
+			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID;
+			grid.columnResizeSkin = columnResizeSkin;
+
+			var columnDropSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropSkinTexture);
+			columnDropSkin.scale9Grid = DATA_GRID_COLUMN_DROP_SKIN_SCALE_9_GRID;
+			grid.headerDragIndicatorSkin = columnDropSkin;
+
+			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
 		}
 
 		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
 		{
-			headerRenderer.backgroundSkin = new Quad(1, 1, LIST_HEADER_BACKGROUND_COLOR);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.dataGridHeaderRendererSkinTexture);
+			backgroundSkin.scale9Grid = DATA_GRID_HEADER_RENDERER_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			backgroundSkin.minWidth = this.controlSize;
+			backgroundSkin.minHeight = this.controlSize;
+			headerRenderer.backgroundSkin = backgroundSkin;
+
+			headerRenderer.sortAscendingIcon = new ImageSkin(this.dataGridHeaderSortAscendingIconTexture);
+			headerRenderer.sortDescendingIcon = new ImageSkin(this.dataGridHeaderSortDescendingIconTexture);
 
 			headerRenderer.fontStyles = this.primaryFontStyles.clone();
 			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
