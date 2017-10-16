@@ -273,8 +273,8 @@ package feathers.themes
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 2, 28);
 		protected static const SEEK_SLIDER_MINIMUM_TRACK_SCALE_9_GRID:Rectangle = new Rectangle(3, 0, 1, 4);
 		protected static const SEEK_SLIDER_MAXIMUM_TRACK_SCALE_9_GRID:Rectangle = new Rectangle(1, 0, 1, 4);
-		protected static const DATA_GRID_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 1, 2);
-		protected static const DATA_GRID_WIDE_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 3, 2);
+		protected static const DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 1, 2);
+		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 5, 2);
 		protected static const DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 2, 3, 2);
 		
 		protected static const ITEM_RENDERER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 4, 4);
@@ -1071,14 +1071,14 @@ package feathers.themes
 		protected function dataGridHeaderDividerFactory():DisplayObject
 		{
 			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
-			skin.scale9Grid = DATA_GRID_WIDE_DIVIDER_SCALE_9_GRID;
+			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
 			return skin;
 		}
 
 		protected function dataGridVerticalDividerFactory():DisplayObject
 		{
 			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
-			skin.scale9Grid = DATA_GRID_DIVIDER_SCALE_9_GRID;
+			skin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
 			return skin;
 		}
 
@@ -1409,7 +1409,7 @@ package feathers.themes
 			grid.headerBackgroundSkin = headerBackgroundSkin;
 
 			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
-			columnResizeSkin.scale9Grid = DATA_GRID_DIVIDER_SCALE_9_GRID;
+			columnResizeSkin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
 			grid.columnResizeSkin = columnResizeSkin;
 
 			var columnDropIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropIndicatorSkinTexture);
