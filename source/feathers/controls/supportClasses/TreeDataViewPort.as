@@ -392,12 +392,6 @@ package feathers.controls.supportClasses
 				if(this._layout is IVariableVirtualLayout)
 				{
 					var variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout);
-
-					//headers and footers are almost always going to have a
-					//different height, so we might as well force it because if
-					//we don't, there will be a lot of support requests
-					variableVirtualLayout.hasVariableItemDimensions = true;
-					
 					variableVirtualLayout.resetVariableVirtualCache();
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
