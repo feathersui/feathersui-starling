@@ -275,6 +275,10 @@ package feathers.data
 		 */
 		public function isBranch(node:Object):Boolean
 		{
+			if(node === null)
+			{
+				return false;
+			}
 			return node.hasOwnProperty(this._childrenField) && node[this._childrenField] is Array;
 		}
 
