@@ -839,14 +839,16 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				newTypicalItemIsInDataProvider = true;
 				if(this._dataProvider && this._dataProvider.length > 0)
 				{
+					newTypicalItemIsInDataProvider = true;
 					typicalItem = this._dataProvider.getItemAt(0);
 				}
 			}
 
-			if(typicalItem !== null)
+			//#1645 The typicalItem can be null if the data provider contains
+			//a null value at index 0. this is the only time we allow null.
+			if(typicalItem !== null || newTypicalItemIsInDataProvider)
 			{
 				var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
 				if(typicalRenderer)

@@ -1307,7 +1307,9 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			if(typicalItem !== null)
+			//#1645 The typicalItem can be null if the data provider contains
+			//a null value at index 0. this is the only time we allow null.
+			if(typicalItem !== null || newTypicalItemIsInDataProvider)
 			{
 				var typicalItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
 				if(typicalItemRenderer)
