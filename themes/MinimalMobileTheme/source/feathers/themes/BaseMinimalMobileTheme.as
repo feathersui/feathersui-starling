@@ -171,7 +171,7 @@ package feathers.themes
 
 		protected static const DEFAULT_SCALE_9_GRID:Rectangle = new Rectangle(4, 4, 1, 1);
 		protected static const SCROLLBAR_THUMB_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 2, 2);
-		protected static const ITEM_RENDERER_SCALE_9_GRID:Rectangle = new Rectangle(0.5, 3, 1, 1);
+		protected static const ITEM_RENDERER_SCALE_9_GRID:Rectangle = new Rectangle(1, 3, 1, 1);
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(11, 11, 1, 1);
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(1, 3, 1, 1);
 		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(1, 3, 1, 1);
@@ -396,6 +396,8 @@ package feathers.themes
 		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 		protected var dataGridHeaderSortAscendingIconTexture:Texture;
+		protected var dataGridCellRendererDownSkinTexture:Texture;
+		protected var dataGridCellRendererSelectedUpSkinTexture:Texture;
 
 		/**
 		 * The size, in pixels, of major regions in the grid. Used for sizing
@@ -614,6 +616,8 @@ package feathers.themes
 			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
 			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
+			this.dataGridCellRendererDownSkinTexture = this.atlas.getTexture("data-grid-cell-renderer-down-skin0000");
+			this.dataGridCellRendererSelectedUpSkinTexture = this.atlas.getTexture("data-grid-cell-renderer-selected-up-skin0000");
 		}
 
 		/**
@@ -671,7 +675,7 @@ package feathers.themes
 			//data grid
 			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
 			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
-			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setDataGridCellRendererStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1260,6 +1264,40 @@ package feathers.themes
 			headerRenderer.paddingRight = this.gutterSize;
 			//headerRenderer.gap = this.gutterSize;
 			//headerRenderer.minGap = this.gutterSize;
+		}
+
+		protected function setDataGridCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+		{
+			var defaultSkin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			defaultSkin.setTextureForState(ButtonState.DOWN, this.dataGridCellRendererDownSkinTexture);
+			defaultSkin.selectedTexture = this.dataGridCellRendererSelectedUpSkinTexture;
+			defaultSkin.scale9Grid = ITEM_RENDERER_SCALE_9_GRID;
+			defaultSkin.width = this.gridSize;
+			defaultSkin.height = this.gridSize;
+			defaultSkin.minWidth = this.gridSize;
+			defaultSkin.minHeight = this.gridSize;
+			cellRenderer.defaultSkin = defaultSkin;
+
+			cellRenderer.fontStyles = this.primaryFontStyles.clone();
+			cellRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+			cellRenderer.iconLabelFontStyles = this.primaryFontStyles.clone();
+			cellRenderer.iconLabelDisabledFontStyles = this.disabledFontStyles.clone();
+			cellRenderer.accessoryLabelFontStyles = this.primaryFontStyles.clone();
+			cellRenderer.accessoryLabelDisabledFontStyles = this.disabledFontStyles.clone();
+
+			cellRenderer.paddingTop = this.smallGutterSize;
+			cellRenderer.paddingBottom = this.smallGutterSize;
+			cellRenderer.paddingLeft = this.gutterSize;
+			cellRenderer.paddingRight = this.gutterSize;
+			cellRenderer.gap = this.gutterSize;
+			cellRenderer.minGap = this.gutterSize;
+			cellRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			cellRenderer.minAccessoryGap = this.gutterSize;
+			cellRenderer.minTouchWidth = this.gridSize;
+			cellRenderer.minTouchHeight = this.gridSize;
+			cellRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			cellRenderer.iconPosition = RelativePosition.LEFT;
+			cellRenderer.accessoryPosition = RelativePosition.RIGHT;
 		}
 
 	//-------------------------
