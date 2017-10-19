@@ -4892,6 +4892,14 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * @private
+		 */
+		protected function getDataToRender():Object
+		{
+			return this._data;
+		}
+
+		/**
 		 * Updates the renderer to display the item's data. Override this
 		 * function to pass data to sub-components and react to data changes.
 		 *
@@ -4899,20 +4907,21 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
+			var dataToRender:Object = this.getDataToRender();
 			//we need to use strict equality here because the data can be
 			//non-strictly equal to null
-			if(this._data !== null)
+			if(dataToRender !== null)
 			{
 				if(this._itemHasLabel)
 				{
-					this._label = this.itemToLabel(this._data);
+					this._label = this.itemToLabel(dataToRender);
 					//we don't need to invalidate because the label setter
 					//uses the same data invalidation flag that triggered this
 					//call to commitData(), so we're already properly invalid.
 				}
 				if(this._itemHasSkin)
 				{
-					var newSkin:DisplayObject = this.itemToSkin(this._data);
+					var newSkin:DisplayObject = this.itemToSkin(dataToRender);
 					this._skinIsFromItem = newSkin != null;
 					this.replaceSkin(newSkin);
 				}
@@ -4923,7 +4932,7 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasIcon)
 				{
-					var newIcon:DisplayObject = this.itemToIcon(this._data);
+					var newIcon:DisplayObject = this.itemToIcon(dataToRender);
 					this._iconIsFromItem = newIcon != null;
 					this.replaceIcon(newIcon);
 				}
@@ -4934,7 +4943,7 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasAccessory)
 				{
-					var newAccessory:DisplayObject = this.itemToAccessory(this._data);
+					var newAccessory:DisplayObject = this.itemToAccessory(dataToRender);
 					this._accessoryIsFromItem = newAccessory != null;
 					this.replaceAccessory(newAccessory);
 				}
@@ -4945,7 +4954,7 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasSelectable)
 				{
-					this._isToggle = this._explicitIsToggle && this.itemToSelectable(this._data);
+					this._isToggle = this._explicitIsToggle && this.itemToSelectable(dataToRender);
 				}
 				else
 				{
@@ -4953,7 +4962,7 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasEnabled)
 				{
-					this.refreshIsEnabled(this._explicitIsEnabled && this.itemToEnabled(this._data));
+					this.refreshIsEnabled(this._explicitIsEnabled && this.itemToEnabled(dataToRender));
 				}
 				else
 				{

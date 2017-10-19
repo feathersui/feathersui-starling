@@ -13,6 +13,9 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	//it's required by IScreenNavigatorItem, but we always return null
+	[Exclude(name="transitionDelayEvent",kind="property")]
+
 	/**
 	 * Data for an individual tab that will be displayed by a
 	 * <code>TabNavigator</code> component.
@@ -343,6 +346,14 @@ package feathers.controls
 				throw new Error("TabNavigatorItem must have an \"id\" in MXML.");
 			}
 			this._mxmlID = id;
+		}
+
+		/**
+		 * @private
+		 */
+		public function get transitionDelayEvent():String
+		{
+			return null;
 		}
 
 		/**

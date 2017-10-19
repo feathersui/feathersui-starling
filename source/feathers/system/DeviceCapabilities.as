@@ -9,6 +9,7 @@ package feathers.system
 {
 	import flash.display.Stage;
 	import flash.system.Capabilities;
+	import starling.core.Starling;
 
 	/**
 	 * Using values from the Stage and Capabilities classes, makes educated
@@ -18,6 +19,22 @@ package feathers.system
 	 */
 	public class DeviceCapabilities
 	{
+		/**
+		 * Indicates if the arrow and enter keys on a standard keyboard are
+		 * treated the same as a d-pad. If <code>true</code>, focus and other
+		 * behaviors may be controlled with a standard keyboard.
+		 *
+		 * <p>In the following example, the D-Pad is simulated:</p>
+		 *
+		 * <listing version="3.0">
+		 * DeviceCapabilities.simulateDPad = true;</listing>
+		 *
+		 * @default false
+		 *
+		 * @productversion Feathers 3.4.0
+		 */
+		public static var simulateDPad:Boolean = false;
+
 		/**
 		 * The minimum physical size, in inches, of the device's larger side to
 		 * be considered a tablet.
@@ -81,8 +98,12 @@ package feathers.system
 		 * @see #screenPixelHeight
 		 * @see #isPhone()
 		 */
-		public static function isTablet(stage:Stage):Boolean
+		public static function isTablet(stage:Stage = null):Boolean
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenWidth:Number = screenPixelWidth;
 			if(screenWidth !== screenWidth) //isNaN
 			{
@@ -107,7 +128,7 @@ package feathers.system
 		 *
 		 * @see #isTablet()
 		 */
-		public static function isPhone(stage:Stage):Boolean
+		public static function isPhone(stage:Stage = null):Boolean
 		{
 			return !isTablet(stage);
 		}
@@ -118,8 +139,12 @@ package feathers.system
 		 *
 		 * @see #screenPixelWidth
 		 */
-		public static function screenInchesX(stage:Stage):Number
+		public static function screenInchesX(stage:Stage = null):Number
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenWidth:Number = screenPixelWidth;
 			if(screenWidth !== screenWidth) //isNaN
 			{
@@ -134,8 +159,12 @@ package feathers.system
 		 *
 		 * @see #screenPixelHeight
 		 */
-		public static function screenInchesY(stage:Stage):Number
+		public static function screenInchesY(stage:Stage = null):Number
 		{
+			if(stage === null)
+			{
+				stage = Starling.current.nativeStage;
+			}
 			var screenHeight:Number = screenPixelHeight;
 			if(screenHeight !== screenHeight) //isNaN
 			{

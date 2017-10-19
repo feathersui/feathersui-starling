@@ -1235,7 +1235,7 @@ package feathers.controls.text
 		override public function render(painter:Painter):void
 		{
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-			if(this.textSnapshot !== null && this._updateSnapshotOnScaleChange)
+			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
@@ -1928,6 +1928,7 @@ package feathers.controls.text
 		{
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var scaleFactor:Number = starling.contentScaleFactor;
+			this._lastContentScaleFactor = scaleFactor;
 			//these are getting put into an int later, so we don't want it
 			//to possibly round down and cut off part of the text.
 			var rectangleSnapshotWidth:Number = Math.ceil(this.textField.width);
@@ -1935,8 +1936,10 @@ package feathers.controls.text
 			if(this._updateSnapshotOnScaleChange)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				rectangleSnapshotWidth *= matrixToScaleX(HELPER_MATRIX);
-				rectangleSnapshotHeight *= matrixToScaleY(HELPER_MATRIX);
+				this._lastGlobalScaleX = matrixToScaleX(HELPER_MATRIX);
+				this._lastGlobalScaleY = matrixToScaleY(HELPER_MATRIX);
+				rectangleSnapshotWidth *= this._lastGlobalScaleX;
+				rectangleSnapshotHeight *= this._lastGlobalScaleY;
 			}
 			if(rectangleSnapshotWidth >= 1 && rectangleSnapshotHeight >= 1 &&
 				this._nativeFilters !== null && this._nativeFilters.length > 0)

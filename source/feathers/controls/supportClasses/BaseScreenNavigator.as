@@ -288,6 +288,11 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		protected var _delayedTransition:Function = null;
+
+		/**
+		 * @private
+		 */
 		protected var _clipContent:Boolean = false;
 
 		/**
@@ -779,29 +784,15 @@ package feathers.controls.supportClasses
 				this._previousScreenInTransitionID = null;
 				this._isTransitionActive = false;
 			}
+			else if(item.transitionDelayEvent !== null)
+			{
+				this._activeScreen.visible = false;
+				this._delayedTransition = transition;
+				this._activeScreen.addEventListener(item.transitionDelayEvent, screen_transitionDelayHandler);
+			}
 			else
 			{
-				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-				this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
-				if(this._previousScreenInTransition !== null)
-				{
-					this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
-				}
-				if(transition !== null && transition !== defaultTransition)
-				{
-					//temporarily make the active screen invisible because the
-					//transition doesn't start right away.
-					this._activeScreen.visible = false;
-					this._waitingForTransitionFrameCount = 0;
-					this._waitingTransition = transition;
-					//this is a workaround for an issue with transition performance.
-					//see the comment in the listener for details.
-					this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
-				}
-				else
-				{
-					defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
-				}
+				this.startTransition(transition);
 			}
 
 			this.dispatchEventWith(Event.CHANGE);
@@ -887,6 +878,34 @@ package feathers.controls.supportClasses
 				{
 					IValidating(this._activeScreen).validate();
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function startTransition(transition:Function):void
+		{
+			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+			this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
+			if(this._previousScreenInTransition !== null)
+			{
+				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
+			}
+			if(transition !== null && transition !== defaultTransition)
+			{
+				//temporarily make the active screen invisible because the
+				//transition doesn't start right away.
+				this._activeScreen.visible = false;
+				this._waitingForTransitionFrameCount = 0;
+				this._waitingTransition = transition;
+				//this is a workaround for an issue with transition performance.
+				//see the comment in the listener for details.
+				this.addEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+			}
+			else
+			{
+				defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 			}
 		}
 
@@ -1019,6 +1038,15 @@ package feathers.controls.supportClasses
 		protected function stage_resizeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function screen_transitionDelayHandler(event:Event):void
+		{
+			this._activeScreen.removeEventListener(event.type, screen_transitionDelayHandler);
+			this.startTransition(this._delayedTransition);
 		}
 
 		/**

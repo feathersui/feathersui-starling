@@ -16,6 +16,7 @@ package feathers.utils.keyboard
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Changes the <code>isSelected</code> property of the target when a key is
@@ -54,9 +55,10 @@ package feathers.utils.keyboard
 		/**
 		 * Constructor.
 		 */
-		public function KeyToSelect(target:IToggle = null)
+		public function KeyToSelect(target:IToggle = null, keyCode:uint = Keyboard.SPACE)
 		{
 			this.target = target;
+			this.keyCode = keyCode;
 		}
 
 		/**
@@ -186,6 +188,32 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _keyLocation:uint = uint.MAX_VALUE;
+
+		/**
+		 * The location of the key that will select the target, when pressed.
+		 * If <code>uint.MAX_VALUE</code>, then any key location is allowed.
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see flash.ui.KeyLocation
+		 */
+		public function get keyLocation():uint
+		{
+			return this._keyLocation;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyLocation(value:uint):void
+		{
+			this._keyLocation = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isEnabled:Boolean = true;
 
 		/**
@@ -252,11 +280,18 @@ package feathers.utils.keyboard
 			if(event.keyCode === this._cancelKeyCode)
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				return;
 			}
-			else if(event.keyCode === this._keyCode)
+			if(event.keyCode !== this._keyCode)
 			{
-				this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				return;
 			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			{
+				return;	
+			}
+			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
 
 		/**
@@ -271,6 +306,11 @@ package feathers.utils.keyboard
 			if(event.keyCode !== this._keyCode)
 			{
 				return;
+			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			{
+				return;	
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

@@ -29,6 +29,7 @@ package feathers.controls.text
 	import starling.textures.TextureSmoothing;
 	import starling.utils.Align;
 	import starling.utils.MathUtil;
+	import starling.utils.Pool;
 
 	/**
 	 * Renders text using
@@ -54,16 +55,6 @@ package feathers.controls.text
 	 */
 	public class BitmapFontTextRenderer extends BaseTextRenderer implements ITextRenderer
 	{
-		/**
-		 * @private
-		 */
-		private static var HELPER_IMAGE:Image;
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -135,7 +126,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _characterBatch:MeshBatch;
+		protected var _characterBatch:MeshBatch = null;
 
 		/**
 		 * @private
@@ -148,6 +139,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textFormatChanged:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		protected var _currentFontStyles:TextFormat = null;
 
 		/**
 		 * @private
@@ -368,18 +364,20 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textureSmoothing:String = TextureSmoothing.BILINEAR;
+		protected var _textureSmoothing:String = null;
 
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
-		 * A texture smoothing value passed to each character image.
-		 *
+		 * A texture smoothing value passed to each character image. If
+		 * <code>null</code>, defaults to the value specified by the
+		 * <code>smoothing</code> property of the <code>BitmapFont</code>.
+		 * 
 		 * <p>In the following example, the texture smoothing is changed:</p>
 		 *
 		 * <listing version="3.0">
 		 * textRenderer.textureSmoothing = TextureSmoothing.NONE;</listing>
 		 *
-		 * @default starling.textures.TextureSmoothing.BILINEAR
+		 * @default null
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
 		 */
@@ -434,6 +432,43 @@ package feathers.controls.text
 				return;
 			}
 			this._pixelSnapping = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _breakLongWords:Boolean = false;
+
+		/**
+		 * If <code>wordWrap</code> is <code>true</code>, determines if words
+		 * longer than the width of the text renderer will break in the middle
+		 * or if the word will extend outside the edges until it ends.
+		 *
+		 * <p>In the following example, the text will break long words:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.breakLongWords = true;</listing>
+		 *
+		 * @default false
+		 * 
+		 * @see #wordWrap
+		 */
+		public function get breakLongWords():Boolean
+		{
+			return _breakLongWords;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set breakLongWords(value:Boolean):void
+		{
+			if(this._breakLongWords === value)
+			{
+				return;
+			}
+			this._breakLongWords = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -550,7 +585,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _style:MeshStyle;
+		protected var _defaultStyle:MeshStyle = null;
+
+		/**
+		 * @private
+		 */
+		protected var _style:MeshStyle = null;
 
 		/**
 		 * The style that is used to render the text's mesh.
@@ -609,6 +649,11 @@ package feathers.controls.text
 			}
 			return baseline * fontSizeScale;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _image:Image = null;
 
 		/**
 		 * @private
@@ -750,8 +795,18 @@ package feathers.controls.text
 					}
 
 					var charWidth:Number = charData.width * scale;
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && (currentX + charWidth) > maxLineWidth)
+					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && (currentX + charWidth) > maxLineWidth)
 					{
+						if(wordCountForLine === 0)
+						{
+							//if we're breaking long words, this is where we break
+							startXOfPreviousWord = currentX;
+							if(previousCharID === previousCharID) //!isNaN
+							{
+								previousCharData = font.getChar(previousCharID);
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+							}
+						}
 						//we're just reusing this variable to avoid creating a
 						//new one. it'll be reset to 0 in a moment.
 						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
@@ -887,7 +942,7 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
-			if(!this._characterBatch)
+			if(this._characterBatch === null)
 			{
 				this._characterBatch = new MeshBatch();
 				this._characterBatch.touchable = false;
@@ -964,7 +1019,7 @@ package feathers.controls.text
 				sizeInvalid ||= this._currentTextFormat.align !== TextFormatAlign.LEFT;
 			}
 
-			if(dataInvalid || sizeInvalid || this._textFormatChanged)
+			if(dataInvalid || sizeInvalid || stylesInvalid || this._textFormatChanged)
 			{
 				this._textFormatChanged = false;
 				this._characterBatch.clear();
@@ -974,6 +1029,17 @@ package feathers.controls.text
 					return;
 				}
 				this.layoutCharacters(HELPER_RESULT);
+				//for some reason, we can't just set the style once...
+				//we need to set up every time after layout
+				if(this._style !== null)
+				{
+					this._characterBatch.style = this._style;
+				}
+				else
+				{
+					this._defaultStyle = this._currentTextFormat.font.getDefaultMeshStyle(this._defaultStyle, this._currentFontStyles, null);
+					this._characterBatch.style = this._defaultStyle;
+				}
 				this._lastLayoutWidth = HELPER_RESULT.width;
 				this._lastLayoutHeight = HELPER_RESULT.height;
 				this._lastLayoutIsTruncated = HELPER_RESULT.isTruncated;
@@ -1010,12 +1076,14 @@ package feathers.controls.text
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this._currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
-			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
+			if(isAligned && maxLineWidth === Number.POSITIVE_INFINITY)
 			{
 				//we need to measure the text to get the maximum line width
 				//so that we can align the text
-				this.measureText(HELPER_POINT);
-				maxLineWidth = HELPER_POINT.x;
+				var point:Point = Pool.getPoint();
+				this.measureText(point);
+				maxLineWidth = point.x;
+				Pool.putPoint(point);
 			}
 			var textToDraw:String = this._text;
 			if(this._truncateToFit)
@@ -1127,8 +1195,25 @@ package feathers.controls.text
 					//so we're going to be a little bit fuzzy on the greater
 					//than check. such tiny numbers shouldn't break anything.
 					var charWidth:Number = charData.width * scale;
-					if(!currentCharIsWhitespace && wordCountForLine > 0 && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
+					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
+						if(wordCountForLine === 0)
+						{
+							//if we're breaking long words, this is where we break.
+							//we need to pretend that there's a word before this one.
+							wordLength = 0;
+							startXOfPreviousWord = currentX;
+							widthOfWhitespaceAfterWord = 0;
+							if(previousCharID === previousCharID) //!isNaN
+							{
+								previousCharData = font.getChar(previousCharID);
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+							}
+							if(!isAligned)
+							{
+								this.addBufferToBatch(0);
+							}
+						}
 						if(isAligned)
 						{
 							this.trimBuffer(wordLength);
@@ -1326,36 +1411,40 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(!HELPER_IMAGE)
+			var font:BitmapFont = this._currentTextFormat.font;
+			if(this._image === null)
 			{
-				HELPER_IMAGE = new Image(texture);
+				this._image = new Image(texture);
 			}
 			else
 			{
-				HELPER_IMAGE.texture = texture;
-				HELPER_IMAGE.readjustSize();
+				this._image.texture = texture;
+				this._image.readjustSize();
 			}
-			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
-			HELPER_IMAGE.x = x;
-			HELPER_IMAGE.y = y;
-			HELPER_IMAGE.color = this._currentTextFormat.color;
-			HELPER_IMAGE.textureSmoothing = this._textureSmoothing;
-			HELPER_IMAGE.pixelSnapping = this._pixelSnapping;
-			if(this._style !== null)
+			this._image.scaleX = scale;
+			this._image.scaleY = scale;
+			this._image.x = x;
+			this._image.y = y;
+			this._image.color = this._currentTextFormat.color;
+			if(this._textureSmoothing !== null)
 			{
-				HELPER_IMAGE.style = this._style;
+				this._image.textureSmoothing = this._textureSmoothing;
+			}
+			else
+			{
+				this._image.textureSmoothing = font.smoothing;
 			}
 
 			if(painter !== null)
 			{
 				painter.pushState();
-				painter.setStateTo(HELPER_IMAGE.transformationMatrix);
-				painter.batchMesh(HELPER_IMAGE);
+				painter.setStateTo(this._image.transformationMatrix);
+				painter.batchMesh(this._image);
 				painter.popState();
 			}
 			else
 			{
-				this._characterBatch.addMesh(HELPER_IMAGE);
+				this._characterBatch.addMesh(this._image);
 			}
 		}
 
@@ -1407,6 +1496,12 @@ package feathers.controls.text
 			{
 				//when using BitmapFontTextFormat, vertical align is always top
 				this._currentVerticalAlign = Align.TOP;
+				if(this._currentFontStyles === null)
+				{
+					this._currentFontStyles = new TextFormat();
+				}
+				//we need the size to determine the default mesh style
+				this._currentFontStyles.size = textFormat.size;
 			}
 			if(this._currentTextFormat !== textFormat)
 			{
@@ -1427,6 +1522,7 @@ package feathers.controls.text
 				if(this._fontStyles !== null)
 				{
 					textFormat = this._fontStyles.getTextFormatForTarget(this);
+					this._currentFontStyles = textFormat;
 				}
 				if(textFormat !== null)
 				{
@@ -1467,7 +1563,7 @@ package feathers.controls.text
 			}
 
 			//if the width is infinity or the string is multiline, don't allow truncation
-			if(width == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
+			if(width === Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
 			{
 				return this._text;
 			}

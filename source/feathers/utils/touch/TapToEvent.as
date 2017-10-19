@@ -1,0 +1,280 @@
+/*
+Feathers
+Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
+*/
+package feathers.utils.touch
+{
+	import flash.geom.Point;
+
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
+	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.utils.Pool;
+
+	/**
+	 * Dispatches an event from the target when the target is tapped/clicked.
+	 * Conveniently handles all <code>TouchEvent</code> listeners
+	 * automatically.
+	 *
+	 * <p>In the following example, a custom item renderer will be triggered
+	 * when tapped:</p>
+	 *
+	 * <listing version="3.0">
+	 * public class CustomItemRenderer extends LayoutGroupListItemRenderer
+	 * {
+	 *     public function CustomItemRenderer()
+	 *     {
+	 *         super();
+	 *         this._tapToEvent = new TapToEvent(this, Event.TRIGGERED);
+	 *     }
+	 *     
+	 *     private var _tapToEvent:TapToEvent;
+	 * }</listing>
+	 * 
+	 * @see feathers.utils.touch.TapToTrigger
+	 * @see feathers.utils.touch.TapToSelect
+	 * @see feathers.utils.touch.LongPress
+	 *
+	 * @productversion Feathers 3.4.0
+	 */
+	public class TapToEvent
+	{
+		/**
+		 * Constructor.
+		 */
+		public function TapToEvent(target:DisplayObject = null, eventType:String = null)
+		{
+			this.target = target;
+			this.eventType = eventType;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _target:DisplayObject;
+
+		/**
+		 * The target component that should dispatch the <code>eventType</code>
+		 * when tapped.
+		 */
+		public function get target():DisplayObject
+		{
+			return this._target;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set target(value:DisplayObject):void
+		{
+			if(this._target == value)
+			{
+				return;
+			}
+			if(this._target)
+			{
+				this._target.removeEventListener(TouchEvent.TOUCH, target_touchHandler);
+			}
+			this._target = value;
+			if(this._target)
+			{
+				//if we're changing targets, and a touch is active, we want to
+				//clear it.
+				this._touchPointID = -1;
+				this._target.addEventListener(TouchEvent.TOUCH, target_touchHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _eventType:String = null;
+
+		/**
+		 * The event type that will be dispatched when tapped.
+		 */
+		public function get eventType():String
+		{
+			return this._eventType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set eventType(value:String):void
+		{
+			this._eventType = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _isEnabled:Boolean = true;
+
+		/**
+		 * May be set to <code>false</code> to disable the event dispatching
+		 * temporarily until set back to <code>true</code>.
+		 */
+		public function get isEnabled():Boolean
+		{
+			return this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isEnabled(value:Boolean):void
+		{
+			if(this._isEnabled === value)
+			{
+				return;
+			}
+			this._isEnabled = value;
+			if(!value)
+			{
+				this._touchPointID = -1;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _tapCount:int = -1;
+
+		/**
+		 * The number of times a component must be tapped before the event will
+		 * be dispatched. If the value of <code>tapCount</code> is <code>-1</code>,
+		 * the event will be dispatched for every tap.
+		 */
+		public function get tapCount():int
+		{
+			return this._tapCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set tapCount(value:int):void
+		{
+			this._tapCount = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customHitTest:Function;
+
+		/**
+		 * In addition to a normal call to <code>hitTest()</code>, a custom
+		 * function may impose additional rules that determine if the target
+		 * should be dispatch an event. Called on <code>TouchPhase.BEGAN</code>.
+		 *
+		 * <p>The function must have the following signature:</p>
+		 *
+		 * <pre>function(localPosition:Point):Boolean;</pre>
+		 *
+		 * <p>The function should return <code>true</code> if the target should
+		 * dispatch an event, and <code>false</code> if it should not dispatch.</p>
+		 */
+		public function get customHitTest():Function
+		{
+			return this._customHitTest;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHitTest(value:Function):void
+		{
+			this._customHitTest = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function target_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled)
+			{
+				this._touchPointID = -1;
+				return;
+			}
+
+			if(this._touchPointID >= 0)
+			{
+				//a touch has begun, so we'll ignore all other touches.
+				var touch:Touch = event.getTouch(this._target, null, this._touchPointID);
+				if(!touch)
+				{
+					//this should not happen.
+					return;
+				}
+
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					var stage:Stage = this._target.stage;
+					if(stage !== null)
+					{
+						var point:Point = Pool.getPoint();
+						touch.getLocation(stage, point);
+						if(this._target is DisplayObjectContainer)
+						{
+							var isInBounds:Boolean = DisplayObjectContainer(this._target).contains(stage.hitTest(point));
+						}
+						else
+						{
+							isInBounds = this._target === stage.hitTest(point);
+						}
+						Pool.putPoint(point);
+						if(isInBounds && (this._tapCount === -1 || this._tapCount === touch.tapCount))
+						{
+							this._target.dispatchEventWith(this._eventType);
+						}
+					}
+
+					//the touch has ended, so now we can start watching for a
+					//new one.
+					this._touchPointID = -1;
+				}
+				return;
+			}
+			else
+			{
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(DisplayObject(this._target), TouchPhase.BEGAN);
+				if(!touch)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				if(this._customHitTest !== null)
+				{
+					point = Pool.getPoint();
+					touch.getLocation(DisplayObject(this._target), point);
+					isInBounds = this._customHitTest(point);
+					Pool.putPoint(point);
+					if(!isInBounds)
+					{
+						return;
+					}
+				}
+
+				//save the touch ID so that we can track this touch's phases.
+				this._touchPointID = touch.id;
+			}
+		}
+	}
+}

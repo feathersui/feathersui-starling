@@ -107,6 +107,9 @@ package feathers.themes
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Minimal" theme for desktop Feathers apps. Handles
@@ -208,6 +211,10 @@ package feathers.themes
 		protected static const SEEK_SLIDER_PROGRESS_SKIN_SCALE9_GRID:Rectangle = new Rectangle(0, 2, 2, 10);
 		protected static const BACK_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(11, 0, 1, 20);
 		protected static const FORWARD_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 0, 1, 20);
+		protected static const DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 3);
+		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 3);
+		protected static const DATA_GRID_HEADER_RENDERER_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 1, 1);
+		protected static const DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 3);
 
 		protected static const BACKGROUND_COLOR:uint = 0xf3f3f3;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
@@ -217,6 +224,8 @@ package feathers.themes
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0xcccccc;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
+		protected static const DATA_GRID_COLUMN_OVERLAY_COLOR:uint = 0xeeeeee;
+		protected static const DATA_GRID_COLUMN_OVERLAY_ALPHA:Number = 0.6;
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -423,15 +432,22 @@ package feathers.themes
 		protected var listBackgroundSkinTexture:Texture;
 		protected var listInsetBackgroundSkinTexture:Texture;
 		
-		protected var itemRendererUpSkin:Texture;
-		protected var itemRendererHoverSkin:Texture;
-		protected var itemRendererSelectedSkin:Texture;
-		protected var headerRendererSkin:Texture;
+		protected var itemRendererUpSkinTexture:Texture;
+		protected var itemRendererHoverSkinTexture:Texture;
+		protected var itemRendererSelectedSkinTexture:Texture;
+		protected var headerRendererSkinTexture:Texture;
 		
 		protected var listDrillDownAccessoryTexture:Texture;
 
 		protected var treeDisclosureOpenIconTexture:Texture;
 		protected var treeDisclosureClosedIconTexture:Texture;
+
+		protected var dataGridHeaderRendererSkinTexture:Texture;
+		protected var dataGridColumnResizeSkinTexture:Texture;
+		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
+		protected var dataGridHeaderSortAscendingIconTexture:Texture;
+		protected var dataGridHeaderSortDescendingIconTexture:Texture;
 
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -556,10 +572,10 @@ package feathers.themes
 			this.listBackgroundSkinTexture = this.atlas.getTexture("list-background-skin0000");
 			this.listInsetBackgroundSkinTexture = this.atlas.getTexture("list-inset-background-skin0000");
 			
-			this.itemRendererUpSkin = Texture.fromTexture(this.atlas.getTexture("item-renderer-up-skin0000"), SOLID_COLOR_TEXTURE_REGION);
-			this.itemRendererHoverSkin = Texture.fromTexture(this.atlas.getTexture("item-renderer-hover-skin0000"), SOLID_COLOR_TEXTURE_REGION);
-			this.itemRendererSelectedSkin = Texture.fromTexture(this.atlas.getTexture("item-renderer-selected-skin0000"), SOLID_COLOR_TEXTURE_REGION);
-			this.headerRendererSkin = Texture.fromTexture(this.atlas.getTexture("header-renderer-skin0000"), SOLID_COLOR_TEXTURE_REGION);
+			this.itemRendererUpSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-up-skin0000"), SOLID_COLOR_TEXTURE_REGION);
+			this.itemRendererHoverSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-hover-skin0000"), SOLID_COLOR_TEXTURE_REGION);
+			this.itemRendererSelectedSkinTexture = Texture.fromTexture(this.atlas.getTexture("item-renderer-selected-skin0000"), SOLID_COLOR_TEXTURE_REGION);
+			this.headerRendererSkinTexture = Texture.fromTexture(this.atlas.getTexture("header-renderer-skin0000"), SOLID_COLOR_TEXTURE_REGION);
 
 			this.insetBackgroundSkinTexture = this.atlas.getTexture("inset-background-enabled-skin0000");
 			this.insetBackgroundDisabledSkinTexture = this.atlas.getTexture("inset-background-disabled-skin0000");
@@ -621,6 +637,13 @@ package feathers.themes
 
 			this.treeDisclosureOpenIconTexture = this.atlas.getTexture("tree-disclosure-open-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
+
+			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
+			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+			this.dataGridHeaderRendererSkinTexture = this.atlas.getTexture("data-grid-header-renderer-skin0000");
+			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
+			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
+			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
 		}
 
 		/**
@@ -672,6 +695,11 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+
+			//data grid
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setItemRendererStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -841,6 +869,13 @@ package feathers.themes
 		protected function pageIndicatorSelectedSymbolFactory():DisplayObject
 		{
 			return new Image(this.pageIndicatorSelectedSymbolTexture);
+		}
+
+		protected function dataGridHeaderDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
+			return skin;
 		}
 
 	//-------------------------
@@ -1214,6 +1249,68 @@ package feathers.themes
 		}
 
 	//-------------------------
+	// DataGrid
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+
+			grid.verticalScrollPolicy = ScrollPolicy.AUTO;
+
+			var backgroundSkin:ImageSkin = new ImageSkin(this.listBackgroundSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			grid.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:ImageSkin = new ImageSkin(this.buttonDisabledSkinTexture);
+			backgroundSkin.scale9Grid = DEFAULT_SCALE_9_GRID;
+			backgroundDisabledSkin.width = this.controlSize;
+			backgroundDisabledSkin.height = this.controlSize;
+			grid.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+
+			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
+			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SKIN_SCALE_9_GRID;
+			grid.columnResizeSkin = columnResizeSkin;
+
+			var columnDropIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropIndicatorSkinTexture);
+			columnDropIndicatorSkin.scale9Grid = DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID;
+			grid.columnDropIndicatorSkin = columnDropIndicatorSkin;
+
+			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
+
+			grid.padding = this.borderSize;
+			grid.paddingRight = 0;
+		}
+
+		protected function setDataGridHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			var backgroundSkin:ImageSkin = new ImageSkin(this.dataGridHeaderRendererSkinTexture);
+			backgroundSkin.scale9Grid = DATA_GRID_HEADER_RENDERER_SCALE_9_GRID;
+			backgroundSkin.width = this.controlSize;
+			backgroundSkin.height = this.controlSize;
+			backgroundSkin.minWidth = this.controlSize;
+			backgroundSkin.minHeight = this.controlSize;
+			headerRenderer.backgroundSkin = backgroundSkin;
+
+			headerRenderer.sortAscendingIcon = new ImageSkin(this.dataGridHeaderSortAscendingIconTexture);
+			headerRenderer.sortDescendingIcon = new ImageSkin(this.dataGridHeaderSortDescendingIconTexture);
+
+			headerRenderer.fontStyles = this.primaryFontStyles.clone();
+			headerRenderer.disabledFontStyles = this.disabledFontStyles.clone();
+
+			headerRenderer.paddingTop = this.smallGutterSize;
+			headerRenderer.paddingBottom = this.smallGutterSize;
+			headerRenderer.paddingLeft = this.gutterSize;
+			headerRenderer.paddingRight = this.gutterSize;
+		}
+
+	//-------------------------
 	// DateTimeSpinner
 	//-------------------------
 
@@ -1269,7 +1366,7 @@ package feathers.themes
 
 		protected function setGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
-			var backgroundSkin:ImageSkin = new ImageSkin(this.headerRendererSkin);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.headerRendererSkinTexture);
 			backgroundSkin.width = this.controlSize;
 			backgroundSkin.height = this.controlSize;
 			backgroundSkin.minWidth = this.controlSize;
@@ -1438,10 +1535,10 @@ package feathers.themes
 
 		protected function setItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
-			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkin);
-			skin.selectedTexture = this.itemRendererSelectedSkin;
-			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkin);
-			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkin);
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedSkinTexture;
+			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			skin.minWidth = this.controlSize;
@@ -1482,10 +1579,10 @@ package feathers.themes
 
 		protected function setCheckItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
 		{
-			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkin);
-			skin.selectedTexture = this.itemRendererSelectedSkin;
-			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkin);
-			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkin);
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedSkinTexture;
+			skin.setTextureForState(ButtonState.HOVER, this.itemRendererHoverSkinTexture);
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
 			skin.width = this.controlSize;
 			skin.height = this.controlSize;
 			skin.minWidth = this.controlSize;

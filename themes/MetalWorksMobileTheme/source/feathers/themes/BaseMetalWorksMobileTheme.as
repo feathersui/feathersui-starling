@@ -102,6 +102,11 @@ package feathers.themes
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
+	import feathers.core.FocusManager;
+	import starling.display.Stage;
+	import feathers.controls.DataGrid;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for mobile Feathers apps.
@@ -144,6 +149,8 @@ package feathers.themes
 		protected static const DRAWER_OVERLAY_ALPHA:Number = 0.4;
 		protected static const VIDEO_OVERLAY_COLOR:uint = 0x1a1816;
 		protected static const VIDEO_OVERLAY_ALPHA:Number = 0.2;
+		protected static const DATA_GRID_COLUMN_OVERLAY_COLOR:uint = 0x383430;
+		protected static const DATA_GRID_COLUMN_OVERLAY_ALPHA:Number = 0.4;
 
 		protected static const DEFAULT_BACKGROUND_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 1, 1);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 1, 20);
@@ -159,6 +166,11 @@ package feathers.themes
 		protected static const SPINNER_LIST_SELECTION_OVERLAY_SCALE9_GRID:Rectangle = new Rectangle(2, 6, 1, 32);
 		protected static const HORIZONTAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(4, 0, 4, 5);
 		protected static const VERTICAL_SCROLL_BAR_THUMB_SCALE9_GRID:Rectangle = new Rectangle(0, 4, 5, 4);
+		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
+		protected static const DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 2, 4);
+		protected static const DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 1, 4);
+		protected static const DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
+		protected static const DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(0, 1, 3, 28);
 
 		protected static const HEADER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 128, 64);
 		protected static const TAB_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 0, 22, 44);
@@ -361,6 +373,8 @@ package feathers.themes
 		protected var calloutBackgroundMinSize:int = 12;
 		protected var calloutArrowOverlapGap:int = -2;
 		protected var scrollBarGutterSize:int = 2;
+		protected var focusPaddingSize:int = -1;
+		protected var tabFocusPaddingSize:int = 4;
 
 		/**
 		 * The font styles for standard-sized, light text.
@@ -505,6 +519,7 @@ package feathers.themes
 		 */
 		protected var atlas:TextureAtlas;
 
+		protected var focusIndicatorSkinTexture:Texture;
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var popUpHeaderBackgroundSkinTexture:Texture;
 		protected var backgroundSkinTexture:Texture;
@@ -583,6 +598,12 @@ package feathers.themes
 		protected var treeDisclosureOpenSelectedIconTexture:Texture;
 		protected var treeDisclosureClosedIconTexture:Texture;
 		protected var treeDisclosureClosedSelectedIconTexture:Texture;
+		protected var dataGridHeaderSortAscendingIconTexture:Texture;
+		protected var dataGridHeaderSortDescendingIconTexture:Texture;
+		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dataGridVerticalDividerSkinTexture:Texture;
+		protected var dataGridColumnResizeSkinTexture:Texture;
+		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -654,6 +675,9 @@ package feathers.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+
+			var stage:Stage = this.starling.stage;
+			FocusManager.setEnabledForStage(stage, true);
 		}
 
 		/**
@@ -717,6 +741,8 @@ package feathers.themes
 		 */
 		protected function initializeTextures():void
 		{
+			this.focusIndicatorSkinTexture = this.atlas.getTexture("focus-indicator-skin0000");
+
 			this.backgroundSkinTexture = this.atlas.getTexture("background-skin0000");
 			this.backgroundDisabledSkinTexture = this.atlas.getTexture("background-disabled-skin0000");
 			this.backgroundInsetSkinTexture = this.atlas.getTexture("background-inset-skin0000");
@@ -811,6 +837,13 @@ package feathers.themes
 			this.treeDisclosureOpenSelectedIconTexture = this.atlas.getTexture("tree-disclosure-open-selected-icon0000");
 			this.treeDisclosureClosedIconTexture = this.atlas.getTexture("tree-disclosure-closed-icon0000");
 			this.treeDisclosureClosedSelectedIconTexture = this.atlas.getTexture("tree-disclosure-closed-selected-icon0000");
+
+			this.dataGridHeaderSortAscendingIconTexture = this.atlas.getTexture("data-grid-header-sort-ascending-icon0000");
+			this.dataGridHeaderSortDescendingIconTexture = this.atlas.getTexture("data-grid-header-sort-descending-icon0000");
+			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+			this.dataGridVerticalDividerSkinTexture = this.atlas.getTexture("data-grid-vertical-divider-skin0000");
+			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
+			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			
 			this.playPauseButtonPlayUpIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-up-icon0000");
 			this.playPauseButtonPlayDownIconTexture = this.atlas.getTexture("play-pause-toggle-button-play-down-icon0000");
@@ -864,6 +897,11 @@ package feathers.themes
 
 			//check
 			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
+
+			//data grid
+			this.getStyleProviderForClass(DataGrid).defaultStyleFunction = this.setDataGridStyles;
+			this.getStyleProviderForClass(DefaultDataGridCellRenderer).defaultStyleFunction = this.setDataGridCellRendererStyles;
+			this.getStyleProviderForClass(DefaultDataGridHeaderRenderer).defaultStyleFunction = this.setDataGridHeaderStyles;
 
 			//date time spinner
 			this.getStyleProviderForClass(DateTimeSpinner).defaultStyleFunction = this.setDateTimeSpinnerStyles;
@@ -1035,12 +1073,31 @@ package feathers.themes
 			return symbol;
 		}
 
+		protected function dataGridHeaderDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
+			return skin;
+		}
+
+		protected function dataGridVerticalDividerFactory():DisplayObject
+		{
+			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
+			skin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
+			return skin;
+		}
+
 	//-------------------------
 	// Shared
 	//-------------------------
 
 		protected function setScrollerStyles(scroller:Scroller):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			scroller.focusIndicatorSkin = focusIndicatorSkin;
+			scroller.focusPadding = 0;
+
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
 		}
@@ -1130,6 +1187,11 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			button.paddingTop = this.smallControlGutterSize;
 			button.paddingBottom = this.smallControlGutterSize;
 			button.paddingLeft = this.gutterSize;
@@ -1158,6 +1220,11 @@ package feathers.themes
 			skin.minWidth = this.controlSize;
 			skin.minHeight = this.controlSize;
 			button.defaultSkin = skin;
+
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
 
 			button.fontStyles = this.darkUIFontStyles.clone();
 			button.disabledFontStyles = this.darkDisabledUIFontStyles.clone();
@@ -1225,7 +1292,13 @@ package feathers.themes
 			button.paddingRight = this.smallGutterSize;
 			button.gap = this.smallControlGutterSize;
 			button.minGap = this.smallControlGutterSize;
-			button.minTouchWidth = button.minTouchHeight = this.gridSize;
+			button.minTouchWidth = this.gridSize;
+			button.minTouchHeight = this.gridSize;
+			
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setDangerButtonStyles(button:Button):void
@@ -1314,6 +1387,11 @@ package feathers.themes
 			skin.minHeight = this.gridSize;
 			button.defaultSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			button.focusIndicatorSkin = focusIndicatorSkin;
+			button.focusPadding = this.focusPaddingSize;
+
 			button.fontStyles = this.largeDarkUIFontStyles.clone();
 			button.disabledFontStyles = this.largeDarkUIDisabledFontStyles.clone();
 
@@ -1396,6 +1474,11 @@ package feathers.themes
 			skin.alpha = 0;
 			check.defaultSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			check.focusIndicatorSkin = focusIndicatorSkin;
+			check.focusPadding = this.focusPaddingSize;
+
 			var icon:ImageSkin = new ImageSkin(this.checkUpIconTexture);
 			icon.selectedTexture = this.checkSelectedUpIconTexture;
 			icon.setTextureForState(ButtonState.DOWN, this.checkDownIconTexture);
@@ -1412,6 +1495,87 @@ package feathers.themes
 			check.minGap = this.smallControlGutterSize;
 			check.minTouchWidth = this.gridSize;
 			check.minTouchHeight = this.gridSize;
+		}
+
+	//-------------------------
+	// DataGrid
+	//-------------------------
+
+		protected function setDataGridStyles(grid:DataGrid):void
+		{
+			this.setScrollerStyles(grid);
+			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+			grid.backgroundSkin = backgroundSkin;
+
+			var columnResizeSkin:ImageSkin = new ImageSkin(this.dataGridColumnResizeSkinTexture);
+			columnResizeSkin.scale9Grid = DATA_GRID_COLUMN_RESIZE_SCALE_9_GRID;
+			grid.columnResizeSkin = columnResizeSkin;
+
+			var columnDropIndicatorSkin:ImageSkin = new ImageSkin(this.dataGridColumnDropIndicatorSkinTexture);
+			columnDropIndicatorSkin.scale9Grid = DATA_GRID_COLUMN_DROP_INDICATOR_SCALE_9_GRID;
+			grid.columnDropIndicatorSkin = columnDropIndicatorSkin;
+			grid.extendedColumnDropIndicator = true;
+
+			var columnDragOverlaySkin:Quad = new Quad(1, 1, DATA_GRID_COLUMN_OVERLAY_COLOR);
+			columnDragOverlaySkin.alpha = DATA_GRID_COLUMN_OVERLAY_ALPHA;
+			grid.columnDragOverlaySkin = columnDragOverlaySkin;
+
+			grid.headerDividerFactory = this.dataGridHeaderDividerFactory;
+			grid.verticalDividerFactory = this.dataGridVerticalDividerFactory;
+		}
+
+		protected function setDataGridHeaderStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+		{
+			headerRenderer.backgroundSkin = new Quad(1, 1, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			headerRenderer.sortAscendingIcon = new ImageSkin(this.dataGridHeaderSortAscendingIconTexture);
+			headerRenderer.sortDescendingIcon = new ImageSkin(this.dataGridHeaderSortDescendingIconTexture);
+
+			headerRenderer.fontStyles = this.lightUIFontStyles;
+			headerRenderer.disabledFontStyles = this.lightDisabledUIFontStyles;
+			headerRenderer.padding = this.smallGutterSize;
+		}
+
+		protected function setDataGridCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+		{
+			var skin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
+			skin.selectedTexture = this.itemRendererSelectedSkinTexture;
+			skin.setTextureForState(ButtonState.DOWN, this.itemRendererSelectedSkinTexture);
+			skin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
+			skin.width = this.gridSize;
+			skin.height = this.gridSize;
+			skin.minWidth = this.gridSize;
+			skin.minHeight = this.gridSize;
+			cellRenderer.defaultSkin = skin;
+
+			cellRenderer.fontStyles = this.largeLightFontStyles.clone();
+			cellRenderer.disabledFontStyles = this.largeLightDisabledFontStyles.clone();
+			cellRenderer.selectedFontStyles = this.largeDarkFontStyles.clone();
+			cellRenderer.setFontStylesForState(ButtonState.DOWN, this.largeDarkFontStyles.clone());
+
+			cellRenderer.iconLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.iconLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.iconLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setIconLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+
+			cellRenderer.accessoryLabelFontStyles = this.lightFontStyles.clone();
+			cellRenderer.accessoryLabelDisabledFontStyles = this.lightDisabledFontStyles.clone();
+			cellRenderer.accessoryLabelSelectedFontStyles = this.darkFontStyles.clone();
+			cellRenderer.setAccessoryLabelFontStylesForState(ButtonState.DOWN, this.darkFontStyles.clone());
+
+			cellRenderer.horizontalAlign = HorizontalAlign.LEFT;
+			cellRenderer.paddingTop = this.smallGutterSize;
+			cellRenderer.paddingBottom = this.smallGutterSize;
+			cellRenderer.paddingLeft = this.gutterSize;
+			cellRenderer.paddingRight = this.gutterSize;
+			cellRenderer.gap = this.gutterSize;
+			cellRenderer.minGap = this.gutterSize;
+			cellRenderer.iconPosition = RelativePosition.LEFT;
+			cellRenderer.accessoryGap = Number.POSITIVE_INFINITY;
+			cellRenderer.minAccessoryGap = this.gutterSize;
+			cellRenderer.accessoryPosition = RelativePosition.RIGHT;
+			cellRenderer.minTouchWidth = this.gridSize;
+			cellRenderer.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -1797,6 +1961,13 @@ package feathers.themes
 
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			stepper.focusIndicatorSkin = focusIndicatorSkin;
+			stepper.focusPadding = this.focusPaddingSize;
+
+			stepper.useLeftAndRightKeys = true;
+
 			stepper.buttonLayoutMode = StepperButtonLayoutMode.SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
@@ -2040,6 +2211,11 @@ package feathers.themes
 			skin.alpha = 0;
 			radio.defaultSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			radio.focusIndicatorSkin = focusIndicatorSkin;
+			radio.focusPadding = this.focusPaddingSize;
+
 			var icon:ImageSkin = new ImageSkin(this.radioUpIconTexture);
 			icon.selectedTexture = this.radioSelectedUpIconTexture;
 			icon.setTextureForState(ButtonState.DOWN, this.radioDownIconTexture);
@@ -2158,6 +2334,11 @@ package feathers.themes
 
 		protected function setSliderStyles(slider:Slider):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			slider.focusIndicatorSkin = focusIndicatorSkin;
+			slider.focusPadding = this.focusPaddingSize;
+
 			slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 			if(slider.direction == Direction.VERTICAL)
 			{
@@ -2302,6 +2483,11 @@ package feathers.themes
 			skin.minHeight = this.gridSize;
 			tab.defaultSkin = skin;
 
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			tab.focusIndicatorSkin = focusIndicatorSkin;
+			tab.focusPadding = this.tabFocusPaddingSize;
+
 			tab.fontStyles = this.lightUIFontStyles.clone();
 			tab.disabledFontStyles = this.lightDisabledUIFontStyles.clone();
 			tab.selectedFontStyles = this.darkUIFontStyles.clone();
@@ -2437,6 +2623,11 @@ package feathers.themes
 
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
+			var focusIndicatorSkin:Image = new Image(this.focusIndicatorSkinTexture);
+			focusIndicatorSkin.scale9Grid = FOCUS_INDICATOR_SCALE_9_GRID;
+			toggle.focusIndicatorSkin = focusIndicatorSkin;
+			toggle.focusPadding = this.focusPaddingSize;
+
 			toggle.trackLayoutMode = TrackLayoutMode.SINGLE;
 
 			toggle.offLabelFontStyles = this.lightUIFontStyles.clone();

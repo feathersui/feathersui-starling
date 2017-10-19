@@ -2085,7 +2085,15 @@ package feathers.controls
 			{
 				if(this._isTextureOwner)
 				{
-					this._texture.dispose();
+					if(!SystemUtil.isDesktop && !SystemUtil.isApplicationActive)
+					{
+						//avoiding stage3d calls when a mobile application isn't active
+						SystemUtil.executeWhenApplicationIsActive(this._texture.dispose);
+					}
+					else
+					{
+						this._texture.dispose();
+					}
 				}
 				else if(this._textureCache !== null)
 				{
@@ -2244,10 +2252,20 @@ package feathers.controls
 			{
 				//skip Texture.fromBitmapData() because we don't want
 				//it to create an onRestore function that will be
-				//immediately discarded for garbage collection. 
-				this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
-					bitmapData.height / this._scaleFactor, true, false, false,
-					this._scaleFactor, this._textureFormat);
+				//immediately discarded for garbage collection.
+				try
+				{
+					this._texture = Texture.empty(bitmapData.width / this._scaleFactor,
+						bitmapData.height / this._scaleFactor, true, false, false,
+						this._scaleFactor, this._textureFormat);
+				}
+				catch(error:Error)
+				{
+					this.cleanupTexture();
+					this.invalidate(INVALIDATION_FLAG_DATA);
+					this.dispatchEventWith(starling.events.Event.IO_ERROR, false, new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, error.toString()));
+					return;
+				}
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
@@ -2343,7 +2361,17 @@ package feathers.controls
 			}
 			else
 			{
-				this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				try
+				{
+					this._texture = Texture.fromAtfData(rawData, this._scaleFactor);
+				}
+				catch(error:Error)
+				{
+					this.cleanupTexture();
+					this.invalidate(INVALIDATION_FLAG_DATA);
+					this.dispatchEventWith(starling.events.Event.IO_ERROR, false, new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, error.toString()));
+					return;
+				}
 				this._texture.root.onRestore = this.createTextureOnRestore(this._texture,
 					this._source, this._textureFormat, this._scaleFactor);
 				if(this._textureCache)
@@ -2574,7 +2602,7 @@ package feathers.controls
 			//(perhaps with some kind of AIR version detection, though)
 			var canReuseTexture:Boolean =
 				this._texture !== null &&
-				(!this._asyncTextureUpload || this._texture.root.uploadBitmapData.length === 1) &&
+				(!Texture.asyncBitmapUploadEnabled || !this._asyncTextureUpload) &&
 				this._texture.nativeWidth === bitmapData.width &&
 				this._texture.nativeHeight === bitmapData.height &&
 				this._texture.scale === this._scaleFactor &&
@@ -2582,6 +2610,15 @@ package feathers.controls
 			if(!canReuseTexture)
 			{
 				this.cleanupTexture();
+				if(this._textureCache)
+				{
+					//we need to replace the current texture in the cache,
+					//so we need to remove the old one so that the cache
+					//doesn't throw an error because there's already a
+					//texture with this key.
+					var key:String = this.sourceToTextureCacheKey(this._source);
+					this._textureCache.removeTexture(key);
+				}
 			}
 			if(this._delayTextureCreation && !this._isRestoringTexture)
 			{

@@ -24,12 +24,13 @@ package feathers.controls
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 	import starling.utils.Pool;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -861,7 +862,7 @@ package feathers.controls
 		 * <p><em>Warning:</em> A grouped list's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item renderers,
 		 * you must create separate objects with the same properties. This
-		 * limitation exists because it significantly improves performance.</p>
+		 * restriction exists because it significantly improves performance.</p>
 		 *
 		 * <p><em>Warning:</em> If the data provider contains display objects,
 		 * concrete textures, or anything that needs to be disposed, those
@@ -3092,11 +3093,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(!this._isSelectable)
+			{
+				//not selectable, but should scroll
+				super.nativeStage_keyDownHandler(event);
+				return;
+			}
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			if(!this._dataProvider)
 			{
 				return;
+			}
+			if(this._selectedGroupIndex !== -1 && this._selectedItemIndex !== -1 &&
+				(event.keyCode === Keyboard.SPACE ||
+				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			{
+				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
 				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
@@ -3112,6 +3129,7 @@ package feathers.controls
 				}
 				else if(this._selectedGroupIndex !== newGroupIndex || this._selectedItemIndex !== newItemIndex)
 				{
+					event.preventDefault();
 					this.setSelectedLocation(newGroupIndex, newItemIndex);
 					var point:Point = Pool.getPoint();
 					this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, point);

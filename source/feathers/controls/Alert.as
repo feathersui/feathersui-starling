@@ -529,7 +529,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _buttonsDataProvider:IListCollection;
+		protected var _buttonsDataProvider:IListCollection = null;
 
 		/**
 		 * The data provider of the alert's <code>ButtonGroup</code>.
@@ -1354,6 +1354,11 @@ package feathers.controls
 			if(event.isDefaultPrevented())
 			{
 				//someone else already handled this one
+				return;
+			}
+			if(this._buttonsDataProvider === null)
+			{
+				//no buttons to trigger
 				return;
 			}
 			var keyCode:uint = event.keyCode;

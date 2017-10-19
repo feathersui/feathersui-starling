@@ -180,6 +180,58 @@ package feathers.data
 	[Event(name="updateAll",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the <code>filterFunction</code> property changes or the
+	 * <code>refresh()</code> function is called on the <code>IListCollection</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #filterFunction
+	 * @see #refresh()
+	 *
+	 * @eventType feathers.events.CollectionEventType.FILTER_CHANGE
+	 */
+	[Event(name="filterChange",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the <code>sortCompareFunction</code> property changes or
+	 * the <code>refresh()</code> function is called on the <code>IListCollection</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @see #sortCompareFunction
+	 * @see #refresh()
+	 *
+	 * @eventType feathers.events.CollectionEventType.SORT_CHANGE
+	 */
+	[Event(name="sortChange",type="starling.events.Event")]
+
+	/**
 	 * Wraps a data source with a common API for use with UI controls, like
 	 * lists, that support one dimensional collections of data. Supports custom
 	 * "data descriptors" so that unexpected data sources may be used. Supports
@@ -313,7 +365,7 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected var _filterFunction:Function;
+		protected var _filterFunction:Function = null;
 
 		/**
 		 * @copy feathers.data.IListCollection#filterFunction
@@ -339,6 +391,34 @@ package feathers.data
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _sortCompareFunction:Function = null;
+
+		/**
+		 * @copy feathers.data.IListCollection#sortCompareFunction
+		 */
+		public function get sortCompareFunction():Function
+		{
+			return this._sortCompareFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sortCompareFunction(value:Function):void
+		{
+			if(this._sortCompareFunction === value)
+			{
+				return;
+			}
+			this._sortCompareFunction = value;
+			this._pendingRefresh = true;
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.SORT_CHANGE);
+		}
+
+		/**
 		 * @copy feathers.data.IListCollection#length
 		 */
 		public function get length():int
@@ -349,7 +429,7 @@ package feathers.data
 			}
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -358,24 +438,40 @@ package feathers.data
 			return this._dataDescriptor.getLength(this._data);
 		}
 
+		[Deprecated(message="Use refresh() instead of refreshFilter().")]
 		/**
-		 * @copy feathers.data.IListCollection#refreshFilter()
+		 * @private
 		 */
 		public function refreshFilter():void
 		{
-			if(this._filterFunction === null)
+			this.refresh();
+		}
+
+		/**
+		 * @copy feathers.data.IListCollection#refresh()
+		 */
+		public function refresh():void
+		{
+			if(this._filterFunction === null && this._sortCompareFunction === null)
 			{
 				return;
 			}
 			this._pendingRefresh = true;
 			this.dispatchEventWith(Event.CHANGE);
-			this.dispatchEventWith(CollectionEventType.FILTER_CHANGE);
+			if(this._filterFunction !== null)
+			{
+				this.dispatchEventWith(CollectionEventType.FILTER_CHANGE);
+			}
+			if(this._sortCompareFunction !== null)
+			{
+				this.dispatchEventWith(CollectionEventType.SORT_CHANGE);
+			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refresh():void
+		protected function refreshFilterAndSort():void
 		{
 			this._pendingRefresh = false;
 			if(this._filterFunction !== null)
@@ -404,10 +500,31 @@ package feathers.data
 				this._localData = result;
 				this._localDataDescriptor = new ArrayListCollectionDataDescriptor();
 			}
-			else
+			else if(this._sortCompareFunction !== null) //no filter
+			{
+				count = this._dataDescriptor.getLength(this._data);
+				if(this._localData === null)
+				{
+					this._localData = new Array(count);
+				}
+				else
+				{
+					this._localData.length = count;
+				}
+				for(i = 0; i < count; i++)
+				{
+					this._localData[i] = this._dataDescriptor.getItemAt(this._data, i);
+				}
+				this._localDataDescriptor = new ArrayListCollectionDataDescriptor();
+			}
+			else //no filter or sort
 			{
 				this._localData = null;
 				this._localDataDescriptor = null;
+			}
+			if(this._sortCompareFunction !== null)
+			{
+				this._localData.sort(this._sortCompareFunction);
 			}
 		}
 
@@ -439,7 +556,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -456,7 +573,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -472,7 +589,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -499,13 +616,18 @@ package feathers.data
 				}
 				if(includeItem)
 				{
-					this._localDataDescriptor.addItemAt(this._localData, item, index);
+					var sortedIndex:int = index;
+					if(this._sortCompareFunction !== null)
+					{
+						sortedIndex = this.getSortedInsertionIndex(item);
+					}
+					this._localDataDescriptor.addItemAt(this._localData, item, sortedIndex);
 					//don't dispatch these events if the item is filtered!
 					this.dispatchEventWith(Event.CHANGE);
-					this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
+					this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, sortedIndex);
 				}
 			}
-			else
+			else //no filter or sort
 			{
 				this._dataDescriptor.addItemAt(this._data, item, index);
 				this.dispatchEventWith(Event.CHANGE);
@@ -520,7 +642,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -556,7 +678,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this.length === 0)
 			{
@@ -581,7 +703,7 @@ package feathers.data
 		{
 			if(this._pendingRefresh)
 			{
-				this.refresh();
+				this.refreshFilterAndSort();
 			}
 			if(this._localData !== null)
 			{
@@ -607,8 +729,19 @@ package feathers.data
 						this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 					}
 				}
+				else if(this._sortCompareFunction !== null)
+				{
+					//remove the old item first!
+					this._localDataDescriptor.removeItemAt(this._localData, index);
+					//then try to figure out where the new item goes when inserted
+					var sortedIndex:int = this.getSortedInsertionIndex(item);
+					this._localDataDescriptor.setItemAt(this._localData, item, sortedIndex);
+					this.dispatchEventWith(Event.CHANGE);
+					this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
+					return;
+				}
 			}
-			else
+			else //no filter or sort
 			{
 				this._dataDescriptor.setItemAt(this._data, item, index);
 				this.dispatchEventWith(Event.CHANGE);
@@ -722,7 +855,7 @@ package feathers.data
 			//if we're disposing the collection, filters don't matter anymore,
 			//and we should ensure that all items are disposed.
 			this._filterFunction = null;
-			this.refresh();
+			this.refreshFilterAndSort();
 
 			var itemCount:int = this.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -730,6 +863,28 @@ package feathers.data
 				var item:Object = this.getItemAt(i);
 				disposeItem(item);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getSortedInsertionIndex(item:Object):int
+		{
+			var itemCount:int = this._localDataDescriptor.getLength(this._localData);
+			if(this._sortCompareFunction === null)
+			{
+				return itemCount;
+			}
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var otherItem:Object = this._localDataDescriptor.getItemAt(this._localData, i);
+				var result:int = this._sortCompareFunction(item, otherItem);
+				if(result < 1)
+				{
+					return i;
+				}
+			}
+			return itemCount;
 		}
 	}
 }

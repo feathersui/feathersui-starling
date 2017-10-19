@@ -16,6 +16,7 @@ package feathers.utils.keyboard
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Changes a target's state when a key is pressed or released on the
@@ -41,6 +42,11 @@ package feathers.utils.keyboard
 		 * @private
 		 */
 		protected var _stage:Stage;
+
+		/**
+		 * @private
+		 */
+		protected var _hasFocus:Boolean = false;
 
 		/**
 		 * @private
@@ -131,7 +137,7 @@ package feathers.utils.keyboard
 		protected var _keyCode:uint = Keyboard.SPACE;
 
 		/**
-		 * The key that will trigger the target, when pressed.
+		 * The key that will change the state of the target, when pressed.
 		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
@@ -154,7 +160,7 @@ package feathers.utils.keyboard
 		protected var _cancelKeyCode:uint = Keyboard.ESCAPE;
 
 		/**
-		 * The key that will cancel the trigger if the key is down.
+		 * The key that will cancel the state change if the key is down.
 		 *
 		 * @default flash.ui.Keyboard.ESCAPE
 		 */
@@ -169,6 +175,32 @@ package feathers.utils.keyboard
 		public function set cancelKeyCode(value:uint):void
 		{
 			this._cancelKeyCode = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _keyLocation:uint = uint.MAX_VALUE;
+
+		/**
+		 * The location of the key that will change the state, when pressed.
+		 * If <code>uint.MAX_VALUE</code>, then any key location is allowed.
+		 *
+		 * @default uint.MAX_VALUE
+		 *
+		 * @see flash.ui.KeyLocation
+		 */
+		public function get keyLocation():uint
+		{
+			return this._keyLocation;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyLocation(value:uint):void
+		{
+			this._keyLocation = value;
 		}
 
 		/**
@@ -255,6 +287,29 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected var _focusedState:String = ButtonState.FOCUSED;
+
+		/**
+		 * The value for the "focused" state.
+		 *
+		 * @default feathers.controls.ButtonState.FOCUSED
+		 */
+		public function get focusedState():String
+		{
+			return this._focusedState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusedState(value:String):void
+		{
+			this._focusedState = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function changeState(value:String):void
 		{
 			if(this._currentState === value)
@@ -271,9 +326,31 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
+		protected function focusOut():void
+		{
+			this._hasFocus = false;
+			if(this._stage !== null)
+			{
+				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this._stage = null;
+			}
+			this.resetState();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function resetState():void
 		{
-			this.changeState(this._upState);
+			if(this._hasFocus)
+			{
+				this.changeState(this._focusedState);
+			}
+			else
+			{
+				this.changeState(this._upState);
+			}
 		}
 
 		/**
@@ -281,8 +358,10 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusInHandler(event:Event):void
 		{
+			this._hasFocus = true;
 			this._stage = this._target.stage;
 			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.resetState();
 		}
 
 		/**
@@ -290,13 +369,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_focusOutHandler(event:Event):void
 		{
-			if(this._stage !== null)
-			{
-				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this._stage = null;
-			}
-			this.resetState();
+			this.focusOut();
 		}
 
 		/**
@@ -304,13 +377,7 @@ package feathers.utils.keyboard
 		 */
 		protected function target_removedFromStageHandler(event:Event):void
 		{
-			if(this._stage !== null)
-			{
-				this._stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this._stage = null;
-			}
-			this.resetState();
+			this.focusOut();
 		}
 
 		/**
@@ -326,12 +393,19 @@ package feathers.utils.keyboard
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.resetState();
+				return;
 			}
-			else if(event.keyCode === this._keyCode)
+			if(event.keyCode !== this._keyCode)
 			{
-				this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this.changeState(this._downState);
+				return;
 			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			{
+				return;	
+			}
+			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+			this.changeState(this._downState);
 		}
 
 		/**
@@ -346,6 +420,11 @@ package feathers.utils.keyboard
 			if(event.keyCode !== this._keyCode)
 			{
 				return;
+			}
+			if(this._keyLocation !== uint.MAX_VALUE &&
+				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			{
+				return;	
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

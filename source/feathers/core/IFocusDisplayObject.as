@@ -122,6 +122,114 @@ package feathers.core
 		function set previousTabFocus(value:IFocusDisplayObject):void;
 
 		/**
+		 * The next object that will receive focus when
+		 * <code>Keyboard.UP</code> is pressed at
+		 * <code>KeyLocation.D_PAD</code> and a focus manager is enabled. If
+		 * <code>null</code>, defaults to the best available child, as
+		 * determined by the focus manager.
+		 *
+		 * <p>In the following example, the next up focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextUpFocus = otherObject;</listing>
+		 * 
+		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
+		 * Launcher on desktop for debugging purposes, set
+		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
+		 * 
+		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
+		 */
+		function get nextUpFocus():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set nextUpFocus(value:IFocusDisplayObject):void;
+
+		/**
+		 * The next object that will receive focus when
+		 * <code>Keyboard.RIGHT</code> is pressed at
+		 * <code>KeyLocation.D_PAD</code> and a focus manager is enabled. If
+		 * <code>null</code>, defaults to the best available child, as
+		 * determined by the focus manager.
+		 *
+		 * <p>In the following example, the next right focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextRightFocus = otherObject;</listing>
+		 * 
+		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
+		 * Launcher on desktop for debugging purposes, set
+		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
+		 * 
+		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
+		 */
+		function get nextRightFocus():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set nextRightFocus(value:IFocusDisplayObject):void;
+
+		/**
+		 * The next object that will receive focus when
+		 * <code>Keyboard.DOWN</code> is pressed at
+		 * <code>KeyLocation.D_PAD</code> and a focus manager is enabled. If
+		 * <code>null</code>, defaults to the best available child, as
+		 * determined by the focus manager.
+		 *
+		 * <p>In the following example, the next down focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextDownFocus = otherObject;</listing>
+		 * 
+		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
+		 * Launcher on desktop for debugging purposes, set
+		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
+		 * 
+		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
+		 */
+		function get nextDownFocus():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set nextDownFocus(value:IFocusDisplayObject):void;
+
+		/**
+		 * The next object that will receive focus when
+		 * <code>Keyboard.LEFT</code> is pressed at
+		 * <code>KeyLocation.D_PAD</code> and a focus manager is enabled. If
+		 * <code>null</code>, defaults to the best available child, as
+		 * determined by the focus manager.
+		 *
+		 * <p>In the following example, the next left focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextLeftFocus = otherObject;</listing>
+		 * 
+		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
+		 * Launcher on desktop for debugging purposes, set
+		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
+		 * 
+		 * @see feathers.system.DeviceCapabilities#simulateDPad
+		 *
+		 * @productversion Feathers 3.4.0
+		 */
+		function get nextLeftFocus():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set nextLeftFocus(value:IFocusDisplayObject):void;
+
+		/**
 		 * Used for associating focusable display objects that are not direct
 		 * children with an "owner" focusable display object, such as pop-ups.
 		 * A focus manager may use this property to influence the tab order.
@@ -137,6 +245,21 @@ package feathers.core
 		 * @private
 		 */
 		function set focusOwner(value:IFocusDisplayObject):void;
+
+		/**
+		 * Indicates if the <code>showFocus()</code> method has been called on
+		 * the object when it has focus.
+		 *
+		 * <listing version="3.0">
+		 * if(object.isShowingFocus)
+		 * {
+		 * 
+		 * }</listing>
+		 *
+		 * @see #showFocus()
+		 * @see #hideFocus()
+		 */
+		function get isShowingFocus():Boolean;
 
 		/**
 		 * If the object has focus, an additional visual indicator may

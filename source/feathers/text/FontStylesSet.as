@@ -70,7 +70,7 @@ package feathers.text
 		 * Stores formats for specific state. The key is the state constant,
 		 * and the value is a TextFormat.
 		 */
-		protected var _stateToFormat:Object;
+		protected var _stateToFormat:Object = null;
 
 		/**
 		 * @private
@@ -96,22 +96,14 @@ package feathers.text
 			{
 				return;
 			}
-			if(value === null && this._format !== null)
+			if(this._format !== null)
 			{
 				this._format.removeEventListener(Event.CHANGE, format_changeHandler);
-				this._format = null;
 			}
-			else if(value !== null)
+			this._format = value;
+			if(this._format !== null)
 			{
-				if(this._format === null)
-				{
-					this._format = value;
-					this._format.addEventListener(Event.CHANGE, format_changeHandler);
-				}
-				else
-				{
-					this._format.copyFrom(value);
-				}
+				this._format.addEventListener(Event.CHANGE, format_changeHandler);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -142,22 +134,14 @@ package feathers.text
 			{
 				return;
 			}
-			if(value === null && this._disabledFormat !== null)
+			if(this._disabledFormat !== null)
 			{
 				this._disabledFormat.removeEventListener(Event.CHANGE, format_changeHandler);
-				this._disabledFormat = null;
 			}
-			else if(value !== null)
+			this._disabledFormat = value;
+			if(this._disabledFormat !== null)
 			{
-				if(this._disabledFormat === null)
-				{
-					this._disabledFormat = value;
-					this._disabledFormat.addEventListener(Event.CHANGE, format_changeHandler);
-				}
-				else
-				{
-					this._disabledFormat.copyFrom(value);
-				}
+				this._disabledFormat.addEventListener(Event.CHANGE, format_changeHandler);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -188,22 +172,14 @@ package feathers.text
 			{
 				return;
 			}
-			if(value === null && this._selectedFormat !== null)
+			if(this._selectedFormat !== null)
 			{
 				this._selectedFormat.removeEventListener(Event.CHANGE, format_changeHandler);
-				this._selectedFormat = null;
 			}
-			else if(value !== null)
+			this._selectedFormat = value;
+			if(this._selectedFormat !== null)
 			{
-				if(this._selectedFormat === null)
-				{
-					this._selectedFormat = value;
-					this._selectedFormat.addEventListener(Event.CHANGE, format_changeHandler);
-				}
-				else
-				{
-					this._selectedFormat.copyFrom(value);
-				}
+				this._selectedFormat.addEventListener(Event.CHANGE, format_changeHandler);
 			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -258,16 +234,12 @@ package feathers.text
 				{
 					oldFormat = TextFormat(this._stateToFormat[state]);
 				}
-				if(oldFormat === null)
+				if(oldFormat !== null)
 				{
-					oldFormat = value;
-					oldFormat.addEventListener(Event.CHANGE, format_changeHandler);
-					this._stateToFormat[state] = oldFormat;
+					oldFormat.removeEventListener(Event.CHANGE, format_changeHandler);
 				}
-				else
-				{
-					oldFormat.copyFrom(value);
-				}
+				this._stateToFormat[state] = value;
+				value.addEventListener(Event.CHANGE, format_changeHandler);
 			}
 			else if(this._stateToFormat !== null)
 			{

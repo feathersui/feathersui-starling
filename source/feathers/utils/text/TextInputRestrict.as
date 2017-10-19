@@ -102,11 +102,16 @@ package feathers.utils.text
 				else if(this._restrict)
 				{
 					var startIndex:int = 0;
-					var isExcluding:Boolean = value.indexOf("^") == 0;
+					var isExcluding:Boolean = value.indexOf("^") === 0;
 					this._restrictStartsWithExclude = isExcluding;
 					do
 					{
 						var nextStartIndex:int = value.indexOf("^", startIndex + 1);
+						while(nextStartIndex !== -1 && value.charAt(nextStartIndex - 1) === "\\")
+						{
+							//this is an escaped caret, so skip it
+							nextStartIndex = value.indexOf("^", nextStartIndex + 1);
+						}
 						if(nextStartIndex >= 0)
 						{
 							var partialRestrict:String = value.substr(startIndex, nextStartIndex - startIndex);
@@ -204,15 +209,16 @@ package feathers.utils.text
 		 */
 		protected function createRestrictRegExp(restrict:String, isExcluding:Boolean):RegExp
 		{
-			if(!isExcluding && restrict.indexOf("^") == 0)
+			if(!isExcluding && restrict.indexOf("^") === 0)
 			{
 				//unlike regular expressions, which always treat ^ as excluding,
 				//restrict uses ^ to swap between excluding and including.
 				//if we're including, we need to remove ^ for the regexp
 				restrict = restrict.substr(1);
 			}
-			//we need to do backslash first. otherwise, we'll get duplicates
-			restrict = restrict.replace(/\\/g, "\\\\");
+			//we need to do backslash first. otherwise, we'll get duplicates.
+			//however, skip backslashes that are escaping -, ^, and \.
+			restrict = restrict.replace(/\\(?=[^\-\^\\])/g, "\\\\");
 			for(var key:Object in REQUIRES_ESCAPE)
 			{
 				var keyRegExp:RegExp = key as RegExp;

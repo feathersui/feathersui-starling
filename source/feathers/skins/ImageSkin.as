@@ -22,6 +22,9 @@ package feathers.skins
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.Pool;
+	import flash.errors.IllegalOperationError;
+
+	[Exclude(name="color",kind="property")]
 
 	/**
 	 * A skin for Feathers components that displays a texture. Has the ability
@@ -50,8 +53,16 @@ package feathers.skins
 		public function ImageSkin(defaultTexture:Texture = null)
 		{
 			super(defaultTexture);
+			//the super constructor sets the color property, so we need to wait
+			//before restricting it
+			this._restrictColor = true;
 			this.defaultTexture = defaultTexture;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _restrictColor:Boolean = false;
 
 		/**
 		 * @private
@@ -200,7 +211,28 @@ package feathers.skins
 		/**
 		 * @private
 		 */
-		protected var _defaultColor:uint = uint.MAX_VALUE;
+		override public function set color(value:uint):void
+		{
+			if(this._restrictColor)
+			{
+				throw new IllegalOperationError("To set the color of an ImageSkin, use defaultColor or setColorForState().");
+			}
+			this.$color = value;
+		}
+
+		/**
+		 * @private
+		 * Subclasses may use this setter to change the color.
+		 */
+		protected function set $color(value:uint):void
+		{
+			super.color = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _defaultColor:uint = 0xffffff;
 
 		/**
 		 * The default color to use to tint the skin. If the component
@@ -208,6 +240,12 @@ package feathers.skins
 		 * be specified using the <code>setColorForState()</code> method. If
 		 * no color has been specified for the current state, the default
 		 * color will be used.
+		 * 
+		 * <p>To set the color of an <code>ImageSkin</code>, the
+		 * <code>defaultColor</code> property should be preferred over the
+		 * <code>color</code> property defined on
+		 * <code>starling.display.Mesh</code>. The <code>ImageSkin</code>
+		 * will manage the <code>color</code> property internally.</p>
 		 * 
 		 * <p>A value of <code>uint.MAX_VALUE</code> means that the
 		 * <code>color</code> property will not be changed when the context's
@@ -219,7 +257,7 @@ package feathers.skins
 		 * var skin:ImageSkin = new ImageSkin();
 		 * skin.defaultColor = 0x9f0000;</listing>
 		 *
-		 * @default uint.MAX_VALUE
+		 * @default 0xffffff
 		 *
 		 * @see #disabledColor
 		 * @see #selectedColor
@@ -898,7 +936,7 @@ package feathers.skins
 			{
 				if(this._defaultColor !== uint.MAX_VALUE)
 				{
-					this.color = this._defaultColor;
+					this.$color = this._defaultColor;
 				}
 				return;
 			}
@@ -927,7 +965,7 @@ package feathers.skins
 			}
 			if(color !== uint.MAX_VALUE)
 			{
-				this.color = color;
+				this.$color = color;
 			}
 		}
 

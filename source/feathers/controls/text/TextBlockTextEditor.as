@@ -1037,10 +1037,18 @@ package feathers.controls.text
 			var line:TextLine = this._textLines[0];
 			if((pointX - line.x) <= 0)
 			{
+				if(this._bidiLevel === 1)
+				{
+					return this._text.length;
+				}
 				return 0;
 			}
 			else if((pointX - line.x) >= line.width)
 			{
+				if(this._bidiLevel === 1)
+				{
+					return 0;
+				}
 				return this._text.length;
 			}
 			var atomIndex:int = line.getAtomIndexAtPoint(pointX, pointY);
@@ -1079,7 +1087,7 @@ package feathers.controls.text
 			{
 				displayText = this._imeText;
 			}
-			if(!displayText || this._textLines.length == 0)
+			if(!displayText || this._textLines.length === 0)
 			{
 				if(this._textAlign == TextFormatAlign.CENTER)
 				{
@@ -1092,12 +1100,22 @@ package feathers.controls.text
 				return 0;
 			}
 			var line:TextLine = this._textLines[0];
-			if(index == displayText.length)
+			if(index === displayText.length)
 			{
+				if(this._bidiLevel === 1)
+				{
+					return line.x;
+				}
 				return line.x + line.width;
 			}
 			var atomIndex:int = line.getAtomIndexAtCharIndex(index);
-			return line.x + line.getAtomBounds(atomIndex).x;
+			var atomBounds:Rectangle = line.getAtomBounds(atomIndex);
+			var result:Number = line.x + atomBounds.x;
+			if(this._bidiLevel === 1)
+			{
+				result += atomBounds.width;
+			}
+			return result;
 		}
 
 		/**

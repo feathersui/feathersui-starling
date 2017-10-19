@@ -21,6 +21,19 @@ package feathers.controls.supportClasses
 	public interface IScreenNavigatorItem
 	{
 		/**
+		 * An optional event that the screen will dispatch when it's ready for
+		 * the transition to start. If <code>null</code>, the transition will
+		 * start immediately.
+		 * 
+		 * <p>Useful for loading assets or doing other long tasks to prepare
+		 * the screen before it is shown. It is recommended to display some
+		 * kind of progress indicator over the previous screen during this
+		 * delay to ensure that users don't get confused and think that the
+		 * app has frozen.</p>
+		 */
+		function get transitionDelayEvent():String;
+
+		/**
 		 * Determines if a display object returned by <code>getScreen()</code>
 		 * can be disposed or not when a screen is no longer active.
 		 *

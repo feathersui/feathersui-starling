@@ -38,6 +38,13 @@ package feathers.events
 		public static const FILTER_CHANGE:String = "filterChange";
 
 		/**
+		 * Dispatched when a sort compare function has been applied to or
+		 * removed from the collection. The underlying source remains the same,
+		 * but the order may be modified.
+		 */
+		public static const SORT_CHANGE:String = "sortChange";
+
+		/**
 		 * Dispatched when an item is added to the collection.
 		 */
 		public static const ADD_ITEM:String = "addItem";

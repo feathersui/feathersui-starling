@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -29,6 +28,9 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import feathers.system.DeviceCapabilities;
+	import flash.ui.KeyLocation;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	/**
 	 * A style name to add to the list sub-component of the
@@ -738,11 +740,10 @@ package feathers.controls
 		 */
 		override protected function focusInHandler(event:Event):void
 		{
-			//the priority here is 1 so that this listener is called before
-			//starling's listener. we want to know the list's selected index
-			//before the list changes it.
-			var starling:Starling = stageToStarling(this.stage);
-			starling.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 1, true);
+			//using priority here is a hack so that objects deeper in the
+			//display list have a chance to cancel the event first.
+			var priority:int = getDisplayObjectDepthFromStage(this);
+			this.stage.starling.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 			super.focusInHandler(event);
 		}
 
@@ -751,8 +752,7 @@ package feathers.controls
 		 */
 		override protected function focusOutHandler(event:Event):void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			starling.nativeStage.removeEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			this.stage.starling.nativeStage.removeEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			super.focusOutHandler(event);
 		}
 
@@ -917,6 +917,13 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				return;
+			}
+			if(this._touchPointID === -1)
+			{
+				//triggered by keyboard
+				this.closeList();
+				this.selectRange(this.text.length, this.text.length);
 				return;
 			}
 			this._triggered = true;

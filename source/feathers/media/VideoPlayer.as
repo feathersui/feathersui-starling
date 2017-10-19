@@ -336,6 +336,14 @@ package feathers.media
 			connection.connect(null);
 			return connection;
 		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultNetStreamFactory(netConnection:NetConnection):NetStream
+		{
+			return new NetStream(netConnection);
+		}
 		
 		/**
 		 * Constructor.
@@ -812,6 +820,51 @@ package feathers.media
 		/**
 		 * @private
 		 */
+		protected var _netStreamFactory:Function = defaultNetStreamFactory;
+
+		/**
+		 * Creates the <code>flash.net.NetStream</code> object used to play
+		 * the video.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function(netConnection:NetConnection):NetStream</pre>
+		 *
+		 * <p>In the following example, a custom factory for the
+		 * <code>NetStream</code> is passed to the video player:</p>
+		 *
+		 * <listing version="3.0">
+		 * videoPlayer.netConnectionFactory = function(netConnection:NetConnection):NetStream
+		 * {
+		 *     var stream:NetStream = new NetStream(netConnection);
+		 *     //change properties here
+		 *     return stream;
+		 * };</listing>
+		 * 
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html flash.net.NetStream
+		 */
+		public function get netStreamFactory():Function
+		{
+			return this._netStreamFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set netStreamFactory(value:Function):void
+		{
+			if(this._netStreamFactory === value)
+			{
+				return;
+			}
+			this._netStreamFactory = value;
+			this.stop();
+			this.disposeNetStream();
+			this.disposeNetConnection();
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _bytesLoaded:uint = 0;
 
 		/**
@@ -976,7 +1029,8 @@ package feathers.media
 					this._netConnection.addEventListener(NetStatusEvent.NET_STATUS, netConnection_netStatusHandler);
 					return;
 				}
-				this._netStream = new NetStream(this._netConnection);
+				var netStreamFactory:Function = this._netStreamFactory !== null ? this._netStreamFactory : defaultNetStreamFactory;
+				this._netStream = NetStream(netStreamFactory(this._netConnection));
 				this._netStream.client = new VideoPlayerNetStreamClient(
 					this.netStream_onMetaData, this.netStream_onCuePoint,
 					this.netStream_onXMPData);

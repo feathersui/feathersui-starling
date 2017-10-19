@@ -38,6 +38,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
+	import feathers.layout.RelativePosition;
 
 	/**
 	 * The skin used for the input's disabled state. If <code>null</code>,
@@ -404,6 +405,23 @@ package feathers.controls
 	 * @default 0
 	 */
 	[Style(name="gap",type="Number")]
+
+	/**
+	 * The location of the icon, relative to the text renderer.
+	 *
+	 * <p>The following example positions the icon to the right of the
+	 * text renderer:</p>
+	 *
+	 * <listing version="3.0">
+	 * input.defaultIcon = new Image( texture );
+	 * input.iconPosition = RelativePosition.RIGHT;</listing>
+	 *
+	 * @default feathers.layout.RelativePosition.LEFT
+	 *
+	 * @see feathers.layout.RelativePosition#RIGHT
+	 * @see feathers.layout.RelativePosition#LEFT
+	 */
+	[Style(name="iconPosition",type="String")]
 
 	/**
 	 * Quickly sets all padding properties to the same value. The
@@ -2138,6 +2156,37 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _iconPosition:String = RelativePosition.LEFT;
+
+		[Inspectable(type="String",enumeration="left,right")]
+		/**
+		 * @private
+		 */
+		public function get iconPosition():String
+		{
+			return this._iconPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconPosition(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._iconPosition === value)
+			{
+				return;
+			}
+			this._iconPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _gap:Number = 0;
 
 		/**
@@ -2477,12 +2526,14 @@ package feathers.controls
 			if(!value)
 			{
 				this._isWaitingToSetFocus = false;
-				if(this._textEditorHasFocus)
-				{
-					this.textEditor.clearFocus();
-				}
 			}
 			super.visible = value;
+			//call clearFocus() after setting super.visible because the text
+			//editor may check the visible property
+			if(!value && this._textEditorHasFocus)
+			{
+				this.textEditor.clearFocus();
+			}
 		}
 
 		/**
@@ -3453,11 +3504,23 @@ package feathers.controls
 
 			if(this.currentIcon !== null)
 			{
-				this.currentIcon.x = this._paddingLeft;
-				this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
-				if(this.promptTextRenderer !== null)
+				if(this._iconPosition === RelativePosition.RIGHT)
 				{
-					this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
+					this.currentIcon.x = this.actualWidth - this.currentIcon.width - this._paddingRight;
+					this.textEditor.x = this._paddingLeft;
+					if(this.promptTextRenderer !== null)
+					{
+						this.promptTextRenderer.x = this._paddingLeft;
+					}
+				}
+				else //left
+				{
+					this.currentIcon.x = this._paddingLeft;
+					this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
+					if(this.promptTextRenderer !== null)
+					{
+						this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
+					}
 				}
 			}
 			else
@@ -3468,10 +3531,16 @@ package feathers.controls
 					this.promptTextRenderer.x = this._paddingLeft;
 				}
 			}
-			this.textEditor.width = this.actualWidth - this._paddingRight - this.textEditor.x;
+
+			var textEditorWidth:Number = this.actualWidth - this._paddingRight - this.textEditor.x;
+			if(this.currentIcon !== null && this._iconPosition === RelativePosition.RIGHT)
+			{
+				textEditorWidth -= (this.currentIcon.width + this._gap);
+			}
+			this.textEditor.width = textEditorWidth;
 			if(this.promptTextRenderer !== null)
 			{
-				this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
+				this.promptTextRenderer.width = textEditorWidth;
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;

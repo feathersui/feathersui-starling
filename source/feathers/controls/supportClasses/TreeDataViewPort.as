@@ -392,12 +392,6 @@ package feathers.controls.supportClasses
 				if(this._layout is IVariableVirtualLayout)
 				{
 					var variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout);
-
-					//headers and footers are almost always going to have a
-					//different height, so we might as well force it because if
-					//we don't, there will be a lot of support requests
-					variableVirtualLayout.hasVariableItemDimensions = true;
-					
 					variableVirtualLayout.resetVariableVirtualCache();
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
@@ -831,15 +825,17 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				newTypicalItemIsInDataProvider = true;
 				if(this._dataProvider !== null && this._dataProvider.getLengthAtLocation() > 0)
 				{
+					newTypicalItemIsInDataProvider = true;
 					typicalItem = this._dataProvider.getItemAt(0);
 					typicalItemLocation = new <int>[0];
 				}
 			}
 
-			if(typicalItem !== null)
+			//#1645 The typicalItem can be null if the data provider contains
+			//a null value at index 0. this is the only time we allow null.
+			if(typicalItem !== null || newTypicalItemIsInDataProvider)
 			{
 				var typicalItemRenderer:ITreeItemRenderer = ITreeItemRenderer(this._itemRendererMap[typicalItem]);
 				if(typicalItemRenderer !== null)

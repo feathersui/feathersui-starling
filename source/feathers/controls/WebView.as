@@ -9,7 +9,6 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -521,8 +520,7 @@ package feathers.controls
 		 */
 		protected function webView_addedToStageHandler(event:Event):void
 		{
-			var starling:Starling = stageToStarling(this.stage);
-			this.stageWebView.stage = starling.nativeStage;
+			this.stageWebView.stage = this.stage.starling.nativeStage;
 			this.addEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
 		}
 
@@ -554,8 +552,7 @@ package feathers.controls
 				target = target.parent;
 			}
 			while(target)
-			var starling:Starling = stageToStarling(this.stage);
-			this.stageWebView.stage = starling.nativeStage;
+			this.stageWebView.stage = this.stage.starling.nativeStage;
 		}
 
 		/**

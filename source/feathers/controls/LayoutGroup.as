@@ -18,7 +18,6 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
-	import feathers.utils.display.stageToStarling;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
@@ -745,10 +744,9 @@ package feathers.controls
 		{
 			if(this.stage !== null)
 			{
-				var starling:Starling = stageToStarling(this.stage);
 				//we use starling.root because a pop-up's root and the stage
 				//root may be different.
-				if(starling.root === this)
+				if(this.stage.starling.root === this)
 				{
 					this.autoSizeMode = AutoSizeMode.STAGE;
 				}
@@ -1067,28 +1065,42 @@ package feathers.controls
 			this._layoutResult.contentY = 0;
 			this._layoutResult.contentWidth = maxX;
 			this._layoutResult.contentHeight = maxY;
-			var viewPortMinWidth:Number = this.viewPortBounds.minWidth;
-			var viewPortMinHeight:Number = this.viewPortBounds.minHeight;
-			if(maxX < viewPortMinWidth)
+			if(this.viewPortBounds.explicitWidth === this.viewPortBounds.explicitWidth) //!isNaN
 			{
-				maxX = viewPortMinWidth;
+				this._layoutResult.viewPortWidth = this.viewPortBounds.explicitWidth;
 			}
-			if(maxY < viewPortMinHeight)
+			else
 			{
-				maxY = viewPortMinHeight;
+				var viewPortMinWidth:Number = this.viewPortBounds.minWidth;
+				if(maxX < viewPortMinWidth)
+				{
+					maxX = viewPortMinWidth;
+				}
+				var viewPortMaxWidth:Number = this.viewPortBounds.maxWidth;
+				if(maxX > viewPortMaxWidth)
+				{
+					maxX = viewPortMaxWidth;
+				}
+				this._layoutResult.viewPortWidth = maxX;
 			}
-			var viewPortMaxWidth:Number = this.viewPortBounds.maxWidth;
-			var viewPortMaxHeight:Number = this.viewPortBounds.maxHeight;
-			if(maxX > viewPortMaxWidth)
+			if(this.viewPortBounds.explicitHeight === this.viewPortBounds.explicitHeight)
 			{
-				maxX = viewPortMaxWidth;
+				this._layoutResult.viewPortHeight = this.viewPortBounds.explicitHeight;
 			}
-			if(maxY > viewPortMaxHeight)
+			else
 			{
-				maxY = viewPortMaxHeight;
+				var viewPortMinHeight:Number = this.viewPortBounds.minHeight;
+				if(maxY < viewPortMinHeight)
+				{
+					maxY = viewPortMinHeight;
+				}
+				var viewPortMaxHeight:Number = this.viewPortBounds.maxHeight;
+				if(maxY > viewPortMaxHeight)
+				{
+					maxY = viewPortMaxHeight;
+				}
+				this._layoutResult.viewPortHeight = maxY;
 			}
-			this._layoutResult.viewPortWidth = maxX;
-			this._layoutResult.viewPortHeight = maxY;
 		}
 
 		/**

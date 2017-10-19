@@ -10,15 +10,24 @@ package feathers.tests
 	public class VectorCollectionTests
 	{
 		private var _collection:VectorCollection;
+		private var _a:Object;
+		private var _b:Object;
+		private var _c:Object;
+		private var _d:Object;
 
 		[Before]
 		public function prepare():void
 		{
+			this._a = { label: "One", value: 0 };
+			this._b = { label: "Two", value: 2 };
+			this._c = { label: "Three", value: 3 };
+			this._d = { label: "Four", value: 1 };
 			this._collection = new VectorCollection(new <Object>
 			[
-				{ label: "One" },
-				{ label: "Two" },
-				{ label: "Three" },
+				this._a,
+				this._b,
+				this._c,
+				this._d,
 			]);
 		}
 
@@ -26,6 +35,30 @@ package feathers.tests
 		public function cleanup():void
 		{
 			this._collection = null;
+		}
+
+		private function filterFunction(item:Object):Boolean
+		{
+			if(item === this._a || item === this._c)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		private function sortCompareFunction(a:Object, b:Object):int
+		{
+			var valueA:Number = a.value as Number;
+			var valueB:Number = b.value as Number;
+			if(valueA < valueB)
+			{
+				return -1;
+			}
+			if(valueA > valueB)
+			{
+				return 1;
+			}
+			return 0;
 		}
 
 		[Test]
@@ -391,6 +424,158 @@ package feathers.tests
 				var item:Object = this._collection.getItemAt(i);
 				Assert.assertTrue("Item was not included when calling dispose() on VectorCollection", item.isDisposed);
 			}
+		}
+
+		[Test]
+		public function testSortCompareFunction():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._b, this._collection.getItemAt(2));
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._c, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionAndFilterFunction():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.filterFunction = this.filterFunction;
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction and filterFunction length is incorrect.",
+				2, this._collection.length);
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect with filterFunction.",
+				this._d, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect with filterFunction.",
+				this._b, this._collection.getItemAt(1));
+		}
+
+		[Test]
+		public function testSetSortCompareFunctionToNull():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			//get an item so that we know the sorting was applied
+			Assert.assertStrictlyEquals("VectorCollection: sortCompareFunction order is incorrect.",
+				this._c, this._collection.getItemAt(3));
+
+			this._collection.sortCompareFunction = null;
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._b, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._c, this._collection.getItemAt(2));
+			Assert.assertStrictlyEquals("VectorCollection: set sortCompareFunction to null order is incorrect.",
+				this._d, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithAddItem():void
+		{
+			var newItem:Object = { label: "New Item", value: 1.5 };
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.addItem(newItem);
+
+			Assert.assertStrictlyEquals("VectorCollection: addItem() with sortCompareFunction does not add at correct sorted index.",
+				newItem, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("VectorCollection: addItem() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(4));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithAddItemAt():void
+		{
+			var newItem:Object = { label: "New Item", value: 1.5 };
+			var newIndex:int = 1;
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.addItemAt(newItem, newIndex);
+
+			//the index we passed in isn't necessarily the same while sorted
+			Assert.assertStrictlyEquals("VectorCollection: addItemAt() with sortCompareFunction does not add at correct sorted index.",
+				newItem, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			//and it might not even be the same while unsorted!
+			//that's because, in the unsorted data, it will be placed relative
+			//to the item in the sorted data that was at the index passed to
+			//addItemAt(). confusing, but it's consistent with setItemAt() and
+			//filtered collections
+			Assert.assertStrictlyEquals("VectorCollection: addItemAt() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(3));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithRemoveItemAt():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.removeItemAt(2);
+
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in sorted data.",
+				this._c, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._c, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: removeItemAt() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._d, this._collection.getItemAt(2));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithRemoveItem():void
+		{
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.removeItem(this._b);
+
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._d, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in sorted data.",
+				this._c, this._collection.getItemAt(2));
+
+			this._collection.sortCompareFunction = null;
+
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._a, this._collection.getItemAt(0));
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._c, this._collection.getItemAt(1));
+			Assert.assertStrictlyEquals("VectorCollection: removeItem() with sortCompareFunction removed incorrect item in unsorted data.",
+				this._d, this._collection.getItemAt(2));
+		}
+
+		[Test]
+		public function testSortCompareFunctionWithSetItemAt():void
+		{
+			var newItem:Object = { label: "New Item", value: 1.5 };
+			var newIndex:int = 0;
+			this._collection.sortCompareFunction = this.sortCompareFunction;
+			this._collection.setItemAt(newItem, newIndex);
+
+			//the index we passed in isn't necessarily the same while sorted
+			Assert.assertStrictlyEquals("VectorCollection: setItemAt() with sortCompareFunction does not add at correct sorted index.",
+				newItem, this._collection.getItemAt(1));
+			Assert.assertFalse("VectorCollection: setItemAt() with sortCompareFunction does not replace correct item.",
+				this._collection.contains(this._a));
+
+			this._collection.sortCompareFunction = null;
+
+			//however, that index should be the same when the collection is unsorted
+			Assert.assertStrictlyEquals("VectorCollection: setItemAt() with sortCompareFunction does not add at correct unsorted index.",
+				newItem, this._collection.getItemAt(newIndex));
 		}
 	}
 }

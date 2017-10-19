@@ -9,9 +9,11 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
+	import feathers.layout.HorizontalAlign;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -199,6 +201,39 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the right of the items, if they
+		 * do not repeat. If items repeat, <code>paddingRight</code> will
+		 * only be used if <code>horizontalAlign</code> is set to
+		 * <code>HorizontalAlign.RIGHT</code>. In this case, the first item,
+		 * starting from the right, will be offset by the value of
+		 * <code>paddingRight</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _paddingBottom:Number = 0;
 
 		[Bindable(event="change")]
@@ -222,6 +257,72 @@ package feathers.layout
 				return;
 			}
 			this._paddingBottom = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the right of the items, if they
+		 * do not repeat. If items repeat, <code>paddingLeft</code> will
+		 * only be used if <code>horizontalAlign</code> is set to
+		 * <code>HorizontalAlign.LEFT</code>. In this case, the first item,
+		 * starting from the left, will be offset by the value of
+		 * <code>paddingLeft</code>.
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * The alignment of the items horizontally, on the x-axis.
+		 *
+		 * @default feathers.layout.HorizontalAlign.CENTER
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 		
@@ -600,6 +701,19 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _selectionBounds:Rectangle = new Rectangle();
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionBounds():Rectangle
+		{
+			return this._selectionBounds;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
@@ -750,27 +864,41 @@ package feathers.layout
 				}
 			}
 			
-			var canRepeatItems:Boolean = this._repeatItems && totalWidth > availableWidth;
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(availableWidth / (calculatedTypicalItemWidth + gap)) + 1;
+			var minTotalWidthForRepeat:Number = maxVisibleTypicalItemCount * (calculatedTypicalItemWidth + gap) - gap;
+			var canRepeatItems:Boolean = this._repeatItems && totalWidth >= minTotalWidthForRepeat;
 			if(canRepeatItems)
 			{
 				totalWidth += gap;
 			}
 
-			//in this section, we handle vertical alignment. the selected item
-			//needs to be centered vertically.
-			var horizontalAlignOffsetX:Number = Math.round((availableWidth - calculatedTypicalItemWidth) / 2);
+			//in this section, we handle horizontal alignment
+			var horizontalAlignOffsetX:Number = this._paddingLeft;
+			if(this._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				horizontalAlignOffsetX = availableWidth - this._paddingRight - calculatedTypicalItemWidth;
+			}
+			else if(this._horizontalAlign === HorizontalAlign.CENTER)
+			{
+				horizontalAlignOffsetX = this._paddingLeft + Math.round((availableWidth - this._paddingLeft - this._paddingRight - calculatedTypicalItemWidth) / 2);
+			}
 			if(!canRepeatItems)
 			{
-				totalWidth += 2 * horizontalAlignOffsetX;
+				totalWidth += horizontalAlignOffsetX + (availableWidth - calculatedTypicalItemWidth - horizontalAlignOffsetX);
 			}
-			for(i = 0; i < discoveredItemCount; i++)
+			if(horizontalAlignOffsetX !== 0)
 			{
-				item = discoveredItems[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				for(i = 0; i < discoveredItemCount; i++)
 				{
-					continue;
+					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					item.x += horizontalAlignOffsetX;
 				}
-				item.x += horizontalAlignOffsetX;
 			}
 
 			for(i = 0; i < discoveredItemCount; i++)
@@ -845,6 +973,12 @@ package feathers.layout
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._discoveredItemsCache.length = 0;
+
+			//calculate the bounds of the selection rectangle
+			this._selectionBounds.x = horizontalAlignOffsetX;
+			this._selectionBounds.y = 0;
+			this._selectionBounds.width = calculatedTypicalItemWidth;
+			this._selectionBounds.height = availableHeight;
 
 			//finally, we want to calculate the result so that the container
 			//can use it to adjust its viewport and determine the minimum and
@@ -979,15 +1113,30 @@ package feathers.layout
 			var gap:Number = this._gap;
 			
 			var resultLastIndex:int = 0;
-			//we add one extra here because the first item renderer in view may
-			//be partially obscured, which would reveal an extra item renderer.
-			var maxVisibleTypicalItemCount:int = Math.ceil(width / (calculatedTypicalItemWidth + gap)) + 1;
 			
 			var totalItemWidth:Number = itemCount * (calculatedTypicalItemWidth + gap) - gap;
 
-			scrollX -= Math.round((width - calculatedTypicalItemWidth) / 2);
+			//the actual code that figures out which items are visible assumes
+			//that alignment is left. to make it work with other alignments, we
+			//can simply adjust the scroll position!
+			if(this._horizontalAlign === HorizontalAlign.CENTER)
+			{
+				scrollX -= (this._paddingLeft + Math.round((width - calculatedTypicalItemWidth) / 2));
+			}
+			else if(this._horizontalAlign === HorizontalAlign.RIGHT)
+			{
+				scrollX -= (width - calculatedTypicalItemWidth - this._paddingRight);
+			}
+			else //left
+			{
+				scrollX -= this._paddingLeft;
+			}
 
-			var canRepeatItems:Boolean = this._repeatItems && totalItemWidth > width;
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(width / (calculatedTypicalItemWidth + gap)) + 1;
+			var minTotalWidthForRepeat:Number = maxVisibleTypicalItemCount * (calculatedTypicalItemWidth + gap) - gap;
+			var canRepeatItems:Boolean = this._repeatItems && totalItemWidth >= minTotalWidthForRepeat;
 			if(canRepeatItems)
 			{
 				//if we're repeating, then there's an extra gap

@@ -167,6 +167,25 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testAutoSizeModeStageWithChildBeyondStageEdges():void
+		{
+			this._group.autoSizeMode = AutoSizeMode.STAGE;
+			var child:Quad = new Quad(ITEM_WIDTH, ITEM_HEIGHT);
+			child.x = this._group.stage.stageWidth + 100;
+			child.y = this._group.stage.stageHeight + 100;
+			this._group.addChild(child);
+			this._group.validate();
+			Assert.assertStrictlyEquals("The width of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
+				this._group.stage.stageWidth, this._group.width);
+			Assert.assertStrictlyEquals("The height of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
+				this._group.stage.stageHeight, this._group.height);
+			Assert.assertStrictlyEquals("The minWidth of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
+				this._group.stage.stageWidth, this._group.minWidth);
+			Assert.assertStrictlyEquals("The minHeight of the layout group was not calculated correctly with autoSizeMode set to AutoSizeMode.STAGE.",
+				this._group.stage.stageHeight, this._group.minHeight);
+		}
+
+		[Test]
 		public function testAutoSizeWithChildAtOrigin():void
 		{
 			this._group.addChild(new Quad(ITEM_WIDTH, ITEM_HEIGHT));

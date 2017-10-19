@@ -404,6 +404,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreTabBarChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var tabBar:TabBar;
 
 		/**
@@ -1126,6 +1131,10 @@ package feathers.controls
 		 */
 		protected function tabBar_changeHandler(event:Event):void
 		{
+			if(this._ignoreTabBarChanges)
+			{
+				return;
+			}
 			var id:String = this.tabBar.selectedItem as String;
 			if(this._activeScreenID === id)
 			{
@@ -1273,7 +1282,10 @@ package feathers.controls
 			if(cancelTransition)
 			{
 				this._selectedIndex = this._tabBarDataProvider.getItemIndex(this._previousScreenInTransitionID);
+				var oldIgnoreTabBarChanges:Boolean = this._ignoreTabBarChanges;
+				this._ignoreTabBarChanges = true;
 				this.tabBar.selectedIndex = this._selectedIndex;
+				this._ignoreTabBarChanges = oldIgnoreTabBarChanges;
 			}
 			super.transitionComplete(cancelTransition);
 		}
