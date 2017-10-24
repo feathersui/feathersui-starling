@@ -24,6 +24,7 @@ package feathers.core
 	import flash.events.KeyboardEvent;
 	import flash.events.TransformGestureEvent;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	import flash.ui.KeyLocation;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
@@ -1039,6 +1040,10 @@ package feathers.core
 		 */
 		protected function topLevelContainer_touchHandler(event:TouchEvent):void
 		{
+			if(Capabilities.os.indexOf("tvOS") !== -1)
+			{
+				return;
+			}
 			var touch:Touch = event.getTouch(this._root, TouchPhase.BEGAN);
 			if(!touch)
 			{
