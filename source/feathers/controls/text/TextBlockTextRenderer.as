@@ -11,6 +11,7 @@ package feathers.controls.text
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -1914,9 +1915,9 @@ package feathers.controls.text
 			else
 			{
 				//if using ElementFormat, vertical align is always top
-				this._currentVerticalAlign = Align.TOP;
+				this._currentVerticalAlign = VerticalAlign.TOP;
 				//these are defaults in case textAlign and leading are not set
-				this._currentHorizontalAlign = Align.CENTER;
+				this._currentHorizontalAlign = HorizontalAlign.CENTER;
 				this._currentLeading = 0;
 			}
 			if(this._textAlign !== null)
@@ -1994,8 +1995,8 @@ package feathers.controls.text
 					//fallback to a default so that something is displayed
 					this._fontStylesElementFormat = new ElementFormat();
 					this._currentLeading = 0;
-					this._currentVerticalAlign = Align.TOP;
-					this._currentHorizontalAlign = Align.LEFT;
+					this._currentVerticalAlign = VerticalAlign.TOP;
+					this._currentHorizontalAlign = HorizontalAlign.LEFT;
 				}
 			}
 			return this._fontStylesElementFormat;
@@ -2448,11 +2449,11 @@ package feathers.controls.text
 				//be rendered
 				this.alignTextLines(textLines, width, this._currentHorizontalAlign);
 			}
-			if(this._currentHorizontalAlign === Align.RIGHT)
+			if(this._currentHorizontalAlign === HorizontalAlign.RIGHT)
 			{
 				maxLineWidth = width;
 			}
-			else if(this._currentHorizontalAlign === Align.CENTER)
+			else if(this._currentHorizontalAlign === HorizontalAlign.CENTER)
 			{
 				maxLineWidth = (width + maxLineWidth) / 2;
 			}
@@ -2516,11 +2517,11 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			if(this._currentVerticalAlign === Align.BOTTOM)
+			if(this._currentVerticalAlign === VerticalAlign.BOTTOM)
 			{
 				return (this.actualHeight - this._savedTextLinesHeight);
 			}
-			else if(this._currentVerticalAlign === Align.CENTER)
+			else if(this._currentVerticalAlign === VerticalAlign.MIDDLE)
 			{
 				return (this.actualHeight - this._savedTextLinesHeight) / 2;
 			}
