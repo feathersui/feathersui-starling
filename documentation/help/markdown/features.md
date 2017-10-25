@@ -13,7 +13,7 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Hardware-accelerated graphics.
 
--   Target iOS, Android, Windows and macOS.
+-   Target iOS, Android, Windows, macOS, and Android TV.
 
 -   Built on top of Starling Framework and Adobe AIR.
 
@@ -21,11 +21,11 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 ## Cross Platform
 
--   Create user interfaces for both desktop and mobile apps.
+-   Create user interfaces for desktop, mobile, and smart TV apps.
 
--   Easy to scale for different screen dimensions and densities with [`ScreenDensityScaleFactorManager`](../api-reference/feathers/utils/ScreenDensityScaleFactorManager.html).
+-   Easy to scale your app for different screen dimensions and densities with [`ScreenDensityScaleFactorManager`](../api-reference/feathers/utils/ScreenDensityScaleFactorManager.html).
 
--   Support for fluid layouts, with anchors or dimensions set as percentages, that fit to a wide variety of screen sizes.
+-   Support for fluid layouts (using anchors and percentages) that fit to a wide variety of screen sizes.
 
 -   Choose between scrolling with touch physics including elastic, springy edges or traditional desktop scroll bars and the mouse scroll wheel.
 
@@ -33,7 +33,7 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 ## Skinning
 
--   All components may be skinned using regular Starling display objects.
+-   All components may be skinned using regular Starling display objects, like `Image` or `Quad`.
 
 -   Resizable skins using `scale9Grid` and `tileGrid`.
 
@@ -47,9 +47,9 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   Invalidation. Queues property changes until Starling render phase to maximize performance.
 
--   Easy to understand for anyone familiar with Adobe Flex or the Flash Pro AS3 components.
+-   Easy to understand for anyone familiar with Apache Flex or the AS3 components from Adobe Animate CC.
 
--   If no width or height is provided, components will resize themselves automatically based on the provided skin and dimensions of sub-components.
+-   If no width or height is provided, components will resize themselves automatically based on their skins or their sub-components.
 
 -   Factories and interfaces allow you to customize sub-components. For instance, select the type of sub-component best suited for phone, tablet, or desktop.
 
@@ -72,6 +72,8 @@ Feathers is an open source library of user interface components for [Starling Fr
 -   The [`List`](list.html) component supports displaying a data provider using item renderers inside a scrollable container.
 
 -   Support for hierarchical data using [`Tree`](tree.html) and [`GroupedList`](grouped-list.html).
+
+-   Display a table of data using the [`DataGrid`](data-grid.html) component.
 
 -   [`PickerList`](picker-list.html) supports displaying a list as a pop-up triggered by a [`Button`](button.html).
 
@@ -113,7 +115,9 @@ Feathers is an open source library of user interface components for [Starling Fr
 
 -   A manager for drag and drop.
 
--   Add pop-ups above all other content in the app. Includes support for modal pop-ups that display an overlay between the pop-up and everything under it.
+-   Add [pop-ups](pop-ups.html) above all other content in the app. Includes support for modal pop-ups that display an overlay between the pop-up and everything under it.
+
+-   Create media players for [video](video-player.html) and [audio](sound-player.html).
 
 ## Sound useful?
 
