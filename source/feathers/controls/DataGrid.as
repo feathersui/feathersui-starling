@@ -264,6 +264,37 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Displays a collection of items as a table. Each item is rendered as a
+	 * row, divided into columns for each of the item's fields. Supports
+	 * scrolling, custom cell renderers, sorting columns, resizing columns, and
+	 * drag and drop reordering of columns.
+	 *
+	 * <p>The following example creates a data grid, gives it a data provider,
+	 * defines its columns, and listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var grid:DataGrid = new DataGrid();
+	 * 
+	 * grid.dataProvider = new ArrayCollection(
+	 * [
+	 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+	 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+	 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+	 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+	 * ]);
+	 * 
+	 * grid.columns = new ArrayCollection(
+	 * [
+	 *     new DataGridColumn("item", "Item"),
+	 *     new DataGridColumn("dept", "Department"),
+	 *     new DataGridColumn("price", "Unit Price"),
+	 * ]);
+	 * 
+	 * grid.addEventListener( Event.CHANGE, grid_changeHandler );
+	 * 
+	 * this.addChild( grid );</listing>
+	 *
+	 * @see ../../../help/data-grid.html How to use the Feathers DataGrid component
 	 * 
 	 * @productversion Feathers 3.4.0
 	 */
@@ -710,6 +741,24 @@ package feathers.controls
 		 * grid's data, so the horizontal and vertical scroll positions will be
 		 * reset, and the data grid's selection will be cleared.
 		 *
+		 * <p>The following example passes in a data provider and columns:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.dataProvider = new ArrayCollection(
+		 * [
+		 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+		 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+		 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+		 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+		 * ]);
+		 * 
+		 * grid.columns = new ArrayCollection(
+		 * [
+		 *     new DataGridColumn("item", "Item"),
+		 *     new DataGridColumn("dept", "Department"),
+		 *     new DataGridColumn("price", "Unit Price"),
+		 * ]);</listing>
+		 *
 		 * <p><em>Warning:</em> A data grid's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item
 		 * renderers, you must create separate objects with the same
@@ -729,6 +778,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #columns
 		 * @see feathers.data.IListCollection#dispose()
 		 * @see feathers.data.ArrayCollection
 		 * @see feathers.data.VectorCollection
@@ -789,11 +839,32 @@ package feathers.controls
 		protected var _columns:IListCollection = null;
 
 		/**
+		 * Defines the columns to display for each item in the data provider.
+		 * If <code>null</code>, the data grid will attempt to populate the
+		 * columns automatically.
+		 *
+		 * <p>The following example passes in a data provider and columns:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.dataProvider = new ArrayCollection(
+		 * [
+		 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+		 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+		 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+		 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+		 * ]);
 		 * 
+		 * grid.columns = new ArrayCollection(
+		 * [
+		 *     new DataGridColumn("item", "Item"),
+		 *     new DataGridColumn("dept", "Department"),
+		 *     new DataGridColumn("price", "Unit Price"),
+		 * ]);</listing>
 		 *
 		 * @default null
 		 * 
 		 * @see #dataProvider
+		 * @see feathers.controls.DataGridColumn
 		 */
 		public function get columns():IListCollection
 		{
