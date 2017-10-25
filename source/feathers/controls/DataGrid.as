@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
 	import feathers.core.IValidating;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.data.SortOrder;
@@ -30,6 +31,7 @@ package feathers.controls
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -48,7 +50,6 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import feathers.layout.VerticalAlign;
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to
@@ -1677,9 +1678,32 @@ package feathers.controls
 				this.refreshHeaderStyles();
 			}
 
+			this.refreshColumns();
+
 			this.refreshHeaderRenderers();
 			this.refreshDataViewPortProperties();
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 * If the columns are not defined, we can try to create them automatically.
+		 */
+		protected function refreshColumns():void
+		{
+			if(this._columns !== null || this._dataProvider === null || this._dataProvider.length === 0)
+			{
+				return;
+			}
+			var columns:Array = [];
+			var firstItem:Object = this._dataProvider.getItemAt(0);
+			var pushIndex:int = 0;
+			for(var key:String in firstItem)
+			{
+				columns[pushIndex] = new DataGridColumn(key);
+				pushIndex++;
+			}
+			this._columns = new ArrayCollection(columns);
 		}
 
 		/**
@@ -1829,7 +1853,11 @@ package feathers.controls
 		 */
 		protected function layoutHeaderRenderers():void
 		{
-			var columnCount:int = this._columns.length;
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
 			for(var i:int = 0; i < columnCount; i++)
 			{
 				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
@@ -1860,7 +1888,11 @@ package feathers.controls
 			this.refreshInactiveVerticalDividers(this._verticalDividerStorage.factory !== this._verticalDividerFactory);
 			this._verticalDividerStorage.factory = this._verticalDividerFactory;
 
-			var columnCount:int = this._columns.length;
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
 			var dividerCount:int = 0;
 			if(this._verticalDividerFactory !== null)
 			{
@@ -1932,11 +1964,15 @@ package feathers.controls
 			this.refreshInactiveHeaderDividers(this._headerDividerStorage.factory !== this._headerDividerFactory);
 			this._headerDividerStorage.factory = this._headerDividerFactory;
 
-			var dividerCount:int = this._columns.length;
-			if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
-				this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+			var dividerCount:int = 0;
+			if(this._columns !== null)
 			{
-				dividerCount--;
+				dividerCount = this._columns.length;
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
+					this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+				{
+					dividerCount--;
+				}
 			}
 
 			this._headerGroup.validate();
