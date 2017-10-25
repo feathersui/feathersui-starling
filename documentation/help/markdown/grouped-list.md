@@ -82,7 +82,7 @@ list.dataProvider = groceryList;
  
 It's even possible for anyone to create new `IHierarhicalCollection` implementations to display custom data types, if needed.</aside>
 
-Now, we need to tell the item renderer how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
+Now, we need to tell the item renderers how to display the data. The grouped list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
 By default, a list renders items from the data provider using the [`DefaultGroupedListItemRenderer`](default-item-renderers.html) component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let's look at a couple of these properties right now.
 

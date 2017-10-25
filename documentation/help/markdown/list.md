@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # How to use the Feathers `List` component
 
-The [`List`](../api-reference/feathers/controls/List.html) class renders a series of items from a flat data source such as an `Array` or `Vector`. It includes support for selection, scrolling, custom layouts, layout virtualization, and custom item renderers.
+The [`List`](../api-reference/feathers/controls/List.html) class renders a series of items from a flat data source such as an `Array` or `Vector`. It includes support for selection, scrolling, custom layouts, layout virtualization to optimize rendering of large collections, and custom item renderers.
 
 <figure>
 <img src="images/list.png" srcset="images/list@2x.png 2x" alt="Screenshot of a Feathers List component" />
@@ -60,7 +60,7 @@ list.dataProvider = groceryList;
 
 It's even possible for anyone to create new `IListCollection` implementations to display custom data types, if needed.</aside>
 
-Now, we need to tell the item renderer how to display the data. The list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
+Now, we need to tell the item renderers how to display the data. The list simply passes each item from the data provider to an item renderer, and it is the item renderer's responsibility to interpret the properties of an item.
 
 By default, a list renders items from the data provider using the [`DefaultListItemRenderer`](default-item-renderers.html) component. This default item renderer has many options for displaying strings, textures, and even adding display objects from the data provider as children. Let's look at a couple of these properties right now.
 
