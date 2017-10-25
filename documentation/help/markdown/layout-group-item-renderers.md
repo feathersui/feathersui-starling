@@ -5,11 +5,13 @@ author: Josh Tynjala
 ---
 # Creating custom item renderers with the `LayoutGroup` container
 
-The [`LayoutGroup`](layout-group.html) container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom-components), but it's especially useful for custom item renderers in the [`List`](list.html), [`Tree`](tree.html) and [`GroupedList`](grouped-list.html) components.
+The [`LayoutGroup`](layout-group.html) container is a simple Feathers component that holds children and provides the ability to specify a layout. This makes an ideal base for any [custom component](index.html#custom-components), but it's especially useful for custom item renderers in the [`List`](list.html), [`DataGrid`](data-grid.html), [`Tree`](tree.html) and [`GroupedList`](grouped-list.html) components.
 
-Feathers includes three subclasses of `LayoutGroup` that are designed specifically to help you get started creating custom item renderers.
+Feathers includes several subclasses of `LayoutGroup` that are designed specifically to help you get started creating custom item renderers (or "cell" renderers in a `DataGrid`).
 
 -   [`LayoutGroupListItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html) can be used as an item renderer in a [`List`](list.html).
+
+-   [`LayoutGroupDataGridCellRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupDataGridCellRenderer.html) can be used as a cell renderer in a [`DataGrid`](data-grid.html).
 
 -   [`LayoutGroupTreeItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupTreeItemRenderer.html) can be used as an item renderer in a [`Tree`](tree.html).
 
@@ -278,6 +280,8 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [`feathers.controls.renderers.LayoutGroupListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html)
+
+-   [`feathers.controls.renderers.LayoutGroupDataGridCellRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupDataGridCellRenderer.html)
 
 -   [`feathers.controls.renderers.LayoutGroupTreeItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/LayoutGroupTreeItemRenderer.html)
 

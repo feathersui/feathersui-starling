@@ -122,7 +122,7 @@ tree.itemRendererFactory = function():ITreeItemRenderer
 
 When you set the [`iconSourceField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField), the item renderer will automatically create an [`ImageLoader`](image-loader.html) to display the texture. You may also use `iconSourceField` to ask the `ImageLoader` to display an image loaded from a URL instead of a texture. The value is passed to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property of the `ImageLoader`.
 
-The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for complete details.
+The default item renderers can support up to three children, including a label, an icon, and a third one, called an *accessory*. In addition to `labelField` and `iconSourceField` properties, a default item renderer's children may be customized with several other similar properties. Please see [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](default-item-renderers.html) for complete details.
 
 ## Selection
 
@@ -298,7 +298,7 @@ tree.horizontalScrollBarFactory = function():ScrollBar
 
 ### Skinning the Item Renderers
 
-This section only explains how to access the item renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+This section only explains how to access the item renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
 [Custom item renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the [`DefaultTreeItemRenderer`](../api-reference/feathers/controls/renderers/DefaultTreeItemRenderer.html) class in the code below with references to your custom item renderer class.
 
 #### With a Theme
@@ -359,7 +359,7 @@ tree.itemRendererFactory = function():ITreeItemRenderer
 
 If the default item renderer doesn't have the features that you need, the `Tree` component offers the ability to use [custom item renderers](item-renderers.html) instead. Custom item renderers must be Feathers components that implement the [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) interface.
 
-<aside class="info">For full details about implementing custom item renderers, see [Creating custom item renderers for the Feathers `List`, `Tree`, and `GroupedList` components](item-renderers.html).</aside>
+<aside class="info">For full details about implementing custom item renderers, see [Creating custom item renderers for the Feathers `List`, `DataGrid`, `Tree`, and `GroupedList` components](item-renderers.html).</aside>
 
 The easiest way to tell a tree to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/Tree.html#itemRendererType) property:
 
@@ -505,6 +505,6 @@ The [`pageWidth`](../api-reference/feathers/controls/Scroller.html#pageWidth) an
 
 -   [`feathers.controls.Tree` API Documentation](../api-reference/feathers/controls/Tree.html)
 
--   [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](default-item-renderers.html)
+-   [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](default-item-renderers.html)
 
--   [Creating custom item renderers for the Feathers `List`, `Tree`, and `GroupedList` components](item-renderers.html)
+-   [Creating custom item renderers for the Feathers `List`, `DataGrid`, `Tree`, and `GroupedList` components](item-renderers.html)

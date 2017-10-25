@@ -3,13 +3,15 @@ title: Creating custom item renderers with FeathersControl and IListItemRenderer
 author: Josh Tynjala
 
 ---
-# Creating custom item renderers with `FeathersControl` and `IListItemRenderer`, `ITreeItemRenderer`, or `IGroupedListItemRenderer`
+# Creating custom item renderers with `FeathersControl` and `IListItemRenderer`, `IDataGridCellRenderer`, `ITreeItemRenderer`, or `IGroupedListItemRenderer`
 
-The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a [`List`](list.html), [`Tree`](tree.html) or [`GroupedList`](grouped-list.html), you're actually going to create a [custom Feathers component](index.html#custom-components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
+The [`FeathersControl`](../api-reference/feathers/core/FeathersControl.html) class it the most basic foundation of all Feathers user interface components, including item renderers. With that in mind, if you need a custom item renderer for a [`List`](list.html), [`DataGrid`](data-grid.html), [`Tree`](tree.html) or [`GroupedList`](grouped-list.html), you're actually going to create a [custom Feathers component](index.html#custom-components). An item renderer will have a few extra properties that are needed to communicate with its owner, but ultimately, it will be very similar to any regular Feathers component.
 
-Feathers includes three interfaces that define the API used by the `List`, `Tree`, or `GroupedList` components to communicate with their item renderers.
+Feathers includes several interfaces that define the API used by the `List`, `DataGrid`, `Tree`, or `GroupedList` components to communicate with their item renderers.
 
 -   [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) can be used to implement an item renderer for [`List`](list.html).
+
+-   [`IDataGridCellRenderer`](../api-reference/feathers/controls/renderers/IDataGridCellRenderer.html) can be used to implement an item renderer for [`DataGrid`](data-grid.html).
 
 -   [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) can be used to implement an item renderer for [`Tree`](tree.html).
 
@@ -313,15 +315,15 @@ if(needsHeight)
 
 In more complex item renderers, we might add together the dimensions of multiple sub-components. For this simple item renderer, we'll simply ask the `Label` sub-component for its width and height, and then we add the padding to those values.
 
-Finally, we tell Feathers what the final dimensions will be using the [`setSizeInternal()`](../api-reference/feathers/core/FeathersControl.html#setSizeInternal()) function:
+Finally, we tell Feathers what the final dimensions will be using the [`saveMeasurements()`](../api-reference/feathers/core/FeathersControl.html#saveMeasurements()) function:
 
 ``` code
-return this.setSizeInternal(newWidth, newHeight, false);
+return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 ```
 
 The return value is true if the dimensions are different than the last time that the component validated. We return this same value from `autoSizeIfNeeded()` for use in the `draw()` function.
 
-<aside class="info">For more information about the `setSizeInternal()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
+<aside class="info">For more information about the `saveMeasurements()` function and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
 Speaking of the `draw()` function, we want to add some code to call the `autoSizeIfNeeded()` from there:
 
@@ -355,7 +357,7 @@ protected function layoutChildren():void
 }
 ```
 
-The [`actualWidth`](../api-reference/feathers/core/FeathersControl.html#actualWidth) and [`actualHeight`](../api-reference/feathers/core/FeathersControl.html#actualHeight) variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to `setSizeInternal()`.
+The [`actualWidth`](../api-reference/feathers/core/FeathersControl.html#actualWidth) and [`actualHeight`](../api-reference/feathers/core/FeathersControl.html#actualHeight) variables hold the final width and height of the item renderer. These variables are derived using a combination of the explicit dimensions and the measured dimensions that we calculated before passing them to `saveMeasurements()`.
 
 <aside class="info">For more information about the `actualWidth` and `actualHeight` variables, and other parts of the Feathers architecture, see [Anatomy of a Feathers Component](component-properties-methods.html).</aside>
 
@@ -542,7 +544,7 @@ package
                 newHeight = this._label.height + 2 * this._padding;
             }
  
-            return this.setSizeInternal(newWidth, newHeight, false);
+            return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
         }
  
         protected function commitData():void
@@ -579,6 +581,8 @@ Looking to do more with your custom item renderer? Check out the [Feathers Cookb
 -   [Feathers Cookbook: Recipes for Custom Item Renderers](cookbook/index.html#custom_item_renderers)
 
 -   [`feathers.controls.renderers.IListItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/IListItemRenderer.html)
+
+-   [`feathers.controls.renderers.IDataGridCellRenderer` API Documentation](../api-reference/feathers/controls/renderers/IDataGridCellRenderer.html)
 
 -   [`feathers.controls.renderers.ITreeItemRenderer` API Documentation](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html)
 

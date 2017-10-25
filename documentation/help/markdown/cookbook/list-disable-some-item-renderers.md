@@ -46,4 +46,4 @@ list.dataProvider.updateItemAt(4);
 ## Related Links
 
 -   [How to use the Feathers `List` component](../list.html)
--   [How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`](../default-item-renderers.html)
+-   [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](../default-item-renderers.html)

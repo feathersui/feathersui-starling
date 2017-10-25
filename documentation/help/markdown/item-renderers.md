@@ -1,9 +1,9 @@
 ---
-title: Creating custom item renderers for the Feathers List, Tree and GroupedList components  
+title: Creating custom item renderers for the Feathers List, DataGrid, Tree and GroupedList components  
 author: Josh Tynjala
 
 ---
-# Creating custom item renderers for the Feathers `List`, `Tree`, and `GroupedList` components
+# Creating custom item renderers for the Feathers `List`, `DataGrid`, `Tree`, and `GroupedList` components
 
 The [default item renderers](default-item-renderers.html) provide an abundance of customization options to display up to three children with a variety of layouts. However, sometimes, you need more children or more advanced layout capabilities to translate a design to code for a customized list. In those situations, you may need to create a custom item renderer class.
 
@@ -34,6 +34,8 @@ Custom item renderers are basically [custom Feathers components](index.html#cust
 ## Related Links
 
 -   [How to use the Feathers `List` component](list.html)
+
+-   [How to use the Feathers `DataGrid` component](data-grid.html)
 
 -   [How to use the Feathers `Tree` component](list.html)
 

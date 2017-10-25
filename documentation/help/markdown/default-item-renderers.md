@@ -1,9 +1,9 @@
 ---
-title: How to use the default Feathers item renderer with List, Tree, and GroupedList  
+title: How to use the default Feathers item renderer with List, DataGrid, Tree, and GroupedList  
 author: Josh Tynjala
 
 ---
-# How to use the default Feathers item renderer with `List`, `Tree`, and `GroupedList`
+# How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`
 
 The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html), [`DefaultTreeItemRenderer`](../api-reference/feathers/controls/renderers/DefaultTreeItemRenderer.html), and [`DefaultGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultGroupedListItemRenderer.html) classes provide a basic way to display items from data collections in the [`List`](list.html), [`Tree`](tree.html), and [`GroupedList`](grouped-list.html) components. These default item renderers are derived from the same base class, and their functionality is virtually identical.
 
@@ -14,7 +14,7 @@ The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/Def
 
 <aside class="info">In many of the examples below, code and descriptions will refer to the [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class and the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface, which are both used by the `List` component. When using a `Tree` component, you should substitute the [`DefaultTreeItemRenderer`](../api-reference/feathers/controls/renderers/DefaultTreeItemRenderer.html) class and the [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) interface instead. When using a `GroupedList` component, you should substitute the [`DefaultGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultGroupedListItemRenderer.html) class and the [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interface instead.
 
-Whether using a `List`, `Tree`, or a `GroupedList`, the default item renderers will have all of the same properties that are used in the examples below. The differences are entirely behind the scenes.</aside>
+Whether using a `List`, `DataGrid`, `Tree`, or a `GroupedList`, the default item renderers will have all of the same properties that are used in the examples below. The differences are entirely behind the scenes.</aside>
 
 -   [The Basics](#the-basics)
 
@@ -24,7 +24,7 @@ Whether using a `List`, `Tree`, or a `GroupedList`, the default item renderers w
 
 ## The Basics
 
-Item renderers are managed by a `List`, `Tree`, or `GroupedList` component, and you generally don't add them to the display list directly. To customize properties on a default item renderer, you can use the list's [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory):
+Item renderers are managed by a `List`, `DataGrid`, `Tree`, or `GroupedList` component, and you generally don't add them to the display list directly. To customize properties on a default item renderer, you can use the list's [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory):
 
 ``` code
 list.itemRendererFactory = function():IListItemRenderer
@@ -177,4 +177,4 @@ When displaying all three children that the default item renderer supports (the 
 
 -   [How to use the Feathers `GroupedList` component](grouped-list.html)
 
--   [Creating custom item renderers for the Feathers `List`, `Tree` and `GroupedList` components](item-renderers.html)
+-   [Creating custom item renderers for the Feathers `List`, `DataGrid`, `Tree` and `GroupedList` components](item-renderers.html)
