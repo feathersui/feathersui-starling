@@ -137,6 +137,160 @@ grid.allowMultipleSelection = true;
 
 ## Skinning a `DataGrid`
 
+A data grid has a main background skin and one for its headers. It also supports *divider* skins between headers and columns. Much of the ability to customize the appearance of a data grid exists inside the cell renderer and header renderer components, such as their font styles and backgrounds for different states. For full details about which properties are available on a `DataGrid`, see the [`DataGrid` API reference](../api-reference/feathers/controls/DataGrid.html). We'll look at a few of the most common ways of styling a data grid below.
+
+### Background skin
+
+We can give the data grid a background skin that fills the entire width and height of the data grid. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+grid.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Scroller.html#backgroundSkin) property.
+
+We can give the data grid a different background when it is disabled:
+
+``` code
+var skin:Image = new Image( disabledTexture );
+skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
+grid.backgroundDisabledSkin = skin;
+```
+
+The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the data grid is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled data grid, it will fall back to using the `backgroundSkin` in the disabled state.
+
+The data grid's header may be skinned using the [`headerBackgroundSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundSkin) and [`headerBackgroundDisabledSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundDisabledSkin) properties:
+
+``` code
+var skin:Image = new Image( texture );
+skin.scale9Grid = new Rectangle( 1, 2, 2, 6 );
+grid.headerBackgroundSkin = skin;
+
+var skin2:Image = new Image( disabledTexture );
+skin.scale9Grid = new Rectangle( 2, 1, 3, 4 );
+grid.headerBackgroundSkin = skin2;
+```
+
+### Skinning the Scroll Bars
+
+This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
+
+#### With a Theme
+
+If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
+
+``` code
+getStyleProviderForClass( ScrollBar )
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
+getStyleProviderForClass( ScrollBar )
+    .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR, setVerticalScrollBarStyles );
+```
+
+The styling function for the horizontal scroll bar might look like this:
+
+``` code
+private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+{
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+}
+```
+
+You can override the default style names to use different ones in your theme, if you prefer:
+
+``` code
+grid.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
+grid.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
+```
+
+You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
+
+``` code
+getStyleProviderForClass( ScrollBar )
+    .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
+getStyleProviderForClass( ScrollBar )
+    .setFunctionForStyleName( "custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles );
+```
+
+#### Without a Theme
+
+If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the data grid's scroll bars:
+
+``` code
+grid.horizontalScrollBarFactory = function():ScrollBar
+{
+    var scrollBar:ScrollBar = new ScrollBar();
+
+    //skin the scroll bar here, if not using a theme
+    scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
+
+    return scrollBar;
+}
+```
+
+### Skinning the Cell Renderers
+
+This section only explains how to access the cell renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default cell renderers.
+
+<aside class="info">Other components use the term *item* renderer, but *cell* is a bit more appropriate for a data grid, which divides the fields of each item into multiple cells.</aside>
+
+[Custom cell renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default cell renderers. When using custom cell renderers, you may easily replace references to the [`DefaultDataGridCellRenderer`](../api-reference/feathers/controls/renderers/DefaultDataGridCellRenderer.html) class in the code below with references to your custom cell renderer class.
+
+#### With a Theme
+
+If you are creating a [theme](themes.html), you can set a function for the default styles like this:
+
+``` code
+getStyleProviderForClass( DefaultDataGridCellRenderer ).defaultStyleFunction = setCellRendererStyles;
+```
+
+The styling function might look like this:
+
+``` code
+private function setCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
+{
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextureForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    cellRenderer.defaultSkin = skin;
+    cellRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+}
+```
+
+If you want to customize a specific cell renderer to look different than the default, you may use a custom style name to call a different function:
+
+``` code
+grid.customCellRendererStyleName = "custom-cell-renderer";
+```
+
+You can set the function for the custom [`customCellRendererStyleName`](../api-reference/feathers/controls/DataGrid.html#customCellRendererStyleName) like this:
+
+``` code
+getStyleProviderForClass( DefaultDataGridCellRenderer )
+    .setFunctionForStyleName( "custom-cell-renderer", setCustomCellRendererStyles );
+```
+
+#### Without a theme
+
+If you are not using a theme, you can use [`cellRendererFactory`](../api-reference/feathers/controls/DataGrid.html#cellRendererFactory) to provide skins for the data grid's cell renderers:
+
+``` code
+grid.cellRendererFactory = function():IDataGridCellRenderer
+{
+    var cellRenderer:DefaultDataGridCellRenderer = new DefaultDataGridCellRenderer();
+
+    //set cell renderer styles here, if not using a theme
+    var skin:ImageSkin = new ImageSkin( upTexture );
+    skin.setTextureForState( ButtonState.DOWN, downTexture );
+    skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
+    cellRenderer.defaultSkin = skin;
+    cellRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+
+    return cellRenderer;
+}
+```
+
 ## Custom cell renderers
 
 ## Customize scrolling behavior
