@@ -299,6 +299,7 @@ tree.horizontalScrollBarFactory = function():ScrollBar
 ### Skinning the Item Renderers
 
 This section only explains how to access the item renderer sub-components. Please read [How to use the default Feathers item renderer with `List`, `DataGrid`, `Tree`, and `GroupedList`](default-item-renderers.html) for full details about the skinning properties that are available on the default item renderers.
+
 [Custom item renderers](item-renderers.html) may be accessed similarly, but they won't necessarily have the same styling properties as the default item renderers. When using custom item renderers, you may easily replace references to the [`DefaultTreeItemRenderer`](../api-reference/feathers/controls/renderers/DefaultTreeItemRenderer.html) class in the code below with references to your custom item renderer class.
 
 #### With a Theme
