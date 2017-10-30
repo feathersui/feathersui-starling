@@ -24,7 +24,7 @@ header, footer
 	background: #f3f2ee;
 }
 
-header .content, footer .content
+header .content
 {
 	display: -webkit-flex;
 	display: flex;
@@ -34,7 +34,7 @@ header .content, footer .content
 	text-align: left;
 }
 
-header nav, footer nav
+header nav
 {
 	margin: 12px 0;
 }
@@ -47,11 +47,18 @@ header .search
 	margin: 12px 0;
 }
 
+footer .content
+{
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 10px;
+	text-align: left;
+}
+
 footer .copyright
 {
-	-webkit-flex: 1;
-	flex: 1;
-	text-align: right;
+	display: block;
+	margin: 0;
 }
 
 article
