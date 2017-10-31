@@ -1,4 +1,4 @@
-# Feathers 3.4.0-prerelease
+# Feathers 3.4.0-beta
 
 ---
 
