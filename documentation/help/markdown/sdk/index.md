@@ -17,6 +17,8 @@ The Feathers SDK combines the application layout capabilities of MXML with the [
 
     -   [IntelliJ IDEA](intellij-idea.html)
 
+    -   [Visual Studio Code](https://github.com/BowlerHatLLC/vscode-nextgenas/wiki/Create-a-new-ActionScript-project-in-Visual-Studio-Code-that-targets-the-Feathers-SDK)
+
 -   Follow the instructions in [Getting started with MXML in the Feathers SDK](getting-started-mxml.html) to create your first "Hello World" app using the Feathers SDK.
 
 ## Core Concepts

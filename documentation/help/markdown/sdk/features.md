@@ -11,7 +11,7 @@ The [Feathers SDK](http://feathersui.com/sdk/) offers everything you need to bui
 
 -   Use [MXML](mxml.html) instead of ActionScript to create user interfaces and layouts faster with Feathers components.
 
--   Compatible with popular IDEs, including [Flash Builder](flash-builder.html) and [IntelliJ IDEA](intellij-idea.html).
+-   Compatible with popular IDEs, including [Adobe Flash Builder](flash-builder.html), [IntelliJ IDEA](intellij-idea.html), and [Visual Studio Code](https://github.com/BowlerHatLLC/vscode-nextgenas/wiki/Create-a-new-ActionScript-project-in-Visual-Studio-Code-that-targets-the-Feathers-SDK).
 
 -   Built on top of [Feathers](http://feathersui.com/), [Starling Framework](http://gamua.com/starling), and a fork of the [Apache Flex SDK](http://flex.apache.org/). Targets Adobe AIR and Flash Player.
 

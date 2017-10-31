@@ -5,7 +5,7 @@ author: Josh Tynjala
 ---
 # Why does the compiler throw errors that some classes cannot be found when I use the Feathers SWC?
 
-Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](../flash-builder.html), [IntelliJ IDEA](../intellij-idea.html), [Flash Professional](../flash-pro.html), and [FlashDevelop](../flashdevelop.html).
+Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](../flash-builder.html), [IntelliJ IDEA](../intellij-idea.html), [Animate CC](../flash-pro.html), and [FlashDevelop](../flashdevelop.html).
 
 Confirm that you added Feathers to your project's build settings. The SWC should be added to your project's library path. Where to find this information depends on which IDE that you are using, so please take a look at the appropriate instructions for details.
 

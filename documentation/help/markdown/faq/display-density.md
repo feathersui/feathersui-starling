@@ -13,11 +13,11 @@ Adobe AIR allows you to provide custom values for the screen density and platfor
 
 Ensure that the project type is an **ActionScript Mobile Project**. You can choose the simulated device in the **Run Configurations** and **Debug Configurations** dialogs. The screen density and platform name will be provided automatically for common devices.
 
-#### Adobe Animate / Flash Professional
+#### Adobe Animate CC
 
-Unfortunately, Animate / Flash Professional does not provide advanced options to customize the ADL testing environment with a screen density and platform name. In fact, to switch between different screen resolutions during testing, you need to manually adjust the stage width and height of your FLA file before you choose Test Movie. It's very cumbersome, and building Feathers apps with Animate / Flash Professional is supported, but not recommended.
+Unfortunately, Animate CC (formerly known as Flash Professional CC) does not provide advanced options to customize the ADL testing environment with a screen density and platform name. In fact, to switch between different screen resolutions during testing, you need to manually adjust the stage width and height of your FLA file before you choose Test Movie. It's very cumbersome, and building Feathers apps with Animate is supported, but not recommended.
 
-For best results, run ADL from the command line after you compile your SWF in Animate / Flash Professional. Please follow the instructions for [*Other Environments*](#other-environments), specified below.
+For best results, run ADL from the command line after you compile your SWF in Animate. Please follow the instructions for [*Other Environments*](#other-environments), specified below.
 
 #### IntelliJ IDEA
 

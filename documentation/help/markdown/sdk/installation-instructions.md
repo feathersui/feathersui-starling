@@ -25,3 +25,4 @@ From here, you should take a look at the instructions for adding the Feathers SD
 
 * [Flash Builder](flash-builder.html)
 * [IntelliJ IDEA](intellij-idea.html)
+* [Visual Studio Code](https://github.com/BowlerHatLLC/vscode-nextgenas/wiki/Create-a-new-ActionScript-project-in-Visual-Studio-Code-that-targets-the-Feathers-SDK)

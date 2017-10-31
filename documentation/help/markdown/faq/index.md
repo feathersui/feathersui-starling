@@ -49,7 +49,7 @@ For new components and other major contributions, I encourage you to create your
 
 ### What operating systems can run apps made with Feathers?
 
-Feathers uses [Adobe AIR](http://gaming.adobe.com/technologies/), which can create completely standalone, native apps on iOS, Android (including Barnes & Noble's NOOK devices, Amazon's Kindle devices, and the OUYA console), Windows, and Mac OS X. It also works with Adobe Flash Player in the browser.
+Feathers uses [Adobe AIR](http://www.adobe.com/products/air.html), which can create completely standalone, native apps on iOS, Android (including Barnes & Noble's NOOK devices, Amazon's Kindle devices, and the OUYA console), Windows, and macOS. It also works with the Adobe Flash Player plugin in web browsers.
 
 ### Doesn't Adobe AIR require a separate runtime to be installed?
 
@@ -83,7 +83,7 @@ A few tips for common issues you may encounter as a new Feathers user.
 
 ### Why do I get compiler errors that some classes cannot be found when I use the Feathers SWC?
 
-Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](../flash-builder.html), [IntelliJ IDEA](../intellij-idea.html), [Flash Professional](../flash-pro.html), and [FlashDevelop](../flashdevelop.html). Please see [this detailed explanation](swc-missing-classes.html) for more information.
+Double check that your development environment has been set up correctly. Instructions are provided for setting up [Flash Builder](../flash-builder.html), [IntelliJ IDEA](../intellij-idea.html), [Animate CC](../flash-pro.html), and [FlashDevelop](../flashdevelop.html). Please see [this detailed explanation](swc-missing-classes.html) for more information.
 
 ### When I add a Feathers component to the display list, why don't I see anything?
 
