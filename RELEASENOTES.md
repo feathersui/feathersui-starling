@@ -19,6 +19,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * DateTimeSpinner: fixed issue where internal SpinnerLists were not disabled when isEnabled is set to false.
 * DeviceCapabilities: added simulateDPad property that allows regular keyboard arrow keys to interact with components similarly to a TV remote or another device that dispatches keyboard events with KeyLocation.D_PAD.
 * DeviceCapabilities: methods that accept a flash.display.Stage parameter now default to null and fall back to Starling.current.nativeStage.
+* DragDropManager: fixed issue where a null reference error could be thrown if the drag source's stage property was null during cleanup.
 * FocusManager: can change focus up, down, left, or right if the keyLocation property of the KeyboardEvent is KeyLocation.D_PAD.
 * FocusManager: supports TransformGestureEvent.GESTURE_DIRECTIONAL_TAP for focus navigation on Apple tvOS.
 * HorizontalSpinnerLayout: added horizontalAlign property to allow the selected item to be aligned to the left or right instead of the default center.
