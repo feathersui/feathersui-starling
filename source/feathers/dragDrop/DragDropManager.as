@@ -57,6 +57,11 @@ package feathers.dragDrop
 		/**
 		 * @private
 		 */
+		protected static var _dragSourceStage:Stage;
+
+		/**
+		 * @private
+		 */
 		protected static var _dragSource:IDragSource;
 
 		/**
@@ -158,8 +163,8 @@ package feathers.dragDrop
 			avatar = dragAvatar;
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
-			var stage:Stage = DisplayObject(source).stage;
-			touch.getLocation(stage, HELPER_POINT);
+			_dragSourceStage = DisplayObject(source).stage;
+			touch.getLocation(_dragSourceStage, HELPER_POINT);
 			if(avatar)
 			{
 				avatarOldTouchable = avatar.touchable;
@@ -168,8 +173,8 @@ package feathers.dragDrop
 				avatar.y = HELPER_POINT.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
 			}
-			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			var starling:Starling = stage.starling;
+			_dragSourceStage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			var starling:Starling = _dragSourceStage.starling;
 			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
 			_dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
 
@@ -237,12 +242,12 @@ package feathers.dragDrop
 				avatar.touchable = avatarOldTouchable;
 				avatar = null;
 			}
-			var stage:Stage = DisplayObject(_dragSource).stage;
-			var starling:Starling = stage.starling;
-			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			var starling:Starling = _dragSourceStage.starling;
+			_dragSourceStage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			_dragSource = null;
 			_dragData = null;
+			_dragSourceStage = null;
 		}
 
 		/**
@@ -250,8 +255,7 @@ package feathers.dragDrop
 		 */
 		protected static function updateDropTarget(location:Point):void
 		{
-			var stage:Stage = DisplayObject(_dragSource).stage;
-			var target:DisplayObject = stage.hitTest(location);
+			var target:DisplayObject = _dragSourceStage.hitTest(location);
 			while(target && !(target is IDropTarget))
 			{
 				target = target.parent;
