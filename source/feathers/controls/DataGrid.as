@@ -107,6 +107,28 @@ package feathers.controls
 	[Style(name="customCellRendererStyleName",type="String")]
 
 	/**
+	 * Specifies a custom style name for header renderers that will be used if
+	 * the <code>customHeaderRendererStyleName</code> property from a
+	 * <code>DataGridColumn</code> is <code>null</code>.
+	 *
+	 * <p>The following example sets the header renderer style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * column.customHeaderRendererStyleName = "my-custom-header-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component name to provide
+	 * different skins than the default style:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( DefaultDataGridHeaderRenderer ).setFunctionForStyleName( "my-custom-header-renderer", setCustomHeaderRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customHeaderRendererStyleName",type="String")]
+
+	/**
 	 * Determines if the height of the column drop indicator is equal to the
 	 * height of the headers, or if it extends to the full height of the data
 	 * grid's view port.
@@ -1410,6 +1432,8 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * 
+		 * @see #style:verticalDividerFactory
 		 */
 		public function get verticalDividerFactory():Function
 		{
@@ -1440,6 +1464,8 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * 
+		 * @see #style:headerDividerFactory
 		 */
 		public function get headerDividerFactory():Function
 		{
@@ -1534,6 +1560,80 @@ package feathers.controls
 				return;
 			}
 			this._customCellRendererStyleName = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerRendererFactory:Function = null;
+		
+		/**
+		 * Specifies a default factory for header renderers that will be used if
+		 * the <code>headerRendererFactory</code> from a
+		 * <code>DataGridColumn</code> is <code>null</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IDataGridHeaderRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the data grid:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.headerRendererFactory = function():IDataGridHeaderRenderer
+		 * {
+		 *     var headerRenderer:CustomHeaderRendererClass = new CustomHeaderRendererClass();
+		 *     headerRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return headerRenderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IDataGridHeaderRenderer
+		 */
+		public function get headerRendererFactory():Function
+		{
+			return this._headerRendererFactory;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set headerRendererFactory(value:Function):void
+		{
+			if(this._headerRendererFactory === value)
+			{
+				return;
+			}
+			this._headerRendererFactory = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customHeaderRendererStyleName:String = null;
+
+		/**
+		 * @private
+		 * 
+		 * @see #style:customHeaderRendererStyleName
+		 */
+		public function get customHeaderRendererStyleName():String
+		{
+			return this._customHeaderRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHeaderRendererStyleName(value:String):void
+		{
+			if(this._customHeaderRendererStyleName === value)
+			{
+				return;
+			}
+			this._customHeaderRendererStyleName = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -2262,9 +2362,17 @@ package feathers.controls
 			var headerRendererFactory:Function = column.headerRendererFactory;
 			if(headerRendererFactory === null)
 			{
+				headerRendererFactory = this._headerRendererFactory;
+			}
+			if(headerRendererFactory === null)
+			{
 				headerRendererFactory = defaultHeaderRendererFactory;
 			}
 			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
+			if(customHeaderRendererStyleName === null)
+			{
+				customHeaderRendererStyleName = this._customHeaderRendererStyleName;
+			}
 			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
 			var headerRenderer:IDataGridHeaderRenderer = null;
