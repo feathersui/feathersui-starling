@@ -161,6 +161,8 @@ grid.backgroundDisabledSkin = skin;
 
 The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#backgroundDisabledSkin) is displayed when the data grid is disabled. If the `backgroundDisabledSkin` isn't provided to a disabled data grid, it will fall back to using the `backgroundSkin` in the disabled state.
 
+### Header background skin
+
 The data grid's header may be skinned using the [`headerBackgroundSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundSkin) and [`headerBackgroundDisabledSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundDisabledSkin) properties:
 
 ``` code
@@ -291,7 +293,166 @@ grid.cellRendererFactory = function():IDataGridCellRenderer
 }
 ```
 
+### Skinning the Header Renderers
+
+The row of headers at the top of the data grid may be skinned.
+
+#### With a Theme
+
+If you are creating a [theme](themes.html), you can set a function for the default styles like this:
+
+``` code
+getStyleProviderForClass( DefaultDataGridHeaderRenderer ).defaultStyleFunction = setHeaderRendererStyles;
+```
+
+The styling function might look like this:
+
+``` code
+private function setHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
+{
+    headerRenderer.backgroundSkin = new ImageSkin( texture );
+    headerRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+}
+```
+
+If you want to customize a specific header renderer to look different than the default, you may use a custom style name to call a different function:
+
+``` code
+grid.customHeaderRendererStyleName = "custom-header-renderer";
+```
+
+You can set the function for the custom [`customHeaderRendererStyleName`](../api-reference/feathers/controls/DataGrid.html#customHeaderRendererStyleName) like this:
+
+``` code
+getStyleProviderForClass( DefaultDataGridHeaderRenderer )
+    .setFunctionForStyleName( "custom-header-renderer", setCustomHeaderRendererStyles );
+```
+
+#### Without a theme
+
+If you are not using a theme, you can use [`headerRendererFactory`](../api-reference/feathers/controls/DataGrid.html#headerRendererFactory) to provide skins for the data grid's header renderers:
+
+``` code
+grid.headerRendererFactory = function():IDataGridHeaderRenderer
+{
+    var headerRenderer:DefaultDataGridHeaderRenderer = new DefaultDataGridHeaderRenderer();
+
+    //set header renderer styles here, if not using a theme
+    headerRenderer.backgroundSkin = new ImageSkin( texture );
+    headerRenderer.fontStyles = new TextFormat( "Helvetica", 20, 0xc3c3c3 );
+
+    return headerRenderer;
+}
+```
+
 ## Custom cell renderers
+
+If the default cell renderer doesn't have the features that you need, the `DataGrid` component offers the ability to use [custom cell renderers](item-renderers.html) instead. Custom cell renderers must be Feathers components that implement the [`IDataGridCellRenderer`](../api-reference/feathers/controls/renderers/IDataGridCellRenderer.html) interface.
+
+<aside class="info">For full details about implementing custom cell renderers, see [Creating custom item renderers for the Feathers `List`, `DataGrid`, `Tree` and `GroupedList` components](item-renderers.html).</aside>
+
+You may set the [`cellRendererFactory`](../api-reference/feathers/controls/DataGrid.html#cellRendererFactory) property to specify a function that returns a newly created cell renderer:
+
+``` code
+grid.cellRendererFactory = function():IDataGridCellRenderer
+{
+    var cellRenderer:ExampleCustomCellRenderer = new ExampleCustomCellRenderer();
+    cellRenderer.exampleProperty = 20;
+    return cellRenderer;
+};
+```
+
+Additionally, each column may use different cell renderers, if necessary. In the following example, a column provides its own `cellRendererFactory` to override the default factory from the data grid:
+
+``` code
+var column:DataGridColumn = new DataGridColumn("text");
+column.cellRendererFactory = function():IDataGridCellRenderer
+{
+    return new CustomColumnCellRenderer();
+};
+```
+
+### Custom header renderers
+
+You may also provide a factory for custom header renderers. Custom header renderers must be Feathers components that implement the [`IDataGridHeaderRenderer`](../api-reference/feathers/controls/renderers/IDataGridHeaderRenderer.html) interface.
+
+You may set the [`headerRendererFactory`](../api-reference/feathers/controls/DataGrid.html#headerRendererFactory) property to specify a function that returns a newly created header renderer:
+
+``` code
+grid.headerRendererFactory = function():IDataGridHeaderRenderer
+{
+    var headerRenderer:ExampleCustomHeaderRenderer = new ExampleCustomHeaderRenderer();
+    headerRenderer.exampleProperty = 20;
+    return headerRenderer;
+};
+```
+
+Additionally, each column may use different header renderers, if necessary. In the following example, a column provides its own `headerRendererFactory` to override the default factory from the data grid:
+
+``` code
+var column:DataGridColumn = new DataGridColumn("text");
+column.headerRendererFactory = function():IDataGridHeaderRenderer
+{
+    return new CustomColumnHeaderRenderer();
+};
+```
+
+### Listening to Events from Custom Cell Renderers
+
+Listening to events dispatched by a custom cell renderer isn't too difficult. Simply dispatch the event normally from the cell renderer. No need for bubbling. As an example, let's say that we want to dispatch `Event.COMPLETE` from an cell renderer when something happens:
+
+``` code
+function someEventHandler( event:Event ):void
+{
+    this.dispatchEventWith( Event.COMPLETE );
+}
+```
+
+On our data grid, first we need to listen for `FeathersEventType.RENDERER_ADD`:
+
+``` code
+grid.addEventListener( FeathersEventType.RENDERER_ADD, grid_rendererAddHandler );
+```
+
+Inside the listener for `FeathersEventType.RENDERER_ADD`, we add a listener for our event dispatched by the cell renderer:
+
+``` code
+function grid_rendererAddHandler( event:Event ):void
+{
+    var cellRenderer:IDataGridCellRenderer = event.data as IDataGridCellRenderer;
+    if(!cellRenderer)
+    {
+        return;
+    }
+    cellRenderer.addEventListener( Event.COMPLETE, cellRenderer_customCompleteHandler );
+}
+ 
+function cellRenderer_customCompleteHandler( event:Event ):void
+{
+    var cellRenderer:IDataGridCellRenderer = IDataGridCellRenderer( event.currentTarget );
+    //do something to handle the event
+}
+```
+
+Finally, we want to be sure to remove the listeners from the cell renderers, so we should also listen for `FeathersEventType.RENDERER_REMOVE`:
+
+``` code
+grid.addEventListener( FeathersEventType.RENDERER_REMOVE, grid_rendererRemoveHandler );
+```
+
+The listener for `FeathersEventType.RENDERER_REMOVE` looks very similar to the listener for `FeathersEventType.RENDERER_ADD`:
+
+``` code
+function grid_rendererRemoveHandler( event:Event ):void
+{
+    var cellRenderer:IDataGridCellRenderer = event.data as IDataGridCellRenderer;
+    if(!cellRenderer)
+    {
+        return;
+    }
+    cellRenderer.removeEventListener( Event.COMPLETE, cellRenderer_customCompleteHandler );
+}
+```
 
 ## Customize scrolling behavior
 
