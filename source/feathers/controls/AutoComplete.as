@@ -552,6 +552,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _listTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _triggered:Boolean = false;
 
 		/**
@@ -742,7 +747,7 @@ package feathers.controls
 		{
 			//using priority here is a hack so that objects deeper in the
 			//display list have a chance to cancel the event first.
-			var priority:int = getDisplayObjectDepthFromStage(this);
+			var priority:int = -getDisplayObjectDepthFromStage(this);
 			this.stage.starling.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 			super.focusInHandler(event);
 		}
@@ -919,7 +924,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._touchPointID === -1)
+			if(this._listTouchPointID === -1)
 			{
 				//triggered by keyboard
 				this.closeList();
@@ -941,10 +946,12 @@ package feathers.controls
 			}
 			if(touch.phase === TouchPhase.BEGAN)
 			{
+				this._listTouchPointID = touch.id;
 				this._triggered = false;
 			}
 			if(touch.phase === TouchPhase.ENDED && this._triggered)
 			{
+				this._listTouchPointID = -1;
 				this.closeList();
 				this.selectRange(this.text.length, this.text.length);
 			}
