@@ -14,7 +14,6 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * BitmapFontTextRenderer: fixed issue where distance field fonts would render blurry and fonts that shouldn't use smoothing would be blurry.
 * Button: added getScaleForState() and setScaleForState() to support different rendering scales in all states, in addition to the existing scaleWhenDown and scaleWhenHovering.
 * Button, ToggleButton, ToggleSwitch, List, GroupedList, Tree: Event.TRIGGERED and Event.CHANGE may also be dispatched for Keyboard.ENTER if the key location is KeyLocation.D_PAD.
-* Button: added new ButtonState.FOCUSED to allow the button to be styled differently when in focus with the FocusManager. This may cause unexpected missing styles when ButtonState.UP is used, but a default fallback value is missing.
 * Callout: added originGap property to optionally add extra spacing between the callout and its origin.
 * DateTimeSpinner: fixed issue where internal SpinnerLists were not disabled when isEnabled is set to false.
 * DeviceCapabilities: added simulateDPad property that allows regular keyboard arrow keys to interact with components similarly to a TV remote or another device that dispatches keyboard events with KeyLocation.D_PAD.

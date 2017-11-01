@@ -9,14 +9,15 @@ package feathers.utils.keyboard
 {
 	import feathers.controls.ButtonState;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IStateContext;
 	import feathers.events.FeathersEventType;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.ui.Keyboard;
 
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Changes a target's state when a key is pressed or released on the
@@ -231,7 +232,8 @@ package feathers.utils.keyboard
 		protected var _currentState:String = ButtonState.UP;
 
 		/**
-		 * The current state of the utility.
+		 * The current state of the utility. May be different than the state
+		 * of the target.
 		 */
 		public function get currentState():String
 		{
@@ -287,36 +289,18 @@ package feathers.utils.keyboard
 		/**
 		 * @private
 		 */
-		protected var _focusedState:String = ButtonState.FOCUSED;
-
-		/**
-		 * The value for the "focused" state.
-		 *
-		 * @default feathers.controls.ButtonState.FOCUSED
-		 */
-		public function get focusedState():String
-		{
-			return this._focusedState;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set focusedState(value:String):void
-		{
-			this._focusedState = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function changeState(value:String):void
 		{
-			if(this._currentState === value)
+			var oldState:String = this._currentState;
+			if(this._target is IStateContext)
+			{
+				oldState = IStateContext(this._target).currentState;
+			}
+			this._currentState = value;
+			if(oldState === value)
 			{
 				return;
 			}
-			this._currentState = value;
 			if(this._callback !== null)
 			{
 				this._callback(value);
@@ -335,22 +319,7 @@ package feathers.utils.keyboard
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this._stage = null;
 			}
-			this.resetState();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function resetState():void
-		{
-			if(this._hasFocus)
-			{
-				this.changeState(this._focusedState);
-			}
-			else
-			{
-				this.changeState(this._upState);
-			}
+			this.changeState(this._upState);
 		}
 
 		/**
@@ -361,7 +330,9 @@ package feathers.utils.keyboard
 			this._hasFocus = true;
 			this._stage = this._target.stage;
 			this._stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.resetState();
+
+			//don't change the state on focus in because the state may be
+			//managed by another utility
 		}
 
 		/**
@@ -392,7 +363,7 @@ package feathers.utils.keyboard
 			if(event.keyCode === this._cancelKeyCode)
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this.resetState();
+				this.changeState(this._upState);
 				return;
 			}
 			if(event.keyCode !== this._keyCode)
@@ -432,7 +403,7 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
-			this.resetState();
+			this.changeState(this._upState);
 		}
 	}
 }

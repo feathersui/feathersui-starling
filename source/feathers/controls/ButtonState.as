@@ -55,16 +55,6 @@ package feathers.controls
 		public static const DISABLED:String = "disabled";
 
 		/**
-		 * The focused state, when the component is given focus by the
-		 * <code>FocusManager</code>.
-		 * 
-		 * @see feathers.core.FocusManager
-		 *
-		 * @productversion Feathers 3.4.0
-		 */
-		public static const FOCUSED:String = "focused";
-
-		/**
 		 * Same as the up state, but the component is also selected.
 		 *
 		 * @see feathers.controls.ToggleButton#isSelected
