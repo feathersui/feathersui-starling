@@ -770,6 +770,10 @@ package feathers.controls
 			{
 				return;
 			}
+			if(event.isDefaultPrevented())
+			{
+				return;
+			}
 			var isDown:Boolean = event.keyCode == Keyboard.DOWN;
 			var isUp:Boolean = event.keyCode == Keyboard.UP;
 			if(!isDown && !isUp)
@@ -780,7 +784,7 @@ package feathers.controls
 			var lastIndex:int = this.list.dataProvider.length - 1;
 			if(oldSelectedIndex < 0)
 			{
-				event.stopImmediatePropagation();
+				event.preventDefault();
 				this._originalText = this._text;
 				if(isDown)
 				{
@@ -797,7 +801,7 @@ package feathers.controls
 			else if((isDown && oldSelectedIndex == lastIndex) ||
 				(isUp && oldSelectedIndex == 0))
 			{
-				event.stopImmediatePropagation();
+				event.preventDefault();
 				var oldIgnoreAutoCompleteChanges:Boolean = this._ignoreAutoCompleteChanges;
 				this._ignoreAutoCompleteChanges = true;
 				this.text = this._originalText;
