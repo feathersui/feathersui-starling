@@ -1049,6 +1049,10 @@ package feathers.core
 			{
 				return;
 			}
+			if(this._focus !== null && this._focus.maintainTouchFocus)
+			{
+				return;
+			}
 
 			var focusTarget:IFocusDisplayObject = null;
 			var target:DisplayObject = touch.target;

@@ -1091,7 +1091,7 @@ package feathers.controls.text
 		 *
 		 * @default false
 		 */
-		public function get maintainTouchFocus():Boolean
+		override public function get maintainTouchFocus():Boolean
 		{
 			return this._maintainTouchFocus;
 		}
