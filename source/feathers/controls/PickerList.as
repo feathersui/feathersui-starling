@@ -19,7 +19,6 @@ package feathers.controls
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;

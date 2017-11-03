@@ -31,7 +31,6 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 	import starling.utils.Pool;
 
 	/**

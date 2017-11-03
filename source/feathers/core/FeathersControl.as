@@ -22,7 +22,6 @@ package feathers.core
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;

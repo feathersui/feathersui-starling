@@ -15,10 +15,11 @@ package feathers.controls
 	import feathers.utils.keyboard.KeyToSelect;
 	import feathers.utils.touch.TapToSelect;
 
+	import flash.ui.Keyboard;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.text.TextFormat;
-	import flash.ui.Keyboard;
 
 	[Exclude(name="defaultSelectedLabelProperties",kind="property")]
 	[Exclude(name="selectedUpLabelProperties",kind="property")]

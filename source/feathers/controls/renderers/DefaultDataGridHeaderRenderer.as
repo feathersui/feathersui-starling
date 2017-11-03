@@ -9,7 +9,6 @@ package feathers.controls.renderers
 {
 	import feathers.controls.DataGrid;
 	import feathers.controls.DataGridColumn;
-	import feathers.controls.GroupedList;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.core.FeathersControl;
@@ -17,12 +16,13 @@ package feathers.controls.renderers
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
-	import feathers.core.PropertyProxy;
+	import feathers.data.SortOrder;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
+	import feathers.utils.touch.TapToTrigger;
 
 	import flash.geom.Point;
 
@@ -30,8 +30,6 @@ package feathers.controls.renderers
 	import starling.events.Event;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
-	import feathers.utils.touch.TapToTrigger;
-	import feathers.data.SortOrder;
 
 	/**
 	 * A background to behind the header renderer's content.

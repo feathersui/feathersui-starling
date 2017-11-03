@@ -10,13 +10,13 @@ package feathers.utils.keyboard
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.ui.Keyboard;
 
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Changes the <code>isSelected</code> property of the target when a key is

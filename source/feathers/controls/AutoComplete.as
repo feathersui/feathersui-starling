@@ -13,24 +13,20 @@ package feathers.controls
 	import feathers.data.ArrayCollection;
 	import feathers.data.IAutoCompleteSource;
 	import feathers.data.IListCollection;
-	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 
-	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import feathers.system.DeviceCapabilities;
-	import flash.ui.KeyLocation;
-	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	/**
 	 * A style name to add to the list sub-component of the

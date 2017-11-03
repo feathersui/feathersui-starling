@@ -13,6 +13,7 @@ package feathers.controls.text
 	import feathers.core.INativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
@@ -34,6 +35,7 @@ package feathers.controls.text
 	import flash.text.TextFormatAlign;
 	import flash.text.engine.FontPosture;
 	import flash.text.engine.FontWeight;
+	import flash.ui.KeyLocation;
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
 
@@ -49,8 +51,6 @@ package feathers.controls.text
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 	import starling.utils.SystemUtil;
-	import flash.ui.KeyLocation;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatched when the text property changes.

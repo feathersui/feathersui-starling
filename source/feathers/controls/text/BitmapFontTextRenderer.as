@@ -26,7 +26,6 @@ package feathers.controls.text
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
-	import starling.textures.TextureSmoothing;
 	import starling.utils.Align;
 	import starling.utils.MathUtil;
 	import starling.utils.Pool;

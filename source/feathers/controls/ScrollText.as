@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
+	import feathers.core.INativeFocusOwner;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
 
@@ -18,7 +19,6 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.text.TextFormat;
-	import feathers.core.INativeFocusOwner;
 
 	/**
 	 * The type of anti-aliasing used for this text field, defined as

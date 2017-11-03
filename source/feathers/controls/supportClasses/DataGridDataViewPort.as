@@ -8,8 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.controls.DataGrid;
-	import feathers.controls.DataGridColumn;
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IDataGridCellRenderer;
 	import feathers.controls.supportClasses.DataGridRowRenderer;
@@ -21,10 +19,7 @@ package feathers.controls.supportClasses
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.HorizontalLayout;
-	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
-	import feathers.layout.ITrimmedVirtualLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;

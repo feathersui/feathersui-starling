@@ -24,6 +24,7 @@ package feathers.controls
 	import feathers.text.FontStylesSet;
 
 	import flash.geom.Point;
+	import flash.ui.KeyLocation;
 	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
@@ -38,7 +39,6 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.text.TextFormat;
 	import starling.utils.SystemUtil;
-	import flash.ui.KeyLocation;
 
 	/**
 	 * A style name to add to the toggle switch's on label text renderer

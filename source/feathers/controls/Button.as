@@ -29,13 +29,13 @@ package feathers.controls
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.rendering.Painter;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
-	import flash.ui.Keyboard;
 
 	[Exclude(name="stateToIconFunction",kind="property")]
 	[Exclude(name="stateToLabelPropertiesFunction",kind="property")]

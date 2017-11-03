@@ -15,7 +15,6 @@ package feathers.layout
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 
 	/**
 	 * Dispatched when a property of the layout changes, indicating that a
