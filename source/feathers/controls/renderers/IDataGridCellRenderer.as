@@ -8,9 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.DataGrid;
+	import feathers.controls.DataGridColumn;
 	import feathers.core.IToggle;
 	import feathers.layout.ILayoutDisplayObject;
-	import feathers.controls.DataGridColumn;
 
 	/**
 	 * Interface to implement a renderer for a data grid cell.

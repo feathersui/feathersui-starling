@@ -22,7 +22,6 @@ package feathers.controls
 
 	import flash.geom.Point;
 
-	import starling.core.Starling;
 	import starling.core.starling_internal;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;

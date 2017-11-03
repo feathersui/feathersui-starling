@@ -20,13 +20,13 @@ package feathers.controls
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.ui.Keyboard;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * A style name to add to all item renderers in this tree. Typically

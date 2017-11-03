@@ -9,8 +9,9 @@ package feathers.utils.keyboard
 {
 	import feathers.core.IFocusDisplayObject;
 
-	import starling.events.Event;
 	import flash.ui.Keyboard;
+
+	import starling.events.Event;
 
 	/**
 	 * Dispatches <code>Event.TRIGGERED</code> from the target when a key is

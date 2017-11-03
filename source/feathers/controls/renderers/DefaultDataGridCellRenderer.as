@@ -8,9 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.DataGrid;
+	import feathers.controls.DataGridColumn;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.controls.DataGridColumn;
 
 	/**
 	 * The default cell renderer for the <code>DataGrid</code> component.

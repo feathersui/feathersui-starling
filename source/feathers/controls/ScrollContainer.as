@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.layout.IVirtualLayout;
 	import feathers.skins.IStyleProvider;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;

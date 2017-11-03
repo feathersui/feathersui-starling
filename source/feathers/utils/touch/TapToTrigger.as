@@ -7,16 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.touch
 {
-	import flash.geom.Point;
-
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
-	import starling.display.Stage;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
-	import starling.utils.Pool;
 
 	/**
 	 * Dispatches <code>Event.TRIGGERED</code> from the target when the target

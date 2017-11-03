@@ -23,7 +23,6 @@ package feathers.controls
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.events.KeyboardEvent;
 	import flash.events.TransformGestureEvent;

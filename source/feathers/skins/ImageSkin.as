@@ -14,6 +14,7 @@ package feathers.skins
 	import feathers.core.IToggle;
 	import feathers.events.FeathersEventType;
 
+	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
@@ -22,7 +23,6 @@ package feathers.skins
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.utils.Pool;
-	import flash.errors.IllegalOperationError;
 
 	[Exclude(name="color",kind="property")]
 

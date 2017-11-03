@@ -17,8 +17,10 @@ package feathers.utils.focus
 {
 	import feathers.core.IFocusDisplayObject;
 	import feathers.layout.RelativePosition;
-	import starling.utils.Pool;
+
 	import flash.geom.Rectangle;
+
+	import starling.utils.Pool;
 
 	/**
 	 * Determines if <code>object1</code> is a better choice than
@@ -117,8 +119,9 @@ package feathers.utils.focus
 	}
 }
 
-import flash.geom.Rectangle;
 import feathers.layout.RelativePosition;
+
+import flash.geom.Rectangle;
 
 function calculateSecondaryAxisDistanceForRelativePosition(globalRect1:Rectangle, globalRect2:Rectangle, position:String):Number
 {

@@ -10,7 +10,6 @@ package feathers.controls.renderers
 	import feathers.controls.DataGrid;
 	import feathers.controls.DataGridColumn;
 	import feathers.core.IFeathersControl;
-	import feathers.core.IToggle;
 	import feathers.layout.ILayoutDisplayObject;
 
 	/**

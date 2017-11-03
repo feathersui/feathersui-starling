@@ -7,11 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.renderers.DefaultDataGridCellRenderer;
-	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
-	import feathers.controls.renderers.IDataGridCellRenderer;
-	import feathers.controls.renderers.IDataGridHeaderRenderer;
-	import feathers.core.FeathersControl;
 	import feathers.data.SortOrder;
 
 	import starling.events.Event;

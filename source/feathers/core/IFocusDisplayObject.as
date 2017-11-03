@@ -262,6 +262,13 @@ package feathers.core
 		function get isShowingFocus():Boolean;
 
 		/**
+		 * If <code>true</code>, the display object should remain in focus,
+		 * even if something else is touched. If <code>false</code>, touching
+		 * another object will pass focus normally.
+		 */
+		function get maintainTouchFocus():Boolean;
+
+		/**
 		 * If the object has focus, an additional visual indicator may
 		 * optionally be displayed to highlight the object. Calling this
 		 * function may have no effect. It's merely a suggestion to the object.

@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.utils.touch
 {
 	import feathers.controls.ButtonState;
+	import feathers.core.IStateContext;
 
 	import flash.geom.Point;
 
@@ -119,7 +120,8 @@ package feathers.utils.touch
 		protected var _currentState:String = ButtonState.UP;
 
 		/**
-		 * The current state of the utility.
+		 * The current state of the utility. May be different than the state
+		 * of the target.
 		 */
 		public function get currentState():String
 		{
@@ -314,11 +316,16 @@ package feathers.utils.touch
 		 */
 		protected function changeState(value:String):void
 		{
-			if(this._currentState === value)
+			var oldState:String = this._currentState;
+			if(this._target is IStateContext)
+			{
+				oldState = IStateContext(this._target).currentState;
+			}
+			this._currentState = value;
+			if(oldState === value)
 			{
 				return;
 			}
-			this._currentState = value;
 			if(this._callback !== null)
 			{
 				this._callback(value);

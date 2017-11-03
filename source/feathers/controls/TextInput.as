@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
@@ -22,6 +23,7 @@ package feathers.controls
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
@@ -38,7 +40,6 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
-	import feathers.layout.RelativePosition;
 
 	/**
 	 * The skin used for the input's disabled state. If <code>null</code>,
@@ -1077,6 +1078,18 @@ package feathers.controls
 				return INativeFocusOwner(this.textEditor).nativeFocus;
 			}
 			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get maintainTouchFocus():Boolean
+		{
+			if(this.textEditor is IFocusDisplayObject)
+			{
+				return IFocusDisplayObject(this.textEditor).maintainTouchFocus;
+			}
+			return super.maintainTouchFocus;
 		}
 
 		/**

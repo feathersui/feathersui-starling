@@ -9,6 +9,7 @@ package feathers.system
 {
 	import flash.display.Stage;
 	import flash.system.Capabilities;
+
 	import starling.core.Starling;
 
 	/**

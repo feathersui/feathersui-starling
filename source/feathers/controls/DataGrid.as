@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
 	import feathers.core.IValidating;
+	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
 	import feathers.data.SortOrder;
@@ -30,6 +31,7 @@ package feathers.controls
 	import feathers.layout.HorizontalLayoutData;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
@@ -48,7 +50,6 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import feathers.layout.VerticalAlign;
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to
@@ -104,6 +105,28 @@ package feathers.controls
 	 * @see feathers.core.FeathersControl#styleNameList
 	 */
 	[Style(name="customCellRendererStyleName",type="String")]
+
+	/**
+	 * Specifies a custom style name for header renderers that will be used if
+	 * the <code>customHeaderRendererStyleName</code> property from a
+	 * <code>DataGridColumn</code> is <code>null</code>.
+	 *
+	 * <p>The following example sets the header renderer style name:</p>
+	 *
+	 * <listing version="3.0">
+	 * column.customHeaderRendererStyleName = "my-custom-header-renderer";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component name to provide
+	 * different skins than the default style:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( DefaultDataGridHeaderRenderer ).setFunctionForStyleName( "my-custom-header-renderer", setCustomHeaderRendererStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see feathers.core.FeathersControl#styleNameList
+	 */
+	[Style(name="customHeaderRendererStyleName",type="String")]
 
 	/**
 	 * Determines if the height of the column drop indicator is equal to the
@@ -263,6 +286,46 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Displays a collection of items as a table. Each item is rendered as a
+	 * row, divided into columns for each of the item's fields. Supports
+	 * scrolling, custom cell renderers, sorting columns, resizing columns, and
+	 * drag and drop reordering of columns.
+	 *
+	 * <p>The following example creates a data grid, gives it a data provider,
+	 * defines its columns, and listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var grid:DataGrid = new DataGrid();
+	 * 
+	 * grid.dataProvider = new ArrayCollection(
+	 * [
+	 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+	 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+	 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+	 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+	 * ]);
+	 * 
+	 * grid.columns = new ArrayCollection(
+	 * [
+	 *     new DataGridColumn("item", "Item"),
+	 *     new DataGridColumn("dept", "Department"),
+	 *     new DataGridColumn("price", "Unit Price"),
+	 * ]);
+	 * 
+	 * grid.addEventListener( Event.CHANGE, grid_changeHandler );
+	 * 
+	 * this.addChild( grid );</listing>
+	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a href="https://feathersui.com/help/deprecation-policy.html">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
+	 * @see ../../../help/data-grid.html How to use the Feathers DataGrid component
 	 * 
 	 * @productversion Feathers 3.4.0
 	 */
@@ -709,6 +772,24 @@ package feathers.controls
 		 * grid's data, so the horizontal and vertical scroll positions will be
 		 * reset, and the data grid's selection will be cleared.
 		 *
+		 * <p>The following example passes in a data provider and columns:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.dataProvider = new ArrayCollection(
+		 * [
+		 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+		 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+		 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+		 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+		 * ]);
+		 * 
+		 * grid.columns = new ArrayCollection(
+		 * [
+		 *     new DataGridColumn("item", "Item"),
+		 *     new DataGridColumn("dept", "Department"),
+		 *     new DataGridColumn("price", "Unit Price"),
+		 * ]);</listing>
+		 *
 		 * <p><em>Warning:</em> A data grid's data provider cannot contain
 		 * duplicate items. To display the same item in multiple item
 		 * renderers, you must create separate objects with the same
@@ -728,6 +809,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #columns
 		 * @see feathers.data.IListCollection#dispose()
 		 * @see feathers.data.ArrayCollection
 		 * @see feathers.data.VectorCollection
@@ -788,11 +870,32 @@ package feathers.controls
 		protected var _columns:IListCollection = null;
 
 		/**
+		 * Defines the columns to display for each item in the data provider.
+		 * If <code>null</code>, the data grid will attempt to populate the
+		 * columns automatically.
+		 *
+		 * <p>The following example passes in a data provider and columns:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.dataProvider = new ArrayCollection(
+		 * [
+		 *     { item: "Chicken breast", dept: "Meat", price: "5.90" },
+		 *     { item: "Butter", dept: "Dairy", price: "4.69" },
+		 *     { item: "Broccoli", dept: "Produce", price: "2.99" },
+		 *     { item: "Whole Wheat Bread", dept: "Bakery", price: "2.49" },
+		 * ]);
 		 * 
+		 * grid.columns = new ArrayCollection(
+		 * [
+		 *     new DataGridColumn("item", "Item"),
+		 *     new DataGridColumn("dept", "Department"),
+		 *     new DataGridColumn("price", "Unit Price"),
+		 * ]);</listing>
 		 *
 		 * @default null
 		 * 
 		 * @see #dataProvider
+		 * @see feathers.controls.DataGridColumn
 		 */
 		public function get columns():IListCollection
 		{
@@ -1338,6 +1441,8 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * 
+		 * @see #style:verticalDividerFactory
 		 */
 		public function get verticalDividerFactory():Function
 		{
@@ -1368,6 +1473,8 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * 
+		 * @see #style:headerDividerFactory
 		 */
 		public function get headerDividerFactory():Function
 		{
@@ -1462,6 +1569,80 @@ package feathers.controls
 				return;
 			}
 			this._customCellRendererStyleName = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerRendererFactory:Function = null;
+		
+		/**
+		 * Specifies a default factory for header renderers that will be used if
+		 * the <code>headerRendererFactory</code> from a
+		 * <code>DataGridColumn</code> is <code>null</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IDataGridHeaderRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the data grid:</p>
+		 *
+		 * <listing version="3.0">
+		 * grid.headerRendererFactory = function():IDataGridHeaderRenderer
+		 * {
+		 *     var headerRenderer:CustomHeaderRendererClass = new CustomHeaderRendererClass();
+		 *     headerRenderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return headerRenderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IDataGridHeaderRenderer
+		 */
+		public function get headerRendererFactory():Function
+		{
+			return this._headerRendererFactory;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set headerRendererFactory(value:Function):void
+		{
+			if(this._headerRendererFactory === value)
+			{
+				return;
+			}
+			this._headerRendererFactory = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customHeaderRendererStyleName:String = null;
+
+		/**
+		 * @private
+		 * 
+		 * @see #style:customHeaderRendererStyleName
+		 */
+		public function get customHeaderRendererStyleName():String
+		{
+			return this._customHeaderRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHeaderRendererStyleName(value:String):void
+		{
+			if(this._customHeaderRendererStyleName === value)
+			{
+				return;
+			}
+			this._customHeaderRendererStyleName = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -1677,9 +1858,32 @@ package feathers.controls
 				this.refreshHeaderStyles();
 			}
 
+			this.refreshColumns();
+
 			this.refreshHeaderRenderers();
 			this.refreshDataViewPortProperties();
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 * If the columns are not defined, we can try to create them automatically.
+		 */
+		protected function refreshColumns():void
+		{
+			if(this._columns !== null || this._dataProvider === null || this._dataProvider.length === 0)
+			{
+				return;
+			}
+			var columns:Array = [];
+			var firstItem:Object = this._dataProvider.getItemAt(0);
+			var pushIndex:int = 0;
+			for(var key:String in firstItem)
+			{
+				columns[pushIndex] = new DataGridColumn(key);
+				pushIndex++;
+			}
+			this._columns = new ArrayCollection(columns);
 		}
 
 		/**
@@ -1829,7 +2033,11 @@ package feathers.controls
 		 */
 		protected function layoutHeaderRenderers():void
 		{
-			var columnCount:int = this._columns.length;
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
 			for(var i:int = 0; i < columnCount; i++)
 			{
 				var headerRenderer:IDataGridHeaderRenderer = IDataGridHeaderRenderer(this._headerGroup.getChildAt(i));
@@ -1860,7 +2068,11 @@ package feathers.controls
 			this.refreshInactiveVerticalDividers(this._verticalDividerStorage.factory !== this._verticalDividerFactory);
 			this._verticalDividerStorage.factory = this._verticalDividerFactory;
 
-			var columnCount:int = this._columns.length;
+			var columnCount:int = 0;
+			if(this._columns !== null)
+			{
+				columnCount = this._columns.length;
+			}
 			var dividerCount:int = 0;
 			if(this._verticalDividerFactory !== null)
 			{
@@ -1932,11 +2144,15 @@ package feathers.controls
 			this.refreshInactiveHeaderDividers(this._headerDividerStorage.factory !== this._headerDividerFactory);
 			this._headerDividerStorage.factory = this._headerDividerFactory;
 
-			var dividerCount:int = this._columns.length;
-			if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
-				this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+			var dividerCount:int = 0;
+			if(this._columns !== null)
 			{
-				dividerCount--;
+				dividerCount = this._columns.length;
+				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
+					this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+				{
+					dividerCount--;
+				}
 			}
 
 			this._headerGroup.validate();
@@ -2155,9 +2371,17 @@ package feathers.controls
 			var headerRendererFactory:Function = column.headerRendererFactory;
 			if(headerRendererFactory === null)
 			{
+				headerRendererFactory = this._headerRendererFactory;
+			}
+			if(headerRendererFactory === null)
+			{
 				headerRendererFactory = defaultHeaderRendererFactory;
 			}
 			var customHeaderRendererStyleName:String = column.customHeaderRendererStyleName;
+			if(customHeaderRendererStyleName === null)
+			{
+				customHeaderRendererStyleName = this._customHeaderRendererStyleName;
+			}
 			var inactiveHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IDataGridHeaderRenderer> = this._headerStorage.activeHeaderRenderers;
 			var headerRenderer:IDataGridHeaderRenderer = null;

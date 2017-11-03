@@ -7,17 +7,16 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.keyboard
 {
+	import feathers.core.DefaultFocusManager;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.events.FeathersEventType;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.ui.Keyboard;
 
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
-	import feathers.core.IFocusManager;
-	import feathers.core.DefaultFocusManager;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * Dispatches an event from the target when a key is pressed and released

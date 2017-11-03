@@ -26,7 +26,6 @@ package feathers.controls.text
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
-	import starling.textures.TextureSmoothing;
 	import starling.utils.Align;
 	import starling.utils.MathUtil;
 	import starling.utils.Pool;
@@ -1031,13 +1030,14 @@ package feathers.controls.text
 				this.layoutCharacters(HELPER_RESULT);
 				//for some reason, we can't just set the style once...
 				//we need to set up every time after layout
-				if(this._style !== null)
+				if(this._style !== null || !("getDefaultMeshStyle" in this._currentTextFormat.font))
 				{
 					this._characterBatch.style = this._style;
 				}
 				else
 				{
-					this._defaultStyle = this._currentTextFormat.font.getDefaultMeshStyle(this._defaultStyle, this._currentFontStyles, null);
+					//getDefaultMeshStyle doesn't exist in Starling 2.2
+					this._defaultStyle = this._currentTextFormat.font["getDefaultMeshStyle"](this._defaultStyle, this._currentFontStyles, null);
 					this._characterBatch.style = this._defaultStyle;
 				}
 				this._lastLayoutWidth = HELPER_RESULT.width;
