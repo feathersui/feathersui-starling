@@ -66,6 +66,9 @@
 		<package name="feathers.utils.display"> 
 			<shortDescription><![CDATA[Utilities for working with display objects.]]></shortDescription>
 		</package>
+		<package name="feathers.utils.focus"> 
+			<shortDescription><![CDATA[Utilities for focus management.]]></shortDescription>
+		</package>
 		<package name="feathers.utils.geom"> 
 			<shortDescription><![CDATA[Utilities for working with geometrical calculations.]]></shortDescription>
 		</package>
