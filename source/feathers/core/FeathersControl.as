@@ -405,6 +405,28 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _document:Object = null;
+
+		[Inspectable(environment="none")]
+		/**
+		 * @private
+		 */
+		public function get document():Object
+		{
+			return this._document;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set document(value:Object):void
+		{
+			this._document = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _showEffectContext:IEffectContext = null;
 
 		/**
