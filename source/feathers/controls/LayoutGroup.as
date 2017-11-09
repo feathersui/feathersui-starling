@@ -18,6 +18,7 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
+	import feathers.states.State;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.geom.Point;
@@ -307,6 +308,98 @@ package feathers.controls
 			this._mxmlContent = value;
 			this._mxmlContentIsReady = false;
 			this.invalidate(INVALIDATION_FLAG_MXML_CONTENT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _currentState:String = null;
+
+		/**
+		 * @private
+		 */
+		public function get currentState():String
+		{
+			return this._currentState;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set currentState(value:String):void
+		{
+			if(this._currentState === value)
+			{
+				return;
+			}
+			this._currentState = value;
+			this.invalidate(INVALIDATION_FLAG_STATE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _states:Array = null;
+
+		[Inspectable(arrayType="feathers.states.State")]
+		[ArrayElementType("feathers.states.State")]
+		/**
+		 * @private
+		 */
+		public function get states():Array
+		{
+			return this._states;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set states(value:Array):void
+		{
+			this._states = value;
+		}
+
+		/**
+		 *  @private
+		 */
+		public function hasState(stateName:String):Boolean
+		{
+			return (getState(stateName, false) != null); 
+		}
+
+		/**
+		 *  @private
+		 *  Returns the state with the specified name, or null if it doesn't exist.
+		 *  If multiple states have the same name the first one will be returned.
+		 */
+		private function getState(stateName:String, throwOnUndefined:Boolean=true):State
+		{
+			if (!states || isBaseState(stateName))
+				return null;
+
+			// Do a simple linear search for now. This can
+			// be optimized later if needed.
+			for (var i:int = 0; i < states.length; i++)
+			{
+				if (states[i].name == stateName)
+					return states[i];
+			}
+			
+			if (throwOnUndefined)
+			{
+				throw new ArgumentError("Undefined state '" + stateName + "'.");
+			}
+			return null;
+		}
+
+		/**
+		 *  @private
+		 *  Returns true if the passed in state name is the 'base' state, which
+		 *  is currently defined as null or ""
+		 */
+		private function isBaseState(stateName:String):Boolean
+		{
+			return !stateName || stateName == "";
 		}
 
 		/**
