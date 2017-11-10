@@ -23,12 +23,18 @@ package feathers.controls
 
 	import flash.geom.Point;
 
+	import mx.core.mx_internal;
+
 	import starling.core.starling_internal;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.filters.FragmentFilter;
 	import starling.rendering.Painter;
+	import feathers.core.IMXMLStateContext;
+	import feathers.events.StateEventType;
+
+	use namespace mx_internal;
 
 	[DefaultProperty("mxmlContent")]
 	/**
@@ -313,6 +319,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var requestedCurrentState:String = null;
+
+		/**
+		 * @private
+		 */
+		protected var _currentStateChanged:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _currentState:String = null;
 
 		/**
@@ -320,6 +336,10 @@ package feathers.controls
 		 */
 		public function get currentState():String
 		{
+			if(this._currentStateChanged)
+			{
+				return this.requestedCurrentState;
+			}
 			return this._currentState;
 		}
 
@@ -328,12 +348,7 @@ package feathers.controls
 		 */
 		public function set currentState(value:String):void
 		{
-			if(this._currentState === value)
-			{
-				return;
-			}
-			this._currentState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.setCurrentState(value, true);
 		}
 
 		/**
@@ -357,49 +372,6 @@ package feathers.controls
 		public function set states(value:Array):void
 		{
 			this._states = value;
-		}
-
-		/**
-		 *  @private
-		 */
-		public function hasState(stateName:String):Boolean
-		{
-			return (getState(stateName, false) != null); 
-		}
-
-		/**
-		 *  @private
-		 *  Returns the state with the specified name, or null if it doesn't exist.
-		 *  If multiple states have the same name the first one will be returned.
-		 */
-		private function getState(stateName:String, throwOnUndefined:Boolean=true):State
-		{
-			if (!states || isBaseState(stateName))
-				return null;
-
-			// Do a simple linear search for now. This can
-			// be optimized later if needed.
-			for (var i:int = 0; i < states.length; i++)
-			{
-				if (states[i].name == stateName)
-					return states[i];
-			}
-			
-			if (throwOnUndefined)
-			{
-				throw new ArgumentError("Undefined state '" + stateName + "'.");
-			}
-			return null;
-		}
-
-		/**
-		 *  @private
-		 *  Returns true if the passed in state name is the 'base' state, which
-		 *  is currently defined as null or ""
-		 */
-		private function isBaseState(stateName:String):Boolean
-		{
-			return !stateName || stateName == "";
 		}
 
 		/**
@@ -827,6 +799,36 @@ package feathers.controls
 			//if super.validate() returns without calling draw(), the flag
 			//won't be reset before layout is called, so we need reset manually.
 			this._ignoreChildChangesButSetFlags = oldIgnoreChildChanges;
+		}
+
+		/**
+		 *  @private
+		 */
+		public function hasState(stateName:String):Boolean
+		{
+			return (getState(stateName, false) != null); 
+		}
+
+		/**
+		 * @private
+		 */
+		override public function initializeNow():void
+		{
+			if(this._isInitialized || this._isInitializing)
+			{
+				return;
+			}
+
+			super.initializeNow();
+
+			// Typically state changes occur immediately, but during
+        	// component initialization we defer to 
+			// reduce a bit of the startup noise.
+			if(this._currentStateChanged)
+			{
+				this._currentStateChanged = false;
+				this.commitCurrentState();
+			}
 		}
 
 		/**
@@ -1316,6 +1318,405 @@ package feathers.controls
 		protected function stage_resizeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 *  Set the current state.
+		 *
+		 *  @param stateName The name of the new view state.
+		 *
+		 *  @param playTransition If <code>true</code>, play
+		 *  the appropriate transition when the view state changes.
+		 *
+		 *  @see #currentState
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 9
+		 *  @playerversion AIR 1.1
+		 *  @productversion Flex 3
+		 */
+		private function setCurrentState(stateName:String,
+										playTransition:Boolean = true):void
+		{
+			// Flex 4 has no concept of an explicit base state, so ensure we
+			// fall back to something appropriate.
+			stateName = isBaseState(stateName) ? getDefaultState() : stateName;
+
+			// Only change if the requested state is different. Since the root
+			// state can be either null or "", we need to add additional check
+			// to make sure we're not going from null to "" or vice-versa.
+			if (stateName != currentState &&
+				!(isBaseState(stateName) && isBaseState(currentState)))
+			{
+				requestedCurrentState = stateName;
+				// Don't play transition if we're just getting started
+				// In Flex4, there is no "base state", so if isBaseState() is true
+				// then we're just going into our first real state
+				/*playStateTransition =  
+					(this is IMXMLStateContext) && isBaseState(currentState) ?
+					false : 
+					playTransition;*/
+				if (isInitialized)
+				{
+					commitCurrentState();
+				}
+				else
+				{
+					_currentStateChanged = true;
+					invalidate(INVALIDATION_FLAG_STATE);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		private function commitCurrentState():void
+		{
+			var commonBaseState:String = findCommonBaseState(_currentState, requestedCurrentState);
+			var event:Event;
+			var oldState:String = _currentState ? _currentState : "";
+			var destination:State = getState(requestedCurrentState);
+			/*var prevTransitionEffect:Object;
+			var tmpPropertyChanges:Array;*/
+			
+			// First, make sure we've loaded the Effect class - some of the logic 
+			// below requires it
+			/*if (nextTransition && !effectLoaded)
+			{
+				effectLoaded = true;
+				if (ApplicationDomain.currentDomain.hasDefinition("mx.effects.Effect"))
+					effectType = Class(ApplicationDomain.currentDomain.
+						getDefinition("mx.effects.Effect"));
+			}*/
+
+			// Stop any transition that may still be playing
+			/*var prevTransitionFraction:Number;
+			if (_currentTransition)
+			{
+				// Remove the event listener, we don't want to trigger it as it
+				// dispatches FlexEvent.STATE_CHANGE_COMPLETE and we are
+				// interrupting _currentTransition instead.
+				_currentTransition.effect.removeEventListener(EffectEvent.EFFECT_END, transition_effectEndHandler);
+
+				// 'stop' interruptions take precedence over autoReverse behavior
+				if (nextTransition && _currentTransition.interruptionBehavior == "stop")
+				{
+					prevTransitionEffect = _currentTransition.effect;
+					prevTransitionEffect.transitionInterruption = true;
+					// This logic stops the effect from applying the end values
+					// so that we can capture the interrupted values correctly
+					// in captureStartValues() below. Save the values in the
+					// tmp variable because stop() clears out propertyChangesArray
+					// from the effect.
+					tmpPropertyChanges = prevTransitionEffect.propertyChangesArray;
+					prevTransitionEffect.applyEndValuesWhenDone = false;
+					prevTransitionEffect.stop();
+					prevTransitionEffect.applyEndValuesWhenDone = true;
+				}
+				else
+				{
+					if (_currentTransition.autoReverse &&
+						transitionFromState == requestedCurrentState &&
+						transitionToState == _currentState)
+					{
+						if (_currentTransition.effect.duration == 0)
+							prevTransitionFraction = 0;
+						else
+							prevTransitionFraction = 
+								_currentTransition.effect.playheadTime /
+								getTotalDuration(_currentTransition.effect);
+					}
+					_currentTransition.effect.end();
+				}
+
+				// The current transition is being interrupted, dispatch an event
+				if (hasEventListener(FlexEvent.STATE_CHANGE_INTERRUPTED))
+					dispatchEvent(new FlexEvent(FlexEvent.STATE_CHANGE_INTERRUPTED));
+				_currentTransition = null;
+			}*/
+
+			// Initialize the state we are going to.
+			initializeState(requestedCurrentState);
+
+			// Capture transition start values
+			/*if (nextTransition)
+				nextTransition.effect.captureStartValues();
+			
+			// Now that we've captured the start values, apply the end values of
+			// the effect as normal. This makes sure that objects unaffected by the
+			// next transition have their correct end values from the previous
+			// transition
+			if (tmpPropertyChanges)
+				prevTransitionEffect.applyEndValues(tmpPropertyChanges,
+					prevTransitionEffect.targets);*/
+			
+			// Dispatch currentStateChanging event
+			/*if (hasEventListener(StateChangeEvent.CURRENT_STATE_CHANGING)) 
+			{
+				event = new StateChangeEvent(StateChangeEvent.CURRENT_STATE_CHANGING);
+				event.oldState = oldState;
+				event.newState = requestedCurrentState ? requestedCurrentState : "";
+				dispatchEvent(event);
+			}*/
+			
+			// If we're leaving the base state, send an exitState event
+			if (isBaseState(_currentState) && hasEventListener(StateEventType.EXIT_STATE))
+				dispatchEventWith(StateEventType.EXIT_STATE, false, oldState);
+
+			// Remove the existing state
+			removeState(_currentState, commonBaseState);
+			_currentState = requestedCurrentState;
+
+			// Check for state specific styles
+			//stateChanged(oldState, _currentState, true);
+
+			// If we're going back to the base state, dispatch an
+			// enter state event, otherwise apply the state.
+			if (isBaseState(currentState)) 
+			{
+				if (hasEventListener(StateEventType.ENTER_STATE))
+					dispatchEventWith(StateEventType.ENTER_STATE, false, _currentState ? _currentState : ""); 
+			}
+			else
+				applyState(_currentState, commonBaseState);
+
+			// Dispatch currentStateChange
+			/*if (hasEventListener(StateChangeEvent.CURRENT_STATE_CHANGE))
+			{
+				event = new StateChangeEvent(StateChangeEvent.CURRENT_STATE_CHANGE);
+				event.oldState = oldState;
+				event.newState = _currentState ? _currentState : "";
+				dispatchEvent(event);
+			}*/
+			
+			/*if (nextTransition)
+			{
+				var reverseTransition:Boolean =  
+					nextTransition && nextTransition.autoReverse &&
+					(nextTransition.toState == oldState ||
+					nextTransition.fromState == _currentState);
+				// Force a validation before playing the transition effect
+				UIComponentGlobals.layoutManager.validateNow();
+				_currentTransition = nextTransition;
+				transitionFromState = oldState;
+				transitionToState = _currentState;
+				// Tell the effect whether it is running in interruption mode, in which
+				// case it should grab values from the states instead of from current
+				// property values
+				Object(nextTransition.effect).transitionInterruption = 
+					(prevTransitionEffect != null);
+				nextTransition.effect.addEventListener(EffectEvent.EFFECT_END, 
+					transition_effectEndHandler);
+				nextTransition.effect.play(null, reverseTransition);
+				if (!isNaN(prevTransitionFraction) && 
+					nextTransition.effect.duration != 0)
+					nextTransition.effect.playheadTime = (1 - prevTransitionFraction) * 
+						getTotalDuration(nextTransition.effect);
+			}
+			else
+			{
+				// Dispatch an event that the transition has completed.
+				if (hasEventListener(FlexEvent.STATE_CHANGE_COMPLETE))
+					dispatchEvent(new FlexEvent(FlexEvent.STATE_CHANGE_COMPLETE));
+			}*/
+		}
+
+		/**
+		 *  @private
+		 *  Remove the overrides applied by a state, and any
+		 *  states it is based on.
+		 */
+		private function removeState(stateName:String, lastState:String):void
+		{
+			var state:State = getState(stateName);
+
+			if (stateName == lastState)
+				return;
+
+			// Remove existing state overrides.
+			// This must be done in reverse order
+			if (state)
+			{
+				// Dispatch the "exitState" event
+				state.dispatchExitState();
+
+				var overrides:Array = state.overrides;
+
+				for (var i:int = overrides.length; i; i--)
+					overrides[i-1].remove(this);
+
+				// Remove any basedOn deltas last
+				if (state.basedOn != lastState)
+					removeState(state.basedOn, lastState);
+			}
+		}
+
+		/**
+		 *  @private
+		 *  Apply the overrides from a state, and any states it
+		 *  is based on.
+		 */
+		private function applyState(stateName:String, lastState:String):void
+		{
+			var state:State = getState(stateName);
+
+			if (stateName == lastState)
+				return;
+
+			if (state)
+			{
+				// Apply "basedOn" overrides first
+				if (state.basedOn != lastState)
+					applyState(state.basedOn, lastState);
+
+				// Apply new state overrides
+				var overrides:Array = state.overrides;
+
+				for (var i:int = 0; i < overrides.length; i++)
+					overrides[i].apply(this);
+
+				// Dispatch the "enterState" event
+				state.dispatchEnterState();
+			}
+		}
+
+		/**
+		 *  @private
+		 *  Initialize the state, and any states it is based on
+		 */
+		private function initializeState(stateName:String):void
+		{
+			var state:State = getState(stateName);
+
+			while (state)
+			{
+				state.initialize();
+				state = getState(state.basedOn);
+			}
+		}
+
+		/**
+		 *  @private
+		 *  Find the deepest common state between two states. For example:
+		 *
+		 *  State A
+		 *  State B basedOn A
+		 *  State C basedOn A
+		 *
+		 *  findCommonBaseState(B, C) returns A
+		 *
+		 *  If there are no common base states, the root state ("") is returned.
+		 */
+		private function findCommonBaseState(state1:String, state2:String):String
+		{
+			var firstState:State = getState(state1);
+			var secondState:State = getState(state2);
+
+			// Quick exit if either state is the base state
+			if (!firstState || !secondState)
+				return "";
+
+			// Quick exit if both states are not based on other states
+			if (isBaseState(firstState.basedOn) && isBaseState(secondState.basedOn))
+				return "";
+
+			// Get the base states for each state and walk from the top
+			// down until we find the deepest common base state.
+			var firstBaseStates:Array = getBaseStates(firstState);
+			var secondBaseStates:Array = getBaseStates(secondState);
+			var commonBase:String = "";
+
+			while (firstBaseStates[firstBaseStates.length - 1] ==
+				secondBaseStates[secondBaseStates.length - 1])
+			{
+				commonBase = firstBaseStates.pop();
+				secondBaseStates.pop();
+
+				if (!firstBaseStates.length || !secondBaseStates.length)
+					break;
+			}
+
+			// Finally, check to see if one of the states is directly based on the other.
+			if (firstBaseStates.length &&
+				firstBaseStates[firstBaseStates.length - 1] == secondState.name)
+			{
+				commonBase = secondState.name;
+			}
+			else if (secondBaseStates.length &&
+					secondBaseStates[secondBaseStates.length - 1] == firstState.name)
+			{
+				commonBase = firstState.name;
+			}
+
+			return commonBase;
+		}
+
+		/**
+		 *  @private
+		 *  Returns the base states for a given state.
+		 *  This Array is in high-to-low order - the first entry
+		 *  is the immediate basedOn state, the last entry is the topmost
+		 *  basedOn state.
+		 */
+		private function getBaseStates(state:State):Array
+		{
+			var baseStates:Array = [];
+
+			// Push each basedOn name
+			while (state && state.basedOn)
+			{
+				baseStates.push(state.basedOn);
+				state = getState(state.basedOn);
+			}
+
+			return baseStates;
+		}
+
+		/**
+		 *  @private
+		 *  Returns the state with the specified name, or null if it doesn't exist.
+		 *  If multiple states have the same name the first one will be returned.
+		 */
+		private function getState(stateName:String, throwOnUndefined:Boolean=true):State
+		{
+			if (!states || isBaseState(stateName))
+				return null;
+
+			// Do a simple linear search for now. This can
+			// be optimized later if needed.
+			for (var i:int = 0; i < states.length; i++)
+			{
+				if (states[i].name == stateName)
+					return states[i];
+			}
+			
+			if (throwOnUndefined)
+			{
+				throw new ArgumentError("Undefined state '" + stateName + "'.");
+			}
+			return null;
+		}
+
+		/**
+		 *  @private
+		 *  Returns true if the passed in state name is the 'base' state, which
+		 *  is currently defined as null or ""
+		 */
+		private function isBaseState(stateName:String):Boolean
+		{
+			return !stateName || stateName == "";
+		}
+
+		/**
+		 *  @private
+		 *  Returns the default state. For Flex 4 and later we return the base
+		 *  the first defined state, otherwise (Flex 3 and earlier), we return
+		 *  the base (null) state.
+		 */
+		private function getDefaultState():String
+		{
+			return (this is IMXMLStateContext && (states.length > 0)) ? states[0].name : null;
 		}
 	}
 }
