@@ -78,6 +78,7 @@ package feathers.examples.magic8
 				var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				itemRenderer.styleNameList.add(StyleNames.USER_MESSAGE_ITEM_RENDERER);
 				itemRenderer.labelField = "message";
+				itemRenderer.wordWrap = true;
 				return itemRenderer;
 			});
 			this._list.setItemRendererFactoryWithID(EIGHT_BALL_ITEM, function():IListItemRenderer
@@ -85,6 +86,7 @@ package feathers.examples.magic8
 				var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				itemRenderer.styleNameList.add(StyleNames.EIGHT_BALL_MESSAGE_ITEM_RENDERER);
 				itemRenderer.labelField = "message";
+				itemRenderer.wordWrap = true;
 				return itemRenderer;
 			});
 			this._list.factoryIDFunction = function(item:ChatMessage):String
