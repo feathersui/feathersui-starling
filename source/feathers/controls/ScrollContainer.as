@@ -10,12 +10,16 @@ package feathers.controls
 	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IMXMLStateContext;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.states.State;
+	import feathers.utils.states.commitCurrentState;
+	import feathers.utils.states.getDefaultState;
+	import feathers.utils.states.getState;
+	import feathers.utils.states.isBaseState;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -453,6 +457,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var requestedCurrentState:String = null;
+
+		/**
+		 * @private
+		 */
+		protected var _currentStateChanged:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _currentState:String = null;
 
 		/**
@@ -460,6 +474,10 @@ package feathers.controls
 		 */
 		public function get currentState():String
 		{
+			if(this._currentStateChanged)
+			{
+				return this.requestedCurrentState;
+			}
 			return this._currentState;
 		}
 
@@ -468,12 +486,7 @@ package feathers.controls
 		 */
 		public function set currentState(value:String):void
 		{
-			if(this._currentState === value)
-			{
-				return;
-			}
-			this._currentState = value;
-			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.setCurrentState(value, true);
 		}
 
 		/**
@@ -497,49 +510,6 @@ package feathers.controls
 		public function set states(value:Array):void
 		{
 			this._states = value;
-		}
-
-		/**
-		 *  @private
-		 */
-		public function hasState(stateName:String):Boolean
-		{
-			return (getState(stateName, false) != null); 
-		}
-
-		/**
-		 *  @private
-		 *  Returns the state with the specified name, or null if it doesn't exist.
-		 *  If multiple states have the same name the first one will be returned.
-		 */
-		private function getState(stateName:String, throwOnUndefined:Boolean=true):State
-		{
-			if (!states || isBaseState(stateName))
-				return null;
-
-			// Do a simple linear search for now. This can
-			// be optimized later if needed.
-			for (var i:int = 0; i < states.length; i++)
-			{
-				if (states[i].name == stateName)
-					return states[i];
-			}
-			
-			if (throwOnUndefined)
-			{
-				throw new ArgumentError("Undefined state '" + stateName + "'.");
-			}
-			return null;
-		}
-
-		/**
-		 *  @private
-		 *  Returns true if the passed in state name is the 'base' state, which
-		 *  is currently defined as null or ""
-		 */
-		private function isBaseState(stateName:String):Boolean
-		{
-			return !stateName || stateName == "";
 		}
 
 		/**
@@ -936,6 +906,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function initializeNow():void
+		{
+			if(this._isInitialized || this._isInitializing)
+			{
+				return;
+			}
+
+			super.initializeNow();
+
+			// Typically state changes occur immediately, but during
+        	// component initialization we defer to 
+			// reduce a bit of the startup noise.
+			if(this._currentStateChanged)
+			{
+				this._currentStateChanged = false;
+				_currentState = commitCurrentState(this as IMXMLStateContext, _currentState, requestedCurrentState);
+			}
+		}
+
+		/**
+		 *  @private
+		 */
+		public function hasState(stateName:String):Boolean
+		{
+			return (getState(this as IMXMLStateContext, stateName, false) != null); 
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(this.stage !== null)
@@ -1022,6 +1022,55 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
+		}
+
+		/**
+		 *  @private
+		 *  Set the current state.
+		 *
+		 *  @param stateName The name of the new view state.
+		 *
+		 *  @param playTransition If <code>true</code>, play
+		 *  the appropriate transition when the view state changes.
+		 *
+		 *  @see #currentState
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 9
+		 *  @playerversion AIR 1.1
+		 *  @productversion Flex 3
+		 */
+		protected function setCurrentState(stateName:String,
+										playTransition:Boolean = true):void
+		{
+			// Flex 4 has no concept of an explicit base state, so ensure we
+			// fall back to something appropriate.
+			stateName = isBaseState(stateName) ? getDefaultState(this as IMXMLStateContext) : stateName;
+
+			// Only change if the requested state is different. Since the root
+			// state can be either null or "", we need to add additional check
+			// to make sure we're not going from null to "" or vice-versa.
+			if (stateName != currentState &&
+				!(isBaseState(stateName) && isBaseState(currentState)))
+			{
+				requestedCurrentState = stateName;
+				// Don't play transition if we're just getting started
+				// In Flex4, there is no "base state", so if isBaseState() is true
+				// then we're just going into our first real state
+				/*playStateTransition =  
+					(this is IMXMLStateContext) && isBaseState(currentState) ?
+					false : 
+					playTransition;*/
+				if (isInitialized)
+				{
+					_currentState = commitCurrentState(this as IMXMLStateContext, _currentState, requestedCurrentState);
+				}
+				else
+				{
+					_currentStateChanged = true;
+					invalidate(INVALIDATION_FLAG_STATE);
+				}
+			}
 		}
 
 		/**
