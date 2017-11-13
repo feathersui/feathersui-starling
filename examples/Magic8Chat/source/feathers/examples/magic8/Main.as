@@ -146,7 +146,7 @@ package feathers.examples.magic8
 			this._input.text = "";
 			this._list.dataProvider.addItem(new ChatMessage(ChatMessage.TYPE_USER, message));
 
-			var index:int = Math.round(Math.random() * MESSAGES.length);
+			var index:int = Math.floor(Math.random() * MESSAGES.length);
 			var response:String = MESSAGES[index];
 			this._list.dataProvider.addItem(new ChatMessage(ChatMessage.TYPE_MAGIC_8BALL, response));
 
