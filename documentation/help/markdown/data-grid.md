@@ -175,6 +175,30 @@ skin.scale9Grid = new Rectangle( 2, 1, 3, 4 );
 grid.headerBackgroundSkin = skin2;
 ```
 
+### Dividers
+
+A data grid's columns may have dividers between them to enhance visual separation. Two types of dividers are available. Vertical dividers appear between the columns in the main scrolling view port of the data grid. Header dividers appear between the column's headers at the top of the data grid.
+
+In the following example, we provide the data grid's vertical dividers:
+
+``` code
+grid.verticalDividerFactory = function():DisplayObject
+{
+    return new Quad(1, 1, 0x000000);
+};
+```
+
+We used a simple `starling.display.Quad`, but it's also possible to skin the dividers with a texture using something like `feathers.skins.ImageSkin`. We can see the use of `ImageSkin` in the following example that provides the header dividers:
+
+``` code
+grid.headerDividerFactory = function():DisplayObject
+{
+    var dividerSkin:ImageSkin = new ImageSkin( dividerTexture );
+    dividerSkin.scale9Grid = new Rectangle( 1, 2, 2, 6 );
+    return dividerSkin;
+};
+```
+
 ### Skinning the Scroll Bars
 
 This section only explains how to access the horizontal scroll bar and vertical scroll bar sub-components. Please read [How to use the Feathers `ScrollBar` component](scroll-bar.html) (or [`SimpleScrollBar`](simple-scroll-bar.html)) for full details about the skinning properties that are available on scroll bar components.
