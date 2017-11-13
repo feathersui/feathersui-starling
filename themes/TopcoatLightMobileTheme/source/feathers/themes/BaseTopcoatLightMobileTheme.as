@@ -703,6 +703,7 @@ package feathers.themes
 		{
 			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
 			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
+			skin.minTouchWidth = this.controlSize;
 			return skin;
 		}
 
