@@ -6968,8 +6968,12 @@ package feathers.controls
 		protected function horizontalAutoScrollTween_onUpdateWithEndRatio():void
 		{
 			var ratio:Number = this._horizontalAutoScrollTween.transitionFunc(this._horizontalAutoScrollTween.currentTime / this._horizontalAutoScrollTween.totalTime);
-			if(ratio >= this._horizontalAutoScrollTweenEndRatio)
+			if(ratio >= this._horizontalAutoScrollTweenEndRatio &&
+				this._horizontalAutoScrollTween.currentTime < this._horizontalAutoScrollTween.totalTime)
 			{
+				//check that the currentTime is less than totalTime because if
+				//the tween is complete, we don't want it set to null before
+				//the onComplete callback
 				if(!this._hasElasticEdges)
 				{
 					if(this._horizontalScrollPosition < this._minHorizontalScrollPosition)
@@ -6998,8 +7002,12 @@ package feathers.controls
 		protected function verticalAutoScrollTween_onUpdateWithEndRatio():void
 		{
 			var ratio:Number = this._verticalAutoScrollTween.transitionFunc(this._verticalAutoScrollTween.currentTime / this._verticalAutoScrollTween.totalTime);
-			if(ratio >= this._verticalAutoScrollTweenEndRatio)
+			if(ratio >= this._verticalAutoScrollTweenEndRatio &&
+				this._verticalAutoScrollTween.currentTime < this._verticalAutoScrollTween.totalTime)
 			{
+				//check that the currentTime is less than totalTime because if
+				//the tween is complete, we don't want it set to null before
+				//the onComplete callback
 				if(!this._hasElasticEdges)
 				{
 					if(this._verticalScrollPosition < this._minVerticalScrollPosition)
@@ -7755,9 +7763,12 @@ package feathers.controls
 		{
 			//because the onUpdate callback may call advanceTime(), remove
 			//the callbacks to be sure that they aren't called too many times.
-			this._horizontalAutoScrollTween.onUpdate = null;
-			this._horizontalAutoScrollTween.onComplete = null;
-			this._horizontalAutoScrollTween = null;
+			if(this._horizontalAutoScrollTween !== null)
+			{
+				this._horizontalAutoScrollTween.onUpdate = null;
+				this._horizontalAutoScrollTween.onComplete = null;
+				this._horizontalAutoScrollTween = null;
+			}
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -7789,9 +7800,12 @@ package feathers.controls
 		{
 			//because the onUpdate callback may call advanceTime(), remove
 			//the callbacks to be sure that they aren't called too many times.
-			this._verticalAutoScrollTween.onUpdate = null;
-			this._verticalAutoScrollTween.onComplete = null;
-			this._verticalAutoScrollTween = null;
+			if(this._verticalAutoScrollTween !== null)
+			{
+				this._verticalAutoScrollTween.onUpdate = null;
+				this._verticalAutoScrollTween.onComplete = null;
+				this._verticalAutoScrollTween = null;
+			}
 			//the page index will not have updated during the animation, so we
 			//need to ensure that it is updated now.
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
