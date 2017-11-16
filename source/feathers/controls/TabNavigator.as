@@ -685,7 +685,7 @@ package feathers.controls
 		/**
 		 * The minimum physical velocity (in inches per second) that a touch
 		 * must move before a swipe is detected. Otherwise, it will settle which
-		 * screen to navigate to base don which one is closer when the touch ends.
+		 * screen to navigate to based on which one is closer when the touch ends.
 		 *
 		 * <p>In the following example, the minimum swipe velocity is customized:</p>
 		 *
