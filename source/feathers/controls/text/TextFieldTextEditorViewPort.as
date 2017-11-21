@@ -558,7 +558,6 @@ package feathers.controls.text
 			{
 				this._actualMinVisibleHeight = this.actualMinHeight;
 			}
-			trace(needsWidth, this.actualWidth, this._explicitVisibleWidth, this._actualVisibleWidth);
 			return result;
 		}
 
