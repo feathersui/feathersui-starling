@@ -19,6 +19,7 @@ package feathers.controls.supportClasses
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.ITrimmedVirtualLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
@@ -266,6 +267,7 @@ package feathers.controls.supportClasses
 		private var _minimumItemCount:int;
 
 		private var _layoutIndexOffset:int = 0;
+		private var _layoutIndexRolloverIndex:int = -1;
 
 		private var _owner:List;
 
@@ -1154,17 +1156,34 @@ package feathers.controls.supportClasses
 						maxIndex = index;
 					}
 				}
-				var beforeItemCount:int = minIndex - 1;
-				if(beforeItemCount < 0)
+				if(this._layout is ISpinnerLayout &&
+					minIndex === 0 &&
+					maxIndex === (this._dataProvider.length - 1))
 				{
-					beforeItemCount = 0;
+					var newMin:int = HELPER_VECTOR[0] - this._dataProvider.length;
+					var newMax:int = HELPER_VECTOR[HELPER_VECTOR.length - 1];
+					var beforeItemCount:int = newMin;
+					var afterItemCount:int = itemCount - 1 - newMax + beforeItemCount;
+					this._layoutItems.length = HELPER_VECTOR.length;
+					this._layoutIndexOffset = -beforeItemCount;
+					this._layoutIndexRolloverIndex = HELPER_VECTOR[0];
 				}
-				var afterItemCount:int = itemCount - 1 - maxIndex;
-				var sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
-				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
-				sequentialVirtualLayout.afterVirtualizedItemCount = afterItemCount;
-				this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
-				this._layoutIndexOffset = -beforeItemCount;
+				else
+				{
+					beforeItemCount = minIndex - 1;
+					if(beforeItemCount < 0)
+					{
+						beforeItemCount = 0;
+					}
+					afterItemCount = itemCount - 1 - maxIndex;
+
+					this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
+					this._layoutIndexOffset = -beforeItemCount;
+					this._layoutIndexRolloverIndex = -1;
+				}
+				var trimmedLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
+				trimmedLayout.beforeVirtualizedItemCount = beforeItemCount;
+				trimmedLayout.afterVirtualizedItemCount = afterItemCount;
 			}
 			else
 			{
@@ -1233,7 +1252,15 @@ package feathers.controls.supportClasses
 							throw new IllegalOperationError("ListDataViewPort: renderer map contains bad data. This may be caused by duplicate items in the data provider, which is not allowed.");
 						}
 					}
-					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(itemRenderer);
+					if(this._layoutIndexRolloverIndex === -1 || index < this._layoutIndexRolloverIndex)
+					{
+						var layoutIndex:int = index + this._layoutIndexOffset;
+					}
+					else
+					{
+						layoutIndex = index - this._dataProvider.length + this._layoutIndexOffset;
+					}
+					this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
 				}
 				else
 				{
@@ -1279,7 +1306,15 @@ package feathers.controls.supportClasses
 				var index:int = this._dataProvider.getItemIndex(item);
 				var renderer:IListItemRenderer = this.createRenderer(item, index, true, false);
 				renderer.visible = true;
-				this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
+				if(this._layoutIndexRolloverIndex === -1 || index < this._layoutIndexRolloverIndex)
+				{
+					var layoutIndex:int = index + this._layoutIndexOffset;
+				}
+				else
+				{
+					layoutIndex = index - this._dataProvider.length + this._layoutIndexOffset;
+				}
+				this._layoutItems[layoutIndex] = DisplayObject(renderer);
 			}
 		}
 
