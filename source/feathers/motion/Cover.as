@@ -55,7 +55,7 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+					var tween:Tween = new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
@@ -100,7 +100,7 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
+					var tween:Tween = new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
@@ -145,7 +145,7 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
+					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
@@ -190,7 +190,7 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
+					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);

@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.motion
 {
 	import starling.animation.Transitions;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**
@@ -42,13 +43,22 @@ package feathers.motion
 		 */
 		public static function createCubeLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new CubeTween(newScreen, oldScreen, Math.PI / 2, 0, duration, ease, onComplete, tweenProperties);
+				var tween:CubeTween = new CubeTween(newScreen, oldScreen, Math.PI / 2, 0, duration, ease, managed ? null : onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				else
+				{
+					Starling.juggler.add(tween);
+					return null;
+				}
 			}
 		}
 
@@ -64,13 +74,22 @@ package feathers.motion
 		 */
 		public static function createCubeRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new CubeTween(newScreen, oldScreen, -Math.PI / 2, 0, duration, ease, onComplete, tweenProperties);
+				var tween:CubeTween = new CubeTween(newScreen, oldScreen, -Math.PI / 2, 0, duration, ease, managed ? null : onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				else
+				{
+					Starling.juggler.add(tween);
+					return null;
+				}
 			}
 		}
 
@@ -86,13 +105,22 @@ package feathers.motion
 		 */
 		public static function createCubeUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new CubeTween(newScreen, oldScreen, 0, -Math.PI / 2, duration, ease, onComplete, tweenProperties);
+				var tween:CubeTween = new CubeTween(newScreen, oldScreen, 0, -Math.PI / 2, duration, ease, managed ? null : onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				else
+				{
+					Starling.juggler.add(tween);
+					return null;
+				}
 			}
 		}
 
@@ -108,13 +136,22 @@ package feathers.motion
 		 */
 		public static function createCubeDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new CubeTween(newScreen, oldScreen, 0, Math.PI / 2, duration, ease, onComplete, tweenProperties);
+				var tween:CubeTween = new CubeTween(newScreen, oldScreen, 0, Math.PI / 2, duration, ease, managed ? null : onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				else
+				{
+					Starling.juggler.add(tween);
+					return null;
+				}
 			}
 		}
 	}
@@ -224,7 +261,6 @@ class CubeTween extends Tween
 
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
 	}
 
 	private var _navigator:DisplayObjectContainer;

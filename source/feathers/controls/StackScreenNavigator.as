@@ -8,8 +8,10 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.core.IFeathersControl;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.motion.IEffectContext;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -390,6 +392,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _poppedStackItem:StackItem = null;
+
+		/**
+		 * @private
+		 */
 		protected var _stack:Vector.<StackItem> = new <StackItem>[];
 
 		/**
@@ -611,6 +618,21 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _savedTransitionOnComplete:Function = null;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEffectTransition:Function = null;
+
+		/**
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>pushScreen()</code>.
@@ -739,8 +761,8 @@ package feathers.controls
 					transition = this.popTransition;
 				}
 			}
-			var stackItem:StackItem = this._stack.pop();
-			return this.showScreenInternal(stackItem.id, transition, stackItem.properties);
+			this._poppedStackItem = this._stack.pop();
+			return this.showScreenInternal(this._poppedStackItem.id, transition, this._poppedStackItem.properties);
 		}
 
 		/**
@@ -1335,9 +1357,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function dragTransition(oldScreen:IFeathersControl, newScreen:IFeathersControl, onComplete:Function):void
+		{
+			this._savedTransitionOnComplete = onComplete;
+			this._dragEffectContext = this._dragEffectTransition(this._previousScreenInTransition, this._activeScreen, null, true);
+			this._dragEffectContext.easeEnabled = false;
+			this._dragEffectTransition = null;
+			this.handleDragMove();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function handleDragMove():void
 		{
+			if(this._dragEffectContext === null)
+			{
+				//the transition may not have started yet
+				return;
+			}
 			var offsetX:Number = this._currentTouchX - this._startTouchX;
+			this._dragEffectContext.position = offsetX / this.screenContainer.width;
 		}
 
 		/**
@@ -1367,37 +1407,28 @@ package feathers.controls
 					this._dragCancelled = true;
 				}
 			}
-			else if(this._activeScreen.x <= -(this.screenContainer.width / 2))
+			else
 			{
-				if(this._isDragging)
+				var offsetX:Number = this._currentTouchX - this._startTouchX;
+				var ratio:Number = offsetX / this.screenContainer.width;
+				if(ratio <= 0.5)
 				{
-					this._dragCancelled = true;
+					if(this._isDragging)
+					{
+						this._dragCancelled = true;
+					}
 				}
 			}
 
-			/*this._swipeTween = new Tween(this._previousScreenInTransition, this._swipeDuration, this._swipeEase);
-			
+			this._dragEffectContext.addEventListener(Event.COMPLETE, dragEffectContext_completeHandler);
 			if(this._dragCancelled)
 			{
-				this._swipeTween.animate("x", 0);
+				this._dragEffectContext.playReverse();
 			}
-			else if(this._isDraggingPrevious)
+			else
 			{
-				this._swipeTween.animate("x", this.screenContainer.width);
+				this._dragEffectContext.play();
 			}
-			else if(this._isDraggingNext)
-			{
-				this._swipeTween.animate("x", -this.screenContainer.width);
-			}
-			this._swipeTween.onUpdate = this.swipeTween_onUpdate;
-			this._swipeTween.onComplete = this.swipeTween_onComplete;
-			if(this._savedTransitionOnComplete !== null)
-			{
-				//it's possible that we get here before the transition has
-				//officially start. if that's the case, we won't add the tween
-				//to the juggler now, and we'll do it later.
-				starling.juggler.add(this._swipeTween);
-			}*/
 		}
 
 		/**
@@ -1411,13 +1442,43 @@ package feathers.controls
 			{
 				return;
 			}
+
+			this._dragEffectTransition = null;
+			var screenItem:StackScreenNavigatorItem = this.getScreen(this._activeScreenID);
+			if(screenItem && screenItem.popTransition !== null)
+			{
+				this._dragEffectTransition = screenItem.popTransition;
+			}
+			else
+			{
+				this._dragEffectTransition = this.popTransition;
+			}
+
+			//if this is an old transition that doesn't support being managed,
+			//simply start it without management.
+			if(this._dragEffectTransition.length < 4)
+			{
+				this._dragEffectTransition = null;
+				this.popScreen();
+				return;
+			}
+
 			this._isDragging = true;
-			this.popScreen();
+			this.popScreen(dragTransition);
 			this._startTouchX = this._currentTouchX;
 			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 			exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 			exclusiveTouch.claimTouch(this._touchPointID, this);
 			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function transitionComplete(cancelTransition:Boolean = false):void
+		{
+			this._poppedStackItem = null;
+			super.transitionComplete(cancelTransition);
 		}
 
 		/**
@@ -1470,7 +1531,7 @@ package feathers.controls
 		 */
 		protected function stackScreenNavigator_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || !this._isSwipeToPopEnabled || this._stack.length === 0)
+			if(!this._isEnabled || !this._isSwipeToPopEnabled || (this._stack.length === 0 && !this._isDragging))
 			{
 				this._touchPointID = -1;
 				return;
@@ -1533,6 +1594,25 @@ package feathers.controls
 			}
 
 			this._touchPointID = -1;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragEffectContext_completeHandler(event:Event):void
+		{
+			this._dragEffectContext.removeEventListeners();
+			this._dragEffectContext = null;
+			this._isDragging = false;
+			var cancelled:Boolean = this._dragCancelled;
+			this._dragCancelled = false;
+			var onComplete:Function = this._savedTransitionOnComplete;
+			this._savedTransitionOnComplete = null;
+			if(cancelled)
+			{
+				this._stack[this._stack.length] = this._poppedStackItem;
+			}
+			onComplete(cancelled);
 		}
 	}
 }
