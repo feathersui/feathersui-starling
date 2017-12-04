@@ -50,6 +50,7 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * A skin to display when dragging one of the data grid's headers to
@@ -2176,6 +2177,10 @@ package feathers.controls
 				{
 					headerDivider = new Quad(3, 1, 0xff00ff);
 					headerDivider.alpha = 0;
+					if(!SystemUtil.isDesktop)
+					{
+						headerDivider.width = 22;
+					}
 					headerDivider.addEventListener(TouchEvent.TOUCH, headerDivider_touchHandler);
 					this._headerDividerGroup.addChildAt(headerDivider, i);
 				}

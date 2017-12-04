@@ -23,4 +23,5 @@ html-template/
 archive/
 *.lnk
 .vscode/
+*.code-workspace
 package-lock.json
