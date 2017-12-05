@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.4.0 - In Development
+## 3.4.0 - December 2017
 
 * New Component: DataGrid displays a list of data as a table. Each item is rendered as a row, divided into columns for each of the item's fields. Supports sorting columns, resizing columns, and drag-and-drop reordering of columns.
 * Support for Android TV. Refactored focus management API and keyboard interaction to support TV remotes. Support scaling to TV resolutions.
@@ -41,6 +41,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * PickerList: fixed issue where the pop-up list may be given focus in the wrong focus manager when it uses a different focus manager than the PickerList.
 * ScreenDensityScaleFactorManager: added support for Android TV and Apple tvOS.
 * ScrollBar, SimpleScrollBar, Slider: fixed issue where the scroll bar could not reach the maximum scroll position with certain page or step values.
+* Scroller: fixed issue where a null reference error could be thrown if scrolling animation were manually removed just as it completed.
 * SpinnerList: added hideSelectionOverlayUnlessFocused to allow the selectionOverlaySkin to be hidden when the list is not focused if showSelectionOverlay is true.
 * SpinnerList: added showSelectionOverlay property to completely hide the selectionOverlaySkin skin when set to false.
 * SpinnerList: The selectedIndex and selectedItem is changed immediately when an item renderer is triggered or keyboard events change selection, instead of waiting for the animation to complete.
