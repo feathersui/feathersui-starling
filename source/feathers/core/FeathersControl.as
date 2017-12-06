@@ -25,6 +25,7 @@ package feathers.core
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 
@@ -388,7 +389,7 @@ package feathers.core
 			{
 				throw new Error(ABSTRACT_CLASS_ERROR);
 			}
-			this._styleProvider = this.defaultStyleProvider;
+			this.styleProvider = this.defaultStyleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
 			if(this is IFocusDisplayObject)
@@ -505,12 +506,20 @@ package feathers.core
 			{
 				throw new IllegalOperationError("Cannot change styleProvider while the current style provider is applying styles.")
 			}
+			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
+			{
+				EventDispatcher(this._styleProvider).removeEventListener(Event.CHANGE, styleProvider_changeHandler);
+			}
 			this._styleProvider = value;
 			if(this._styleProvider !== null && this.isInitialized)
 			{
 				this._applyingStyles = true;
 				this._styleProvider.applyStyles(this);
 				this._applyingStyles = false;
+			}
+			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
+			{
+				EventDispatcher(this._styleProvider).addEventListener(Event.CHANGE, styleProvider_changeHandler);
 			}
 		}
 
@@ -2809,6 +2818,25 @@ package feathers.core
 			if(this._applyingStyles)
 			{
 				throw new IllegalOperationError("Cannot change styleNameList while the style provider is applying styles.");
+			}
+			this._applyingStyles = true;
+			this._styleProvider.applyStyles(this);
+			this._applyingStyles = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function styleProvider_changeHandler(event:Event):void
+		{
+			if(!this._isInitialized)
+			{
+				//safe to ignore changes until initialization
+				return;
+			}
+			if(this._applyingStyles)
+			{
+				throw new IllegalOperationError("Cannot change style provider while it is applying styles.");
 			}
 			this._applyingStyles = true;
 			this._styleProvider.applyStyles(this);

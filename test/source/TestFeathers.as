@@ -103,6 +103,7 @@ package
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.StyleNameFunctionStyleProviderTests;
 	import feathers.tests.StyleProviderRegistryTests;
+	import feathers.tests.StyleTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
@@ -200,6 +201,7 @@ package
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
 				ScaleTests,
+				StyleTests,
 				RestrictedStyleTests,
 				FocusIndicatorTests,
 
