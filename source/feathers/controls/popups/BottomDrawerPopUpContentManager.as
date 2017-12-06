@@ -89,6 +89,22 @@ package feathers.controls.popups
 	public class BottomDrawerPopUpContentManager extends EventDispatcher implements IPersistentPopUpContentManager, IPopUpContentManagerWithPrompt
 	{
 		/**
+		 * @private
+		 */
+		protected static function defaultPanelFactory():Panel
+		{
+			return new Panel();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultCloseButtonFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
 		 * Constructor.
 		 */
 		public function BottomDrawerPopUpContentManager()
@@ -120,7 +136,26 @@ package feathers.controls.popups
 		}
 
 		/**
-		 * Adds a style name to the panel that wraps the content.
+		 * Creates the <code>Panel</code> that wraps the content.
+		 *
+		 * <p>In the following example, a custom panel factory is provided:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.panelFactory = function():Panel
+		 * {
+		 *     var panel:Panel = new Panel();
+		 *     panel.backgroundSkin = new Image( texture );
+		 *     return panel;
+		 * };</listing>
+		 *
+		 * @default null
+		 * 
+		 * @see feathers.controls.Panel
+		 */
+		public var panelFactory:Function = null;
+
+		/**
+		 * Adds a style name to the <code>Panel</code> that wraps the content.
 		 *
 		 * <p>In the following example, a custom style name is provided:</p>
 		 *
@@ -128,8 +163,29 @@ package feathers.controls.popups
 		 * manager.customPanelStyleName = "my-custom-pop-up-panel";</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see feathers.controls.Panel
 		 */
 		public var customPanelStyleName:String = null;
+
+		/**
+		 * Creates the <code>Button</code> that closes the pop-up.
+		 *
+		 * <p>In the following example, a custom close button factory is provided:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.closeButtonFactory = function():Button
+		 * {
+		 *     var closeButton:Button = new Button();
+		 *     closeButton.defaultSkin = new Image( texture );
+		 *     return closeButton;
+		 * };</listing>
+		 *
+		 * @default null
+		 * 
+		 * @see feathers.controls.Button
+		 */
+		public var closeButtonFactory:Function = null;
 
 		/**
 		 * Adds a style name to the close button.
@@ -140,6 +196,8 @@ package feathers.controls.popups
 		 * manager.customCloseButtonStyleName = "my-custom-close-button";</listing>
 		 *
 		 * @default null
+		 * 
+		 * @see feathers.controls.Button
 		 */
 		public var customCloseButtonStyleName:String = null;
 
@@ -334,7 +392,8 @@ package feathers.controls.popups
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
 			
-			this.panel = new Panel();
+			var panelFactory:Function = (this.panelFactory !== null) ? this.panelFactory : defaultPanelFactory;
+			this.panel = Panel(panelFactory());
 			if(this.customPanelStyleName)
 			{
 				this.panel.styleNameList.add(this.customPanelStyleName);
@@ -418,7 +477,8 @@ package feathers.controls.popups
 		protected function headerFactory():Header
 		{
 			var header:Header = new Header();
-			var closeButton:Button = new Button();
+			var closeButtonFactory:Function = (this.closeButtonFactory !== null) ? this.closeButtonFactory : defaultCloseButtonFactory;
+			var closeButton:Button = Button(closeButtonFactory());
 			if(this.customCloseButtonStyleName !== null)
 			{
 				closeButton.styleNameList.add(this.customCloseButtonStyleName);
