@@ -1352,10 +1352,20 @@ package feathers.controls.text
 			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
+				if(event.shiftKey)
+				{
+					this.selectRange(newIndex, this._selectionAnchorIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.END || event.keyCode == Keyboard.DOWN)
 			{
 				newIndex = this._text.length;
+				if(event.shiftKey)
+				{
+					this.selectRange(this._selectionAnchorIndex, newIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
