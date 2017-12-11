@@ -1361,7 +1361,6 @@ package feathers.controls
 		{
 			this._savedTransitionOnComplete = onComplete;
 			this._dragEffectContext = this._dragEffectTransition(this._previousScreenInTransition, this._activeScreen, null, true);
-			this._dragEffectContext.easeEnabled = false;
 			this._dragEffectTransition = null;
 			this.handleDragMove();
 		}
