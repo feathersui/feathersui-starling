@@ -2362,7 +2362,10 @@ package feathers.controls
 			}
 			else if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				HELPER_DATE.time = this._minimum.time;
+				//in this editing mode, the date is only controlled by one
+				//spinner list, that increments by day. we shouldn't need to
+				//go forward more than a year.
+				HELPER_DATE.time = this._value.time;
 				this._listMaxYear = HELPER_DATE.fullYear + 1;
 				this._maximum = new Date(this._listMaxYear, MAX_MONTH_VALUE,
 					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
