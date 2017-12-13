@@ -12,6 +12,7 @@ package feathers.motion
 	import starling.core.Starling;
 	import starling.animation.Tween;
 	import starling.events.Event;
+	import starling.errors.AbstractClassError;
 
 	/**
 	 * Dispatched when the effect is complete.
@@ -40,7 +41,7 @@ package feathers.motion
 	 * 
 	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
 	 */
-	public class EffectContext extends EventDispatcher implements IEffectContext
+	public class BaseEffectContext extends EventDispatcher implements IEffectContext
 	{
 		/**
 		 * @private
@@ -50,9 +51,13 @@ package feathers.motion
 		/**
 		 * Constructor.
 		 */
-		public function EffectContext(duration:Number, transition:Object = null)
+		public function BaseEffectContext(duration:Number, transition:Object = null)
 		{
 			super();
+			if(Object(this).constructor === BaseEffectContext)
+			{
+				throw new AbstractClassError();
+			}
 			this._duration = duration;
 			this._transition = transition;
 			this.prepareEffect();

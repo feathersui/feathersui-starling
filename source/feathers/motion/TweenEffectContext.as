@@ -19,7 +19,7 @@ package feathers.motion
 	 * 
 	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
 	 */
-	public class TweenEffectContext extends EffectContext implements IEffectContext
+	public class TweenEffectContext extends BaseEffectContext implements IEffectContext
 	{
 		/**
 		 * Constructor.
