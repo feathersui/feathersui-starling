@@ -9,6 +9,8 @@ package feathers.motion
 {
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	[Exclude(name="createBlackFadeToBlackTransition",kind="method")]
 
@@ -81,7 +83,7 @@ package feathers.motion
 		 */
 		public static function createColorFadeTransition(color:uint, duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -94,13 +96,19 @@ package feathers.motion
 					{
 						oldScreen.alpha = 1;
 					}
-					new ColorFadeTween(newScreen, oldScreen, color, duration, ease, onComplete, tweenProperties);
+					var tween:ColorFadeTween = new ColorFadeTween(newScreen, oldScreen, color, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					oldScreen.alpha = 1;
-					new ColorFadeTween(oldScreen, null, color, duration, ease, onComplete, tweenProperties);
+					tween = new ColorFadeTween(oldScreen, null, color, duration, ease, onComplete, tweenProperties);
 				}
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}
@@ -150,8 +158,6 @@ class ColorFadeTween extends Tween
 		this._overlay.alpha = 0;
 		this._overlay.touchable = false;
 		navigator.addChild(this._overlay);
-
-		Starling.juggler.add(this);
 	}
 
 	private var _otherTarget:DisplayObject;
@@ -163,6 +169,11 @@ class ColorFadeTween extends Tween
 		var progress:Number = this.progress;
 		if(progress < 0.5)
 		{
+			target.visible = false;
+			if(this._otherTarget)
+			{
+				this._otherTarget.visible = true;
+			}
 			this._overlay.alpha = progress * 2;
 		}
 		else

@@ -9,6 +9,7 @@ package feathers.motion
 {
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
+	import starling.core.Starling;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -42,7 +43,7 @@ package feathers.motion
 		 */
 		public static function createIrisOpenTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -58,7 +59,13 @@ package feathers.motion
 					originX = newScreen.width / 2;
 					originY = newScreen.height / 2;
 				}
-				new IrisTween(newScreen, oldScreen, originX, originY, true, duration, ease, onComplete, tweenProperties);
+				var tween:IrisTween = new IrisTween(newScreen, oldScreen, originX, originY, true, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -73,13 +80,19 @@ package feathers.motion
 		 */
 		public static function createIrisOpenTransitionAt(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new IrisTween(newScreen, oldScreen, x, y, true, duration, ease, onComplete, tweenProperties);
+				var tween:IrisTween = new IrisTween(newScreen, oldScreen, x, y, true, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -94,7 +107,7 @@ package feathers.motion
 		 */
 		public static function createIrisCloseTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -110,7 +123,13 @@ package feathers.motion
 					originX = newScreen.width / 2;
 					originY = newScreen.height / 2;
 				}
-				new IrisTween(newScreen, oldScreen, originX, originY, false, duration, ease, onComplete, tweenProperties);
+				var tween:IrisTween = new IrisTween(newScreen, oldScreen, originX, originY, false, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -125,13 +144,19 @@ package feathers.motion
 		 */
 		public static function createIrisCloseTransitionAt(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
-				new IrisTween(newScreen, oldScreen, x, y, false, duration, ease, onComplete, tweenProperties);
+				var tween:IrisTween = new IrisTween(newScreen, oldScreen, x, y, false, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}
@@ -257,7 +282,6 @@ class IrisTween extends Tween
 		this._savedHeight = height;
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
 	}
 
 	private var _newScreenDelegate:RenderDelegate;

@@ -10,6 +10,8 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -38,7 +40,7 @@ package feathers.motion
 		 */
 		public static function createFadeInTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -54,7 +56,7 @@ package feathers.motion
 					{
 						oldScreen.alpha = 1;
 					}
-					new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
+					var tween:FadeTween = new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
 				}
 				else
 				{
@@ -62,8 +64,14 @@ package feathers.motion
 					//kind of animation, so we'll just fade out the old screen
 					//in order to have some animation, we're going to fade out
 					oldScreen.alpha = 1;
-					new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
+					tween = new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
 				}
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -79,7 +87,7 @@ package feathers.motion
 		 */
 		public static function createFadeOutTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -95,7 +103,7 @@ package feathers.motion
 					{
 						newScreen.alpha = 1;
 					}
-					new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
+					var tween:FadeTween = new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
 				}
 				else
 				{
@@ -103,8 +111,14 @@ package feathers.motion
 					//kind of animation, so we'll just fade in the new screen
 					//in order to have some animation, we're going to fade out
 					newScreen.alpha = 0;
-					new FadeTween(newScreen, null, duration, ease, onComplete, tweenProperties);
+					tween = new FadeTween(newScreen, null, duration, ease, onComplete, tweenProperties);
 				}
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -121,7 +135,7 @@ package feathers.motion
 		 */
 		public static function createCrossfadeTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
@@ -134,13 +148,19 @@ package feathers.motion
 					{
 						oldScreen.alpha = 1;
 					}
-					new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
+					var tween:FadeTween = new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					oldScreen.alpha = 1;
-					new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
+					tween = new FadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
 				}
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}
@@ -179,7 +199,6 @@ class FadeTween extends Tween
 		}
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
 	}
 
 	private var _otherTarget:DisplayObject;

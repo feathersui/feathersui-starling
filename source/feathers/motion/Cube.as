@@ -54,11 +54,8 @@ package feathers.motion
 				{
 					return new TweenEffectContext(tween);
 				}
-				else
-				{
-					Starling.juggler.add(tween);
-					return null;
-				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -85,11 +82,8 @@ package feathers.motion
 				{
 					return new TweenEffectContext(tween);
 				}
-				else
-				{
-					Starling.juggler.add(tween);
-					return null;
-				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -116,11 +110,8 @@ package feathers.motion
 				{
 					return new TweenEffectContext(tween);
 				}
-				else
-				{
-					Starling.juggler.add(tween);
-					return null;
-				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -147,11 +138,8 @@ package feathers.motion
 				{
 					return new TweenEffectContext(tween);
 				}
-				else
-				{
-					Starling.juggler.add(tween);
-					return null;
-				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}

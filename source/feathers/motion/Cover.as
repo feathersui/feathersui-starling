@@ -55,21 +55,16 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
+					var tween:CoverTween = new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
 					}
-					else
-					{
-						Starling.juggler.add(tween);
-						return null;
-					}
+					Starling.juggler.add(tween);
+					return null;
 				}
-				else //we only have the new screen
-				{
-					return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-				}
+				//we only have the new screen
+				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
 			}
 		}
 
@@ -100,21 +95,16 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
+					var tween:CoverTween = new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
 					}
-					else
-					{
-						Starling.juggler.add(tween);
-						return null;
-					}
+					Starling.juggler.add(tween);
+					return null;
 				}
-				else //we only have the new screen
-				{
-					return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-				}
+				//we only have the new screen
+				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
 			}
 		}
 
@@ -145,21 +135,16 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
+					var tween:CoverTween = new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
 					}
-					else
-					{
-						Starling.juggler.add(tween);
-						return null;
-					}
+					Starling.juggler.add(tween);
+					return null;
 				}
-				else //we only have the new screen
-				{
-					return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-				}
+				//we only have the new screen
+				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
 			}
 		}
 
@@ -190,21 +175,16 @@ package feathers.motion
 				{
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					var tween:Tween = new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
+					var tween:CoverTween = new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
 						return new TweenEffectContext(tween);
 					}
-					else
-					{
-						Starling.juggler.add(tween);
-						return null;
-					}
+					Starling.juggler.add(tween);
+					return null;
 				}
-				else //we only have the new screen
-				{
-					return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-				}
+				//we only have the new screen
+				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
 			}
 		}
 
@@ -248,6 +228,7 @@ import starling.core.Starling;
 import starling.display.DisplayObject;
 import starling.display.Quad;
 import starling.display.Sprite;
+import feathers.motion.BaseEffectContext;
 
 class CoverTween extends Tween
 {
@@ -353,4 +334,3 @@ class CoverTween extends Tween
 	}
 
 }
-

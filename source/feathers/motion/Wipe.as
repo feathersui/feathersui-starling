@@ -9,6 +9,7 @@ package feathers.motion
 {
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
+	import starling.core.Starling;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -40,14 +41,20 @@ package feathers.motion
 		 */
 		public static function createWipeLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var xOffset:Number = oldScreen ? -oldScreen.width : -newScreen.width;
-				new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -64,14 +71,20 @@ package feathers.motion
 		 */
 		public static function createWipeRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var xOffset:Number = oldScreen ? oldScreen.width : newScreen.width;
-				new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -88,14 +101,20 @@ package feathers.motion
 		 */
 		public static function createWipeUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var yOffset:Number = oldScreen ? -oldScreen.height : -newScreen.height;
-				new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -112,14 +131,20 @@ package feathers.motion
 		 */
 		public static function createWipeDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var yOffset:Number = oldScreen ? oldScreen.height : newScreen.height;
-				new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}
@@ -253,7 +278,6 @@ class WipeTween extends Tween
 		this._savedYOffset = yOffset;
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
 	}
 
 	private var _oldScreenDelegate:RenderDelegate;
