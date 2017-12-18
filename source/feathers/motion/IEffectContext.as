@@ -61,5 +61,10 @@ package feathers.motion
 		 * Pauses an effect that is currently playing.
 		 */
 		function pause():void;
+
+		/**
+		 * @private
+		 */
+		function toEnd():void;
 	}	
 }

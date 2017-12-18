@@ -156,6 +156,27 @@ package feathers.motion
 		}
 
 		/**
+		 * Sets the position of the tween using a value between <code>0</code> and <code>1</code>.
+		 */
+		public function get position():Number
+		{
+			return this._position;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set position(value:Number):void
+		{
+			if(value > MAX_POSITION)
+			{
+				value = MAX_POSITION;
+			}
+			this._position = value;
+			this.updateEffect();
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function play():void
@@ -184,27 +205,6 @@ package feathers.motion
 				juggler = Starling.juggler;
 			}
 			juggler.add(this._playTween);
-		}
-
-		/**
-		 * Sets the position of the tween using a value between <code>0</code> and <code>1</code>.
-		 */
-		public function get position():Number
-		{
-			return this._position;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set position(value:Number):void
-		{
-			if(value > MAX_POSITION)
-			{
-				value = MAX_POSITION;
-			}
-			this._position = value;
-			this.updateEffect();
 		}
 
 		/**
@@ -253,6 +253,20 @@ package feathers.motion
 				this._playTween = null;
 			}
 			this._playing = false;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function toEnd():void
+		{
+			if(this._playing)
+			{
+				this._position = 1;
+				this._playTween.advanceTime(this._playTween.totalTime);
+				return;
+			}
+			this.position = 1;
 		}
 
 		/**
