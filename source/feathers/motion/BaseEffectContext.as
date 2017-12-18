@@ -258,6 +258,16 @@ package feathers.motion
 		/**
 		 * @inheritDoc
 		 */
+		public function stop():void
+		{
+			this.pause();
+			this.cleanupEffect();
+			this.dispatchEventWith(Event.COMPLETE);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function toEnd():void
 		{
 			if(this._playing)
@@ -267,6 +277,8 @@ package feathers.motion
 				return;
 			}
 			this.position = 1;
+			this.cleanupEffect();
+			this.dispatchEventWith(Event.COMPLETE);
 		}
 
 		/**

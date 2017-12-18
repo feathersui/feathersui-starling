@@ -63,7 +63,13 @@ package feathers.motion
 		function pause():void;
 
 		/**
-		 * @private
+		 * Stops the effect at its current position and orces Event.COMPLETE to
+		 * dispatch.
+		 */
+		function stop():void;
+
+		/**
+		 * Advances the effect to the end and forces Event.COMPLETE to dispatch.
 		 */
 		function toEnd():void;
 	}	
