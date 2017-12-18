@@ -8,10 +8,10 @@ accordance with the terms of the accompanying license agreement.
 package feathers.motion
 {
 	import starling.animation.Transitions;
-	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -27,6 +27,39 @@ package feathers.motion
 		 * @private
 		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
+
+		/**
+		 * Creates an effect function that fades in the target component by
+		 * animating the `alpha` property from its current value to `1.0`.
+		 */
+		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return createFadeEffect(1, duration, ease);
+		}
+
+		/**
+		 * Creates an effect function that fades out the target component by
+		 * animating the `alpha` property from its current value to `0.0`.
+		 */
+		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return createFadeEffect(0, duration, ease);
+		}
+
+		/**
+		 * Creates an effect function that fades the target component by
+		 * animating the `alpha` property from its current value to a new
+		 * value.
+		 */
+		public static function createFadeEffect(newAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.fadeTo(newAlpha);
+				return new TweenEffectContext(tween);
+			}
+		}
 
 		/**
 		 * Creates a transition function for a screen navigator that fades in
