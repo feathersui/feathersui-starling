@@ -28,6 +28,7 @@ package feathers.core
 	import starling.events.EventDispatcher;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
+	import feathers.motion.IEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be
@@ -397,6 +398,32 @@ package feathers.core
 				this.addEventListener(FeathersEventType.FOCUS_IN, focusInHandler);
 				this.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffect:Function = null;
+
+		/**
+		 * 
+		 */
+		public function get addedEffect():Function
+		{
+			return this._addedEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set addedEffect(value:Function):void
+		{
+			this._addedEffect = value;
 		}
 
 		/**
@@ -2787,6 +2814,13 @@ package feathers.core
 				//add to validation queue, if required
 				this._validationQueue.addControl(this);
 			}
+
+			if(this._addedEffect !== null)
+			{
+				this._addedEffectContext = this._addedEffect(this);
+				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffect_completeHandler);
+				this._addedEffectContext.play();
+			}
 		}
 
 		/**
@@ -2794,8 +2828,20 @@ package feathers.core
 		 */
 		protected function feathersControl_removedFromStageHandler(event:Event):void
 		{
+			if(this._addedEffectContext !== null)
+			{
+				this._addedEffectContext.toEnd();
+			}
 			this._depth = -1;
 			this._validationQueue = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedEffect_completeHandler(event:Event):void
+		{
+			this._addedEffectContext = null;
 		}
 
 		/**
