@@ -429,6 +429,95 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _showEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _showEffect:Function = null;
+
+		/**
+		 * 
+		 */
+		public function get showEffect():Function
+		{
+			return this._showEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set showEffect(value:Function):void
+		{
+			this._showEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hideEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _hideEffect:Function = null;
+
+		/**
+		 * 
+		 */
+		public function get hideEffect():Function
+		{
+			return this._hideEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideEffect(value:Function):void
+		{
+			this._hideEffect = value;
+		}
+
+		override public function set visible(value:Boolean):void
+		{
+			if(this._hideEffectContext !== null)
+			{
+				this._hideEffectContext.stop();
+				this._hideEffectContext = null;
+			}
+			if(this._showEffectContext !== null)
+			{
+				this._showEffectContext.stop();
+				this._showEffectContext = null;
+			}
+			if(value)
+			{
+				super.visible = value;
+				if(this._showEffect !== null && this.stage !== null)
+				{
+					this._showEffectContext = this._showEffect(this);
+					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
+					this._showEffectContext.play();
+				}
+			}
+			else
+			{
+				if(this._hideEffect === null || this.stage === null)
+				{
+					super.visible = value;
+				}
+				else
+				{
+					this._hideEffectContext = this._hideEffect(this);
+					this._hideEffectContext.addEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
+					this._hideEffectContext.play();
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _validationQueue:ValidationQueue;
 
 		/**
@@ -2256,6 +2345,13 @@ package feathers.core
 			{
 				this._hasValidated = true;
 				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
+
+				if(this.stage !== null && this._addedEffect !== null)
+				{
+					this._addedEffectContext = this._addedEffect(this);
+					this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
+					this._addedEffectContext.play();
+				}
 			}
 		}
 
@@ -2815,10 +2911,10 @@ package feathers.core
 				this._validationQueue.addControl(this);
 			}
 
-			if(this._addedEffect !== null)
+			if(this.isCreated && this._addedEffect !== null)
 			{
 				this._addedEffectContext = this._addedEffect(this);
-				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffect_completeHandler);
+				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
 				this._addedEffectContext.play();
 			}
 		}
@@ -2839,9 +2935,26 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function addedEffect_completeHandler(event:Event):void
+		protected function addedEffectContext_completeHandler(event:Event):void
 		{
 			this._addedEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function showEffectContext_completeHandler(event:Event):void
+		{
+			this._showEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hideEffectContext_completeHandler(event:Event):void
+		{
+			this._hideEffectContext = null;
+			super.visible = false;
 		}
 
 		/**
