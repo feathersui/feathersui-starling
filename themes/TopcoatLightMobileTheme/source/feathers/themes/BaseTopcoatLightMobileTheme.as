@@ -223,6 +223,7 @@ package feathers.themes
 		 */
 		protected var atlas:TextureAtlas;
 
+		protected var focusIndicatorTexture:Texture;
 		protected var buttonUpTexture:Texture;
 		protected var buttonDownTexture:Texture;
 		protected var buttonDisabledTexture:Texture;
@@ -350,6 +351,8 @@ package feathers.themes
 		{
 			this.popUpBackgroundTexture = this.atlas.getTexture("background-popup-skin0000");
 			this.popUpDrawerBackgroundTexture = this.atlas.getTexture("pop-up-drawer-background-skin0000");
+
+			this.focusIndicatorTexture = this.atlas.getTexture("focus-indicator-skin0000");
 
 			this.buttonUpTexture = this.atlas.getTexture("button-up-skin0000");
 			this.buttonDownTexture = this.atlas.getTexture("button-down-skin0000");
