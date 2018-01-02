@@ -1921,13 +1921,13 @@ package feathers.controls.text
 				//when font styles are passed in from the parent component, we
 				//automatically determine if the TextField should use embedded
 				//fonts, unless embedFonts is explicitly true
-				this.textField.embedFonts = SystemUtil.isEmbeddedFont(
+				textField.embedFonts = SystemUtil.isEmbeddedFont(
 					this._currentTextFormat.font, this._currentTextFormat.bold,
 					this._currentTextFormat.italic, FontType.EMBEDDED);
 			}
 			else
 			{
-				this.textField.embedFonts = this._embedFonts;
+				textField.embedFonts = this._embedFonts;
 			}
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled && (this._isEditable || this._isSelectable);
