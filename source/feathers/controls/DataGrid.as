@@ -912,6 +912,15 @@ package feathers.controls
 			{
 				return;
 			}
+			this.setColumns(value);
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function setColumns(value:IListCollection):void
+		{
 			if(this._columns !== null)
 			{
 				this._columns.removeEventListener(Event.CHANGE, columns_changeHandler);
@@ -925,8 +934,6 @@ package feathers.controls
 				this._columns.addEventListener(CollectionEventType.RESET, columns_resetHandler);
 				this._columns.addEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
 			}
-
-			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1884,7 +1891,7 @@ package feathers.controls
 				columns[pushIndex] = new DataGridColumn(key);
 				pushIndex++;
 			}
-			this._columns = new ArrayCollection(columns);
+			this.setColumns(new ArrayCollection(columns));
 		}
 
 		/**
