@@ -676,204 +676,7 @@ package feathers.controls.text
 		 */
 		public function measureText(result:Point = null):Point
 		{
-			if(!result)
-			{
-				result = new Point();
-			}
-
-			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
-			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
-			{
-				result.x = this._explicitWidth;
-				result.y = this._explicitHeight;
-				return result;
-			}
-
-			if(this.isInvalid(INVALIDATION_FLAG_STYLES) || this.isInvalid(INVALIDATION_FLAG_STATE))
-			{
-				this.refreshTextFormat();
-			}
-
-			if(!this._currentTextFormat || this._text === null)
-			{
-				result.setTo(0, 0);
-				return result;
-			}
-
-			var font:BitmapFont = this._currentTextFormat.font;
-			var customSize:Number = this._currentTextFormat.size;
-			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
-			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
-			var scale:Number = customSize / font.size;
-			if(scale !== scale) //isNaN
-			{
-				scale = 1;
-			}
-			var lineHeight:Number = font.lineHeight * scale + this._currentTextFormat.leading;
-			var maxLineWidth:Number = this._explicitWidth;
-			if(maxLineWidth !== maxLineWidth) //isNaN
-			{
-				maxLineWidth = this._explicitMaxWidth;
-			}
-
-			var maxX:Number = 0;
-			var currentX:Number = 0;
-			var currentY:Number = 0;
-			var previousCharID:Number = NaN;
-			var charCount:int = this._text.length;
-			var startXOfPreviousWord:Number = 0;
-			var widthOfWhitespaceAfterWord:Number = 0;
-			var wordCountForLine:int = 0;
-			var line:String = "";
-			var word:String = "";
-			var charData:BitmapChar = null;
-			for(var i:int = 0; i < charCount; i++)
-			{
-				var charID:int = this._text.charCodeAt(i);
-				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
-				{
-					//remove whitespace after the final character in the line
-					currentX -= customLetterSpacing;
-					if(charData !== null)
-					{
-						currentX -= (charData.xAdvance - charData.width) * scale;
-					}
-					if(currentX < 0)
-					{
-						currentX = 0;
-					}
-					if(maxX < currentX)
-					{
-						maxX = currentX;
-					}
-					previousCharID = NaN;
-					currentX = 0;
-					currentY += lineHeight;
-					startXOfPreviousWord = 0;
-					wordCountForLine = 0;
-					widthOfWhitespaceAfterWord = 0;
-					continue;
-				}
-
-				charData = font.getChar(charID);
-				if(charData === null)
-				{
-					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
-					continue;
-				}
-
-				if(isKerningEnabled &&
-					previousCharID === previousCharID) //!isNaN
-				{
-					currentX += charData.getKerning(previousCharID) * scale;
-				}
-
-				var xAdvance:Number = charData.xAdvance * scale;
-				if(this._wordWrap)
-				{
-					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
-					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
-					if(currentCharIsWhitespace)
-					{
-						if(!previousCharIsWhitespace)
-						{
-							//this is the spacing after the last character
-							//that isn't whitespace
-							var previousCharData:BitmapChar = font.getChar(previousCharID);
-							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
-						}
-						widthOfWhitespaceAfterWord += xAdvance;
-					}
-					else if(previousCharIsWhitespace)
-					{
-						startXOfPreviousWord = currentX;
-						wordCountForLine++;
-						line += word;
-						word = "";
-					}
-
-					var charWidth:Number = charData.width * scale;
-					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && (currentX + charWidth) > maxLineWidth)
-					{
-						if(wordCountForLine === 0)
-						{
-							//if we're breaking long words, this is where we break
-							startXOfPreviousWord = currentX;
-							if(previousCharID === previousCharID) //!isNaN
-							{
-								previousCharData = font.getChar(previousCharID);
-								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
-							}
-						}
-						//we're just reusing this variable to avoid creating a
-						//new one. it'll be reset to 0 in a moment.
-						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
-						if(maxX < widthOfWhitespaceAfterWord)
-						{
-							maxX = widthOfWhitespaceAfterWord;
-						}
-						previousCharID = NaN;
-						currentX -= startXOfPreviousWord;
-						currentY += lineHeight;
-						startXOfPreviousWord = 0;
-						widthOfWhitespaceAfterWord = 0;
-						wordCountForLine = 0;
-						line = "";
-					}
-				}
-				currentX += xAdvance + customLetterSpacing;
-				previousCharID = charID;
-				word += String.fromCharCode(charID);
-			}
-			//remove whitespace after the final character in the final line
-			currentX -= customLetterSpacing;
-			if(charData !== null)
-			{
-				currentX -= (charData.xAdvance - charData.width) * scale;
-			}
-			if(currentX < 0)
-			{
-				currentX = 0;
-			}
-			//if the text ends in extra whitespace, the currentX value will be
-			//larger than the max line width. we'll remove that and add extra
-			//lines.
-			if(this._wordWrap)
-			{
-				while(currentX > maxLineWidth && !MathUtil.isEquivalent(currentX, maxLineWidth))
-				{
-					currentX -= maxLineWidth;
-					currentY += lineHeight;
-					if(maxLineWidth === 0)
-					{
-						//we don't want to get stuck in an infinite loop!
-						break;
-					}
-				}
-			}
-			if(maxX < currentX)
-			{
-				maxX = currentX;
-			}
-
-			if(needsWidth)
-			{
-				result.x = maxX;
-			}
-			else
-			{
-				result.x = this._explicitWidth;
-			}
-			if(needsHeight)
-			{
-				result.y = currentY + lineHeight - this._currentTextFormat.leading;
-			}
-			else
-			{
-				result.y = this._explicitHeight;
-			}
-			return result;
+			return this.measureTextInternal(result, true);
 		}
 
 		/**
@@ -1552,6 +1355,212 @@ package feathers.controls.text
 				}
 			}
 			return this._fontStylesTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureTextInternal(result:Point, useExplicit:Boolean):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			var needsWidth:Boolean = !useExplicit || this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = !useExplicit || this._explicitHeight !== this._explicitHeight; //isNaN
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = this._explicitWidth;
+				result.y = this._explicitHeight;
+				return result;
+			}
+
+			if(this.isInvalid(INVALIDATION_FLAG_STYLES) || this.isInvalid(INVALIDATION_FLAG_STATE))
+			{
+				this.refreshTextFormat();
+			}
+
+			if(!this._currentTextFormat || this._text === null)
+			{
+				result.setTo(0, 0);
+				return result;
+			}
+
+			var font:BitmapFont = this._currentTextFormat.font;
+			var customSize:Number = this._currentTextFormat.size;
+			var customLetterSpacing:Number = this._currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this._currentTextFormat.isKerningEnabled;
+			var scale:Number = customSize / font.size;
+			if(scale !== scale) //isNaN
+			{
+				scale = 1;
+			}
+			var lineHeight:Number = font.lineHeight * scale + this._currentTextFormat.leading;
+			var maxLineWidth:Number = this._explicitWidth;
+			if(maxLineWidth !== maxLineWidth) //isNaN
+			{
+				maxLineWidth = this._explicitMaxWidth;
+			}
+
+			var maxX:Number = 0;
+			var currentX:Number = 0;
+			var currentY:Number = 0;
+			var previousCharID:Number = NaN;
+			var charCount:int = this._text.length;
+			var startXOfPreviousWord:Number = 0;
+			var widthOfWhitespaceAfterWord:Number = 0;
+			var wordCountForLine:int = 0;
+			var line:String = "";
+			var word:String = "";
+			var charData:BitmapChar = null;
+			for(var i:int = 0; i < charCount; i++)
+			{
+				var charID:int = this._text.charCodeAt(i);
+				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				{
+					//remove whitespace after the final character in the line
+					currentX -= customLetterSpacing;
+					if(charData !== null)
+					{
+						currentX -= (charData.xAdvance - charData.width) * scale;
+					}
+					if(currentX < 0)
+					{
+						currentX = 0;
+					}
+					if(maxX < currentX)
+					{
+						maxX = currentX;
+					}
+					previousCharID = NaN;
+					currentX = 0;
+					currentY += lineHeight;
+					startXOfPreviousWord = 0;
+					wordCountForLine = 0;
+					widthOfWhitespaceAfterWord = 0;
+					continue;
+				}
+
+				charData = font.getChar(charID);
+				if(charData === null)
+				{
+					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
+					continue;
+				}
+
+				if(isKerningEnabled &&
+					previousCharID === previousCharID) //!isNaN
+				{
+					currentX += charData.getKerning(previousCharID) * scale;
+				}
+
+				var xAdvance:Number = charData.xAdvance * scale;
+				if(this._wordWrap)
+				{
+					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
+					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
+					if(currentCharIsWhitespace)
+					{
+						if(!previousCharIsWhitespace)
+						{
+							//this is the spacing after the last character
+							//that isn't whitespace
+							var previousCharData:BitmapChar = font.getChar(previousCharID);
+							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+						}
+						widthOfWhitespaceAfterWord += xAdvance;
+					}
+					else if(previousCharIsWhitespace)
+					{
+						startXOfPreviousWord = currentX;
+						wordCountForLine++;
+						line += word;
+						word = "";
+					}
+
+					var charWidth:Number = charData.width * scale;
+					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && (currentX + charWidth) > maxLineWidth)
+					{
+						if(wordCountForLine === 0)
+						{
+							//if we're breaking long words, this is where we break
+							startXOfPreviousWord = currentX;
+							if(previousCharID === previousCharID) //!isNaN
+							{
+								previousCharData = font.getChar(previousCharID);
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
+							}
+						}
+						//we're just reusing this variable to avoid creating a
+						//new one. it'll be reset to 0 in a moment.
+						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
+						if(maxX < widthOfWhitespaceAfterWord)
+						{
+							maxX = widthOfWhitespaceAfterWord;
+						}
+						previousCharID = NaN;
+						currentX -= startXOfPreviousWord;
+						currentY += lineHeight;
+						startXOfPreviousWord = 0;
+						widthOfWhitespaceAfterWord = 0;
+						wordCountForLine = 0;
+						line = "";
+					}
+				}
+				currentX += xAdvance + customLetterSpacing;
+				previousCharID = charID;
+				word += String.fromCharCode(charID);
+			}
+			//remove whitespace after the final character in the final line
+			currentX -= customLetterSpacing;
+			if(charData !== null)
+			{
+				currentX -= (charData.xAdvance - charData.width) * scale;
+			}
+			if(currentX < 0)
+			{
+				currentX = 0;
+			}
+			//if the text ends in extra whitespace, the currentX value will be
+			//larger than the max line width. we'll remove that and add extra
+			//lines.
+			if(this._wordWrap)
+			{
+				while(currentX > maxLineWidth && !MathUtil.isEquivalent(currentX, maxLineWidth))
+				{
+					currentX -= maxLineWidth;
+					currentY += lineHeight;
+					if(maxLineWidth === 0)
+					{
+						//we don't want to get stuck in an infinite loop!
+						break;
+					}
+				}
+			}
+			if(maxX < currentX)
+			{
+				maxX = currentX;
+			}
+
+			if(needsWidth)
+			{
+				result.x = maxX;
+			}
+			else
+			{
+				result.x = this._explicitWidth;
+			}
+			if(needsHeight)
+			{
+				result.y = currentY + lineHeight - this._currentTextFormat.leading;
+			}
+			else
+			{
+				result.y = this._explicitHeight;
+			}
+
+			return result;
 		}
 
 		/**
