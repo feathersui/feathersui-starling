@@ -45,7 +45,32 @@ package feathers.motion
 		 */
 		public static function createIrisOpenEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
-			return createIrisOpenEffectAtXY(NaN, NaN, duration, ease);
+			return createIrisOpenEffectAtRatio(0.5, 0.5, duration, ease);
+		}
+
+		/**
+		 * Creates an effect function for the target component that shows the
+		 * component by masking it with a growing circle at a specific position
+		 * in the range from 0.0 to 1.0.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createIrisOpenEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				return createIrisOpenEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease);
+			}
 		}
 
 		/**
@@ -58,60 +83,58 @@ package feathers.motion
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
-				var oldMask:DisplayObject = target.mask;
-				var maskWidth:Number = target.width;
-				var maskHeight:Number = target.height;
-				if(maskWidth < 0)
-				{
-					maskWidth = 1;
-				}
-				if(maskHeight < 0)
-				{
-					maskHeight = 1;
-				}
-				var halfWidth:Number = maskWidth / 2;
-				var halfHeight:Number = maskHeight / 2;
-				var originX:Number = x;
-				var originY:Number = y;
-				if(originX !== originX) //isNaN
-				{
-					originX = halfWidth;
-				}
-				if(originY !== originY) //isNaN
-				{
-					originY = halfHeight;
-				}
-				var p1:Point = Pool.getPoint(halfWidth, halfHeight);
-				var p2:Point = Pool.getPoint(originX, originY);
-				var radiusFromCenter:Number = p1.length;
-				if(p1.equals(p2))
-				{
-					var radius:Number = radiusFromCenter;
-				}
-				else
-				{
-					var distanceFromCenterToOrigin:Number = Point.distance(p1, p2);
-					radius = radiusFromCenter + distanceFromCenterToOrigin;
-				}
-				Pool.putPoint(p1);
-				Pool.putPoint(p2);
-				var mask:Canvas = new Canvas();
-				mask.x = originX;
-				mask.y = originY;
-				mask.beginFill(0xff00ff);
-				mask.drawCircle(0, 0, radius);
-				mask.endFill();
-				mask.scale = 0;
-				target.mask = mask;
-				var tween:Tween = new Tween(mask, duration, ease);
-				tween.animate("scale", 1);
-				tween.onComplete = function():void
-				{
-					target.mask = oldMask;
-					mask.removeFromParent(true);
-				}
-				return new TweenEffectContext(tween);
+				return createIrisOpenEffectContextAtXY(target, x, y, duration, ease);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function createIrisOpenEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object):IEffectContext
+		{
+			var oldMask:DisplayObject = target.mask;
+			var maskWidth:Number = target.width;
+			var maskHeight:Number = target.height;
+			if(maskWidth < 0)
+			{
+				maskWidth = 1;
+			}
+			if(maskHeight < 0)
+			{
+				maskHeight = 1;
+			}
+			var halfWidth:Number = maskWidth / 2;
+			var halfHeight:Number = maskHeight / 2;
+			var p1:Point = Pool.getPoint(halfWidth, halfHeight);
+			var p2:Point = Pool.getPoint(originX, originY);
+			var radiusFromCenter:Number = p1.length;
+			if(p1.equals(p2))
+			{
+				var radius:Number = radiusFromCenter;
+			}
+			else
+			{
+				var distanceFromCenterToOrigin:Number = Point.distance(p1, p2);
+				radius = radiusFromCenter + distanceFromCenterToOrigin;
+			}
+			Pool.putPoint(p1);
+			Pool.putPoint(p2);
+			var mask:Canvas = new Canvas();
+			mask.x = originX;
+			mask.y = originY;
+			mask.beginFill(0xff00ff);
+			mask.drawCircle(0, 0, radius);
+			mask.endFill();
+			mask.scale = 0;
+			target.mask = mask;
+			var tween:Tween = new Tween(mask, duration, ease);
+			tween.animate("scale", 1);
+			tween.onComplete = function():void
+			{
+				target.mask = oldMask;
+				mask.removeFromParent(true);
+			}
+			return new TweenEffectContext(tween);
 		}
 
 		/**
@@ -122,7 +145,32 @@ package feathers.motion
 		 */
 		public static function createIrisCloseEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
-			return createIrisCloseEffectAtXY(NaN, NaN, duration, ease);
+			return createIrisCloseEffectAtRatio(0.5, 0.5, duration, ease);
+		}
+
+		/**
+		 * Creates an effect function for the target component that hides the
+		 * component by masking it with a shrinking circle at a specific position
+		 * in the range 0.0 to 1.0.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createIrisCloseEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				return createIrisCloseEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease);
+			}
 		}
 
 		/**
@@ -135,59 +183,57 @@ package feathers.motion
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
-				var oldMask:DisplayObject = target.mask;
-				var maskWidth:Number = target.width;
-				var maskHeight:Number = target.height;
-				if(maskWidth < 0)
-				{
-					maskWidth = 1;
-				}
-				if(maskHeight < 0)
-				{
-					maskHeight = 1;
-				}
-				var halfWidth:Number = maskWidth / 2;
-				var halfHeight:Number = maskHeight / 2;
-				var originX:Number = x;
-				var originY:Number = y;
-				if(originX !== originX) //isNaN
-				{
-					originX = halfWidth;
-				}
-				if(originY !== originY) //isNaN
-				{
-					originY = halfHeight;
-				}
-				var p1:Point = Pool.getPoint(halfWidth, halfHeight);
-				var p2:Point = Pool.getPoint(originX, originY);
-				var radiusFromCenter:Number = p1.length;
-				if(p1.equals(p2))
-				{
-					var radius:Number = radiusFromCenter;
-				}
-				else
-				{
-					var distanceFromCenterToOrigin:Number = Point.distance(p1, p2);
-					radius = radiusFromCenter + distanceFromCenterToOrigin;
-				}
-				Pool.putPoint(p1);
-				Pool.putPoint(p2);
-				var mask:Canvas = new Canvas();
-				mask.x = originX;
-				mask.y = originY;
-				mask.beginFill(0xff00ff);
-				mask.drawCircle(0, 0, radius);
-				mask.endFill();
-				target.mask = mask;
-				var tween:Tween = new Tween(mask, duration, ease);
-				tween.animate("scale", 0);
-				tween.onComplete = function():void
-				{
-					target.mask = oldMask;
-					mask.removeFromParent(true);
-				}
-				return new TweenEffectContext(tween);
+				return createIrisCloseEffectContextAtXY(target, x, y, duration, ease);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function createIrisCloseEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object):IEffectContext
+		{
+			var oldMask:DisplayObject = target.mask;
+			var maskWidth:Number = target.width;
+			var maskHeight:Number = target.height;
+			if(maskWidth < 0)
+			{
+				maskWidth = 1;
+			}
+			if(maskHeight < 0)
+			{
+				maskHeight = 1;
+			}
+			var halfWidth:Number = maskWidth / 2;
+			var halfHeight:Number = maskHeight / 2;
+			var p1:Point = Pool.getPoint(halfWidth, halfHeight);
+			var p2:Point = Pool.getPoint(originX, originY);
+			var radiusFromCenter:Number = p1.length;
+			if(p1.equals(p2))
+			{
+				var radius:Number = radiusFromCenter;
+			}
+			else
+			{
+				var distanceFromCenterToOrigin:Number = Point.distance(p1, p2);
+				radius = radiusFromCenter + distanceFromCenterToOrigin;
+			}
+			Pool.putPoint(p1);
+			Pool.putPoint(p2);
+			var mask:Canvas = new Canvas();
+			mask.x = originX;
+			mask.y = originY;
+			mask.beginFill(0xff00ff);
+			mask.drawCircle(0, 0, radius);
+			mask.endFill();
+			target.mask = mask;
+			var tween:Tween = new Tween(mask, duration, ease);
+			tween.animate("scale", 0);
+			tween.onComplete = function():void
+			{
+				target.mask = oldMask;
+				mask.removeFromParent(true);
+			}
+			return new TweenEffectContext(tween);
 		}
 
 		/**
