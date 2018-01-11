@@ -793,7 +793,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			return this.addItemAt(item, 0);
+			this.addItemAt(item, 0);
 		}
 
 		/**

@@ -2123,7 +2123,7 @@ package feathers.controls
 		 */
 		public function set upIcon(value:DisplayObject):void
 		{
-			return this.setIconForState(ButtonState.UP, value);
+			this.setIconForState(ButtonState.UP, value);
 		}
 
 		/**
@@ -2139,7 +2139,7 @@ package feathers.controls
 		 */
 		public function set downIcon(value:DisplayObject):void
 		{
-			return this.setIconForState(ButtonState.DOWN, value);
+			this.setIconForState(ButtonState.DOWN, value);
 		}
 
 		/**
@@ -2155,7 +2155,7 @@ package feathers.controls
 		 */
 		public function set hoverIcon(value:DisplayObject):void
 		{
-			return this.setIconForState(ButtonState.HOVER, value);
+			this.setIconForState(ButtonState.HOVER, value);
 		}
 
 		/**
@@ -2171,7 +2171,7 @@ package feathers.controls
 		 */
 		public function set disabledIcon(value:DisplayObject):void
 		{
-			return this.setIconForState(ButtonState.DISABLED, value);
+			this.setIconForState(ButtonState.DISABLED, value);
 		}
 
 		/**
