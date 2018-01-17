@@ -518,12 +518,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
-		LOADER_CONTEXT.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
-
-		/**
-		 * @private
-		 */
 		protected static const ATF_FILE_EXTENSION:String = "atf";
 
 		/**
@@ -1651,6 +1645,44 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _imageDecodingOnLoad:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _loaderContext:LoaderContext = null;
+
+		/**
+		 * If the texture is loaded using <code>flash.display.Loader</code>,
+		 * a custom <code>flash.system.LoaderContext</code> may optionally
+		 * be provided.
+		 *
+		 * <p>In the following example, a custom loader context is provided:</p>
+		 *
+		 * <listing version="3.0">
+		 * var context:LoaderContext = new LoaderContext();
+		 * context.loadPolicyFile = true;
+		 * loader.loaderContext = context;
+		 * </listing>
+		 * 
+		 * @see https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/system/LoaderContext.html flash.system.LoaderContext
+		 */
+		public function get loaderContext():LoaderContext
+		{
+			return this._loaderContext;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set loaderContext(value:LoaderContext):void
+		{
+			this._loaderContext = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this._isRestoringTexture = false;
@@ -1879,7 +1911,19 @@ package feathers.controls
 						this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loader_progressHandler);
 						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler);
 						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
-						this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
+						if(this._loaderContext === null)
+						{
+							//create a default loader context that checks
+							//policy files, and also decodes images on load for
+							//better performance
+							this._loaderContext = new LoaderContext(true);
+							this._loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+						}
+						//save this value because the _loaderContext might
+						//change before we need to access it.
+						//we will need it if we need to clean up the Loader.
+						this._imageDecodingOnLoad = this._loaderContext.imageDecodingPolicy === ImageDecodingPolicy.ON_LOAD;
+						this.loader.load(new URLRequest(sourceURL), this._loaderContext);
 					}
 				}
 				this.refreshCurrentTexture();
@@ -2156,17 +2200,35 @@ package feathers.controls
 				this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler);
 				if(close)
 				{
-					//when using ImageDecodingPolicy.ON_LOAD, calling close()
-					//seems to cause the image data to get stuck in memory,
-					//unable to be garbage collected!
-					//to clean up the memory, we need to wait for Event.COMPLETE
-					//to dispose the BitmapData and call unload(). we can't do
-					//either of those things here.
-					this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
-					//be sure to add listeners for these events, or errors
-					//could be thrown! issue #1627
-					this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, orphanedLoader_errorHandler);
-					this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, orphanedLoader_errorHandler);
+					var closed:Boolean = false;
+					if(!this._imageDecodingOnLoad)
+					{
+						//when using ImageDecodingPolicy.ON_LOAD, calling close()
+						//seems to cause the image data to get stuck in memory,
+						//unable to be garbage collected!
+						//to clean up the memory, we need to wait for Event.COMPLETE
+						//to dispose the BitmapData and call unload(). we can't do
+						//either of those things here.
+						try
+						{
+							this.loader.close();
+							closed = true;
+						}
+						catch(error:Error)
+						{
+						}
+					}
+					if(!closed)
+					{
+						//if we couldn't close() the loader, for some reason,
+						//our best option is to let it complete and clean
+						//things up then.
+						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
+						//be sure to add listeners for these events, or errors
+						//could be thrown! issue #1627
+						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, orphanedLoader_errorHandler);
+						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, orphanedLoader_errorHandler);
+					}
 				}
 				this.loader = null;
 			}
