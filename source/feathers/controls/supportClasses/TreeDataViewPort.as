@@ -622,33 +622,45 @@ package feathers.controls.supportClasses
 		private var _itemRendererMap:Dictionary = new Dictionary(true);
 		private var _minimumItemCount:int;
 
-		public function calculateNavigationDestination(groupIndex:int, itemIndex:int, keyCode:uint, result:Vector.<int>):void
+		public function calculateNavigationDestination(location:Vector.<int>, keyCode:uint, result:Vector.<int>):void
 		{
-			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			var displayIndex:int = this.locationToDisplayIndex(location, false);
+			if(displayIndex === -1)
+			{
+				throw new ArgumentError("Cannot calculate navigation destination for location: " + location);
+			}
 			var newDisplayIndex:int = this._layout.calculateNavigationDestination(this._layoutItems, displayIndex, keyCode, this._layoutResult);
 			this.displayIndexToLocation(newDisplayIndex, result);
 		}
 
-		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
+		public function getScrollPositionForLocation(location:Vector.<int>, result:Point = null):Point
 		{
 			if(!result)
 			{
 				result = new Point();
 			}
 
-			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			var displayIndex:int = this.locationToDisplayIndex(location, true);
+			if(displayIndex === -1)
+			{
+				throw new ArgumentError("Cannot calculate scroll position for location: " + location);
+			}
 			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems,
 				0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
 		}
 
-		public function getNearestScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
+		public function getNearestScrollPositionForIndex(location:Vector.<int>, result:Point = null):Point
 		{
 			if(!result)
 			{
 				result = new Point();
 			}
 
-			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			var displayIndex:int = this.locationToDisplayIndex(location, true);
+			if(displayIndex === -1)
+			{
+				throw new ArgumentError("Cannot calculate nearest scroll position for location: " + location);
+			}
 			return this._layout.getNearestScrollPositionForIndex(displayIndex, this._horizontalScrollPosition,
 				this._verticalScrollPosition, this._layoutItems, 0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
 		}
@@ -762,9 +774,66 @@ package feathers.controls.supportClasses
 		{
 		}
 
-		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
+		private var _displayIndex:int;
+
+		private function locationToDisplayIndex(location:Vector.<int>, returnNearestIfBranchNotOpen:Boolean):int
 		{
+			this._displayIndex = -1;
+			var result:Object =  this.locationToDisplayIndexAtBranch(new <int>[], location, returnNearestIfBranchNotOpen);
+			if(result !== null)
+			{
+				return this._displayIndex;
+			}
 			return -1;
+		}
+
+		private function locationToDisplayIndexAtBranch(locationOfBranch:Vector.<int>, locationToFind:Vector.<int>, returnNearestIfBranchNotOpen:Boolean):Object
+		{
+			var childCount:int = this._dataProvider.getLengthAtLocation(locationOfBranch);
+			for(var i:int = 0; i < childCount; i++)
+			{
+				this._displayIndex++;
+				locationOfBranch[locationOfBranch.length] = i;
+				var child:Object = this._dataProvider.getItemAtLocation(locationOfBranch);
+				if(locationOfBranch.length === locationToFind.length)
+				{
+					var every:Boolean = locationOfBranch.every(function(item:int, index:int, source:Vector.<int>):Boolean
+					{
+						return item === locationToFind[index];
+					});
+					if(every)
+					{
+						return child;
+					}
+				}
+				if(this._dataProvider.isBranch(child))
+				{
+					if(this.owner.isBranchOpen(child))
+					{
+						var result:Object = this.locationToDisplayIndexAtBranch(locationOfBranch, locationToFind, returnNearestIfBranchNotOpen);
+						if(result)
+						{
+							return result;
+						}
+					}
+					else if(returnNearestIfBranchNotOpen)
+					{
+						//if the location is inside a closed branch
+						//return that branch
+						every = locationOfBranch.every(function(item:int, index:int, source:Vector.<int>):Boolean
+						{
+							return item === locationToFind[index];
+						});
+						if(every)
+						{
+							return child;
+						}
+					}
+				}
+				locationOfBranch.length--;
+			}
+			//location was not found!
+			return null;
 		}
 
 		private function refreshViewPortBounds():void
