@@ -916,7 +916,12 @@ package feathers.layout
 					var adjustedScrollY:Number = scrollY - verticalAlignOffsetY;
 					if(adjustedScrollY > 0)
 					{
-						item.y += totalHeight * int((adjustedScrollY + availableHeight) / totalHeight);
+						var multiplier:int = int((adjustedScrollY + availableHeight) / totalHeight);
+						if(useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+						{
+							multiplier++;
+						}
+						item.y += totalHeight * multiplier;
 						if(item.y >= (scrollY + availableHeight))
 						{
 							item.y -= totalHeight;

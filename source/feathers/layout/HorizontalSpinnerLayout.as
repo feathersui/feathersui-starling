@@ -916,7 +916,12 @@ package feathers.layout
 					var adjustedScrollX:Number = scrollX - horizontalAlignOffsetX;
 					if(adjustedScrollX > 0)
 					{
-						item.x += totalWidth * int((adjustedScrollX + availableWidth) / totalWidth);
+						var multiplier:int = int((adjustedScrollX + availableWidth) / totalWidth);
+						if(useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+						{
+							multiplier++;
+						}
+						item.x += totalWidth * multiplier;
 						if(item.x >= (scrollX + availableWidth))
 						{
 							item.x -= totalWidth;
