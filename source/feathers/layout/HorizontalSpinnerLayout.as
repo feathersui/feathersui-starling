@@ -835,6 +835,10 @@ package feathers.layout
 
 			//this is the total width of all items
 			var totalWidth:Number = positionX - gap - boundsX;
+			if(this._useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+			{
+				totalWidth -= (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + gap));
+			}
 			//the available width is the width of the viewport. if the explicit
 			//width is NaN, we need to calculate the viewport width ourselves
 			//based on the total width of all items.
