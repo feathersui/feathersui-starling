@@ -25,7 +25,7 @@ Say hello to [Feathers UI](https://feathersui.com/), a library of light-weight, 
 
 * Adobe AIR 27.0 for desktop or mobile apps
 * Adobe Flash Player 19.0 for web browsers
-* Starling Framework 2.2
+* Starling Framework 2.3
 
 ## Downloads
 

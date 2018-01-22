@@ -833,14 +833,14 @@ package feathers.controls.text
 				this.layoutCharacters(HELPER_RESULT);
 				//for some reason, we can't just set the style once...
 				//we need to set up every time after layout
-				if(this._style !== null || !("getDefaultMeshStyle" in this._currentTextFormat.font))
+				if(this._style !== null)
 				{
 					this._characterBatch.style = this._style;
 				}
 				else
 				{
 					//getDefaultMeshStyle doesn't exist in Starling 2.2
-					this._defaultStyle = this._currentTextFormat.font["getDefaultMeshStyle"](this._defaultStyle, this._currentFontStyles, null);
+					this._defaultStyle = this._currentTextFormat.font.getDefaultMeshStyle(this._defaultStyle, this._currentFontStyles, null);
 					if(this._defaultStyle)
 					{
 						this._characterBatch.style = this._defaultStyle;
