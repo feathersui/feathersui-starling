@@ -1038,7 +1038,10 @@ package feathers.controls.text
 				{
 					//getDefaultMeshStyle doesn't exist in Starling 2.2
 					this._defaultStyle = this._currentTextFormat.font["getDefaultMeshStyle"](this._defaultStyle, this._currentFontStyles, null);
-					this._characterBatch.style = this._defaultStyle;
+					if(this._defaultStyle)
+					{
+						this._characterBatch.style = this._defaultStyle;
+					}
 				}
 				this._lastLayoutWidth = HELPER_RESULT.width;
 				this._lastLayoutHeight = HELPER_RESULT.height;
