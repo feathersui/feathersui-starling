@@ -212,6 +212,9 @@ package feathers.tests
 			
 			var font:BitmapFont = new BitmapFont();
 			this._button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(font, defaultFontSize);
+			//the following lines will produce deprecation warnings.
+			//these are expected, and this test will be removed when they are
+			//removed in the future.
 			this._button.upLabelProperties.textFormat = new BitmapFontTextFormat(font, upFontSize);
 			this._button.hoverLabelProperties.textFormat = new BitmapFontTextFormat(font, hoverFontSize);
 			this._button.downLabelProperties.textFormat = new BitmapFontTextFormat(font, downFontSize);
