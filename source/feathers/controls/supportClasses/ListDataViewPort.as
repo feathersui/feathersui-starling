@@ -1159,7 +1159,7 @@ package feathers.controls.supportClasses
 				if(this._layout is ISpinnerLayout &&
 					minIndex === 0 &&
 					maxIndex === (this._dataProvider.length - 1) &&
-					HELPER_VECTOR[minIndex] > HELPER_VECTOR[maxIndex])
+					HELPER_VECTOR[0] > HELPER_VECTOR[HELPER_VECTOR.length - 1])
 				{
 					var newMin:int = HELPER_VECTOR[0] - this._dataProvider.length;
 					var newMax:int = HELPER_VECTOR[HELPER_VECTOR.length - 1];
