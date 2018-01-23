@@ -160,6 +160,16 @@ package feathers.core
 		/**
 		 * @copy feathers.core.FeathersControl#initializeNow()
 		 */
-		function initializeNow():void
+		function initializeNow():void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#suspendEffects()
+		 */
+		function suspendEffects():void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#resumeEffects()
+		 */
+		function resumeEffects():void;
 	}
 }

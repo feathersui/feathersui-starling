@@ -33,6 +33,8 @@ package feathers.motion
 
 	/**
 	 * Gives a component the ability to control an effect.
+	 * 
+	 * @productversion Feathers 3.5.0
 	 */
 	public interface IEffectContext extends IFeathersEventDispatcher
 	{

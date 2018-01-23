@@ -29,6 +29,7 @@ package feathers.core
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
 	import feathers.motion.IEffectContext;
+	import feathers.motion.IMoveEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be
@@ -480,12 +481,12 @@ package feathers.core
 
 		override public function set visible(value:Boolean):void
 		{
-			if(this._hideEffectContext !== null)
+			if(this._suspendEffectsCount === 0 && this._hideEffectContext !== null)
 			{
 				this._hideEffectContext.stop();
 				this._hideEffectContext = null;
 			}
-			if(this._showEffectContext !== null)
+			if(this._suspendEffectsCount === 0 && this._showEffectContext !== null)
 			{
 				this._showEffectContext.stop();
 				this._showEffectContext = null;
@@ -493,7 +494,7 @@ package feathers.core
 			if(value)
 			{
 				super.visible = value;
-				if(this._showEffect !== null && this.stage !== null)
+				if(this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
 				{
 					this._showEffectContext = this._showEffect(this);
 					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
@@ -502,7 +503,7 @@ package feathers.core
 			}
 			else
 			{
-				if(this._hideEffect === null || this.stage === null)
+				if(this._suspendEffectsCount > 0 || this._hideEffect === null || this.stage === null)
 				{
 					super.visible = value;
 				}
@@ -802,6 +803,90 @@ package feathers.core
 		public function get explicitWidth():Number
 		{
 			return this._explicitWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _moveEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _moveEffect:Function = null;
+
+		/**
+		 * 
+		 */
+		public function get moveEffect():Function
+		{
+			return this._moveEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set moveEffect(value:Function):void
+		{
+			this._moveEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set x(value:Number):void
+		{
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.stop();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = this._moveEffect(this);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					IMoveEffectContext(this._moveEffectContext).playMove(value, this.y, this.x, this.y);
+				}
+				else
+				{
+					super.x = value;
+					this._moveEffectContext.play();
+				}
+			}
+			else
+			{
+				super.x = value;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set y(value:Number):void
+		{
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.stop();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = this._moveEffect(this);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					IMoveEffectContext(this._moveEffectContext).playMove(this.x, value, this.x, this.y);
+				}
+				else
+				{
+					super.y = value;
+					this._moveEffectContext.play();
+				}
+			}
+			else
+			{
+				super.y = value;
+			}
 		}
 
 		/**
@@ -2089,6 +2174,11 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _suspendEffectsCount:int = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreNextStyleRestriction:Boolean = false;
 
 		/**
@@ -2346,7 +2436,7 @@ package feathers.core
 				this._hasValidated = true;
 				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
 
-				if(this.stage !== null && this._addedEffect !== null)
+				if(this._suspendEffectsCount === 0 && this.stage !== null && this._addedEffect !== null)
 				{
 					this._addedEffectContext = this._addedEffect(this);
 					this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
@@ -2425,8 +2515,30 @@ package feathers.core
 		 */
 		public function move(x:Number, y:Number):void
 		{
-			this.x = x;
-			this.y = y;
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.stop();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = this._moveEffect(this);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					IMoveEffectContext(this._moveEffectContext).playMove(x, y, this.x, this.y);
+				}
+				else
+				{
+					super.x = x;
+					super.y = y;
+					this._moveEffectContext.play();
+				}
+			}
+			else
+			{
+				super.x = x;
+				super.y = y;
+			}
 		}
 
 		/**
@@ -2439,6 +2551,27 @@ package feathers.core
 		public function resetStyleProvider():void
 		{
 			this.styleProvider = this.defaultStyleProvider;
+		}
+
+		/**
+		 * Indicates that effects should not be activated temporarily. Call
+		 * <code>resumeEffects()</code> when effects should be allowed again.
+		 * 
+		 * @see #resumeEffects()
+		 */
+		public function suspendEffects():void
+		{
+			this._suspendEffectsCount++;
+		}
+
+		/**
+		 * Indicates that effects should be re-activated after being suspended.
+		 * 
+		 * @see #suspendEffects()
+		 */
+		public function resumeEffects():void
+		{
+			this._suspendEffectsCount--;
 		}
 
 		/**
@@ -2911,7 +3044,7 @@ package feathers.core
 				this._validationQueue.addControl(this);
 			}
 
-			if(this.isCreated && this._addedEffect !== null)
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
 			{
 				this._addedEffectContext = this._addedEffect(this);
 				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);

@@ -13,11 +13,15 @@ package feathers.motion
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.display.DisplayObject;
+	import feathers.core.IFeathersControl;
 
 	/**
 	 * An effect context for a <code>starling.animation.Tween</code>.
 	 * 
 	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
+	 * 
+	 * @productversion Feathers 3.5.0
 	 */
 	public class TweenEffectContext extends BaseEffectContext implements IEffectContext
 	{
@@ -82,8 +86,17 @@ package feathers.motion
 		 */
 		override protected function updateEffect():void
 		{
+			var target:Object = this._tween.target;
+			if(target is IFeathersControl)
+			{
+				IFeathersControl(target).suspendEffects();
+			}
 			var newCurrentTime:Number = this._position * this._tween.totalTime;
 			this._tween.advanceTime(newCurrentTime - this._tween.currentTime);
+			if(target is IFeathersControl)
+			{
+				IFeathersControl(target).resumeEffects();
+			}
 		}
 
 		/**
