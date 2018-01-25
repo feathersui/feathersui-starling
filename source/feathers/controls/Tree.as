@@ -1089,7 +1089,7 @@ package feathers.controls
 		 * third item in the second branch:</p>
 		 *
 		 * <listing version="3.0">
-		 * tree.scrollToDisplayLocation( new <int>[1, 2] );</listing>
+		 * tree.scrollToDisplayLocation( new &lt;int&gt;[1, 2] );</listing>
 		 */
 		public function scrollToDisplayLocation(location:Vector.<int>, animationDuration:Number = 0):void
 		{
