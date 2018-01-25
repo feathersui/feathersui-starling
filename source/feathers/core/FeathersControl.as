@@ -846,13 +846,17 @@ package feathers.core
 				this._moveEffectContext = this._moveEffect(this);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					IMoveEffectContext(this._moveEffectContext).playMove(value, this.y, this.x, this.y);
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = value;
+					moveEffectContext.newY = this.y;
 				}
 				else
 				{
 					super.x = value;
-					this._moveEffectContext.play();
 				}
+				this._moveEffectContext.play();
 			}
 			else
 			{
@@ -875,13 +879,17 @@ package feathers.core
 				this._moveEffectContext = this._moveEffect(this);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					IMoveEffectContext(this._moveEffectContext).playMove(this.x, value, this.x, this.y);
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = this.x;
+					moveEffectContext.newY = value;
 				}
 				else
 				{
 					super.y = value;
-					this._moveEffectContext.play();
 				}
+				this._moveEffectContext.play();
 			}
 			else
 			{
@@ -2525,14 +2533,18 @@ package feathers.core
 				this._moveEffectContext = this._moveEffect(this);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					IMoveEffectContext(this._moveEffectContext).playMove(x, y, this.x, this.y);
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = x;
+					moveEffectContext.newY = y;
 				}
 				else
 				{
 					super.x = x;
 					super.y = y;
-					this._moveEffectContext.play();
 				}
+				this._moveEffectContext.play();
 			}
 			else
 			{

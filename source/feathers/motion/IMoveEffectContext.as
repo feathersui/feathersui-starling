@@ -13,8 +13,43 @@ package feathers.motion
 	public interface IMoveEffectContext extends IEffectContext
 	{
 		/**
-		 * Starts playing the move effect.
+		 * The old x position of the target.
 		 */
-		function playMove(x:Number, y:Number, oldX:Number, oldY:Number):void;
+		function get oldX():Number;
+
+		/**
+		 * @private
+		 */
+		function set oldX(value:Number):void;
+
+		/**
+		 * The old y position of the target.
+		 */
+		function get oldY():Number;
+
+		/**
+		 * @private
+		 */
+		function set oldY(value:Number):void;
+
+		/**
+		 * The new x position of the target.
+		 */
+		function get newX():Number;
+
+		/**
+		 * @private
+		 */
+		function set newX(value:Number):void;
+
+		/**
+		 * The new y position of the target.
+		 */
+		function get newY():Number;
+
+		/**
+		 * @private
+		 */
+		function set newY(value:Number):void;
 	}	
 }
