@@ -494,7 +494,7 @@ package feathers.core
 			if(value)
 			{
 				super.visible = value;
-				if(this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
+				if(this.isCreated && this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
 				{
 					this._showEffectContext = this._showEffect(this);
 					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
@@ -503,7 +503,7 @@ package feathers.core
 			}
 			else
 			{
-				if(this._suspendEffectsCount > 0 || this._hideEffect === null || this.stage === null)
+				if(!this.isCreated || this._suspendEffectsCount > 0 || this._hideEffect === null || this.stage === null)
 				{
 					super.visible = value;
 				}
