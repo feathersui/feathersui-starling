@@ -844,6 +844,7 @@ package feathers.core
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
 					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
@@ -877,6 +878,7 @@ package feathers.core
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
 					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
@@ -2531,6 +2533,7 @@ package feathers.core
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
 					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
@@ -3090,6 +3093,7 @@ package feathers.core
 		 */
 		protected function showEffectContext_completeHandler(event:Event):void
 		{
+			this._showEffectContext.removeEventListener(Event.COMPLETE, showEffectContext_completeHandler);
 			this._showEffectContext = null;
 		}
 
@@ -3098,8 +3102,20 @@ package feathers.core
 		 */
 		protected function hideEffectContext_completeHandler(event:Event):void
 		{
+			this._hideEffectContext.removeEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
 			this._hideEffectContext = null;
-			super.visible = false;
+			this.suspendEffects();
+			this.visible = false;
+			this.resumeEffects();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function moveEffectContext_completeHandler(event:Event):void
+		{
+			this._moveEffectContext.removeEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
+			this._moveEffectContext = null;
 		}
 
 		/**
