@@ -34,7 +34,6 @@ package feathers.motion
 			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.moveTo(target.x, target.y);
 				return new TweenMoveEffectContext(tween);
 			}
 		}
@@ -46,7 +45,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveToXYEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createMoveToEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -63,7 +62,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveFromXYEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createMoveFromEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -92,12 +91,12 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveByXYEffect(byX:Number, byY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createMoveByEffect(xBy:Number, yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.moveTo(target.x + byX, target.y + byY);
+				tween.moveTo(target.x + xBy, target.y + yBy);
 				return new TweenEffectContext(tween);
 			}
 		}

@@ -8,7 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.motion
 {
 	/**
-	 * Gives a component the ability to control an effect.
+	 * Gives a component the ability to control a move effect.
 	 */
 	public interface IMoveEffectContext extends IEffectContext
 	{
