@@ -30,6 +30,7 @@ package feathers.core
 	import starling.utils.Pool;
 	import feathers.motion.IEffectContext;
 	import feathers.motion.IMoveEffectContext;
+	import feathers.motion.IResizeEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be
@@ -808,6 +809,32 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _resizeEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _resizeEffect:Function = null;
+
+		/**
+		 * 
+		 */
+		public function get resizeEffect():Function
+		{
+			return this._resizeEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resizeEffect(value:Function):void
+		{
+			this._resizeEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _moveEffectContext:IEffectContext = null;
 
 		/**
@@ -970,18 +997,50 @@ package feathers.core
 			{
 				return;
 			}
-			this._explicitWidth = value;
-			if(valueIsNaN)
+			var hasSetExplicitWidth:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this.actualWidth = this.scaledActualWidth = 0;
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext.stop();
+				this._resizeEffectContext = null;
+			}
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			{
+				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					resizeEffectContext.newWidth = value;
+					resizeEffectContext.newHeight = this.actualHeight;
+				}
+				else
+				{
+					this._explicitWidth = value;
+					hasSetExplicitWidth = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(value, this.actualHeight, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitWidth = value;
+				hasSetExplicitWidth = true;
+			}
+			if(hasSetExplicitWidth)
+			{
+				if(valueIsNaN)
 				{
+					this.actualWidth = this.scaledActualWidth = 0;
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(value, this.actualHeight, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -1072,18 +1131,50 @@ package feathers.core
 			{
 				return;
 			}
-			this._explicitHeight = value;
-			if(valueIsNaN)
+			var hasSetExplicitHeight:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this.actualHeight = this.scaledActualHeight = 0;
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext.stop();
+				this._resizeEffectContext = null;
+			}
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			{
+				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					resizeEffectContext.newWidth = this.actualWidth;
+					resizeEffectContext.newHeight = value;
+				}
+				else
+				{
+				this._explicitHeight = value;
+					hasSetExplicitHeight = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(this.actualWidth, value, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitHeight = value;
+				hasSetExplicitHeight = true;
+			}
+			if(hasSetExplicitHeight)
+			{
+				if(valueIsNaN)
 				{
+					this.actualHeight = this.scaledActualHeight = 0;
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(this.actualWidth, value, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -2489,29 +2580,77 @@ package feathers.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
-			this._explicitWidth = width;
+			var hasSetExplicitSize:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
+			{
+				this._resizeEffectContext.stop();
+				this._resizeEffectContext = null;
+			}
 			var widthIsNaN:Boolean = width !== width;
-			if(widthIsNaN)
-			{
-				this.actualWidth = this.scaledActualWidth = 0;
-			}
-			this._explicitHeight = height;
 			var heightIsNaN:Boolean = height !== height;
-			if(heightIsNaN)
+			if((!widthIsNaN || !heightIsNaN) && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
 			{
-				this.actualHeight = this.scaledActualHeight = 0;
-			}
-
-			if(widthIsNaN || heightIsNaN)
-			{
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				trace(this._resizeEffectContext);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					if(widthIsNaN)
+					{
+						resizeEffectContext.newWidth = this.actualWidth;
+					}
+					else
+					{
+						resizeEffectContext.newWidth = width;
+					}
+					if(heightIsNaN)
+					{
+						resizeEffectContext.newHeight = this.actualHeight;
+					}
+					else
+					{
+						resizeEffectContext.newHeight = height;
+					}
+				}
+				else
+				{
+					this._explicitWidth = width;
+					this._explicitHeight = height;
+					hasSetExplicitSize = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(width, height, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitWidth = width;
+				this._explicitHeight = height;
+				hasSetExplicitSize = true;
+			}
+			if(hasSetExplicitSize)
+			{
+				if(widthIsNaN)
+				{
+					this.actualWidth = this.scaledActualWidth = 0;
+				}
+				if(heightIsNaN)
+				{
+					this.actualHeight = this.scaledActualHeight = 0;
+				}
+
+				if(widthIsNaN || heightIsNaN)
 				{
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(width, height, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -3116,6 +3255,15 @@ package feathers.core
 		{
 			this._moveEffectContext.removeEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 			this._moveEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resizeEffectContext_completeHandler(event:Event):void
+		{
+			this._resizeEffectContext.removeEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+			this._resizeEffectContext = null;
 		}
 
 		/**
