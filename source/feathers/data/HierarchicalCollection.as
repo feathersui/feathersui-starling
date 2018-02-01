@@ -355,6 +355,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#addItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function addItemAtLocation(item:Object, location:Vector.<int>):void
 		{
@@ -387,6 +389,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#removeItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function removeItemAtLocation(location:Vector.<int>):Object
 		{
@@ -447,6 +451,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#setItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function setItemAtLocation(item:Object, location:Vector.<int>):void
 		{
