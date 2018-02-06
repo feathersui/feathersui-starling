@@ -945,7 +945,20 @@ package feathers.controls
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._fontStylesSet.selectedFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
