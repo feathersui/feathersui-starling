@@ -1,9 +1,11 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Tree;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.Tree;
+	import feathers.controls.renderers.DefaultTreeItemRenderer;
+	import feathers.controls.renderers.ITreeItemRenderer;
 	import feathers.data.ArrayHierarchicalCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -13,8 +15,6 @@ package feathers.examples.componentsExplorer.screens
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import feathers.controls.renderers.ITreeItemRenderer;
-	import feathers.controls.renderers.DefaultTreeItemRenderer;
 
 	[Event(name="complete",type="starling.events.Event")]
 

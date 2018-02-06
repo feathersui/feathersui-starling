@@ -7,7 +7,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.layout.AnchorLayout;

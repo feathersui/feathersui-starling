@@ -5,14 +5,13 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.system.DeviceCapabilities;
 
+	import starling.events.Event;
+	import feathers.system.DeviceCapabilities;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.events.Event;
 
 	public class AlertScreen extends PanelScreen
 	{

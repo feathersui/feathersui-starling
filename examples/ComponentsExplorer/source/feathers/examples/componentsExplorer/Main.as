@@ -46,12 +46,12 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ToggleSwitchScreen;
 	import feathers.examples.componentsExplorer.screens.TreeScreen;
 	import feathers.examples.componentsExplorer.screens.WebViewScreen;
-	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.layout.Orientation;
 	import feathers.motion.Cover;
 	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
 	import feathers.system.DeviceCapabilities;
+	import feathers.themes.MetalWorksMobileTheme;
 
 	import flash.system.Capabilities;
 
@@ -63,7 +63,7 @@ package feathers.examples.componentsExplorer
 		public function Main()
 		{
 			//set up the theme right away!
-			new ComponentsExplorerTheme();
+			new MetalWorksMobileTheme();
 			super();
 		}
 

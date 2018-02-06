@@ -4,10 +4,12 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.data.ListCollection;
+	import feathers.controls.ScrollPolicy;
 	import feathers.data.LocalAutoCompleteSource;
 	import feathers.data.VectorCollection;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -18,18 +20,11 @@ package feathers.examples.componentsExplorer.screens
 
 	public class AutoCompleteScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function AutoCompleteScreen()
 		{
 		}
 
 		private var _input:AutoComplete;
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return AutoCompleteScreen.globalStyleProvider;
-		}
 
 		override protected function initialize():void
 		{
@@ -37,6 +32,15 @@ package feathers.examples.componentsExplorer.screens
 			super.initialize();
 
 			this.title = "Auto-complete";
+			
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
 
 			this._input = new AutoComplete();
 			this._input.prompt = "Fruits. Type 'ap' to see suggestions";

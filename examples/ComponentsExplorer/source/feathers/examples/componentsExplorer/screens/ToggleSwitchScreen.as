@@ -4,7 +4,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.TiledRowsLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -15,8 +17,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ToggleSwitchScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function ToggleSwitchScreen()
 		{
 			super();
@@ -27,17 +27,24 @@ package feathers.examples.componentsExplorer.screens
 		private var _disabled:ToggleSwitch;
 		private var _selectedDisabled:ToggleSwitch;
 
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return ToggleSwitchScreen.globalStyleProvider;
-		}
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
 			this.title = "Toggle Switch";
+			
+			var layout:TiledRowsLayout = new TiledRowsLayout();
+			layout.requestedColumnCount = 2;
+			layout.useSquareTiles = false;
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.TOP;
+			layout.tileHorizontalAlign = HorizontalAlign.CENTER;
+			layout.tileVerticalAlign = VerticalAlign.TOP;
+			layout.padding = 12;
+			layout.horizontalGap = 12;
+			layout.verticalGap = 44;
+			this.layout = layout;
 
 			this._toggle = new ToggleSwitch();
 			this._toggle.addEventListener(Event.CHANGE, toggleSwitch_changeHandler);

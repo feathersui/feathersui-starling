@@ -2,9 +2,14 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Header;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.ToggleButton;
-	import feathers.skins.IStyleProvider;
+	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -15,10 +20,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ButtonScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
-		public static const CHILD_STYLE_NAME_ICON_BUTTON:String = "components-explorer-button-screen-icon-button";
-		
 		public function ButtonScreen()
 		{
 			super();
@@ -33,11 +34,6 @@ package feathers.examples.componentsExplorer.screens
 		private var _dangerButton:Button;
 		private var _sampleBackButton:Button;
 		private var _forwardButton:Button;
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return ButtonScreen.globalStyleProvider;
-		}
 		
 		override protected function initialize():void
 		{
@@ -45,6 +41,15 @@ package feathers.examples.componentsExplorer.screens
 			super.initialize();
 
 			this.title = "Button";
+			
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
 			
 			this._normalButton = new Button();
 			this._normalButton.label = "Normal Button";
@@ -57,9 +62,11 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._disabledButton);
 			
 			this._iconButton = new Button();
-			//since it's a skin, we'll specify an icon in the theme
-			this._iconButton.styleNameList.add(CHILD_STYLE_NAME_ICON_BUTTON);
 			this._iconButton.label = "Icon Button";
+			var icon:ImageLoader = new ImageLoader();
+			//the source can be either a texture or a URL
+			icon.source = EmbeddedAssets.SKULL_ICON_DARK;
+			this._iconButton.defaultIcon = icon;
 			this.addChild(this._iconButton);
 
 			this._toggleButton = new ToggleButton();

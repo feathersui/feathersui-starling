@@ -5,8 +5,11 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.Radio;
+	import feathers.controls.ScrollPolicy;
 	import feathers.core.ToggleGroup;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -17,8 +20,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class RadioScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function RadioScreen()
 		{
 			super();
@@ -37,17 +38,21 @@ package feathers.examples.componentsExplorer.screens
 		private var _radioB:Radio;
 		private var _radioC:Radio;
 
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return RadioScreen.globalStyleProvider;
-		}
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
 			this.title = "Radio";
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.LEFT;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
 
 			this._group1 = new ToggleGroup();
 

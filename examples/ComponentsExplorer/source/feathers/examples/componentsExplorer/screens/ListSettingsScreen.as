@@ -1,18 +1,17 @@
 package feathers.examples.componentsExplorer.screens
 {
-	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.ListSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
-	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import feathers.controls.Button;
+	import starling.display.DisplayObject;
 
 	[Event(name="complete",type="starling.events.Event")]
 

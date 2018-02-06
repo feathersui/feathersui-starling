@@ -3,9 +3,12 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollPolicy;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -16,8 +19,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class TextInputScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function TextInputScreen()
 		{
 		}
@@ -30,17 +31,21 @@ package feathers.examples.componentsExplorer.screens
 		private var _searchInput:TextInput;
 		private var _textArea:TextArea;
 
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return TextInputScreen.globalStyleProvider;
-		}
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
 			this.title = "Text Input";
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
 
 			this._input = new TextInput();
 			this._input.prompt = "Normal Text Input";

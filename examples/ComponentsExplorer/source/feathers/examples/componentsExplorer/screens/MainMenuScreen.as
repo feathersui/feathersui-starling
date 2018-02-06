@@ -5,7 +5,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.ScreenID;
 	import feathers.layout.AnchorLayout;

@@ -4,7 +4,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Check;
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.skins.IStyleProvider;
+	import feathers.controls.ScrollPolicy;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -15,8 +18,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class CheckScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function CheckScreen()
 		{
 			super();
@@ -27,17 +28,21 @@ package feathers.examples.componentsExplorer.screens
 		private var _disabled:Check;
 		private var _selectedDisabled:Check;
 
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return CheckScreen.globalStyleProvider;
-		}
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
 			this.title = "Check";
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.LEFT;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
 
 			this._check = new Check();
 			this._check.label = "Default";

@@ -5,9 +5,12 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScrollPolicy;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -18,10 +21,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class CalloutScreen extends PanelScreen
 	{
-		public static const CHILD_STYLE_NAME_CALLOUT_HEADER:String = "components-explorer-callout-header";
-
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function CalloutScreen()
 		{
 			super();
@@ -29,11 +28,6 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _showCalloutButton:Button;
 		private var _content:PanelScreen;
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return CalloutScreen.globalStyleProvider;
-		}
 
 		override public function dispose():void
 		{
@@ -54,9 +48,30 @@ package feathers.examples.componentsExplorer.screens
 
 			this.title = "Callout";
 
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.TOP;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
+
+			this.verticalScrollPolicy = ScrollPolicy.ON;
+
 			//this is what we're going to display in the callout
 			this._content = new PanelScreen();
-			this._content.customHeaderStyleName = CHILD_STYLE_NAME_CALLOUT_HEADER;
+			this._content.headerFactory = function():Header
+			{
+				var header:Header = new Header();
+				header.paddingTop = 2;
+				header.paddingBottom = 8;
+				header.gap = 8;
+				header.titleGap = 8;
+				header.backgroundSkin = null;
+				//we want to use the theme's font styles, with a slightly smaller font size
+				header.initializeNow();
+				header.fontStyles.size = 14;
+				return header;
+			};
 			this._content.title = "Callout Content";
 			this._content.width = 200;
 			this._content.layout = new AnchorLayout();

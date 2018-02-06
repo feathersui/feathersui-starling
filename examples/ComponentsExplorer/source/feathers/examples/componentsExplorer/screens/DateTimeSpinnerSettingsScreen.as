@@ -7,7 +7,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
 	import feathers.layout.AnchorLayout;

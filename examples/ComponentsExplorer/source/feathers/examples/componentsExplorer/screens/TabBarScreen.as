@@ -6,7 +6,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.TabBar;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.system.DeviceCapabilities;

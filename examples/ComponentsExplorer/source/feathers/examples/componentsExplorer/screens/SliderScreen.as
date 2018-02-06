@@ -6,7 +6,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Slider;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.layout.Direction;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -20,8 +22,6 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static const SHOW_SETTINGS:String = "showSettings";
 
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function SliderScreen()
 		{
 			super();
@@ -31,11 +31,6 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _horizontalSlider:Slider;
 		private var _verticalSlider:Slider;
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return SliderScreen.globalStyleProvider;
-		}
 		
 		override protected function initialize():void
 		{
@@ -43,6 +38,13 @@ package feathers.examples.componentsExplorer.screens
 			super.initialize();
 
 			this.title = "Slider";
+			
+			var layout:HorizontalLayout = new HorizontalLayout();
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
+			layout.padding = 12;
+			layout.gap = 12;
+			this.layout = layout;
 
 			this._horizontalSlider = new Slider();
 			this._horizontalSlider.direction = Direction.HORIZONTAL;

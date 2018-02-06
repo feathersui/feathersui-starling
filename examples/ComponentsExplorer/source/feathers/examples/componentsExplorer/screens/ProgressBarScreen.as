@@ -5,7 +5,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ProgressBar;
 	import feathers.layout.Direction;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalAlign;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.animation.Tween;
@@ -17,8 +19,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ProgressBarScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function ProgressBarScreen()
 		{
 			super();
@@ -30,17 +30,19 @@ package feathers.examples.componentsExplorer.screens
 		private var _horizontalProgressTween:Tween;
 		private var _verticalProgressTween:Tween;
 
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return ProgressBarScreen.globalStyleProvider;
-		}
-
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
 			this.title = "Progress Bar";
+			
+			var layout:HorizontalLayout = new HorizontalLayout();
+			layout.horizontalAlign = HorizontalAlign.CENTER;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
+			layout.padding = 12;
+			layout.gap = 12;
+			this.layout = layout;
 
 			this._horizontalProgress = new ProgressBar();
 			this._horizontalProgress.direction = Direction.HORIZONTAL;

@@ -5,7 +5,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.examples.componentsExplorer.data.DateTimeSpinnerSettings;
-	import feathers.skins.IStyleProvider;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -16,17 +18,10 @@ package feathers.examples.componentsExplorer.screens
 	
 	public class DateTimeSpinnerScreen extends PanelScreen
 	{
-		public static var globalStyleProvider:IStyleProvider;
-		
 		public static const SHOW_SETTINGS:String = "showSettings";
 		
 		public function DateTimeSpinnerScreen()
 		{
-		}
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return DateTimeSpinnerScreen.globalStyleProvider;
 		}
 
 		public var settings:DateTimeSpinnerSettings;
@@ -39,6 +34,13 @@ package feathers.examples.componentsExplorer.screens
 			super.initialize();
 
 			this.title = "Date Time Spinner";
+
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = HorizontalAlign.CENTER;
+			verticalLayout.verticalAlign = VerticalAlign.MIDDLE;
+			verticalLayout.padding = 12;
+			verticalLayout.gap = 8;
+			this.layout = verticalLayout;
 
 			this._dateTimeSpinner = new DateTimeSpinner();
 			this._dateTimeSpinner.editingMode = this.settings.editingMode;

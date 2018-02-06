@@ -8,12 +8,10 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -27,8 +25,6 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static const SHOW_SETTINGS:String = "showSettings";
 
-		public static var globalStyleProvider:IStyleProvider;
-
 		public function ItemRendererScreen()
 		{
 			super();
@@ -36,23 +32,6 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _list:List;
 		private var _listItem:Object;
-
-		private var _itemRendererGap:Number = 0;
-
-		public function get itemRendererGap():Number
-		{
-			return this._itemRendererGap;
-		}
-
-		public function set itemRendererGap(value:Number):void
-		{
-			if(this._itemRendererGap == value)
-			{
-				return;
-			}
-			this._itemRendererGap = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
 
 		private var _settings:ItemRendererSettings;
 
@@ -69,11 +48,6 @@ package feathers.examples.componentsExplorer.screens
 			}
 			this._settings = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		override protected function get defaultStyleProvider():IStyleProvider
-		{
-			return ItemRendererScreen.globalStyleProvider;
 		}
 
 		override public function dispose():void
@@ -198,7 +172,7 @@ package feathers.examples.componentsExplorer.screens
 			}
 			else
 			{
-				itemRenderer.gap = this._itemRendererGap;
+				itemRenderer.gap = 12;
 			}
 			if(this.settings.useInfiniteAccessoryGap)
 			{
@@ -206,7 +180,7 @@ package feathers.examples.componentsExplorer.screens
 			}
 			else
 			{
-				itemRenderer.accessoryGap = this._itemRendererGap;
+				itemRenderer.accessoryGap = 12;
 			}
 			itemRenderer.horizontalAlign = this.settings.horizontalAlign;
 			itemRenderer.verticalAlign = this.settings.verticalAlign;

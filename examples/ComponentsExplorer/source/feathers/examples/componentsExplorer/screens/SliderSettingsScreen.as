@@ -5,17 +5,16 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
+	import feathers.controls.TrackInteractionMode;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import feathers.controls.PickerList;
-	import feathers.controls.TrackInteractionMode;
 
 	[Event(name="complete",type="starling.events.Event")]
 
