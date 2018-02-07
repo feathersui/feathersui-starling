@@ -2,6 +2,22 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
+## 3.4.0 - February 2018
+
+* AnchorLayout: Fixed issue where x and y properties might not be accounted for in measurement if item had AnchorLayoutData, but didn't set left and top.
+* BitmapFontTextEditor: Fixed issue where the cursor and selection might be positioned incorrectly when alignment is center or right.
+* BitmapFontTextRenderer: Fixed issue where a new MeshStyle could be created too frequently when getDefaultMeshStyle() returns null.
+* DataGrid: Fixed issue where reordering the columns might not reorder the column headers if the columns were generated automatically.
+* DateTimeSpinner: Fixed issue where the default maximum date near the end of a year when using DateTimeMode.DATE_AND_TIME was not far enough into the future.
+* FDT: Fixed some valid, but unconventional, code that caused this IDE to display false-positive compiler errors.
+* Hierarchical Collections: Fixed some issues related to using null or empty locations that should have been considered invalid.
+* ImageLoader: Fixed issue where an IOError or SecurityError might be thrown for an old source that was replaced.
+* PopUpManager: Fixed issue where an error could be thrown by calling removeAllPopUps() when removing one pop-up might remove others automatically.
+* TextBlockTextEditor: Fixed issue where the cursor might be positioned incorrectly when alignment is center or right.
+* TextFieldTextEditor: Fixed issue where text editor would measure itself incorrectly when using embedded fonts because the measurement was based on device fonts instead.
+* ToggleGroup: Fixed issue where a flag to ignore changes might be disabled too early, causing the selection to change to the wrong value.
+* Tree: Fixed issue where changing the selected item programatically might not immediately update the appearance of the rendered component.
+
 ## 3.4.0 - December 2017
 
 * New Component: DataGrid displays a list of data as a table. Each item is rendered as a row, divided into columns for each of the item's fields. Supports sorting columns, resizing columns, and drag-and-drop reordering of columns.
