@@ -5,6 +5,7 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
+	import feathers.layout.Direction;
 	import feathers.layout.TiledColumnsLayout;
 	import feathers.system.DeviceCapabilities;
 
@@ -50,7 +51,7 @@ package feathers.examples.layoutExplorer.screens
 			layout.tileVerticalAlign = this.settings.tileVerticalAlign;
 
 			this.layout = layout;
-			this.snapToPages = this.settings.paging != TiledColumnsLayout.PAGING_NONE;
+			this.snapToPages = this.settings.paging != Direction.NONE;
 			this.snapScrollPositionsToPixels = true;
 
 			var minQuadSize:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) / 15;

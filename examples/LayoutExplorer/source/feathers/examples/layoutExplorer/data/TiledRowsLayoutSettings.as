@@ -1,5 +1,6 @@
 package feathers.examples.layoutExplorer.data
 {
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.layout.VerticalAlign;
@@ -10,7 +11,7 @@ package feathers.examples.layoutExplorer.data
 		{
 		}
 
-		public var paging:String = TiledRowsLayout.PAGING_NONE;
+		public var paging:String = Direction.NONE;
 		public var itemCount:int = 75;
 		public var requestedColumnCount:int = 0;
 		public var horizontalAlign:String = HorizontalAlign.LEFT;

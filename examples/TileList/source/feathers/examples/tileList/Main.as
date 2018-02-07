@@ -78,7 +78,7 @@ package feathers.examples.tileList
 			this._list.verticalScrollPolicy = ScrollPolicy.OFF;
 
 			var listLayout:TiledRowsLayout = new TiledRowsLayout();
-			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
+			listLayout.paging = Direction.HORIZONTAL;
 			listLayout.useSquareTiles = false;
 			listLayout.tileHorizontalAlign = HorizontalAlign.JUSTIFY;
 			listLayout.tileVerticalAlign = HorizontalAlign.JUSTIFY;

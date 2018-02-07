@@ -11,8 +11,8 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.TiledColumnsLayout;
 	import feathers.layout.VerticalAlign;
 
 	import starling.display.DisplayObject;
@@ -84,12 +84,12 @@ package feathers.examples.layoutExplorer.screens
 			this._requestedRowCountStepper.addEventListener(Event.CHANGE, requestedRowCountStepper_changeHandler);
 
 			this._pagingPicker = new PickerList();
-			this._pagingPicker.typicalItem = TiledColumnsLayout.PAGING_HORIZONTAL;
+			this._pagingPicker.typicalItem = Direction.HORIZONTAL;
 			this._pagingPicker.dataProvider = new VectorCollection(new <String>
 			[
-				TiledColumnsLayout.PAGING_NONE,
-				TiledColumnsLayout.PAGING_HORIZONTAL,
-				TiledColumnsLayout.PAGING_VERTICAL
+				Direction.NONE,
+				Direction.HORIZONTAL,
+				Direction.VERTICAL
 			]);
 			this._pagingPicker.selectedItem = this.settings.paging;
 			this._pagingPicker.addEventListener(Event.CHANGE, pagingPicker_changeHandler);
