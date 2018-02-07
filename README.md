@@ -1,4 +1,4 @@
-# Feathers 3.4.0
+# Feathers 3.4.1
 
 Say hello to [Feathers UI](https://feathersui.com/), a library of light-weight, skinnable, and extensible UI controls for mobile and desktop. The components run on [Starling Framework](http://starling-framework.org/) and [Adobe AIR](http://www.adobe.com/products/air.html) — offering blazing fast GPU powered graphics to create a smooth and responsive experience. Build completely standalone, native applications on iOS, Android, Windows, and macOS, or target Adobe Flash Player in desktop browsers. Created by [Josh Tynjala](https://twitter.com/joshtynjala) from Bowler Hat LLC, Feathers UI is free and open source.
 
