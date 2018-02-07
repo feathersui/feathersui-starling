@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
 
-## 3.4.0 - February 2018
+## 3.4.1 - February 2018
 
 * AnchorLayout: Fixed issue where x and y properties might not be accounted for in measurement if item had AnchorLayoutData, but didn't set left and top.
 * BitmapFontTextEditor: Fixed issue where the cursor and selection might be positioned incorrectly when alignment is center or right.
