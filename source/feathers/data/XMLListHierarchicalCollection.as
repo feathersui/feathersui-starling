@@ -347,6 +347,10 @@ package feathers.data
 		 */
 		public function getItemAtLocation(location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				return null;
+			}
 			var branch:XMLList = this._xmlListData;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
@@ -413,9 +417,15 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#addItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function addItemAtLocation(item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var parentOfBranch:XML = null;
 			var branch:XMLList = this._xmlListData;
@@ -467,9 +477,15 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#removeItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function removeItemAtLocation(location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var branch:XMLList = this._xmlListData;
 			var indexCount:int = location.length - 1;
@@ -537,9 +553,15 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#setItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function setItemAtLocation(item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var branch:XMLList = this._xmlListData;
 			var indexCount:int = location.length - 1;

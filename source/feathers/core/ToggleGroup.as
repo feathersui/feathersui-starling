@@ -169,13 +169,14 @@ package feathers.core
 			this._selectedIndex = value;
 
 			//refresh all the items
+			var oldIgnoreChanges:Boolean = this._ignoreChanges;
 			this._ignoreChanges = true;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:IToggle = this._items[i];
 				item.isSelected = i == value;
 			}
-			this._ignoreChanges = false;
+			this._ignoreChanges = oldIgnoreChanges
 			if(hasChanged)
 			{
 				//only dispatch if there's been a change. we didn't return

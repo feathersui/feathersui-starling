@@ -107,12 +107,20 @@ package feathers.data
 		 */
 		public function getItemAtLocation(data:Object, location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				return null;
+			}
 			var branch:Array = data as Array;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = location[i];
 				branch = branch[index][childrenField] as Array;
+				if(branch === null)
+				{
+					throw new RangeError("Branch not found at location: " + location);
+				}
 			}
 			var lastIndex:int = location[indexCount];
 			return branch[lastIndex];
@@ -140,12 +148,20 @@ package feathers.data
 		 */
 		public function setItemAtLocation(data:Object, item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var branch:Array = data as Array;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = location[i];
 				branch = branch[index][childrenField] as Array;
+				if(branch === null)
+				{
+					throw new RangeError("Branch not found at location: " + location);
+				}
 			}
 			var lastIndex:int = location[indexCount];
 			branch[lastIndex] = item;
@@ -173,12 +189,20 @@ package feathers.data
 		 */
 		public function addItemAtLocation(data:Object, item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var branch:Array = data as Array;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = location[i];
 				branch = branch[index][childrenField] as Array;
+				if(branch === null)
+				{
+					throw new RangeError("Branch not found at location: " + location);
+				}
 			}
 			var lastIndex:int = location[indexCount];
 			branch.insertAt(lastIndex, item);
@@ -206,12 +230,20 @@ package feathers.data
 		 */
 		public function removeItemAtLocation(data:Object, location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var branch:Array = data as Array;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = location[i];
 				branch = branch[index][childrenField] as Array;
+				if(branch === null)
+				{
+					throw new RangeError("Branch not found at location: " + location);
+				}
 			}
 			var lastIndex:int = location[indexCount];
 			return branch.removeAt(lastIndex);

@@ -385,7 +385,7 @@ package feathers.layout
 					}
 					else
 					{
-						top = 0;
+						top = item.y;
 					}
 					var bottom:Number = layoutData.bottom;
 					var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
@@ -415,7 +415,7 @@ package feathers.layout
 					return top;
 				}
 			}
-			return 0;
+			return item.y;
 		}
 
 		/**
@@ -565,7 +565,7 @@ package feathers.layout
 					}
 					else
 					{
-						left = 0;
+						left = item.x;
 					}
 					var right:Number = layoutData.right;
 					var hasRightPosition:Boolean = right === right; //!isNaN;
@@ -595,7 +595,7 @@ package feathers.layout
 					return left;
 				}
 			}
-			return 0;
+			return item.x;
 		}
 
 		/**

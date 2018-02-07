@@ -379,6 +379,10 @@ package feathers.data
 		 */
 		public function getItemAtLocation(location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				return null;
+			}
 			var branch:Vector.<*> = this._vectorData;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
@@ -446,6 +450,10 @@ package feathers.data
 		 */
 		public function addItemAtLocation(item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var branch:Vector.<*> = this._vectorData;
 			var indexCount:int = location.length - 1;
@@ -501,6 +509,10 @@ package feathers.data
 		 */
 		public function removeItemAtLocation(location:Vector.<int>):Object
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var branch:Vector.<*> = this._vectorData;
 			var indexCount:int = location.length - 1;
@@ -582,6 +594,10 @@ package feathers.data
 		 */
 		public function setItemAtLocation(item:Object, location:Vector.<int>):void
 		{
+			if(location === null || location.length === 0)
+			{
+				throw new RangeError("Branch not found at location: " + location);
+			}
 			var eventIndices:Array = [];
 			var branch:Vector.<*> = this._vectorData;
 			var indexCount:int = location.length - 1;

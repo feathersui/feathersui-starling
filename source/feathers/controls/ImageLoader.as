@@ -2163,6 +2163,10 @@ package feathers.controls
 					//to dispose the BitmapData and call unload(). we can't do
 					//either of those things here.
 					this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
+					//be sure to add listeners for these events, or errors
+					//could be thrown! issue #1627
+					this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, orphanedLoader_errorHandler);
+					this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, orphanedLoader_errorHandler);
 				}
 				this.loader = null;
 			}
@@ -2673,12 +2677,27 @@ package feathers.controls
 		{
 			var loaderInfo:LoaderInfo = LoaderInfo(event.currentTarget);
 			loaderInfo.removeEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, orphanedLoader_errorHandler);
+			loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, orphanedLoader_errorHandler);
 			var loader:Loader = loaderInfo.loader;
 			var bitmap:Bitmap = Bitmap(loader.content);
 			bitmap.bitmapData.dispose();
 			//we could call unloadAndStop() and force the garbage collector to
 			//run, but that could hurt performance, so let it happen naturally.
 			loader.unload();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function orphanedLoader_errorHandler(event:flash.events.Event):void
+		{
+			var loaderInfo:LoaderInfo = LoaderInfo(event.currentTarget);
+			loaderInfo.removeEventListener(flash.events.Event.COMPLETE, orphanedLoader_completeHandler);
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, orphanedLoader_errorHandler);
+			loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, orphanedLoader_errorHandler);
+			//no need to do anything else. this listener only exists to avoid
+			//a runtime error on an resource that is no longer required
 		}
 
 		/**

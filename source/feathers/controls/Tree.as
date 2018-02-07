@@ -589,6 +589,7 @@ package feathers.controls
 				return;
 			}
 			this._selectedItem = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 

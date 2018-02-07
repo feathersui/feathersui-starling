@@ -12,6 +12,7 @@ package feathers.tests
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.Event;
 
 	public class PopUpManagerTests
 	{
@@ -276,6 +277,23 @@ package feathers.tests
 			this._feathersPopUp = container;
 			PopUpManager.addPopUp(container);
 			Assert.assertStrictlyEquals("ScrollContainer added to PopUpManager should default to autoSizeMode === AutoSizeMode.CONTENT", AutoSizeMode.CONTENT, container.autoSizeMode);
+		}
+
+		//Github issue #1685
+		[Test]
+		public function testRemovePopUpFromRemovedEventForOtherPopUp():void
+		{
+			this._popUp1 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp1);
+			this._popUp2 = new DisposeFlagQuad();
+			PopUpManager.addPopUp(this._popUp2);
+			this._popUp1.addEventListener(Event.REMOVED, function():void
+			{
+				_popUp2.removeFromParent(true);
+			});
+			PopUpManager.removeAllPopUps();
+			Assert.assertStrictlyEquals("PopUpManager: Failed to remove all pop ups.",
+				0, PopUpManager.popUpCount);
 		}
 	}
 }

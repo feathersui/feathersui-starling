@@ -227,7 +227,13 @@ package feathers.core
 			for(var i:int = 0; i < popUpCount; i++)
 			{
 				var popUp:DisplayObject = popUps[i];
-				this.removePopUp(popUp, dispose);
+				//we check if this is still a pop-up because it might have been
+				//removed in an Event.REMOVED or Event.REMOVED_FROM_STAGE
+				//listener for another pop-up earlier in the loop
+				if(this.isPopUp(popUp))
+				{
+					this.removePopUp(popUp, dispose);
+				}
 			}
 		}
 
