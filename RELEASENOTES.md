@@ -1,6 +1,6 @@
 # Feathers UI Release Notes
 
-Noteworthy changes in official, stable releases of [Feathers UI](http://feathersui.com/).
+Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
 ## 3.4.1 - February 2018
 
@@ -92,6 +92,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 * TextInputRestrict: fixed issue where -, ^, and \ characters could not be escaped. Used by BitmapFontTextEditor and TextBlockTextEditor.
 
 ## 3.3.0 - July 2017
+
+See the [Feathers 3.3 Migration Guide](https://feathersui.com/help/migration-guide-3.3.html) for details about how to upgrade to Feathers 3.3.
 
 * New Component: Tree is a List-like component designed for displaying nested hierarchical data, with branches that may be opened and closed.
 * New Layout: SlideShowLayout is designed for displaying one image at a time in a gallery.
@@ -228,7 +230,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](http://feathers
 
 ## 3.1.0 - October 2016
 
-See the [Feathers 3.1 Migration Guide](http://feathersui.com/help/migration-guide-3.1.html) for details about how to upgrade to Feathers 3.1.
+See the [Feathers 3.1 Migration Guide](https://feathersui.com/help/migration-guide-3.1.html) for details about how to upgrade to Feathers 3.1.
 
 * New Component: TabNavigator to display a TabBar that switches between screens, similar to a ScreenNavigator.
 * Font Styles: all components support starling.text.TextFormat for font styling. For advanced needs, text renderers can still use low-level ElementFormat/TextFormat objects which take precedence.
@@ -343,7 +345,7 @@ See the [Feathers 3.1 Migration Guide](http://feathersui.com/help/migration-guid
 
 ## 3.0.0 - June 2016
 
-See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
+See the [Feathers 3.0 Migration Guide](https://feathersui.com/help/migration-guide-3.0.html) for details about how to upgrade to Feathers 3.0.
 
 * Support for Starling Framework 2.0
 * Minimum runtime version is now Flash Player 19 and AIR 19.
@@ -489,7 +491,7 @@ See the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guid
 
 ### 3.0.0 API Changes
 
-Please see the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migration-guide-3.0.html) for details about what has been deprecated or removed in Feathers 3.0.
+Please see the [Feathers 3.0 Migration Guide](https://feathersui.com/help/migration-guide-3.0.html) for details about what has been deprecated or removed in Feathers 3.0.
 
 ## 2.3.0 - December 2015
 
@@ -589,7 +591,7 @@ Please see the [Feathers 3.0 Migration Guide](http://feathersui.com/help/migrati
 
 ### 2.3.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `StandardIcons` class is deprecated. It was used to provide a drill-down icon for item renderers, but since lists now support multiple item renderer types, it is no longer needed. Additionally, the `StandardIcons` didn't work properly with multiple Starling instances, so it was ultimately a poor design choice.
 
@@ -716,7 +718,7 @@ All properties and constants where "name" was replaced by "style name" were orig
 
 ### 2.2.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `FeathersEventType.ERROR` constant is deprecated. The `ImageLoader` component used this constant, and it now dispatches separate `Event.IO_ERROR` and `Event.SECURITY_ERROR` events. Error events should always be specific.
 
@@ -847,7 +849,7 @@ list.scrollToPageIndex( 2, list.verticalPageIndex );
 
 ### 2.1.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `nameList` property on the `IFeathersControl` interface has been deprecated, and it is replaced by the `styleNameList` property. The `name` property is no longer connected to style names, and situations where it failed to work with `getChildByName()` have been resolved. The `styleName` property has been added to replace the former usage of the `name` property as a concatenated version of `nameList` (now, `styleNameList`). The `nameList` property was deprecated in Feathers 2.0.0, and it remains deprecated in Feathers 2.1.0.
 
@@ -1033,7 +1035,7 @@ Subclasses of `Scroller` that need to support passing focus to children must now
 
 ### 2.0.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `nameList` property has been deprecated, and it is replaced by the `styleNameList` property. The `name` property is no longer connected to style names, and situations where it failed to work with `getChildByName()` have been resolved. The `styleName` property has been added to replace the former usage of the `name` property as a concatenated version of `nameList` (now, `styleNameList`).
 
@@ -1180,13 +1182,13 @@ When replacing the `dataProvider` of a `List` or `GroupedList` (or replacing the
 
 ### 1.3.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer was originally deprecated in Feathers 1.1.0, and it has now been removed. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components.
 
 ### 1.3.0 API Changes
 
-Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type may be considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type may be considered [exceptions to the Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
 
 #### ILayout
 
@@ -1288,13 +1290,13 @@ The property `requiresLayoutOnScroll` has been added to `ILayout` to provide imp
 
 ### 1.2.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components. The `scrollerProperties` property was deprecated in Feathers 1.1.0, and it remains deprecated in Feathers 1.2.0. 
 
 ### 1.2.0 API Changes
 
-Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type are considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type are considered [exceptions to the Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
 
 #### PopUpManager
 
@@ -1472,13 +1474,13 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 
 ### 1.1.0 Deprecated APIs
 
-All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+All deprecated APIs are subject to the [Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
 
 The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components.
 
 ### 1.1.0 API Changes
 
-Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type are considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+Some changes have been made to Feathers that have the potential to break code in existing projects. Changes of this type are considered [exceptions to the Feathers deprecation policy](https://feathersui.com/help/deprecation-policy.html#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
 
 #### IVariableVirtualLayout
 
