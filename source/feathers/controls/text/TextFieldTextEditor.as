@@ -1376,6 +1376,42 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _softKeyboard:String = "default"; //constant is available in AIR only
+
+		/**
+		 * Customizes the soft keyboard that is displayed on a touch screen
+		 * when the text editor has focus.
+		 *
+		 * <p>In the following example, the soft keyboard type is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.softKeyboard = SoftKeyboardType.NUMBER;</listing>
+		 *
+		 * @default flash.text.SoftKeyboardType.DEFAULT
+		 * 
+		 * @see https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/SoftKeyboardType.html flash.text.SoftKeyboardType
+		 */
+		public function get softKeyboard():String
+		{
+			return this._softKeyboard;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set softKeyboard(value:String):void
+		{
+			if(this._softKeyboard === value)
+			{
+				return;
+			}
+			this._softKeyboard = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var resetScrollOnFocusOut:Boolean = true;
 
 		/**
@@ -1915,6 +1951,12 @@ package feathers.controls.text
 			textField.displayAsPassword = this._displayAsPassword;
 			textField.wordWrap = this._wordWrap;
 			textField.multiline = this._multiline;
+			//The softKeyboard property is not available in Flash Player.
+			//It's only available in AIR.
+			if("softKeyboard" in textField)
+			{
+				textField["softKeyboard"] = this._softKeyboard;
+			}
 			if(!this._embedFonts &&
 				this._currentTextFormat === this._fontStylesTextFormat)
 			{
