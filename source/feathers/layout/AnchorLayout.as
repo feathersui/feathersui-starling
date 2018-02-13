@@ -371,6 +371,10 @@ package feathers.layout
 				{
 					var top:Number = layoutData.top;
 					var hasTopPosition:Boolean = top === top; //!isNaN
+					var bottom:Number = layoutData.bottom;
+					var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
+					var verticalCenter:Number = layoutData.verticalCenter;
+					var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
 					if(hasTopPosition)
 					{
 						var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
@@ -383,12 +387,14 @@ package feathers.layout
 							return top;
 						}
 					}
-					else
+					else if(!hasBottomPosition && !hasVerticalCenterPosition)
 					{
 						top = item.y;
 					}
-					var bottom:Number = layoutData.bottom;
-					var hasBottomPosition:Boolean = bottom === bottom; //!isNaN
+					else
+					{
+						top = 0;
+					}
 					if(hasBottomPosition)
 					{
 						var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
@@ -397,8 +403,6 @@ package feathers.layout
 							top = Math.max(top, -bottomAnchorDisplayObject.height - bottom + this.getTopOffset(bottomAnchorDisplayObject));
 						}
 					}
-					var verticalCenter:Number = layoutData.verticalCenter;
-					var hasVerticalCenterPosition:Boolean = verticalCenter === verticalCenter; //!isNaN
 					if(hasVerticalCenterPosition)
 					{
 						var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
@@ -551,6 +555,10 @@ package feathers.layout
 				{
 					var left:Number = layoutData.left;
 					var hasLeftPosition:Boolean = left === left; //!isNaN
+					var right:Number = layoutData.right;
+					var hasRightPosition:Boolean = right === right; //!isNaN;
+					var horizontalCenter:Number = layoutData.horizontalCenter;
+					var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
 					if(hasLeftPosition)
 					{
 						var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
@@ -563,12 +571,14 @@ package feathers.layout
 							return left;
 						}
 					}
-					else
+					else if(!hasRightPosition && !hasHorizontalCenterPosition)
 					{
 						left = item.x;
 					}
-					var right:Number = layoutData.right;
-					var hasRightPosition:Boolean = right === right; //!isNaN;
+					else
+					{
+						left = 0;
+					}
 					if(hasRightPosition)
 					{
 						var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
@@ -577,8 +587,6 @@ package feathers.layout
 							left = Math.max(left, -rightAnchorDisplayObject.width - right + this.getLeftOffset(rightAnchorDisplayObject));
 						}
 					}
-					var horizontalCenter:Number = layoutData.horizontalCenter;
-					var hasHorizontalCenterPosition:Boolean = horizontalCenter === horizontalCenter; //!isNaN
 					if(hasHorizontalCenterPosition)
 					{
 						var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
