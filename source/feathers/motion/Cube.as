@@ -10,6 +10,8 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import feathers.motion.effectClasses.TweenEffectContext;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that

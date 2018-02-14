@@ -12,6 +12,10 @@ package feathers.motion
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.display.DisplayObject;
+	import feathers.motion.effectClasses.IMoveEffectContext;
+	import feathers.motion.effectClasses.TweenMoveEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * Animates a component's <code>x</code> and <code>y</code> position. 

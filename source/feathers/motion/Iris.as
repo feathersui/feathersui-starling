@@ -15,6 +15,8 @@ package feathers.motion
 	import starling.display.Canvas;
 	import starling.display.DisplayObject;
 	import starling.utils.Pool;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that

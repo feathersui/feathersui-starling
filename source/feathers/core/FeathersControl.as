@@ -28,9 +28,9 @@ package feathers.core
 	import starling.events.EventDispatcher;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
-	import feathers.motion.IEffectContext;
-	import feathers.motion.IMoveEffectContext;
-	import feathers.motion.IResizeEffectContext;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.IMoveEffectContext;
+	import feathers.motion.effectClasses.IResizeEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be

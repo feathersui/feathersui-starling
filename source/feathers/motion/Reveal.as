@@ -11,6 +11,8 @@ package feathers.motion
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that

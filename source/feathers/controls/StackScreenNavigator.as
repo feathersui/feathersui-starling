@@ -11,7 +11,6 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
-	import feathers.motion.IEffectContext;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
@@ -25,6 +24,7 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * Typically used to provide some kind of animation or visual effect,
