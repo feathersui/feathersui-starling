@@ -13,6 +13,7 @@ package feathers.motion.effectClasses
 	import starling.animation.Tween;
 	import starling.events.Event;
 	import starling.errors.AbstractClassError;
+	import starling.animation.Transitions;
 
 	/**
 	 * Dispatched when the effect is complete.
@@ -59,6 +60,10 @@ package feathers.motion.effectClasses
 				throw new AbstractClassError();
 			}
 			this._duration = duration;
+			if(transition === null)
+			{
+				transition = Transitions.LINEAR;
+			}
 			this._transition = transition;
 			this.prepareEffect();
 		}
@@ -74,7 +79,7 @@ package feathers.motion.effectClasses
 		protected var _duration:Number;
 
 		/**
-		 * The duration of the effect.
+		 * The duration of the effect, in seconds.
 		 */
 		public function get duration():Number
 		{

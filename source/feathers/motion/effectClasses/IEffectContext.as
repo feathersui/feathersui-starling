@@ -39,6 +39,11 @@ package feathers.motion.effectClasses
 	public interface IEffectContext extends IFeathersEventDispatcher
 	{
 		/**
+		 * The duration of the effect, in seconds.
+		 */
+		function get duration():Number;
+
+		/**
 		 * The position of the effect, from <code>0</code> to <code>1</code>.
 		 */
 		function get position():Number;
