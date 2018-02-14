@@ -18,6 +18,9 @@ package feathers.motion.effectClasses
 	 */
 	public class ParallelEffectContext extends BaseEffectContext implements IEffectContext
 	{
+		/**
+		 * Constructor.
+		 */
 		public function ParallelEffectContext(target:DisplayObject, functions:Array)
 		{
 			var duration:Number = 0;
@@ -36,8 +39,14 @@ package feathers.motion.effectClasses
 			super(duration);
 		}
 
-		private var _contexts:Vector.<IEffectContext> = new <IEffectContext>[];
+		/**
+		 * @private
+		 */
+		protected var _contexts:Vector.<IEffectContext> = new <IEffectContext>[];
 
+		/**
+		 * @private
+		 */
 		override protected function updateEffect():void
 		{
 			var ratio:Number = this._position * this._duration;

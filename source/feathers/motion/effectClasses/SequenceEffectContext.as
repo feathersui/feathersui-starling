@@ -18,6 +18,9 @@ package feathers.motion.effectClasses
 	 */
 	public class SequenceEffectContext extends BaseEffectContext implements IEffectContext
 	{
+		/**
+		 * Constructor.
+		 */
 		public function SequenceEffectContext(target:DisplayObject, functions:Array)
 		{
 			var duration:Number = 0;
@@ -32,8 +35,14 @@ package feathers.motion.effectClasses
 			super(duration);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _contexts:Vector.<IEffectContext> = new <IEffectContext>[];
 
+		/**
+		 * @private
+		 */
 		override protected function updateEffect():void
 		{
 			var totalTime:Number = 0;
