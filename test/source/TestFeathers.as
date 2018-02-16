@@ -27,6 +27,7 @@ package
 	import feathers.tests.DefaultGroupedListHeaderOrFooterRendererMeasurementTests;
 	import feathers.tests.DefaultListItemRendererInternalStateTests;
 	import feathers.tests.DefaultListItemRendererMeasurementTests;
+	import feathers.tests.DeviceCapabilitiesTests;
 	import feathers.tests.DrawersMeasurementTests;
 	import feathers.tests.DrawersTests;
 	import feathers.tests.DropDownPopUpContentManagerTests;
@@ -204,6 +205,7 @@ package
 				StyleTests,
 				RestrictedStyleTests,
 				FocusIndicatorTests,
+				DeviceCapabilitiesTests,
 
 				//individual component tests
 				AlertMeasurementTests,
