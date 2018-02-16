@@ -118,24 +118,24 @@ package feathers.system
 		public static function isTablet(stage:Stage = null):Boolean
 		{
 			if(stage === null)
- -			{
- -				stage = Starling.current.nativeStage;
- -			}
- -			var screenWidth:Number = screenPixelWidth;
- -			if(screenWidth !== screenWidth) //isNaN
- -			{
- -				screenWidth = stage.fullScreenWidth;
- -			}
- -			var screenHeight:Number = screenPixelHeight;
- -			if(screenHeight !== screenHeight) //isNaN
- -			{
- -				screenHeight = stage.fullScreenHeight;
- -			}
- -			if(screenWidth > screenHeight)
- -			{
- -				screenWidth = screenHeight;
- -			}
- -			return (screenWidth / dpi) >= tabletScreenMinimumInches;
+ 			{
+ 				stage = Starling.current.nativeStage;
+ 			}
+ 			var screenWidth:Number = screenPixelWidth;
+ 			if(screenWidth !== screenWidth) //isNaN
+ 			{
+ 				screenWidth = stage.fullScreenWidth;
+ 			}
+ 			var screenHeight:Number = screenPixelHeight;
+ 			if(screenHeight !== screenHeight) //isNaN
+ 			{
+ 				screenHeight = stage.fullScreenHeight;
+ 			}
+ 			if(screenWidth > screenHeight)
+ 			{
+ 				screenWidth = screenHeight;
+ 			}
+ 			return (screenWidth / dpi) >= tabletScreenMinimumInches;
 		}
 
 		/**
@@ -153,23 +153,23 @@ package feathers.system
 		public static function isLargePhone(stage:Stage = null):Boolean
 		{
 			if(stage === null)
- -			{
- -				stage = Starling.current.nativeStage;
- -			}
- -			var screenWidth:Number = screenPixelWidth;
- -			if(screenWidth !== screenWidth) //isNaN
- -			{
- -				screenWidth = stage.fullScreenWidth;
- -			}
- -			var screenHeight:Number = screenPixelHeight;
- -			if(screenHeight !== screenHeight) //isNaN
- -			{
- -				screenHeight = stage.fullScreenHeight;
- -			}
- -			if(screenWidth > screenHeight)
- -			{
- -				screenWidth = screenHeight;
- -			}
+ 			{
+ 				stage = Starling.current.nativeStage;
+ 			}
+ 			var screenWidth:Number = screenPixelWidth;
+ 			if(screenWidth !== screenWidth) //isNaN
+ 			{
+ 				screenWidth = stage.fullScreenWidth;
+ 			}
+ 			var screenHeight:Number = screenPixelHeight;
+ 			if(screenHeight !== screenHeight) //isNaN
+ 			{
+ 				screenHeight = stage.fullScreenHeight;
+ 			}
+ 			if(screenWidth > screenHeight)
+ 			{
+ 				screenWidth = screenHeight;
+ 			}
 			return (screenWidth / dpi) >= largePhoneScreenMinimumInches && !isTablet(stage);
 		}
 
