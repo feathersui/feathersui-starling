@@ -117,10 +117,25 @@ package feathers.system
 		 */
 		public static function isTablet(stage:Stage = null):Boolean
 		{
-			var inchesX = screenInchesX(stage);
-			var inchesY = screenInchesY(stage);
-			var minValue = Math.min(inchesX,inchesY);
-			return minValue >= tabletScreenMinimumInches;
+			if(stage === null)
+ -			{
+ -				stage = Starling.current.nativeStage;
+ -			}
+ -			var screenWidth:Number = screenPixelWidth;
+ -			if(screenWidth !== screenWidth) //isNaN
+ -			{
+ -				screenWidth = stage.fullScreenWidth;
+ -			}
+ -			var screenHeight:Number = screenPixelHeight;
+ -			if(screenHeight !== screenHeight) //isNaN
+ -			{
+ -				screenHeight = stage.fullScreenHeight;
+ -			}
+ -			if(screenWidth > screenHeight)
+ -			{
+ -				screenWidth = screenHeight;
+ -			}
+ -			return (screenWidth / dpi) >= tabletScreenMinimumInches;
 		}
 
 		/**
@@ -137,10 +152,25 @@ package feathers.system
 		 */
 		public static function isLargePhone(stage:Stage = null):Boolean
 		{
-			var inchesX = screenInchesX(stage);
-			var inchesY = screenInchesY(stage);
-			var minValue = Math.min(inchesX,inchesY);
-			return minValue >= largePhoneScreenMinimumInches && !isTablet(stage);
+			if(stage === null)
+ -			{
+ -				stage = Starling.current.nativeStage;
+ -			}
+ -			var screenWidth:Number = screenPixelWidth;
+ -			if(screenWidth !== screenWidth) //isNaN
+ -			{
+ -				screenWidth = stage.fullScreenWidth;
+ -			}
+ -			var screenHeight:Number = screenPixelHeight;
+ -			if(screenHeight !== screenHeight) //isNaN
+ -			{
+ -				screenHeight = stage.fullScreenHeight;
+ -			}
+ -			if(screenWidth > screenHeight)
+ -			{
+ -				screenWidth = screenHeight;
+ -			}
+			return (screenWidth / dpi) >= largePhoneScreenMinimumInches && !isTablet(stage);
 		}
 
 		/**
