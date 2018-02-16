@@ -1,13 +1,8 @@
 package feathers.tests
-{
-	import feathers.controls.DateTimeMode;
-	import feathers.controls.DateTimeSpinner;
-	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.tests.supportClasses.DisposeFlagQuad;
-
+{	
+	import feathers.system.DeviceCapabilities;
+	
 	import org.flexunit.Assert;
-
-	import starling.display.Quad;
 
 	public class DeviceCapabilitiesTests
 	{
@@ -196,15 +191,16 @@ package feathers.tests
 		public function testDeviceTypes():void
 		{
 			
-			for each (var deviceName:Object in IOS_DEVICES)
+			for each (var device:Object in IOS_DEVICES)
 			{
 				DeviceCapabilities.dpi = device.dpi;
 				DeviceCapabilities.screenPixelWidth = device.resolution[0];
 				DeviceCapabilities.screenPixelHeight = device.resolution[1];
 				var isTablet:Boolean = DeviceCapabilities.isTablet();
 				var isLargePhone:Boolean = DeviceCapabilities.isLargePhone();
-				Assert.assertFalse(device.deviceName+" detection failed at orientation "+device.orientation, isTablet == device.isTablet && isLargePhone == device.isLargePhone);
-			}
-			
+				Assert.assertFalse(device.deviceName+" detection failed at orientation "+device.orientation+" as TABLET", isTablet != device.isTablet);
+				Assert.assertFalse(device.deviceName+" detection failed at orientation "+device.orientation+" as LARGE PHONE", isLargePhone != device.isLargePhone);
+			}		
 		}
+	}
 }
