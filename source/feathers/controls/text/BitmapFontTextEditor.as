@@ -1596,6 +1596,8 @@ package feathers.controls.text
 				//the clipboard doesn't contain any text to paste
 				return;
 			}
+			//new lines are not allowed
+			pastedText = pastedText.replace(/[\n\r]/g, "");
 			if(this._restrict)
 			{
 				pastedText = this._restrict.filterText(pastedText);
