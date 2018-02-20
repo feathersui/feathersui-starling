@@ -1384,6 +1384,16 @@ package feathers.controls
 		 */
 		protected function handleDragEnd():void
 		{
+			if(this._dragEffectContext === null)
+			{
+				//if we're waiting to start the transition for performance
+				//reasons, force it to start immediately
+				if(this._waitingTransition !== null)
+				{
+					this.startWaitingTransition();
+				}
+			}
+
 			this._dragCancelled = false;
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			
