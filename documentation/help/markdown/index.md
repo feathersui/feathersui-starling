@@ -275,6 +275,8 @@ Item renderers are custom components used by lists to display items from the dat
 
 -   [Feathers FAQ](faq/index.html)
 
+-   [Feathers Performance Tips by Josh Tynjala](https://joshblog.net/2013/feathers-performance-tips/)
+
 -   [Building the Feathers SWC from source code](build.html)
 
 -   [Feathers prerelease information](prerelease.html)
