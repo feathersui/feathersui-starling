@@ -37,15 +37,30 @@ package feathers.system
 		public static var simulateDPad:Boolean = false;
 
 		/**
-		 * The minimum physical size, in inches, of the device's larger side to
-		 * be considered a tablet.
+		 * The minimum physical size, in inches, of the device's smaller side to
+		 * be considered a tablet. 
+		 * Default value is based on iPad mini screen width that is ~4.712 inches
 		 *
-		 * @default 5
+		 * @default 4.7
 		 *
 		 * @see #isTablet()
+		 * @see #isLargePhone()
 		 * @see #isPhone()
 		 */
-		public static var tabletScreenMinimumInches:Number = 5;
+		public static var tabletScreenMinimumInches:Number = 4.7;
+
+		/**
+		 * The minimum physical size, in inches, of the device's smaller side to
+		 * be considered a large phone.
+		 * Default value is based on iPhone+ screen width that is ~3.09 inches
+		 *
+		 * @default 3
+		 *
+		 * @see #isTablet()
+		 * @see #isLargePhone()
+		 * @see #isPhone()
+		 */
+		public static var largePhoneScreenMinimumInches:Number = 3;
 
 		/**
 		 * A custom width, in pixels, to use for calculations of the device's
@@ -97,29 +112,65 @@ package feathers.system
 		 * @see #tabletScreenMinimumInches
 		 * @see #screenPixelWidth
 		 * @see #screenPixelHeight
+		 * @see #isLargePhone()
 		 * @see #isPhone()
 		 */
 		public static function isTablet(stage:Stage = null):Boolean
 		{
 			if(stage === null)
-			{
-				stage = Starling.current.nativeStage;
-			}
-			var screenWidth:Number = screenPixelWidth;
-			if(screenWidth !== screenWidth) //isNaN
-			{
-				screenWidth = stage.fullScreenWidth;
-			}
-			var screenHeight:Number = screenPixelHeight;
-			if(screenHeight !== screenHeight) //isNaN
-			{
-				screenHeight = stage.fullScreenHeight;
-			}
-			if(screenWidth < screenHeight)
-			{
-				screenWidth = screenHeight;
-			}
-			return (screenWidth / dpi) >= tabletScreenMinimumInches;
+ 			{
+ 				stage = Starling.current.nativeStage;
+ 			}
+ 			var screenWidth:Number = screenPixelWidth;
+ 			if(screenWidth !== screenWidth) //isNaN
+ 			{
+ 				screenWidth = stage.fullScreenWidth;
+ 			}
+ 			var screenHeight:Number = screenPixelHeight;
+ 			if(screenHeight !== screenHeight) //isNaN
+ 			{
+ 				screenHeight = stage.fullScreenHeight;
+ 			}
+ 			if(screenWidth > screenHeight)
+ 			{
+ 				screenWidth = screenHeight;
+ 			}
+ 			return (screenWidth / dpi) >= tabletScreenMinimumInches;
+		}
+
+		/**
+		 * Determines if this device is probably a large phone (like iPhone "plus" family), 
+		 * based on the physical
+		 * width and height, in inches, calculated using the full-screen
+		 * dimensions and the screen density.
+		 *
+		 * @see #tabletScreenMinimumInches
+		 * @see #screenPixelWidth
+		 * @see #screenPixelHeight
+		 * @see #isTablet()
+		 * @see #isPhone()
+		 */
+		public static function isLargePhone(stage:Stage = null):Boolean
+		{
+			if(stage === null)
+ 			{
+ 				stage = Starling.current.nativeStage;
+ 			}
+ 			var screenWidth:Number = screenPixelWidth;
+ 			if(screenWidth !== screenWidth) //isNaN
+ 			{
+ 				screenWidth = stage.fullScreenWidth;
+ 			}
+ 			var screenHeight:Number = screenPixelHeight;
+ 			if(screenHeight !== screenHeight) //isNaN
+ 			{
+ 				screenHeight = stage.fullScreenHeight;
+ 			}
+ 			if(screenWidth > screenHeight)
+ 			{
+ 				screenWidth = screenHeight;
+ 			}
+			return (screenWidth / dpi) >= largePhoneScreenMinimumInches && !isTablet(stage);
 		}
 
 		/**
@@ -128,10 +179,11 @@ package feathers.system
 		 * dimensions and the screen density.
 		 *
 		 * @see #isTablet()
+		 * @see #isLargePhone()
 		 */
 		public static function isPhone(stage:Stage = null):Boolean
 		{
-			return !isTablet(stage);
+			return !isTablet(stage) && !isLargePhone(stage);
 		}
 
 		/**
