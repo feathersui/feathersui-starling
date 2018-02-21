@@ -90,6 +90,7 @@ package feathers.utils.touch
 			if(this._target)
 			{
 				this._target.removeEventListener(TouchEvent.TOUCH, target_touchHandler);
+				this._target.removeEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
 			}
 			this._target = value;
 			if(this._target)
