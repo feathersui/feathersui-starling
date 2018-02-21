@@ -36,16 +36,95 @@ package feathers.system
 		 */
 		public static var simulateDPad:Boolean = false;
 
+		[Deprecated(replacement="feathers.system.DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches",since="3.5.0")]
+		/**
+		 * @private
+		 * DEPRECATED: Replaced by <code>feathers.system.DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
+		 * starting with Feathers 3.5. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
+		 */
+		public static function get tabletScreenMinimumInches():Number
+		{
+			return DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set tabletScreenMinimumInches(value:Number):void
+		{
+			DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches = value;
+		}
+
+		//early Android tablets were frequently 600x1024 170 DPI, which results
+		//in a portrait width slightly larger than 3.5 inches
+		/**
+		 * The minimum physical width, in inches, of the device when in
+		 * portrait orientation to be considered a tablet.
+		 * 
+		 * <p>When calling <code>isTablet()</code>, a device must meet the
+		 * requirements of both the minimum portrait width and the minimum
+		 * landscape width.</p>
+		 *
+		 * @default 3.5
+		 *
+		 * @see #tabletScreenLandscapeWidthMinimumInches
+		 * @see #isTablet()
+		 */
+		public static var tabletScreenPortraitWidthMinimumInches:Number = 3.5;
+
 		/**
 		 * The minimum physical size, in inches, of the device's larger side to
 		 * be considered a tablet.
+		 * 
+		 * <p>When calling <code>isTablet()</code>, a device must meet the
+		 * requirements of both the minimum portrait width and the minimum
+		 * landscape width.</p>
 		 *
 		 * @default 5
 		 *
+		 * @see #tabletScreenPortraitWidthMinimumInches
 		 * @see #isTablet()
-		 * @see #isPhone()
 		 */
-		public static var tabletScreenMinimumInches:Number = 5;
+		public static var tabletScreenLandscapeWidthMinimumInches:Number = 5;
+
+		//the iPhone X is 1125x2436 458 DPI, which results in a portrait width
+		//of ~2.45 inches. This device should be treated as a small phone.
+		//the Pixel XL is 1440x2560 534 DPI, which results in a portrait width
+		//of ~2.69 inches. This device should be treated as a large phone.
+		/**
+		 * The minimum physical width, in inches, of the device when in
+		 * portrait orientation to be considered a large phone (sometimes
+		 * called a phablet).
+		 * 
+		 * <p>When calling <code>isLargePhone()</code>, a device must meet the
+		 * requirements of both the minimum portrait width and the minimum
+		 * landscape width.</p>
+		 *
+		 * @default 2.5
+		 *
+		 * @see #largePhoneScreenLandscapeWidthMinimumInches
+		 * @see #isLargePhone()
+		 */
+		public static var largePhoneScreenPortraitWidthMinimumInches:Number = 2.5;
+
+		/**
+		 * The minimum physical size, in inches, of the device's larger side to
+		 * be considered a large phone (sometimes called a phablet).
+		 * 
+		 * <p>When calling <code>isLargePhone()</code>, a device must meet the
+		 * requirements of both the minimum portrait width and the minimum
+		 * landscape width.</p>
+		 *
+		 * @default 4.5
+		 *
+		 * @see #largePhoneScreenPortraitWidthMinimumInches
+		 * @see #isLargePhone()
+		 */
+		public static var largePhoneScreenLandscapeWidthMinimumInches:Number = 4.5;
 
 		/**
 		 * A custom width, in pixels, to use for calculations of the device's
@@ -94,40 +173,66 @@ package feathers.system
 		 * width and height, in inches, calculated using the full-screen
 		 * dimensions and the screen density.
 		 *
-		 * @see #tabletScreenMinimumInches
-		 * @see #screenPixelWidth
-		 * @see #screenPixelHeight
+		 * @see #tabletScreenPortraitWidthMinimumInches
+		 * @see #tabletScreenLandscapeWidthMinimumInches
 		 * @see #isPhone()
 		 */
 		public static function isTablet(stage:Stage = null):Boolean
 		{
-			if(stage === null)
+			var portraitWidth:Number = screenInchesX(stage);
+			var landscapeWidth:Number = screenInchesY(stage);
+			if(portraitWidth > landscapeWidth)
 			{
-				stage = Starling.current.nativeStage;
+				//make sure the longer side is used for landscape comparison
+				var temp:Number = landscapeWidth;
+				landscapeWidth = portraitWidth;
+				portraitWidth = temp;
 			}
-			var screenWidth:Number = screenPixelWidth;
-			if(screenWidth !== screenWidth) //isNaN
+			return portraitWidth >= tabletScreenPortraitWidthMinimumInches &&
+				landscapeWidth >= tabletScreenLandscapeWidthMinimumInches;
+		}
+
+		/**
+		 * Determines if this device is probably a large phone (sometimes
+		 * called a phablet), based on the physical width and height, in
+		 * inches, calculated using the full-screen dimensions and the screen
+		 * density.
+		 *
+		 * @see #largePhoneScreenLandscapeWidthMinimumInches
+		 * @see #largePhoneScreenPortraitWidthMinimumInches
+		 * @see #isPhone()
+		 * @see #isTablet()
+		 */
+		public static function isLargePhone(stage:Stage = null):Boolean
+		{
+			var portraitWidth:Number = screenInchesX(stage);
+			var landscapeWidth:Number = screenInchesY(stage);
+			if(portraitWidth > landscapeWidth)
 			{
-				screenWidth = stage.fullScreenWidth;
+				//make sure the longer side is used for landscape comparison
+				var temp:Number = landscapeWidth;
+				landscapeWidth = portraitWidth;
+				portraitWidth = temp;
 			}
-			var screenHeight:Number = screenPixelHeight;
-			if(screenHeight !== screenHeight) //isNaN
-			{
-				screenHeight = stage.fullScreenHeight;
-			}
-			if(screenWidth < screenHeight)
-			{
-				screenWidth = screenHeight;
-			}
-			return (screenWidth / dpi) >= tabletScreenMinimumInches;
+			return portraitWidth >= largePhoneScreenPortraitWidthMinimumInches &&
+				landscapeWidth >= largePhoneScreenLandscapeWidthMinimumInches &&
+				!isTablet(stage);
 		}
 
 		/**
 		 * Determines if this device is probably a phone, based on the physical
 		 * width and height, in inches, calculated using the full-screen
 		 * dimensions and the screen density.
+		 * 
+		 * <p>Returns <code>true</code> if the device is smaller than the
+		 * minimum dimensions of a tablet. Larger phones (sometimes called
+		 * phablets) are classified as phones when calling
+		 * <code>isPhone()</code>. If <code>isPhone()</code> returns
+		 * <code>true</code>, use <code>isLargePhone()</code> to determine the
+		 * size of the phone, if necessary.</p>
 		 *
 		 * @see #isTablet()
+		 * @see #isLargePhone()
 		 */
 		public static function isPhone(stage:Stage = null):Boolean
 		{
@@ -139,6 +244,7 @@ package feathers.system
 		 * full-screen width and the screen density.
 		 *
 		 * @see #screenPixelWidth
+		 * @see #dpi
 		 */
 		public static function screenInchesX(stage:Stage = null):Number
 		{
@@ -159,6 +265,7 @@ package feathers.system
 		 * full-screen height and the screen density.
 		 *
 		 * @see #screenPixelHeight
+		 * @see #dpi
 		 */
 		public static function screenInchesY(stage:Stage = null):Number
 		{
