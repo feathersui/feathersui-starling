@@ -39,52 +39,102 @@ package
 		private var _launchImage:Loader;
 		private var _savedAutoOrients:Boolean;
 
+		/**
+		 * On iOS, add the native launch image to the classic display list to
+		 * avoid displaying only the stage background color between when the
+		 * AIR app finishes launching and Starling starts rendering.
+		 * 
+		 * Launch image names: https://forums.adobe.com/message/9986239#9986239
+		 */
 		private function showLaunchImage():void
 		{
-			var filePath:String;
+			var filePath:String = null;
 			var isPortraitOnly:Boolean = false;
 			if(Capabilities.manufacturer.indexOf("iOS") >= 0)
 			{
-				var isCurrentlyPortrait:Boolean = this.stage.orientation == StageOrientation.DEFAULT || this.stage.orientation == StageOrientation.UPSIDE_DOWN;
+				var isPortraitUpsideDown:Boolean = this.stage.orientation == StageOrientation.UPSIDE_DOWN;
+				var isPortrait:Boolean = this.stage.orientation == StageOrientation.DEFAULT || isPortraitUpsideDown;
+				var isLandscapeRight:Boolean = this.stage.orientation == StageOrientation.ROTATED_RIGHT;
 				if(Capabilities.screenResolutionX == 1242 && Capabilities.screenResolutionY == 2208)
 				{
-					//iphone 6 plus
-					filePath = isCurrentlyPortrait ? "Default-414w-736h@3x.png" : "Default-414w-736h-Landscape@3x.png";
+					//iphone 6/7/8 plus
+					filePath = isPortrait ? "Default-414w-736h@3x~iphone.png" : "Default-Landscape-414w-736h@3x~iphone.png";
+				}
+				else if(Capabilities.screenResolutionX == 1125 && Capabilities.screenResolutionY == 2436)
+				{
+					//iphone x
+					filePath = isPortrait ? "Default-812h@3x~iphone.png" : "Default-Landscape-812h@3x~iphone.png";
+				}
+				else if(Capabilities.screenResolutionX == 2048 && Capabilities.screenResolutionY == 2732)
+				{
+					//ipad pro
+					filePath = isPortrait ? "Default-Portrait@2x.png" : "Default-Landscape@2x.png";
 				}
 				else if(Capabilities.screenResolutionX == 1536 && Capabilities.screenResolutionY == 2048)
 				{
-					//ipad retina
-					filePath = isCurrentlyPortrait ? "Default-Portrait@2x.png" : "Default-Landscape@2x.png";
-				}
-				else if(Capabilities.screenResolutionX == 768 && Capabilities.screenResolutionY == 1024)
-				{
-					//ipad classic
-					filePath = isCurrentlyPortrait ? "Default-Portrait.png" : "Default-Landscape.png";
-				}
-				else if(Capabilities.screenResolutionX == 750)
-				{
-					//iphone 6
-					isPortraitOnly = true;
-					filePath = "Default-375w-667h@2x.png";
-				}
-				else if(Capabilities.screenResolutionX == 640)
-				{
-					//iphone retina
-					isPortraitOnly = true;
-					if(Capabilities.screenResolutionY == 1136)
+					//ipad 3/air
+					if(isPortraitUpsideDown)
 					{
-						filePath = "Default-568h@2x.png";
+						filePath = "Default-Portrait@2x~ipad.png";
+					}
+					else if(isPortrait)
+					{
+						filePath = "Default-PortraitUpsideDown@2x~ipad.png";
+					}
+					else if(isLandscapeRight)
+					{
+						filePath = "Default-LandscapeRight@2x~ipad.png";
 					}
 					else
 					{
-						filePath = "Default@2x.png";
+						filePath = "Default-LandscapeLeft@2x~ipad.png";
+					}
+				}
+				else if(Capabilities.screenResolutionX == 768 && Capabilities.screenResolutionY == 1024)
+				{
+					//ipad 1/2
+					if(isPortraitUpsideDown)
+					{
+						filePath = "Default-Portrait~ipad.png";
+					}
+					else if(isPortrait)
+					{
+						filePath = "Default-PortraitUpsideDown~ipad.png";
+					}
+					else if(isLandscapeRight)
+					{
+						filePath = "Default-LandscapeRight~ipad.png";
+					}
+					else
+					{
+						filePath = "Default-Landscape~ipad.png";
+					}
+				}
+				else if(Capabilities.screenResolutionX == 750)
+				{
+					//iphone 6/7/8
+					isPortraitOnly = true;
+					filePath = "Default-375w-667h@2x~iphone.png";
+				}
+				else if(Capabilities.screenResolutionX == 640)
+				{
+					isPortraitOnly = true;
+					if(Capabilities.screenResolutionY == 1136)
+					{
+						//iphone 5/5c/5s
+						filePath = "Default-568h@2x~iphone.png";
+					}
+					else
+					{
+						//iphone 4/4s
+						filePath = "Default@2x~iphone.png";
 					}
 				}
 				else if(Capabilities.screenResolutionX == 320)
 				{
-					//iphone classic
+					//iphone 3gs
 					isPortraitOnly = true;
-					filePath = "Default.png";
+					filePath = "Default~iphone.png";
 				}
 			}
 
