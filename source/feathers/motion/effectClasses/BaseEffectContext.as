@@ -122,7 +122,8 @@ package feathers.motion.effectClasses
 		protected var _juggler:Juggler = null;
 
 		/**
-		 * The effect's <code>Juggler.</code>
+		 * The <code>Juggler</code> used to update the effect when it is
+		 * playing.
 		 * 
 		 * @see http://doc.starling-framework.org/core/starling/animation/Juggler.html starling.animation.Juggler
 		 */
@@ -161,7 +162,10 @@ package feathers.motion.effectClasses
 		}
 
 		/**
-		 * Sets the position of the tween using a value between <code>0</code> and <code>1</code>.
+		 * Sets the position of the tween using a value between <code>0</code>
+		 * and <code>1</code>.
+		 * 
+		 * @see #duration
 		 */
 		public function get position():Number
 		{

@@ -45,6 +45,8 @@ package feathers.motion.effectClasses
 
 		/**
 		 * The position of the effect, from <code>0</code> to <code>1</code>.
+		 * 
+		 * @see #duration
 		 */
 		function get position():Number;
 
@@ -55,6 +57,8 @@ package feathers.motion.effectClasses
 
 		/**
 		 * Starts playing the effect from its current position to the end.
+		 * 
+		 * @see #pause()
 		 */
 		function play():void;
 
@@ -70,13 +74,18 @@ package feathers.motion.effectClasses
 		function pause():void;
 
 		/**
-		 * Stops the effect at its current position and orces Event.COMPLETE to
-		 * dispatch.
+		 * Stops the effect at its current position and forces
+		 * <code>Event.COMPLETE</code> to dispatch.
+		 * 
+		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function stop():void;
 
 		/**
-		 * Advances the effect to the end and forces Event.COMPLETE to dispatch.
+		 * Advances the effect to the end and forces
+		 * <code>Event.COMPLETE</code> to dispatch.
+		 * 
+		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function toEnd():void;
 	}	
