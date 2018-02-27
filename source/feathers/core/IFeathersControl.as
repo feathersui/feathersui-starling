@@ -120,7 +120,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		function set styleName(value:String):void
+		function set styleName(value:String):void;
 
 		/**
 		 * @copy feathers.core.FeathersControl#styleProvider
@@ -130,7 +130,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		function set styleProvider(value:IStyleProvider):void
+		function set styleProvider(value:IStyleProvider):void;
 
 		/**
 		 * @copy feathers.core.FeathersControl#toolTip
@@ -140,7 +140,12 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		function set toolTip(value:String):void
+		function set toolTip(value:String):void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#effectsSuspended
+		 */
+		function get effectsSuspended():Boolean;
 
 		/**
 		 * @copy feathers.core.FeathersControl#setSize()

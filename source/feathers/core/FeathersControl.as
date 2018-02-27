@@ -2217,6 +2217,17 @@ package feathers.core
 		}
 
 		/**
+		 * Indicates if effects have been suspended.
+		 * 
+		 * @see #suspendEffects()
+		 * @see #resumeEffects()
+		 */
+		public function get effectsSuspended():Boolean
+		{
+			return this._suspendEffectsCount > 0;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _hasFocus:Boolean = false;
