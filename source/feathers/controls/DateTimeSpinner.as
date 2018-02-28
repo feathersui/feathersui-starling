@@ -2713,14 +2713,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function updateHoursFromLists():void
+		protected function updateHoursFromLists():Boolean
 		{
 			var hours:int = this.hoursList.selectedItem as int;
 			if(this.meridiemList && this.meridiemList.selectedIndex === 1)
 			{
 				hours += 12;
 			}
+			if(this._value.hours === hours)
+			{
+				return false;
+			}
 			this._value.setHours(hours);
+			return true;
 		}
 
 		/**
@@ -2791,10 +2796,10 @@ package feathers.controls
 			}
 			var month:int = this.monthsList.selectedItem as int;
 			var date:int = this.getValidDateForYearAndMonth(this._value.fullYear, month);
-			var needsToScroll:Boolean = false;
-			if(this._value.date !== date)
+			var needsToScroll:Boolean = this._value.date !== date;
+			if(!needsToScroll && this._value.month === month)
 			{
-				needsToScroll = true;
+				return;
 			}
 			this._value.setMonth(month, date);
 			this.validateNewValue();
@@ -2816,6 +2821,10 @@ package feathers.controls
 				return;
 			}
 			var date:int = this.datesList.selectedItem as int;
+			if(this._value.date === date)
+			{
+				return;
+			}
 			this._value.setDate(date);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2832,6 +2841,10 @@ package feathers.controls
 				return;
 			}
 			var year:int = this.yearsList.selectedItem as int;
+			if(this._value.fullYear === year)
+			{
+				return;
+			}
 			this._value.setFullYear(year);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2862,7 +2875,10 @@ package feathers.controls
 			{
 				return;
 			}
-			this.updateHoursFromLists();
+			if(!this.updateHoursFromLists())
+			{
+				return;
+			}
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);
@@ -2878,6 +2894,10 @@ package feathers.controls
 				return;
 			}
 			var minutes:int = this.minutesList.selectedItem as int;
+			if(this._value.minutes === minutes)
+			{
+				return;
+			}
 			this._value.setMinutes(minutes);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2893,7 +2913,10 @@ package feathers.controls
 			{
 				return;
 			}
-			this.updateHoursFromLists();
+			if(!this.updateHoursFromLists())
+			{
+				return;
+			}
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);
