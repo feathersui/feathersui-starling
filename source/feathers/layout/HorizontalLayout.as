@@ -473,7 +473,12 @@ package feathers.layout
 					{
 						continue;
 					}
-					item.x = item.pivotX + positionX;
+					var pivotX:Number = item.pivotX;
+					if(pivotX !== 0)
+					{
+						pivotX *= item.scaleX;
+					}
+					item.x = pivotX + positionX;
 					var itemWidth:Number;
 					if(hasDistributedWidth)
 					{
@@ -668,12 +673,18 @@ package feathers.layout
 					continue;
 				}
 
+				var pivotY:Number = item.pivotY;
+				if(pivotY !== 0)
+				{
+					pivotY *= item.scaleY;
+				}
+
 				//in this section, we handle vertical alignment and percent
 				//height from HorizontalLayoutData
 				if(this._verticalAlign == VerticalAlign.JUSTIFY)
 				{
 					//if we justify items vertically, we can skip percent height
-					item.y = item.pivotY + boundsY + this._paddingTop;
+					item.y = pivotY + boundsY + this._paddingTop;
 					item.height = availableHeightMinusPadding;
 				}
 				else
@@ -735,17 +746,17 @@ package feathers.layout
 					{
 						case VerticalAlign.BOTTOM:
 						{
-							item.y = item.pivotY + boundsY + verticalAlignHeight - this._paddingBottom - item.height;
+							item.y = pivotY + boundsY + verticalAlignHeight - this._paddingBottom - item.height;
 							break;
 						}
 						case VerticalAlign.MIDDLE:
 						{
-							item.y = item.pivotY + boundsY + this._paddingTop + Math.round((verticalAlignHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
+							item.y = pivotY + boundsY + this._paddingTop + Math.round((verticalAlignHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
 							break;
 						}
 						default: //top
 						{
-							item.y = item.pivotY + boundsY + this._paddingTop;
+							item.y = pivotY + boundsY + this._paddingTop;
 						}
 					}
 				}

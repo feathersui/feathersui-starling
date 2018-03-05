@@ -619,7 +619,12 @@ package feathers.layout
 					{
 						continue;
 					}
-					item.y = item.pivotY + positionY;
+					var pivotY:Number = item.pivotY;
+					if(pivotY !== 0)
+					{
+						pivotY *= item.scaleY;
+					}
+					item.y = pivotY + positionY;
 					var itemWidth:Number = item.width;
 					var itemHeight:Number;
 					if(hasDistributedHeight)
@@ -822,12 +827,18 @@ package feathers.layout
 					continue;
 				}
 
+				var pivotX:Number = item.pivotX;
+				if(pivotX !== 0)
+				{
+					pivotX *= item.scaleX;
+				}
+
 				//in this section, we handle horizontal alignment and percent
 				//width from VerticalLayoutData
 				if(this._horizontalAlign == HorizontalAlign.JUSTIFY)
 				{
 					//if we justify items horizontally, we can skip percent width
-					item.x = item.pivotX + boundsX + this._paddingLeft;
+					item.x = pivotX + boundsX + this._paddingLeft;
 					item.width = availableWidthMinusPadding;
 				}
 				else
@@ -889,19 +900,19 @@ package feathers.layout
 					{
 						case HorizontalAlign.RIGHT:
 						{
-							item.x = item.pivotX + boundsX + horizontalAlignWidth - this._paddingRight - item.width;
+							item.x = pivotX + boundsX + horizontalAlignWidth - this._paddingRight - item.width;
 							break;
 						}
 						case HorizontalAlign.CENTER:
 						{
 							//round to the nearest pixel when dividing by 2 to
 							//align in the center
-							item.x = item.pivotX + boundsX + this._paddingLeft + Math.round((horizontalAlignWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
+							item.x = pivotX + boundsX + this._paddingLeft + Math.round((horizontalAlignWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
 							break;
 						}
 						default: //left
 						{
-							item.x = item.pivotX + boundsX + this._paddingLeft;
+							item.x = pivotX + boundsX + this._paddingLeft;
 						}
 					}
 				}
