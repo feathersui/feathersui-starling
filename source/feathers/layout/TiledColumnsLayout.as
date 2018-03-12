@@ -1320,7 +1320,7 @@ package feathers.layout
 					tileWidth = tileHeight;
 				}
 			}
-			if(this._distributeHeights && !this._useSquareTiles)
+			if(this._distributeWidths && !this._useSquareTiles)
 			{
 				var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 					width, width, this._paddingLeft + this._paddingRight,
