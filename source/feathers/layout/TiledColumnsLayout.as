@@ -641,8 +641,8 @@ package feathers.layout
 			{
 				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsLastIndex = discoveredItems.length - 1;
-				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalPageContentWidth, availableWidth);
-				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalPageContentHeight, availableHeight);
+				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
+				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
 			}
 			this._discoveredItemsCache.length = 0;
 
