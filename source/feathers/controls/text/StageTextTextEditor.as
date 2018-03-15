@@ -1079,11 +1079,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _temporarilyMaintainTouchFocus:Boolean = false;
-
-		/**
-		 * @private
-		 */
 		protected var _maintainTouchFocus:Boolean = false;
 
 		/**
@@ -1102,10 +1097,6 @@ package feathers.controls.text
 		 */
 		override public function get maintainTouchFocus():Boolean
 		{
-			if(this._temporarilyMaintainTouchFocus)
-			{
-				return true;
-			}
 			return this._maintainTouchFocus;
 		}
 
@@ -2409,7 +2400,6 @@ package feathers.controls.text
 		 */
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
-			this._temporarilyMaintainTouchFocus = false;
 			this._stageTextHasFocus = true;
 			if(!this._isEditable)
 			{
@@ -2430,7 +2420,6 @@ package feathers.controls.text
 		 */
 		protected function stageText_focusOutHandler(event:FocusEvent):void
 		{
-			this._temporarilyMaintainTouchFocus = false;
 			this._stageTextHasFocus = false;
 			//since StageText doesn't expose its scroll position, we need to
 			//set the selection back to the beginning to scroll there. it's a
@@ -2466,7 +2455,6 @@ package feathers.controls.text
 		 */
 		protected function stageText_mouseFocusChangeHandler(event:FocusEvent):void
 		{
-			this._temporarilyMaintainTouchFocus = false;
 			var nativeStage:Stage = this.stage.starling.nativeStage;
 			var point:Point = Pool.getPoint(nativeStage.mouseX, nativeStage.mouseY);
 			nativeToGlobal(point, this.stage.starling, point);
@@ -2484,7 +2472,6 @@ package feathers.controls.text
 						{
 							//this mouseFocusChange event won't reach the native
 							//stage, so the FocusManager can't prevent it
-							this._temporarilyMaintainTouchFocus = true;
 							event.preventDefault();
 						}
 						break;
