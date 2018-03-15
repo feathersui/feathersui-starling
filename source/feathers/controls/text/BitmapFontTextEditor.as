@@ -1318,6 +1318,11 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(FocusManager.isEnabledForStage(this.stage))
+			{
+				//let the focus manager handle clearing focus
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
 			if(!touch) //we only care about began touches
 			{
