@@ -9,16 +9,19 @@ package feathers.controls.text
 {
 	import feathers.core.BaseTextEditor;
 	import feathers.core.FocusManager;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.text.StageTextField;
+	import feathers.utils.display.nativeToGlobal;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -41,6 +44,7 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
@@ -1075,6 +1079,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		private var _temporarilyMaintainTouchFocus:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _maintainTouchFocus:Boolean = false;
 
 		/**
@@ -1093,6 +1102,10 @@ package feathers.controls.text
 		 */
 		override public function get maintainTouchFocus():Boolean
 		{
+			if(this._temporarilyMaintainTouchFocus)
+			{
+				return true;
+			}
 			return this._maintainTouchFocus;
 		}
 
@@ -2396,6 +2409,7 @@ package feathers.controls.text
 		 */
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
+			this._temporarilyMaintainTouchFocus = false;
 			this._stageTextHasFocus = true;
 			if(!this._isEditable)
 			{
@@ -2416,6 +2430,7 @@ package feathers.controls.text
 		 */
 		protected function stageText_focusOutHandler(event:FocusEvent):void
 		{
+			this._temporarilyMaintainTouchFocus = false;
 			this._stageTextHasFocus = false;
 			//since StageText doesn't expose its scroll position, we need to
 			//set the selection back to the beginning to scroll there. it's a
@@ -2451,6 +2466,36 @@ package feathers.controls.text
 		 */
 		protected function stageText_mouseFocusChangeHandler(event:FocusEvent):void
 		{
+			this._temporarilyMaintainTouchFocus = false;
+			var nativeStage:Stage = this.stage.starling.nativeStage;
+			var point:Point = Pool.getPoint(nativeStage.mouseX, nativeStage.mouseY);
+			nativeToGlobal(point, this.stage.starling, point);
+			var result:DisplayObject = this.stage.hitTest(point);
+			while(result !== null)
+			{
+				var focusResult:IFocusDisplayObject = result as IFocusDisplayObject;
+				if(focusResult !== null)
+				{
+					var focusOwner:IFocusDisplayObject = focusResult.focusOwner;
+					if(focusOwner !== null)
+					{
+						if(focusOwner is DisplayObjectContainer &&
+							DisplayObjectContainer(focusOwner).contains(this))
+						{
+							//this mouseFocusChange event won't reach the native
+							//stage, so the FocusManager can't prevent it
+							this._temporarilyMaintainTouchFocus = true;
+							event.preventDefault();
+						}
+						break;
+					}
+					else if(focusResult.isFocusEnabled)
+					{
+						break;
+					}
+				}
+				result = result.parent;
+			}
 			if(!this._maintainTouchFocus)
 			{
 				return;
