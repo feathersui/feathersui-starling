@@ -2526,7 +2526,7 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(this._maintainTouchFocus)
+			if(this._maintainTouchFocus || FocusManager.isEnabledForStage(this.stage))
 			{
 				return;
 			}
