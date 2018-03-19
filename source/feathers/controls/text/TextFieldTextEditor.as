@@ -1412,7 +1412,31 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var resetScrollOnFocusOut:Boolean = true;
+		protected var _resetScrollOnFocusOut:Boolean = true;
+
+		/**
+		 * Indicates of the text editor resets its current scroll position to
+		 * 0 on focus out.
+		 * 
+		 * <p>In the following example, the scroll position is not reset on focus out:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.resetScrollOnFocusOut = false;</listing>
+		 * 
+		 * @default true
+		 */
+		public function get resetScrollOnFocusOut():Boolean
+		{
+			return this._resetScrollOnFocusOut;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resetScrollOnFocusOut(value:Boolean):void
+		{
+			this._resetScrollOnFocusOut = value;
+		}
 
 		/**
 		 * @private
@@ -2581,7 +2605,7 @@ package feathers.controls.text
 			this._textFieldHasFocus = false;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 
-			if(this.resetScrollOnFocusOut)
+			if(this._resetScrollOnFocusOut)
 			{
 				this.textField.scrollH = this.textField.scrollV = 0;
 			}
