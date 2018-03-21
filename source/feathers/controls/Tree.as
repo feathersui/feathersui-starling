@@ -498,6 +498,7 @@ package feathers.controls
 		 */
 		protected var _helperLocation:Vector.<int> = new <int>[];
 
+		[Bindable(event="change")]
 		/**
 		 * The currently selected location. Returns an empty
 		 * <code>Vector.&lt;int&gt;</code> if no item is selected.
@@ -540,6 +541,7 @@ package feathers.controls
 		 */
 		protected var _selectedItem:Object = null;
 
+		[Bindable(event="change")]
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -1021,6 +1023,7 @@ package feathers.controls
 			return this._openBranches.getItemIndex(branch) !== -1;
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Returns the currently selected location, or an empty
 		 * <code>Vector.&lt;int&gt;</code>, if no item is currently selected.

@@ -980,6 +980,7 @@ package feathers.controls
 		 */
 		protected var _selectedIndex:int = -1;
 		
+		[Bindable(event="change")]
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -1038,6 +1039,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -1139,6 +1141,7 @@ package feathers.controls
 		 */
 		protected var _selectedIndices:ListCollection = new ListCollection(new <int>[]);
 
+		[Bindable(event="change")]
 		/**
 		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
 		 * if no items are selected. If <code>allowMultipleSelection</code> is
@@ -1210,6 +1213,7 @@ package feathers.controls
 		 */
 		protected var _selectedItems:Vector.<Object> = new <Object>[];
 
+		[Bindable(event="change")]
 		/**
 		 * The currently selected item. The getter returns an empty
 		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
@@ -1273,6 +1277,7 @@ package feathers.controls
 			this.selectedIndices = indices;
 		}
 
+		[Bindable(event="change")]
 		/**
 		 * Returns the selected items, with the ability to pass in an optional
 		 * result vector. Better for performance than the <code>selectedItems</code>

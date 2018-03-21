@@ -149,6 +149,7 @@ package feathers.controls.renderers
 		 */
 		protected var _data:Object;
 
+		[Bindable(event="dataChange")]
 		/**
 		 * @inheritDoc
 		 */
@@ -171,6 +172,11 @@ package feathers.controls.renderers
 			//LayoutGroup doesn't know about INVALIDATION_FLAG_DATA, so we need
 			//set set another flag that it understands.
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+
+			//developers expect to set up bindings with the item's properties,
+			//so even though the data property doesn't change with user
+			//interaction, it needs to be bindable.
+			this.dispatchEventWith("dataChange");
 		}
 
 		/**
@@ -178,6 +184,7 @@ package feathers.controls.renderers
 		 */
 		protected var _isSelected:Boolean;
 
+		[Bindable(event="change")]
 		/**
 		 * @inheritDoc
 		 */
@@ -207,6 +214,7 @@ package feathers.controls.renderers
 		 */
 		protected var _isBranch:Boolean;
 
+		[Bindable(event="isBranchChange")]
 		/**
 		 * @inheritDoc
 		 */
@@ -226,6 +234,7 @@ package feathers.controls.renderers
 			}
 			this._isBranch = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith("isBranchChange");
 		}
 
 		/**
@@ -233,6 +242,7 @@ package feathers.controls.renderers
 		 */
 		protected var _isOpen:Boolean;
 
+		[Bindable(event="isOpenChange")]
 		/**
 		 * @inheritDoc
 		 */
@@ -252,6 +262,7 @@ package feathers.controls.renderers
 			}
 			this._isOpen = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith("isOpenChange");
 		}
 
 		/**
