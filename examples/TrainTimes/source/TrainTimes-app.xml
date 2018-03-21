@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/27.0">
+<application xmlns="http://ns.adobe.com/air/application/29.0">
 	<id>com.feathersui.examples.TrainTimes</id>
 	<filename>Train Times</filename>
 	<name>Train Times</name>
 	<versionNumber>3.5.0</versionNumber>
 	<description>Train Times example application built with Feathers UI controls for Starling</description>
-	<copyright>2017 Bowler Hat LLC</copyright>
+	<copyright>2018 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>TrainTimes.swf</content>
