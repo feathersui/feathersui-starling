@@ -33,6 +33,7 @@ package feathers.controls.supportClasses
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * @private
@@ -649,6 +650,40 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
+		protected var _addedItems:Dictionary = null;
+
+		public function get addedItems():Dictionary
+		{
+			return this._addedItems;
+		}
+
+		public function set addedItems(value:Dictionary):void
+		{
+			if(this._addedItems === value)
+			{
+				return;
+			}
+			this._addedItems = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		protected var _removedItems:Dictionary = null;
+
+		public function get removedItems():Dictionary
+		{
+			return this._removedItems;
+		}
+
+		public function set removedItems(value:Dictionary):void
+		{
+			if(this._removedItems === value)
+			{
+				return;
+			}
+			this._removedItems = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&
@@ -1109,6 +1144,40 @@ package feathers.controls.supportClasses
 				}
 			}
 			this._updateForDataReset = false;
+			this.refreshItemRendererEffects();
+		}
+
+		private function refreshItemRendererEffects():void
+		{
+			if(this._addedItems !== null)
+			{
+				for(var item:Object in this._addedItems)
+				{
+					var itemRenderer:IListItemRenderer = this._rendererMap[item] as IListItemRenderer;
+					if(itemRenderer !== null)
+					{
+						var effect:Function = this._addedItems[item] as Function;
+						var context:IEffectContext = IEffectContext(effect(itemRenderer));
+						context.play();
+					}
+				}
+				this._addedItems = null;
+			}
+			if(this._removedItems !== null)
+			{
+				for(item in this._removedItems)
+				{
+					itemRenderer = this._rendererMap[item] as IListItemRenderer;
+					if(itemRenderer !== null)
+					{
+						effect = this._removedItems[item] as Function;
+						context = IEffectContext(effect(itemRenderer));
+						context.addEventListener(Event.COMPLETE, removedItemEffectContext_completeHandler);
+						context.play();
+					}
+				}
+				this._removedItems = null;
+			}
 		}
 
 		private function findUnrenderedData():void
@@ -1671,6 +1740,13 @@ package feathers.controls.supportClasses
 		private function selectedIndices_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		private function removedItemEffectContext_completeHandler(event:Event):void
+		{
+			var context:IEffectContext = IEffectContext(event.currentTarget);
+			var itemRenderer:IListItemRenderer = IListItemRenderer(context.target);
+			this._dataProvider.removeItem(itemRenderer.data);
 		}
 	}
 }

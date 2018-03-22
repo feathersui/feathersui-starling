@@ -31,6 +31,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import flash.utils.Dictionary;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -534,6 +535,16 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _addedItems:Dictionary = null;
+
+		/**
+		 * @private
+		 */
+		protected var _removedItems:Dictionary = null;
 
 		/**
 		 * @private
@@ -1486,6 +1497,43 @@ package feathers.controls
 		}
 
 		/**
+		 * Adds an item from the data provider and animates its item renderer
+		 * using an effect.
+		 * 
+		 * @see feathers.data.IListCollection#removeItem()
+		 */
+		public function addItemWithEffect(item:Object, index:int, effect:Function):void
+		{
+			//add to the data provider immediately
+			this._dataProvider.addItemAt(item, index);
+			if(this._addedItems === null)
+			{
+				this._addedItems = new Dictionary();
+			}
+			this._addedItems[item] = effect;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * Removes an item from the data provider <strong>after</strong>
+		 * animating its item renderer using an effect.
+		 * 
+		 * @see feathers.data.IListCollection#removeItem()
+		 */
+		public function removeItemWithEffect(item:Object, effect:Function):void
+		{
+			//don't remove from the data provider yet because that will
+			//immediately remove the item renderer. we'll wait until the effect
+			//finishes instead.
+			if(this._removedItems === null)
+			{
+				this._removedItems = new Dictionary();
+			}
+			this._removedItems[item] = effect;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
@@ -1563,6 +1611,10 @@ package feathers.controls
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
+			this.dataViewPort.addedItems = this._addedItems;
+			this.dataViewPort.removedItems = this._removedItems;
+			this._addedItems = null;
+			this._removedItems = null;
 		}
 
 		/**
