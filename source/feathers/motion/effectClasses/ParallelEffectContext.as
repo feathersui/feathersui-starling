@@ -36,7 +36,7 @@ package feathers.motion.effectClasses
 					duration = contextDuration;
 				}
 			}
-			super(duration);
+			super(target, duration);
 		}
 
 		/**

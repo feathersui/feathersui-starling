@@ -25,14 +25,13 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenResizeEffectContext(tween:Tween)
+		public function TweenResizeEffectContext(target:DisplayObject, tween:Tween)
 		{
 			super(tween);
-			var target:DisplayObject = DisplayObject(tween.target);
-			this._oldWidth = target.width;
-			this._oldHeight = target.height;
-			this._newWidth = target.width;
-			this._newHeight = target.height;
+			this._oldWidth = this._target.width;
+			this._oldHeight = this._target.height;
+			this._newWidth = this._target.width;
+			this._newHeight = this._target.height;
 		}
 
 		/**
@@ -136,16 +135,15 @@ package feathers.motion.effectClasses
 		 */
 		override public function play():void
 		{
-			var target:DisplayObject = DisplayObject(this._tween.target);
-			if(target is IFeathersControl)
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).suspendEffects();
+				IFeathersControl(this._target).suspendEffects();
 			}
-			target.width = this._oldWidth;
-			target.height = this._oldHeight;
-			if(target is IFeathersControl)
+			this._target.width = this._oldWidth;
+			this._target.height = this._oldHeight;
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).resumeEffects();
+				IFeathersControl(this._target).resumeEffects();
 			}
 			super.play();
 		}

@@ -9,6 +9,8 @@ package feathers.motion.effectClasses
 {
 	import feathers.core.IFeathersEventDispatcher;
 
+	import starling.display.DisplayObject;
+
 	/**
 	 * Dispatched when the effect is complete.
 	 *
@@ -38,6 +40,11 @@ package feathers.motion.effectClasses
 	 */
 	public interface IEffectContext extends IFeathersEventDispatcher
 	{
+		/**
+		 * The target of the effect.
+		 */
+		function get target():DisplayObject;
+
 		/**
 		 * The duration of the effect, in seconds.
 		 */

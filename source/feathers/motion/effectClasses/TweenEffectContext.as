@@ -44,7 +44,7 @@ package feathers.motion.effectClasses
 			this._tween.onStart = null;
 			this._tween.onComplete = null;
 
-			super(this._tween.totalTime, transitionFunc);
+			super(DisplayObject(this._tween.target), this._tween.totalTime, transitionFunc);
 		}
 
 		/**
@@ -86,16 +86,15 @@ package feathers.motion.effectClasses
 		 */
 		override protected function updateEffect():void
 		{
-			var target:Object = this._tween.target;
-			if(target is IFeathersControl)
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).suspendEffects();
+				IFeathersControl(this._target).suspendEffects();
 			}
 			var newCurrentTime:Number = this._position * this._tween.totalTime;
 			this._tween.advanceTime(newCurrentTime - this._tween.currentTime);
-			if(target is IFeathersControl)
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).resumeEffects();
+				IFeathersControl(this._target).resumeEffects();
 			}
 		}
 

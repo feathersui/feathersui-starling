@@ -28,11 +28,10 @@ package feathers.motion.effectClasses
 		public function TweenMoveEffectContext(tween:Tween)
 		{
 			super(tween);
-			var target:DisplayObject = DisplayObject(tween.target);
-			this._oldX = target.x;
-			this._oldY = target.y;
-			this._newX = target.x;
-			this._newY = target.y;
+			this._oldX = this._target.x;
+			this._oldY = this._target.y;
+			this._newX = this._target.x;
+			this._newY = this._target.y;
 		}
 
 		/**
@@ -134,16 +133,15 @@ package feathers.motion.effectClasses
 		 */
 		override public function play():void
 		{
-			var target:DisplayObject = DisplayObject(this._tween.target);
-			if(target is IFeathersControl)
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).suspendEffects();
+				IFeathersControl(this._target).suspendEffects();
 			}
-			target.x = this._oldX;
-			target.y = this._oldY;
-			if(target is IFeathersControl)
+			this._target.x = this._oldX;
+			this._target.y = this._oldY;
+			if(this._target is IFeathersControl)
 			{
-				IFeathersControl(target).resumeEffects();
+				IFeathersControl(this._target).resumeEffects();
 			}
 			super.play();
 		}

@@ -14,6 +14,7 @@ package feathers.motion.effectClasses
 	import starling.events.Event;
 	import starling.errors.AbstractClassError;
 	import starling.animation.Transitions;
+	import starling.display.DisplayObject;
 
 	/**
 	 * Dispatched when the effect is complete.
@@ -52,13 +53,14 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function BaseEffectContext(duration:Number, transition:Object = null)
+		public function BaseEffectContext(target:DisplayObject, duration:Number, transition:Object = null)
 		{
 			super();
 			if(Object(this).constructor === BaseEffectContext)
 			{
 				throw new AbstractClassError();
 			}
+			this._target = target;
 			this._duration = duration;
 			if(transition === null)
 			{
@@ -66,6 +68,19 @@ package feathers.motion.effectClasses
 			}
 			this._transition = transition;
 			this.prepareEffect();
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _target:DisplayObject;
+
+		/**
+		 * The target of the effect.
+		 */
+		public function get target():DisplayObject
+		{
+			return this._target;
 		}
 
 		/**
