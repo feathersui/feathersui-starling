@@ -25,7 +25,7 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenResizeEffectContext(target:DisplayObject, tween:Tween)
+		public function TweenResizeEffectContext(tween:Tween)
 		{
 			super(tween);
 			this._oldWidth = this._target.width;
