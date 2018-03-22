@@ -14,6 +14,7 @@ package feathers.motion
 	import starling.display.DisplayObjectContainer;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
+	import feathers.core.IFeathersControl;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -33,32 +34,99 @@ package feathers.motion
 		/**
 		 * Creates an effect function that fades in the target component by
 		 * animating the `alpha` property from its current value to `1.0`.
+		 * 
+		 * <p>To force the target to start at a specific alpha value (such as
+		 * `0.0`), use <code>createFadeBetweenEffect()</code> instead.</p>
+		 * 
+		 * @see #createFadeOutEffect()
+		 * @see #createFadeBetweenEffect()
 		 */
 		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
-			return createFadeEffect(1, duration, ease);
+			return createFadeToEffect(1);
 		}
 
 		/**
 		 * Creates an effect function that fades out the target component by
 		 * animating the `alpha` property from its current value to `0.0`.
+		 * 
+		 * <p>To force the target to start at a specific alpha value (such as
+		 * `1.0`), use <code>createFadeBetweenEffect()</code> instead.</p>
+		 * 
+		 * @see #createFadeInEffect()
+		 * @see #createFadeBetweenEffect()
 		 */
 		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
-			return createFadeEffect(0, duration, ease);
+			return createFadeToEffect(0);
 		}
 
 		/**
 		 * Creates an effect function that fades the target component by
 		 * animating the `alpha` property from its current value to a new
 		 * value.
+		 * 
+		 * @see #createFadeFromEffect()
+		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeEffect(newAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeToEffect(endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.fadeTo(newAlpha);
+				tween.fadeTo(endAlpha);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function that fades the target component by
+		 * animating the `alpha` property from a start value to its current
+		 * value.
+		 * 
+		 * @see #createFadeToEffect()
+		 * @see #createFadeBetweenEffect()
+		 */
+		public static function createFadeFromEffect(startAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var endAlpha:Number = target.alpha;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).suspendEffects();
+				}
+				target.alpha = startAlpha;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).resumeEffects();
+				}
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.fadeTo(endAlpha);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function that fades the target component by
+		 * animating the `alpha` property between a start value and an ending
+		 * value.
+		 */
+		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).suspendEffects();
+				}
+				target.alpha = startAlpha;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).resumeEffects();
+				}
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.fadeTo(endAlpha);
 				return new TweenEffectContext(tween);
 			}
 		}
