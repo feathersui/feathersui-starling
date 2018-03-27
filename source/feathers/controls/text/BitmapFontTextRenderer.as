@@ -925,7 +925,7 @@ package feathers.controls.text
 					currentX -= customLetterSpacing;
 					if(charData !== null)
 					{
-						currentX -= (charData.xAdvance - charData.width - charData.xOffset) * scale;
+						currentX -= (charData.xAdvance - charData.width) * scale;
 					}
 					if(currentX < 0)
 					{
@@ -976,7 +976,7 @@ package feathers.controls.text
 							//this is the spacing after the last character
 							//that isn't whitespace
 							var previousCharData:BitmapChar = font.getChar(previousCharID);
-							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width - previousCharData.xOffset) * scale;
+							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 						}
 						widthOfWhitespaceAfterWord += xAdvance;
 					}
@@ -1013,7 +1013,7 @@ package feathers.controls.text
 							if(previousCharID === previousCharID) //!isNaN
 							{
 								previousCharData = font.getChar(previousCharID);
-								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width - previousCharData.xOffset) * scale;
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 							}
 							if(!isAligned)
 							{
@@ -1070,7 +1070,7 @@ package feathers.controls.text
 			currentX = currentX - customLetterSpacing;
 			if(charData !== null)
 			{
-				currentX -= (charData.xAdvance - charData.width - charData.xOffset) * scale;
+				currentX -= (charData.xAdvance - charData.width) * scale;
 			}
 			if(currentX < 0)
 			{
@@ -1423,7 +1423,7 @@ package feathers.controls.text
 					currentX -= customLetterSpacing;
 					if(charData !== null)
 					{
-						currentX -= (charData.xAdvance - charData.width - charData.xOffset) * scale;
+						currentX -= (charData.xAdvance - charData.width) * scale;
 					}
 					if(currentX < 0)
 					{
@@ -1467,7 +1467,7 @@ package feathers.controls.text
 							//this is the spacing after the last character
 							//that isn't whitespace
 							var previousCharData:BitmapChar = font.getChar(previousCharID);
-							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width - previousCharData.xOffset) * scale;
+							widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 						}
 						widthOfWhitespaceAfterWord += xAdvance;
 					}
@@ -1489,7 +1489,7 @@ package feathers.controls.text
 							if(previousCharID === previousCharID) //!isNaN
 							{
 								previousCharData = font.getChar(previousCharID);
-								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width - previousCharData.xOffset) * scale;
+								widthOfWhitespaceAfterWord = customLetterSpacing + (previousCharData.xAdvance - previousCharData.width) * scale;
 							}
 						}
 						//we're just reusing this variable to avoid creating a
@@ -1516,7 +1516,7 @@ package feathers.controls.text
 			currentX -= customLetterSpacing;
 			if(charData !== null)
 			{
-				currentX -= (charData.xAdvance - charData.width - charData.xOffset) * scale;
+				currentX -= (charData.xAdvance - charData.width) * scale;
 			}
 			if(currentX < 0)
 			{
@@ -1655,7 +1655,7 @@ package feathers.controls.text
 				currentX -= customLetterSpacing;
 				if(charData !== null)
 				{
-					currentX -= (charData.xAdvance - charData.width - charData.xOffset) * scale;
+					currentX -= (charData.xAdvance - charData.width) * scale;
 				}
 
 				//then work our way backwards until we fit into the width
