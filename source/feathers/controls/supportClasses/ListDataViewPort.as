@@ -824,6 +824,41 @@ package feathers.controls.supportClasses
 
 			//final validation to avoid juggler next frame issues
 			this.validateItemRenderers();
+
+			this.handlePendingItemRendererEffects();
+		}
+
+		private function handlePendingItemRendererEffects():void
+		{
+			if(this._addedItems !== null)
+			{
+				for(var item:Object in this._addedItems)
+				{
+					var itemRenderer:IListItemRenderer = this._rendererMap[item] as IListItemRenderer;
+					if(itemRenderer !== null)
+					{
+						var effect:Function = this._addedItems[item] as Function;
+						var context:IEffectContext = IEffectContext(effect(itemRenderer));
+						context.play();
+					}
+				}
+				this._addedItems = null;
+			}
+			if(this._removedItems !== null)
+			{
+				for(item in this._removedItems)
+				{
+					itemRenderer = this._rendererMap[item] as IListItemRenderer;
+					if(itemRenderer !== null)
+					{
+						effect = this._removedItems[item] as Function;
+						context = IEffectContext(effect(itemRenderer));
+						context.addEventListener(Event.COMPLETE, removedItemEffectContext_completeHandler);
+						context.play();
+					}
+				}
+				this._removedItems = null;
+			}
 		}
 
 		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
@@ -1144,40 +1179,6 @@ package feathers.controls.supportClasses
 				}
 			}
 			this._updateForDataReset = false;
-			this.refreshItemRendererEffects();
-		}
-
-		private function refreshItemRendererEffects():void
-		{
-			if(this._addedItems !== null)
-			{
-				for(var item:Object in this._addedItems)
-				{
-					var itemRenderer:IListItemRenderer = this._rendererMap[item] as IListItemRenderer;
-					if(itemRenderer !== null)
-					{
-						var effect:Function = this._addedItems[item] as Function;
-						var context:IEffectContext = IEffectContext(effect(itemRenderer));
-						context.play();
-					}
-				}
-				this._addedItems = null;
-			}
-			if(this._removedItems !== null)
-			{
-				for(item in this._removedItems)
-				{
-					itemRenderer = this._rendererMap[item] as IListItemRenderer;
-					if(itemRenderer !== null)
-					{
-						effect = this._removedItems[item] as Function;
-						context = IEffectContext(effect(itemRenderer));
-						context.addEventListener(Event.COMPLETE, removedItemEffectContext_completeHandler);
-						context.play();
-					}
-				}
-				this._removedItems = null;
-			}
 		}
 
 		private function findUnrenderedData():void
