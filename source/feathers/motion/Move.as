@@ -48,6 +48,9 @@ package feathers.motion
 		 * location.
 		 *
 		 * @productversion Feathers 3.5.0
+		 * 
+		 * @see #createMoveXToEffect()
+		 * @see #createMoveYToEffect()
 		 */
 		public static function createMoveToEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -61,10 +64,47 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function for the target component that
+		 * animates its <strong>x</strong> position from its current location to
+		 * a new location.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveXToEffect(toX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("x", toX);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
+		 * animates its <strong>y</strong> position from its current location to
+		 * a new location.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveYToEffect(toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("y", toY);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
 		 * animates its position from a specific location to its
 		 * current location.
 		 *
 		 * @productversion Feathers 3.5.0
+		 * 
+		 * @see #createMoveXFromEffect()
+		 * @see #createMoveYFromEffect()
 		 */
 		public static function createMoveFromEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -90,10 +130,67 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function for the target component that
+		 * animates its strong>x</strong> position from a specific location to
+		 * its current location.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveXFromEffect(fromX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldX:Number = target.x;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).suspendEffects();
+				}
+				target.x = fromX;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).resumeEffects();
+				}
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("x", oldX);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
+		 * animates its <strong>y</strong> position from a specific location to
+		 * its current location.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveYFromEffect(fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldY:Number = target.y;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).suspendEffects();
+				}
+				target.y = fromY;
+				if(target is IFeathersControl)
+				{
+					IFeathersControl(target).resumeEffects();
+				}
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("y", oldY);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
 		 * animates its position from its current location to a new
 		 * location calculated by an offset.
 		 *
 		 * @productversion Feathers 3.5.0
+		 * 
+		 * @see #createMoveXByEffect()
+		 * @see #createMoveYByEffect()
 		 */
 		public static function createMoveByEffect(xBy:Number, yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -101,6 +198,40 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.moveTo(target.x + xBy, target.y + yBy);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
+		 * animates its <strong>x</strong> position from its current location to
+		 * a new location calculated by an offset.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveXByEffect(xBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("x", target.x + xBy);
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that
+		 * animates its <strong>y</strong> position from its current location to
+		 * a new location calculated by an offset.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createMoveYByEffect(yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var tween:Tween = new Tween(target, duration, ease);
+				tween.animate("y", target.y + yBy);
 				return new TweenEffectContext(tween);
 			}
 		}
