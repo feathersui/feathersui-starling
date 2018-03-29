@@ -480,6 +480,9 @@ package feathers.core
 			this._hideEffect = value;
 		}
 
+		/**
+		 * @private
+		 */
 		override public function set visible(value:Boolean):void
 		{
 			if(this._suspendEffectsCount === 0 && this._hideEffectContext !== null)
@@ -516,6 +519,16 @@ package feathers.core
 				}
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _removedEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _disposeAfterRemovedEffect:Boolean = false;
 
 		/**
 		 * @private
@@ -2707,6 +2720,24 @@ package feathers.core
 		}
 
 		/**
+		 * Plays an effect before removing the component from its parent.
+		 */
+		public function removeFromParentWithEffect(effect:Function, dispose:Boolean = false):void
+		{
+			if(this.isCreated && this._suspendEffectsCount === 0)
+			{
+				this._disposeAfterRemovedEffect = dispose;
+				this._removedEffectContext = IEffectContext(effect(this));
+				this._removedEffectContext.addEventListener(Event.COMPLETE, removedEffectContext_completeHandler);
+				this._removedEffectContext.play();
+			}
+			else
+			{
+				this.removeFromParent(dispose);
+			}
+		}
+
+		/**
 		 * Resets the <code>styleProvider</code> property to its default value,
 		 * which is usually the global style provider for the component.
 		 * 
@@ -3209,6 +3240,12 @@ package feathers.core
 				this._validationQueue.addControl(this);
 			}
 
+			//if the removed effect is still active, stop it
+			if(this._removedEffectContext !== null)
+			{
+				this._removedEffectContext.toEnd();
+			}
+
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
 			{
 				this._addedEffectContext = this._addedEffect(this);
@@ -3236,6 +3273,15 @@ package feathers.core
 		protected function addedEffectContext_completeHandler(event:Event):void
 		{
 			this._addedEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedEffectContext_completeHandler(event:Event):void
+		{
+			this._removedEffectContext = null;
+			this.removeFromParent(this._disposeAfterRemovedEffect);
 		}
 
 		/**
