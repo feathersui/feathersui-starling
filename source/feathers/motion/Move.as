@@ -130,7 +130,7 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function for the target component that
-		 * animates its strong>x</strong> position from a specific location to
+		 * animates its <strong>x</strong> position from a specific location to
 		 * its current location.
 		 *
 		 * @productversion Feathers 3.5.0
