@@ -1104,14 +1104,40 @@ package feathers.controls
 			}
 			if(this._direction === Direction.VERTICAL)
 			{
+				var calculatedHeight:Number = Math.round(percentage * (this.actualHeight - this._paddingTop - this._paddingBottom));
+				if(calculatedHeight < this._originalFillHeight)
+				{
+					calculatedHeight = this._originalFillHeight;
+					//if the size is too small, and the value is equal to the
+					//minimum, people don't expect to see the fill
+					this.currentFill.visible = this._value > this._minimum;
+				}
+				else
+				{
+					//if it was hidden before, we want to show it again
+					this.currentFill.visible = true;
+				}
 				this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.currentFill.height = Math.round(this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight));
+				this.currentFill.height = calculatedHeight;
 				this.currentFill.x = this._paddingLeft;
 				this.currentFill.y = this.actualHeight - this._paddingBottom - this.currentFill.height;
 			}
 			else //horizontal
 			{
-				this.currentFill.width = Math.round(this._originalFillWidth + percentage * (this.actualWidth - this._paddingLeft - this._paddingRight - this._originalFillWidth));
+				var calculatedWidth:Number = Math.round(percentage * (this.actualWidth - this._paddingLeft - this._paddingRight));
+				if(calculatedWidth < this._originalFillWidth)
+				{
+					calculatedWidth = this._originalFillWidth;
+					//if the size is too small, and the value is equal to the
+					//minimum, people don't expect to see the fill
+					this.currentFill.visible = this._value > this._minimum;
+				}
+				else
+				{
+					//if it was hidden before, we want to show it again
+					this.currentFill.visible = true;
+				}
+				this.currentFill.width = calculatedWidth;
 				this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 				this.currentFill.x = this._paddingLeft;
 				this.currentFill.y = this._paddingTop;
