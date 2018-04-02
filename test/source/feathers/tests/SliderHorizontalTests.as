@@ -2,6 +2,7 @@ package feathers.tests
 {
 	import feathers.controls.Button;
 	import feathers.controls.Slider;
+	import feathers.controls.TrackInteractionMode;
 	import feathers.controls.TrackLayoutMode;
 	import feathers.layout.Direction;
 
@@ -214,6 +215,7 @@ package feathers.tests
 			this._slider.minimum = 0;
 			this._slider.maximum = 10;
 			this._slider.value = beforeValue;
+			this._slider.trackInteractionMode = TrackInteractionMode.TO_VALUE;
 			//validate to position the thumb correctly.
 			this._slider.validate();
 			var hasChanged:Boolean = false;
@@ -224,8 +226,8 @@ package feathers.tests
 			var position:Point = new Point(TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
 			var target:DisplayObject = this._slider.stage.hitTest(position);
 
-			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
-				this._slider.getChildByName(TRACK_NAME).name, target.name);
+			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
+				this._slider.getChildByName(THUMB_NAME).name, target.name);
 
 			var touch:Touch = new Touch(0);
 			touch.target = target;
@@ -249,6 +251,7 @@ package feathers.tests
 			this._slider.minimum = 0;
 			this._slider.maximum = 10;
 			this._slider.value = beforeValue;
+			this._slider.trackInteractionMode = TrackInteractionMode.TO_VALUE;
 			//validate to position the thumb correctly.
 			this._slider.validate();
 			var hasChanged:Boolean = false;
@@ -259,8 +262,8 @@ package feathers.tests
 			var position:Point = new Point(2 * TRACK_WIDTH / 3, THUMB_HEIGHT / 2);
 			var target:DisplayObject = this._slider.stage.hitTest(position);
 
-			Assert.assertStrictlyEquals("The hit test did not return the slider's track",
-				this._slider.getChildByName(TRACK_NAME).name, target.name);
+			Assert.assertStrictlyEquals("The hit test did not return the slider's thumb",
+				this._slider.getChildByName(THUMB_NAME).name, target.name);
 
 			var touch:Touch = new Touch(0);
 			touch.target = target;
