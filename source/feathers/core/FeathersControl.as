@@ -405,6 +405,70 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _focusInEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusInEffect:Function = null;
+
+		/**
+		 * An option effect that is activated when the component receives focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusOutEffect
+		 */
+		public function get focusInEffect():Function
+		{
+			return this._focusInEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusInEffect(value:Function):void
+		{
+			this._focusInEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffect:Function = null;
+
+		/**
+		 * An option effect that is activated when the component loses focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusInEffect
+		 */
+		public function get focusOutEffect():Function
+		{
+			return this._focusOutEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusOutEffect(value:Function):void
+		{
+			this._focusOutEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _addedEffectContext:IEffectContext = null;
 
 		/**
@@ -500,7 +564,7 @@ package feathers.core
 				super.visible = value;
 				if(this.isCreated && this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
 				{
-					this._showEffectContext = this._showEffect(this);
+					this._showEffectContext = IEffectContext(this._showEffect(this));
 					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
 					this._showEffectContext.play();
 				}
@@ -513,7 +577,7 @@ package feathers.core
 				}
 				else
 				{
-					this._hideEffectContext = this._hideEffect(this);
+					this._hideEffectContext = IEffectContext(this._hideEffect(this));
 					this._hideEffectContext.addEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
 					this._hideEffectContext.play();
 				}
@@ -883,7 +947,7 @@ package feathers.core
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
-				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
@@ -917,7 +981,7 @@ package feathers.core
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
-				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
@@ -1018,7 +1082,7 @@ package feathers.core
 			}
 			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
 			{
-				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
@@ -1152,7 +1216,7 @@ package feathers.core
 			}
 			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
 			{
-				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
@@ -2563,7 +2627,7 @@ package feathers.core
 
 				if(this._suspendEffectsCount === 0 && this.stage !== null && this._addedEffect !== null)
 				{
-					this._addedEffectContext = this._addedEffect(this);
+					this._addedEffectContext = IEffectContext(this._addedEffect(this));
 					this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
 					this._addedEffectContext.play();
 				}
@@ -2614,9 +2678,8 @@ package feathers.core
 			var heightIsNaN:Boolean = height !== height;
 			if((!widthIsNaN || !heightIsNaN) && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
 			{
-				this._resizeEffectContext = this._resizeEffect(this);
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
-				trace(this._resizeEffectContext);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
 					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
@@ -2695,7 +2758,7 @@ package feathers.core
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
 			{
-				this._moveEffectContext = this._moveEffect(this);
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
@@ -3202,6 +3265,19 @@ package feathers.core
 		{
 			this._hasFocus = true;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
+
+			if(this._focusOutEffectContext !== null)
+			{
+				this._focusOutEffectContext.toEnd();
+				this._focusOutEffectContext = null;
+			}
+
+			if(this._suspendEffectsCount === 0 && this._focusInEffect !== null)
+			{
+				this._focusInEffectContext = IEffectContext(this._focusInEffect(this));
+				this._focusInEffectContext.addEventListener(Event.COMPLETE, focusInEffectContext_completeHandler);
+				this._focusInEffectContext.play();
+			}
 		}
 
 		/**
@@ -3214,6 +3290,19 @@ package feathers.core
 			this._hasFocus = false;
 			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
+
+			if(this._focusInEffectContext !== null)
+			{
+				this._focusInEffectContext.toEnd();
+				this._focusInEffectContext = null;
+			}
+
+			if(this._suspendEffectsCount === 0 && this._focusOutEffect !== null)
+			{
+				this._focusOutEffectContext = IEffectContext(this._focusOutEffect(this));
+				this._focusOutEffectContext.addEventListener(Event.COMPLETE, focusOutEffectContext_completeHandler);
+				this._focusOutEffectContext.play();
+			}
 		}
 
 		/**
@@ -3248,7 +3337,7 @@ package feathers.core
 
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
 			{
-				this._addedEffectContext = this._addedEffect(this);
+				this._addedEffectContext = IEffectContext(this._addedEffect(this));
 				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
 				this._addedEffectContext.play();
 			}
@@ -3303,6 +3392,24 @@ package feathers.core
 			this.suspendEffects();
 			this.visible = false;
 			this.resumeEffects();
+		}
+
+		/**
+		 * @private
+		 */
+		private function focusInEffectContext_completeHandler(event:Event):void
+		{
+			this._focusInEffectContext.removeEventListener(Event.COMPLETE, focusInEffectContext_completeHandler);
+			this._focusInEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		private function focusOutEffectContext_completeHandler(event:Event):void
+		{
+			this._focusOutEffectContext.removeEventListener(Event.COMPLETE, focusOutEffectContext_completeHandler);
+			this._focusOutEffectContext = null;
 		}
 
 		/**
