@@ -548,7 +548,7 @@ package feathers.controls.text
 				return 0;
 			}
 			var gutterDimensionsOffset:Number = 0;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 2;
 			}
@@ -716,8 +716,10 @@ package feathers.controls.text
 		 * Specifies whether the text field has a border. Use the
 		 * <code>borderColor</code> property to set the border color.
 		 *
-		 * <p>Note: this property cannot be used when the <code>useGutter</code>
-		 * property is set to <code>false</code> (the default value!).</p>
+		 * <p>Note: If <code>border</code> is set to <code>true</code>, the
+		 * component will behave as if <code>useGutter</code> is also set to
+		 * <code>true</code> because the border will not render correctly
+		 * without the gutter.</p>
 		 *
 		 * <p>In the following example, the border is enabled:</p>
 		 *
@@ -1071,6 +1073,9 @@ package feathers.controls.text
 		 * <code>flash.text.TextField</code> will be used in measurement and
 		 * layout. To visually align with other text renderers and text editors,
 		 * it is often best to leave the gutter disabled.
+		 * 
+		 * <p>Returns <code>true</code> if the <code>border</code> property is
+		 * <code>true</code>.</p>
 		 *
 		 * <p>In the following example, the gutter is enabled:</p>
 		 *
@@ -1081,7 +1086,7 @@ package feathers.controls.text
 		 */
 		public function get useGutter():Boolean
 		{
-			return this._useGutter;
+			return this._useGutter || this._border;
 		}
 
 		/**
@@ -1540,7 +1545,7 @@ package feathers.controls.text
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var scaleFactor:Number = starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -1619,7 +1624,7 @@ package feathers.controls.text
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
 			var scaleFactor:Number = starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -1910,7 +1915,7 @@ package feathers.controls.text
 				bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 			}
 			var gutterPositionOffset:Number = 2 * scaleFactor;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterPositionOffset = 0;
 			}

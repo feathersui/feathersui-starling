@@ -356,7 +356,7 @@ package feathers.controls.text
 				return 0;
 			}
 			var gutterDimensionsOffset:Number = 0;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 2;
 			}
@@ -1095,8 +1095,10 @@ package feathers.controls.text
 		 * Specifies whether the text field has a border. Use the
 		 * <code>borderColor</code> property to set the border color.
 		 *
-		 * <p>Note: this property cannot be used when the <code>useGutter</code>
-		 * property is set to <code>false</code> (the default value!).</p>
+		 * <p>Note: If <code>border</code> is set to <code>true</code>, the
+		 * component will behave as if <code>useGutter</code> is also set to
+		 * <code>true</code> because the border will not render correctly
+		 * without the gutter.</p>
 		 *
 		 * <p>In the following example, the border is enabled:</p>
 		 *
@@ -1175,6 +1177,9 @@ package feathers.controls.text
 		 * <code>flash.text.TextField</code> will be used in measurement and
 		 * layout. To visually align with other text renderers and text editors,
 		 * it is often best to leave the gutter disabled.
+		 * 
+		 * <p>Returns <code>true</code> if the <code>border</code> property is
+		 * <code>true</code>.</p>
 		 *
 		 * <p>In the following example, the gutter is enabled:</p>
 		 *
@@ -1185,7 +1190,7 @@ package feathers.controls.text
 		 */
 		public function get useGutter():Boolean
 		{
-			return this._useGutter;
+			return this._useGutter || this._border;
 		}
 
 		/**
@@ -1543,7 +1548,7 @@ package feathers.controls.text
 					var scaleX:Number = this.textField.scaleX;
 					var scaleY:Number = this.textField.scaleY;
 					var gutterPositionOffset:Number = 2;
-					if(this._useGutter)
+					if(this._useGutter || this._border)
 					{
 						gutterPositionOffset = 0;
 					}
@@ -1910,7 +1915,7 @@ package feathers.controls.text
 			this.commitStylesAndData(this.measureTextField);
 
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -1936,7 +1941,7 @@ package feathers.controls.text
 				this.measureTextField.wordWrap = this._wordWrap;
 				this.measureTextField.width = newWidth + gutterDimensionsOffset;
 				newHeight = this.measureTextField.height - gutterDimensionsOffset;
-				if(this._useGutter)
+				if(this._useGutter || this._border)
 				{
 					newHeight += 4;
 				}
@@ -2214,7 +2219,7 @@ package feathers.controls.text
 		protected function refreshTextFieldSize():void
 		{
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -2289,7 +2294,7 @@ package feathers.controls.text
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			var gutterPositionOffset:Number = 0;
-			if(!this._useGutter)
+			if(!this._useGutter || this._border)
 			{
 				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
@@ -2409,7 +2414,7 @@ package feathers.controls.text
 				return;
 			}
 			var gutterPositionOffset:Number = 2;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterPositionOffset = 0;
 			}
