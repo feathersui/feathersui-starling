@@ -7901,7 +7901,9 @@ package feathers.controls
 		 */
 		protected function scroller_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled)
+			//it's rare, but the stage could be null if the scroller is removed
+			//in a listener for the same event.
+			if(!this._isEnabled || this.stage === null)
 			{
 				this._touchPointID = -1;
 				return;
