@@ -405,96 +405,6 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _focusInEffectContext:IEffectContext = null;
-
-		/**
-		 * @private
-		 */
-		protected var _focusInEffect:Function = null;
-
-		/**
-		 * An option effect that is activated when the component receives focus.
-		 * 
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
-		 * @see #focusOutEffect
-		 */
-		public function get focusInEffect():Function
-		{
-			return this._focusInEffect;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set focusInEffect(value:Function):void
-		{
-			this._focusInEffect = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _focusOutEffectContext:IEffectContext = null;
-
-		/**
-		 * @private
-		 */
-		protected var _focusOutEffect:Function = null;
-
-		/**
-		 * An option effect that is activated when the component loses focus.
-		 * 
-		 * <p>The implementation of this property is provided for convenience,
-		 * but it cannot be used unless a subclass implements the
-		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
-		 * @see #focusInEffect
-		 */
-		public function get focusOutEffect():Function
-		{
-			return this._focusOutEffect;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set focusOutEffect(value:Function):void
-		{
-			this._focusOutEffect = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _addedEffectContext:IEffectContext = null;
-
-		/**
-		 * @private
-		 */
-		protected var _addedEffect:Function = null;
-
-		/**
-		 * 
-		 */
-		public function get addedEffect():Function
-		{
-			return this._addedEffect;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set addedEffect(value:Function):void
-		{
-			this._addedEffect = value;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _showEffectContext:IEffectContext = null;
 
 		/**
@@ -503,7 +413,12 @@ package feathers.core
 		protected var _showEffect:Function = null;
 
 		/**
+		 * An optional effect that is activated when the component is shown.
+		 * More specifically, this effect plays when the <code>visible</code>
+		 * property is set to <code>true.</code>
 		 * 
+		 * @see #visible
+		 * @see #hideEffect
 		 */
 		public function get showEffect():Function
 		{
@@ -529,7 +444,12 @@ package feathers.core
 		protected var _hideEffect:Function = null;
 
 		/**
+		 * An optional effect that is activated when the component is hidden.
+		 * More specifically, this effect plays when the <code>visible</code>
+		 * property is set to <code>false</code>.
 		 * 
+		 * @see #visible
+		 * @see #showEffect
 		 */
 		public function get hideEffect():Function
 		{
@@ -582,6 +502,100 @@ package feathers.core
 					this._hideEffectContext.play();
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _focusInEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusInEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component receives
+		 * focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusOutEffect
+		 */
+		public function get focusInEffect():Function
+		{
+			return this._focusInEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusInEffect(value:Function):void
+		{
+			this._focusInEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component loses focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusInEffect
+		 */
+		public function get focusOutEffect():Function
+		{
+			return this._focusOutEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusOutEffect(value:Function):void
+		{
+			this._focusOutEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is added to
+		 * the stage.
+		 * 
+		 * @see #removeFromParentWithEffect()
+		 */
+		public function get addedEffect():Function
+		{
+			return this._addedEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set addedEffect(value:Function):void
+		{
+			this._addedEffect = value;
 		}
 
 		/**
@@ -894,7 +908,13 @@ package feathers.core
 		protected var _resizeEffect:Function = null;
 
 		/**
+		 * An optional effect that is activated when the component is resized
+		 * with new dimensions. More specifically, this effect plays when the
+		 * <code>width</code> or <code>height</code> property changes.
 		 * 
+		 * @see #width
+		 * @see #height
+		 * @see #setSize()
 		 */
 		public function get resizeEffect():Function
 		{
@@ -920,7 +940,13 @@ package feathers.core
 		protected var _moveEffect:Function = null;
 
 		/**
+		 * An optional effect that is activated when the component is moved to
+		 * a new position. More specifically, this effect plays when the
+		 * <code>x</code> or <code>y</code> property changes.
 		 * 
+		 * @see #x
+		 * @see #y
+		 * @see #move()
 		 */
 		public function get moveEffect():Function
 		{
@@ -2784,6 +2810,8 @@ package feathers.core
 
 		/**
 		 * Plays an effect before removing the component from its parent.
+		 * 
+		 * @see #addedEffect
 		 */
 		public function removeFromParentWithEffect(effect:Function, dispose:Boolean = false):void
 		{

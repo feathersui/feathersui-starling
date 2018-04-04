@@ -1500,7 +1500,8 @@ package feathers.controls
 		 * Adds an item from the data provider and animates its item renderer
 		 * using an effect.
 		 * 
-		 * @see feathers.data.IListCollection#removeItem()
+		 * @see #removeItemWithEffect()
+		 * @see feathers.data.IListCollection#addItem()
 		 */
 		public function addItemWithEffect(item:Object, index:int, effect:Function):void
 		{
@@ -1518,6 +1519,7 @@ package feathers.controls
 		 * Removes an item from the data provider <strong>after</strong>
 		 * animating its item renderer using an effect.
 		 * 
+		 * @see #addItemWithEffect()
 		 * @see feathers.data.IListCollection#removeItem()
 		 */
 		public function removeItemWithEffect(item:Object, effect:Function):void
