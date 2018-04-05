@@ -398,5 +398,37 @@ package feathers.tests
 			Assert.assertStrictlyEquals("The selectedItem property was not changed when selected item is filtered",
 				newSelectedItem, this._tabBar.selectedItem);
 		}
+
+		[Test]
+		public function testSelectionChangeOnSortChange():void
+		{
+			this._tabBar.selectedIndex = this._tabBar.dataProvider.length - 1;
+			var oldSelectedItem:Object = this._tabBar.dataProvider.getItemAt(this._tabBar.dataProvider.length - 1);
+			var hasChanged:Boolean = false;
+			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tabBar.dataProvider.sortCompareFunction = function(a:Object, b:Object):int
+			{
+				var aIndex:int = _tabBar.dataProvider.getItemIndex(a);
+				var bIndex:int = _tabBar.dataProvider.getItemIndex(b);
+				if(aIndex < bIndex)
+				{
+					return 1;
+				}
+				else if(aIndex > bIndex)
+				{
+					return -1;
+				}
+				return 0;
+			}
+			this._tabBar.dataProvider.refresh();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("Incorrect selectedIndex after sort change",
+				0, this._tabBar.selectedIndex);
+			Assert.assertStrictlyEquals("Incorrect selectedItem after sort change",
+				oldSelectedItem, this._tabBar.selectedItem);
+		}
 	}
 }

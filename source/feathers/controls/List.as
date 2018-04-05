@@ -615,6 +615,7 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
@@ -626,6 +627,7 @@ package feathers.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
@@ -1842,7 +1844,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_filterChangeHandler(event:Event):void
+		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
 			if(this._selectedIndex === -1)
 			{
@@ -1877,6 +1879,22 @@ package feathers.controls
 			{
 				this._selectedIndices.data = newIndices;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_sortChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
 		}
 
 		/**
