@@ -508,7 +508,8 @@ package feathers.controls
 
 		/**
 		 * The minimum physical distance (in inches) that a touch must move
-		 * before a drag gesture begins.
+		 * before a drag gesture begins when <code>isSwipeToPopEnabled</code>
+		 * is <code>true</code>.
 		 *
 		 * <p>In the following example, the minimum drag distance is customized:</p>
 		 *
@@ -516,6 +517,8 @@ package feathers.controls
 		 * scroller.minimumDragDistance = 0.1;</listing>
 		 *
 		 * @default 0.04
+		 * 
+		 * @see #isSwipeToPopEnabled
 		 */
 		public function get minimumDragDistance():Number
 		{
@@ -546,6 +549,8 @@ package feathers.controls
 		 * navigator.minimumSwipeVelocity = 2;</listing>
 		 *
 		 * @default 5
+		 * 
+		 * @see #isSwipeToPopEnabled
 		 */
 		public function get minimumSwipeVelocity():Number
 		{
@@ -594,15 +599,19 @@ package feathers.controls
 		protected var _swipeToPopGestureEdgeSize:Number = 0.1;
 
 		/**
-		 * The minimum physical distance (in inches) that a touch must move
-		 * before a drag gesture begins.
+		 * The size (in inches) of the region near the left edge of the content
+		 * that can be dragged when <code>isSwipeToPopEnabled</code> is
+		 * <code>true</code>.
 		 *
-		 * <p>In the following example, the swipe-to-pop gesture edge size customized:</p>
+		 * <p>In the following example, the swipe-to-pop gesture edge size is
+		 * customized:</p>
 		 *
 		 * <listing version="3.0">
 		 * drawers.swipeToPopGestureEdgeSize = 0.25;</listing>
 		 *
 		 * @default 0.1
+		 * 
+		 * @see #isSwipeToPopEnabled
 		 */
 		public function get swipeToPopGestureEdgeSize():Number
 		{
