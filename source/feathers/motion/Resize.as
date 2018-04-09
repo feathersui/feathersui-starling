@@ -114,6 +114,18 @@ package feathers.motion
 				var oldHeight:Number = target.height;
 				if(target is IFeathersControl)
 				{
+					var oldExplicitWidth:Number = IFeathersControl(target).explicitWidth;
+					var oldExplicitHeight:Number = IFeathersControl(target).explicitHeight;
+					if(oldExplicitWidth === oldExplicitWidth ||
+						oldExplicitHeight === oldExplicitHeight) //isNaN
+					{
+						tween.onComplete = function():void
+						{
+							//restore the original explicit height
+							target.width = oldExplicitWidth;
+							target.height = oldExplicitHeight;
+						};
+					}
 					IFeathersControl(target).suspendEffects();
 				}
 				target.width = fromWidth;
@@ -143,6 +155,15 @@ package feathers.motion
 				var oldWidth:Number = target.width;
 				if(target is IFeathersControl)
 				{
+					var oldExplicitWidth:Number = IFeathersControl(target).explicitWidth;
+					if(oldExplicitWidth === oldExplicitWidth) //isNaN
+					{
+						tween.onComplete = function():void
+						{
+							//restore the original explicit width
+							target.width = oldExplicitWidth;
+						};
+					}
 					IFeathersControl(target).suspendEffects();
 				}
 				target.width = fromWidth;
@@ -170,6 +191,15 @@ package feathers.motion
 				var oldHeight:Number = target.height;
 				if(target is IFeathersControl)
 				{
+					var oldExplicitHeight:Number = IFeathersControl(target).explicitHeight;
+					if(oldExplicitHeight === oldExplicitHeight) //isNaN
+					{
+						tween.onComplete = function():void
+						{
+							//restore the original explicit height
+							target.height = oldExplicitHeight;
+						};
+					}
 					IFeathersControl(target).suspendEffects();
 				}
 				target.height = fromHeight;
