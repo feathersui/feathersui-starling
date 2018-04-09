@@ -1476,8 +1476,6 @@ package feathers.controls.supportClasses
 						storage.explicitHeight = itemRenderer.explicitHeight;
 						storage.explicitMinWidth = itemRenderer.explicitMinWidth;
 						storage.explicitMinHeight = itemRenderer.explicitMinHeight;
-						storage.explicitMaxWidth = itemRenderer.explicitMaxWidth;
-						storage.explicitMaxHeight = itemRenderer.explicitMaxHeight;
 					}
 					else
 					{
@@ -1489,8 +1487,6 @@ package feathers.controls.supportClasses
 						itemRenderer.height = storage.explicitHeight;
 						itemRenderer.minWidth = storage.explicitMinWidth;
 						itemRenderer.minHeight = storage.explicitMinHeight;
-						itemRenderer.maxWidth = storage.explicitMaxWidth;
-						itemRenderer.maxHeight = storage.explicitMaxHeight;
 					}
 					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
 					{
@@ -1804,6 +1800,4 @@ class ItemRendererFactoryStorage
 	public var explicitHeight:Number;
 	public var explicitMinWidth:Number;
 	public var explicitMinHeight:Number;
-	public var explicitMaxWidth:Number;
-	public var explicitMaxHeight:Number;
 }
