@@ -41,9 +41,9 @@ package feathers.motion
 		 * @see #createFadeOutEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createFadeToEffect(1);
+			return createFadeToEffect(1, duration, ease, interruptBehavior);
 		}
 
 		/**
@@ -56,9 +56,9 @@ package feathers.motion
 		 * @see #createFadeInEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createFadeToEffect(0);
+			return createFadeToEffect(0, duration, ease, interruptBehavior);
 		}
 
 		/**
@@ -69,13 +69,15 @@ package feathers.motion
 		 * @see #createFadeFromEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeToEffect(endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeToEffect(endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -87,7 +89,7 @@ package feathers.motion
 		 * @see #createFadeToEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeFromEffect(startAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeFromEffect(startAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -103,7 +105,9 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -112,7 +116,7 @@ package feathers.motion
 		 * animating the `alpha` property between a start value and an ending
 		 * value.
 		 */
-		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -127,7 +131,9 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 

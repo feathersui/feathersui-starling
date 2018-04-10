@@ -33,12 +33,14 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.STOP):Function
 		{
 			return function(target:DisplayObject):IResizeEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				return new TweenResizeEffectContext(tween);
+				var context:TweenResizeEffectContext = new TweenResizeEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -51,14 +53,16 @@ package feathers.motion
 		 * @see #createResizeWidthToEffect()
 		 * @see #createResizeHeightToEffect()
 		 */
-		public static function createResizeToEffect(toWidth:Number, toHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeToEffect(toWidth:Number, toHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", toWidth);
 				tween.animate("height", toHeight);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -69,13 +73,15 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeWidthToEffect(toWidth:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeWidthToEffect(toWidth:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", toWidth);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -86,13 +92,15 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeHeightToEffect(toHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeHeightToEffect(toHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", toHeight);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -106,7 +114,7 @@ package feathers.motion
 		 * @see #createResizeWidthFromEffect()
 		 * @see createResizeHeightFromEffect()
 		 */
-		public static function createResizeFromEffect(fromWidth:Number, fromHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeFromEffect(fromWidth:Number, fromHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -137,7 +145,9 @@ package feathers.motion
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", oldWidth);
 				tween.animate("height", oldHeight);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -148,7 +158,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeWidthFromEffect(fromWidth:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeWidthFromEffect(fromWidth:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -173,7 +183,9 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", oldWidth);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -184,7 +196,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeHeightFromEffect(fromHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeHeightFromEffect(fromHeight:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -209,7 +221,9 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", oldHeight);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -223,14 +237,16 @@ package feathers.motion
 		 * @see #createResizeWidthByEffect()
 		 * @see #createResizeHeightByEffect()
 		 */
-		public static function createResizeByEffect(widthBy:Number, heightBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeByEffect(widthBy:Number, heightBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", target.width + widthBy);
 				tween.animate("height", target.height + heightBy);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -241,13 +257,15 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeWidthByEffect(widthBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeWidthByEffect(widthBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", target.width + widthBy);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 
@@ -258,13 +276,15 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createResizeHeightByEffect(heightBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createResizeHeightByEffect(heightBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", target.height + heightBy);
-				return new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(tween);
+				context.interruptBehavior = interruptBehavior;
+				return context;
 			}
 		}
 	}

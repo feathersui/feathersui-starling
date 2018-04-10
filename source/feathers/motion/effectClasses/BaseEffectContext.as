@@ -306,6 +306,16 @@ package feathers.motion.effectClasses
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function interrupt():void
+		{
+			//by default, go to the end. subclasses may override this method
+			//to customize the behavior, if needed.
+			this.toEnd();
+		}
+
+		/**
 		 * Called when the effect is initialized. Subclasses may
 		 * override this method to customize the effect's behavior.
 		 */

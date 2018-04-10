@@ -84,6 +84,7 @@ package feathers.motion.effectClasses
 		 * Stops the effect at its current position and forces
 		 * <code>Event.COMPLETE</code> to dispatch.
 		 * 
+		 * @see #toEnd()
 		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function stop():void;
@@ -92,8 +93,20 @@ package feathers.motion.effectClasses
 		 * Advances the effect to the end and forces
 		 * <code>Event.COMPLETE</code> to dispatch.
 		 * 
+		 * @see #stop()
 		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function toEnd():void;
+
+		/**
+		 * Either advances the effect to the end or stops it at its current
+		 * position, with behavior to be determined by the effect context. In
+		 * both cases, forces <code>Event.COMPLETE</code> to dispatch.
+		 * 
+		 * @see #toEnd()
+		 * @see #stop()
+		 * @see #event:complete starling.events.Event.COMPLETE
+		 */
+		function interrupt():void;
 	}	
 }

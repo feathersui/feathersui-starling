@@ -471,12 +471,12 @@ package feathers.core
 		{
 			if(this._suspendEffectsCount === 0 && this._hideEffectContext !== null)
 			{
-				this._hideEffectContext.stop();
+				this._hideEffectContext.interrupt();
 				this._hideEffectContext = null;
 			}
 			if(this._suspendEffectsCount === 0 && this._showEffectContext !== null)
 			{
-				this._showEffectContext.stop();
+				this._showEffectContext.interrupt();
 				this._showEffectContext = null;
 			}
 			if(value)
@@ -968,7 +968,7 @@ package feathers.core
 		{
 			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
 			{
-				this._moveEffectContext.stop();
+				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
@@ -1002,7 +1002,7 @@ package feathers.core
 		{
 			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
 			{
-				this._moveEffectContext.stop();
+				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
@@ -1103,7 +1103,7 @@ package feathers.core
 			var hasSetExplicitWidth:Boolean = false;
 			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this._resizeEffectContext.stop();
+				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
 			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
@@ -1237,7 +1237,7 @@ package feathers.core
 			var hasSetExplicitHeight:Boolean = false;
 			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this._resizeEffectContext.stop();
+				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
 			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
@@ -2697,7 +2697,7 @@ package feathers.core
 			var hasSetExplicitSize:Boolean = false;
 			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this._resizeEffectContext.stop();
+				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
 			var widthIsNaN:Boolean = width !== width;
@@ -2779,7 +2779,7 @@ package feathers.core
 		{
 			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
 			{
-				this._moveEffectContext.stop();
+				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
@@ -3296,7 +3296,7 @@ package feathers.core
 
 			if(this._focusOutEffectContext !== null)
 			{
-				this._focusOutEffectContext.toEnd();
+				this._focusOutEffectContext.interrupt();
 				this._focusOutEffectContext = null;
 			}
 
@@ -3321,7 +3321,7 @@ package feathers.core
 
 			if(this._focusInEffectContext !== null)
 			{
-				this._focusInEffectContext.toEnd();
+				this._focusInEffectContext.interrupt();
 				this._focusInEffectContext = null;
 			}
 
@@ -3360,7 +3360,7 @@ package feathers.core
 			//if the removed effect is still active, stop it
 			if(this._removedEffectContext !== null)
 			{
-				this._removedEffectContext.toEnd();
+				this._removedEffectContext.interrupt();
 			}
 
 			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
@@ -3378,7 +3378,7 @@ package feathers.core
 		{
 			if(this._addedEffectContext !== null)
 			{
-				this._addedEffectContext.toEnd();
+				this._addedEffectContext.interrupt();
 			}
 			this._depth = -1;
 			this._validationQueue = null;
