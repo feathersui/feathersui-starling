@@ -17,6 +17,7 @@ package feathers.motion
 	import starling.utils.Pool;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
+	import starling.events.Event;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -37,6 +38,11 @@ package feathers.motion
 		/**
 		 * @private
 		 */
+		protected static const IRIS_MASK_NAME:String = "feathers-iris-effect-mask";
+
+		/**
+		 * @private
+		 */
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
 		/**
@@ -45,9 +51,9 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisOpenEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createIrisOpenEffectAtRatio(0.5, 0.5, duration, ease);
+			return createIrisOpenEffectAtRatio(0.5, 0.5, duration, ease, interruptBehavior);
 		}
 
 		/**
@@ -57,7 +63,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisOpenEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -71,7 +77,7 @@ package feathers.motion
 				{
 					maskHeight = 1;
 				}
-				return createIrisOpenEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease);
+				return createIrisOpenEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease, interruptBehavior);
 			}
 		}
 
@@ -81,20 +87,25 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisOpenEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
-				return createIrisOpenEffectContextAtXY(target, x, y, duration, ease);
+				return createIrisOpenEffectContextAtXY(target, x, y, duration, ease, interruptBehavior);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function createIrisOpenEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object):IEffectContext
+		protected static function createIrisOpenEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object, interruptBehavior:String):IEffectContext
 		{
+			var mask:Canvas = null;
 			var oldMask:DisplayObject = target.mask;
+			if(oldMask is Canvas && oldMask.name === IRIS_MASK_NAME)
+			{
+				mask = Canvas(oldMask);
+			}
 			var maskWidth:Number = target.width;
 			var maskHeight:Number = target.height;
 			if(maskWidth < 0)
@@ -121,22 +132,59 @@ package feathers.motion
 			}
 			Pool.putPoint(p1);
 			Pool.putPoint(p2);
-			var mask:Canvas = new Canvas();
-			mask.x = originX;
-			mask.y = originY;
-			mask.beginFill(0xff00ff);
-			mask.drawCircle(0, 0, radius);
-			mask.endFill();
-			mask.scale = 0;
-			target.mask = mask;
+			if(mask === null)
+			{
+				mask = new Canvas();
+				mask.name = IRIS_MASK_NAME;
+				mask.x = originX;
+				mask.y = originY;
+				mask.beginFill(0xff00ff);
+				mask.drawCircle(0, 0, radius);
+				mask.endFill();
+				mask.scale = 0;
+				target.mask = mask;
+			}
+			else
+			{
+				mask.clear();
+				mask.beginFill(0xff00ff);
+				//the radius may have changed
+				mask.drawCircle(0, 0, radius);
+				mask.endFill();
+			}
 			var tween:Tween = new Tween(mask, duration, ease);
 			tween.animate("scale", 1);
-			tween.onComplete = function():void
+			if(mask === oldMask)
 			{
-				target.mask = oldMask;
-				mask.removeFromParent(true);
+				//the x and y position may have changed
+				if(mask.x !== originX)
+				{
+					tween.animate("x", originX);
+				}
+				if(mask.y !== originY)
+				{
+					tween.animate("y", originY);
+				}
 			}
-			return new TweenEffectContext(tween);
+			var context:TweenEffectContext = new TweenEffectContext(tween);
+			context.interruptBehavior = interruptBehavior;
+			context.addEventListener(Event.COMPLETE, function(event:Event, stopped:Boolean):void
+			{
+				if(stopped)
+				{
+					return;
+				}
+				mask.removeFromParent(true);
+				if(mask === oldMask)
+				{
+					target.mask = null;
+				}
+				else
+				{
+					target.mask = oldMask;
+				}
+			});
+			return context;
 		}
 
 		/**
@@ -145,9 +193,9 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisCloseEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createIrisCloseEffectAtRatio(0.5, 0.5, duration, ease);
+			return createIrisCloseEffectAtRatio(0.5, 0.5, duration, ease, interruptBehavior);
 		}
 
 		/**
@@ -157,7 +205,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisCloseEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -171,7 +219,7 @@ package feathers.motion
 				{
 					maskHeight = 1;
 				}
-				return createIrisCloseEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease);
+				return createIrisCloseEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease, interruptBehavior);
 			}
 		}
 
@@ -181,20 +229,25 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT):Function
+		public static function createIrisCloseEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
-				return createIrisCloseEffectContextAtXY(target, x, y, duration, ease);
+				return createIrisCloseEffectContextAtXY(target, x, y, duration, ease, interruptBehavior);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function createIrisCloseEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object):IEffectContext
+		protected static function createIrisCloseEffectContextAtXY(target:DisplayObject, originX:Number, originY:Number, duration:Number, ease:Object, interruptBehavior:String):IEffectContext
 		{
+			var mask:Canvas = null;
 			var oldMask:DisplayObject = target.mask;
+			if(oldMask is Canvas && oldMask.name === IRIS_MASK_NAME)
+			{
+				mask = Canvas(oldMask);
+			}
 			var maskWidth:Number = target.width;
 			var maskHeight:Number = target.height;
 			if(maskWidth < 0)
@@ -221,21 +274,58 @@ package feathers.motion
 			}
 			Pool.putPoint(p1);
 			Pool.putPoint(p2);
-			var mask:Canvas = new Canvas();
-			mask.x = originX;
-			mask.y = originY;
-			mask.beginFill(0xff00ff);
-			mask.drawCircle(0, 0, radius);
-			mask.endFill();
-			target.mask = mask;
+			if(mask === null)
+			{
+				mask = new Canvas();
+				mask.name = IRIS_MASK_NAME;
+				mask.x = originX;
+				mask.y = originY;
+				mask.beginFill(0xff00ff);
+				mask.drawCircle(0, 0, radius);
+				mask.endFill();
+				target.mask = mask;
+			}
+			else
+			{
+				mask.clear();
+				mask.beginFill(0xff00ff);
+				//the radius may have changed
+				mask.drawCircle(0, 0, radius);
+				mask.endFill();
+			}
 			var tween:Tween = new Tween(mask, duration, ease);
 			tween.animate("scale", 0);
-			tween.onComplete = function():void
+			if(mask === oldMask)
 			{
-				target.mask = oldMask;
-				mask.removeFromParent(true);
+				//the x and y position may have changed
+				if(mask.x !== originX)
+				{
+					tween.animate("x", originX);
+				}
+				if(mask.y !== originY)
+				{
+					tween.animate("y", originY);
+				}
 			}
-			return new TweenEffectContext(tween);
+			var context:TweenEffectContext = new TweenEffectContext(tween);
+			context.interruptBehavior = interruptBehavior;
+			context.addEventListener(Event.COMPLETE, function(event:Event, stopped:Boolean):void
+			{
+				if(stopped)
+				{
+					return;
+				}
+				mask.removeFromParent(true);
+				if(mask === oldMask)
+				{
+					target.mask = null;
+				}
+				else
+				{
+					target.mask = oldMask;
+				}
+			});
+			return context;
 		}
 
 		/**
@@ -376,6 +466,7 @@ import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.Canvas;
 import starling.display.DisplayObject;
+import starling.events.Event;
 
 class IrisTween extends Tween
 {
