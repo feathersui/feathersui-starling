@@ -3395,10 +3395,13 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function removedEffectContext_completeHandler(event:Event):void
+		protected function removedEffectContext_completeHandler(event:Event, stopped:Boolean):void
 		{
 			this._removedEffectContext = null;
-			this.removeFromParent(this._disposeAfterRemovedEffect);
+			if(!stopped)
+			{
+				this.removeFromParent(this._disposeAfterRemovedEffect);
+			}
 		}
 
 		/**
@@ -3413,13 +3416,16 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function hideEffectContext_completeHandler(event:Event):void
+		protected function hideEffectContext_completeHandler(event:Event, stopped:Boolean):void
 		{
 			this._hideEffectContext.removeEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
 			this._hideEffectContext = null;
-			this.suspendEffects();
-			this.visible = false;
-			this.resumeEffects();
+			if(!stopped)
+			{
+				this.suspendEffects();
+				this.visible = false;
+				this.resumeEffects();
+			}
 		}
 
 		/**

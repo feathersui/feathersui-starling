@@ -17,7 +17,9 @@ package feathers.motion.effectClasses
 	import starling.display.DisplayObject;
 
 	/**
-	 * Dispatched when the effect is complete.
+	 * Dispatched when the effect completes or is interrupted. If the effect was
+	 * stopped instead of advancing to the end, the value of the event's
+	 * <code>data</code> property will be <code>true</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -27,7 +29,9 @@ package feathers.motion.effectClasses
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>data</code></td><td>If the effect was stopped without
+	 *   reaching the end, this value will be <code>true</code>. Otherwise,
+	 *   <code>false</code>.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
@@ -35,6 +39,8 @@ package feathers.motion.effectClasses
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.COMPLETE
+	 * 
+	 * @see #toEnd()
 	 */
 	[Event(name="complete",type="starling.events.Event")]
 
@@ -286,7 +292,7 @@ package feathers.motion.effectClasses
 		{
 			this.pause();
 			this.cleanupEffect();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE, false, true);
 		}
 
 		/**
@@ -302,7 +308,7 @@ package feathers.motion.effectClasses
 			}
 			this.position = 1;
 			this.cleanupEffect();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE, false, false);
 		}
 
 		/**
@@ -334,7 +340,7 @@ package feathers.motion.effectClasses
 		}
 
 		/**
-		 * Called when the effect completes. Subclasses may
+		 * Called when the effect completes or is interrupted. Subclasses may
 		 * override this method to customize the effect's behavior.
 		 */
 		protected function cleanupEffect():void
@@ -349,7 +355,7 @@ package feathers.motion.effectClasses
 		{
 			this._playTween = null;
 			this.cleanupEffect();
-			this.dispatchEventWith(Event.COMPLETE);
+			this.dispatchEventWith(Event.COMPLETE, false, false);
 		}
 
 	}
