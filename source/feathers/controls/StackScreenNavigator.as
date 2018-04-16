@@ -894,6 +894,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function hitTest(local:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(local);
+			if(this._isDragging && result !== null)
+			{
+				//don't allow touches to reach children while dragging
+				return this;
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function prepareActiveScreen():void
 		{
 			var item:StackScreenNavigatorItem = StackScreenNavigatorItem(this._screens[this._activeScreenID]);
