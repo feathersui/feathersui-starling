@@ -331,6 +331,10 @@ package feathers.controls
 		 */
 		public function set showSelectionOverlay(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._showSelectionOverlay === value)
 			{
 				return;
@@ -357,6 +361,10 @@ package feathers.controls
 		 */
 		public function set hideSelectionOverlayUnlessFocused(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._hideSelectionOverlayUnlessFocused === value)
 			{
 				return;
