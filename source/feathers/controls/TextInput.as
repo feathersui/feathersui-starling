@@ -3749,7 +3749,11 @@ package feathers.controls
 			var point:Point = Pool.getPoint();
 			touch.getLocation(this.stage, point);
 			var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
-			if(isInBounds && !this._textEditorHasFocus)
+			//if the focus manager is enabled, _hasFocus will determine if we
+			//pass focus to the text editor.
+			//if there is no focus manager, then we check if the touch is in
+			//the bounds of the text input.
+			if((this._hasFocus || (this._focusManager === null && isInBounds)) && !this._textEditorHasFocus)
 			{
 				this.textEditor.globalToLocal(point, point);
 				this._isWaitingToSetFocus = false;
