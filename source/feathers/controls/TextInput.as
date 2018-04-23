@@ -3753,7 +3753,7 @@ package feathers.controls
 			//pass focus to the text editor.
 			//if there is no focus manager, then we check if the touch is in
 			//the bounds of the text input.
-			if((this._hasFocus || (this._focusManager === null && isInBounds)) && !this._textEditorHasFocus)
+			if((this._hasFocus || isInBounds) && !this._textEditorHasFocus)
 			{
 				this.textEditor.globalToLocal(point, point);
 				this._isWaitingToSetFocus = false;
