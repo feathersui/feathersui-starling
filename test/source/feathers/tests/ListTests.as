@@ -381,5 +381,37 @@ package feathers.tests
 			Assert.assertStrictlyEquals("Incorrect item passed to Event.TRIGGERED listener",
 				this._list.dataProvider.getItemAt(1), triggeredItem);
 		}
+
+		[Test]
+		public function testSelectionChangeOnSortChange():void
+		{
+			this._list.selectedIndex = this._list.dataProvider.length - 1;
+			var oldSelectedItem:Object = this._list.dataProvider.getItemAt(this._list.dataProvider.length - 1);
+			var hasChanged:Boolean = false;
+			this._list.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._list.dataProvider.sortCompareFunction = function(a:Object, b:Object):int
+			{
+				var aIndex:int = _list.dataProvider.getItemIndex(a);
+				var bIndex:int = _list.dataProvider.getItemIndex(b);
+				if(aIndex < bIndex)
+				{
+					return 1;
+				}
+				else if(aIndex > bIndex)
+				{
+					return -1;
+				}
+				return 0;
+			}
+			this._list.dataProvider.refresh();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("Incorrect selectedIndex after sort change",
+				0, this._list.selectedIndex);
+			Assert.assertStrictlyEquals("Incorrect selectedItem after sort change",
+				oldSelectedItem, this._list.selectedItem);
+		}
 	}
 }

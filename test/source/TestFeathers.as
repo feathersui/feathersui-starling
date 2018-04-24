@@ -103,6 +103,7 @@ package
 	import feathers.tests.StageTextTextEditorFocusTests;
 	import feathers.tests.StyleNameFunctionStyleProviderTests;
 	import feathers.tests.StyleProviderRegistryTests;
+	import feathers.tests.StyleTests;
 	import feathers.tests.TabBarEmptyDataProviderTests;
 	import feathers.tests.TabBarMeasurementTests;
 	import feathers.tests.TabBarTests;
@@ -149,7 +150,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.system.System;
+	import flash.system.fscommand;
 
 	import org.flexunit.internals.TraceListener;
 	import org.flexunit.listeners.CIListener;
@@ -200,6 +201,7 @@ package
 				MinAndMaxDimensionsTests,
 				ComponentLifecycleTests,
 				ScaleTests,
+				StyleTests,
 				RestrictedStyleTests,
 				FocusIndicatorTests,
 
@@ -363,7 +365,7 @@ package
 
 		private function flexunit_testsCompleteHandler(event:flash.events.Event):void
 		{
-			System.exit(0);
+			fscommand("quit");
 		}
 
 	}

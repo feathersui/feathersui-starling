@@ -405,5 +405,32 @@ package feathers.tests
 			Assert.assertStrictlyEquals("AnchorLayout without explicit view port height and child with percentHeight, calculated height, and calculated minHeight results in wrong child height",
 				150, item1.height);
 		}
+
+		[Test]
+		public function testLeftAndTop():void
+		{
+			var left:Number = 10;
+			var top:Number = 15;
+			var width:Number = 100;
+			var height:Number = 150;
+			var item1:LayoutGroup = new LayoutGroup();
+			item1.backgroundSkin = new Quad(width, height, 0xff00ff);
+			item1.validate();
+			var layoutData1:AnchorLayoutData = new AnchorLayoutData();
+			layoutData1.left = left;
+			layoutData1.top = top;
+			item1.layoutData = layoutData1;
+			var items:Vector.<DisplayObject> = new <DisplayObject>[item1];
+			var bounds:ViewPortBounds = new ViewPortBounds();
+			var result:LayoutBoundsResult = this._layout.layout(items, bounds);
+			Assert.assertTrue("AnchorLayoutData with left and top results in incorrect view port width",
+				width + left, result.viewPortWidth);
+			Assert.assertTrue("AnchorLayoutData with left and top results in incorrect view port height",
+				height + top, result.viewPortHeight);
+			Assert.assertTrue("AnchorLayoutData with left and top results in incorrect content width",
+				width + left, result.contentWidth);
+			Assert.assertTrue("AnchorLayoutData with left and top results in incorrect content height",
+				height + top, result.contentHeight);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -764,7 +764,15 @@ package feathers.layout
 				//if the layout is virtualized, and the items all have the same
 				//width, we can make our loops smaller by skipping some items
 				//at the beginning and end. this improves performance.
-				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+
+				if(this._beforeVirtualizedItemCount > 0)
+				{
+					//this value may be negative, which means that we're
+					//repeating items. we don't want to include this value in
+					//the total count, but we'll use it elsewhere.
+					totalItemCount += this._beforeVirtualizedItemCount;
+				}
+				totalItemCount += this._afterVirtualizedItemCount;
 				positionX += (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + gap));
 			}
 			//this cache is used to save non-null items in virtual layouts. by
@@ -840,6 +848,10 @@ package feathers.layout
 
 			//this is the total width of all items
 			var totalWidth:Number = positionX - gap - boundsX;
+			if(this._useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+			{
+				totalWidth -= (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + gap));
+			}
 			//the available width is the width of the viewport. if the explicit
 			//width is NaN, we need to calculate the viewport width ourselves
 			//based on the total width of all items.
@@ -917,7 +929,12 @@ package feathers.layout
 					var adjustedScrollX:Number = scrollX - horizontalAlignOffsetX;
 					if(adjustedScrollX > 0)
 					{
-						item.x += totalWidth * int((adjustedScrollX + availableWidth) / totalWidth);
+						var multiplier:int = int((adjustedScrollX + availableWidth) / totalWidth);
+						if(useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+						{
+							multiplier++;
+						}
+						item.x += totalWidth * multiplier;
 						if(item.x >= (scrollX + availableWidth))
 						{
 							item.x -= totalWidth;
@@ -1201,7 +1218,12 @@ package feathers.layout
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var itemArrayCount:int = items.length;
-			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+			var itemCount:int = itemArrayCount + this._afterVirtualizedItemCount;
+			if(this._beforeVirtualizedItemCount > 0)
+			{
+				itemCount += this._beforeVirtualizedItemCount;
+			}
+			
 			var result:int = index;
 			if(keyCode === Keyboard.HOME)
 			{

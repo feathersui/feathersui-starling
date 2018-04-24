@@ -180,8 +180,12 @@ package feathers.tests
 
 			//we don't care what the exact index is, but it should be clear that
 			//the touch changed it to something
-			Assert.assertTrue("TextInput selectionBeginIndex and selectionEndIndex incorrect after TouchEvent.TOUCH",
-				selectionBeginIndex > 0 && selectionEndIndex < SAMPLE_TEXT.length && selectionBeginIndex === selectionEndIndex)
+			Assert.assertStrictlyEquals("TextInput selectionBeginIndex and selectionEndIndex don't match after TouchEvent.TOUCH",
+				selectionBeginIndex, selectionEndIndex);
+			Assert.assertTrue("TextInput selectionBeginIndex and selectionEndIndex not greater than 0 after TouchEvent.TOUCH",
+				selectionBeginIndex > 0);
+			Assert.assertTrue("TextInput selectionBeginIndex and selectionEndIndex not less than text length after TouchEvent.TOUCH",
+				selectionEndIndex < SAMPLE_TEXT.length);
 		}
 
 		[Test]

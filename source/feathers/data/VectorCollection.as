@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -794,7 +794,7 @@ package feathers.data
 		 */
 		public function unshift(item:Object):void
 		{
-			return this.addItemAt(item, 0);
+			this.addItemAt(item, 0);
 		}
 
 		/**

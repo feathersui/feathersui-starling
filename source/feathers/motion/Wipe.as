@@ -1,14 +1,23 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
+	import flash.geom.Point;
+
 	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
+	import starling.display.Stage;
+	import starling.utils.Pool;
+	import feathers.motion.effectClasses.TweenEffectContext;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
@@ -28,6 +37,322 @@ package feathers.motion
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
 		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component into view from right to left, animating the
+		 * <code>width</code> and <code>x</code> properties of a temporary mask.
+		 */
+		public static function createWipeInLeftEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				mask.width = 0;
+				target.mask = mask;
+				var stage:Stage = target.stage;
+				if(stage === null)
+				{
+					stage = Starling.current.stage;
+				}
+				stage.addChild(mask);
+				var point:Point = Pool.getPoint();
+				target.localToGlobal(point, point);
+				mask.x = point.x + maskWidth;
+				mask.y = point.y;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("width", maskWidth);
+				tween.animate("x", point.x);
+				Pool.putPoint(point);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.removeFromParent(true);
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component into view from left to right, animating the
+		 * <code>width</code> property of a temporary mask.
+		 */
+		public static function createWipeInRightEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				mask.width = 0;
+				target.mask = mask;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("width", maskWidth);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.dispose();
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component into view from bottom to top, animating the
+		 * <code>height</code> and <code>y</code> properties of a temporary mask.
+		 */
+		public static function createWipeInUpEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				mask.height = 0;
+				target.mask = mask;
+				var stage:Stage = target.stage;
+				if(stage === null)
+				{
+					stage = Starling.current.stage;
+				}
+				stage.addChild(mask);
+				var point:Point = Pool.getPoint();
+				target.localToGlobal(point, point);
+				mask.x = point.x;
+				mask.y = point.y + maskHeight;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("height", maskHeight);
+				tween.animate("y", point.y);
+				Pool.putPoint(point);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.dispose();
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component into view from top to bottom, animating the
+		 * <code>height</code> property of a temporary mask.
+		 */
+		public static function createWipeInDownEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				mask.height = 0;
+				target.mask = mask;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("height", maskHeight);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.removeFromParent(true);
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component out of view from right to left, animating the
+		 * <code>width</code> property of a temporary mask.
+		 */
+		public static function createWipeOutLeftEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				target.mask = mask;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("width", 0);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.dispose();
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component out of view from left to right, animating the
+		 * <code>width</code> and <code>x</code> properties of a temporary mask.
+		 */
+		public static function createWipeOutRightEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				target.mask = mask;
+				var stage:Stage = target.stage;
+				if(stage === null)
+				{
+					stage = Starling.current.stage;
+				}
+				stage.addChild(mask);
+				var point:Point = Pool.getPoint();
+				target.localToGlobal(point, point);
+				mask.x = point.x;
+				mask.y = point.y;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("width", 0);
+				tween.animate("x", point.x + maskWidth);
+				Pool.putPoint(point);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.removeFromParent(true);
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component out of view from bottom to top, animating the
+		 * <code>height</code> property of a temporary mask.
+		 */
+		public static function createWipeOutUpEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				target.mask = mask;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("height", 0);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.dispose();
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
+		 * Creates an effect function for the target component that wipes the
+		 * target component out of view from top to bottom, animating the
+		 * <code>height</code> and <code>y</code> properties of a temporary mask.
+		 */
+		public static function createWipeOutDownEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
+		{
+			return function(target:DisplayObject):IEffectContext
+			{
+				var oldMask:DisplayObject = target.mask;
+				var maskWidth:Number = target.width;
+				var maskHeight:Number = target.height;
+				if(maskWidth < 0)
+				{
+					maskWidth = 1;
+				}
+				if(maskHeight < 0)
+				{
+					maskHeight = 1;
+				}
+				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
+				target.mask = mask;
+				var stage:Stage = target.stage;
+				if(stage === null)
+				{
+					stage = Starling.current.stage;
+				}
+				stage.addChild(mask);
+				var point:Point = Pool.getPoint();
+				target.localToGlobal(point, point);
+				mask.x = point.x;
+				mask.y = point.y;
+				var tween:Tween = new Tween(mask, duration, ease);
+				tween.animate("height", 0);
+				tween.animate("y", point.y + maskHeight);
+				Pool.putPoint(point);
+				tween.onComplete = function():void
+				{
+					target.mask = oldMask;
+					mask.removeFromParent(true);
+				}
+				return new TweenEffectContext(tween);
+			}
+		}
+
+		/**
 		 * Creates a transition function for a screen navigator that wipes the
 		 * old screen out of view to the left, animating the <code>width</code>
 		 * property of a <code>clipRect</code>, to reveal the new screen under
@@ -40,14 +365,20 @@ package feathers.motion
 		 */
 		public static function createWipeLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var xOffset:Number = oldScreen ? -oldScreen.width : -newScreen.width;
-				new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -64,14 +395,20 @@ package feathers.motion
 		 */
 		public static function createWipeRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var xOffset:Number = oldScreen ? oldScreen.width : newScreen.width;
-				new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -88,14 +425,20 @@ package feathers.motion
 		 */
 		public static function createWipeUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var yOffset:Number = oldScreen ? -oldScreen.height : -newScreen.height;
-				new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 
@@ -112,14 +455,20 @@ package feathers.motion
 		 */
 		public static function createWipeDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
-			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function, managed:Boolean = false):IEffectContext
 			{
 				if(!oldScreen && !newScreen)
 				{
 					throw new ArgumentError(SCREEN_REQUIRED_ERROR);
 				}
 				var yOffset:Number = oldScreen ? oldScreen.height : newScreen.height;
-				new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
+				if(managed)
+				{
+					return new TweenEffectContext(tween);
+				}
+				Starling.juggler.add(tween);
+				return null;
 			}
 		}
 	}
@@ -253,7 +602,6 @@ class WipeTween extends Tween
 		this._savedYOffset = yOffset;
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		Starling.juggler.add(this);
 	}
 
 	private var _oldScreenDelegate:RenderDelegate;

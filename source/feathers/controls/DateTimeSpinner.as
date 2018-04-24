@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -2120,6 +2120,157 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function getMinMonth(year:int):int
+		{
+			if(year === this._minYear)
+			{
+				return this._minimum.month;
+			}
+			return MIN_MONTH_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMaxMonth(year:int):int
+		{
+			if(year === this._maxYear)
+			{
+				return this._maximum.month;
+			}
+			return MAX_MONTH_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMinDate(year:int, month:int):int
+		{
+			if(year === this._minYear && month === this._minimum.month)
+			{
+				return this._minimum.date;
+			}
+			return MIN_DATE_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMaxDate(year:int, month:int):int
+		{
+			if(year === this._maxYear && month === this._maximum.month)
+			{
+				return this._maximum.date;
+			}
+			if(month === 1) //february has a variable number of days
+			{
+				//subtract one date from march 1st to figure out the last
+				//date of february for the specified year
+				HELPER_DATE.setFullYear(year, month + 1, -1);
+				return HELPER_DATE.date + 1;
+			}
+			//all other months have been pre-calculated
+			return DAYS_IN_MONTH[month];
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMinHours(year:int, month:int, date:int):int
+		{
+			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
+			{
+				if(year === this._minYear && month === this._minimum.month &&
+					date === this._minimum.date)
+				{
+					return this._minimum.hours;
+				}
+				return MIN_HOURS_VALUE;
+			}
+			return this._minimum.hours;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMaxHours(year:int, month:int, date:int):int
+		{
+			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
+			{
+				if(year === this._maxYear && month === this._maximum.month &&
+					date === this._maximum.date)
+				{
+					return this._maximum.hours;
+				}
+				return MAX_HOURS_VALUE_24HOURS;
+			}
+			return this._maximum.hours;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMinMinutes(year:int, month:int, date:int, hours:int):int
+		{
+			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
+			{
+				if(year === this._minYear && month === this._minimum.month &&
+					date === this._minimum.date && hours === this._minimum.hours)
+				{
+					return this._minimum.minutes;
+				}
+				return MIN_MINUTES_VALUE;
+			}
+			if(hours === this._minHours)
+			{
+				return this._minimum.minutes;
+			}
+			return MIN_MINUTES_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getMaxMinutes(year:int, month:int, date:int, hours:int):int
+		{
+			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
+			{
+				if(year === this._maxYear && month === this._maximum.month &&
+					date === this._maximum.date && hours === this._maximum.hours)
+				{
+					return this._maximum.minutes;
+				}
+				return MAX_MINUTES_VALUE;
+			}
+			if(hours === this._maxHours)
+			{
+				return this._maximum.minutes;
+			}
+			return MAX_MINUTES_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getValidDateForYearAndMonth(year:int, month:int):int
+		{
+			var date:int = this._value.date;
+			var minDate:int = this.getMinDate(year, month);
+			var maxDate:int = this.getMaxDate(year, month);
+			if(date < minDate)
+			{
+				date = minDate;
+			}
+			else if(date > maxDate)
+			{
+				date = maxDate;
+			}
+			return date;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshValidRanges():void
 		{
 			var oldMinYear:int = this._minYear;
@@ -2136,111 +2287,17 @@ package feathers.controls
 			var currentMonth:int = this._value.month;
 			var currentDate:int = this._value.date;
 			var currentHours:int = this._value.hours;
+
 			this._minYear = this._minimum.fullYear;
 			this._maxYear = this._maximum.fullYear;
-			if(currentYear === this._minYear)
-			{
-				this._minMonth = this._minimum.month;
-			}
-			else
-			{
-				this._minMonth = MIN_MONTH_VALUE;
-			}
-			if(currentYear === this._maxYear)
-			{
-				this._maxMonth = this._maximum.month;
-			}
-			else
-			{
-				this._maxMonth = MAX_MONTH_VALUE;
-			}
-			if(currentYear === this._minYear && currentMonth === this._minimum.month)
-			{
-				this._minDate = this._minimum.date;
-			}
-			else
-			{
-				this._minDate = MIN_DATE_VALUE;
-			}
-			if(currentYear === this._maxYear && currentMonth === this._maximum.month)
-			{
-				this._maxDate = this._maximum.date;
-			}
-			else
-			{
-				if(currentMonth === 1) //february has a variable number of days
-				{
-					//subtract one date from march 1st to figure out the last
-					//date of february for the specified year
-					HELPER_DATE.setFullYear(currentYear, currentMonth + 1, -1);
-					this._maxDate = HELPER_DATE.date + 1;
-				}
-				else //all other months have been pre-calculated
-				{
-					this._maxDate = DAYS_IN_MONTH[currentMonth];
-				}
-			}
-			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
-			{
-				if(currentYear === this._minYear && currentMonth === this._minimum.month &&
-					currentDate === this._minimum.date)
-				{
-					this._minHours = this._minimum.hours;
-				}
-				else
-				{
-					this._minHours = MIN_HOURS_VALUE;
-				}
-				if(currentYear === this._maxYear && currentMonth === this._maximum.month &&
-					currentDate === this._maximum.date)
-				{
-					this._maxHours = this._maximum.hours;
-				}
-				else
-				{
-					this._maxHours = MAX_HOURS_VALUE_24HOURS;
-				}
-
-				if(currentYear === this._minYear && currentMonth === this._minimum.month &&
-					currentDate === this._minimum.date && currentHours === this._minimum.hours)
-				{
-					this._minMinute = this._minimum.minutes;
-				}
-				else
-				{
-					this._minMinute = MIN_MINUTES_VALUE;
-				}
-				if(currentYear === this._maxYear && currentMonth === this._maximum.month &&
-					currentDate === this._maximum.date && currentHours === this._maximum.hours)
-				{
-					this._maxMinute = this._maximum.minutes;
-				}
-				else
-				{
-					this._maxMinute = MAX_MINUTES_VALUE;
-				}
-			}
-			else //time
-			{
-				this._minHours = this._minimum.hours;
-				this._maxHours = this._maximum.hours;
-				if(currentHours === this._minHours)
-				{
-					this._minMinute = this._minimum.minutes;
-				}
-				else
-				{
-					this._minMinute = MIN_MINUTES_VALUE;
-				}
-				if(currentHours === this._maxHours)
-				{
-					this._maxMinute = this._maximum.minutes;
-				}
-				else
-				{
-					this._maxMinute = MAX_MINUTES_VALUE;
-				}
-			}
+			this._minMonth = this.getMinMonth(currentYear);
+			this._maxMonth = this.getMaxMonth(currentYear);
+			this._minDate = this.getMinDate(currentYear, currentMonth);
+			this._maxDate = this.getMaxDate(currentYear, currentMonth);
+			this._minHours = this.getMinHours(currentYear, currentMonth, currentDate);
+			this._maxHours = this.getMaxHours(currentYear, currentMonth, currentDate);
+			this._minMinute = this.getMinMinutes(currentYear, currentMonth, currentDate, currentHours);
+			this._maxMinute = this.getMaxMinutes(currentYear, currentMonth, currentDate, currentHours);
 
 			//the item renderers in the lists may need to be enabled or disabled
 			//after the ranges change, so we need to call updateAll() on the
@@ -2362,7 +2419,10 @@ package feathers.controls
 			}
 			else if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				HELPER_DATE.time = this._minimum.time;
+				//in this editing mode, the date is only controlled by one
+				//spinner list, that increments by day. we shouldn't need to
+				//go forward more than a year.
+				HELPER_DATE.time = this._value.time;
 				this._listMaxYear = HELPER_DATE.fullYear + 1;
 				this._maximum = new Date(this._listMaxYear, MAX_MONTH_VALUE,
 					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
@@ -2653,14 +2713,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function updateHoursFromLists():void
+		protected function updateHoursFromLists():Boolean
 		{
 			var hours:int = this.hoursList.selectedItem as int;
 			if(this.meridiemList && this.meridiemList.selectedIndex === 1)
 			{
 				hours += 12;
 			}
+			if(this._value.hours === hours)
+			{
+				return false;
+			}
 			this._value.setHours(hours);
+			return true;
 		}
 
 		/**
@@ -2730,10 +2795,20 @@ package feathers.controls
 				return;
 			}
 			var month:int = this.monthsList.selectedItem as int;
-			this._value.setMonth(month);
+			var date:int = this.getValidDateForYearAndMonth(this._value.fullYear, month);
+			var needsToScroll:Boolean = this._value.date !== date;
+			if(!needsToScroll && this._value.month === month)
+			{
+				return;
+			}
+			this._value.setMonth(month, date);
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);
+			if(needsToScroll)
+			{
+				this.scrollToDate(this._value);
+			}
 		}
 
 		/**
@@ -2746,6 +2821,10 @@ package feathers.controls
 				return;
 			}
 			var date:int = this.datesList.selectedItem as int;
+			if(this._value.date === date)
+			{
+				return;
+			}
 			this._value.setDate(date);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2762,6 +2841,10 @@ package feathers.controls
 				return;
 			}
 			var year:int = this.yearsList.selectedItem as int;
+			if(this._value.fullYear === year)
+			{
+				return;
+			}
 			this._value.setFullYear(year);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2792,7 +2875,10 @@ package feathers.controls
 			{
 				return;
 			}
-			this.updateHoursFromLists();
+			if(!this.updateHoursFromLists())
+			{
+				return;
+			}
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);
@@ -2808,6 +2894,10 @@ package feathers.controls
 				return;
 			}
 			var minutes:int = this.minutesList.selectedItem as int;
+			if(this._value.minutes === minutes)
+			{
+				return;
+			}
 			this._value.setMinutes(minutes);
 			this.validateNewValue();
 			this.refreshValidRanges();
@@ -2823,7 +2913,10 @@ package feathers.controls
 			{
 				return;
 			}
-			this.updateHoursFromLists();
+			if(!this.updateHoursFromLists())
+			{
+				return;
+			}
 			this.validateNewValue();
 			this.refreshValidRanges();
 			this.dispatchEventWith(Event.CHANGE);

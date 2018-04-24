@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -40,6 +40,7 @@ package feathers.controls.text
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.rendering.Painter;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -166,11 +167,6 @@ package feathers.controls.text
 	 */
 	public class TextBlockTextEditor extends TextBlockTextRenderer implements IIMETextEditor, INativeFocusOwner
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The text will be positioned to the left edge.
 		 *
@@ -1089,11 +1085,11 @@ package feathers.controls.text
 			}
 			if(!displayText || this._textLines.length === 0)
 			{
-				if(this._textAlign == TextFormatAlign.CENTER)
+				if(this._currentHorizontalAlign == TextFormatAlign.CENTER)
 				{
 					return Math.round(this.actualWidth / 2);
 				}
-				else if(this._textAlign == TextFormatAlign.RIGHT)
+				else if(this._currentHorizontalAlign == TextFormatAlign.RIGHT)
 				{
 					return this.actualWidth;
 				}
@@ -1351,9 +1347,11 @@ package feathers.controls.text
 			if(this.touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this, null, this.touchPointID);
-				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._textSnapshotScrollX;
-				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
+				var point:Point = Pool.getPoint();
+				touch.getLocation(this, point);
+				point.x += this._textSnapshotScrollX;
+				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(point.x, point.y));
+				Pool.putPoint(point);
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
@@ -1379,20 +1377,22 @@ package feathers.controls.text
 					return;
 				}
 				this.touchPointID = touch.id;
-				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._textSnapshotScrollX;
+				point = Pool.getPoint();
+				touch.getLocation(this, point);
+				point.x += this._textSnapshotScrollX;
 				if(event.shiftKey)
 				{
 					if(this._selectionAnchorIndex < 0)
 					{
 						this._selectionAnchorIndex = this._selectionBeginIndex;
 					}
-					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
+					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(point.x, point.y));
 				}
 				else
 				{
-					this.setFocus(HELPER_POINT);
+					this.setFocus(point);
 				}
+				Pool.putPoint(point);
 			}
 		}
 
@@ -1401,13 +1401,20 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(FocusManager.isEnabledForStage(this.stage))
+			{
+				//let the focus manager handle clearing focus
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
 			if(!touch) //we only care about began touches
 			{
 				return;
 			}
-			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this.stage, point);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
+			Pool.putPoint(point);
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;
@@ -1441,10 +1448,20 @@ package feathers.controls.text
 			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
+				if(event.shiftKey)
+				{
+					this.selectRange(newIndex, this._selectionAnchorIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.END || event.keyCode == Keyboard.DOWN)
 			{
 				newIndex = this._text.length;
+				if(event.shiftKey)
+				{
+					this.selectRange(this._selectionAnchorIndex, newIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
@@ -1675,6 +1692,8 @@ package feathers.controls.text
 				//the clipboard doesn't contain any text to paste
 				return;
 			}
+			//new lines are not allowed
+			pastedText = pastedText.replace(/[\n\r]/g, "");
 			if(this._restrict)
 			{
 				pastedText = this._restrict.filterText(pastedText);

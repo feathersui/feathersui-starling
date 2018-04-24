@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -361,6 +361,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#addItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function addItemAtLocation(item:Object, location:Vector.<int>):void
 		{
@@ -393,6 +395,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#removeItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function removeItemAtLocation(location:Vector.<int>):Object
 		{
@@ -453,6 +457,8 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#setItemAtLocation()
+		 *
+		 * @throws RangeError Branch not found at specified location
 		 */
 		public function setItemAtLocation(item:Object, location:Vector.<int>):void
 		{

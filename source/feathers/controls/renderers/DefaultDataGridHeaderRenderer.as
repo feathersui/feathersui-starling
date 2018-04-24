@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -576,7 +576,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._fontStylesSet.format = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -596,7 +609,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._fontStylesSet.disabledFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**

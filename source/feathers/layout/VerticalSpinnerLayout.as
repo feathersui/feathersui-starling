@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -765,7 +765,15 @@ package feathers.layout
 				//if the layout is virtualized, and the items all have the same
 				//height, we can make our loops smaller by skipping some items
 				//at the beginning and end. this improves performance.
-				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+
+				if(this._beforeVirtualizedItemCount > 0)
+				{
+					//this value may be negative, which means that we're
+					//repeating items. we don't want to include this value in
+					//the total count, but we'll use it elsewhere.
+					totalItemCount += this._beforeVirtualizedItemCount;
+				}
+				totalItemCount += this._afterVirtualizedItemCount;
 				positionY += (this._beforeVirtualizedItemCount * (calculatedTypicalItemHeight + gap));
 			}
 			//this cache is used to save non-null items in virtual layouts. by
@@ -841,6 +849,10 @@ package feathers.layout
 
 			//this is the total height of all items
 			var totalHeight:Number = positionY - gap - boundsY;
+			if(this._useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+			{
+				totalHeight -= (this._beforeVirtualizedItemCount * (calculatedTypicalItemHeight + gap));
+			}
 			//the available height is the height of the viewport. if the explicit
 			//height is NaN, we need to calculate the viewport height ourselves
 			//based on the total height of all items.
@@ -918,7 +930,12 @@ package feathers.layout
 					var adjustedScrollY:Number = scrollY - verticalAlignOffsetY;
 					if(adjustedScrollY > 0)
 					{
-						item.y += totalHeight * int((adjustedScrollY + availableHeight) / totalHeight);
+						var multiplier:int = int((adjustedScrollY + availableHeight) / totalHeight);
+						if(useVirtualLayout && this._beforeVirtualizedItemCount < 0)
+						{
+							multiplier++;
+						}
+						item.y += totalHeight * multiplier;
 						if(item.y >= (scrollY + availableHeight))
 						{
 							item.y -= totalHeight;
@@ -1202,7 +1219,11 @@ package feathers.layout
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var itemArrayCount:int = items.length;
-			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+			var itemCount:int = itemArrayCount + this._afterVirtualizedItemCount;
+			if(this._beforeVirtualizedItemCount > 0)
+			{
+				itemCount += this._beforeVirtualizedItemCount;
+			}
 			var result:int = index;
 			if(keyCode === Keyboard.HOME)
 			{

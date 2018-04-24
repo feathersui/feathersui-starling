@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1676,6 +1676,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function hitTest(local:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(local);
+			if(result !== null && this._trackInteractionMode === TrackInteractionMode.TO_VALUE)
+			{
+				return this.thumb;
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(this._value < this._minimum)
@@ -2715,9 +2728,28 @@ package feathers.controls
 				return;
 			}
 
-			if(this._touchPointID >= 0)
+			if(this._trackInteractionMode === TrackInteractionMode.TO_VALUE)
 			{
 				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
+				if(touch !== null)
+				{
+					var location:Point = touch.getLocation(this.thumb, Pool.getPoint());
+					if(this.thumb.hitTest(location) === null)
+					{
+						//the touch is not actually on the thumb, so behave as
+						//if the track were touched
+						Pool.putPoint(location);
+						this.track_touchHandler(event);
+						return;
+					}
+					//the touch is on the thumb
+					Pool.putPoint(location);
+				}
+			}
+
+			if(this._touchPointID >= 0)
+			{
+				touch = event.getTouch(this.thumb, null, this._touchPointID);
 				if(touch === null)
 				{
 					return;
@@ -2738,7 +2770,7 @@ package feathers.controls
 							exclusiveTouch.claimTouch(this._touchPointID, this);
 						}
 					}
-					var location:Point = touch.getLocation(this, Pool.getPoint());
+					location = touch.getLocation(this, Pool.getPoint());
 					this.value = this.locationToValue(location);
 					Pool.putPoint(location);
 				}

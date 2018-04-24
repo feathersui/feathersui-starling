@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -36,6 +36,7 @@ package feathers.controls.text
 	import starling.rendering.Painter;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
+	import starling.utils.Pool;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -156,11 +157,6 @@ package feathers.controls.text
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor, INativeFocusOwner
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -995,14 +991,17 @@ package feathers.controls.text
 				scale = 1;
 			}
 			var align:String = this._currentTextFormat.align;
-			if(align != TextFormatAlign.LEFT)
+			if(align !== TextFormatAlign.LEFT)
 			{
-				var lineWidth:Number = this.measureText(HELPER_POINT).x;
+				var point:Point = Pool.getPoint();
+				this.measureTextInternal(point, false);
+				var lineWidth:Number = point.x;
+				Pool.putPoint(point);
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
-					if(align == TextFormatAlign.RIGHT)
+					if(align === TextFormatAlign.RIGHT)
 					{
 						pointX -= maxLineWidth - lineWidth;
 					}
@@ -1064,14 +1063,17 @@ package feathers.controls.text
 			}
 			var xPositionOffset:Number = 0;
 			var align:String = this._currentTextFormat.align;
-			if(align != TextFormatAlign.LEFT)
+			if(align !== TextFormatAlign.LEFT)
 			{
-				var lineWidth:Number = this.measureText(HELPER_POINT).x;
+				var point:Point = Pool.getPoint();
+				this.measureTextInternal(point, false);
+				var lineWidth:Number = point.x;
+				Pool.putPoint(point);
 				var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 				var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
 				if(maxLineWidth > lineWidth)
 				{
-					if(align == TextFormatAlign.RIGHT)
+					if(align === TextFormatAlign.RIGHT)
 					{
 						xPositionOffset = maxLineWidth - lineWidth;
 					}
@@ -1262,10 +1264,12 @@ package feathers.controls.text
 			if(this.touchPointID >= 0)
 			{
 				var touch:Touch = event.getTouch(this, null, this.touchPointID);
-				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._scrollX;
-				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
-				if(touch.phase == TouchPhase.ENDED)
+				var point:Point = Pool.getPoint();
+				touch.getLocation(this, point);
+				point.x += this._scrollX;
+				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(point.x, point.y));
+				Pool.putPoint(point);
+				if(touch.phase === TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
 				}
@@ -1290,20 +1294,22 @@ package feathers.controls.text
 					return;
 				}
 				this.touchPointID = touch.id;
-				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._scrollX;
+				point = Pool.getPoint();
+				touch.getLocation(this, point);
+				point.x += this._scrollX;
 				if(event.shiftKey)
 				{
 					if(this._selectionAnchorIndex < 0)
 					{
 						this._selectionAnchorIndex = this._selectionBeginIndex;
 					}
-					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
+					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(point.x, point.y));
 				}
 				else
 				{
-					this.setFocus(HELPER_POINT);
+					this.setFocus(point);
 				}
+				Pool.putPoint(point);
 			}
 		}
 
@@ -1312,13 +1318,20 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
+			if(FocusManager.isEnabledForStage(this.stage))
+			{
+				//let the focus manager handle clearing focus
+				return;
+			}
 			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
 			if(!touch) //we only care about began touches
 			{
 				return;
 			}
-			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT));
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this.stage, point);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(point));
+			Pool.putPoint(point);
 			if(isInBounds) //if the touch is in the text editor, it's all good
 			{
 				return;
@@ -1352,10 +1365,20 @@ package feathers.controls.text
 			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
+				if(event.shiftKey)
+				{
+					this.selectRange(newIndex, this._selectionAnchorIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.END || event.keyCode == Keyboard.DOWN)
 			{
 				newIndex = this._text.length;
+				if(event.shiftKey)
+				{
+					this.selectRange(this._selectionAnchorIndex, newIndex);
+					return;
+				}
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
@@ -1578,6 +1601,8 @@ package feathers.controls.text
 				//the clipboard doesn't contain any text to paste
 				return;
 			}
+			//new lines are not allowed
+			pastedText = pastedText.replace(/[\n\r]/g, "");
 			if(this._restrict)
 			{
 				pastedText = this._restrict.filterText(pastedText);

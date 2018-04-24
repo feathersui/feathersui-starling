@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -912,6 +912,15 @@ package feathers.controls
 			{
 				return;
 			}
+			this.setColumns(value);
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function setColumns(value:IListCollection):void
+		{
 			if(this._columns !== null)
 			{
 				this._columns.removeEventListener(Event.CHANGE, columns_changeHandler);
@@ -925,8 +934,6 @@ package feathers.controls
 				this._columns.addEventListener(CollectionEventType.RESET, columns_resetHandler);
 				this._columns.addEventListener(CollectionEventType.UPDATE_ALL, columns_updateAllHandler);
 			}
-
-			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1889,7 +1896,7 @@ package feathers.controls
 				columns[pushIndex] = new DataGridColumn(key);
 				pushIndex++;
 			}
-			this._columns = new ArrayCollection(columns);
+			this.setColumns(new ArrayCollection(columns));
 		}
 
 		/**
@@ -2718,15 +2725,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_sortChangeHandler(event:Event):void
-		{
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function dataProvider_filterChangeHandler(event:Event):void
+		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
 			if(this._selectedIndex === -1)
 			{
@@ -2761,6 +2760,22 @@ package feathers.controls
 			{
 				this._selectedIndices.data = newIndices;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_sortChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
 		}
 
 		/**

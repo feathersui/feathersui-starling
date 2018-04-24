@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -627,8 +627,8 @@ package feathers.layout
 			{
 				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsLastIndex = discoveredItems.length - 1;
-				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalPageContentWidth, availableWidth);
-				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalPageContentHeight, availableHeight);
+				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
+				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
 			}
 			this._discoveredItemsCache.length = 0;
 
@@ -1306,7 +1306,7 @@ package feathers.layout
 					tileWidth = tileHeight;
 				}
 			}
-			if(this._distributeHeights && !this._useSquareTiles)
+			if(this._distributeWidths && !this._useSquareTiles)
 			{
 				var horizontalTileCount:int = this.calculateHorizontalTileCount(tileWidth,
 					width, width, this._paddingLeft + this._paddingRight,

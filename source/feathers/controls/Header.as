@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -391,6 +391,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const IOS_STATUS_BAR_HEIGHT:Number = 20;
+
+		/**
+		 * @private
+		 */
+		protected static const IOS_NOTCH_STATUS_BAR_HEIGHT:Number = 44;
 
 		/**
 		 * @private
@@ -1309,7 +1314,20 @@ package feathers.controls
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._fontStylesSet.format = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -1329,7 +1347,20 @@ package feathers.controls
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._fontStylesSet.disabledFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -2165,12 +2196,41 @@ package feathers.controls
 				scaleSelector.addScaleForDensity(168, 1); //original
 				scaleSelector.addScaleForDensity(326, 2); //retina
 				scaleSelector.addScaleForDensity(401, 3); //retina HD
-				iOSStatusBarScaledHeight = IOS_STATUS_BAR_HEIGHT * scaleSelector.getScale(DeviceCapabilities.dpi);
+				if(this.hasNotch())
+				{
+					iOSStatusBarScaledHeight = IOS_NOTCH_STATUS_BAR_HEIGHT * scaleSelector.getScale(DeviceCapabilities.dpi);
+				}
+				else
+				{
+					iOSStatusBarScaledHeight = IOS_STATUS_BAR_HEIGHT * scaleSelector.getScale(DeviceCapabilities.dpi);
+				}
 			}
 
 			//while it probably won't change, contentScaleFactor shouldn't be
 			//considered constant, so do this calculation every time
 			return iOSStatusBarScaledHeight / starling.contentScaleFactor;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hasNotch():Boolean
+		{
+			//this is not an ideal way to detect the status bar height
+			//because future devices will need to be added to this list
+			//manually!
+			var osString:String = Capabilities.os;
+			var notchIDs:Vector.<String> = new <String>["iPhone10,3", "iPhone10,6"];
+			var idCount:int = notchIDs.length;
+			for(var i:int = 0; i < idCount; i++)
+			{
+				var id:String = notchIDs[i];
+				if(osString.lastIndexOf(id) === osString.length - id.length)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**

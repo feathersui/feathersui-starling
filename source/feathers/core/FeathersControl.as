@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -25,8 +25,12 @@ package feathers.core
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.IMoveEffectContext;
+	import feathers.motion.effectClasses.IResizeEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be
@@ -388,7 +392,7 @@ package feathers.core
 			{
 				throw new Error(ABSTRACT_CLASS_ERROR);
 			}
-			this._styleProvider = this.defaultStyleProvider;
+			this.styleProvider = this.defaultStyleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
 			if(this is IFocusDisplayObject)
@@ -397,6 +401,212 @@ package feathers.core
 				this.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _showEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _showEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is shown.
+		 * More specifically, this effect plays when the <code>visible</code>
+		 * property is set to <code>true.</code>
+		 * 
+		 * @see #visible
+		 * @see #hideEffect
+		 */
+		public function get showEffect():Function
+		{
+			return this._showEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set showEffect(value:Function):void
+		{
+			this._showEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hideEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _hideEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is hidden.
+		 * More specifically, this effect plays when the <code>visible</code>
+		 * property is set to <code>false</code>.
+		 * 
+		 * @see #visible
+		 * @see #showEffect
+		 */
+		public function get hideEffect():Function
+		{
+			return this._hideEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideEffect(value:Function):void
+		{
+			this._hideEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if(this._suspendEffectsCount === 0 && this._hideEffectContext !== null)
+			{
+				this._hideEffectContext.interrupt();
+				this._hideEffectContext = null;
+			}
+			if(this._suspendEffectsCount === 0 && this._showEffectContext !== null)
+			{
+				this._showEffectContext.interrupt();
+				this._showEffectContext = null;
+			}
+			if(value)
+			{
+				super.visible = value;
+				if(this.isCreated && this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
+				{
+					this._showEffectContext = IEffectContext(this._showEffect(this));
+					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
+					this._showEffectContext.play();
+				}
+			}
+			else
+			{
+				if(!this.isCreated || this._suspendEffectsCount > 0 || this._hideEffect === null || this.stage === null)
+				{
+					super.visible = value;
+				}
+				else
+				{
+					this._hideEffectContext = IEffectContext(this._hideEffect(this));
+					this._hideEffectContext.addEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
+					this._hideEffectContext.play();
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _focusInEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusInEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component receives
+		 * focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusOutEffect
+		 */
+		public function get focusInEffect():Function
+		{
+			return this._focusInEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusInEffect(value:Function):void
+		{
+			this._focusInEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _focusOutEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component loses focus.
+		 * 
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 * 
+		 * @see #focusInEffect
+		 */
+		public function get focusOutEffect():Function
+		{
+			return this._focusOutEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusOutEffect(value:Function):void
+		{
+			this._focusOutEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _addedEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is added to
+		 * the stage.
+		 * 
+		 * @see #removeFromParentWithEffect()
+		 */
+		public function get addedEffect():Function
+		{
+			return this._addedEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set addedEffect(value:Function):void
+		{
+			this._addedEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _removedEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _disposeAfterRemovedEffect:Boolean = false;
 
 		/**
 		 * @private
@@ -528,12 +738,20 @@ package feathers.core
 			{
 				throw new IllegalOperationError("Cannot change styleProvider while the current style provider is applying styles.")
 			}
+			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
+			{
+				EventDispatcher(this._styleProvider).removeEventListener(Event.CHANGE, styleProvider_changeHandler);
+			}
 			this._styleProvider = value;
 			if(this._styleProvider !== null && this.isInitialized)
 			{
 				this._applyingStyles = true;
 				this._styleProvider.applyStyles(this);
 				this._applyingStyles = false;
+			}
+			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
+			{
+				EventDispatcher(this._styleProvider).addEventListener(Event.CHANGE, styleProvider_changeHandler);
 			}
 		}
 
@@ -704,6 +922,138 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _resizeEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _resizeEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is resized
+		 * with new dimensions. More specifically, this effect plays when the
+		 * <code>width</code> or <code>height</code> property changes.
+		 * 
+		 * @see #width
+		 * @see #height
+		 * @see #setSize()
+		 */
+		public function get resizeEffect():Function
+		{
+			return this._resizeEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resizeEffect(value:Function):void
+		{
+			this._resizeEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _moveEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _moveEffect:Function = null;
+
+		/**
+		 * An optional effect that is activated when the component is moved to
+		 * a new position. More specifically, this effect plays when the
+		 * <code>x</code> or <code>y</code> property changes.
+		 * 
+		 * @see #x
+		 * @see #y
+		 * @see #move()
+		 */
+		public function get moveEffect():Function
+		{
+			return this._moveEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set moveEffect(value:Function):void
+		{
+			this._moveEffect = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set x(value:Number):void
+		{
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.interrupt();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = value;
+					moveEffectContext.newY = this.y;
+				}
+				else
+				{
+					super.x = value;
+				}
+				this._moveEffectContext.play();
+			}
+			else
+			{
+				super.x = value;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set y(value:Number):void
+		{
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.interrupt();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = this.x;
+					moveEffectContext.newY = value;
+				}
+				else
+				{
+					super.y = value;
+				}
+				this._moveEffectContext.play();
+			}
+			else
+			{
+				super.y = value;
+			}
+		}
+
+		/**
 		 * The final width value that should be used for layout. If the width
 		 * has been explicitly set, then that value is used. If not, the actual
 		 * width will be calculated automatically. Each component has different
@@ -775,18 +1125,50 @@ package feathers.core
 			{
 				return;
 			}
-			this._explicitWidth = value;
-			if(valueIsNaN)
+			var hasSetExplicitWidth:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this.actualWidth = this.scaledActualWidth = 0;
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext.interrupt();
+				this._resizeEffectContext = null;
+			}
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			{
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					resizeEffectContext.newWidth = value;
+					resizeEffectContext.newHeight = this.actualHeight;
+				}
+				else
+				{
+					this._explicitWidth = value;
+					hasSetExplicitWidth = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(value, this.actualHeight, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitWidth = value;
+				hasSetExplicitWidth = true;
+			}
+			if(hasSetExplicitWidth)
+			{
+				if(valueIsNaN)
 				{
+					this.actualWidth = this.scaledActualWidth = 0;
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(value, this.actualHeight, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -878,18 +1260,50 @@ package feathers.core
 			{
 				return;
 			}
-			this._explicitHeight = value;
-			if(valueIsNaN)
+			var hasSetExplicitHeight:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
-				this.actualHeight = this.scaledActualHeight = 0;
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext.interrupt();
+				this._resizeEffectContext = null;
+			}
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			{
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					resizeEffectContext.newWidth = this.actualWidth;
+					resizeEffectContext.newHeight = value;
+				}
+				else
+				{
+				this._explicitHeight = value;
+					hasSetExplicitHeight = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(this.actualWidth, value, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitHeight = value;
+				hasSetExplicitHeight = true;
+			}
+			if(hasSetExplicitHeight)
+			{
+				if(valueIsNaN)
 				{
+					this.actualHeight = this.scaledActualHeight = 0;
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(this.actualWidth, value, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -1934,6 +2348,17 @@ package feathers.core
 		}
 
 		/**
+		 * Indicates if effects have been suspended.
+		 * 
+		 * @see #suspendEffects()
+		 * @see #resumeEffects()
+		 */
+		public function get effectsSuspended():Boolean
+		{
+			return this._suspendEffectsCount > 0;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _hasFocus:Boolean = false;
@@ -1989,6 +2414,11 @@ package feathers.core
 		{
 			return this._depth;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _suspendEffectsCount:int = 0;
 
 		/**
 		 * @private
@@ -2249,6 +2679,13 @@ package feathers.core
 			{
 				this._hasValidated = true;
 				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
+
+				if(this._suspendEffectsCount === 0 && this.stage !== null && this._addedEffect !== null)
+				{
+					this._addedEffectContext = IEffectContext(this._addedEffect(this));
+					this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
+					this._addedEffectContext.play();
+				}
 			}
 		}
 
@@ -2286,29 +2723,76 @@ package feathers.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
-			this._explicitWidth = width;
+			var hasSetExplicitSize:Boolean = false;
+			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
+			{
+				this._resizeEffectContext.interrupt();
+				this._resizeEffectContext = null;
+			}
 			var widthIsNaN:Boolean = width !== width;
-			if(widthIsNaN)
-			{
-				this.actualWidth = this.scaledActualWidth = 0;
-			}
-			this._explicitHeight = height;
 			var heightIsNaN:Boolean = height !== height;
-			if(heightIsNaN)
+			if((!widthIsNaN || !heightIsNaN) && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
 			{
-				this.actualHeight = this.scaledActualHeight = 0;
-			}
-
-			if(widthIsNaN || heightIsNaN)
-			{
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
+				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext.oldWidth = this.actualWidth;
+					resizeEffectContext.oldHeight = this.actualHeight;
+					if(widthIsNaN)
+					{
+						resizeEffectContext.newWidth = this.actualWidth;
+					}
+					else
+					{
+						resizeEffectContext.newWidth = width;
+					}
+					if(heightIsNaN)
+					{
+						resizeEffectContext.newHeight = this.actualHeight;
+					}
+					else
+					{
+						resizeEffectContext.newHeight = height;
+					}
+				}
+				else
+				{
+					this._explicitWidth = width;
+					this._explicitHeight = height;
+					hasSetExplicitSize = true;
+				}
+				this._resizeEffectContext.play();
 			}
 			else
 			{
-				var result:Boolean = this.saveMeasurements(width, height, this.actualMinWidth, this.actualMinHeight);
-				if(result)
+				this._explicitWidth = width;
+				this._explicitHeight = height;
+				hasSetExplicitSize = true;
+			}
+			if(hasSetExplicitSize)
+			{
+				if(widthIsNaN)
+				{
+					this.actualWidth = this.scaledActualWidth = 0;
+				}
+				if(heightIsNaN)
+				{
+					this.actualHeight = this.scaledActualHeight = 0;
+				}
+
+				if(widthIsNaN || heightIsNaN)
 				{
 					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
+				else
+				{
+					var result:Boolean = this.saveMeasurements(width, height, this.actualMinWidth, this.actualMinHeight);
+					if(result)
+					{
+						this.invalidate(INVALIDATION_FLAG_SIZE);
+					}
 				}
 			}
 		}
@@ -2322,8 +2806,55 @@ package feathers.core
 		 */
 		public function move(x:Number, y:Number):void
 		{
-			this.x = x;
-			this.y = y;
+			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			{
+				this._moveEffectContext.interrupt();
+				this._moveEffectContext = null;
+			}
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			{
+				this._moveEffectContext = IEffectContext(this._moveEffect(this));
+				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext.oldX = this.x;
+					moveEffectContext.oldY = this.y;
+					moveEffectContext.newX = x;
+					moveEffectContext.newY = y;
+				}
+				else
+				{
+					super.x = x;
+					super.y = y;
+				}
+				this._moveEffectContext.play();
+			}
+			else
+			{
+				super.x = x;
+				super.y = y;
+			}
+		}
+
+		/**
+		 * Plays an effect before removing the component from its parent.
+		 * 
+		 * @see #addedEffect
+		 */
+		public function removeFromParentWithEffect(effect:Function, dispose:Boolean = false):void
+		{
+			if(this.isCreated && this._suspendEffectsCount === 0)
+			{
+				this._disposeAfterRemovedEffect = dispose;
+				this._removedEffectContext = IEffectContext(effect(this));
+				this._removedEffectContext.addEventListener(Event.COMPLETE, removedEffectContext_completeHandler);
+				this._removedEffectContext.play();
+			}
+			else
+			{
+				this.removeFromParent(dispose);
+			}
 		}
 
 		/**
@@ -2336,6 +2867,27 @@ package feathers.core
 		public function resetStyleProvider():void
 		{
 			this.styleProvider = this.defaultStyleProvider;
+		}
+
+		/**
+		 * Indicates that effects should not be activated temporarily. Call
+		 * <code>resumeEffects()</code> when effects should be allowed again.
+		 * 
+		 * @see #resumeEffects()
+		 */
+		public function suspendEffects():void
+		{
+			this._suspendEffectsCount++;
+		}
+
+		/**
+		 * Indicates that effects should be re-activated after being suspended.
+		 * 
+		 * @see #suspendEffects()
+		 */
+		public function resumeEffects():void
+		{
+			this._suspendEffectsCount--;
 		}
 
 		/**
@@ -2770,6 +3322,19 @@ package feathers.core
 		{
 			this._hasFocus = true;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
+
+			if(this._focusOutEffectContext !== null)
+			{
+				this._focusOutEffectContext.interrupt();
+				this._focusOutEffectContext = null;
+			}
+
+			if(this._suspendEffectsCount === 0 && this._focusInEffect !== null)
+			{
+				this._focusInEffectContext = IEffectContext(this._focusInEffect(this));
+				this._focusInEffectContext.addEventListener(Event.COMPLETE, focusInEffectContext_completeHandler);
+				this._focusInEffectContext.play();
+			}
 		}
 
 		/**
@@ -2782,6 +3347,19 @@ package feathers.core
 			this._hasFocus = false;
 			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
+
+			if(this._focusInEffectContext !== null)
+			{
+				this._focusInEffectContext.interrupt();
+				this._focusInEffectContext = null;
+			}
+
+			if(this._suspendEffectsCount === 0 && this._focusOutEffect !== null)
+			{
+				this._focusOutEffectContext = IEffectContext(this._focusOutEffect(this));
+				this._focusOutEffectContext.addEventListener(Event.COMPLETE, focusOutEffectContext_completeHandler);
+				this._focusOutEffectContext.play();
+			}
 		}
 
 		/**
@@ -2807,6 +3385,19 @@ package feathers.core
 				//add to validation queue, if required
 				this._validationQueue.addControl(this);
 			}
+
+			//if the removed effect is still active, stop it
+			if(this._removedEffectContext !== null)
+			{
+				this._removedEffectContext.interrupt();
+			}
+
+			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
+			{
+				this._addedEffectContext = IEffectContext(this._addedEffect(this));
+				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
+				this._addedEffectContext.play();
+			}
 		}
 
 		/**
@@ -2814,8 +3405,92 @@ package feathers.core
 		 */
 		protected function feathersControl_removedFromStageHandler(event:Event):void
 		{
+			if(this._addedEffectContext !== null)
+			{
+				this._addedEffectContext.interrupt();
+			}
 			this._depth = -1;
 			this._validationQueue = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedEffectContext_completeHandler(event:Event):void
+		{
+			this._addedEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedEffectContext_completeHandler(event:Event, stopped:Boolean):void
+		{
+			this._removedEffectContext = null;
+			if(!stopped)
+			{
+				this.removeFromParent(this._disposeAfterRemovedEffect);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function showEffectContext_completeHandler(event:Event):void
+		{
+			this._showEffectContext.removeEventListener(Event.COMPLETE, showEffectContext_completeHandler);
+			this._showEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hideEffectContext_completeHandler(event:Event, stopped:Boolean):void
+		{
+			this._hideEffectContext.removeEventListener(Event.COMPLETE, hideEffectContext_completeHandler);
+			this._hideEffectContext = null;
+			if(!stopped)
+			{
+				this.suspendEffects();
+				this.visible = false;
+				this.resumeEffects();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		private function focusInEffectContext_completeHandler(event:Event):void
+		{
+			this._focusInEffectContext.removeEventListener(Event.COMPLETE, focusInEffectContext_completeHandler);
+			this._focusInEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		private function focusOutEffectContext_completeHandler(event:Event):void
+		{
+			this._focusOutEffectContext.removeEventListener(Event.COMPLETE, focusOutEffectContext_completeHandler);
+			this._focusOutEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function moveEffectContext_completeHandler(event:Event):void
+		{
+			this._moveEffectContext.removeEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
+			this._moveEffectContext = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function resizeEffectContext_completeHandler(event:Event):void
+		{
+			this._resizeEffectContext.removeEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
+			this._resizeEffectContext = null;
 		}
 
 		/**
@@ -2838,6 +3513,25 @@ package feathers.core
 			if(this._applyingStyles)
 			{
 				throw new IllegalOperationError("Cannot change styleNameList while the style provider is applying styles.");
+			}
+			this._applyingStyles = true;
+			this._styleProvider.applyStyles(this);
+			this._applyingStyles = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function styleProvider_changeHandler(event:Event):void
+		{
+			if(!this._isInitialized)
+			{
+				//safe to ignore changes until initialization
+				return;
+			}
+			if(this._applyingStyles)
+			{
+				throw new IllegalOperationError("Cannot change style provider while it is applying styles.");
 			}
 			this._applyingStyles = true;
 			this._styleProvider.applyStyles(this);

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -27,6 +27,7 @@ package feathers.controls
 	import flash.ui.Keyboard;
 
 	import starling.events.Event;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to all item renderers in this tree. Typically
@@ -591,6 +592,7 @@ package feathers.controls
 				return;
 			}
 			this._selectedItem = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -897,6 +899,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var pendingLocation:Vector.<int> = null;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			//clearing selection now so that the data provider setter won't
@@ -1063,6 +1070,61 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = NaN):void
+		{
+			this.pendingLocation = null;
+			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = NaN):void
+		{
+			this.pendingLocation = null;
+			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
+		}
+
+		/**
+		 * After the next validation, scrolls the list so that the specified
+		 * item is visible. If <code>animationDuration</code> is greater than
+		 * zero, the scroll will animate. The duration is in seconds.
+		 *
+		 * <p>In the following example, the list is scrolled to display the
+		 * third item in the second branch:</p>
+		 *
+		 * <listing version="3.0">
+		 * tree.scrollToDisplayLocation( new &lt;int&gt;[1, 2] );</listing>
+		 */
+		public function scrollToDisplayLocation(location:Vector.<int>, animationDuration:Number = 0):void
+		{
+			//cancel any pending scroll to a different page or scroll position.
+			//we can have only one type of pending scroll at a time.
+			this.hasPendingHorizontalPageIndex = false;
+			this.hasPendingVerticalPageIndex = false;
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingLocation !== null &&
+				this.pendingLocation.length === location.length &&
+				this.pendingScrollDuration === animationDuration)
+			{
+				var locationsEqual:Boolean = this.pendingLocation.every(function(item:int, index:int, source:Vector.<int>):Boolean
+				{
+					return item === location[index];
+				});
+				if(locationsEqual)
+				{
+					return;
+				}
+			}
+			this.pendingLocation = location;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			var hasLayout:Boolean = this._layout !== null;
@@ -1106,6 +1168,57 @@ package feathers.controls
 		{
 			this.refreshDataViewPortProperties();
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function handlePendingScroll():void
+		{
+			if(this.pendingLocation !== null)
+			{
+				var pendingData:Object = null;
+				if(this._dataProvider !== null)
+				{
+					pendingData = this._dataProvider.getItemAtLocation(this.pendingLocation);
+				}
+				if(pendingData is Object)
+				{
+					var point:Point = Pool.getPoint();
+					var result:Point = this.dataViewPort.getScrollPositionForLocation(this.pendingLocation, point);
+					this.pendingLocation = null;
+					if(result === null)
+					{
+						//we can't scroll to that location...
+						//probably because the branch isn't open!
+						Pool.putPoint(point);
+					}
+					else
+					{
+						var targetHorizontalScrollPosition:Number = point.x;
+						var targetVerticalScrollPosition:Number = point.y;
+						Pool.putPoint(point);
+						if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+						{
+							targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+						}
+						else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+						{
+							targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+						}
+						if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+						{
+							targetVerticalScrollPosition = this._minVerticalScrollPosition;
+						}
+						else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+						{
+							targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+						}
+						this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this.pendingScrollDuration);
+					}
+				}
+			}
+			super.handlePendingScroll();
 		}
 
 		/**

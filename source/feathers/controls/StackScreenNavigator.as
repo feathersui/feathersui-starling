@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -8,11 +8,23 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
+	import feathers.core.IFeathersControl;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 
+	import flash.geom.Point;
+	import flash.utils.getTimer;
+
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.utils.Pool;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	[DefaultProperty("mxmlContent")]
 	/**
@@ -215,6 +227,23 @@ package feathers.controls
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
 		/**
+		 * @private
+		 * The current velocity is given high importance.
+		 */
+		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
+
+		/**
+		 * @private
+		 * Older saved velocities are given less importance.
+		 */
+		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[1, 1.33, 1.66, 2];
+
+		/**
+		 * @private
+		 */
+		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>StackScreenNavigator</code>
 		 * components.
 		 *
@@ -230,6 +259,7 @@ package feathers.controls
 		{
 			super();
 			this.addEventListener(FeathersEventType.INITIALIZE, stackScreenNavigator_initializeHandler);
+			this.addEventListener(TouchEvent.TOUCH, stackScreenNavigator_touchHandler);
 		}
 
 		/**
@@ -239,6 +269,51 @@ package feathers.controls
 		{
 			return StackScreenNavigator.globalStyleProvider;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _isDragging:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _dragCancelled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _startTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchTime:int;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityX:Vector.<Number> = new <Number>[];
 
 		/**
 		 * @private
@@ -314,6 +389,11 @@ package feathers.controls
 			}
 			this._popToRootTransition = value;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _poppedStackItem:StackItem = null;
 
 		/**
 		 * @private
@@ -457,6 +537,144 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _minimumDragDistance:Number = 0.04;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before a drag gesture begins when <code>isSwipeToPopEnabled</code>
+		 * is <code>true</code>.
+		 *
+		 * <p>In the following example, the minimum drag distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumDragDistance = 0.1;</listing>
+		 *
+		 * @default 0.04
+		 * 
+		 * @see #isSwipeToPopEnabled
+		 */
+		public function get minimumDragDistance():Number
+		{
+			return this._minimumDragDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumDragDistance(value:Number):void
+		{
+			this._minimumDragDistance = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumSwipeVelocity:Number = 5;
+
+		/**
+		 * The minimum physical velocity (in inches per second) that a touch
+		 * must move before a swipe is detected. Otherwise, it will settle which
+		 * screen to navigate to based on which one is closer when the touch ends.
+		 *
+		 * <p>In the following example, the minimum swipe velocity is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.minimumSwipeVelocity = 2;</listing>
+		 *
+		 * @default 5
+		 * 
+		 * @see #isSwipeToPopEnabled
+		 */
+		public function get minimumSwipeVelocity():Number
+		{
+			return this._minimumSwipeVelocity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumSwipeVelocity(value:Number):void
+		{
+			this._minimumSwipeVelocity = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSwipeToPopEnabled:Boolean = false;
+
+		/**
+		 * Determines if the swipe gesture to pop the current screen is enabled.
+		 * 
+		 * <p>In the following example, swiping to go back is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.isSwipeToPopEnabled = true;</listing>
+		 * 
+		 * @default false
+		 */
+		public function get isSwipeToPopEnabled():Boolean
+		{
+			return this._isSwipeToPopEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSwipeToPopEnabled(value:Boolean):void
+		{
+			this._isSwipeToPopEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _swipeToPopGestureEdgeSize:Number = 0.1;
+
+		/**
+		 * The size (in inches) of the region near the left edge of the content
+		 * that can be dragged when <code>isSwipeToPopEnabled</code> is
+		 * <code>true</code>.
+		 *
+		 * <p>In the following example, the swipe-to-pop gesture edge size is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * drawers.swipeToPopGestureEdgeSize = 0.25;</listing>
+		 *
+		 * @default 0.1
+		 * 
+		 * @see #isSwipeToPopEnabled
+		 */
+		public function get swipeToPopGestureEdgeSize():Number
+		{
+			return this._swipeToPopGestureEdgeSize;
+		}
+
+		/**
+		public function set swipeToPopGestureEdgeSize(value:Number):void
+		{
+			this._swipeToPopGestureEdgeSize = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _savedTransitionOnComplete:Function = null;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEffectTransition:Function = null;
+
+		/**
 		 * Registers a new screen with a string identifier that can be used
 		 * to reference the screen in other calls, like <code>removeScreen()</code>
 		 * or <code>pushScreen()</code>.
@@ -585,8 +803,8 @@ package feathers.controls
 					transition = this.popTransition;
 				}
 			}
-			var stackItem:StackItem = this._stack.pop();
-			return this.showScreenInternal(stackItem.id, transition, stackItem.properties);
+			this._poppedStackItem = this._stack.pop();
+			return this.showScreenInternal(this._poppedStackItem.id, transition, this._poppedStackItem.properties);
 		}
 
 		/**
@@ -704,6 +922,20 @@ package feathers.controls
 				}
 			}
 			return this.showScreenInternal(id, transition);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(local:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(local);
+			if(this._isDragging && result !== null)
+			{
+				//don't allow touches to reach children while dragging
+				return this;
+			}
+			return result;
 		}
 
 		/**
@@ -1120,6 +1352,203 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function handleTouchBegan(touch:Touch):void
+		{
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touch.id))
+			{
+				//already claimed
+				return;
+			}
+
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this, point);
+			var localX:Number = point.x;
+			Pool.putPoint(point);
+
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var leftInches:Number = localX / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			if(leftInches < 0 || leftInches > this._swipeToPopGestureEdgeSize)
+			{
+				//we're not close enough to the edge
+				return;
+			}
+
+			this._touchPointID = touch.id;
+			this._velocityX = 0;
+			this._previousVelocityX.length = 0;
+			this._previousTouchTime = getTimer();
+			this._previousTouchX = this._startTouchX = this._currentTouchX = localX;
+			this._isDragging = false;
+			this._dragCancelled = false;
+
+			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleTouchMoved(touch:Touch):void
+		{
+			var point:Point = Pool.getPoint();
+			touch.getLocation(this, point);
+			this._currentTouchX = point.x;
+			Pool.putPoint(point);
+			var now:int = getTimer();
+			var timeOffset:int = now - this._previousTouchTime;
+			if(timeOffset > 0)
+			{
+				//we're keeping previous velocity updates to improve accuracy
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
+				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityX.shift();
+				}
+				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
+				this._previousTouchTime = now;
+				this._previousTouchX = this._currentTouchX;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragTransition(oldScreen:IFeathersControl, newScreen:IFeathersControl, onComplete:Function):void
+		{
+			this._savedTransitionOnComplete = onComplete;
+			this._dragEffectContext = this._dragEffectTransition(this._previousScreenInTransition, this._activeScreen, null, true);
+			this._dragEffectTransition = null;
+			this.handleDragMove();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleDragMove():void
+		{
+			if(this._dragEffectContext === null)
+			{
+				//the transition may not have started yet
+				return;
+			}
+			var offsetX:Number = this._currentTouchX - this._startTouchX;
+			this._dragEffectContext.position = offsetX / this.screenContainer.width;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleDragEnd():void
+		{
+			if(this._dragEffectContext === null)
+			{
+				//if we're waiting to start the transition for performance
+				//reasons, force it to start immediately
+				if(this._waitingTransition !== null)
+				{
+					this.startWaitingTransition();
+				}
+			}
+
+			this._dragCancelled = false;
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			
+			var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
+			var velocityCount:int = this._previousVelocityX.length;
+			var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
+			for(var i:int = 0; i < velocityCount; i++)
+			{
+				var weight:Number = VELOCITY_WEIGHTS[i];
+				sum += this._previousVelocityX.shift() * weight;
+				totalWeight += weight;
+			}
+
+			var inchesPerSecondX:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			if(inchesPerSecondX < -this._minimumSwipeVelocity)
+			{
+				//force back to current screen
+				if(this._isDragging)
+				{
+					this._dragCancelled = true;
+				}
+			}
+			else
+			{
+				var offsetX:Number = this._currentTouchX - this._startTouchX;
+				var ratio:Number = offsetX / this.screenContainer.width;
+				if(ratio <= 0.5)
+				{
+					if(this._isDragging)
+					{
+						this._dragCancelled = true;
+					}
+				}
+			}
+
+			this._dragEffectContext.addEventListener(Event.COMPLETE, dragEffectContext_completeHandler);
+			if(this._dragCancelled)
+			{
+				this._dragEffectContext.playReverse();
+			}
+			else
+			{
+				this._dragEffectContext.play();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function checkForDrag():void
+		{
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			if(horizontalInchesMoved < this._minimumDragDistance)
+			{
+				return;
+			}
+
+			this._dragEffectTransition = null;
+			var screenItem:StackScreenNavigatorItem = this.getScreen(this._activeScreenID);
+			if(screenItem && screenItem.popTransition !== null)
+			{
+				this._dragEffectTransition = screenItem.popTransition;
+			}
+			else
+			{
+				this._dragEffectTransition = this.popTransition;
+			}
+
+			//if this is an old transition that doesn't support being managed,
+			//simply start it without management.
+			if(this._dragEffectTransition.length < 4)
+			{
+				this._dragEffectTransition = null;
+				this.popScreen();
+				return;
+			}
+
+			this._isDragging = true;
+			this.popScreen(dragTransition);
+			this._startTouchX = this._currentTouchX;
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			exclusiveTouch.claimTouch(this._touchPointID, this);
+			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function transitionComplete(cancelTransition:Boolean = false):void
+		{
+			this._poppedStackItem = null;
+			super.transitionComplete(cancelTransition);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function popEventListener(event:Event):void
 		{
 			this.popScreen();
@@ -1160,6 +1589,95 @@ package feathers.controls
 				this._tempRootScreenID = null;
 				this.showScreenInternal(screenID, null);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stackScreenNavigator_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled || !this._isSwipeToPopEnabled || (this._stack.length === 0 && !this._isDragging))
+			{
+				this._touchPointID = -1;
+				return;
+			}
+			if(this._touchPointID !== -1)
+			{
+				var touch:Touch = event.getTouch(this, null, this._touchPointID);
+				if(touch === null)
+				{
+					return;
+				}
+				if(touch.phase === TouchPhase.MOVED)
+				{
+					this.handleTouchMoved(touch);
+
+					if(!this._isDragging)
+					{
+						this.checkForDrag();
+					}
+					if(this._isDragging)
+					{
+						this.handleDragMove();
+					}
+				}
+				else if(touch.phase === TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					if(this._isDragging)
+					{
+						this.handleDragEnd();
+						this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+					}
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch === null)
+				{
+					return;
+				}
+				this.handleTouchBegan(touch);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function exclusiveTouch_changeHandler(event:Event, touchID:int):void
+		{
+			if(this._touchPointID === -1 || this._touchPointID !== touchID || this._isDragging)
+			{
+				return;
+			}
+
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touchID) === this)
+			{
+				return;
+			}
+
+			this._touchPointID = -1;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragEffectContext_completeHandler(event:Event):void
+		{
+			this._dragEffectContext.removeEventListeners();
+			this._dragEffectContext = null;
+			this._isDragging = false;
+			var cancelled:Boolean = this._dragCancelled;
+			this._dragCancelled = false;
+			var onComplete:Function = this._savedTransitionOnComplete;
+			this._savedTransitionOnComplete = null;
+			if(cancelled)
+			{
+				this._stack[this._stack.length] = this._poppedStackItem;
+			}
+			onComplete(cancelled);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -331,6 +331,10 @@ package feathers.controls
 		 */
 		public function set showSelectionOverlay(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._showSelectionOverlay === value)
 			{
 				return;
@@ -357,6 +361,10 @@ package feathers.controls
 		 */
 		public function set hideSelectionOverlayUnlessFocused(value:Boolean):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._hideSelectionOverlayUnlessFocused === value)
 			{
 				return;

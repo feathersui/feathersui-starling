@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -356,7 +356,7 @@ package feathers.controls.text
 				return 0;
 			}
 			var gutterDimensionsOffset:Number = 0;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 2;
 			}
@@ -1095,8 +1095,10 @@ package feathers.controls.text
 		 * Specifies whether the text field has a border. Use the
 		 * <code>borderColor</code> property to set the border color.
 		 *
-		 * <p>Note: this property cannot be used when the <code>useGutter</code>
-		 * property is set to <code>false</code> (the default value!).</p>
+		 * <p>Note: If <code>border</code> is set to <code>true</code>, the
+		 * component will behave as if <code>useGutter</code> is also set to
+		 * <code>true</code> because the border will not render correctly
+		 * without the gutter.</p>
 		 *
 		 * <p>In the following example, the border is enabled:</p>
 		 *
@@ -1175,6 +1177,9 @@ package feathers.controls.text
 		 * <code>flash.text.TextField</code> will be used in measurement and
 		 * layout. To visually align with other text renderers and text editors,
 		 * it is often best to leave the gutter disabled.
+		 * 
+		 * <p>Returns <code>true</code> if the <code>border</code> property is
+		 * <code>true</code>.</p>
 		 *
 		 * <p>In the following example, the gutter is enabled:</p>
 		 *
@@ -1185,7 +1190,7 @@ package feathers.controls.text
 		 */
 		public function get useGutter():Boolean
 		{
-			return this._useGutter;
+			return this._useGutter || this._border;
 		}
 
 		/**
@@ -1376,7 +1381,67 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var resetScrollOnFocusOut:Boolean = true;
+		protected var _softKeyboard:String = "default"; //constant is available in AIR only
+
+		/**
+		 * Customizes the soft keyboard that is displayed on a touch screen
+		 * when the text editor has focus.
+		 *
+		 * <p>In the following example, the soft keyboard type is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.softKeyboard = SoftKeyboardType.NUMBER;</listing>
+		 *
+		 * @default flash.text.SoftKeyboardType.DEFAULT
+		 * 
+		 * @see https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/SoftKeyboardType.html flash.text.SoftKeyboardType
+		 */
+		public function get softKeyboard():String
+		{
+			return this._softKeyboard;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set softKeyboard(value:String):void
+		{
+			if(this._softKeyboard === value)
+			{
+				return;
+			}
+			this._softKeyboard = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _resetScrollOnFocusOut:Boolean = true;
+
+		/**
+		 * Indicates of the text editor resets its current scroll position to
+		 * 0 on focus out.
+		 * 
+		 * <p>In the following example, the scroll position is not reset on focus out:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.resetScrollOnFocusOut = false;</listing>
+		 * 
+		 * @default true
+		 */
+		public function get resetScrollOnFocusOut():Boolean
+		{
+			return this._resetScrollOnFocusOut;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resetScrollOnFocusOut(value:Boolean):void
+		{
+			this._resetScrollOnFocusOut = value;
+		}
 
 		/**
 		 * @private
@@ -1483,7 +1548,7 @@ package feathers.controls.text
 					var scaleX:Number = this.textField.scaleX;
 					var scaleY:Number = this.textField.scaleY;
 					var gutterPositionOffset:Number = 2;
-					if(this._useGutter)
+					if(this._useGutter || this._border)
 					{
 						gutterPositionOffset = 0;
 					}
@@ -1850,7 +1915,7 @@ package feathers.controls.text
 			this.commitStylesAndData(this.measureTextField);
 
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -1876,7 +1941,7 @@ package feathers.controls.text
 				this.measureTextField.wordWrap = this._wordWrap;
 				this.measureTextField.width = newWidth + gutterDimensionsOffset;
 				newHeight = this.measureTextField.height - gutterDimensionsOffset;
-				if(this._useGutter)
+				if(this._useGutter || this._border)
 				{
 					newHeight += 4;
 				}
@@ -1915,19 +1980,25 @@ package feathers.controls.text
 			textField.displayAsPassword = this._displayAsPassword;
 			textField.wordWrap = this._wordWrap;
 			textField.multiline = this._multiline;
+			//The softKeyboard property is not available in Flash Player.
+			//It's only available in AIR.
+			if("softKeyboard" in textField)
+			{
+				textField["softKeyboard"] = this._softKeyboard;
+			}
 			if(!this._embedFonts &&
 				this._currentTextFormat === this._fontStylesTextFormat)
 			{
 				//when font styles are passed in from the parent component, we
 				//automatically determine if the TextField should use embedded
 				//fonts, unless embedFonts is explicitly true
-				this.textField.embedFonts = SystemUtil.isEmbeddedFont(
+				textField.embedFonts = SystemUtil.isEmbeddedFont(
 					this._currentTextFormat.font, this._currentTextFormat.bold,
 					this._currentTextFormat.italic, FontType.EMBEDDED);
 			}
 			else
 			{
-				this.textField.embedFonts = this._embedFonts;
+				textField.embedFonts = this._embedFonts;
 			}
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled && (this._isEditable || this._isSelectable);
@@ -2148,7 +2219,7 @@ package feathers.controls.text
 		protected function refreshTextFieldSize():void
 		{
 			var gutterDimensionsOffset:Number = 4;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterDimensionsOffset = 0;
 			}
@@ -2223,7 +2294,7 @@ package feathers.controls.text
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
 			var gutterPositionOffset:Number = 0;
-			if(!this._useGutter)
+			if(!this._useGutter || this._border)
 			{
 				gutterPositionOffset = 2 * smallerGlobalScale;
 			}
@@ -2343,7 +2414,7 @@ package feathers.controls.text
 				return;
 			}
 			var gutterPositionOffset:Number = 2;
-			if(this._useGutter)
+			if(this._useGutter || this._border)
 			{
 				gutterPositionOffset = 0;
 			}
@@ -2484,7 +2555,7 @@ package feathers.controls.text
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(this._maintainTouchFocus)
+			if(this._maintainTouchFocus || FocusManager.isEnabledForStage(this.stage))
 			{
 				return;
 			}
@@ -2539,7 +2610,7 @@ package feathers.controls.text
 			this._textFieldHasFocus = false;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 
-			if(this.resetScrollOnFocusOut)
+			if(this._resetScrollOnFocusOut)
 			{
 				this.textField.scrollH = this.textField.scrollV = 0;
 			}

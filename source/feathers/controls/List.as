@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -31,6 +31,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import flash.utils.Dictionary;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -539,6 +540,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _addedItems:Dictionary = null;
+
+		/**
+		 * @private
+		 */
+		protected var _removedItems:Dictionary = null;
+
+		/**
+		 * @private
+		 */
 		protected var _dataProvider:IListCollection;
 
 		/**
@@ -605,6 +616,7 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
+				this._dataProvider.removeEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
@@ -616,6 +628,7 @@ package feathers.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				this._dataProvider.addEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
@@ -1492,6 +1505,45 @@ package feathers.controls
 		}
 
 		/**
+		 * Adds an item from the data provider and animates its item renderer
+		 * using an effect.
+		 * 
+		 * @see #removeItemWithEffect()
+		 * @see feathers.data.IListCollection#addItem()
+		 */
+		public function addItemWithEffect(item:Object, index:int, effect:Function):void
+		{
+			//add to the data provider immediately
+			this._dataProvider.addItemAt(item, index);
+			if(this._addedItems === null)
+			{
+				this._addedItems = new Dictionary();
+			}
+			this._addedItems[item] = effect;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * Removes an item from the data provider <strong>after</strong>
+		 * animating its item renderer using an effect.
+		 * 
+		 * @see #addItemWithEffect()
+		 * @see feathers.data.IListCollection#removeItem()
+		 */
+		public function removeItemWithEffect(item:Object, effect:Function):void
+		{
+			//don't remove from the data provider yet because that will
+			//immediately remove the item renderer. we'll wait until the effect
+			//finishes instead.
+			if(this._removedItems === null)
+			{
+				this._removedItems = new Dictionary();
+			}
+			this._removedItems[item] = effect;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function dispose():void
@@ -1569,6 +1621,10 @@ package feathers.controls
 			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
+			this.dataViewPort.addedItems = this._addedItems;
+			this.dataViewPort.removedItems = this._removedItems;
+			this._addedItems = null;
+			this._removedItems = null;
 		}
 
 		/**
@@ -1794,7 +1850,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_filterChangeHandler(event:Event):void
+		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
 			if(this._selectedIndex === -1)
 			{
@@ -1829,6 +1885,22 @@ package feathers.controls
 			{
 				this._selectedIndices.data = newIndices;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_sortChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
 		}
 
 		/**

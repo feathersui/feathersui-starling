@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -278,6 +278,123 @@ package feathers.controls
 	 * @see #style:antiAliasType
 	 */
 	[Style(name="gridFitType",type="String")]
+
+	/**
+	 * Quickly sets all outer padding properties to the same value. The
+	 * <code>outerPadding</code> getter always returns the value of
+	 * <code>outerPaddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPadding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPaddingTop
+	 * @see #style:outerPaddingRight
+	 * @see #style:outerPaddingBottom
+	 * @see #style:outerPaddingLeft
+	 * @see feathers.controls.Scroller#style:padding
+	 */
+	[Style(name="outerPadding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the view port's top edge and the
+	 * top edge of the component.
+	 *
+	 * <p>Note: The <code>paddingTop</code> property applies to padding inside
+	 * the view port, and may not be visible on all sides if the text may be
+	 * scroll. Use <code>outerPaddingTop</code> if you want to always display
+	 * padding on the top side of the component. <code>outerPaddingTop</code>
+	 * and <code>paddingTop</code> may be used simultaneously to define
+	 * padding around the outer edges of the container and additional padding
+	 * around the text.</p>
+	 *
+	 * <p>In the following example, the top padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingTop
+	 */
+	[Style(name="outerPaddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the view port's right edge and the
+	 * right edge of the component.
+	 *
+	 * <p>Note: The <code>paddingRight</code> property applies to padding inside
+	 * the view port, and may not be visible on all sides if the text may be
+	 * scroll. Use <code>outerPaddingRight</code> if you want to always display
+	 * padding on the right side of the component. <code>outerPaddingRight</code>
+	 * and <code>paddingRight</code> may be used simultaneously to define
+	 * padding around the outer edges of the container and additional padding
+	 * around the text.</p>
+	 *
+	 * <p>In the following example, the right outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingRight
+	 */
+	[Style(name="outerPaddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the view port's bottom edge and the
+	 * bottom edge of the component.
+	 *
+	 * <p>Note: The <code>paddingBottom</code> property applies to padding inside
+	 * the view port, and may not be visible on all sides if the text may be
+	 * scroll. Use <code>outerPaddingBottom</code> if you want to always display
+	 * padding on the bottom edge of the component. <code>outerPaddingBottom</code>
+	 * and <code>paddingBottom</code> may be used simultaneously to define
+	 * padding around the outer edges of the container and additional padding
+	 * around the text.</p>
+	 *
+	 * <p>In the following example, the bottom outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * panel.outerPaddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingBottom
+	 */
+	[Style(name="outerPaddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the view port's left edge and the
+	 * left edge of the component.
+	 *
+	 * <p>Note: The <code>paddingLeft</code> property applies to padding inside
+	 * the view port, and may not be visible on all sides if the text may be
+	 * scroll. Use <code>outerPaddingLeft</code> if you want to always display
+	 * padding on the left side of the component. <code>outerPaddingLeft</code>
+	 * and <code>paddingLeft</code> may be used simultaneously to define
+	 * padding around the outer edges of the container and additional padding
+	 * around the text.</p>
+	 *
+	 * <p>In the following example, the left outer padding is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollText.outerPaddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:outerPadding
+	 * @see feathers.controls.Scroller#style:paddingLeft
+	 */
+	[Style(name="outerPaddingLeft",type="Number")]
 
 	/**
 	 * The sharpness of the glyph edges in this text field. This property
@@ -1386,6 +1503,145 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		public function get outerPadding():Number
+		{
+			return this._outerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set outerPadding(value:Number):void
+		{
+			this.outerPaddingTop = value;
+			this.outerPaddingRight = value;
+			this.outerPaddingBottom = value;
+			this.outerPaddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _outerPaddingTop:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get outerPaddingTop():Number
+		{
+			return this._outerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set outerPaddingTop(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingTop === value)
+			{
+				return;
+			}
+			this._outerPaddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _outerPaddingRight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get outerPaddingRight():Number
+		{
+			return this._outerPaddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set outerPaddingRight(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingRight === value)
+			{
+				return;
+			}
+			this._outerPaddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _outerPaddingBottom:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get outerPaddingBottom():Number
+		{
+			return this._outerPaddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set outerPaddingBottom(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingBottom === value)
+			{
+				return;
+			}
+			this._outerPaddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _outerPaddingLeft:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get outerPaddingLeft():Number
+		{
+			return this._outerPaddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set outerPaddingLeft(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._outerPaddingLeft === value)
+			{
+				return;
+			}
+			this._outerPaddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _visible:Boolean = true;
 
 		/**
@@ -1491,6 +1747,19 @@ package feathers.controls
 			}
 
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
+		{
+			super.calculateViewPortOffsets(forceScrollBars);
+
+			this._topViewPortOffset += this._outerPaddingTop;
+			this._rightViewPortOffset += this._outerPaddingRight;
+			this._bottomViewPortOffset += this._outerPaddingBottom;
+			this._leftViewPortOffset += this._outerPaddingLeft;
 		}
 
 		/**

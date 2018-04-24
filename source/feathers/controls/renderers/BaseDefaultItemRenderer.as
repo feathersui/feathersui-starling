@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -3424,7 +3424,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._iconLabelFontStylesSet.format = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -3444,7 +3457,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._iconLabelFontStylesSet.disabledFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -3464,7 +3490,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._iconLabelFontStylesSet.selectedFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -3672,7 +3711,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._accessoryLabelFontStylesSet.format = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -3692,7 +3744,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._accessoryLabelFontStylesSet.disabledFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -3712,7 +3777,20 @@ package feathers.controls.renderers
 			{
 				return;
 			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._accessoryLabelFontStylesSet.selectedFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -4382,7 +4460,24 @@ package feathers.controls.renderers
 		 */
 		public function setIconLabelFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setIconLabelFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(key);
+			}
+			if(format !== null)
+			{
+				format.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._iconLabelFontStylesSet.setFormatForState(state, format);
+			if(format !== null)
+			{
+				format.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**
@@ -4425,7 +4520,24 @@ package feathers.controls.renderers
 		 */
 		public function setAccessoryLabelFontStylesForState(state:String, format:TextFormat):void
 		{
+			var key:String = "setAccessoryLabelFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(key);
+			}
+			if(format !== null)
+			{
+				format.removeEventListener(Event.CHANGE, changeHandler);
+			}
 			this._accessoryLabelFontStylesSet.setFormatForState(state, format);
+			if(format !== null)
+			{
+				format.addEventListener(Event.CHANGE, changeHandler);
+			}
 		}
 
 		/**

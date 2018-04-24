@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -912,6 +912,22 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		protected function startWaitingTransition():void
+		{
+			this.removeEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
+			if(this._activeScreen)
+			{
+				this._activeScreen.visible = true;
+			}
+
+			var transition:Function = this._waitingTransition;
+			this._waitingTransition = null;
+			transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function transitionComplete(cancelTransition:Boolean = false):void
 		{
 			//consider the transition still active if something is already
@@ -1064,15 +1080,7 @@ package feathers.controls.supportClasses
 				this._waitingForTransitionFrameCount++;
 				return;
 			}
-			this.removeEventListener(Event.ENTER_FRAME, waitingForTransition_enterFrameHandler);
-			if(this._activeScreen)
-			{
-				this._activeScreen.visible = true;
-			}
-
-			var transition:Function = this._waitingTransition;
-			this._waitingTransition = null;
-			transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+			this.startWaitingTransition();
 		}
 	}
 }

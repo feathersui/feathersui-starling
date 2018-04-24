@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -796,6 +796,7 @@ package feathers.controls
 				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
@@ -808,6 +809,7 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ALL, dataProvider_removeAllHandler);
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.FILTER_CHANGE, dataProvider_filterChangeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.SORT_CHANGE, dataProvider_sortChangeHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ALL, dataProvider_updateAllHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
@@ -3180,7 +3182,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_filterChangeHandler(event:Event):void
+		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
 			var oldIndex:int = this._dataProvider.getItemIndex(this._selectedItem);
 			if(oldIndex === -1)
@@ -3190,8 +3192,8 @@ package feathers.controls
 				var maxIndex:int = this._dataProvider.length - 1;
 				if(newIndex > maxIndex)
 				{
-					//try to keep the same selectedIndex, but if use the last
-					//index if needed
+					//try to keep the same selectedIndex, but use the largest
+					//index if the same one can't be used
 					newIndex = maxIndex;
 				}
 				if(newIndex !== -1)
@@ -3203,6 +3205,25 @@ package feathers.controls
 					this.selectedIndex = -1;
 				}
 			}
+			else if(oldIndex !== this._selectedIndex)
+			{
+				//the selectedItem is the same, but its index has changed
+				this.selectedIndex = oldIndex;
+			}
+		}
+
+		protected function dataProvider_sortChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_filterChangeHandler(event:Event):void
+		{
+			this.refreshSelectedIndicesAfterFilterOrSort();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 

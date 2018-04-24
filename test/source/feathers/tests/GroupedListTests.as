@@ -749,7 +749,7 @@ package feathers.tests
 		[Test]
 		public function testGroupToHeaderData():void
 		{
-			var rawData:Object = ArrayHierarchicalCollection(this._list.dataProvider).data;
+			var rawData:Array = ArrayHierarchicalCollection(this._list.dataProvider).arrayData;
 			var group0:Object = this._list.dataProvider.getItemAt(0);
 			var header0:Object = this._list.groupToHeaderData(group0);
 			var group1:Object = this._list.dataProvider.getItemAt(1);

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -2006,6 +2006,7 @@ package feathers.controls
 		 * @see feathers.controls.DragGesture#NONE
 		 * @see feathers.controls.DragGesture#CONTENT
 		 * @see feathers.controls.DragGesture#EDGE
+		 * @see #openGestureEdgeSize
 		 */
 		public function get openGesture():String
 		{
@@ -2094,15 +2095,19 @@ package feathers.controls
 		protected var _openGestureEdgeSize:Number = 0.1;
 
 		/**
-		 * The minimum physical distance (in inches) that a touch must move
-		 * before a drag gesture begins.
+		 * The size (in inches) of the region near the edge of the content that
+		 * can be dragged when the <code>openGesture</code> property is set to
+		 * <code>DragGesture.EDGE</code>.
 		 *
-		 * <p>In the following example, the open gesture edge size customized:</p>
+		 * <p>In the following example, the open gesture edge size is customized:</p>
 		 *
 		 * <listing version="3.0">
 		 * drawers.openGestureEdgeSize = 0.25;</listing>
 		 *
 		 * @default 0.1
+		 * 
+		 * @see #openGesture
+		 * @see feathers.controls.DragGesture#EDGE
 		 */
 		public function get openGestureEdgeSize():Number
 		{

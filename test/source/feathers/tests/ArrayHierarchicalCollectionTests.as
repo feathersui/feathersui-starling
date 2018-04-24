@@ -115,6 +115,23 @@ package feathers.tests
 		}
 
 		[Test]
+		public function testGetItemAtNullLocation():void
+		{
+			var item:Object = this._collection.getItemAtLocation(null);
+			Assert.assertStrictlyEquals("ArrayHierarchicalCollection: getItemAtLocation() returned incorrect item",
+				null, item);
+		}
+
+		[Test]
+		public function testGetItemAtEmptyLocation():void
+		{
+			var indices:Vector.<int> = new <int>[];
+			var item:Object = this._collection.getItemAtLocation(indices);
+			Assert.assertStrictlyEquals("ArrayHierarchicalCollection: getItemAtLocation() returned incorrect item",
+				null, item);
+		}
+
+		[Test]
 		public function testRemoveAll():void
 		{
 			var hasChanged:Boolean = false;
@@ -206,6 +223,19 @@ package feathers.tests
 				indicesToRemove[0], indicesFromEvent[0]);
 			Assert.assertStrictlyEquals("ArrayHierarchicalCollection: The CollectionEventType.REMOVE_ITEM event data was not the correct location (value)",
 				indicesToRemove[1], indicesFromEvent[1]);
+		}
+
+		[Test(expects="RangeError")]
+		public function testRemoveItemAtNullLocation():void
+		{
+			this._collection.removeItemAtLocation(null);
+		}
+
+		[Test(expects="RangeError")]
+		public function testRemoveItemAtEmptyLocation():void
+		{
+			var indices:Vector.<int> = new <int>[];
+			this._collection.removeItemAtLocation(indices);
 		}
 
 		[Test]
@@ -346,6 +376,21 @@ package feathers.tests
 				location[0], indicesFromEvent[0]);
 			Assert.assertStrictlyEquals("ArrayHierarchicalCollection: The CollectionEventType.ADD_ITEM event data was not the correct location (value)",
 				location[1], indicesFromEvent[1]);
+		}
+
+		[Test(expects="RangeError")]
+		public function testAddItemAtNullLocation():void
+		{
+			var itemToAdd:Object = { label: "New Item" };
+			this._collection.addItemAtLocation(itemToAdd, null);
+		}
+
+		[Test(expects="RangeError")]
+		public function testAddItemAtEmptyLocation():void
+		{
+			var itemToAdd:Object = { label: "New Item" };
+			var indices:Vector.<int> = new <int>[];
+			this._collection.addItemAtLocation(itemToAdd, indices);
 		}
 
 		[Test]
@@ -566,6 +611,21 @@ package feathers.tests
 				location[0], indicesFromEvent[0]);
 			Assert.assertStrictlyEquals("ArrayHierarchicalCollection: The CollectionEventType.REPLACE_ITEM event data was not the correct location (value)",
 				location[1], indicesFromEvent[1]);
+		}
+
+		[Test(expects="RangeError")]
+		public function testSetItemAtNullLocation():void
+		{
+			var itemToAdd:Object = { label: "New Item" };
+			this._collection.setItemAtLocation(itemToAdd, null);
+		}
+
+		[Test(expects="RangeError")]
+		public function testSetItemAtEmptyLocation():void
+		{
+			var itemToAdd:Object = { label: "New Item" };
+			var indices:Vector.<int> = new <int>[];
+			this._collection.setItemAtLocation(itemToAdd, indices);
 		}
 
 		[Test]

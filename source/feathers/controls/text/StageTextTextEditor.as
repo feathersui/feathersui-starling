@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,16 +9,19 @@ package feathers.controls.text
 {
 	import feathers.core.BaseTextEditor;
 	import feathers.core.FocusManager;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMultilineTextEditor;
 	import feathers.core.INativeFocusOwner;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.text.StageTextField;
+	import feathers.utils.display.nativeToGlobal;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -41,6 +44,7 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.rendering.Painter;
@@ -2451,6 +2455,34 @@ package feathers.controls.text
 		 */
 		protected function stageText_mouseFocusChangeHandler(event:FocusEvent):void
 		{
+			var nativeStage:Stage = this.stage.starling.nativeStage;
+			var point:Point = Pool.getPoint(nativeStage.mouseX, nativeStage.mouseY);
+			nativeToGlobal(point, this.stage.starling, point);
+			var result:DisplayObject = this.stage.hitTest(point);
+			while(result !== null)
+			{
+				var focusResult:IFocusDisplayObject = result as IFocusDisplayObject;
+				if(focusResult !== null)
+				{
+					var focusOwner:IFocusDisplayObject = focusResult.focusOwner;
+					if(focusOwner !== null)
+					{
+						if(focusOwner is DisplayObjectContainer &&
+							DisplayObjectContainer(focusOwner).contains(this))
+						{
+							//this mouseFocusChange event won't reach the native
+							//stage, so the FocusManager can't prevent it
+							event.preventDefault();
+						}
+						break;
+					}
+					else if(focusResult.isFocusEnabled)
+					{
+						break;
+					}
+				}
+				result = result.parent;
+			}
 			if(!this._maintainTouchFocus)
 			{
 				return;

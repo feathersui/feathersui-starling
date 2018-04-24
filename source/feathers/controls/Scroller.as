@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -7915,19 +7915,21 @@ package feathers.controls
 		 */
 		protected function scroller_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled)
+			//it's rare, but the stage could be null if the scroller is removed
+			//in a listener for the same event.
+			if(!this._isEnabled || this.stage === null)
 			{
 				this._touchPointID = -1;
 				return;
 			}
-			if(this._touchPointID >= 0)
+			if(this._touchPointID !== -1)
 			{
 				return;
 			}
 
 			//any began touch is okay here. we don't need to check all touches.
 			var touch:Touch = event.getTouch(this, TouchPhase.BEGAN);
-			if(!touch)
+			if(touch === null)
 			{
 				return;
 			}
@@ -7943,8 +7945,8 @@ package feathers.controls
 			var touchY:Number = touchPosition.y;
 			Pool.putPoint(touchPosition);
 			if(touchX < this._leftViewPortOffset || touchY < this._topViewPortOffset ||
-				touchX >= this.actualWidth - this._rightViewPortOffset ||
-				touchY >= this.actualHeight - this._bottomViewPortOffset)
+				touchX >= (this.actualWidth - this._rightViewPortOffset) ||
+				touchY >= (this.actualHeight - this._bottomViewPortOffset))
 			{
 				return;
 			}
@@ -7957,25 +7959,15 @@ package feathers.controls
 			}
 
 			//if the scroll policy is off, we shouldn't stop this animation
-			if(this._horizontalAutoScrollTween && this._horizontalScrollPolicy != ScrollPolicy.OFF)
+			if(this._horizontalAutoScrollTween !== null && this._horizontalScrollPolicy !== ScrollPolicy.OFF)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
-				if(this._isScrolling)
-				{
-					//immediately start dragging, since it was scrolling already
-					this._isDraggingHorizontally = true;
-				}
 			}
-			if(this._verticalAutoScrollTween && this._verticalScrollPolicy != ScrollPolicy.OFF)
+			if(this._verticalAutoScrollTween !== null && this._verticalScrollPolicy !== ScrollPolicy.OFF)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
-				if(this._isScrolling)
-				{
-					//immediately start dragging, since it was scrolling already
-					this._isDraggingVertically = true;
-				}
 			}
 
 			this._touchPointID = touch.id;
@@ -7989,6 +7981,13 @@ package feathers.controls
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isScrollingStopped = false;
+			this._isDraggingVertically = false;
+			this._isDraggingHorizontally = false;
+			if(this._isScrolling)
+			{
+				//if it was scrolling, stop it immediately
+				this.completeScroll();
+			}
 
 			this.addEventListener(Event.ENTER_FRAME, scroller_enterFrameHandler);
 
@@ -7997,14 +7996,7 @@ package feathers.controls
 			//receiving touch events for "this".
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 
-			if(this._isScrolling && (this._isDraggingHorizontally || this._isDraggingVertically))
-			{
-				exclusiveTouch.claimTouch(this._touchPointID, this);
-			}
-			else
-			{
-				exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
-			}
+			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 		}
 
 		/**

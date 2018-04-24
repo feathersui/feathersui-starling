@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -77,6 +77,44 @@ package feathers.controls.text
 	 *     return new TextBlockTextRenderer();
 	 * };
 	 * this.addChild( label );</listing>
+	 * 
+	 * <strong>Embedding Fonts</strong>
+	 * 
+	 * <p>This text renderer supports embedded TrueType or OpenType fonts.</p>
+	 * 
+	 * <p>In the following example, a TrueType font is included with
+	 * <code>[Embed]</code> metadata:</p>
+	 * 
+	 * <listing version="3.0">
+	 * [Embed(source="path/to/font.ttf",fontFamily="MyCustomFont",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="true")]
+	 * private static const MY_CUSTOM_FONT:Class;</listing>
+	 * 
+	 * <p>The <code>source</code> field should point to the font file, relative
+	 * to the current <code>.as</code> file that contains the metadata.</p>
+	 * 
+	 * <p>Set the <code>fontFamily</code> field to the string value that you
+	 * want to use when referencing this font in code. For example, you would
+	 * use this name when you create a <code>starling.text.TextFormat</code>
+	 * object. Replace "MyCustomFont" with an appropriate name for your font.</p>
+	 * 
+	 * <p><strong>Tip:</strong> For best results, try not to set the exact same
+	 * name in the <code>fontFamily</code> field as the name of device font
+	 * installed on your system. Debugging embedded font issues can be
+	 * frustrating when you see the correct font on your development computer,
+	 * but it's a different font on other devices. If you use a font name that
+	 * doesn't exist on your development computer, you'll see when something is
+	 * wrong immediately, instead of discovering it later when you're testing
+	 * on other devices.</p>
+	 * 
+	 * <p>If the font is bold, set the <code>fontWeight</code> field to "bold".
+	 * Otherwise, set it to "normal".</p>
+	 * 
+	 * <p>If the font is italic, set the <code>fontStyle</code> field to
+	 * "italic". Otherwise, set it to "normal".</p>
+	 * 
+	 * <p>Since the text renderer is based on Flash Text Engine, you
+	 * <strong>must</strong> set the <code>embedAsCFF</code> field to
+	 * "true".</p>
 	 *
 	 * @see ../../../../help/text-renderers.html Introduction to Feathers text renderers
 	 * @see ../../../../help/text-block-text-renderer.html How to use the Feathers TextBlockTextRenderer component

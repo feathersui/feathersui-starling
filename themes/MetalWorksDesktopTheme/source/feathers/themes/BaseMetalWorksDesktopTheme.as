@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2017 Bowler Hat LLC
+Copyright 2012-2018 Bowler Hat LLC
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -173,6 +173,7 @@ package feathers.themes
 		
 		protected static const ITEM_RENDERER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 1);
 		protected static const ITEM_RENDERER_SELECTED_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 1, 22);
+		protected static const HEADER_SKIN_TEXTURE_REGION:Rectangle = new Rectangle(1, 1, 128, 64);
 
 		/**
 		 * @private
@@ -795,6 +796,8 @@ package feathers.themes
 
 			this.headerBackgroundSkinTexture = this.atlas.getTexture("header-background-skin0000");
 			this.headerPopupBackgroundSkinTexture = this.atlas.getTexture("header-popup-background-skin0000");
+			this.headerBackgroundSkinTexture = Texture.fromTexture(headerBackgroundSkinTexture, HEADER_SKIN_TEXTURE_REGION);
+			this.headerPopupBackgroundSkinTexture = Texture.fromTexture(headerPopupBackgroundSkinTexture, HEADER_SKIN_TEXTURE_REGION);
 
 			this.calloutTopArrowSkinTexture = this.atlas.getTexture("callout-arrow-top-skin0000");
 			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-arrow-right-skin0000");

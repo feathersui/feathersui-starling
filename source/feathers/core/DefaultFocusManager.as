@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2017 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -793,12 +793,19 @@ package feathers.core
 		 */
 		protected function isValidFocus(child:IFocusDisplayObject):Boolean
 		{
-			if(!child || !child.isFocusEnabled || child.focusManager != this)
+			if(child === null || child.focusManager !== this)
 			{
 				return false;
 			}
+			if(!child.isFocusEnabled)
+			{
+				if(child.focusOwner === null || !isValidFocus(child.focusOwner))
+				{
+					return false;
+				}
+			}
 			var uiChild:IFeathersControl = child as IFeathersControl;
-			if(uiChild && !uiChild.isEnabled)
+			if(uiChild !== null && !uiChild.isEnabled)
 			{
 				return false;
 			}
@@ -1072,12 +1079,45 @@ package feathers.core
 				target = target.parent;
 			}
 			while(target)
-			if(this._focus !== null && focusTarget !== null &&
-				this._focus.focusOwner === focusTarget)
+			if(this._focus !== null && focusTarget !== null)
 			{
 				//ignore touches on focusOwner because we consider the
 				//focusOwner to indirectly have focus already
-				return;
+				var focusOwner:IFocusDisplayObject = this._focus.focusOwner;
+				if(focusOwner === focusTarget)
+				{
+					return;
+				}
+				//similarly, ignore touches on display objects that have a
+				//focusOwner and that owner is the currently focused object
+				var result:DisplayObject = DisplayObject(focusTarget);
+				while(result != null)
+				{
+					var focusResult:IFocusDisplayObject = result as IFocusDisplayObject;
+					if(focusResult !== null)
+					{
+						focusOwner = focusResult.focusOwner;
+						if(focusOwner !== null)
+						{
+							if(focusOwner === this._focus)
+							{
+								//the current focus is the touch target's owner,
+								//so we don't need to clear focus
+								focusTarget = focusOwner;
+							}
+							//if we've found a display object with a focus owner,
+							//then we've gone far enough up the display list
+							break;
+						}
+						else if(focusResult.isFocusEnabled)
+						{
+							//if focus in enabled, then we've gone far enough up
+							//the display list
+							break;
+						}
+					}
+					result = result.parent;
+				}
 			}
 			this.focus = focusTarget;
 		}
