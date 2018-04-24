@@ -12,12 +12,12 @@ package feathers.tests.supportClasses
 
 		protected var _currentState:String = null;
 
-		public function get currentState():String
+		override public function get currentState():String
 		{
 			return this._currentState;
 		}
 
-		public function set currentState(value:String):void
+		override public function set currentState(value:String):void
 		{
 			if(this._currentState === value)
 			{
