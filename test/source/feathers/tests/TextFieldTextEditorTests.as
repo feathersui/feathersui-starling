@@ -1,7 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.text.TextFieldTextEditor;
-	import feathers.tests.supportClasses.CustomStateContext;
+	import feathers.tests.supportClasses.CustomToggle;
 	import feathers.text.FontStylesSet;
 
 	import flash.text.TextFormat;
@@ -94,7 +94,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithTextFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textEditor.stateContext = stateContext;
 			this._textEditor.textFormat = new flash.text.TextFormat();
@@ -107,7 +107,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithDisabledTextFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textEditor.stateContext = stateContext;
 			this._textEditor.textFormat = new flash.text.TextFormat();
@@ -121,7 +121,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithTextFormatAndStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textEditor.stateContext = stateContext;
 			this._textEditor.textFormat = new flash.text.TextFormat();
@@ -134,7 +134,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithOnlyTextFormatAndStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textEditor.stateContext = stateContext;
 			this._textEditor.textFormat = new flash.text.TextFormat();
@@ -147,7 +147,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithDisabledTextFormatAndStateTextFormatWithStateContextDisabledAndCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			stateContext.currentState = STATE_DISABLED;
 			this._textEditor.stateContext = stateContext;
@@ -229,7 +229,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textEditor.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -248,7 +248,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseDisabledFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textEditor.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -268,7 +268,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textEditor.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -287,7 +287,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textEditor.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -306,7 +306,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseStateFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;

@@ -1,7 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.text.BitmapFontTextRenderer;
-	import feathers.tests.supportClasses.CustomStateContext;
+	import feathers.tests.supportClasses.CustomToggle;
 	import feathers.text.BitmapFontTextFormat;
 	import feathers.text.FontStylesSet;
 
@@ -149,7 +149,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithTextFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			this._textRenderer.textFormat = new BitmapFontTextFormat(new BitmapFont());
@@ -162,7 +162,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithDisabledTextFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			this._textRenderer.textFormat = new BitmapFontTextFormat(new BitmapFont());
@@ -176,7 +176,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithTextFormatAndStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			this._textRenderer.textFormat = new BitmapFontTextFormat(new BitmapFont());
@@ -189,7 +189,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithSelectedTextFormatAndStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			this._textRenderer.textFormat = new BitmapFontTextFormat(new BitmapFont());
@@ -203,7 +203,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithSelectedAndDisabledTextFormatAndStateContextSelectedAndDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
@@ -220,7 +220,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithOnlyTextFormatAndStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textRenderer.stateContext = stateContext;
 			this._textRenderer.textFormat = new BitmapFontTextFormat(new BitmapFont());
@@ -233,7 +233,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatWithDisabledTextFormatAndStateTextFormatWithStateContextDisabledAndCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			stateContext.isSelected = true;
 			stateContext.currentState = STATE_DISABLED;
@@ -317,7 +317,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -336,7 +336,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseDisabledFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -356,7 +356,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -375,7 +375,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseSelectedFontStylesWithStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -395,7 +395,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseDisabledFontStylesWithStateContextSelectedAndDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
@@ -418,7 +418,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatFallBackToDefaultFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -437,7 +437,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentTextFormatUseStateFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;

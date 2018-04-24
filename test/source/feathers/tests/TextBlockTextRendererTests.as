@@ -1,7 +1,7 @@
 package feathers.tests
 {
 	import feathers.controls.text.TextBlockTextRenderer;
-	import feathers.tests.supportClasses.CustomStateContext;
+	import feathers.tests.supportClasses.CustomToggle;
 	import feathers.text.FontStylesSet;
 
 	import flash.text.engine.ElementFormat;
@@ -150,7 +150,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithElementFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var font:FontDescription = new FontDescription("_sans");
@@ -164,7 +164,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithDisabledElementFormatAndStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var font:FontDescription = new FontDescription("_sans");
@@ -179,7 +179,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithElementFormatAndStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var font:FontDescription = new FontDescription("_sans");
@@ -193,7 +193,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithSelectedElementFormatAndStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var font:FontDescription = new FontDescription("_sans");
@@ -208,7 +208,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithSelectedAndDisabledElementFormatAndStateContextSelectedAndDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
@@ -226,7 +226,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithOnlyElementFormatAndStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textRenderer.stateContext = stateContext;
 			var font:FontDescription = new FontDescription("_sans");
@@ -240,7 +240,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatWithDisabledElementFormatAndStateElementFormatWithStateContextDisabledAndCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			stateContext.isSelected = true;
 			stateContext.currentState = STATE_DISABLED;
@@ -326,7 +326,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatFallBackToDefaultFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -345,7 +345,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatUseDisabledFontStylesWithStateContextDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -365,7 +365,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatFallBackToDefaultFontStylesWithStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -384,7 +384,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatUseSelectedFontStylesWithStateContextSelected():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -404,7 +404,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatUseDisabledFontStylesWithStateContextSelectedAndDisabled():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;
 			this._textRenderer.stateContext = stateContext;
@@ -427,7 +427,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatFallBackToDefaultFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			this._textRenderer.stateContext = stateContext;
 			var fontStyles:FontStylesSet = new FontStylesSet();
@@ -446,7 +446,7 @@ package feathers.tests
 		[Test]
 		public function testCurrentElementFormatUseStateFontStylesWithStateContextCurrentState():void
 		{
-			var stateContext:CustomStateContext = new CustomStateContext();
+			var stateContext:CustomToggle = new CustomToggle();
 			stateContext.currentState = STATE_DISABLED;
 			stateContext.isSelected = true;
 			stateContext.isEnabled = false;
