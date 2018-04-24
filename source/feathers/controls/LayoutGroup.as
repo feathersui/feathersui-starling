@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMXMLStateContext;
 	import feathers.core.IMeasureDisplayObject;
+	import feathers.core.IStateContext;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
@@ -131,7 +132,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.2.0
 	 */
-	public class LayoutGroup extends FeathersControl
+	public class LayoutGroup extends FeathersControl implements IStateContext
 	{
 		/**
 		 * @private

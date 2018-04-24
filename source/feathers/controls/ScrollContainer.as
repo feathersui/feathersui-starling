@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusContainer;
+	import feathers.core.IStateContext;
 	import feathers.core.IMXMLStateContext;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
@@ -71,7 +72,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
+	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer, IStateContext
 	{
 		/**
 		 * @private
