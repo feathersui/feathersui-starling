@@ -2,6 +2,48 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
+## 3.5.0 - In Development
+
+* AnchorLayout: fixed issue where measurement could be incorrect when using horizontalCenter or verticalCenter.
+* BitmapFontTextEditor, TextBlockTextEditor: added Shift+Home, Shift+End, Shift+Up, and Shift+Down keyboard shortcuts.
+* BitmapFontTextEditor, TextBlockTextEditor: when pasting text, new lines are removed because TextInput displays only a single line.
+* BitmapFontTextEditor, TextBlockTextEditor, TextFieldTextEditor: fixed issue where touching outside the text editor incorrectly cleared focus when the FocusManager was enabled (it should only do that without a FocusManager).
+* BottomDrawerPopUpContentManager: added panelFactory and closeButtonFactory to allow these components to be more easily customized.
+* DataGrid, List, TabBar: fixed issue where sorting the collection did not update the selected indices.
+* DateTimeSpinner: fixed issue where the 31st of a month that actually has fewer days could be selected when switching to that month from a different month that has 31 days.
+* DateTimeSpinner: fixed issue where Event.CHANGE could be dispatched when the selected date had not changed.
+* DeviceCapabilities: added isLargePhone() method to check for plus-sized phones (sometimes called "phablets").
+* DeviceCapabilities: isPhone(), isTablet(), and isLargePhone() methods now use both portrait and landscape sizes to determine the correct classification for a device because it is more accurate.
+* Effects: Added new built-in animations that can be used by components. Includes Move, Resize, Fade, Iris, Wipe, Sequence, and Parallel.
+* FeathersControl: Listens for Event.CHANGE on IStyleProvider to allow themes to modify their style providers and have changes reflected automatically.
+* FeathersControl: added showEffect, hideEffect, moveEffect, resizeEffect, focusInEffect, focusOutEffect, addedEffect, and removeFromParentWithEffect().
+* fontStyles: In addition to restricting this style when the property is set, also listens for Event.CHANGE.
+* Header: improved "extra" top padding for iPhone X when app is not full screen.
+* HorizontalLayout, VerticalLayout: fixed issue where scaleX and scaleY were not accounted for when an item uses pivotX or pivotY.
+* ImageLoader: added loaderContext property to support a custom flash.system.LoaderContext.
+* List: added addItemWithEffect() and removeItemWithEffect().
+* LongPress: fixed issue where the Event.ENTER_FRAME listener was not removed if the target were set to null before the touch ended.
+* nativeToGlobal: utility function similar to localToGlobal(), except converting between native stage coordinates and global Starling coordinates.
+* ProgressBar: if the fill skin has a minimum size, and the progress bar's value is equal to its minimum value, the fill skin is hidden.
+* Scroller: fixed issue where a null reference error could be thrown in the TouchEvent.TOUCH listener under certain conditions.
+* Scroller: if thrown, a new touch automatically stops scrolling and once again requires dragging a minimum distance to start scrolling. This more closely matches native behavior to allow other containers to take over scrolling if dragged in a new direction.
+* ScrollText: added outerPadding, outerPaddingTop, outerPaddingRight, outerPaddingBottom, and outerPaddingLeft properties.
+* Slider: fixed issue where thumb did not go into down state when using TrackInteractionMode.TO_VALUE.
+* SpinnerList: Fixed issue where performance could drop temporarily when transitioning from the end back to the beginning (or vice versa) when items repeat.
+* SpinnerList: fixed missing calls to processStyleRestriction() for showSelectionOverlay and hideSelectionOverlayUnlessFocused.
+* StackScreenNavigator: added isSwipeToPopEnabled property to activate a swipe gesture to navigate back in history.
+* StackScreenNavigator: fixed issue where a very fast drag might result in a null reference error because the transition did not start yet.
+* StageTextTextEditor: fixed issue where focus was lost after touching an object with a focus owner, and the focus owner contains the TextInput.
+* TextFieldTextEditor: added softKeyboard property to allow the soft keyboard to be customized on mobile.
+* TextFieldTextEditor: added resetScrollOnFocusOut property, which is true by default.
+* TextFieldTextRenderer, TextFieldTextEditor: useGutter property is automatically forced to true if the border property is set to true so that the border is not clipped.
+* TextInput: fixed issue where a text editor might not receive focus if the TextInput moves between TouchPhase.BEGAN and TouchPhase.ENDED.
+* Themes: fixed issue where pivots in texture atlas caused some skins to appear at incorrect locations with Starling 2.3.
+* TiledColumnsLayout: fixed issue where the columns could be incorrectly aligned horizontally when alignment should not be possible.
+* TiledColumnsLayout: fixed issue where an incorrect number of visible columns was calculated when distributeHeights is true.
+* Tree: added scrollToDisplayLocation() method.
+* VideoPlayer: added missing API documentation for FeathersEventType.ERROR.
+
 ## 3.4.1 - February 2018
 
 * AnchorLayout: Fixed issue where x and y properties might not be accounted for in measurement if item had AnchorLayoutData, but didn't set left and top.
