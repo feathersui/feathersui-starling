@@ -1380,7 +1380,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dragTransition(oldScreen:IFeathersControl, newScreen:IFeathersControl, onComplete:Function):void
+		protected function dragTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			this._savedTransitionOnComplete = onComplete;
 			this._dragEffectContext = this._dragEffectTransition(this._previousScreenInTransition, this._activeScreen, null, true);
