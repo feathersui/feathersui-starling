@@ -33,6 +33,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * SpinnerList: fixed missing calls to processStyleRestriction() for showSelectionOverlay and hideSelectionOverlayUnlessFocused.
 * StackScreenNavigator: added isSwipeToPopEnabled property to activate a swipe gesture to navigate back in history.
 * StackScreenNavigator: fixed issue where a very fast drag might result in a null reference error because the transition did not start yet.
+* StackScreenNavigator: fixed issue where Event.CHANGE was not dispatched again after a transition was cancelled.
 * StageTextTextEditor: fixed issue where focus was lost after touching an object with a focus owner, and the focus owner contains the TextInput.
 * TextFieldTextEditor: added softKeyboard property to allow the soft keyboard to be customized on mobile.
 * TextFieldTextEditor: added resetScrollOnFocusOut property, which is true by default.

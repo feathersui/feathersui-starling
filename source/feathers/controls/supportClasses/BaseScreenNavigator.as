@@ -957,6 +957,7 @@ package feathers.controls.supportClasses
 				this._previousScreenInTransitionID = null;
 				this.prepareActiveScreen();
 				this.dispatchEventWith(FeathersEventType.TRANSITION_CANCEL);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 			else
 			{
