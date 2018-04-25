@@ -1485,6 +1485,12 @@ package feathers.controls
 			{
 				this._dragEffectTransition = this.popTransition;
 			}
+			
+			//if no transition has been specified, use the default
+			if(this._dragEffectTransition === null)
+			{
+				this._dragEffectTransition = defaultTransition;
+			}
 
 			//if this is an old transition that doesn't support being managed,
 			//simply start it without management.
