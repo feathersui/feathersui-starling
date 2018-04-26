@@ -199,13 +199,19 @@ package feathers.data
 			{
 				vectorData = new <*>[];
 			}
+			else if(!(vectorData is Vector.<*>))
+			{
+				throw new ArgumentError("VectorHierarchicalCollection data must be of type Vector");
+			}
 			this._vectorData = vectorData as Vector.<*>;
 		}
 
 		/**
 		 * @private
+		 * Due to bugs in the older ASC1 compiler, we cannot type this variable
+		 * as Vector.<*>. It will result in failures decoding abc bytecode.
 		 */
-		protected var _vectorData:Vector.<*> = null;
+		protected var _vectorData:Object = null;
 
 		/**
 		 * The <code>Vector</code> data source for this collection. 
@@ -227,6 +233,10 @@ package feathers.data
 			if(this._vectorData === value)
 			{
 				return;
+			}
+			else if(value !== null && !(value is Vector.<*>))
+			{
+				throw new ArgumentError("VectorHierarchicalCollection vectorData must be of type Vector");
 			}
 			this._vectorData = value as Vector.<*>;
 			this.dispatchEventWith(CollectionEventType.RESET);
@@ -291,7 +301,7 @@ package feathers.data
 		 */
 		public function getLength(...rest:Array):int
 		{
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = rest.length;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -312,7 +322,7 @@ package feathers.data
 		 */
 		public function getLengthAtLocation(location:Vector.<int> = null):int
 		{
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			if(location !== null)
 			{
 				var indexCount:int = location.length;
@@ -358,7 +368,7 @@ package feathers.data
 		public function getItemAt(index:int, ...rest:Array):Object
 		{
 			rest.insertAt(0, index);
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -382,7 +392,7 @@ package feathers.data
 			{
 				return null;
 			}
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -410,7 +420,7 @@ package feathers.data
 			{
 				result.length = 0;
 			}
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			this.findItemInBranch(branch, item, result);
 			return result;
 		}
@@ -425,7 +435,7 @@ package feathers.data
 		public function addItemAt(item:Object, index:int, ...rest:Array):void
 		{
 			rest.insertAt(0, index);
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -454,7 +464,7 @@ package feathers.data
 				throw new RangeError("Branch not found at location: " + location);
 			}
 			var eventIndices:Array = [];
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -483,7 +493,7 @@ package feathers.data
 		public function removeItemAt(index:int, ...rest:Array):Object
 		{
 			rest.insertAt(0, index);
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -513,7 +523,7 @@ package feathers.data
 				throw new RangeError("Branch not found at location: " + location);
 			}
 			var eventIndices:Array = [];
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -569,7 +579,7 @@ package feathers.data
 		public function setItemAt(item:Object, index:int, ...rest:Array):void
 		{
 			rest.insertAt(0, index);
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -598,7 +608,7 @@ package feathers.data
 				throw new RangeError("Branch not found at location: " + location);
 			}
 			var eventIndices:Array = [];
-			var branch:Vector.<*> = this._vectorData;
+			var branch:Vector.<*> = this._vectorData as Vector.<*>;
 			var indexCount:int = location.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -666,13 +676,14 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected function findItemInBranch(branch:Vector.<*>, item:Object, result:Vector.<int>):Boolean
+		protected function findItemInBranch(branch:Object, item:Object, result:Vector.<int>):Boolean
 		{
+			var branchVector:Vector.<*> = branch as Vector.<*>;
 			var insertIndex:int = result.length;
-			var branchLength:int = branch.length;
+			var branchLength:int = branchVector.length;
 			for(var i:int = 0; i < branchLength; i++)
 			{
-				var branchItem:Object = branch[i];
+				var branchItem:Object = branchVector[i];
 				if(branchItem === item)
 				{
 					result[insertIndex] = i;
