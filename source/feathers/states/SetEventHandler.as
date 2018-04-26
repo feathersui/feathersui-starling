@@ -20,6 +20,7 @@ package feathers.states
 	import feathers.core.IMXMLStateContext;
 
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 
 	/**
@@ -274,7 +275,14 @@ package feathers.states
 				// Set new handler as weak reference
 				if (handlerFunction != null)
 				{
-					obj.addEventListener(name, handlerFunction, false, 0, true);
+					if (obj is IEventDispatcher)
+					{
+						obj.addEventListener(name, handlerFunction, false, 0, true);
+					}
+					else
+					{
+						obj.addEventListener(name, handlerFunction);
+					}
 					
 					// Add this handler to our installedHandlers list so it can
 					// be removed if needed by a state based on this state. We 
@@ -326,7 +334,16 @@ package feathers.states
 		
 				// Restore the old value
 				if (oldHandlerFunction != null)
-					obj.addEventListener(name, oldHandlerFunction, false, 0, true);
+				{
+					if (obj is IEventDispatcher)
+					{
+						obj.addEventListener(name, oldHandlerFunction, false, 0, true);
+					}
+					else
+					{
+						obj.addEventListener(name, oldHandlerFunction);
+					}
+				}
 				
 				if (installedHandlers[obj])
 				{
