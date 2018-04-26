@@ -8,6 +8,13 @@ package feathers.tests
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import flash.geom.Point;
+	import starling.events.Touch;
+	import starling.events.TouchPhase;
+	import starling.events.TouchEvent;
+	import starling.events.Event;
+	import feathers.motion.Slide;
+	import org.flexunit.async.Async;
 
 	public class StackScreenNavigatorTests
 	{
@@ -24,6 +31,9 @@ package feathers.tests
 		private static const EVENT_POP_TO_ROOT_SCREEN:String = "popToRootScreen";
 		private static const EVENT_CALL_FUNCTION:String = "callFunction";
 
+		private static const NAVIGATOR_WIDTH:Number = 250;
+		private static const NAVIGATOR_HEIGHT:Number = 200;
+
 		private var _navigator:StackScreenNavigator;
 		private var _functionWasCalled:Boolean = false;
 
@@ -31,6 +41,7 @@ package feathers.tests
 		public function prepare():void
 		{
 			this._navigator = new StackScreenNavigator();
+			this._navigator.setSize(NAVIGATOR_WIDTH, NAVIGATOR_HEIGHT);
 			TestFeathers.starlingRoot.addChild(this._navigator);
 			this._navigator.validate();
 
@@ -282,6 +293,96 @@ package feathers.tests
 			this._navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, removeAllScreens);
 			this._navigator.rootScreenID = null;
 			Assert.assertFalse(this._navigator.hasScreen(SCREEN_A_ID));
+		}
+
+		[Test(async)]
+		public function testSwipeToPopChange():void
+		{
+			this.addScreenA();
+			this.addScreenB();
+			this._navigator.popTransition = Slide.createSlideRightTransition();
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.pushScreen(SCREEN_B_ID);
+			this._navigator.isSwipeToPopEnabled = true;
+			var changedTo:String = null;
+			this._navigator.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				changedTo = _navigator.activeScreenID;
+			});
+
+			var position:Point = new Point(1, 1);
+			var target:DisplayObject = this._navigator.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			touch.phase = TouchPhase.MOVED;
+			touch.globalX = NAVIGATOR_WIDTH * 2 / 3;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			Assert.assertStrictlyEquals("StackScreenNavigator: activeScreenID incorrect after starting swipe to pop gesture",
+				SCREEN_A_ID, changedTo);
+			Async.delayCall(this, function():void
+			{
+				Assert.assertStrictlyEquals("StackScreenNavigator: activeScreenID incorrect after completing swipe to pop gesture",
+					SCREEN_B_ID, changedTo);
+			}, 600);
+		}
+
+		[Test(async)]
+		public function testSwipeToPopCancelChange():void
+		{
+			this.addScreenA();
+			this.addScreenB();
+			this._navigator.popTransition = Slide.createSlideRightTransition(0.5);
+			this._navigator.rootScreenID = SCREEN_A_ID;
+			this._navigator.pushScreen(SCREEN_B_ID);
+			this._navigator.isSwipeToPopEnabled = true;
+			var changedTo1:String = null;
+			var changedTo2:String = null;
+			function onChange1(event:Event):void
+			{
+				_navigator.removeEventListener(Event.CHANGE, onChange1);
+				_navigator.addEventListener(Event.CHANGE, onChange2);
+				changedTo1 = _navigator.activeScreenID;
+			}
+			function onChange2(event:Event):void
+			{
+				changedTo2 = _navigator.activeScreenID;
+			}
+			this._navigator.addEventListener(Event.CHANGE, onChange1);
+
+			var position:Point = new Point(1, 1);
+			var target:DisplayObject = this._navigator.stage.hitTest(position);
+			var touch:Touch = new Touch(0);
+			touch.target = target;
+			touch.phase = TouchPhase.BEGAN;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
+			var touches:Vector.<Touch> = new <Touch>[touch];
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			touch.phase = TouchPhase.MOVED;
+			touch.globalX = NAVIGATOR_WIDTH * 2 / 3;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			touch.phase = TouchPhase.ENDED;
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+
+			Assert.assertStrictlyEquals("StackScreenNavigator: activeScreenID incorrect after starting swipe to pop gesture",
+				SCREEN_A_ID, changedTo1);
+			Async.delayCall(this, function():void
+			{
+				Assert.assertStrictlyEquals("StackScreenNavigator: activeScreenID incorrect after cancelling swipe to pop gesture",
+					SCREEN_B_ID, changedTo2);
+			}, 600);
 		}
 
 		private function addScreenA():void
