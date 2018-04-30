@@ -16,6 +16,7 @@ The [Feathers SDK](http://feathersui.com/sdk/) supports using MXML to declarativ
 -   [Built-in primitive types](#built-in-primitive-types)
 -   [Define properties on an MXML class](#define-properties-on-an-mxml-class)
 -   [Define metadata on an MXML class](#define-metadata-on-an-mxml-class)
+-   [Define view states on an MXML class](#define-view-states-on-an-mxml-class)
 -   [Create inline sub-component factories](#create-inline-sub-component-factories)
 
 ## Add children to containers
@@ -193,6 +194,61 @@ Metadata may be added to an MXML class using a `<fx:Metadata>` element. For inst
     [Event(name="change",type="starling.events.Event")]
 </fx:Metadata>
 ```
+
+## Define view states on an MXML class
+
+An MXML component that is based on a container class, such as `LayoutGroup`, `ScrollContainer`, or `Panel`, may define multiple view states with overrides that change an aspect of the component's default state. For example, changing between states may modify properties or event listeners, or child components may be added or removed.
+
+The `states` property may contain two or more `feathers.states.State` objects. The first state defines the default state when the component is instantiated.
+
+``` xml
+<f:states>
+    <f:State name="default"/>
+    <f:State name="submittedForm">
+</f:states>
+```
+
+To switch between view states, set the `currentState` property to the name of the new state:
+
+``` code
+private function submitButton_onTriggered(event:Event):void
+{
+    this.currentState = "submittedForm";
+}
+```
+
+The same property may be defined more than once in MXML by appending the name of the state where the value should be modified:
+
+``` xml
+<f:Button label="Submit" triggered="submitButton_onTriggered(event)"
+    isEnabled="true" isEnabled.submittedForm="false"/>
+```
+
+In the example above, the button is enabled until the component enters the `"submittedForm"` state.
+
+Event listeners may be modified when the view state changes:
+
+``` xml
+<f:Button label="Submit"
+    triggered="submitButton_onTriggered(event)"
+    triggered.submittedForm="showAlreadySubmittedError()"
+```
+
+A component may be added in a specific view state only using the `includeIn` attribute:
+
+``` xml
+<f:ProgressBar minimum="0" maximum="100" includeIn="submittedForm"/>
+```
+
+This progress bar will only be added to its parent in the `"submittedForm"` state, and it will be removed in all other view states.
+
+Similarly, you may use the `excludeFrom` attribute to remove a component from its parent in a specific view state:
+
+``` xml
+<f:Label text="Don't forget to click Submit!" excludeFrom="submittedForm"/>
+```
+
+This label will be removed once the form is submitted, but it will be visible in all other view states.
 
 ## Create inline sub-component factories
 
