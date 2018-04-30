@@ -134,7 +134,7 @@
 		<apply executable="pandoc" dir="${help.root}" dest="${help.output}" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks+auto_identifiers"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
@@ -154,7 +154,7 @@
 		<apply executable="pandoc" dir="${help.root}" dest="${help.output}/cookbook" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks+auto_identifiers"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
@@ -175,7 +175,7 @@
 		<apply executable="${pandoc}" dir="${help.root}" dest="${help.output}/faq" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks+auto_identifiers"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
@@ -196,7 +196,7 @@
 		<apply executable="${pandoc}" dir="${help.root}" dest="${help.output}/sdk" failonerror="true">
 			<srcfile/>
 			<arg value="-f"/>
-			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks"/>
+			<arg value="markdown_github+yaml_metadata_block+markdown_in_html_blocks+auto_identifiers"/>
 			<arg value="-t"/>
 			<arg value="html5"/>
 			<arg value="-s"/>
