@@ -301,3 +301,7 @@ Some examples of things to avoid in `initialize()`:
 * Avoid creating many temporary objects that will be quickly garbage collected. Many functions like `push()`, `unshift()`, and `splice()` from the `Array` class have `rest` arguments. Every time one of these functions is called, a new temporary `Array` will be allocated and quickly deallocated. Garbage collection running during a transition can result in lost frames, especially on slower devices.
 
 Chances are that all the initialization will still take just as long to complete, but you'll be spreading it out to strategic times when the user won't notice that all that work is happening. Some animations in between help make the app look more responsive and they naturally make the user pause for a moment as their brain switches context from watching the content transition in to interacting with it.
+
+## Related Links
+
+-   [Effects and animations for Feathers components](effects.html)

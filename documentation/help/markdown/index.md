@@ -267,6 +267,12 @@ Item renderers are custom components used by lists to display items from the dat
 
 -   [Adding tool-tips to Feathers components](tool-tips.html)
 
+## Animation
+
+-   [Effects and animations for Feathers components](effects.html)
+
+-   [Transitions for Feathers screen navigators](transitions.html)
+
 ## Miscellaneous
 
 -   [Feathers SDK - Use MXML with Feathers](sdk/index.html)
