@@ -1071,7 +1071,23 @@ package feathers.core
 		 * An optional effect that is activated when the component is resized
 		 * with new dimensions. More specifically, this effect plays when the
 		 * <code>width</code> or <code>height</code> property changes.
+		 *
+		 * <p>In the following example, a resize effect will animate the new
+		 * dimensions of the component when it resizes:</p>
+		 *
+		 * <listing version="3.0">
+		 * control.resizeEffect = Resize.createResizeEffect();</listing>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IResizeEffectContext</pre>
+		 *
+		 * <p>The <code>IResizeEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it. Custom animated resize effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenResizeEffectContext</code>.</p>
 		 * 
+		 * @see feathers.motion.Resize
 		 * @see #width
 		 * @see #height
 		 * @see #setSize()
@@ -1103,7 +1119,25 @@ package feathers.core
 		 * An optional effect that is activated when the component is moved to
 		 * a new position. More specifically, this effect plays when the
 		 * <code>x</code> or <code>y</code> property changes.
-		 * 
+		 *
+		 * <p>In the following example, a move effect will animate the new
+		 * position of the component when it moves:</p>
+		 *
+		 * <listing version="3.0">
+		 * control.moveEffect = Move.createMoveEffect();</listing>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IMoveEffectContext</pre>
+		 *
+		 * <p>The <code>IMoveEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it. Custom animated move effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenMoveEffectContext</code>.</p>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.motion.Move
 		 * @see #x
 		 * @see #y
 		 * @see #move()
