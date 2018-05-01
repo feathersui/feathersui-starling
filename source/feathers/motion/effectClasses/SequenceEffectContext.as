@@ -10,7 +10,8 @@ package feathers.motion.effectClasses
 	import starling.display.DisplayObject;
 
 	/**
-	 * An effect context for running multiple effects one after another in sequence.
+	 * An effect context for running multiple effects one after another, in
+	 * sequence.
 	 * 
 	 * @productversion Feathers 3.5.0
 	 * 

@@ -55,7 +55,7 @@ package feathers.motion.effectClasses
 		protected var _tween:Tween = null;
 
 		/**
-		 * The tween to control as an effect.
+		 * The tween that is controlled by the effect.
 		 */
 		public function get tween():Tween
 		{

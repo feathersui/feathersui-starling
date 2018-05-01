@@ -13,7 +13,7 @@
 			<shortDescription><![CDATA[User interface controls for working with colors.]]></shortDescription>
 		</package>
 		<package name="feathers.controls.supportClasses"> 
-			<shortDescription><![CDATA[Supporting class and interfaces used by Feathers user interface components.]]></shortDescription>
+			<shortDescription><![CDATA[Supporting classes and interfaces used by Feathers user interface components.]]></shortDescription>
 		</package>
 		<package name="feathers.controls.popups"> 
 			<shortDescription><![CDATA[Managers for the display of pop-up sub-components.]]></shortDescription>
@@ -51,8 +51,8 @@
 		<package name="feathers.motion"> 
 			<shortDescription><![CDATA[Classes related to motion, tweens, and animation.]]></shortDescription>
 		</package>
-		<package name="feathers.motion.transitions"> 
-			<shortDescription><![CDATA[A variety of animated transitions used by the ScreenNavigator component.]]></shortDescription>
+		<package name="feathers.motion.effectClasses"> 
+			<shortDescription><![CDATA[Supporting classes and interfaces used by effects.]]></shortDescription>
 		</package>
 		<package name="feathers.system"> 
 			<shortDescription><![CDATA[Higher level queries for system-level capabilities.]]></shortDescription>

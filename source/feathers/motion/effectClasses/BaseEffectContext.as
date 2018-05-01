@@ -45,9 +45,7 @@ package feathers.motion.effectClasses
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
-	 * An effect context for a <code>starling.animation.Tween</code>.
-	 * 
-	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
+	 * An abstract base class for <code>IEffectContext</code> implementations.
 	 */
 	public class BaseEffectContext extends EventDispatcher implements IEffectContext
 	{
@@ -113,7 +111,7 @@ package feathers.motion.effectClasses
 		protected var _transition:Object = null;
 
 		/**
-		 * The transition used for the effect.
+		 * The transition, or easing function, used for the effect.
 		 * 
 		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 */
@@ -144,7 +142,7 @@ package feathers.motion.effectClasses
 
 		/**
 		 * The <code>Juggler</code> used to update the effect when it is
-		 * playing.
+		 * playing. If <code>null</code>, uses <code>Starling.juggler</code>.
 		 * 
 		 * @see http://doc.starling-framework.org/core/starling/animation/Juggler.html starling.animation.Juggler
 		 */
@@ -183,7 +181,7 @@ package feathers.motion.effectClasses
 		}
 
 		/**
-		 * Sets the position of the tween using a value between <code>0</code>
+		 * Sets the position of the effect using a value between <code>0</code>
 		 * and <code>1</code>.
 		 * 
 		 * @see #duration
