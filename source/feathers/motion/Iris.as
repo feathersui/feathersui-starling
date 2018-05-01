@@ -20,10 +20,10 @@ package feathers.motion
 	import starling.events.Event;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * shows or hides a display object masked by a growing or shrinking circle.
-	 * In a transition, both display objects remain stationary while the effect
-	 * animates a stencil mask.
+	 * Creates effects for Feathers components and transitions for screen
+	 * navigators that show or hide a display object masked by a growing or
+	 * shrinking circle. In a transition, both display objects remain stationary
+	 * while a stencil mask is animated.
 	 * 
 	 * <p>Note: This effect is not supported with display objects that have
 	 * transparent backgrounds due to limitations in stencil masks. Display

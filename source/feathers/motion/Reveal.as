@@ -15,9 +15,10 @@ package feathers.motion
 	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * slides a display object out of view, animating the `x` or `y` property,
-	 * to reveal the content below it. The display object may slide up, right,
+	 * Creates animated transitions for screen navigators that slide a display
+	 * object out of view, by animating the <code>x</code> or <code>y</code>
+	 * property, while revealing an existing display object that
+	 * remains stationary below. The display object may slide up, right,
 	 * down, or left.
 	 *
 	 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
@@ -33,8 +34,9 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * old screen out of view to the left, animating the `x` property, to
-		 * reveal the new screen under it. The new screen remains stationary.
+		 * old screen out of view to the left, animating the <code>x</code>
+		 * property, to reveal the new screen under it. The new screen remains
+		 * stationary.
 		 *
 		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -73,8 +75,9 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * old screen out of view to the right, animating the `x` property, to
-		 * reveal the new screen under it. The new screen remains stationary.
+		 * old screen out of view to the right, animating the <code>x</code>
+		 * property, to reveal the new screen under it. The new screen remains
+		 * stationary.
 		 *
 		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -113,8 +116,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * old screen up out of view, animating the `y` property, to reveal the
-		 * new screen under it. The new screen remains stationary.
+		 * old screen up out of view, animating the <code>y</code> property, to
+		 * reveal the new screen under it. The new screen remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -153,8 +156,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * old screen down out of view, animating the `y` property, to reveal the
-		 * new screen under it. The new screen remains stationary.
+		 * old screen down out of view, animating the <code>y</code> property,
+		 * to reveal the new screen under it. The new screen remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#reveal Transitions for Feathers screen navigators: Reveal
 		 * @see feathers.controls.StackScreenNavigator#pushTransition

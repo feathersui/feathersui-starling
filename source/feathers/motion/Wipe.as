@@ -20,10 +20,11 @@ package feathers.motion
 	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * wipes a display object out of view, revealing another display object
-	 * under the first. Both display objects remain stationary while the
-	 * effect animates clipping rectangles.
+	 * Creates effects for Feathers components and transitions for screen
+	 * navigators that wipe a display object out of view, revealing another
+	 * display object under the first. Both display objects remain stationary
+	 * while the effect animates clipping rectangles. The clipping rectangles
+	 * may be animated up, right, down, or left.
 	 *
 	 * @see ../../../help/transitions.html#wipe Transitions for Feathers screen navigators: Wipe
 	 *

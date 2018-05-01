@@ -17,9 +17,9 @@ package feathers.motion
 	import feathers.core.IFeathersControl;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * animates the <code>alpha</code> property of a display object to fade it
-	 * in or out.
+	 * Creates effects for Feathers components and transitions for screen
+	 * navigators, that animate the <code>alpha</code> property of a display
+	 * object to make it fade in or out.
 	 *
 	 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 	 *

@@ -14,10 +14,10 @@ package feathers.motion
 	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * positions a display object in 3D space as if it is on a side of a cube,
-	 * and the cube may rotate up or down around the x-axis, or it may rotate
-	 * left or right around the y-axis.
+	 * Creates animated transitions for screen navigators that position a
+	 * display object in 3D space as if it is on a side of a cube, and the cube
+	 * may rotate up or down around the x-axis, or it may rotate left or right
+	 * around the y-axis.
 	 *
 	 * <p>Warning: <code>Cube</code> and other transitions with 3D effects may
 	 * not be compatible with masks.</p>

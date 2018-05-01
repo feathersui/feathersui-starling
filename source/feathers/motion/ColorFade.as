@@ -17,8 +17,8 @@ package feathers.motion
 	[Exclude(name="createBlackFadeToBlackTransition",kind="method")]
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * fade a display object to a solid color.
+	 * Creates animated transitions for screen navigators that fade a display
+	 * object to a solid color.
 	 *
 	 * @see ../../../help/transitions.html#colorfade Transitions for Feathers screen navigators: ColorFade
 	 *

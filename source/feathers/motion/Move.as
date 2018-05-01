@@ -18,7 +18,8 @@ package feathers.motion
 	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
-	 * Animates a component's <code>x</code> and <code>y</code> position. 
+	 * An effect that animates a component's <code>x</code> and <code>y</code>
+	 * position. 
 	 *
 	 * @productversion Feathers 3.5.0
 	 */

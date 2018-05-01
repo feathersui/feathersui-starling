@@ -18,7 +18,8 @@ package feathers.motion
 	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
-	 * Animates a component's <code>width</code> and <code>height</code> dimensions. 
+	 * An effect that animates a component's <code>width</code> and
+	 * <code>height</code> dimensions. 
 	 *
 	 * @productversion Feathers 3.5.0
 	 */

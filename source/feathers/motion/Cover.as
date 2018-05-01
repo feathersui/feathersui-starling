@@ -15,9 +15,11 @@ package feathers.motion
 	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * slide a display object into view, animating the `x` or `y` property, to
-	 * cover the content below it.
+	 * Creates animated transitions for screen navigators that slide a new
+	 * display object into view by animating the <code>x</code> and
+	 * <code>y</code> properties, while covering an existing display object that
+	 * remains stationary below. The display object may slide up, right,
+	 * down, or left.
 	 *
 	 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
 	 *
@@ -32,8 +34,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * new screen into view to the left, animating the `x` property, to
-		 * cover up the old screen, which remains stationary.
+		 * new screen into view to the left, animating the <code>x</code>
+		 * property, to cover up the old screen, which remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -72,8 +74,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * new screen into view to the right, animating the `x` property, to
-		 * cover up the old screen, which remains stationary.
+		 * new screen into view to the right, animating the <code>x</code>
+		 * property, to cover up the old screen, which remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -112,8 +114,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * new screen up into view, animating the `y` property, to cover up the
-		 * old screen, which remains stationary.
+		 * new screen up into view, animating the <code>y</code> property, to
+		 * cover up the old screen, which remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -152,8 +154,8 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that slides the
-		 * new screen down into view, animating the `y` property, to cover up the
-		 * old screen, which remains stationary.
+		 * new screen down into view, animating the <code>y</code> property, to
+		 * cover up the old screen, which remains stationary.
 		 *
 		 * @see ../../../help/transitions.html#cover Transitions for Feathers screen navigators: Cover
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
