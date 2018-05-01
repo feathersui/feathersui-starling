@@ -18,7 +18,8 @@ package feathers.motion
 
 	/**
 	 * Creates animated effects, like transitions for screen navigators, that
-	 * animates the `alpha` property of a display object to fade it in or out.
+	 * animates the <code>alpha</code> property of a display object to fade it
+	 * in or out.
 	 *
 	 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 	 *
@@ -33,10 +34,12 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades in the target component by
-		 * animating the `alpha` property from its current value to `1.0`.
+		 * animating the <code>alpha</code> property from its current value to
+		 * <code>1.0</code>.
 		 * 
-		 * <p>To force the target to start at a specific alpha value (such as
-		 * `0.0`), use <code>createFadeBetweenEffect()</code> instead.</p>
+		 * <p>To force the target to start at a specific <code>alpha</code>
+		 * value (such as <code>0.0</code>), use
+		 * <code>createFadeBetweenEffect()</code> instead.</p>
 		 * 
 		 * @see #createFadeOutEffect()
 		 * @see #createFadeBetweenEffect()
@@ -48,10 +51,12 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades out the target component by
-		 * animating the `alpha` property from its current value to `0.0`.
+		 * animating the <code>alpha</code> property from its current value to
+		 * <code>0.0</code>.
 		 * 
-		 * <p>To force the target to start at a specific alpha value (such as
-		 * `1.0`), use <code>createFadeBetweenEffect()</code> instead.</p>
+		 * <p>To force the target to start at a specific <code>alpha</code>
+		 * value (such as <code>1.0</code>), use
+		 * <code>createFadeBetweenEffect()</code> instead.</p>
 		 * 
 		 * @see #createFadeInEffect()
 		 * @see #createFadeBetweenEffect()
@@ -63,7 +68,7 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades the target component by
-		 * animating the `alpha` property from its current value to a new
+		 * animating the <code>alpha</code> property from its current value to a new
 		 * value.
 		 * 
 		 * @see #createFadeFromEffect()
@@ -83,8 +88,8 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades the target component by
-		 * animating the `alpha` property from a start value to its current
-		 * value.
+		 * animating the <code>alpha</code> property from a start value to its
+		 * current value.
 		 * 
 		 * @see #createFadeToEffect()
 		 * @see #createFadeBetweenEffect()
@@ -113,7 +118,7 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades the target component by
-		 * animating the `alpha` property between a start value and an ending
+		 * animating the <code>alpha</code> property between a start value and an ending
 		 * value.
 		 */
 		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
@@ -139,8 +144,9 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that fades in
-		 * the new screen by animating the `alpha` property from `0.0` to `1.0`,
-		 * while the old screen remains fully opaque at a lower depth.
+		 * the new screen by animating the <code>alpha</code> property from
+		 * <code>0.0</code> to <code>1.0</code>, while the old screen remains
+		 * fully opaque at a lower depth.
 		 *
 		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -186,8 +192,9 @@ package feathers.motion
 
 		/**
 		 * Creates a transition function for a screen navigator that fades out
-		 * the old screen by animating the `alpha` property from `1.0` to `0.0`,
-		 * while the new screen remains fully opaque at a lower depth.
+		 * the old screen by animating the <code>alpha</code> property from
+		 * <code>1.0</code> to <code>0.0</code>, while the new screen remains
+		 * fully opaque at a lower depth.
 		 *
 		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
@@ -234,8 +241,9 @@ package feathers.motion
 		/**
 		 * Creates a transition function for a screen navigator that crossfades
 		 * the screens. In other words, the old screen fades out, animating the
-		 * `alpha` property from `1.0` to `0.0`. Simultaneously, the new screen
-		 * fades in, animating its `alpha` property from `0.0` to `1.0`.
+		 * <code>alpha</code> property from <code>1.0</code> to
+		 * <code>0.0</code>. Simultaneously, the new screen fades in, animating
+		 * its <code>alpha</code> property from <code>0.0</code> to <code>1.0</code>.
 		 *
 		 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 		 * @see feathers.controls.StackScreenNavigator#pushTransition
