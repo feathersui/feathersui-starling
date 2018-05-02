@@ -62,6 +62,8 @@ package feathers.examples.componentsExplorer.screens
 			this._content.headerFactory = function():Header
 			{
 				var header:Header = new Header();
+				//don't add extra padding on iOS
+				header.useExtraPaddingForOSStatusBar = false;
 				header.paddingTop = 2;
 				header.paddingBottom = 8;
 				header.gap = 8;
