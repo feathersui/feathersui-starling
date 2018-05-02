@@ -13,6 +13,8 @@ package feathers.motion
 
 	/**
 	 * Combines multiple effects that play one after another in sequence. 
+	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *
 	 * @productversion Feathers 3.5.0
 	 */

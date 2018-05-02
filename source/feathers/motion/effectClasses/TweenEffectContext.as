@@ -20,6 +20,7 @@ package feathers.motion.effectClasses
 	/**
 	 * An effect context for a <code>starling.animation.Tween</code>.
 	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
 	 * 
 	 * @productversion Feathers 3.5.0

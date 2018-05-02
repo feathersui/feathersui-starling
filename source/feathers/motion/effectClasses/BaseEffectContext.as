@@ -46,6 +46,8 @@ package feathers.motion.effectClasses
 
 	/**
 	 * An abstract base class for <code>IEffectContext</code> implementations.
+	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 */
 	public class BaseEffectContext extends EventDispatcher implements IEffectContext
 	{

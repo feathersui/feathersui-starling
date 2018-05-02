@@ -28,7 +28,8 @@ package feathers.motion
 	 * <p>Note: This effect is not supported with display objects that have
 	 * transparent backgrounds due to limitations in stencil masks. Display
 	 * objects should be fully opaque.</p>
-	 *
+	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see ../../../help/transitions.html#iris Transitions for Feathers screen navigators: Iris
 	 *
 	 * @productversion Feathers 2.2.0
@@ -48,6 +49,8 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle in the center.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
@@ -60,6 +63,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle at a specific position
 		 * in the range from 0.0 to 1.0.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
@@ -84,6 +89,8 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle at a specific position.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
@@ -190,6 +197,8 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle in the center.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
@@ -202,6 +211,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle at a specific position
 		 * in the range 0.0 to 1.0.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
@@ -226,6 +237,8 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle at a specific position.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
 		 */

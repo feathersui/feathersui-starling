@@ -20,6 +20,8 @@ package feathers.motion
 	/**
 	 * An effect that animates a component's <code>width</code> and
 	 * <code>height</code> dimensions. 
+	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *
 	 * @productversion Feathers 3.5.0
 	 */
