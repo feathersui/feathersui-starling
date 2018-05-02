@@ -29,4 +29,4 @@ before_script:
   - cp flexunit/* third-party/flexunit/
 
 script:
-  - ant full -Dflashsdk.root="$AIR_HOME" -Dflashplayer="/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger"
+  - ant full -Dflashsdk.root="$AIR_HOME" -Dflashplayer="/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger" -Dpandoc="/usr/local/bin/pandoc"
