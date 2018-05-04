@@ -7,14 +7,14 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion.effectClasses
 {
-	import starling.events.EventDispatcher;
 	import starling.animation.Juggler;
-	import starling.core.Starling;
-	import starling.animation.Tween;
-	import starling.events.Event;
-	import starling.errors.AbstractClassError;
 	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.errors.AbstractClassError;
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Dispatched when the effect completes or is interrupted. If the effect was

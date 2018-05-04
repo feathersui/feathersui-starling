@@ -8,14 +8,14 @@ accordance with the terms of the accompanying license agreement.
 package feathers.motion
 {
 	import feathers.core.IFeathersControl;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.IResizeEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
+	import feathers.motion.effectClasses.TweenResizeEffectContext;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.display.DisplayObject;
-	import feathers.motion.effectClasses.IResizeEffectContext;
-	import feathers.motion.effectClasses.TweenResizeEffectContext;
-	import feathers.motion.effectClasses.IEffectContext;
-	import feathers.motion.effectClasses.TweenEffectContext;
 
 	/**
 	 * An effect that animates a component's <code>width</code> and

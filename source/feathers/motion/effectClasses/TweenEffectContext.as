@@ -7,15 +7,12 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion.effectClasses
 {
-	import starling.animation.Juggler;
-	import starling.animation.Transitions;
-	import starling.animation.Tween;
-	import starling.core.Starling;
-	import starling.events.Event;
-	import starling.events.EventDispatcher;
-	import starling.display.DisplayObject;
 	import feathers.core.IFeathersControl;
 	import feathers.motion.EffectInterruptBehavior;
+
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.display.DisplayObject;
 
 	/**
 	 * An effect context for a <code>starling.animation.Tween</code>.

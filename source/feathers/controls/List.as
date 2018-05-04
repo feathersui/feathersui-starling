@@ -28,10 +28,10 @@ package feathers.controls
 	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import flash.utils.Dictionary;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically

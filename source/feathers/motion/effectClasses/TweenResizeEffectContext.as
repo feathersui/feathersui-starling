@@ -10,7 +10,6 @@ package feathers.motion.effectClasses
 	import feathers.core.IFeathersControl;
 
 	import starling.animation.Tween;
-	import starling.display.DisplayObject;
 
 	/**
 	 * A resize effect context for a <code>starling.animation.Tween</code>.

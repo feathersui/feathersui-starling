@@ -12,6 +12,9 @@ package feathers.core
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayoutData;
 	import feathers.layout.ILayoutDisplayObject;
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.IMoveEffectContext;
+	import feathers.motion.effectClasses.IResizeEffectContext;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
@@ -28,9 +31,6 @@ package feathers.core
 	import starling.events.EventDispatcher;
 	import starling.utils.MatrixUtil;
 	import starling.utils.Pool;
-	import feathers.motion.effectClasses.IEffectContext;
-	import feathers.motion.effectClasses.IMoveEffectContext;
-	import feathers.motion.effectClasses.IResizeEffectContext;
 
 	/**
 	 * If this component supports focus, this optional skin will be

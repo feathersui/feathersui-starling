@@ -7,12 +7,12 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
-	import starling.animation.Transitions;
-	import starling.display.DisplayObject;
-	import starling.animation.Tween;
-	import starling.core.Starling;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
+
+	import starling.animation.Transitions;
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
 
 	/**
 	 * Creates animated transitions for screen navigators that position display

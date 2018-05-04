@@ -7,9 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
-	import starling.display.DisplayObject;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.SequenceEffectContext;
+
+	import starling.display.DisplayObject;
 
 	/**
 	 * Combines multiple effects that play one after another in sequence. 

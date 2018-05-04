@@ -7,6 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
+
 	import flash.geom.Point;
 
 	import starling.animation.Transitions;
@@ -14,10 +17,8 @@ package feathers.motion
 	import starling.core.Starling;
 	import starling.display.Canvas;
 	import starling.display.DisplayObject;
-	import starling.utils.Pool;
-	import feathers.motion.effectClasses.IEffectContext;
-	import feathers.motion.effectClasses.TweenEffectContext;
 	import starling.events.Event;
+	import starling.utils.Pool;
 
 	/**
 	 * Creates effects for Feathers components and transitions for screen
