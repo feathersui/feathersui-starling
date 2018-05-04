@@ -21,7 +21,7 @@ package feathers.core
 		 * the component isn't on the stage, its depth will be <code>-1</code>.
 		 *
 		 * <p>Used by the validation system to validate components from the
-		 * top down</p>.
+		 * top down.</p>
 		 */
 		function get depth():int;
 

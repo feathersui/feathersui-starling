@@ -40,6 +40,8 @@ package feathers.motion.effectClasses
 	/**
 	 * Gives a component the ability to control an effect.
 	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
+	 * 
 	 * @productversion Feathers 3.5.0
 	 */
 	public interface IEffectContext extends IFeathersEventDispatcher

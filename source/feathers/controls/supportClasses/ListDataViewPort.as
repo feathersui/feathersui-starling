@@ -25,6 +25,7 @@ package feathers.controls.supportClasses
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -33,7 +34,6 @@ package feathers.controls.supportClasses
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 * @private

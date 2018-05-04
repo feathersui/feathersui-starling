@@ -7,9 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.utils.display
 {
-	import starling.core.Starling;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import starling.core.Starling;
 
 	/**
 	 * Converts from native coordinates to Starling global coordinates.

@@ -28,10 +28,10 @@ package feathers.controls
 	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import flash.utils.Dictionary;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -1507,9 +1507,46 @@ package feathers.controls
 		/**
 		 * Adds an item from the data provider and animates its item renderer
 		 * using an effect.
+		 *
+		 * <p>In the following example, an effect fades the item renderer's
+		 * <code>alpha</code> property from <code>0</code> to <code>1</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.addItemWithEffect(newItem, list.dataProvider.length, Fade.createFadeBetweenEffect(0, 1));</listing>
+		 *
+		 * <p>A number of animated effects may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these effects. It's possible
+		 * to create custom effects too.</p>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IEffectContext</pre>
+		 *
+		 * <p>The <code>IEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it.</p>
 		 * 
+		 * <p>Custom animated effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenEffectContext</code>. In the following example, we
+		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
+		 * previous example.</p>
+		 * 
+		 * <listing version="3.0">
+		 * function customEffect(target:DisplayObject):IEffectContext
+		 * {
+		 *     target.alpha = 0;
+		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
+		 *     tween.fadeTo(1);
+		 *     return new TweenEffectContext(tween);
+		 * }
+		 * list.addItemWithEffect(newItem, list.dataProvider.length, customEffect);</listing>
+		 *
 		 * @see #removeItemWithEffect()
 		 * @see feathers.data.IListCollection#addItem()
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
+		 * @see feathers.motion.effectClasses.IEffectContext
+		 * @see feathers.motion.effectClasses.TweenEffectContext
 		 */
 		public function addItemWithEffect(item:Object, index:int, effect:Function):void
 		{
@@ -1526,9 +1563,45 @@ package feathers.controls
 		/**
 		 * Removes an item from the data provider <strong>after</strong>
 		 * animating its item renderer using an effect.
+		 *
+		 * <p>In the following example, an effect fades the item renderer's
+		 * <code>alpha</code> property to <code>0</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.removeItemWithEffect(newItem, list.dataProvider.length, Fade.createFadeOutEffect());</listing>
+		 *
+		 * <p>A number of animated effects may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these effects. It's possible
+		 * to create custom effects too.</p>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IEffectContext</pre>
+		 *
+		 * <p>The <code>IEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it.</p>
 		 * 
+		 * <p>Custom animated effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenEffectContext</code>. In the following example, we
+		 * recreate the <code>Fade.createFadeOutEffect()</code> used in the
+		 * previous example.</p>
+		 * 
+		 * <listing version="3.0">
+		 * function customEffect(target:DisplayObject):IEffectContext
+		 * {
+		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
+		 *     tween.fadeTo(0);
+		 *     return new TweenEffectContext(tween);
+		 * }
+		 * list.removeItemWithEffect(newItem, customEffect);</listing>
+		 *
 		 * @see #addItemWithEffect()
 		 * @see feathers.data.IListCollection#removeItem()
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
+		 * @see feathers.motion.effectClasses.IEffectContext
+		 * @see feathers.motion.effectClasses.TweenEffectContext
 		 */
 		public function removeItemWithEffect(item:Object, effect:Function):void
 		{

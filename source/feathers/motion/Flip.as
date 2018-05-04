@@ -7,20 +7,20 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
-	import starling.animation.Transitions;
-	import starling.display.DisplayObject;
-	import starling.animation.Tween;
-	import starling.core.Starling;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
 
+	import starling.animation.Transitions;
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * positions display objects in 3D space is if they are printed on opposite
-	 * sides of a postcard. A display object may appear on the front or back
-	 * side, and the card rotates around its center to reveal the other side.
-	 * The card may rotate up or down around the x-axis, or they may rotate left
-	 * or right around the y-axis.
+	 * Creates animated transitions for screen navigators that position display
+	 * objects in 3D space is if they are printed on opposite sides of a
+	 * postcard. A display object may appear on the front or back side, and the
+	 * card rotates around its center to reveal the other side. The card may
+	 * rotate up or down around the x-axis, or they may rotate left or right
+	 * around the y-axis.
 	 * 
 	 * <p>Warning: <code>Flip</code> and other transitions with 3D effects may
 	 * not be compatible with masks.</p>

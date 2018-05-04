@@ -10,11 +10,11 @@ package feathers.motion.effectClasses
 	import feathers.core.IFeathersControl;
 
 	import starling.animation.Tween;
-	import starling.display.DisplayObject;
 
 	/**
 	 * A move effect context for a <code>starling.animation.Tween</code>.
 	 * 
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see http://doc.starling-framework.org/core/starling/animation/Tween.html starling.animation.Tween
 	 * @see feathers.core.FeathersControl#moveEffect
 	 * 

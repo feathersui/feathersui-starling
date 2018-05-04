@@ -7,6 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
+	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.motion.effectClasses.TweenEffectContext;
+
 	import flash.geom.Point;
 
 	import starling.animation.Transitions;
@@ -16,15 +19,15 @@ package feathers.motion
 	import starling.display.Quad;
 	import starling.display.Stage;
 	import starling.utils.Pool;
-	import feathers.motion.effectClasses.TweenEffectContext;
-	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * wipes a display object out of view, revealing another display object
-	 * under the first. Both display objects remain stationary while the
-	 * effect animates clipping rectangles.
+	 * Creates effects for Feathers components and transitions for screen
+	 * navigators that wipe a display object out of view, revealing another
+	 * display object under the first. Both display objects remain stationary
+	 * while the effect animates clipping rectangles. The clipping rectangles
+	 * may be animated up, right, down, or left.
 	 *
+	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see ../../../help/transitions.html#wipe Transitions for Feathers screen navigators: Wipe
 	 *
 	 * @productversion Feathers 2.2.0
@@ -40,6 +43,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component into view from right to left, animating the
 		 * <code>width</code> and <code>x</code> properties of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeInLeftEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -86,6 +91,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component into view from left to right, animating the
 		 * <code>width</code> property of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeInRightEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -120,6 +127,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component into view from bottom to top, animating the
 		 * <code>height</code> and <code>y</code> properties of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeInUpEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -166,6 +175,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component into view from top to bottom, animating the
 		 * <code>height</code> property of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeInDownEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -200,6 +211,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component out of view from right to left, animating the
 		 * <code>width</code> property of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeOutLeftEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -233,6 +246,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component out of view from left to right, animating the
 		 * <code>width</code> and <code>x</code> properties of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeOutRightEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -278,6 +293,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component out of view from bottom to top, animating the
 		 * <code>height</code> property of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeOutUpEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{
@@ -311,6 +328,8 @@ package feathers.motion
 		 * Creates an effect function for the target component that wipes the
 		 * target component out of view from top to bottom, animating the
 		 * <code>height</code> and <code>y</code> properties of a temporary mask.
+		 * 
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createWipeOutDownEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT):Function
 		{

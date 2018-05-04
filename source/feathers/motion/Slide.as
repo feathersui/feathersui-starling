@@ -7,15 +7,18 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
-	import starling.animation.Transitions;
-	import starling.display.DisplayObject;
-	import starling.core.Starling;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
 
+	import starling.animation.Transitions;
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+
 	/**
-	 * Creates animated effects, like transitions for screen navigators, that
-	 * slides a display object from off-stage. The display object may slide up,
+	 * Creates animated transitions for screen navigators that slides two
+	 * display objects in the same direction (replacing one with the other) like
+	 * a classic slide carousel. Animates the <code>x</code> and <code>y</code>
+	 * properties of the display objects. The display objects may slide up,
 	 * right, down, or left.
 	 *
 	 * @see ../../../help/transitions.html#slide Transitions for Feathers screen navigators: Slide
