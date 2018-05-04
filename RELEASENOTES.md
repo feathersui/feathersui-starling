@@ -32,7 +32,6 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * SpinnerList: Fixed issue where performance could drop temporarily when transitioning from the end back to the beginning (or vice versa) when items repeat.
 * SpinnerList: fixed missing calls to processStyleRestriction() for showSelectionOverlay and hideSelectionOverlayUnlessFocused.
 * StackScreenNavigator: added isSwipeToPopEnabled property to activate a swipe gesture to navigate back in history.
-* StackScreenNavigator: fixed issue where a very fast drag might result in a null reference error because the transition did not start yet.
 * StackScreenNavigator: fixed issue where Event.CHANGE was not dispatched again after a transition was cancelled.
 * StageTextTextEditor: fixed issue where focus was lost after touching an object with a focus owner, and the focus owner contains the TextInput.
 * TextFieldTextEditor: added softKeyboard property to allow the soft keyboard to be customized on mobile.
@@ -43,6 +42,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * TiledColumnsLayout: fixed issue where the columns could be incorrectly aligned horizontally when alignment should not be possible.
 * TiledColumnsLayout: fixed issue where an incorrect number of visible columns was calculated when distributeHeights is true.
 * Tree: added scrollToDisplayLocation() method.
+* VectorHierarchicalCollection: Fixed issue that caused compilation to fail with classic Adobe Flex SDK.
 * VideoPlayer: added missing API documentation for FeathersEventType.ERROR.
 
 ## 3.4.1 - February 2018
