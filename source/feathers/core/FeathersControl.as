@@ -1160,8 +1160,14 @@ package feathers.core
 		 */
 		override public function set x(value:Number):void
 		{
+			var newY:Number = this.y;
 			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
 			{
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					newY = moveEffectContext.newY;
+				}
 				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
@@ -1171,11 +1177,11 @@ package feathers.core
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext = IMoveEffectContext(this._moveEffectContext);
 					moveEffectContext.oldX = this.x;
 					moveEffectContext.oldY = this.y;
 					moveEffectContext.newX = value;
-					moveEffectContext.newY = this.y;
+					moveEffectContext.newY = newY;
 				}
 				else
 				{
@@ -1194,8 +1200,14 @@ package feathers.core
 		 */
 		override public function set y(value:Number):void
 		{
+			var newX:Number = this.x;
 			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
 			{
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					newX = moveEffectContext.newX;
+				}
 				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
@@ -1205,10 +1217,10 @@ package feathers.core
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext = IMoveEffectContext(this._moveEffectContext);
 					moveEffectContext.oldX = this.x;
 					moveEffectContext.oldY = this.y;
-					moveEffectContext.newX = this.x;
+					moveEffectContext.newX = newX;
 					moveEffectContext.newY = value;
 				}
 				else
