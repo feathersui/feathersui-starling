@@ -1307,8 +1307,14 @@ package feathers.core
 				return;
 			}
 			var hasSetExplicitWidth:Boolean = false;
+			var newHeight:Number = this.actualHeight;
 			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					newHeight = resizeEffectContext.newHeight;
+				}
 				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
@@ -1318,11 +1324,11 @@ package feathers.core
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
-					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
 					resizeEffectContext.oldWidth = this.actualWidth;
 					resizeEffectContext.oldHeight = this.actualHeight;
 					resizeEffectContext.newWidth = value;
-					resizeEffectContext.newHeight = this.actualHeight;
+					resizeEffectContext.newHeight = newHeight;
 				}
 				else
 				{
@@ -1441,8 +1447,14 @@ package feathers.core
 				return;
 			}
 			var hasSetExplicitHeight:Boolean = false;
+			var newWidth:Number = this.actualWidth;
 			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
 			{
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					newWidth = resizeEffectContext.newWidth;
+				}
 				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
@@ -1452,10 +1464,10 @@ package feathers.core
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
-					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
 					resizeEffectContext.oldWidth = this.actualWidth;
 					resizeEffectContext.oldHeight = this.actualHeight;
-					resizeEffectContext.newWidth = this.actualWidth;
+					resizeEffectContext.newWidth = newWidth;
 					resizeEffectContext.newHeight = value;
 				}
 				else
