@@ -51,7 +51,9 @@ package feathers.layout
 		 * The width of the layout object, as a percentage of the container's
 		 * width.
 		 *
-		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
+		 * <p>A percentage may be specified in the range from <code>0</code>
+		 * to <code>100</code>. If the value is set to <code>NaN</code>, this
+		 * property is ignored.</p>
 		 *
 		 * @default NaN
 		 */
@@ -82,7 +84,9 @@ package feathers.layout
 		 * The height of the layout object, as a percentage of the container's
 		 * height.
 		 *
-		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
+		 * <p>A percentage may be specified in the range from <code>0</code>
+		 * to <code>100</code>. If the value is set to <code>NaN</code>, this
+		 * property is ignored.</p>
 		 *
 		 * @default NaN
 		 */
