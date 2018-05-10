@@ -650,7 +650,9 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
-		protected var _itemEffectContexts:Vector.<IEffectContext> = null;
+		protected var _addItemEffectContexts:Vector.<IEffectContext> = null;
+
+		protected var _removeItemEffectContexts:Vector.<IEffectContext> = null;
 
 		protected var _addedItems:Dictionary = null;
 
@@ -834,20 +836,20 @@ package feathers.controls.supportClasses
 		{
 			if(this._addedItems !== null)
 			{
-				if(this._itemEffectContexts === null)
+				if(this._addItemEffectContexts === null)
 				{
-					this._itemEffectContexts = new <IEffectContext>[];
+					this._addItemEffectContexts = new <IEffectContext>[];
 				}
 				for(var item:Object in this._addedItems)
 				{
 					var itemRenderer:IListItemRenderer = this._rendererMap[item] as IListItemRenderer;
 					if(itemRenderer !== null)
 					{
-						this.interruptItemEffects(itemRenderer);
+						this.interruptRemoveItemEffects(itemRenderer, false);
 						var effect:Function = this._addedItems[item] as Function;
 						var context:IEffectContext = IEffectContext(effect(itemRenderer));
 						context.addEventListener(Event.COMPLETE, addedItemEffectContext_completeHandler);
-						this._itemEffectContexts[this._itemEffectContexts.length] = context;
+						this._addItemEffectContexts[this._addItemEffectContexts.length] = context;
 						context.play();
 					}
 				}
@@ -855,20 +857,21 @@ package feathers.controls.supportClasses
 			}
 			if(this._removedItems !== null)
 			{
-				if(this._itemEffectContexts === null)
+				if(this._removeItemEffectContexts === null)
 				{
-					this._itemEffectContexts = new <IEffectContext>[];
+					this._removeItemEffectContexts = new <IEffectContext>[];
 				}
 				for(item in this._removedItems)
 				{
 					itemRenderer = this._rendererMap[item] as IListItemRenderer;
 					if(itemRenderer !== null)
 					{
-						this.interruptItemEffects(itemRenderer);
+						this.interruptRemoveItemEffects(itemRenderer, true);
+						this.interruptAddItemEffects(itemRenderer);
 						effect = this._removedItems[item] as Function;
 						context = IEffectContext(effect(itemRenderer));
 						context.addEventListener(Event.COMPLETE, removedItemEffectContext_completeHandler);
-						this._itemEffectContexts[this._itemEffectContexts.length] = context;
+						this._removeItemEffectContexts[this._removeItemEffectContexts.length] = context;
 						context.play();
 					}
 				}
@@ -876,21 +879,56 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		private function interruptItemEffects(itemRenderer:IListItemRenderer):void
+		private function interruptAddItemEffects(itemRenderer:IListItemRenderer):void
 		{
-			if(this._itemEffectContexts === null)
+			if(this._addItemEffectContexts === null)
 			{
 				return;
 			}
-			var contextCount:int = this._itemEffectContexts.length;
+			var contextCount:int = this._addItemEffectContexts.length;
 			for(var i:int = 0; i < contextCount; i++)
 			{
-				var context:IEffectContext = this._itemEffectContexts[i];
+				var context:IEffectContext = this._addItemEffectContexts[i];
 				if(context.target !== itemRenderer)
 				{
 					continue;
 				}
 				context.interrupt();
+				//we've removed this context, so check the same index again
+				//because it won't be the same context, and don't go beyond the
+				//new, smaller length
+				i--;
+				contextCount--;
+			}
+		}
+
+		private function interruptRemoveItemEffects(itemRenderer:IListItemRenderer, stop:Boolean):void
+		{
+			if(this._removeItemEffectContexts === null)
+			{
+				return;
+			}
+			var contextCount:int = this._removeItemEffectContexts.length;
+			for(var i:int = 0; i < contextCount; i++)
+			{
+				var context:IEffectContext = this._removeItemEffectContexts[i];
+				if(context.target !== itemRenderer)
+				{
+					continue;
+				}
+				if(stop)
+				{
+					context.stop();
+				}
+				else
+				{
+					context.interrupt();
+				}
+				//we've removed this context, so check the same index again
+				//because it won't be the same context, and don't go beyond the
+				//new, smaller length
+				i--;
+				contextCount--;
 			}
 		}
 
@@ -1794,16 +1832,22 @@ package feathers.controls.supportClasses
 		{
 			var context:IEffectContext = IEffectContext(event.currentTarget);
 			context.removeEventListener(Event.COMPLETE, addedItemEffectContext_completeHandler);
-			var index:int = this._itemEffectContexts.indexOf(context);
-			this._itemEffectContexts.removeAt(index);
+			var index:int = this._addItemEffectContexts.indexOf(context);
+			this._addItemEffectContexts.removeAt(index);
 		}
 
 		private function removedItemEffectContext_completeHandler(event:Event):void
 		{
 			var context:IEffectContext = IEffectContext(event.currentTarget);
 			context.removeEventListener(Event.COMPLETE, removedItemEffectContext_completeHandler);
-			var contextIndex:int = this._itemEffectContexts.indexOf(context);
-			this._itemEffectContexts.removeAt(contextIndex);
+			var contextIndex:int = this._removeItemEffectContexts.indexOf(context);
+			this._removeItemEffectContexts.removeAt(contextIndex);
+			//if it was stopped before completing, we won't remove the item from
+			//the data provider
+			if(event.data === true)
+			{
+				return;
+			}
 
 			var itemRenderer:IListItemRenderer = IListItemRenderer(context.target);
 			//don't remove it from the data provider until the effect is done
