@@ -10,15 +10,11 @@ package feathers.motion
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.TweenEffectContext;
 
-	import flash.geom.Point;
-
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-	import starling.display.Stage;
-	import starling.utils.Pool;
 
 	/**
 	 * Creates effects for Feathers components and transitions for screen
@@ -63,26 +59,16 @@ package feathers.motion
 				}
 				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
 				mask.width = 0;
+				mask.x = maskWidth;
 				target.mask = mask;
-				var stage:Stage = target.stage;
-				if(stage === null)
-				{
-					stage = Starling.current.stage;
-				}
-				stage.addChild(mask);
-				var point:Point = Pool.getPoint();
-				target.localToGlobal(point, point);
-				mask.x = point.x + maskWidth;
-				mask.y = point.y;
 				var tween:Tween = new Tween(mask, duration, ease);
 				tween.animate("width", maskWidth);
-				tween.animate("x", point.x);
-				Pool.putPoint(point);
+				tween.animate("x", 0);
 				tween.onComplete = function():void
 				{
 					target.mask = oldMask;
 					mask.removeFromParent(true);
-				}
+				};
 				return new TweenEffectContext(tween);
 			}
 		}
@@ -147,26 +133,16 @@ package feathers.motion
 				}
 				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
 				mask.height = 0;
+				mask.y = maskHeight;
 				target.mask = mask;
-				var stage:Stage = target.stage;
-				if(stage === null)
-				{
-					stage = Starling.current.stage;
-				}
-				stage.addChild(mask);
-				var point:Point = Pool.getPoint();
-				target.localToGlobal(point, point);
-				mask.x = point.x;
-				mask.y = point.y + maskHeight;
 				var tween:Tween = new Tween(mask, duration, ease);
 				tween.animate("height", maskHeight);
-				tween.animate("y", point.y);
-				Pool.putPoint(point);
+				tween.animate("y", 0);
 				tween.onComplete = function():void
 				{
 					target.mask = oldMask;
 					mask.dispose();
-				}
+				};
 				return new TweenEffectContext(tween);
 			}
 		}
@@ -266,25 +242,14 @@ package feathers.motion
 				}
 				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
 				target.mask = mask;
-				var stage:Stage = target.stage;
-				if(stage === null)
-				{
-					stage = Starling.current.stage;
-				}
-				stage.addChild(mask);
-				var point:Point = Pool.getPoint();
-				target.localToGlobal(point, point);
-				mask.x = point.x;
-				mask.y = point.y;
 				var tween:Tween = new Tween(mask, duration, ease);
 				tween.animate("width", 0);
-				tween.animate("x", point.x + maskWidth);
-				Pool.putPoint(point);
+				tween.animate("x", maskWidth);
 				tween.onComplete = function():void
 				{
 					target.mask = oldMask;
 					mask.removeFromParent(true);
-				}
+				};
 				return new TweenEffectContext(tween);
 			}
 		}
@@ -348,20 +313,9 @@ package feathers.motion
 				}
 				var mask:Quad = new Quad(maskWidth, maskHeight, 0xff00ff);
 				target.mask = mask;
-				var stage:Stage = target.stage;
-				if(stage === null)
-				{
-					stage = Starling.current.stage;
-				}
-				stage.addChild(mask);
-				var point:Point = Pool.getPoint();
-				target.localToGlobal(point, point);
-				mask.x = point.x;
-				mask.y = point.y;
 				var tween:Tween = new Tween(mask, duration, ease);
 				tween.animate("height", 0);
-				tween.animate("y", point.y + maskHeight);
-				Pool.putPoint(point);
+				tween.animate("y", maskHeight);
 				tween.onComplete = function():void
 				{
 					target.mask = oldMask;
