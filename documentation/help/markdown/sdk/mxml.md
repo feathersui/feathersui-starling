@@ -204,7 +204,7 @@ The `states` property may contain two or more `feathers.states.State` objects. T
 ``` xml
 <f:states>
     <f:State name="default"/>
-    <f:State name="submittedForm">
+    <f:State name="submittedForm"/>
 </f:states>
 ```
 
@@ -249,6 +249,40 @@ Similarly, you may use the `excludeFrom` attribute to remove a component from it
 ```
 
 This label will be removed once the form is submitted, but it will be visible in all other view states.
+
+### State Groups
+
+Consider the following set of states that might allow you to customize a view based on different types of user accounts:
+
+``` xml
+<f:states>
+    <f:State name="default"/>
+    <f:State name="moderator"/>
+    <f:State name="administrator"/>
+</f:states>
+```
+
+Let's say that we want certain functionality to be enabled only for moderators and administrators, but disabled for everyone else. We could do it like this:
+
+``` xml
+<f:Check isEnabled="false" isEnabled.administrator="true" isEnabled.moderator="true"/>
+```
+
+However, we can also add both the "moderator" and "administrator" states to a *state group*:
+
+``` xml
+<f:states>
+    <f:State name="default"/>
+    <f:State name="moderator" stateGroups="privileged"/>
+    <f:State name="administrator" stateGroups="privileged"/>
+</f:states>
+```
+
+Using our new "privileged" state group, we can simply our code to make the same override apply to multiple states:
+
+``` xml
+<f:Check isEnabled="false" isEnabled.privileged="true"/>
+```
 
 ## Create inline sub-component factories
 
