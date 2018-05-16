@@ -2,13 +2,16 @@
 <f:ScrollContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:f="library://ns.feathersui.com/mxml"
 	name="default_property" name.setPropertyState="set_property"
-	removed.setEventHandlerState="trace(event)">
+	removed.setEventHandlerState="trace(event)"
+	name.group1="group1" name.group2="group2">
 	<f:states>
 		<f:State name="default"/>
 		<f:State name="setPropertyState"/>
 		<f:State name="setEventHandlerState"/>
 		<f:State name="includeInState"/>
 		<f:State name="excludeFromState"/>
+		<f:State name="groupedState1" stateGroups="group1"/>
+		<f:State name="groupedState2" stateGroups="group2"/>
 	</f:states>
 	<f:Button id="includeInChild" label="Include In" includeIn="includeInState"/>
 	<f:Button id="excludeFromChild" label="Exclude From" excludeFrom="excludeFromState"/>

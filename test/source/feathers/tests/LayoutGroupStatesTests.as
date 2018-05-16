@@ -22,6 +22,12 @@ package feathers.tests
 
 		private static const EXCLUDE_FROM_STATE_NAME:String = "excludeFromState";
 
+		private static const GROUP1_STATE_NAME:String = "groupedState1";
+		private static const GROUP2_STATE_NAME:String = "groupedState2";
+		private static const GROUP_PROPERTY_NAME:String = "name";
+		private static const GROUP1_PROPERTY_VALUE:String = "group1";
+		private static const GROUP2_PROPERTY_VALUE:String = "group2";
+
 		private var _group:LayoutGroupWithStates;
 
 		[Before]
@@ -157,6 +163,32 @@ package feathers.tests
 			this._group.currentState = DEFAULT_STATE_NAME;
 			Assert.assertStrictlyEquals("LayoutGroup: changing state to default must remove excludeFrom overrides",
 				this._group, this._group.excludeFromChild.parent);
+		}
+
+		[Test]
+		public function testStateGroupOverride():void
+		{
+			this._group.currentState = GROUP1_STATE_NAME;
+			Assert.assertStrictlyEquals("LayoutGroup: changing state must apply group overrides",
+				GROUP1_PROPERTY_VALUE, this._group[GROUP_PROPERTY_NAME]);
+		}
+
+		[Test]
+		public function testResetToDefaultStateAfterStateGroupOverride():void
+		{
+			this._group.currentState = GROUP1_STATE_NAME;
+			this._group.currentState = DEFAULT_STATE_NAME;
+			Assert.assertStrictlyEquals("LayoutGroup: changing state to default must remove group overrides",
+				DEFAULT_PROPERTY_VALUE, this._group[GROUP_PROPERTY_NAME]);
+		}
+
+		[Test]
+		public function testChangeToDifferentStateGroupOverride():void
+		{
+			this._group.currentState = GROUP1_STATE_NAME;
+			this._group.currentState = GROUP2_STATE_NAME;
+			Assert.assertStrictlyEquals("LayoutGroup: changing state to another group must change group overrides",
+				GROUP2_PROPERTY_VALUE, this._group[GROUP_PROPERTY_NAME]);
 		}
 	}	
 }
