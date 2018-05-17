@@ -549,7 +549,7 @@ package feathers.layout
 					//if the sticky header is enabled, we need to find its index
 					//we look for the first header that is visible at the top of
 					//the view port. the previous one should be sticky.
-					if((positionY - startPositionY) < scrollY)
+					if(positionY < scrollY)
 					{
 						headerIndicesIndex++;
 						if(headerIndicesIndex < headerCount)
@@ -1179,7 +1179,7 @@ package feathers.layout
 			{
 				if(nextHeaderIndex === i)
 				{
-					if((positionY - startPositionY) < scrollY)
+					if(positionY < scrollY)
 					{
 						headerIndicesIndex++;
 						if(headerIndicesIndex < headerCount)
