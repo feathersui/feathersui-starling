@@ -4448,8 +4448,18 @@ package feathers.controls
 		 */
 		protected function refreshViewPort(measure:Boolean):void
 		{
-			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+			if(this._snapScrollPositionsToPixels)
+			{
+				var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+				var pixelSize:Number = 1 / starling.contentScaleFactor;
+				this._viewPort.horizontalScrollPosition = Math.round(this._horizontalScrollPosition / pixelSize) * pixelSize;
+				this._viewPort.verticalScrollPosition = Math.round(this._verticalScrollPosition / pixelSize) * pixelSize;
+			}
+			else
+			{
+				this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+				this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+			}
 			if(!measure)
 			{
 				this._viewPort.validate();
