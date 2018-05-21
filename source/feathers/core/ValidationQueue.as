@@ -146,7 +146,7 @@ package feathers.core
 				return;
 			}
 			var queueLength:int = this._queue.length;
-			if(queueLength === 0)
+			if(queueLength == 0)
 			{
 				return;
 			}
@@ -177,8 +177,9 @@ package feathers.core
 
 		/**
 		 * @private
+		 * This is a static constant to avoid a MethodClosure allocation on iOS
 		 */
-		protected function queueSortFunction(first:IValidating, second:IValidating):int
+		protected static const queueSortFunction:Function = function(first:IValidating, second:IValidating):int
 		{
 			var difference:int = second.depth - first.depth;
 			if(difference > 0)
