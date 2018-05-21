@@ -584,12 +584,12 @@ package feathers.media
 			this._videoSource = value;
 			//reset the current and total time if we were playing a different
 			//video previously
-			if(this._currentTime !== 0)
+			if(this._currentTime != 0)
 			{
 				this._currentTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 			}
-			if(this._totalTime !== 0)
+			if(this._totalTime != 0)
 			{
 				this._totalTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
@@ -1188,12 +1188,12 @@ package feathers.media
 			{
 				var needsDispatch:Boolean = false;
 				var newBytesLoaded:Number = this._netStream.bytesLoaded;
-				if(this._bytesTotal !== newBytesTotal)
+				if(this._bytesTotal != newBytesTotal)
 				{
 					this._bytesTotal = newBytesTotal;
 					needsDispatch = true;
 				}
-				if(this._bytesLoaded !== newBytesLoaded)
+				if(this._bytesLoaded != newBytesLoaded)
 				{
 					this._bytesLoaded = newBytesLoaded;
 					needsDispatch = true;
@@ -1202,7 +1202,7 @@ package feathers.media
 				{
 					this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, newBytesLoaded / newBytesTotal);
 				}
-				if(newBytesLoaded === newBytesTotal)
+				if(newBytesLoaded == newBytesTotal)
 				{
 					this.removeEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 				}
@@ -1234,12 +1234,12 @@ package feathers.media
 			//dimensions, so invalidate immediately
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			var bytesTotal:Number = this._netStream.bytesTotal;
-			if(this._bytesTotal === 0 && bytesTotal > 0)
+			if(this._bytesTotal == 0 && bytesTotal > 0)
 			{
 				this._bytesLoaded = this._netStream.bytesLoaded;
 				this._bytesTotal = bytesTotal;
 				this.dispatchEventWith(MediaPlayerEventType.LOAD_PROGRESS, false, this._bytesLoaded / bytesTotal);
-				if(this._bytesLoaded !== this._bytesTotal)
+				if(this._bytesLoaded != this._bytesTotal)
 				{
 					this.addEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
 				}
@@ -1317,7 +1317,7 @@ package feathers.media
 				}
 				case NET_STATUS_CODE_NETSTREAM_PLAY_START:
 				{
-					if(this._netStream.time !== this._currentTime)
+					if(this._netStream.time != this._currentTime)
 					{
 						//if we're restoring from a lost context, or we've
 						//restarted the video after it had reached the end, the

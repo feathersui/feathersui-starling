@@ -207,7 +207,7 @@ package feathers.motion
 			{
 				tween.animate("x", xOffset);
 			}
-			if(yOffset !== 0)
+			if(yOffset != 0)
 			{
 				tween.animate("y", yOffset);
 			}
@@ -249,7 +249,7 @@ class RevealTween extends Tween
 		mask.height = oldScreen.height;
 		mask.width = 0;
 		mask.height = 0;
-		if(xOffset === 0)
+		if(xOffset == 0)
 		{
 			mask.width = newScreen.width;
 		}
@@ -257,7 +257,7 @@ class RevealTween extends Tween
 		{
 			mask.x = -xOffset;
 		}
-		if(yOffset === 0)
+		if(yOffset == 0)
 		{
 			mask.height = newScreen.height;
 		}

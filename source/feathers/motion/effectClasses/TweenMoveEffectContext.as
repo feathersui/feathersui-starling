@@ -94,7 +94,7 @@ package feathers.motion.effectClasses
 		 */
 		public function set newX(value:Number):void
 		{
-			if(this._newX === value)
+			if(this._newX == value)
 			{
 				return;
 			}
@@ -120,7 +120,7 @@ package feathers.motion.effectClasses
 		 */
 		public function set newY(value:Number):void
 		{
-			if(this._newY === value)
+			if(this._newY == value)
 			{
 				return;
 			}

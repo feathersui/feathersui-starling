@@ -61,7 +61,7 @@ package feathers.utils.text
 			for(var i:int = selectionStartIndex; i >= 0; i--)
 			{
 				var charIsWord:Boolean = IS_WORD.test(text.charAt(i));
-				if(!charIsWord && i === selectionStartIndex)
+				if(!charIsWord && i == selectionStartIndex)
 				{
 					//this is whitespace between words
 					return findPreviousWordStartIndex(text, selectionStartIndex);
@@ -90,7 +90,7 @@ package feathers.utils.text
 			for(var i:int = selectionEndIndex; i < textLength; i++)
 			{
 				var charIsWord:Boolean = IS_WORD.test(text.charAt(i));
-				if(!charIsWord && i === selectionEndIndex)
+				if(!charIsWord && i == selectionEndIndex)
 				{
 					//this is whitespace between words
 					var nextStart:int = findNextWordStartIndex(text, selectionEndIndex);

@@ -71,7 +71,7 @@ package feathers.layout
 		public function BaseVariableVirtualLayout()
 		{
 			super();
-			if(Object(this).constructor == BaseLinearLayout)
+			if(Object(this).constructor === BaseLinearLayout)
 			{
 				throw new AbstractClassError()
 			}

@@ -325,7 +325,7 @@ package feathers.media
 				return;
 			}
 
-			if(this._minimum === this._maximum)
+			if(this._minimum == this._maximum)
 			{
 				var percentage:Number = 1;
 			}
@@ -341,7 +341,7 @@ package feathers.media
 					percentage = 1;
 				}
 			}
-			if(this._progress === 0 || this._progress <= percentage)
+			if(this._progress == 0 || this._progress <= percentage)
 			{
 				this._progressSkin.visible = false;
 				return;
@@ -449,7 +449,7 @@ package feathers.media
 		 */
 		protected function mediaPlayer_loadProgressHandler(event:Event, progress:Number):void
 		{
-			if(this._progress === progress)
+			if(this._progress == progress)
 			{
 				return;
 			}

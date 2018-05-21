@@ -38,7 +38,7 @@ package feathers.utils.focus
 		var rect:Rectangle = object1.getBounds(object1.stage, Pool.getRectangle());
 
 		var minPrimaryDistance1:Number = calculateMinPrimaryAxisDistanceForRelativePosition(focusedRect, rect, relativePosition);
-		if(minPrimaryDistance1 === Number.POSITIVE_INFINITY)
+		if(minPrimaryDistance1 == Number.POSITIVE_INFINITY)
 		{
 			return false;
 		}

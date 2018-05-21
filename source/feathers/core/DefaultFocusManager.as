@@ -833,14 +833,14 @@ package feathers.core
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyLocation !== KeyLocation.D_PAD && !DeviceCapabilities.simulateDPad)
+			if(event.keyLocation != KeyLocation.D_PAD && !DeviceCapabilities.simulateDPad)
 			{
 				//focus is controlled only with a d-pad and not the regular
 				//keyboard arrow keys
 				return;
 			}
-			if(event.keyCode !== Keyboard.UP && event.keyCode !== Keyboard.DOWN &&
-				event.keyCode !== Keyboard.LEFT && event.keyCode !== Keyboard.RIGHT)
+			if(event.keyCode != Keyboard.UP && event.keyCode != Keyboard.DOWN &&
+				event.keyCode != Keyboard.LEFT && event.keyCode != Keyboard.RIGHT)
 			{
 				return;
 			}
@@ -1047,7 +1047,7 @@ package feathers.core
 		 */
 		protected function topLevelContainer_touchHandler(event:TouchEvent):void
 		{
-			if(Capabilities.os.indexOf("tvOS") !== -1)
+			if(Capabilities.os.indexOf("tvOS") != -1)
 			{
 				return;
 			}

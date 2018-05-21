@@ -204,7 +204,7 @@ package feathers.data
 			}
 			var urlRequestFunction:Function = this._urlRequestFunction;
 			var request:URLRequest;
-			if(urlRequestFunction.length === 1)
+			if(urlRequestFunction.length == 1)
 			{
 				request = URLRequest(urlRequestFunction(textToMatch));
 			}
@@ -240,7 +240,7 @@ package feathers.data
 		protected function parseData(resultText:String, textToMatch:String, suggestions:IListCollection):void
 		{
 			var parseResultFunction:Function = this._parseResultFunction;
-			if(parseResultFunction.length === 2)
+			if(parseResultFunction.length == 2)
 			{
 				//this is kind of hacky, and maybe it would be better to modify
 				//parseResultFunction to return an IListCollection
@@ -266,7 +266,7 @@ package feathers.data
 			this._savedTextToMatch = null;
 
 			var loadedData:String = this._urlLoader.data as String;
-			if(this._urlRequestFunction.length === 0)
+			if(this._urlRequestFunction.length == 0)
 			{
 				this._cachedResult = loadedData;
 			}

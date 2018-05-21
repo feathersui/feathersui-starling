@@ -237,7 +237,7 @@ package feathers.utils.touch
 							isInBounds = this._target === stage.hitTest(point);
 						}
 						Pool.putPoint(point);
-						if(isInBounds && (this._tapCount === -1 || this._tapCount === touch.tapCount))
+						if(isInBounds && (this._tapCount == -1 || this._tapCount == touch.tapCount))
 						{
 							this._target.dispatchEventWith(this._eventType);
 						}

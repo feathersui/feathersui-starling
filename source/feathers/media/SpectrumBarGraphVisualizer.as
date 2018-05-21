@@ -174,7 +174,7 @@ package feathers.media
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -204,7 +204,7 @@ package feathers.media
 			{
 				return;
 			}
-			if(this._color === value)
+			if(this._color == value)
 			{
 				return;
 			}

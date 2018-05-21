@@ -752,7 +752,7 @@ package feathers.layout
 						leftRightWidth -= (leftAnchorDisplayObject.x - leftAnchorDisplayObject.pivotX + leftAnchorDisplayObject.width);
 					}
 					itemWidth = leftRightWidth - right - left;
-					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth && //!isNaN
 						uiItem.explicitMaxWidth < itemWidth)
 					{
 						itemWidth = uiItem.explicitMaxWidth;
@@ -781,7 +781,7 @@ package feathers.layout
 						xPositionOfRight = viewPortWidth - right;
 					}
 					itemWidth = 2 * (xPositionOfRight - xPositionOfCenter);
-					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth && //!isNaN
 						uiItem.explicitMaxWidth < itemWidth)
 					{
 						itemWidth = uiItem.explicitMaxWidth;
@@ -816,7 +816,7 @@ package feathers.layout
 				if(hasLeftPosition)
 				{
 					itemWidth = 2 * (xPositionOfCenter - item.x + item.pivotX);
-					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth &&
+					if(uiItem.explicitMaxWidth === uiItem.explicitMaxWidth && //!isNaN
 						uiItem.explicitMaxWidth < itemWidth)
 					{
 						itemWidth = uiItem.explicitMaxWidth;
@@ -865,7 +865,7 @@ package feathers.layout
 				{
 					itemHeight = viewPortHeight;
 				}
-				if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+				if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight && //!isNaN
 					uiItem.explicitMaxHeight < itemHeight)
 				{
 					itemHeight = uiItem.explicitMaxHeight;
@@ -905,7 +905,7 @@ package feathers.layout
 						topBottomHeight -= (topAnchorDisplayObject.y - topAnchorDisplayObject.pivotY + topAnchorDisplayObject.height);
 					}
 					itemHeight = topBottomHeight - bottom - top;
-					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight && //!isNaN
 						uiItem.explicitMaxHeight < itemHeight)
 					{
 						itemHeight = uiItem.explicitMaxHeight;
@@ -934,7 +934,7 @@ package feathers.layout
 						yPositionOfBottom = viewPortHeight - bottom;
 					}
 					itemHeight = 2 * (yPositionOfBottom - yPositionOfCenter);
-					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight && //!isNaN
 						uiItem.explicitMaxHeight < itemHeight)
 					{
 						itemHeight = uiItem.explicitMaxHeight;
@@ -969,7 +969,7 @@ package feathers.layout
 				if(hasTopPosition)
 				{
 					itemHeight = 2 * (yPositionOfCenter - item.y + item.pivotY);
-					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight &&
+					if(uiItem.explicitMaxHeight === uiItem.explicitMaxHeight && //!isNaN
 						uiItem.explicitMaxHeight < itemHeight)
 					{
 						itemHeight = uiItem.explicitMaxHeight;
@@ -1152,7 +1152,7 @@ package feathers.layout
 								hasRightPosition && rightAnchor === null)
 							{
 								var itemWidth:Number = containerWidth - left - right;
-								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth &&
+								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth && //!isNaN
 									measureItem.explicitMaxWidth < itemWidth)
 								{
 									itemWidth = measureItem.explicitMaxWidth;
@@ -1170,7 +1170,7 @@ package feathers.layout
 									percentWidth = 100;
 								}
 								itemWidth = percentWidth * 0.01 * containerWidth;
-								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth &&
+								if(measureItem.explicitMaxWidth === measureItem.explicitMaxWidth && //!isNaN
 									measureItem.explicitMaxWidth < itemWidth)
 								{
 									itemWidth = measureItem.explicitMaxWidth;
@@ -1198,7 +1198,7 @@ package feathers.layout
 								hasBottomPosition && bottomAnchor === null)
 							{
 								var itemHeight:Number = containerHeight - top - bottom; 
-								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight &&
+								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight && //!isNaN
 									measureItem.explicitMaxHeight < itemHeight)
 								{
 									itemHeight = measureItem.explicitMaxHeight;
@@ -1216,7 +1216,7 @@ package feathers.layout
 									percentHeight = 100;
 								}
 								itemHeight = percentHeight * 0.01 * containerHeight;
-								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight &&
+								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight && //!isNaN
 									measureItem.explicitMaxHeight < itemHeight)
 								{
 									itemHeight = measureItem.explicitMaxHeight;

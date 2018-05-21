@@ -570,7 +570,7 @@ package feathers.layout
 			if(needsWidth)
 			{
 				availableRowWidth = maxWidth;
-				if(availableRowWidth === Number.POSITIVE_INFINITY)
+				if(availableRowWidth == Number.POSITIVE_INFINITY)
 				{
 					supportsMultipleRows = false;
 				}
@@ -621,7 +621,7 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					horizontalGap = this._horizontalGap;
-					if(hasFirstHorizontalGap && i === 0)
+					if(hasFirstHorizontalGap && i == 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
 					}
@@ -642,7 +642,7 @@ package feathers.layout
 
 						if(this._hasVariableItemDimensions)
 						{
-							if(cachedWidth !== cachedWidth)
+							if(cachedWidth !== cachedWidth) //isNaN
 							{
 								var itemWidth:Number = calculatedTypicalItemWidth;
 							}
@@ -650,7 +650,7 @@ package feathers.layout
 							{
 								itemWidth = cachedWidth;
 							}
-							if(cachedHeight !== cachedHeight)
+							if(cachedHeight !== cachedHeight) //isNaN
 							{
 								var itemHeight:Number = calculatedTypicalItemHeight;
 							}
@@ -717,7 +717,7 @@ package feathers.layout
 						//subtracted from the x position to get the row width.
 						var previousIndex:int = i - 1;
 						horizontalGap = this._horizontalGap;
-						if(hasFirstHorizontalGap && previousIndex === 0)
+						if(hasFirstHorizontalGap && previousIndex == 0)
 						{
 							horizontalGap = this._firstHorizontalGap;
 						}
@@ -769,7 +769,7 @@ package feathers.layout
 					{
 						horizontalAlignOffsetX = Math.round((availableRowWidth - totalRowWidth) / 2);
 					}
-					if(horizontalAlignOffsetX !== 0)
+					if(horizontalAlignOffsetX != 0)
 					{
 						for(var j:int = 0; j < rowItemCount; j++)
 						{
@@ -841,7 +841,7 @@ package feathers.layout
 				{
 					horizontalAlignOffsetX = Math.round((availableRowWidth - contentRowWidth) / 2);
 				}
-				if(horizontalAlignOffsetX !== 0)
+				if(horizontalAlignOffsetX != 0)
 				{
 					for(i = 0; i < itemCount; i++)
 					{
@@ -954,7 +954,7 @@ package feathers.layout
 			if(availableRowWidth !== availableRowWidth) //isNaN
 			{
 				availableRowWidth = maxWidth;
-				if(availableRowWidth === Number.POSITIVE_INFINITY)
+				if(availableRowWidth == Number.POSITIVE_INFINITY)
 				{
 					supportsMultipleRows = false;
 				}
@@ -996,7 +996,7 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					horizontalGap = this._horizontalGap;
-					if(hasFirstHorizontalGap && i === 0)
+					if(hasFirstHorizontalGap && i == 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
 					}
@@ -1008,7 +1008,7 @@ package feathers.layout
 					{
 						var cachedWidth:Number = this._widthCache[i];
 						var cachedHeight:Number = this._heightCache[i];
-						if(cachedWidth !== cachedWidth)
+						if(cachedWidth !== cachedWidth) //isNaN
 						{
 							var itemWidth:Number = calculatedTypicalItemWidth;
 						}
@@ -1016,7 +1016,7 @@ package feathers.layout
 						{
 							itemWidth = cachedWidth;
 						}
-						if(cachedHeight !== cachedHeight)
+						if(cachedHeight !== cachedHeight) //isNaN
 						{
 							var itemHeight:Number = calculatedTypicalItemHeight;
 						}
@@ -1143,22 +1143,22 @@ package feathers.layout
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(items.length > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = items.length - 1;
 			}
-			else if(keyCode === Keyboard.UP)
+			else if(keyCode == Keyboard.UP)
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN)
 			{
 				result++;
 			}
@@ -1312,7 +1312,7 @@ package feathers.layout
 				for(; i < itemCount; i++)
 				{
 					var horizontalGap:Number = this._horizontalGap;
-					if(hasFirstHorizontalGap && i === 0)
+					if(hasFirstHorizontalGap && i == 0)
 					{
 						horizontalGap = this._firstHorizontalGap;
 					}
@@ -1327,7 +1327,7 @@ package feathers.layout
 					}
 					if(this._hasVariableItemDimensions)
 					{
-						if(cachedWidth !== cachedWidth)
+						if(cachedWidth !== cachedWidth) //isNaN
 						{
 							var itemWidth:Number = calculatedTypicalItemWidth;
 						}
@@ -1335,7 +1335,7 @@ package feathers.layout
 						{
 							itemWidth = cachedWidth;
 						}
-						if(cachedHeight !== cachedHeight)
+						if(cachedHeight !== cachedHeight) //isNaN
 						{
 							var itemHeight:Number = calculatedTypicalItemHeight;
 						}
@@ -1508,7 +1508,7 @@ package feathers.layout
 					}
 					//we don't check this at the beginning of the loop because
 					//it may break to start a new row and then redo this item
-					if(i === index)
+					if(i == index)
 					{
 						isLastRow = true;
 					}

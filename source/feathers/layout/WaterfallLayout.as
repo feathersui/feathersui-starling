@@ -571,7 +571,7 @@ package feathers.layout
 				targetColumnHeight += itemHeight;
 				for(var j:int = 0; j < columnCount; j++)
 				{
-					if(j === targetColumnIndex)
+					if(j == targetColumnIndex)
 					{
 						continue;
 					}
@@ -749,7 +749,7 @@ package feathers.layout
 						targetColumnHeight += itemHeight;
 						for(var j:int = 0; j < columnCount; j++)
 						{
-							if(j === targetColumnIndex)
+							if(j == targetColumnIndex)
 							{
 								continue;
 							}
@@ -865,7 +865,7 @@ package feathers.layout
 					targetColumnHeight += itemHeight;
 					for(var j:int = 0; j < columnCount; j++)
 					{
-						if(j === targetColumnIndex)
+						if(j == targetColumnIndex)
 						{
 							continue;
 						}
@@ -997,22 +997,22 @@ package feathers.layout
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(items.length > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = items.length - 1;
 			}
-			else if(keyCode === Keyboard.UP)
+			else if(keyCode == Keyboard.UP)
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN)
 			{
 				result++;
 			}
@@ -1189,7 +1189,7 @@ package feathers.layout
 				targetColumnHeight += itemHeight;
 				for(var j:int = 0; j < columnCount; j++)
 				{
-					if(j === targetColumnIndex)
+					if(j == targetColumnIndex)
 					{
 						continue;
 					}
@@ -1200,7 +1200,7 @@ package feathers.layout
 						targetColumnHeight = columnHeight;
 					}
 				}
-				if(i === index)
+				if(i == index)
 				{
 					return targetColumnHeight - itemHeight;
 				}

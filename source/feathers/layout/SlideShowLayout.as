@@ -146,7 +146,7 @@ package feathers.layout
 		 */
 		public function set paddingTop(value:Number):void
 		{
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -174,7 +174,7 @@ package feathers.layout
 		 */
 		public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -203,7 +203,7 @@ package feathers.layout
 		 */
 		public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -231,7 +231,7 @@ package feathers.layout
 		 */
 		public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -354,7 +354,7 @@ package feathers.layout
 		 */
 		public function set beforeVirtualizedItemCount(value:int):void
 		{
-			if(this._beforeVirtualizedItemCount === value)
+			if(this._beforeVirtualizedItemCount == value)
 			{
 				return;
 			}
@@ -380,7 +380,7 @@ package feathers.layout
 		 */
 		public function set afterVirtualizedItemCount(value:int):void
 		{
-			if(this._afterVirtualizedItemCount === value)
+			if(this._afterVirtualizedItemCount == value)
 			{
 				return;
 			}
@@ -438,7 +438,7 @@ package feathers.layout
 		 */
 		public function set minimumItemCount(value:int):void
 		{
-			if(this._minimumItemCount === value)
+			if(this._minimumItemCount == value)
 			{
 				return;
 			}
@@ -482,8 +482,8 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth;
-			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight;
+			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var viewPortWidth:Number = explicitWidth;
 			if(needsExplicitWidth)
 			{
@@ -837,26 +837,26 @@ package feathers.layout
 			var itemCount:int = itemArrayCount + this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
 
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(itemCount > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = itemCount - 1;
 			}
-			else if(keyCode === Keyboard.PAGE_UP ||
-				(this._direction === Direction.VERTICAL && keyCode === Keyboard.UP) ||
-				(this._direction === Direction.HORIZONTAL && keyCode === Keyboard.LEFT))
+			else if(keyCode == Keyboard.PAGE_UP ||
+				(this._direction === Direction.VERTICAL && keyCode == Keyboard.UP) ||
+				(this._direction === Direction.HORIZONTAL && keyCode == Keyboard.LEFT))
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.PAGE_DOWN ||
-				(this._direction === Direction.VERTICAL && keyCode === Keyboard.DOWN) ||
-				(this._direction === Direction.HORIZONTAL && keyCode === Keyboard.RIGHT))
+			else if(keyCode == Keyboard.PAGE_DOWN ||
+				(this._direction === Direction.VERTICAL && keyCode == Keyboard.DOWN) ||
+				(this._direction === Direction.HORIZONTAL && keyCode == Keyboard.RIGHT))
 			{
 				result++;
 			}

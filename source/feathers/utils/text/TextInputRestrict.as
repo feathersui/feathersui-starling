@@ -102,12 +102,12 @@ package feathers.utils.text
 				else if(this._restrict)
 				{
 					var startIndex:int = 0;
-					var isExcluding:Boolean = value.indexOf("^") === 0;
+					var isExcluding:Boolean = value.indexOf("^") == 0;
 					this._restrictStartsWithExclude = isExcluding;
 					do
 					{
 						var nextStartIndex:int = value.indexOf("^", startIndex + 1);
-						while(nextStartIndex !== -1 && value.charAt(nextStartIndex - 1) === "\\")
+						while(nextStartIndex != -1 && value.charAt(nextStartIndex - 1) === "\\")
 						{
 							//this is an escaped caret, so skip it
 							nextStartIndex = value.indexOf("^", nextStartIndex + 1);
@@ -209,7 +209,7 @@ package feathers.utils.text
 		 */
 		protected function createRestrictRegExp(restrict:String, isExcluding:Boolean):RegExp
 		{
-			if(!isExcluding && restrict.indexOf("^") === 0)
+			if(!isExcluding && restrict.indexOf("^") == 0)
 			{
 				//unlike regular expressions, which always treat ^ as excluding,
 				//restrict uses ^ to swap between excluding and including.

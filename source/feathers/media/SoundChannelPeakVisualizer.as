@@ -96,7 +96,7 @@ package feathers.media
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}

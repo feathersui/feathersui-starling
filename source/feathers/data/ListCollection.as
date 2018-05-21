@@ -676,7 +676,7 @@ package feathers.data
 			{
 				this.refreshFilterAndSort();
 			}
-			if(this.length === 0)
+			if(this.length == 0)
 			{
 				return;
 			}

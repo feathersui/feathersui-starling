@@ -290,12 +290,12 @@ package feathers.media
 			this._soundSource = value;
 			//reset the current and total time if we were playing a different
 			//sound previously
-			if(this._currentTime !== 0)
+			if(this._currentTime != 0)
 			{
 				this._currentTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 			}
-			if(this._totalTime !== 0)
+			if(this._totalTime != 0)
 			{
 				this._totalTime = 0;
 				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
@@ -317,7 +317,7 @@ package feathers.media
 			{
 				this._sound = Sound(this._soundSource);
 				var newTotalTime:Number = this._sound.length / 1000;
-				if(this._totalTime !== newTotalTime)
+				if(this._totalTime != newTotalTime)
 				{
 					this._totalTime = newTotalTime;
 					this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
@@ -708,7 +708,7 @@ package feathers.media
 		{
 			var oldTotalTime:Number = this._totalTime;
 			this._totalTime = this._sound.length / 1000;
-			if(oldTotalTime !== this._totalTime)
+			if(oldTotalTime != this._totalTime)
 			{
 				this.dispatchEventWith(MediaPlayerEventType.TOTAL_TIME_CHANGE);
 			}

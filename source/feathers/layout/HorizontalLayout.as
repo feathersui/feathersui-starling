@@ -261,7 +261,7 @@ package feathers.layout
 			{
 				throw RangeError("maxColumnCount requires a value >= 0");
 			}
-			if(this._maxColumnCount === value)
+			if(this._maxColumnCount == value)
 			{
 				return;
 			}
@@ -330,8 +330,8 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth;
-			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight;
+			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var distributedWidth:Number;
 			if(!needsExplicitWidth && this._distributeWidths)
 			{
@@ -410,11 +410,11 @@ package feathers.layout
 			{
 				if(!this._useVirtualLayout)
 				{
-					if(this._maxColumnCount > 0 && this._maxColumnCount === i)
+					if(this._maxColumnCount > 0 && this._maxColumnCount == i)
 					{
 						maxColumnAvailableWidth = positionX;
 					}
-					if(this._requestedColumnCount > 0 && this._requestedColumnCount === i)
+					if(this._requestedColumnCount > 0 && this._requestedColumnCount == i)
 					{
 						requestedColumnAvailableWidth = positionX;
 					}
@@ -474,7 +474,7 @@ package feathers.layout
 						continue;
 					}
 					var pivotX:Number = item.pivotX;
-					if(pivotX !== 0)
+					if(pivotX != 0)
 					{
 						pivotX *= item.scaleX;
 					}
@@ -519,7 +519,7 @@ package feathers.layout
 							//if all items must have the same width, we will
 							//use the width of the typical item (calculatedTypicalItemWidth).
 							itemWidth = calculatedTypicalItemWidth;
-							if(item !== this._typicalItem || item.width !== itemWidth)
+							if(item !== this._typicalItem || item.width != itemWidth)
 							{
 								//ensure that the typical item's width is not
 								//set explicitly so that it can resize
@@ -674,7 +674,7 @@ package feathers.layout
 				}
 
 				var pivotY:Number = item.pivotY;
-				if(pivotY !== 0)
+				if(pivotY != 0)
 				{
 					pivotY *= item.scaleY;
 				}
@@ -1089,7 +1089,7 @@ package feathers.layout
 				if(this._hasVariableItemDimensions)
 				{
 					var itemWidth:Number = this._virtualCache[index];
-					if(itemWidth !== itemWidth)
+					if(itemWidth !== itemWidth) //isNaN
 					{
 						itemWidth = this._typicalItem.width;
 					}
@@ -1150,18 +1150,18 @@ package feathers.layout
 			}
 
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(itemCount > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = itemCount - 1;
 			}
-			else if(keyCode === Keyboard.PAGE_UP)
+			else if(keyCode == Keyboard.PAGE_UP)
 			{
 				var xPosition:Number = 0;
 				var indexOffset:int = 0;
@@ -1214,7 +1214,7 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.PAGE_DOWN)
+			else if(keyCode == Keyboard.PAGE_DOWN)
 			{
 				xPosition = 0;
 				indexOffset = 0;
@@ -1267,11 +1267,11 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.LEFT)
+			else if(keyCode == Keyboard.LEFT)
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.RIGHT)
+			else if(keyCode == Keyboard.RIGHT)
 			{
 				result++;
 			}
@@ -1297,7 +1297,7 @@ package feathers.layout
 				if(this._hasVariableItemDimensions)
 				{
 					var itemWidth:Number = this._virtualCache[index];
-					if(itemWidth !== itemWidth)
+					if(itemWidth !== itemWidth) //isNaN
 					{
 						itemWidth = this._typicalItem.width;
 					}
@@ -1620,11 +1620,13 @@ package feathers.layout
 				totalExplicitWidth += item.width + this._gap;
 			}
 			totalExplicitWidth -= this._gap;
-			if(this._firstGap === this._firstGap && itemCount > 1)
+			if(this._firstGap === this._firstGap && //!isNaN
+				itemCount > 1)
 			{
 				totalExplicitWidth += (this._firstGap - this._gap);
 			}
-			else if(this._lastGap === this._lastGap && itemCount > 2)
+			else if(this._lastGap === this._lastGap //!isNaN
+				&& itemCount > 2)
 			{
 				totalExplicitWidth += (this._lastGap - this._gap);
 			}

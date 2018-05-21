@@ -109,7 +109,7 @@ package feathers.utils.textures
 		 */
 		public function set maxUnretainedTextures(value:int):void
 		{
-			if(this._maxUnretainedTextures === value)
+			if(this._maxUnretainedTextures == value)
 			{
 				return;
 			}
@@ -268,7 +268,7 @@ package feathers.utils.textures
 			}
 			var count:int = this._retainCounts[key] as int;
 			count--;
-			if(count === 0)
+			if(count == 0)
 			{
 				//get the existing texture
 				var texture:Texture = Texture(this._retainedTextures[key]);

@@ -467,7 +467,7 @@ class WipeTween extends Tween
 			//the initial dimensions cannot be 0 or there's a runtime error,
 			mask.width = 0;
 			mask.height = 0;
-			if(xOffset !== 0)
+			if(xOffset != 0)
 			{
 				if(xOffset < 0)
 				{
@@ -475,7 +475,7 @@ class WipeTween extends Tween
 				}
 				mask.height = newScreen.height;
 			}
-			if(yOffset !== 0)
+			if(yOffset != 0)
 			{
 				if(yOffset < 0)
 				{

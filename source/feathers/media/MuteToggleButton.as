@@ -681,7 +681,7 @@ package feathers.media
 			if(this._isSelected)
 			{
 				this._oldVolume = soundTransform.volume;
-				if(this._oldVolume === 0)
+				if(this._oldVolume == 0)
 				{
 					this._oldVolume = 1;
 				}

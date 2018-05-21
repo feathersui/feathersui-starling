@@ -26,7 +26,7 @@ package feathers.utils.display
 			return -1;
 		}
 		var count:int = 0;
-		while(target.parent)
+		while(target.parent !== null)
 		{
 			target = target.parent;
 			count++;

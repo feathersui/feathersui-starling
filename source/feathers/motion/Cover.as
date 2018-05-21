@@ -204,7 +204,7 @@ package feathers.motion
 			{
 				tween.animate("x", 0);
 			}
-			if(newScreen.y !== 0)
+			if(newScreen.y != 0)
 			{
 				tween.animate("y", 0);
 			}
