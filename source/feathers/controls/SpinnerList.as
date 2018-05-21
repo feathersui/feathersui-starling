@@ -226,7 +226,7 @@ package feathers.controls
 				//provider is empty
 				return;
 			}
-			if(this._selectedIndex !== value)
+			if(this._selectedIndex != value)
 			{
 				this.scrollToDisplayIndex(value, 0);
 			}
@@ -412,11 +412,11 @@ package feathers.controls
 			var oldActualPageWidth:Number = this.actualPageWidth;
 			var oldActualPageHeight:Number = this.actualPageHeight;
 			super.refreshMinAndMaxScrollPositions();
-			if(this._maxVerticalScrollPosition !== this._minVerticalScrollPosition)
+			if(this._maxVerticalScrollPosition != this._minVerticalScrollPosition)
 			{
 				this.actualPageHeight = this._spinnerLayout.snapInterval;
-				if(!this.isScrolling && this.pendingItemIndex === -1 &&
-					this.actualPageHeight !== oldActualPageHeight)
+				if(!this.isScrolling && this.pendingItemIndex == -1 &&
+					this.actualPageHeight != oldActualPageHeight)
 				{
 					//if the height of items have changed, we need to tweak the
 					//scroll position to re-center the selected item.
@@ -427,11 +427,11 @@ package feathers.controls
 					this._verticalScrollPosition = this.actualPageHeight * verticalPageIndex;
 				}
 			}
-			else if(this._maxHorizontalScrollPosition !== this._minHorizontalScrollPosition)
+			else if(this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition)
 			{
 				this.actualPageWidth = this._spinnerLayout.snapInterval;
-				if(!this.isScrolling && this.pendingItemIndex === -1 &&
-					this.actualPageWidth !== oldActualPageWidth)
+				if(!this.isScrolling && this.pendingItemIndex == -1 &&
+					this.actualPageWidth != oldActualPageWidth)
 				{
 					var horizontalPageIndex:int = this.calculateNearestPageIndexForItem(this._selectedIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
 					this._horizontalScrollPosition = this.actualPageWidth * horizontalPageIndex;
@@ -451,12 +451,12 @@ package feathers.controls
 				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					this.pendingVerticalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
-					this.hasPendingVerticalPageIndex = this.pendingVerticalPageIndex !== this._verticalPageIndex;
+					this.hasPendingVerticalPageIndex = this.pendingVerticalPageIndex != this._verticalPageIndex;
 				}
 				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
 					this.pendingHorizontalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
-					this.hasPendingHorizontalPageIndex = this.pendingHorizontalPageIndex !== this._horizontalPageIndex;
+					this.hasPendingHorizontalPageIndex = this.pendingHorizontalPageIndex != this._horizontalPageIndex;
 				}
 			}
 			super.handlePendingScroll();
@@ -527,11 +527,11 @@ package feathers.controls
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
 			var itemCount:int = this._dataProvider.length;
-			if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+			if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 			{
 				var pageIndex:int = this._verticalPageIndex % itemCount;
 			}
-			else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+			else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 			{
 				pageIndex = this._horizontalPageIndex % itemCount;
 			}
@@ -545,11 +545,11 @@ package feathers.controls
 			{
 				//if the item renderer isn't enabled, we cannot select it
 				//go back to the previously selected index
-				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					this.scrollToPageIndex(this._horizontalPageIndex, this._selectedIndex, this._pageThrowDuration);
 				}
-				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
 					this.scrollToPageIndex(this._selectedIndex, this._verticalPageIndex, this._pageThrowDuration);
 				}
@@ -643,23 +643,23 @@ package feathers.controls
 			{
 				return;
 			}
-			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
-				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
-				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
-				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
+			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
+				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
-				if(this.selectedIndex !== newIndex)
+				if(this.selectedIndex != newIndex)
 				{
 					//property must change immediately, but the animation can take longer
 					this.selectedIndex = newIndex;
-					if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+					if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 					{
 						event.preventDefault();
 						var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
 						this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
 					}
-					else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+					else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 					{
 						event.preventDefault();
 						pageIndex = this.calculateNearestPageIndexForItem(newIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
@@ -696,23 +696,23 @@ package feathers.controls
 			{
 				keyCode = Keyboard.LEFT;
 			}
-			if(keyCode === int.MAX_VALUE)
+			if(keyCode == int.MAX_VALUE)
 			{
 				return;
 			}
 			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
-			if(this.selectedIndex !== newIndex)
+			if(this.selectedIndex != newIndex)
 			{
 				//property must change immediately, but the animation can take longer
 				this.selectedIndex = newIndex;
-				if(this._maxVerticalPageIndex !== this._minVerticalPageIndex)
+				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					event.stopImmediatePropagation();
 					//event.preventDefault();
 					var pageIndex:int = this.calculateNearestPageIndexForItem(newIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
 					this.throwToPage(this._horizontalPageIndex, pageIndex, this._pageThrowDuration);
 				}
-				else if(this._maxHorizontalPageIndex !== this._minHorizontalPageIndex)
+				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
 					event.stopImmediatePropagation();
 					//event.preventDefault();

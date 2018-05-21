@@ -958,7 +958,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -988,7 +988,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1018,7 +1018,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1048,7 +1048,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1078,7 +1078,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -1108,7 +1108,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._titleGap === value)
+			if(this._titleGap == value)
 			{
 				return;
 			}
@@ -2157,11 +2157,11 @@ package feathers.controls
 			//first, we check if it's iOS or not. at this time, we only need to
 			//use extra padding on iOS. android and others are fine.
 			var os:String = Capabilities.os;
-			if(os.indexOf(IOS_NAME_PREFIX) !== -1)
+			if(os.indexOf(IOS_NAME_PREFIX) != -1)
 			{
 				os = os.substring(IOS_NAME_PREFIX.length, os.indexOf("."));
 			}
-			else if(os.indexOf(OLD_IOS_NAME_PREFIX) !== -1)
+			else if(os.indexOf(OLD_IOS_NAME_PREFIX) != -1)
 			{
 				os = os.substring(OLD_IOS_NAME_PREFIX.length, os.indexOf("."));
 			}
@@ -2188,7 +2188,7 @@ package feathers.controls
 			}
 
 			//this value only needs to be calculated once
-			if(iOSStatusBarScaledHeight !== iOSStatusBarScaledHeight)
+			if(iOSStatusBarScaledHeight !== iOSStatusBarScaledHeight) //isNaN
 			{
 				//uses the same mechanism as ScreenDensityScaleFactorManager,
 				//but uses different density values
@@ -2225,7 +2225,7 @@ package feathers.controls
 			for(var i:int = 0; i < idCount; i++)
 			{
 				var id:String = notchIDs[i];
-				if(osString.lastIndexOf(id) === osString.length - id.length)
+				if(osString.lastIndexOf(id) == osString.length - id.length)
 				{
 					return true;
 				}

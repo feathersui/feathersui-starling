@@ -1574,7 +1574,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1604,7 +1604,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1634,7 +1634,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1664,7 +1664,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -2011,7 +2011,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._originGap === value)
+			if(this._originGap == value)
 			{
 				return;
 			}
@@ -2041,7 +2041,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._topArrowGap === value)
+			if(this._topArrowGap == value)
 			{
 				return;
 			}
@@ -2071,7 +2071,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._bottomArrowGap === value)
+			if(this._bottomArrowGap == value)
 			{
 				return;
 			}
@@ -2101,7 +2101,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._rightArrowGap === value)
+			if(this._rightArrowGap == value)
 			{
 				return;
 			}
@@ -2131,7 +2131,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._leftArrowGap === value)
+			if(this._leftArrowGap == value)
 			{
 				return;
 			}
@@ -2161,7 +2161,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._arrowOffset === value)
+			if(this._arrowOffset == value)
 			{
 				return;
 			}
@@ -2852,16 +2852,16 @@ package feathers.controls
 				}
 			}
 			//worst case: pick the side that has the most available space
-			if(downSpace !== -1 && downSpace >= upSpace &&
+			if(downSpace != -1 && downSpace >= upSpace &&
 				downSpace >= rightSpace && downSpace >= leftSpace)
 			{
 				positionBelowOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
-			else if(upSpace !== -1 && upSpace >= rightSpace && upSpace >= leftSpace)
+			else if(upSpace != -1 && upSpace >= rightSpace && upSpace >= leftSpace)
 			{
 				positionAboveOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}
-			else if(rightSpace !== -1 && rightSpace >= leftSpace)
+			else if(rightSpace != -1 && rightSpace >= leftSpace)
 			{
 				positionToRightOfOrigin(this, this._lastGlobalBoundsOfOrigin);
 			}

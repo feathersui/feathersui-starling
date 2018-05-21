@@ -1093,7 +1093,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -1123,7 +1123,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._firstGap === value)
+			if(this._firstGap == value)
 			{
 				return;
 			}
@@ -1153,7 +1153,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._lastGap === value)
+			if(this._lastGap == value)
 			{
 				return;
 			}
@@ -1202,7 +1202,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1232,7 +1232,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1262,7 +1262,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1292,7 +1292,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1911,7 +1911,7 @@ package feathers.controls
 		public function set selectedIndex(value:int):void
 		{
 			this._animateSelectionChange = false;
-			if(this._selectedIndex === value)
+			if(this._selectedIndex == value)
 			{
 				return;
 			}
@@ -1973,11 +1973,11 @@ package feathers.controls
 				return;
 			}
 			var newIndex:int = this._dataProvider.getItemIndex(value);
-			if(newIndex === -1)
+			if(newIndex == -1)
 			{
 				this.selectedIndex = -1;
 			}
-			else if(this._selectedIndex !== newIndex)
+			else if(this._selectedIndex != newIndex)
 			{
 				this.selectedIndex = newIndex;
 			}
@@ -2165,7 +2165,7 @@ package feathers.controls
 		 */
 		public function get baseline():Number
 		{
-			if(!this.activeTabs || this.activeTabs.length === 0)
+			if(!this.activeTabs || this.activeTabs.length == 0)
 			{
 				return this.scaledActualHeight;
 			}
@@ -2671,7 +2671,7 @@ package feathers.controls
 		protected function createTab(item:Object):ToggleButton
 		{
 			var isNewInstance:Boolean = false;
-			if(this.inactiveTabs.length === 0)
+			if(this.inactiveTabs.length == 0)
 			{
 				isNewInstance = true;
 				var tab:ToggleButton = ToggleButton(this._tabFactory());
@@ -2720,7 +2720,7 @@ package feathers.controls
 			}
 			if(this._tabReleaser !== null)
 			{
-				if(this._tabReleaser.length === 1)
+				if(this._tabReleaser.length == 1)
 				{
 					this._tabReleaser(tab);
 				}
@@ -2916,7 +2916,7 @@ package feathers.controls
 		 */
 		protected function refreshSelectedItem():void
 		{
-			if(this._selectedIndex === -1)
+			if(this._selectedIndex == -1)
 			{
 				this._selectedItem = null;
 			}
@@ -2978,7 +2978,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!this._dataProvider || this._dataProvider.length === 0)
+			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
 				return;
 			}
@@ -3010,7 +3010,7 @@ package feathers.controls
 				}
 				this.selectedIndex = newFocusedTabIndex;
 			}
-			else if(event.keyCode === Keyboard.UP || event.keyCode === Keyboard.LEFT)
+			else if(event.keyCode == Keyboard.UP || event.keyCode == Keyboard.LEFT)
 			{
 				newFocusedTabIndex--;
 				if(newFocusedTabIndex < 0)
@@ -3018,7 +3018,7 @@ package feathers.controls
 					newFocusedTabIndex = maxFocusedTabIndex;
 				}
 			}
-			else if(event.keyCode === Keyboard.DOWN || event.keyCode === Keyboard.RIGHT)
+			else if(event.keyCode == Keyboard.DOWN || event.keyCode == Keyboard.RIGHT)
 			{
 				newFocusedTabIndex++;
 				if(newFocusedTabIndex > maxFocusedTabIndex)
@@ -3027,7 +3027,7 @@ package feathers.controls
 				}
 			}
 
-			if(newFocusedTabIndex >= 0 && newFocusedTabIndex !== this._focusedTabIndex)
+			if(newFocusedTabIndex >= 0 && newFocusedTabIndex != this._focusedTabIndex)
 			{
 				this.hideFocusedTab();
 				this.focusedTabFocusOut();
@@ -3101,7 +3101,7 @@ package feathers.controls
 				//the same item is selected, but its index has changed.
 				this.selectedIndex -= 1;
 			}
-			else if(this._selectedIndex === index)
+			else if(this._selectedIndex == index)
 			{
 				var oldIndex:int = this._selectedIndex;
 				var newIndex:int = oldIndex;
@@ -3110,7 +3110,7 @@ package feathers.controls
 				{
 					newIndex = maxIndex;
 				}
-				if(oldIndex === newIndex)
+				if(oldIndex == newIndex)
 				{
 					//we're keeping the same selected index, but the selected
 					//item will change, so we need to manually dispatch the
@@ -3138,7 +3138,7 @@ package feathers.controls
 			{
 				//the data provider has changed drastically. we should reset the
 				//selection to the first item.
-				if(this._selectedIndex !== 0)
+				if(this._selectedIndex != 0)
 				{
 					this.selectedIndex = 0;
 				}
@@ -3164,7 +3164,7 @@ package feathers.controls
 		 */
 		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
-			if(this._selectedIndex === index)
+			if(this._selectedIndex == index)
 			{
 				//we're keeping the same selected index, but the selected
 				//item will change, so we need to manually dispatch the
@@ -3182,7 +3182,7 @@ package feathers.controls
 		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
 			var oldIndex:int = this._dataProvider.getItemIndex(this._selectedItem);
-			if(oldIndex === -1)
+			if(oldIndex == -1)
 			{
 				//the selected item was filtered
 				var newIndex:int = this._selectedIndex;
@@ -3193,7 +3193,7 @@ package feathers.controls
 					//index if the same one can't be used
 					newIndex = maxIndex;
 				}
-				if(newIndex !== -1)
+				if(newIndex != -1)
 				{
 					this.selectedItem = this._dataProvider.getItemAt(newIndex);
 				}
@@ -3202,7 +3202,7 @@ package feathers.controls
 					this.selectedIndex = -1;
 				}
 			}
-			else if(oldIndex !== this._selectedIndex)
+			else if(oldIndex != this._selectedIndex)
 			{
 				//the selectedItem is the same, but its index has changed
 				this.selectedIndex = oldIndex;

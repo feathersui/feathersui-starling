@@ -853,7 +853,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._buttonGap === value)
+			if(this._buttonGap == value)
 			{
 				return;
 			}
@@ -883,7 +883,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._textInputGap === value)
+			if(this._textInputGap == value)
 			{
 				return;
 			}
@@ -2284,13 +2284,13 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode === Keyboard.HOME)
+			if(event.keyCode == Keyboard.HOME)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
 				this.toMinimum();
 			}
-			else if(event.keyCode === Keyboard.END)
+			else if(event.keyCode == Keyboard.END)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
@@ -2298,26 +2298,26 @@ package feathers.controls
 			}
 			else if(this._useLeftAndRightKeys)
 			{
-				if(event.keyCode === Keyboard.RIGHT)
+				if(event.keyCode == Keyboard.RIGHT)
 				{
 					//prevent default so that text input selection doesn't change
 					event.preventDefault();
 					this.increment();
 				}
-				else if(event.keyCode === Keyboard.LEFT)
+				else if(event.keyCode == Keyboard.LEFT)
 				{
 					//prevent default so that text input selection doesn't change
 					event.preventDefault();
 					this.decrement();
 				}
 			}
-			else if(event.keyCode === Keyboard.UP)
+			else if(event.keyCode == Keyboard.UP)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();
 				this.increment();
 			}
-			else if(event.keyCode === Keyboard.DOWN)
+			else if(event.keyCode == Keyboard.DOWN)
 			{
 				//prevent default so that text input selection doesn't change
 				event.preventDefault();

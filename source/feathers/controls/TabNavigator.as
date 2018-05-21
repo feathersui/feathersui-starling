@@ -358,7 +358,7 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			if(this._selectedIndex === value)
+			if(this._selectedIndex == value)
 			{
 				return;
 			}
@@ -794,7 +794,7 @@ package feathers.controls
 		{
 			this.addScreenInternal(id, item);
 			this._tabBarDataProvider.addItemAt(id, index);
-			if(this._selectedIndex < 0 && this._tabBarDataProvider.length === 1)
+			if(this._selectedIndex < 0 && this._tabBarDataProvider.length == 1)
 			{
 				this.selectedIndex = 0;
 			}

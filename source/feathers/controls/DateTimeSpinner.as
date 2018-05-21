@@ -401,7 +401,7 @@ package feathers.controls
 		public function DateTimeSpinner()
 		{
 			super();
-			if(DAYS_IN_MONTH.length === 0)
+			if(DAYS_IN_MONTH.length == 0)
 			{
 				HELPER_DATE.setFullYear(2015); //this is pretty arbitrary
 				for(var i:int = MIN_MONTH_VALUE; i <= MAX_MONTH_VALUE; i++)
@@ -550,7 +550,7 @@ package feathers.controls
 			{
 				time = this._maximum.time;
 			}
-			if(this._value && this._value.time === time)
+			if(this._value && this._value.time == time)
 			{
 				return;
 			}
@@ -653,7 +653,7 @@ package feathers.controls
 		 */
 		public function set minuteStep(value:int):void
 		{
-			if(60 % value !== 0)
+			if(60 % value != 0)
 			{
 				throw new ArgumentError("minuteStep must evenly divide into 60.");
 			}
@@ -819,7 +819,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._scrollDuration === value)
+			if(this._scrollDuration == value)
 			{
 				return;
 			}
@@ -1193,7 +1193,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1223,7 +1223,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1253,7 +1253,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1283,7 +1283,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1333,8 +1333,8 @@ package feathers.controls
 		 */
 		public function scrollToDate(date:Date, animationDuration:Number = NaN):void
 		{
-			if(this.pendingScrollToDate && this.pendingScrollToDate.time === date.time &&
-				this.pendingScrollDuration === animationDuration)
+			if(this.pendingScrollToDate && this.pendingScrollToDate.time == date.time &&
+				this.pendingScrollDuration == animationDuration)
 			{
 				return;
 			}
@@ -2122,7 +2122,7 @@ package feathers.controls
 		 */
 		protected function getMinMonth(year:int):int
 		{
-			if(year === this._minYear)
+			if(year == this._minYear)
 			{
 				return this._minimum.month;
 			}
@@ -2134,7 +2134,7 @@ package feathers.controls
 		 */
 		protected function getMaxMonth(year:int):int
 		{
-			if(year === this._maxYear)
+			if(year == this._maxYear)
 			{
 				return this._maximum.month;
 			}
@@ -2146,7 +2146,7 @@ package feathers.controls
 		 */
 		protected function getMinDate(year:int, month:int):int
 		{
-			if(year === this._minYear && month === this._minimum.month)
+			if(year == this._minYear && month == this._minimum.month)
 			{
 				return this._minimum.date;
 			}
@@ -2158,11 +2158,11 @@ package feathers.controls
 		 */
 		protected function getMaxDate(year:int, month:int):int
 		{
-			if(year === this._maxYear && month === this._maximum.month)
+			if(year == this._maxYear && month == this._maximum.month)
 			{
 				return this._maximum.date;
 			}
-			if(month === 1) //february has a variable number of days
+			if(month == 1) //february has a variable number of days
 			{
 				//subtract one date from march 1st to figure out the last
 				//date of february for the specified year
@@ -2180,8 +2180,8 @@ package feathers.controls
 		{
 			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				if(year === this._minYear && month === this._minimum.month &&
-					date === this._minimum.date)
+				if(year == this._minYear && month == this._minimum.month &&
+					date == this._minimum.date)
 				{
 					return this._minimum.hours;
 				}
@@ -2197,8 +2197,8 @@ package feathers.controls
 		{
 			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				if(year === this._maxYear && month === this._maximum.month &&
-					date === this._maximum.date)
+				if(year == this._maxYear && month == this._maximum.month &&
+					date == this._maximum.date)
 				{
 					return this._maximum.hours;
 				}
@@ -2214,14 +2214,14 @@ package feathers.controls
 		{
 			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				if(year === this._minYear && month === this._minimum.month &&
-					date === this._minimum.date && hours === this._minimum.hours)
+				if(year == this._minYear && month == this._minimum.month &&
+					date == this._minimum.date && hours == this._minimum.hours)
 				{
 					return this._minimum.minutes;
 				}
 				return MIN_MINUTES_VALUE;
 			}
-			if(hours === this._minHours)
+			if(hours == this._minHours)
 			{
 				return this._minimum.minutes;
 			}
@@ -2235,14 +2235,14 @@ package feathers.controls
 		{
 			if(this._editingMode === DateTimeMode.DATE_AND_TIME)
 			{
-				if(year === this._maxYear && month === this._maximum.month &&
-					date === this._maximum.date && hours === this._maximum.hours)
+				if(year == this._maxYear && month == this._maximum.month &&
+					date == this._maximum.date && hours == this._maximum.hours)
 				{
 					return this._maximum.minutes;
 				}
 				return MAX_MINUTES_VALUE;
 			}
-			if(hours === this._maxHours)
+			if(hours == this._maxHours)
 			{
 				return this._maximum.minutes;
 			}
@@ -2304,37 +2304,37 @@ package feathers.controls
 			//collections
 			
 			var yearsCollection:IListCollection = this.yearsList ? this.yearsList.dataProvider : null;
-			if(yearsCollection && (oldMinYear !== this._minYear || oldMaxYear !== this._maxYear))
+			if(yearsCollection && (oldMinYear != this._minYear || oldMaxYear != this._maxYear))
 			{
 				//we need to ensure that the item renderers are enabled
 				yearsCollection.updateAll();
 			}
 			var monthsCollection:IListCollection = this.monthsList ? this.monthsList.dataProvider : null;
-			if(monthsCollection && (oldMinMonth !== this._minMonth || oldMaxMonth !== this._maxMonth))
+			if(monthsCollection && (oldMinMonth != this._minMonth || oldMaxMonth != this._maxMonth))
 			{
 				monthsCollection.updateAll();
 			}
 			var datesCollection:IListCollection = this.datesList ? this.datesList.dataProvider : null;
-			if(datesCollection && (oldMinDate !== this._minDate || oldMaxDate !== this._maxDate))
+			if(datesCollection && (oldMinDate != this._minDate || oldMaxDate != this._maxDate))
 			{
 				datesCollection.updateAll();
 			}
 			var dateAndTimeDatesCollection:IListCollection = this.dateAndTimeDatesList ? this.dateAndTimeDatesList.dataProvider : null;
 			if(dateAndTimeDatesCollection &&
-				(oldMinYear !== this._minYear || oldMaxYear !== this._maxYear ||
-				oldMinMonth !== this._minMonth || oldMaxMonth !== this._maxMonth ||
-				oldMinDate !== this._minDate || oldMaxDate !== this._maxDate))
+				(oldMinYear != this._minYear || oldMaxYear != this._maxYear ||
+				oldMinMonth != this._minMonth || oldMaxMonth != this._maxMonth ||
+				oldMinDate != this._minDate || oldMaxDate != this._maxDate))
 			{
 				dateAndTimeDatesCollection.updateAll();
 			}
 			var hoursCollection:IListCollection = this.hoursList ? this.hoursList.dataProvider : null;
-			if(hoursCollection && (oldMinHours !== this._minHours || oldMaxHours !== this._maxHours ||
-				(this._showMeridiem && this._lastMeridiemValue !== this.meridiemList.selectedIndex)))
+			if(hoursCollection && (oldMinHours != this._minHours || oldMaxHours != this._maxHours ||
+				(this._showMeridiem && this._lastMeridiemValue != this.meridiemList.selectedIndex)))
 			{
 				hoursCollection.updateAll();
 			}
 			var minutesCollection:IListCollection = this.minutesList ? this.minutesList.dataProvider : null;
-			if(minutesCollection && (oldMinMinutes !== this._minMinute || oldMaxMinutes!== this._maxMinute))
+			if(minutesCollection && (oldMinMinutes != this._minMinute || oldMaxMinutes!= this._maxMinute))
 			{
 				minutesCollection.updateAll();
 			}
@@ -2446,8 +2446,8 @@ package feathers.controls
 		protected function layoutChildren():void
 		{
 			if(this.currentBackgroundSkin !== null &&
-				(this.currentBackgroundSkin.width !== this.actualWidth ||
-				this.currentBackgroundSkin.height !== this.actualHeight))
+				(this.currentBackgroundSkin.width != this.actualWidth ||
+				this.currentBackgroundSkin.height != this.actualHeight))
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
@@ -2478,7 +2478,7 @@ package feathers.controls
 			if(this.yearsList)
 			{
 				var year:int = pendingDate.fullYear;
-				if(this.yearsList.selectedItem !== year)
+				if(this.yearsList.selectedItem != year)
 				{
 					var yearRange:IntegerRangeCollection = IntegerRangeCollection(this.yearsList.dataProvider);
 					this.yearsList.scrollToDisplayIndex(year - yearRange.minimum, duration);
@@ -2487,7 +2487,7 @@ package feathers.controls
 			if(this.monthsList)
 			{
 				var month:int = pendingDate.month;
-				if(this.monthsList.selectedItem !== month)
+				if(this.monthsList.selectedItem != month)
 				{
 					this.monthsList.scrollToDisplayIndex(month, duration);
 				}
@@ -2495,7 +2495,7 @@ package feathers.controls
 			if(this.datesList)
 			{
 				var date:int = pendingDate.date;
-				if(this.datesList.selectedItem !== date)
+				if(this.datesList.selectedItem != date)
 				{
 					this.datesList.scrollToDisplayIndex(date - 1, duration);
 				}
@@ -2503,7 +2503,7 @@ package feathers.controls
 			if(this.dateAndTimeDatesList)
 			{
 				var dateIndex:int = (pendingDate.time - this._minimum.time) / MS_PER_DAY;
-				if(this.dateAndTimeDatesList.selectedIndex !== dateIndex)
+				if(this.dateAndTimeDatesList.selectedIndex != dateIndex)
 				{
 					this.dateAndTimeDatesList.scrollToDisplayIndex(dateIndex, duration);
 				}
@@ -2515,7 +2515,7 @@ package feathers.controls
 				{
 					hours %= 12;
 				}
-				if(this.hoursList.selectedItem !== hours)
+				if(this.hoursList.selectedItem != hours)
 				{
 					this.hoursList.scrollToDisplayIndex(hours, duration);
 				}
@@ -2523,7 +2523,7 @@ package feathers.controls
 			if(this.minutesList)
 			{
 				var minutes:int = pendingDate.minutes;
-				if(this.minutesList.selectedItem !== minutes)
+				if(this.minutesList.selectedItem != minutes)
 				{
 					this.minutesList.scrollToDisplayIndex(minutes, duration);
 				}
@@ -2531,7 +2531,7 @@ package feathers.controls
 			if(this.meridiemList)
 			{
 				var index:int = (pendingDate.hours < MAX_HOURS_VALUE_12HOURS) ? 0 : 1;
-				if(this.meridiemList.selectedIndex !== index)
+				if(this.meridiemList.selectedIndex != index)
 				{
 					this.meridiemList.scrollToDisplayIndex(index, duration);
 				}
@@ -2567,7 +2567,7 @@ package feathers.controls
 		 */
 		protected function isHourEnabled(hour:int):Boolean
 		{
-			if(this._showMeridiem && this.meridiemList.selectedIndex !== 0)
+			if(this._showMeridiem && this.meridiemList.selectedIndex != 0)
 			{
 				hour += 12;
 			}
@@ -2589,7 +2589,7 @@ package feathers.controls
 		{
 			if(this._showMeridiem)
 			{
-				if(item === 0)
+				if(item == 0)
 				{
 					item = 12;
 				}
@@ -2630,9 +2630,9 @@ package feathers.controls
 					//_lastValidate will be updated once per validation when
 					//scrolling, which is better than creating many duplicate Date
 					//objects in this function
-					if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
-						HELPER_DATE.month === this._lastValidate.month &&
-						HELPER_DATE.date === this._lastValidate.date)
+					if(HELPER_DATE.fullYear == this._lastValidate.fullYear &&
+						HELPER_DATE.month == this._lastValidate.month &&
+						HELPER_DATE.date == this._lastValidate.date)
 					{
 						return "";
 					}
@@ -2658,9 +2658,9 @@ package feathers.controls
 					//_lastValidate will be updated once per validation when
 					//scrolling, which is better than creating many duplicate Date
 					//objects in this function
-					if(HELPER_DATE.fullYear === this._lastValidate.fullYear &&
-						HELPER_DATE.month === this._lastValidate.month &&
-						HELPER_DATE.date === this._lastValidate.date)
+					if(HELPER_DATE.fullYear == this._lastValidate.fullYear &&
+						HELPER_DATE.month == this._lastValidate.month &&
+						HELPER_DATE.date == this._lastValidate.date)
 					{
 						return this._todayLabel;
 					}
@@ -2716,11 +2716,11 @@ package feathers.controls
 		protected function updateHoursFromLists():Boolean
 		{
 			var hours:int = this.hoursList.selectedItem as int;
-			if(this.meridiemList && this.meridiemList.selectedIndex === 1)
+			if(this.meridiemList && this.meridiemList.selectedIndex == 1)
 			{
 				hours += 12;
 			}
-			if(this._value.hours === hours)
+			if(this._value.hours == hours)
 			{
 				return false;
 			}
@@ -2796,8 +2796,8 @@ package feathers.controls
 			}
 			var month:int = this.monthsList.selectedItem as int;
 			var date:int = this.getValidDateForYearAndMonth(this._value.fullYear, month);
-			var needsToScroll:Boolean = this._value.date !== date;
-			if(!needsToScroll && this._value.month === month)
+			var needsToScroll:Boolean = this._value.date != date;
+			if(!needsToScroll && this._value.month == month)
 			{
 				return;
 			}
@@ -2821,7 +2821,7 @@ package feathers.controls
 				return;
 			}
 			var date:int = this.datesList.selectedItem as int;
-			if(this._value.date === date)
+			if(this._value.date == date)
 			{
 				return;
 			}
@@ -2841,7 +2841,7 @@ package feathers.controls
 				return;
 			}
 			var year:int = this.yearsList.selectedItem as int;
-			if(this._value.fullYear === year)
+			if(this._value.fullYear == year)
 			{
 				return;
 			}
@@ -2894,7 +2894,7 @@ package feathers.controls
 				return;
 			}
 			var minutes:int = this.minutesList.selectedItem as int;
-			if(this._value.minutes === minutes)
+			if(this._value.minutes == minutes)
 			{
 				return;
 			}
@@ -2948,7 +2948,7 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 
 	public function set minimum(value:int):void
 	{
-		if(this._minimum === value)
+		if(this._minimum == value)
 		{
 			return;
 		}
@@ -2966,7 +2966,7 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 
 	public function set maximum(value:int):void
 	{
-		if(this._maximum === value)
+		if(this._maximum == value)
 		{
 			return;
 		}
@@ -2984,7 +2984,7 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 
 	public function set step(value:int):void
 	{
-		if(this._step === value)
+		if(this._step == value)
 		{
 			return;
 		}
@@ -3046,7 +3046,7 @@ class IntegerRangeCollection extends EventDispatcher implements IListCollection
 			return false;
 		}
 		var value:int = item as int;
-		return Math.ceil((value - this._minimum) / this._step) !== -1;
+		return Math.ceil((value - this._minimum) / this._step) != -1;
 	}
 
 	public function getItemIndex(item:Object):int

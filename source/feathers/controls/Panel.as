@@ -1063,7 +1063,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingTop === value)
+			if(this._outerPaddingTop == value)
 			{
 				return;
 			}
@@ -1093,7 +1093,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingRight === value)
+			if(this._outerPaddingRight == value)
 			{
 				return;
 			}
@@ -1123,7 +1123,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingBottom === value)
+			if(this._outerPaddingBottom == value)
 			{
 				return;
 			}
@@ -1153,7 +1153,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingLeft === value)
+			if(this._outerPaddingLeft == value)
 			{
 				return;
 			}

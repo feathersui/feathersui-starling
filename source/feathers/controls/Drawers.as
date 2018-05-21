@@ -3304,7 +3304,7 @@ package feathers.controls
 			this.pendingToggleDuration = NaN;
 			if(this._openMode === RelativeDepth.ABOVE)
 			{
-				targetPosition = targetPosition === 0 ? -this._topDrawer.height : 0;
+				targetPosition = targetPosition == 0 ? -this._topDrawer.height : 0;
 				this._openOrCloseTween = new Tween(this._topDrawer, duration, this._openOrCloseEase);
 			}
 			else //below
@@ -3478,7 +3478,7 @@ package feathers.controls
 			this.pendingToggleDuration = NaN;
 			if(this._openMode === RelativeDepth.ABOVE)
 			{
-				targetPosition = targetPosition === 0 ? -this._leftDrawer.width : 0;
+				targetPosition = targetPosition == 0 ? -this._leftDrawer.width : 0;
 				this._openOrCloseTween = new Tween(this._leftDrawer, duration, this._openOrCloseEase);
 			}
 			else //below

@@ -753,7 +753,7 @@ package feathers.controls
 		 */
 		public function popScreen(transition:Function = null):DisplayObject
 		{
-			if(this._stack.length === 0)
+			if(this._stack.length == 0)
 			{
 				return this._activeScreen;
 			}
@@ -1568,12 +1568,12 @@ package feathers.controls
 		 */
 		protected function stackScreenNavigator_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || !this._isSwipeToPopEnabled || (this._stack.length === 0 && !this._isDragging))
+			if(!this._isEnabled || !this._isSwipeToPopEnabled || (this._stack.length == 0 && !this._isDragging))
 			{
 				this._touchPointID = -1;
 				return;
 			}
-			if(this._touchPointID !== -1)
+			if(this._touchPointID != -1)
 			{
 				var touch:Touch = event.getTouch(this, null, this._touchPointID);
 				if(touch === null)
@@ -1619,7 +1619,7 @@ package feathers.controls
 		 */
 		protected function exclusiveTouch_changeHandler(event:Event, touchID:int):void
 		{
-			if(this._touchPointID === -1 || this._touchPointID !== touchID || this._isDragging)
+			if(this._touchPointID == -1 || this._touchPointID != touchID || this._isDragging)
 			{
 				return;
 			}

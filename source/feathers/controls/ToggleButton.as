@@ -1330,7 +1330,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._scaleWhenSelected === value)
+			if(this._scaleWhenSelected == value)
 			{
 				return;
 			}

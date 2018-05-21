@@ -530,7 +530,7 @@ package feathers.controls
 		{
 			super.setChildIndex(child, index);
 			var oldIndex:int = this.items.indexOf(child);
-			if(oldIndex === index)
+			if(oldIndex == index)
 			{
 				return;
 			}
@@ -850,8 +850,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this.currentBackgroundSkin.width !== this.actualWidth ||
-				this.currentBackgroundSkin.height !== this.actualHeight)
+			if(this.currentBackgroundSkin.width != this.actualWidth ||
+				this.currentBackgroundSkin.height != this.actualHeight)
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;
@@ -864,10 +864,10 @@ package feathers.controls
 		 */
 		protected function refreshViewPortBounds():void
 		{
-			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth;
-			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight;
-			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth;
-			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight;
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
 
 			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
 				this._explicitWidth, this._explicitHeight,

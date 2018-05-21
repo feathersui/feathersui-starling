@@ -1188,7 +1188,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -1218,7 +1218,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._minGap === value)
+			if(this._minGap == value)
 			{
 				return;
 			}
@@ -1329,7 +1329,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1359,7 +1359,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1389,7 +1389,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1419,7 +1419,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1449,7 +1449,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._labelOffsetX === value)
+			if(this._labelOffsetX == value)
 			{
 				return;
 			}
@@ -1479,7 +1479,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._labelOffsetY === value)
+			if(this._labelOffsetY == value)
 			{
 				return;
 			}
@@ -1509,7 +1509,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._iconOffsetX === value)
+			if(this._iconOffsetX == value)
 			{
 				return;
 			}
@@ -1539,7 +1539,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._iconOffsetY === value)
+			if(this._iconOffsetY == value)
 			{
 				return;
 			}
@@ -2228,7 +2228,7 @@ package feathers.controls
 		 */
 		public function set longPressDuration(value:Number):void
 		{
-			if(this._longPressDuration === value)
+			if(this._longPressDuration == value)
 			{
 				return;
 			}
@@ -2353,7 +2353,7 @@ package feathers.controls
 		override public function render(painter:Painter):void
 		{
 			var scale:Number = this.getCurrentScale();
-			if(scale !== 1)
+			if(scale != 1)
 			{
 				var matrix:Matrix = Pool.getMatrix();
 				//scale first, then translate... issue #1455
@@ -2674,7 +2674,7 @@ package feathers.controls
 			}
 			
 			var adjustedGap:Number = this._gap;
-			if(adjustedGap === Number.POSITIVE_INFINITY)
+			if(adjustedGap == Number.POSITIVE_INFINITY)
 			{
 				adjustedGap = this._minGap;
 			}
@@ -2712,7 +2712,8 @@ package feathers.controls
 				{
 					if(labelRenderer !== null) //both label and icon
 					{
-						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
+						if(this._iconPosition !== RelativePosition.TOP &&
+							this._iconPosition !== RelativePosition.BOTTOM &&
 							this._iconPosition !== RelativePosition.MANUAL)
 						{
 							newMinWidth += adjustedGap;
@@ -2857,7 +2858,8 @@ package feathers.controls
 				{
 					if(labelRenderer !== null) //both label and icon
 					{
-						if(this._iconPosition !== RelativePosition.TOP && this._iconPosition !== RelativePosition.BOTTOM &&
+						if(this._iconPosition !== RelativePosition.TOP &&
+							this._iconPosition !== RelativePosition.BOTTOM &&
 							this._iconPosition !== RelativePosition.MANUAL)
 						{
 							newWidth += adjustedGap + this.currentIcon.width;
@@ -2931,7 +2933,7 @@ package feathers.controls
 				return;
 			}
 			super.changeState(state);
-			if(this.getCurrentScale() !== 1)
+			if(this.getCurrentScale() != 1)
 			{
 				this.setRequiresRedraw();
 			}

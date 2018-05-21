@@ -911,7 +911,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -941,7 +941,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._firstGap === value)
+			if(this._firstGap == value)
 			{
 				return;
 			}
@@ -971,7 +971,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._lastGap === value)
+			if(this._lastGap == value)
 			{
 				return;
 			}
@@ -1020,7 +1020,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1050,7 +1050,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1080,7 +1080,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1110,7 +1110,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1548,7 +1548,7 @@ package feathers.controls
 		 */
 		public function get baseline():Number
 		{
-			if(!this.activeButtons || this.activeButtons.length === 0)
+			if(!this.activeButtons || this.activeButtons.length == 0)
 			{
 				return this.scaledActualHeight;
 			}
@@ -1957,7 +1957,7 @@ package feathers.controls
 		protected function createButton(item:Object):Button
 		{
 			var isNewInstance:Boolean = false;
-			if(this.inactiveButtons.length === 0)
+			if(this.inactiveButtons.length == 0)
 			{
 				isNewInstance = true;
 				var button:Button = this._buttonFactory();
@@ -1995,7 +1995,7 @@ package feathers.controls
 		{
 			var item:Object = this._buttonToItem[button];
 			delete this._buttonToItem[button];
-			if(this._buttonReleaser.length === 1)
+			if(this._buttonReleaser.length == 1)
 			{
 				this._buttonReleaser(button);
 			}

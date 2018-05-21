@@ -976,7 +976,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1006,7 +1006,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1036,7 +1036,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1066,7 +1066,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -2933,7 +2933,7 @@ package feathers.controls
 				this.maximumTrack.touchable = range > 0 && range < Number.POSITIVE_INFINITY;
 			}
 
-			var showButtons:Boolean = this._maximum !== this._minimum;
+			var showButtons:Boolean = this._maximum != this._minimum;
 			if(this._direction === Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
@@ -3006,7 +3006,7 @@ package feathers.controls
 			var range:Number = this._maximum - this._minimum;
 			this.minimumTrack.touchable = range > 0 && range < Number.POSITIVE_INFINITY;
 
-			var showButtons:Boolean = this._maximum !== this._minimum;
+			var showButtons:Boolean = this._maximum != this._minimum;
 			if(this._direction === Direction.VERTICAL)
 			{
 				this.minimumTrack.x = 0;
@@ -3110,7 +3110,7 @@ package feathers.controls
 		{
 			var range:Number = this._maximum - this._minimum;
 			var adjustedPage:Number = this._page;
-			if(this._page === 0)
+			if(this._page == 0)
 			{
 				adjustedPage = this._step;
 			}
@@ -3121,7 +3121,7 @@ package feathers.controls
 			if(this._touchValue < this._pageStartValue)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - adjustedPage);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundDownToNearest(newValue, this._step);
 				}
@@ -3130,7 +3130,7 @@ package feathers.controls
 			else if(this._touchValue > this._pageStartValue)
 			{
 				newValue = Math.min(this._touchValue, this._value + adjustedPage);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundUpToNearest(newValue, this._step);
 				}

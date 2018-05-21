@@ -1121,7 +1121,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._backgroundColor === value)
+			if(this._backgroundColor == value)
 			{
 				return;
 			}
@@ -1181,7 +1181,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._borderColor === value)
+			if(this._borderColor == value)
 			{
 				return;
 			}
@@ -1331,7 +1331,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._sharpness === value)
+			if(this._sharpness == value)
 			{
 				return;
 			}
@@ -1361,7 +1361,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._thickness === value)
+			if(this._thickness == value)
 			{
 				return;
 			}
@@ -1401,7 +1401,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._textPaddingTop === value)
+			if(this._textPaddingTop == value)
 			{
 				return;
 			}
@@ -1431,7 +1431,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._textPaddingRight === value)
+			if(this._textPaddingRight == value)
 			{
 				return;
 			}
@@ -1461,7 +1461,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._textPaddingBottom === value)
+			if(this._textPaddingBottom == value)
 			{
 				return;
 			}
@@ -1491,7 +1491,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._textPaddingLeft === value)
+			if(this._textPaddingLeft == value)
 			{
 				return;
 			}
@@ -1540,7 +1540,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingTop === value)
+			if(this._outerPaddingTop == value)
 			{
 				return;
 			}
@@ -1570,7 +1570,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingRight === value)
+			if(this._outerPaddingRight == value)
 			{
 				return;
 			}
@@ -1600,7 +1600,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingBottom === value)
+			if(this._outerPaddingBottom == value)
 			{
 				return;
 			}
@@ -1630,7 +1630,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._outerPaddingLeft === value)
+			if(this._outerPaddingLeft == value)
 			{
 				return;
 			}
