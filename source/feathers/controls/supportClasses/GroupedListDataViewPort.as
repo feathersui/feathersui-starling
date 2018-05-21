@@ -1114,16 +1114,28 @@ package feathers.controls.supportClasses
 
 		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
 		{
+			if(item is XML || item is XMLList)
+			{
+				return IGroupedListItemRenderer(this._itemRendererMap[item.toXMLString()]);
+			}
 			return IGroupedListItemRenderer(this._itemRendererMap[item]);
 		}
 
 		public function headerDataToHeaderRenderer(headerData:Object):IGroupedListHeaderRenderer
 		{
+			if(headerData is XML || headerData is XMLList)
+			{
+				return IGroupedListHeaderRenderer(this._headerRendererMap[headerData.toXMLString()]);
+			}
 			return IGroupedListHeaderRenderer(this._headerRendererMap[headerData]);
 		}
 
 		public function footerDataToFooterRenderer(footerData:Object):IGroupedListFooterRenderer
 		{
+			if(footerData is XML || footerData is XMLList)
+			{
+				return IGroupedListFooterRenderer(this._footerRendererMap[footerData.toXMLString()]);
+			}
 			return IGroupedListFooterRenderer(this._footerRendererMap[footerData]);
 		}
 
@@ -1311,7 +1323,7 @@ package feathers.controls.supportClasses
 			//a null value at index 0. this is the only time we allow null.
 			if(typicalItem !== null || newTypicalItemIsInDataProvider)
 			{
-				var typicalItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
+				var typicalItemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(typicalItem);
 				if(typicalItemRenderer)
 				{
 					//at this point, the item already has an item renderer.
@@ -1512,7 +1524,15 @@ package feathers.controls.supportClasses
 			{
 				if(this._typicalItemIsInDataProvider)
 				{
-					delete this._itemRendererMap[this._typicalItemRenderer.data];
+					var item:Object = this._typicalItemRenderer.data;
+					if(item is XML || item is XMLList)
+					{
+						delete this._itemRendererMap[item.toXMLString()];
+					}
+					else
+					{
+						delete this._itemRendererMap[item];
+					}
 				}
 				this.destroyItemRenderer(this._typicalItemRenderer);
 				this._typicalItemRenderer = null;
@@ -1847,14 +1867,21 @@ package feathers.controls.supportClasses
 
 		private function findRendererForItem(item:Object, groupIndex:int, itemIndex:int, layoutIndex:int):void
 		{
-			var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+			var itemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(item);
 			if(this._factoryIDFunction !== null && itemRenderer !== null)
 			{
 				var newFactoryID:String = this.getFactoryID(itemRenderer.data, groupIndex, itemIndex);
 				if(newFactoryID !== itemRenderer.factoryID)
 				{
 					itemRenderer = null;
-					delete this._itemRendererMap[item];
+					if(item is XML || item is XMLList)
+					{
+						delete this._itemRendererMap[item.toXMLString()];
+					}
+					else
+					{
+						delete this._itemRendererMap[item];
+					}
 				}
 			}
 			if(itemRenderer !== null)
@@ -1915,14 +1942,21 @@ package feathers.controls.supportClasses
 
 		private function findRendererForHeader(header:Object, groupIndex:int, layoutIndex:int):void
 		{
-			var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
+			var headerRenderer:IGroupedListHeaderRenderer = this.headerDataToHeaderRenderer(header);
 			if(this._headerFactoryIDFunction !== null && headerRenderer !== null)
 			{
 				var newFactoryID:String = this.getHeaderFactoryID(headerRenderer.data, groupIndex);
 				if(newFactoryID !== headerRenderer.factoryID)
 				{
 					headerRenderer = null;
-					delete this._headerRendererMap[header];
+					if(header is XML || header is XMLList)
+					{
+						delete this._headerRendererMap[header.toXMLString()];
+					}
+					else
+					{
+						delete this._headerRendererMap[header];
+					}
 				}
 			}
 			if(headerRenderer !== null)
@@ -1962,14 +1996,21 @@ package feathers.controls.supportClasses
 
 		private function findRendererForFooter(footer:Object, groupIndex:int, layoutIndex:int):void
 		{
-			var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
+			var footerRenderer:IGroupedListFooterRenderer = this.footerDataToFooterRenderer(footer);
 			if(this._footerFactoryIDFunction !== null && footerRenderer !== null)
 			{
 				var newFactoryID:String = this.getFooterFactoryID(footerRenderer.data, groupIndex);
 				if(newFactoryID !== footerRenderer.factoryID)
 				{
 					footerRenderer = null;
-					delete this._footerRendererMap[footer];
+					if(footer is XML || footer is XMLList)
+					{
+						delete this._footerRendererMap[footer.toXMLString()];
+					}
+					else
+					{
+						delete this._footerRendererMap[footer];
+					}
 				}
 			}
 			if(footerRenderer !== null)
@@ -2063,7 +2104,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
-				delete this._itemRendererMap[itemRenderer.data];
+				var item:Object = itemRenderer.data;
+				if(item is XML || item is XMLList)
+				{
+					delete this._itemRendererMap[item.toXMLString()];
+				}
+				else
+				{
+					delete this._itemRendererMap[item];
+				}
 			}
 		}
 
@@ -2079,7 +2128,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, headerRenderer);
-				delete this._headerRendererMap[headerRenderer.data];
+				var headerData:Object = headerRenderer.data;
+				if(headerData is XML || headerData is XMLList)
+				{
+					delete this._headerRendererMap[headerData.toXMLString()];
+				}
+				else
+				{
+					delete this._headerRendererMap[headerData];
+				}
 			}
 		}
 
@@ -2095,7 +2152,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, footerRenderer);
-				delete this._footerRendererMap[footerRenderer.data];
+				var footerData:Object = footerRenderer.data;
+				if(footerData is XML || footerData is XMLList)
+				{
+					delete this._footerRendererMap[footerData.toXMLString()];
+				}
+				else
+				{
+					delete this._footerRendererMap[footerData];
+				}
 			}
 		}
 
@@ -2244,7 +2309,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._itemRendererMap[item] = itemRenderer;
+				if(item is XML || item is XMLList)
+				{
+					this._itemRendererMap[item.toXMLString()] = itemRenderer;
+				}
+				else
+				{
+					this._itemRendererMap[item] = itemRenderer;
+				}
 				activeItemRenderers.push(itemRenderer);
 				itemRenderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				itemRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
@@ -2293,7 +2365,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._headerRendererMap[header] = headerRenderer;
+				if(header is XML || header is XMLList)
+				{
+					this._headerRendererMap[header.toXMLString()] = headerRenderer;
+				}
+				else
+				{
+					this._headerRendererMap[header] = headerRenderer;
+				}
 				activeHeaderRenderers.push(headerRenderer);
 				headerRenderer.addEventListener(FeathersEventType.RESIZE, headerRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, headerRenderer);
@@ -2340,7 +2419,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._footerRendererMap[footer] = footerRenderer;
+				if(footer is XML || footer is XMLList)
+				{
+					this._footerRendererMap[footer.toXMLString()] = footerRenderer;
+				}
+				else
+				{
+					this._footerRendererMap[footer] = footerRenderer;
+				}
 				activeFooterRenderers[activeFooterRenderers.length] = footerRenderer;
 				footerRenderer.addEventListener(FeathersEventType.RESIZE, footerRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, footerRenderer);
@@ -2926,7 +3012,7 @@ package feathers.controls.supportClasses
 				LOCATION_HELPER_VECTOR[1] = itemIndex;
 				var item:Object = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
-				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+				var itemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(item);
 				if(itemRenderer !== null)
 				{
 					//in order to display the same item with modified properties, this
@@ -2952,10 +3038,10 @@ package feathers.controls.supportClasses
 				{
 					LOCATION_HELPER_VECTOR[1] = i;
 					item = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
-					if(item)
+					if(item !== null)
 					{
-						itemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-						if(itemRenderer)
+						itemRenderer = this.itemToItemRenderer(item);
+						if(itemRenderer !== null)
 						{
 							itemRenderer.data = null;
 							itemRenderer.data = item;
@@ -2968,7 +3054,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToHeaderData(group);
 				if(item)
 				{
-					var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[item]);
+					var headerRenderer:IGroupedListHeaderRenderer = this.headerDataToHeaderRenderer(item);
 					if(headerRenderer)
 					{
 						headerRenderer.data = null;
@@ -2978,7 +3064,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToFooterData(group);
 				if(item)
 				{
-					var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[item]);
+					var footerRenderer:IGroupedListFooterRenderer = this.footerDataToFooterRenderer(item);
 					if(footerRenderer)
 					{
 						footerRenderer.data = null;
