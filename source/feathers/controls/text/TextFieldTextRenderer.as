@@ -1313,7 +1313,7 @@ package feathers.controls.text
 			if(this.textSnapshot !== null)
 			{
 				var scaleFactor:Number = starling.contentScaleFactor;
-				if(!this._nativeFilters || this._nativeFilters.length === 0)
+				if(!this._nativeFilters || this._nativeFilters.length == 0)
 				{
 					var offsetX:Number = 0;
 					var offsetY:Number = 0;
@@ -1691,8 +1691,8 @@ package feathers.controls.text
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
 			if(stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture ||
-				this.actualWidth !== this._previousActualWidth ||
-				this.actualHeight !== this._previousActualHeight)
+				this.actualWidth != this._previousActualWidth ||
+				this.actualHeight != this._previousActualHeight)
 			{
 				this._previousActualWidth = this.actualWidth;
 				this._previousActualHeight = this.actualHeight;
@@ -2013,8 +2013,8 @@ package feathers.controls.text
 
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || this.textSnapshot === null ||
-				(textureRoot !== null && (textureRoot.scale !== scaleFactor ||
-				this._snapshotWidth !== textureRoot.nativeWidth || this._snapshotHeight !== textureRoot.nativeHeight));
+				(textureRoot !== null && (textureRoot.scale != scaleFactor ||
+				this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
 		}
 
 		/**

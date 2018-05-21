@@ -96,7 +96,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+					(this._actualVisibleWidth < value || this._actualVisibleWidth == oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -124,7 +124,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+				(this._actualVisibleWidth > value || this._actualVisibleWidth == oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -148,7 +148,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleWidth = value;
-			if(this._actualVisibleWidth !== value)
+			if(this._actualVisibleWidth != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -190,7 +190,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+					(this._actualVisibleHeight < value || this._actualVisibleHeight == oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -218,7 +218,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+				(this._actualVisibleHeight > value || this._actualVisibleHeight == oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -242,7 +242,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleHeight = value;
-			if(this._actualVisibleHeight !== value)
+			if(this._actualVisibleHeight != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -1801,8 +1801,8 @@ package feathers.controls.supportClasses
 					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
 						if(this._typicalItemRenderer && this._typicalItemIsInDataProvider &&
-							this._typicalItemRenderer.groupIndex === i &&
-							this._typicalItemRenderer.itemIndex === j)
+							this._typicalItemRenderer.groupIndex == i &&
+							this._typicalItemRenderer.itemIndex == j)
 						{
 							//the indices may have changed if items were added, removed,
 							//or reordered in the data provider
@@ -2276,7 +2276,7 @@ package feathers.controls.supportClasses
 			var customStyleName:String = this.indexToCustomStyleName(groupIndex, itemIndex);
 			var inactiveItemRenderers:Vector.<IGroupedListItemRenderer> = storage.inactiveItemRenderers;
 			var activeItemRenderers:Vector.<IGroupedListItemRenderer> = storage.activeItemRenderers;
-			if(!useCache || isTemporary || inactiveItemRenderers.length === 0)
+			if(!useCache || isTemporary || inactiveItemRenderers.length == 0)
 			{
 				var itemRenderer:IGroupedListItemRenderer;
 				if(itemRendererFactory !== null)
@@ -2334,7 +2334,7 @@ package feathers.controls.supportClasses
 			var storage:HeaderRendererFactoryStorage = this.headerFactoryIDToStorage(factoryID);
 			var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.activeHeaderRenderers;
-			if(isTemporary || inactiveHeaderRenderers.length === 0)
+			if(isTemporary || inactiveHeaderRenderers.length == 0)
 			{
 				var headerRenderer:IGroupedListHeaderRenderer;
 				if(headerRendererFactory !== null)
@@ -2388,7 +2388,7 @@ package feathers.controls.supportClasses
 			var storage:FooterRendererFactoryStorage = this.footerFactoryIDToStorage(factoryID);
 			var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.inactiveFooterRenderers;
 			var activeFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.activeFooterRenderers;
-			if(isTemporary || inactiveFooterRenderers.length === 0)
+			if(isTemporary || inactiveFooterRenderers.length == 0)
 			{
 				var footerRenderer:IGroupedListFooterRenderer;
 				if(footerRendererFactory !== null)
@@ -2567,7 +2567,7 @@ package feathers.controls.supportClasses
 				if(totalCount > displayIndex)
 				{
 					var itemIndex:int = displayIndex - (totalCount - groupLength);
-					if(itemIndex === -1)
+					if(itemIndex == -1)
 					{
 						result[0] = -1;
 						result[1] = -1;
@@ -2641,9 +2641,9 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
-				if(this._singleItemRendererType !== null && groupLength === 1)
+				if(this._singleItemRendererType !== null && groupLength == 1)
 				{
 					return this._singleItemRendererType;
 				}
@@ -2652,7 +2652,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererType;
 				}
 			}
-			if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererType !== null && itemIndex == (groupLength - 1))
 			{
 				return this._lastItemRendererType;
 			}
@@ -2669,9 +2669,9 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
-				if(this._customSingleItemRendererStyleName !== null && groupLength === 1)
+				if(this._customSingleItemRendererStyleName !== null && groupLength == 1)
 				{
 					return this._customSingleItemRendererStyleName;
 				}
@@ -2680,7 +2680,7 @@ package feathers.controls.supportClasses
 					return this._customFirstItemRendererStyleName;
 				}
 			}
-			if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
+			if(this._customLastItemRendererStyleName !== null && itemIndex == (groupLength - 1))
 			{
 				return this._customLastItemRendererStyleName;
 			}
@@ -2692,7 +2692,7 @@ package feathers.controls.supportClasses
 			var factoryID:String = null;
 			if(this._factoryIDFunction !== null)
 			{
-				if(this._factoryIDFunction.length === 1)
+				if(this._factoryIDFunction.length == 1)
 				{
 					factoryID = this._factoryIDFunction(item);
 				}
@@ -2713,12 +2713,12 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
 				if((this._singleItemRendererType !== null ||
 					this._singleItemRendererFactory !== null ||
 					this._customSingleItemRendererStyleName !== null) &&
-					groupLength === 1)
+					groupLength == 1)
 				{
 					return SINGLE_ITEM_RENDERER_FACTORY_ID;
 				}
@@ -2730,7 +2730,7 @@ package feathers.controls.supportClasses
 			if((this._lastItemRendererType !== null ||
 				this._lastItemRendererFactory !== null ||
 				this._customLastItemRendererStyleName !== null) &&
-				itemIndex === (groupLength - 1))
+				itemIndex == (groupLength - 1))
 			{
 				return LAST_ITEM_RENDERER_FACTORY_ID;
 			}
@@ -2807,7 +2807,7 @@ package feathers.controls.supportClasses
 			{
 				return null;
 			}
-			if(this._headerFactoryIDFunction.length === 1)
+			if(this._headerFactoryIDFunction.length == 1)
 			{
 				return this._headerFactoryIDFunction(header);
 			}
@@ -2820,7 +2820,7 @@ package feathers.controls.supportClasses
 			{
 				return null;
 			}
-			if(this._footerFactoryIDFunction.length === 1)
+			if(this._footerFactoryIDFunction.length == 1)
 			{
 				return this._footerFactoryIDFunction(footer);
 			}
@@ -3020,8 +3020,8 @@ package feathers.controls.supportClasses
 					//a different item to render.
 					itemRenderer.data = null;
 					itemRenderer.data = item;
-					if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
-						this._explicitVisibleHeight !== this._explicitVisibleHeight)
+					if(this._explicitVisibleWidth !== this._explicitVisibleWidth || //isNaN
+						this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
 					{
 						this.invalidate(INVALIDATION_FLAG_SIZE);
 						this.invalidateParent(INVALIDATION_FLAG_SIZE);

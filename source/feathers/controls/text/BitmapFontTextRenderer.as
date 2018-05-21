@@ -803,7 +803,7 @@ package feathers.controls.text
 			{
 				//when word wrapped, we need to measure again any time that the
 				//width changes.
-				var sizeInvalid:Boolean = newWidth !== this._lastLayoutWidth;
+				var sizeInvalid:Boolean = newWidth != this._lastLayoutWidth;
 			}
 			else
 			{
@@ -815,7 +815,7 @@ package feathers.controls.text
 				sizeInvalid = newWidth < this._lastLayoutWidth;
 
 				//...unless the text was previously truncated!
-				sizeInvalid ||= (this._lastLayoutIsTruncated && newWidth !== this._lastLayoutWidth);
+				sizeInvalid ||= (this._lastLayoutIsTruncated && newWidth != this._lastLayoutWidth);
 
 				//... or the text is aligned
 				sizeInvalid ||= this._currentTextFormat.align !== TextFormatAlign.LEFT;
@@ -882,7 +882,7 @@ package feathers.controls.text
 			var hasExplicitWidth:Boolean = this._explicitWidth === this._explicitWidth; //!isNaN
 			var isAligned:Boolean = this._currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this._explicitWidth : this._explicitMaxWidth;
-			if(isAligned && maxLineWidth === Number.POSITIVE_INFINITY)
+			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
 			{
 				//we need to measure the text to get the maximum line width
 				//so that we can align the text
@@ -919,7 +919,7 @@ package feathers.controls.text
 			{
 				isWordComplete = false;
 				var charID:int = textToDraw.charCodeAt(i);
-				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
 					//remove whitespace after the final character in the line
 					currentX -= customLetterSpacing;
@@ -967,8 +967,8 @@ package feathers.controls.text
 				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
-					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
-					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
+					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
+					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
 					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
@@ -1003,7 +1003,7 @@ package feathers.controls.text
 					var charWidth:Number = charData.width * scale;
 					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && ((currentX + charWidth) - maxLineWidth) > FUZZY_MAX_WIDTH_PADDING)
 					{
-						if(wordCountForLine === 0)
+						if(wordCountForLine == 0)
 						{
 							//if we're breaking long words, this is where we break.
 							//we need to pretend that there's a word before this one.
@@ -1090,7 +1090,7 @@ package feathers.controls.text
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
-					if(maxLineWidth === 0)
+					if(maxLineWidth == 0)
 					{
 						//we don't want to get stuck in an infinite loop!
 						break;
@@ -1137,7 +1137,7 @@ package feathers.controls.text
 				var charLocation:CharLocation = CHARACTER_BUFFER[i];
 				var charData:BitmapChar = charLocation.char;
 				var charID:int = charData.charID;
-				if(charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB)
+				if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
 				{
 					countToRemove++;
 				}
@@ -1208,12 +1208,12 @@ package feathers.controls.text
 			var frame:Rectangle = texture.frame;
 			if(frame)
 			{
-				if(frame.width === 0 || frame.height === 0)
+				if(frame.width == 0 || frame.height == 0)
 				{
 					return;
 				}
 			}
-			else if(texture.width === 0 || texture.height === 0)
+			else if(texture.width == 0 || texture.height == 0)
 			{
 				return;
 			}
@@ -1417,7 +1417,7 @@ package feathers.controls.text
 			for(var i:int = 0; i < charCount; i++)
 			{
 				var charID:int = this._text.charCodeAt(i);
-				if(charID === CHARACTER_ID_LINE_FEED || charID === CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
 					//remove whitespace after the final character in the line
 					currentX -= customLetterSpacing;
@@ -1458,8 +1458,8 @@ package feathers.controls.text
 				var xAdvance:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
-					var currentCharIsWhitespace:Boolean = charID === CHARACTER_ID_SPACE || charID === CHARACTER_ID_TAB;
-					var previousCharIsWhitespace:Boolean = previousCharID === CHARACTER_ID_SPACE || previousCharID === CHARACTER_ID_TAB;
+					var currentCharIsWhitespace:Boolean = charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB;
+					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
 					if(currentCharIsWhitespace)
 					{
 						if(!previousCharIsWhitespace)
@@ -1482,7 +1482,7 @@ package feathers.controls.text
 					var charWidth:Number = charData.width * scale;
 					if(!currentCharIsWhitespace && (wordCountForLine > 0 || this._breakLongWords) && (currentX + charWidth) > maxLineWidth)
 					{
-						if(wordCountForLine === 0)
+						if(wordCountForLine == 0)
 						{
 							//if we're breaking long words, this is where we break
 							startXOfPreviousWord = currentX;
@@ -1531,7 +1531,7 @@ package feathers.controls.text
 				{
 					currentX -= maxLineWidth;
 					currentY += lineHeight;
-					if(maxLineWidth === 0)
+					if(maxLineWidth == 0)
 					{
 						//we don't want to get stuck in an infinite loop!
 						break;
@@ -1575,7 +1575,7 @@ package feathers.controls.text
 			}
 
 			//if the width is infinity or the string is multiline, don't allow truncation
-			if(width === Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
+			if(width == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
 			{
 				return this._text;
 			}

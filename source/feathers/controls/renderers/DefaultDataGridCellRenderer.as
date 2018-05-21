@@ -95,7 +95,7 @@ package feathers.controls.renderers
 		 */
 		public function set rowIndex(value:int):void
 		{
-			if(this._rowIndex === value)
+			if(this._rowIndex == value)
 			{
 				return;
 			}
@@ -121,7 +121,7 @@ package feathers.controls.renderers
 		 */
 		public function set columnIndex(value:int):void
 		{
-			if(this._columnIndex === value)
+			if(this._columnIndex == value)
 			{
 				return;
 			}

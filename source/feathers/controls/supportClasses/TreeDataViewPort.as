@@ -87,7 +87,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+					(this._actualVisibleWidth < value || this._actualVisibleWidth == oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -115,7 +115,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+				(this._actualVisibleWidth > value || this._actualVisibleWidth == oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -139,7 +139,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleWidth = value;
-			if(this._actualVisibleWidth !== value)
+			if(this._actualVisibleWidth != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -181,7 +181,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+					(this._actualVisibleHeight < value || this._actualVisibleHeight == oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -209,7 +209,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+				(this._actualVisibleHeight > value || this._actualVisibleHeight == oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -233,7 +233,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleHeight = value;
-			if(this._actualVisibleHeight !== value)
+			if(this._actualVisibleHeight != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -435,8 +435,8 @@ package feathers.controls.supportClasses
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&
-				(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
-				this._explicitVisibleHeight !== this._explicitVisibleHeight);
+				(this._explicitVisibleWidth !== this._explicitVisibleWidth || //isNaN
+				this._explicitVisibleHeight !== this._explicitVisibleHeight); //isNaN
 		}
 
 		private var _ignoreSelectionChanges:Boolean = false;
@@ -625,7 +625,7 @@ package feathers.controls.supportClasses
 		public function calculateNavigationDestination(location:Vector.<int>, keyCode:uint, result:Vector.<int>):void
 		{
 			var displayIndex:int = this.locationToDisplayIndex(location, false);
-			if(displayIndex === -1)
+			if(displayIndex == -1)
 			{
 				throw new ArgumentError("Cannot calculate navigation destination for location: " + location);
 			}
@@ -641,7 +641,7 @@ package feathers.controls.supportClasses
 			}
 
 			var displayIndex:int = this.locationToDisplayIndex(location, true);
-			if(displayIndex === -1)
+			if(displayIndex == -1)
 			{
 				throw new ArgumentError("Cannot calculate scroll position for location: " + location);
 			}
@@ -657,7 +657,7 @@ package feathers.controls.supportClasses
 			}
 
 			var displayIndex:int = this.locationToDisplayIndex(location, true);
-			if(displayIndex === -1)
+			if(displayIndex == -1)
 			{
 				throw new ArgumentError("Cannot calculate nearest scroll position for location: " + location);
 			}
@@ -799,7 +799,7 @@ package feathers.controls.supportClasses
 				this._displayIndex++;
 				locationOfBranch[locationOfBranch.length] = i;
 				var child:Object = this._dataProvider.getItemAtLocation(locationOfBranch);
-				if(locationOfBranch.length === locationToFind.length)
+				if(locationOfBranch.length == locationToFind.length)
 				{
 					var every:Boolean = locationOfBranch.every(function(item:int, index:int, source:Vector.<int>):Boolean
 					{
@@ -1036,7 +1036,7 @@ package feathers.controls.supportClasses
 				//added the typical item renderer to the active renderers. if
 				//not, we need to do it here.
 				var activeRendererCount:int = activeItemRenderers.length;
-				if(activeRendererCount === 0)
+				if(activeRendererCount == 0)
 				{
 					activeItemRenderers[activeRendererCount] = this._typicalItemRenderer;
 				}
@@ -1101,7 +1101,7 @@ package feathers.controls.supportClasses
 				location[location.length] = i;
 				var item:Object = this._dataProvider.getItemAtLocation(location);
 
-				if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) === -1)
+				if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) == -1)
 				{
 					if(this._typicalItemRenderer !== null &&
 						this._typicalItemIsInDataProvider &&
@@ -1415,7 +1415,7 @@ package feathers.controls.supportClasses
 			var itemRenderer:ITreeItemRenderer;
 			do
 			{
-				if(!useCache || isTemporary || inactiveItemRenderers.length === 0)
+				if(!useCache || isTemporary || inactiveItemRenderers.length == 0)
 				{
 					if(itemRendererFactory !== null)
 					{
@@ -1489,7 +1489,7 @@ package feathers.controls.supportClasses
 			{
 				return null;
 			}
-			if(this._factoryIDFunction.length === 2)
+			if(this._factoryIDFunction.length == 2)
 			{
 				return this._factoryIDFunction(item, location);
 			}

@@ -453,7 +453,7 @@ package feathers.controls.renderers
 		 */
 		public function set owner(value:List):void
 		{
-			if(this._owner == value)
+			if(this._owner === value)
 			{
 				return;
 			}

@@ -587,7 +587,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+					(this._actualVisibleWidth < value || this._actualVisibleWidth == oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -615,7 +615,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+				(this._actualVisibleWidth > value || this._actualVisibleWidth == oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -643,7 +643,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleWidth = value;
-			if(this._actualVisibleWidth !== value)
+			if(this._actualVisibleWidth != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -685,7 +685,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+					(this._actualVisibleHeight < value || this._actualVisibleHeight == oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -713,7 +713,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+				(this._actualVisibleHeight > value || this._actualVisibleHeight == oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -741,7 +741,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleHeight = value;
-			if(this._actualVisibleHeight !== value)
+			if(this._actualVisibleHeight != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}

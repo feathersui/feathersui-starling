@@ -1444,7 +1444,7 @@ package feathers.controls.text
 			if(this.textSnapshot !== null)
 			{
 				var scaleFactor:Number = starling.contentScaleFactor;
-				if(!this._nativeFilters || this._nativeFilters.length === 0)
+				if(!this._nativeFilters || this._nativeFilters.length == 0)
 				{
 					var offsetX:Number = 0;
 					var offsetY:Number = 0;
@@ -1700,7 +1700,7 @@ package feathers.controls.text
 			{
 				//when word wrapped, we need to measure again any time that the
 				//width changes.
-				var needsMeasurement:Boolean = newWidth !== this._lastMeasurementWidth;
+				var needsMeasurement:Boolean = newWidth != this._lastMeasurementWidth;
 			}
 			else
 			{
@@ -1712,7 +1712,7 @@ package feathers.controls.text
 				needsMeasurement = newWidth < this._lastMeasurementWidth;
 
 				//...unless the text was previously truncated!
-				needsMeasurement ||= (this._lastMeasurementWasTruncated && newWidth !== this._lastMeasurementWidth);
+				needsMeasurement ||= (this._lastMeasurementWasTruncated && newWidth != this._lastMeasurementWidth);
 			}
 			if(this._textBlockChanged || needsMeasurement)
 			{
@@ -1761,8 +1761,8 @@ package feathers.controls.text
 			//triggered by changing maxWidth or something for measurement, so we
 			//need to be more specific.
 			var contentStateChanged:Boolean = stylesInvalid || dataInvalid || stateInvalid ||
-				this.actualWidth !== this._previousLayoutActualWidth ||
-				this.actualHeight !== this._previousLayoutActualHeight;
+				this.actualWidth != this._previousLayoutActualWidth ||
+				this.actualHeight != this._previousLayoutActualHeight;
 			if(contentStateChanged)
 			{
 				this._previousLayoutActualWidth = this.actualWidth;
@@ -2157,8 +2157,8 @@ package feathers.controls.text
 
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || this.textSnapshot === null ||
-				(textureRoot !== null && (textureRoot.scale !== scaleFactor ||
-				this._snapshotWidth !== textureRoot.nativeWidth || this._snapshotHeight !== textureRoot.nativeHeight));
+				(textureRoot !== null && (textureRoot.scale != scaleFactor ||
+				this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
 		}
 
 		/**
