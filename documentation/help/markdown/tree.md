@@ -450,7 +450,7 @@ The [`factoryIDFunction`](../api-reference/feathers/controls/Tree.html#factoryID
 ``` code
 tree.factoryIDFunction = function( item:Object, location:Vector.&lt;int&gt; ):String
 {
-    if(location[0] === 0)
+    if(location[0] == 0)
     {
         return "header-item";
     }

@@ -4975,7 +4975,7 @@ package feathers.controls.renderers
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
-					if(adjustedAccessoryGap === Number.POSITIVE_INFINITY)
+					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
 						if(this._minAccessoryGap !== this._minAccessoryGap) //isNaN
 						{

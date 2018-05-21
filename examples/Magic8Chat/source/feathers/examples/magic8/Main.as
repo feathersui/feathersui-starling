@@ -140,7 +140,7 @@ package feathers.examples.magic8
 		private function sendMessage():void
 		{
 			var message:String = this._input.text;
-			if(message.length === 0)
+			if(message.length == 0)
 			{
 				this._input.errorString = "Please ask a question!";
 				return;

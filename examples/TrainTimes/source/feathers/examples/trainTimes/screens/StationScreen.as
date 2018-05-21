@@ -114,11 +114,11 @@ package feathers.examples.trainTimes.screens
 
 		private function factoryIDFunction(item:Object, index:int):String
 		{
-			if(index === 0)
+			if(index == 0)
 			{
 				return FIRST_ITEM_RENDERER_ID;
 			}
-			else if(index === this._stationList.dataProvider.length - 1)
+			else if(index == this._stationList.dataProvider.length - 1)
 			{
 				return LAST_ITEM_RENDERER_ID;
 			}

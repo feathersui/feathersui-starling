@@ -224,7 +224,7 @@ package feathers.examples.youtube.screens
 						item.thumbnailURL = video.snippet.thumbnails.medium.url as String;
 					}
 					//switch from https to http if we're not running in AIR
-					if(useHTTP && item.thumbnailURL.indexOf("https") === 0)
+					if(useHTTP && item.thumbnailURL.indexOf("https") == 0)
 					{
 						item.thumbnailURL = "http" + item.thumbnailURL.substr(5);
 					}

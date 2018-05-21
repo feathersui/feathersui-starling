@@ -1452,7 +1452,7 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.PAGE_DOWN)
+			else if(keyCode == Keyboard.PAGE_DOWN)
 			{
 				yPosition = 0;
 				indexOffset = 0;

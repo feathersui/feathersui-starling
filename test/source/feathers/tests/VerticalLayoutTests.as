@@ -66,8 +66,8 @@ package feathers.tests
 			var item1:Quad = new Quad(200, 200);
 			this._layout.typicalItem = item1;
 			var result:Vector.<int> = this._layout.getVisibleIndicesAtScrollPosition(0, 810, 640, 640, 30);
-			Assert.assertTrue("getVisibleIndicesAtScrollPosition() does not return correct sticky header", result.indexOf(0) === 0);
-			Assert.assertTrue("getVisibleIndicesAtScrollPosition() returns incorrect sticky header", result.indexOf(20) === -1);
+			Assert.assertTrue("getVisibleIndicesAtScrollPosition() does not return correct sticky header", result.indexOf(0) == 0);
+			Assert.assertTrue("getVisibleIndicesAtScrollPosition() returns incorrect sticky header", result.indexOf(20) == -1);
 		}
 
 		[Test]

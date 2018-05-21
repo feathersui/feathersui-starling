@@ -63,19 +63,19 @@ package feathers.examples.gallery.layout
 				}
 				Pool.putRectangle(itemBounds);
 			}
-			if(minX === Number.POSITIVE_INFINITY)
+			if(minX == Number.POSITIVE_INFINITY)
 			{
 				minX = 0;
 			}
-			if(minY === Number.POSITIVE_INFINITY)
+			if(minY == Number.POSITIVE_INFINITY)
 			{
 				minY = 0;
 			}
-			if(maxX === Number.NEGATIVE_INFINITY)
+			if(maxX == Number.NEGATIVE_INFINITY)
 			{
 				maxX = 0;
 			}
-			if(maxY === Number.NEGATIVE_INFINITY)
+			if(maxY == Number.NEGATIVE_INFINITY)
 			{
 				maxY = 0;
 			}

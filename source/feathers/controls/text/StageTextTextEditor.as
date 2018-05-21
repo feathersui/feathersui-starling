@@ -2511,13 +2511,13 @@ package feathers.controls.text
 			}
 			if(FocusManager.isEnabledForStage(this.stage))
 			{
-				if(event.keyCode === Keyboard.TAB)
+				if(event.keyCode == Keyboard.TAB)
 				{
 					event.preventDefault();
 					this.dispatchKeyFocusChangeEvent(event);
 				}
-				if((event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
-					(event.keyCode === Keyboard.ENTER || event.keyCode === Keyboard.UP || event.keyCode === Keyboard.DOWN))
+				if((event.keyLocation == KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
+					(event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN))
 				{
 					event.preventDefault();
 					this.dispatchKeyboardEventToStage(event);
@@ -2534,7 +2534,7 @@ package feathers.controls.text
 			{
 				event.preventDefault();
 			}
-			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
+			if(event.keyCode == Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
 			{
 				event.preventDefault();
 			}

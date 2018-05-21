@@ -470,7 +470,7 @@ The [`factoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#fa
 ``` code
 list.factoryIDFunction = function( item:Object, index:int ):String
 {
-    if(index === 0)
+    if(index == 0)
     {
         return "header-item";
     }

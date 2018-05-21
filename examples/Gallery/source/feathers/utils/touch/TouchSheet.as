@@ -46,7 +46,7 @@ package feathers.utils.touch
             var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 
             //first check if the existing touches ended
-            if(touchBID !== -1)
+            if(touchBID != -1)
             {
                 var touchB:Touch = event.getTouch(this, null, touchBID);
                 if(touchB !== null)
@@ -68,7 +68,7 @@ package feathers.utils.touch
                 }
             }
             //we checeked touch b first because a might be replaced by b
-            if(touchAID !== -1)
+            if(touchAID != -1)
             {
                 var touchA:Touch = event.getTouch(this, null, touchAID);
                 if(touchA !== null)
@@ -90,7 +90,7 @@ package feathers.utils.touch
                 }
             }
             //then, check for new touches, if necessary
-            if(touchAID === -1 || touchBID === -1)
+            if(touchAID == -1 || touchBID == -1)
             {
                 var touches:Vector.<Touch> = event.getTouches(this, TouchPhase.BEGAN);
                 var touchCount:int = touches.length;
@@ -103,7 +103,7 @@ package feathers.utils.touch
                         //this touch is claimed, so we can't use it
                         continue;
                     }
-                    if(touchAID === -1)
+                    if(touchAID == -1)
                     {
                         touchAID = touch.id;
                         if(this.moveEnabled)
@@ -111,7 +111,7 @@ package feathers.utils.touch
                             exclusiveTouch.claimTouch(touchAID, this);
                         }
                     }
-                    else if(touchBID === -1)
+                    else if(touchBID == -1)
                     {
                         touchBID = touch.id;
                         //if we've found both touches, claim them to stop containers
@@ -122,7 +122,7 @@ package feathers.utils.touch
                 }
             }
             //do a multi-touch gesture if we have enough touches
-            if(touchAID !== -1 && touchBID !== -1)
+            if(touchAID != -1 && touchBID != -1)
             {
                 // two fingers touching -> rotate and scale
                 touchA = event.getTouch(this, null, touchAID);
@@ -169,7 +169,7 @@ package feathers.utils.touch
                 Pool.putPoint(currentPosB);
                 Pool.putPoint(previousPosB);
 
-                if (rotateEnabled && deltaAngle !== 0)
+                if (rotateEnabled && deltaAngle != 0)
                 {
                     rotation += deltaAngle;
                     dispatchEventWith(ROTATE);
@@ -197,7 +197,7 @@ package feathers.utils.touch
                     }
                 }
             }
-            else if(touchAID !== -1) //single touch gesture
+            else if(touchAID != -1) //single touch gesture
             {
                 touchA = event.getTouch(this, null, touchAID);
                 if (moveEnabled)
@@ -207,7 +207,7 @@ package feathers.utils.touch
                     // updated to use stage instead of parent because the
                     // parent might move, but the stage won't -JT
                     var delta:Point = touchA.getMovement(stage, Pool.getPoint());
-                    if(delta.length !== 0)
+                    if(delta.length != 0)
                     {
                         x += delta.x;
                         y += delta.y;
