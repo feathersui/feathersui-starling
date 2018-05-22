@@ -972,7 +972,10 @@ package feathers.controls.text
 				//if there isn't a focus manager, we need to set focus manually
 				starling.nativeStage.focus = this._nativeFocus;
 			}
-			this._nativeFocus.requestSoftKeyboard();
+			if(this._isEditable)
+			{
+				this._nativeFocus.requestSoftKeyboard();
+			}
 			if(this._hasFocus)
 			{
 				return;
