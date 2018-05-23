@@ -339,7 +339,7 @@ package feathers.layout
 			{
 				result = new LayoutBoundsResult();
 			}
-			if(items.length === 0)
+			if(items.length == 0)
 			{
 				result.contentX = 0;
 				result.contentY = 0;
@@ -879,22 +879,22 @@ package feathers.layout
 		public function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
 		{
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(items.length > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = items.length - 1;
 			}
-			else if(keyCode === Keyboard.UP)
+			else if(keyCode == Keyboard.UP)
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN)
 			{
 				result++;
 			}
@@ -947,7 +947,7 @@ package feathers.layout
 				//unknown value
 				horizontalAlignOffsetX = Math.round((availableWidth - totalItemWidth) / 2);
 			}
-			if(horizontalAlignOffsetX !== 0)
+			if(horizontalAlignOffsetX != 0)
 			{
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
@@ -979,7 +979,7 @@ package feathers.layout
 			{
 				verticalAlignOffsetY = Math.round((availableHeight - totalItemHeight) / 2);
 			}
-			if(verticalAlignOffsetY !== 0)
+			if(verticalAlignOffsetY != 0)
 			{
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
@@ -1248,11 +1248,11 @@ package feathers.layout
 						resultLength++;
 					}
 					columnIndex++;
-					if(columnIndex === horizontalTileCount)
+					if(columnIndex == horizontalTileCount)
 					{
 						columnIndex = 0;
 						rowIndex++;
-						if(rowIndex === verticalTileCount)
+						if(rowIndex == verticalTileCount)
 						{
 							rowIndex = 0;
 							pageStart += perPage;

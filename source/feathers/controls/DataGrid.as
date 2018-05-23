@@ -1884,7 +1884,7 @@ package feathers.controls
 		 */
 		protected function refreshColumns():void
 		{
-			if(this._columns !== null || this._dataProvider === null || this._dataProvider.length === 0)
+			if(this._columns !== null || this._dataProvider === null || this._dataProvider.length == 0)
 			{
 				return;
 			}
@@ -1985,7 +1985,7 @@ package feathers.controls
 				totalWidth += size;
 				indices[i] = i;
 			}
-			if(totalWidth === availableWidth)
+			if(totalWidth == availableWidth)
 			{
 				return;
 			}
@@ -2033,7 +2033,7 @@ package feathers.controls
 				widthToDistribute = nextWidthToDistribute;
 			}
 
-			if(widthToDistribute !== 0)
+			if(widthToDistribute != 0)
 			{
 				//if we have less than a pixel left, just add it to the
 				//final column and exit the loop
@@ -2162,7 +2162,7 @@ package feathers.controls
 			{
 				dividerCount = this._columns.length;
 				if(this._scrollBarDisplayMode !== ScrollBarDisplayMode.FIXED ||
-					this._minVerticalScrollPosition === this._maxVerticalScrollPosition)
+					this._minVerticalScrollPosition == this._maxVerticalScrollPosition)
 				{
 					dividerCount--;
 				}
@@ -2404,7 +2404,7 @@ package feathers.controls
 			var headerRenderer:IDataGridHeaderRenderer = null;
 			do
 			{
-				if(inactiveHeaderRenderers.length === 0)
+				if(inactiveHeaderRenderers.length == 0)
 				{
 					headerRenderer = IDataGridHeaderRenderer(headerRendererFactory());
 					headerRenderer.addEventListener(TouchEvent.TOUCH, headerRenderer_touchHandler);
@@ -2536,18 +2536,18 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._selectedIndex !== -1 && (event.keyCode === Keyboard.SPACE ||
-				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			if(this._selectedIndex != -1 && (event.keyCode == Keyboard.SPACE ||
+				((event.keyLocation == 4 || DeviceCapabilities.simulateDPad) && event.keyCode == Keyboard.ENTER)))
 			{
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
-			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
-				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
-				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
-				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
+			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
+				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
-				if(this.selectedIndex !== newIndex)
+				if(this.selectedIndex != newIndex)
 				{
 					event.preventDefault();
 					this.selectedIndex = newIndex;
@@ -2586,12 +2586,12 @@ package feathers.controls
 			{
 				keyCode = Keyboard.LEFT;
 			}
-			if(keyCode === int.MAX_VALUE)
+			if(keyCode == int.MAX_VALUE)
 			{
 				return;
 			}
 			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
-			if(this.selectedIndex !== newIndex)
+			if(this.selectedIndex != newIndex)
 			{
 				event.stopImmediatePropagation();
 				//event.preventDefault();
@@ -2727,7 +2727,7 @@ package feathers.controls
 		 */
 		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
-			if(this._selectedIndex === -1)
+			if(this._selectedIndex == -1)
 			{
 				return;
 			}
@@ -2742,7 +2742,7 @@ package feathers.controls
 				var newIndex:int = this._dataProvider.getItemIndex(selectedItem);
 				if(newIndex >= 0)
 				{
-					if(newIndex !== oldIndex)
+					if(newIndex != oldIndex)
 					{
 						//the item was not filtered, but it moved to a new index
 						selectionChanged = true;
@@ -2857,7 +2857,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._sortedColumn !== column)
+			if(this._sortedColumn != column)
 			{
 				this._sortedColumn = column;
 				this._reverseSort = column.sortOrder === SortOrder.DESCENDING;
@@ -2917,7 +2917,7 @@ package feathers.controls
 		 */
 		protected function dataGrid_touchHandler(event:TouchEvent):void
 		{
-			if(this._headerTouchID !== -1)
+			if(this._headerTouchID != -1)
 			{
 				//a touch has begun, so we'll ignore all other touches.
 				var touch:Touch = event.getTouch(this, null, this._headerTouchID);
@@ -2957,7 +2957,7 @@ package feathers.controls
 				this._headerTouchID = -1;
 				return;
 			}
-			if(this._headerTouchID !== -1)
+			if(this._headerTouchID != -1)
 			{
 				//a touch has begun, so we'll ignore all other touches.
 				var touch:Touch = event.getTouch(DisplayObject(headerRenderer), null, this._headerTouchID);
@@ -3074,8 +3074,8 @@ package feathers.controls
 			var globalDropX:Number = point.x;
 			Pool.putPoint(point);
 			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
-			var showDropIndicator:Boolean = dropIndex !== this._draggedHeaderIndex &&
-				dropIndex !== (this._draggedHeaderIndex + 1);
+			var showDropIndicator:Boolean = dropIndex != this._draggedHeaderIndex &&
+				dropIndex != (this._draggedHeaderIndex + 1);
 			this._currentColumnDropIndicatorSkin.visible = showDropIndicator;
 			if(!showDropIndicator)
 			{
@@ -3094,7 +3094,7 @@ package feathers.controls
 				IValidating(this._currentColumnDropIndicatorSkin).validate();
 			}
 			var dropIndicatorX:Number = 0;
-			if(dropIndex === this._columns.length)
+			if(dropIndex == this._columns.length)
 			{
 				var header:DisplayObject = this._headerGroup.getChildAt(dropIndex - 1);
 				dropIndicatorX = header.x + header.width;
@@ -3122,8 +3122,8 @@ package feathers.controls
 			var globalDropX:Number = point.x;
 			Pool.putPoint(point);
 			var dropIndex:int = this.getHeaderDropIndex(globalDropX);
-			if(dropIndex === this._draggedHeaderIndex ||
-				(dropIndex === (this._draggedHeaderIndex + 1)))
+			if(dropIndex == this._draggedHeaderIndex ||
+				(dropIndex == (this._draggedHeaderIndex + 1)))
 			{
 				//it's the same position, so do nothing
 				return;
@@ -3148,14 +3148,14 @@ package feathers.controls
 				return;
 			}
 			var dividerIndex:int = this._headerDividerStorage.activeDividers.indexOf(divider);
-			if(dividerIndex === (this._headerDividerStorage.activeDividers.length - 1) &&
+			if(dividerIndex == (this._headerDividerStorage.activeDividers.length - 1) &&
 				this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED &&
-					this._minVerticalScrollPosition !== this._maxVerticalScrollPosition)
+					this._minVerticalScrollPosition != this._maxVerticalScrollPosition)
 			{
 				//no resizing!
 				return;
 			}
-			if(this._headerDividerTouchID !== -1)
+			if(this._headerDividerTouchID != -1)
 			{
 				//a touch has begun, so we'll ignore all other touches.
 				var touch:Touch = event.getTouch(divider, null, this._headerDividerTouchID);
@@ -3259,7 +3259,7 @@ package feathers.controls
 			for(var i:int = 0; i < columnCount; i++)
 			{
 				var currentColumn:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
-				if(i === this._resizingColumnIndex)
+				if(i == this._resizingColumnIndex)
 				{
 					continue;
 				}
@@ -3292,7 +3292,7 @@ package feathers.controls
 					indicesAfter[indicesAfter.length] = i;
 				}
 			}
-			if(indicesAfter.length === 0)
+			if(indicesAfter.length == 0)
 			{
 				//if all of the columns after the resizing one have explicit
 				//widths, we need to force one to be resized

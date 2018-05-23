@@ -272,7 +272,7 @@ package feathers.data
 		 * var input:TextInput = new TextInput();
 		 * input.addEventListener( Event.CHANGE, function():void
 		 * {
-		 *    if( input.text.length === 0 )
+		 *    if( input.text.length == 0 )
 		 *    {
 		 *        collection.filterFunction = null;
 		 *        return;

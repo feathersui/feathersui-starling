@@ -19,5 +19,5 @@ package feathers
 	 *
 	 * @productversion Feathers 2.1.0
 	 */
-	public const FEATHERS_VERSION:String = "3.5.0-beta+sdk";
+	public const FEATHERS_VERSION:String = "3.5.0-beta2+sdk";
 }

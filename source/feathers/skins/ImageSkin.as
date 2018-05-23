@@ -273,7 +273,7 @@ package feathers.skins
 		 */
 		public function set defaultColor(value:uint):void
 		{
-			if(this._defaultColor === value)
+			if(this._defaultColor == value)
 			{
 				return;
 			}
@@ -324,7 +324,7 @@ package feathers.skins
 		 */
 		public function set disabledColor(value:uint):void
 		{
-			if(this._disabledColor === value)
+			if(this._disabledColor == value)
 			{
 				return;
 			}
@@ -371,7 +371,7 @@ package feathers.skins
 		 */
 		public function set selectedColor(value:uint):void
 		{
-			if(this._selectedColor === value)
+			if(this._selectedColor == value)
 			{
 				return;
 			}
@@ -443,11 +443,11 @@ package feathers.skins
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this._explicitWidth === value)
+			if(this._explicitWidth == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitWidth !== this._explicitWidth)
+			if(value !== value && this._explicitWidth !== this._explicitWidth) //isNaN
 			{
 				return;
 			}
@@ -491,11 +491,11 @@ package feathers.skins
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this._explicitHeight === value)
+			if(this._explicitHeight == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitHeight !== this._explicitHeight)
+			if(value !== value && this._explicitHeight !== this._explicitHeight) //isNaN
 			{
 				return;
 			}
@@ -551,11 +551,11 @@ package feathers.skins
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this._explicitMinWidth === value)
+			if(this._explicitMinWidth == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitMinWidth !== this._explicitMinWidth)
+			if(value !== value && this._explicitMinWidth !== this._explicitMinWidth) //isNaN
 			{
 				return;
 			}
@@ -593,11 +593,11 @@ package feathers.skins
 		 */
 		public function set maxWidth(value:Number):void
 		{
-			if(this._explicitMaxWidth === value)
+			if(this._explicitMaxWidth == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitMaxWidth !== this._explicitMaxWidth)
+			if(value !== value && this._explicitMaxWidth !== this._explicitMaxWidth) //isNaN
 			{
 				return;
 			}
@@ -639,11 +639,11 @@ package feathers.skins
 		 */
 		public function set minHeight(value:Number):void
 		{
-			if(this._explicitMinHeight === value)
+			if(this._explicitMinHeight == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitMinHeight !== this._explicitMinHeight)
+			if(value !== value && this._explicitMinHeight !== this._explicitMinHeight) //isNaN
 			{
 				return;
 			}
@@ -681,11 +681,11 @@ package feathers.skins
 		 */
 		public function set maxHeight(value:Number):void
 		{
-			if(this._explicitMaxHeight === value)
+			if(this._explicitMaxHeight == value)
 			{
 				return;
 			}
-			if(value !== value && this._explicitMaxHeight !== this._explicitMaxHeight)
+			if(value !== value && this._explicitMaxHeight !== this._explicitMaxHeight) //isNaN
 			{
 				return;
 			}
@@ -830,7 +830,7 @@ package feathers.skins
 		 */
 		public function setColorForState(state:String, color:uint):void
 		{
-			if(color !== uint.MAX_VALUE)
+			if(color != uint.MAX_VALUE)
 			{
 				this._stateToColor[state] = color;
 			}
@@ -934,7 +934,7 @@ package feathers.skins
 		{
 			if(this._stateContext === null)
 			{
-				if(this._defaultColor !== uint.MAX_VALUE)
+				if(this._defaultColor != uint.MAX_VALUE)
 				{
 					this.$color = this._defaultColor;
 				}
@@ -946,24 +946,24 @@ package feathers.skins
 			{
 				color = this._stateToColor[currentState] as uint;
 			}
-			if(color === uint.MAX_VALUE &&
-				this._disabledColor !== uint.MAX_VALUE &&
+			if(color == uint.MAX_VALUE &&
+				this._disabledColor != uint.MAX_VALUE &&
 				this._stateContext is IFeathersControl && !IFeathersControl(this._stateContext).isEnabled)
 			{
 				color = this._disabledColor;
 			}
-			if(color === uint.MAX_VALUE &&
-				this._selectedColor !== uint.MAX_VALUE &&
+			if(color == uint.MAX_VALUE &&
+				this._selectedColor != uint.MAX_VALUE &&
 				this._stateContext is IToggle &&
 				IToggle(this._stateContext).isSelected)
 			{
 				color = this._selectedColor;
 			}
-			if(color === uint.MAX_VALUE)
+			if(color == uint.MAX_VALUE)
 			{
 				color = this._defaultColor;
 			}
-			if(color !== uint.MAX_VALUE)
+			if(color != uint.MAX_VALUE)
 			{
 				this.$color = color;
 			}

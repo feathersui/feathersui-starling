@@ -1096,7 +1096,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._color === value)
+			if(this._color == value)
 			{
 				return;
 			}
@@ -1510,7 +1510,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -1540,7 +1540,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -1570,7 +1570,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -1600,7 +1600,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -2055,7 +2055,7 @@ package feathers.controls
 			{
 				sourceURL = sourceURL.substr(0, index);
 			}
-			return sourceURL.toLowerCase().lastIndexOf(ATF_FILE_EXTENSION) === sourceURL.length - 3;
+			return sourceURL.toLowerCase().lastIndexOf(ATF_FILE_EXTENSION) == sourceURL.length - 3;
 		}
 
 		/**
@@ -2669,10 +2669,10 @@ package feathers.controls
 			var canReuseTexture:Boolean =
 				this._texture !== null &&
 				(!Texture.asyncBitmapUploadEnabled || !this._asyncTextureUpload) &&
-				this._texture.nativeWidth === bitmapData.width &&
-				this._texture.nativeHeight === bitmapData.height &&
-				this._texture.scale === this._scaleFactor &&
-				this._texture.format === this._textureFormat;
+				this._texture.nativeWidth == bitmapData.width &&
+				this._texture.nativeHeight == bitmapData.height &&
+				this._texture.scale == this._scaleFactor &&
+				this._texture.format == this._textureFormat;
 			if(!canReuseTexture)
 			{
 				this.cleanupTexture();

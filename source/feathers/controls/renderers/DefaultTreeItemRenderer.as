@@ -573,7 +573,7 @@ package feathers.controls.renderers
 		 */
 		public function set indentation(value:Number):void
 		{
-			if(this._indentation === value)
+			if(this._indentation == value)
 			{
 				return;
 			}
@@ -599,7 +599,7 @@ package feathers.controls.renderers
 		 */
 		public function set disclosureGap(value:Number):void
 		{
-			if(this._disclosureGap === value)
+			if(this._disclosureGap == value)
 			{
 				return;
 			}

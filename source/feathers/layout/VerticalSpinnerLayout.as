@@ -901,7 +901,7 @@ package feathers.layout
 			{
 				totalHeight += verticalAlignOffsetY + (availableHeight - calculatedTypicalItemHeight - verticalAlignOffsetY);
 			}
-			if(verticalAlignOffsetY !== 0)
+			if(verticalAlignOffsetY != 0)
 			{
 				for(i = 0; i < discoveredItemCount; i++)
 				{
@@ -1201,7 +1201,7 @@ package feathers.layout
 				else if(i >= itemCount)
 				{
 					var loopedI:int = i - itemCount;
-					if(loopedI === minimum)
+					if(loopedI == minimum)
 					{
 						//we don't want to repeat items!
 						break;
@@ -1225,18 +1225,18 @@ package feathers.layout
 				itemCount += this._beforeVirtualizedItemCount;
 			}
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				if(itemCount > 0)
 				{
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = itemCount - 1;
 			}
-			else if(keyCode === Keyboard.PAGE_UP)
+			else if(keyCode == Keyboard.PAGE_UP)
 			{
 				var yPosition:Number = 0;
 				for(var i:int = index; i >= 0; i--)
@@ -1250,7 +1250,7 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.PAGE_DOWN)
+			else if(keyCode == Keyboard.PAGE_DOWN)
 			{
 				yPosition = 0;
 				for(i = index; i < itemCount; i++)
@@ -1264,15 +1264,15 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.UP)
+			else if(keyCode == Keyboard.UP)
 			{
 				result--;
 			}
-			else if(keyCode === Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN)
 			{
 				result++;
 			}
-			var canRepeatItems:Boolean = this._repeatItems && bounds.contentHeight === Number.POSITIVE_INFINITY;
+			var canRepeatItems:Boolean = this._repeatItems && bounds.contentHeight == Number.POSITIVE_INFINITY;
 			if(canRepeatItems)
 			{
 				while(result < 0)

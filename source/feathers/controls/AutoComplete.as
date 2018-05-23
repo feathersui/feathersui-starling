@@ -924,7 +924,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._listTouchPointID === -1)
+			if(this._listTouchPointID == -1)
 			{
 				//triggered by keyboard
 				this.closeList();

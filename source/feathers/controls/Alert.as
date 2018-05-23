@@ -517,7 +517,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._gap === value)
+			if(this._gap == value)
 			{
 				return;
 			}
@@ -1387,7 +1387,7 @@ package feathers.controls
 				return;
 			}
 			var keyCode:uint = event.keyCode;
-			if(this._acceptButtonIndex !== -1 && keyCode === Keyboard.ENTER)
+			if(this._acceptButtonIndex != -1 && keyCode == Keyboard.ENTER)
 			{
 				//don't let the OS handle the event
 				event.preventDefault();
@@ -1395,8 +1395,8 @@ package feathers.controls
 				this.closeAlert(item);
 				return;
 			}
-			if(this._cancelButtonIndex !== -1 &&
-				(keyCode === Keyboard.BACK || keyCode === Keyboard.ESCAPE))
+			if(this._cancelButtonIndex != -1 &&
+				(keyCode == Keyboard.BACK || keyCode == Keyboard.ESCAPE))
 			{
 				//don't let the OS handle the event
 				event.preventDefault();

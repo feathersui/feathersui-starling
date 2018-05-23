@@ -160,7 +160,7 @@ package feathers.utils.text
 		 */
 		public function selectRange(startIndex:int, endIndex:int):void
 		{
-			return this._textEditor.selectRange(startIndex, endIndex);
+			this._textEditor.selectRange(startIndex, endIndex);
 		}
 
 		/**

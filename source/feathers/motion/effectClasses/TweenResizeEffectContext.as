@@ -94,12 +94,11 @@ package feathers.motion.effectClasses
 		 */
 		public function set newWidth(value:Number):void
 		{
-			if(this._newWidth === value)
+			if(this._newWidth == value)
 			{
 				return;
 			}
 			this._newWidth = value;
-			trace("animating width", value);
 			this._tween.animate("width", value);
 		}
 
@@ -121,12 +120,11 @@ package feathers.motion.effectClasses
 		 */
 		public function set newHeight(value:Number):void
 		{
-			if(this._newHeight === value)
+			if(this._newHeight == value)
 			{
 				return;
 			}
 			this._newHeight = value;
-			trace("animating height", value);
 			this._tween.animate("height", value);
 		}
 

@@ -48,7 +48,7 @@ package feathers.utils.display
 				{
 					break;
 				}
-				if(bucket.density === density)
+				if(bucket.density == density)
 				{
 					throw new ArgumentError("Screen density cannot be added more than once: " + density);
 				}
@@ -70,7 +70,7 @@ package feathers.utils.display
 			for(var i:int = 0; i < bucketCount; i++)
 			{
 				var bucket:ScreenDensityBucket = this._buckets[i];
-				if(bucket.density === density)
+				if(bucket.density == density)
 				{
 					this._buckets.removeAt(i);
 					return;
@@ -84,7 +84,7 @@ package feathers.utils.display
 		 */
 		public function getScale(density:int):Number
 		{
-			if(this._buckets.length === 0)
+			if(this._buckets.length == 0)
 			{
 				throw new IllegalOperationError("Cannot choose scale because none have been added");
 			}

@@ -165,11 +165,11 @@ package feathers.motion
 			if(mask === oldMask)
 			{
 				//the x and y position may have changed
-				if(mask.x !== originX)
+				if(mask.x != originX)
 				{
 					tween.animate("x", originX);
 				}
-				if(mask.y !== originY)
+				if(mask.y != originY)
 				{
 					tween.animate("y", originY);
 				}
@@ -312,11 +312,11 @@ package feathers.motion
 			if(mask === oldMask)
 			{
 				//the x and y position may have changed
-				if(mask.x !== originX)
+				if(mask.x != originX)
 				{
 					tween.animate("x", originX);
 				}
-				if(mask.y !== originY)
+				if(mask.y != originY)
 				{
 					tween.animate("y", originY);
 				}

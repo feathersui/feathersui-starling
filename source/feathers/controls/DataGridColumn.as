@@ -319,7 +319,7 @@ package feathers.controls
 		 */
 		public function set minWidth(value:Number):void
 		{
-			if(this._minWidth === value)
+			if(this._minWidth == value)
 			{
 				return;
 			}
@@ -354,7 +354,7 @@ package feathers.controls
 		 */
 		public function set width(value:Number):void
 		{
-			if(this._width === value)
+			if(this._width == value)
 			{
 				return;
 			}

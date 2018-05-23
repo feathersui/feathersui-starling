@@ -1461,7 +1461,7 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._accessoryOffsetX === value)
+			if(this._accessoryOffsetX == value)
 			{
 				return;
 			}
@@ -1491,7 +1491,7 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._accessoryOffsetY === value)
+			if(this._accessoryOffsetY == value)
 			{
 				return;
 			}
@@ -1521,7 +1521,7 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._accessoryGap === value)
+			if(this._accessoryGap == value)
 			{
 				return;
 			}
@@ -1551,7 +1551,7 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._minAccessoryGap === value)
+			if(this._minAccessoryGap == value)
 			{
 				return;
 			}
@@ -4046,11 +4046,11 @@ package feathers.controls.renderers
 			if(this._labelFunction !== null)
 			{
 				var labelResult:Object;
-				if(this is IListItemRenderer && this._labelFunction.length === 2)
+				if(this is IListItemRenderer && this._labelFunction.length == 2)
 				{
 					labelResult = this._labelFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._labelFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._labelFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					labelResult = this._labelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4112,11 +4112,11 @@ package feathers.controls.renderers
 			if(this._iconSourceFunction !== null)
 			{
 				var source:Object;
-				if(this is IListItemRenderer && this._iconSourceFunction.length === 2)
+				if(this is IListItemRenderer && this._iconSourceFunction.length == 2)
 				{
 					source = this._iconSourceFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._iconSourceFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._iconSourceFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					source = this._iconSourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4137,11 +4137,11 @@ package feathers.controls.renderers
 			else if(this._iconLabelFunction !== null)
 			{
 				var labelResult:Object;
-				if(this is IListItemRenderer && this._iconLabelFunction.length === 2)
+				if(this is IListItemRenderer && this._iconLabelFunction.length == 2)
 				{
 					labelResult = this._iconLabelFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._iconLabelFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._iconLabelFunction.length == 3)
 				{
 					groupItemRenderer = IGroupedListItemRenderer(this);
 					labelResult = this._iconLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4175,11 +4175,11 @@ package feathers.controls.renderers
 			}
 			else if(this._iconFunction !== null)
 			{
-				if(this is IListItemRenderer && this._iconFunction.length === 2)
+				if(this is IListItemRenderer && this._iconFunction.length == 2)
 				{
 					return this._iconFunction(item, IListItemRenderer(this).index) as DisplayObject;
 				}
-				else if(this is IGroupedListItemRenderer && this._iconFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._iconFunction.length == 3)
 				{
 					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._iconFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
@@ -4213,11 +4213,11 @@ package feathers.controls.renderers
 			if(this._accessorySourceFunction !== null)
 			{
 				var source:Object;
-				if(this is IListItemRenderer && this._accessorySourceFunction.length === 2)
+				if(this is IListItemRenderer && this._accessorySourceFunction.length == 2)
 				{
 					source = this._accessorySourceFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._accessorySourceFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._accessorySourceFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					source = this._accessorySourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4238,11 +4238,11 @@ package feathers.controls.renderers
 			else if(this._accessoryLabelFunction !== null)
 			{
 				var labelResult:Object;
-				if(this is IListItemRenderer && this._accessoryLabelFunction.length === 2)
+				if(this is IListItemRenderer && this._accessoryLabelFunction.length == 2)
 				{
 					labelResult = this._accessoryLabelFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._accessoryLabelFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._accessoryLabelFunction.length == 3)
 				{
 					groupItemRenderer = IGroupedListItemRenderer(this);
 					labelResult = this._accessoryLabelFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4276,11 +4276,11 @@ package feathers.controls.renderers
 			}
 			else if(this._accessoryFunction !== null)
 			{
-				if(this is IListItemRenderer && this._accessoryFunction.length === 2)
+				if(this is IListItemRenderer && this._accessoryFunction.length == 2)
 				{
 					return this._accessoryFunction(item, IListItemRenderer(this).index) as DisplayObject;
 				}
-				else if(this is IGroupedListItemRenderer && this._accessoryFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._accessoryFunction.length == 3)
 				{
 					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._accessoryFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
@@ -4312,11 +4312,11 @@ package feathers.controls.renderers
 			if(this._skinSourceFunction !== null)
 			{
 				var source:Object;
-				if(this is IListItemRenderer && this._skinSourceFunction.length === 2)
+				if(this is IListItemRenderer && this._skinSourceFunction.length == 2)
 				{
 					source = this._skinSourceFunction(item, IListItemRenderer(this).index);
 				}
-				else if(this is IGroupedListItemRenderer && this._skinSourceFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._skinSourceFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					source = this._skinSourceFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex);
@@ -4336,11 +4336,11 @@ package feathers.controls.renderers
 			}
 			else if(this._skinFunction !== null)
 			{
-				if(this is IListItemRenderer && this._skinFunction.length === 2)
+				if(this is IListItemRenderer && this._skinFunction.length == 2)
 				{
 					return this._skinFunction(item, IListItemRenderer(this).index) as DisplayObject;
 				}
-				else if(this is IGroupedListItemRenderer && this._skinFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._skinFunction.length == 3)
 				{
 					groupItemRenderer = IGroupedListItemRenderer(this);
 					return this._skinFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as DisplayObject;
@@ -4369,11 +4369,11 @@ package feathers.controls.renderers
 		{
 			if(this._selectableFunction !== null)
 			{
-				if(this is IListItemRenderer && this._selectableFunction.length === 2)
+				if(this is IListItemRenderer && this._selectableFunction.length == 2)
 				{
 					return this._selectableFunction(item, IListItemRenderer(this).index) as Boolean;
 				}
-				else if(this is IGroupedListItemRenderer && this._selectableFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._selectableFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					return this._selectableFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as Boolean;
@@ -4401,11 +4401,11 @@ package feathers.controls.renderers
 		{
 			if(this._enabledFunction !== null)
 			{
-				if(this is IListItemRenderer && this._enabledFunction.length === 2)
+				if(this is IListItemRenderer && this._enabledFunction.length == 2)
 				{
 					return this._enabledFunction(item, IListItemRenderer(this).index) as Boolean;
 				}
-				else if(this is IGroupedListItemRenderer && this._enabledFunction.length === 3)
+				else if(this is IGroupedListItemRenderer && this._enabledFunction.length == 3)
 				{
 					var groupItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this);
 					return this._enabledFunction(item, groupItemRenderer.groupIndex, groupItemRenderer.itemIndex) as Boolean;
@@ -4931,7 +4931,7 @@ package feathers.controls.renderers
 				if(hasPreviousItem)
 				{
 					var adjustedGap:Number = this._gap;
-					if(this._gap === Number.POSITIVE_INFINITY)
+					if(this._gap == Number.POSITIVE_INFINITY)
 					{
 						adjustedGap = this._minGap;
 					}
@@ -4981,7 +4981,7 @@ package feathers.controls.renderers
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
-					if(adjustedAccessoryGap === Number.POSITIVE_INFINITY)
+					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
 						if(this._minAccessoryGap !== this._minAccessoryGap) //isNaN
 						{

@@ -725,7 +725,7 @@ package feathers.controls.popups
 			var rectX:Number = rect.x;
 			var rectY:Number = rect.y;
 			Pool.putRectangle(rect);
-			if(rectY !== this._lastOriginX || rectY !== this._lastOriginY)
+			if(rectY != this._lastOriginX || rectY != this._lastOriginY)
 			{
 				this.layout();
 			}

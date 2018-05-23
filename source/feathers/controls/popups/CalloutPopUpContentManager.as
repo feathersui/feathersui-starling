@@ -270,7 +270,7 @@ package feathers.controls.popups
 			var contentScaleX:Number = matrixToScaleX(matrix)
 			var contentScaleY:Number = matrixToScaleY(matrix);
 			Pool.putMatrix(matrix);
-			if(contentScaleX !== 1 || contentScaleY !== 1)
+			if(contentScaleX != 1 || contentScaleY != 1)
 			{
 				var originalCalloutFactory:Function = this.calloutFactory;
 				if(originalCalloutFactory === null)

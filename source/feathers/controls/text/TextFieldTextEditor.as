@@ -1491,8 +1491,8 @@ package feathers.controls.text
 			{
 				var matrix:Matrix = Pool.getMatrix();
 				this.getTransformationMatrix(this.stage, matrix);
-				if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
-					matrixToScaleY(matrix) !== this._lastGlobalScaleY)
+				if(matrixToScaleX(matrix) != this._lastGlobalScaleX ||
+					matrixToScaleY(matrix) != this._lastGlobalScaleY)
 				{
 					//the snapshot needs to be updated because the scale has
 					//changed since the last snapshot was taken.
@@ -2360,8 +2360,8 @@ package feathers.controls.text
 			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-				(textureRoot !== null && (textureRoot.scale !== starling.contentScaleFactor ||
-				this._snapshotWidth !== textureRoot.nativeWidth || this._snapshotHeight !== textureRoot.nativeHeight));
+				(textureRoot !== null && (textureRoot.scale != starling.contentScaleFactor ||
+				this._snapshotWidth != textureRoot.nativeWidth || this._snapshotHeight != textureRoot.nativeHeight));
 		}
 
 		/**

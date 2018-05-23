@@ -566,12 +566,12 @@ package feathers.core
 		 */
 		override public function set visible(value:Boolean):void
 		{
-			if(this._suspendEffectsCount === 0 && this._hideEffectContext !== null)
+			if(this._suspendEffectsCount == 0 && this._hideEffectContext !== null)
 			{
 				this._hideEffectContext.interrupt();
 				this._hideEffectContext = null;
 			}
-			if(this._suspendEffectsCount === 0 && this._showEffectContext !== null)
+			if(this._suspendEffectsCount == 0 && this._showEffectContext !== null)
 			{
 				this._showEffectContext.interrupt();
 				this._showEffectContext = null;
@@ -579,7 +579,7 @@ package feathers.core
 			if(value)
 			{
 				super.visible = value;
-				if(this.isCreated && this._suspendEffectsCount === 0 && this._showEffect !== null && this.stage !== null)
+				if(this.isCreated && this._suspendEffectsCount == 0 && this._showEffect !== null && this.stage !== null)
 				{
 					this._showEffectContext = IEffectContext(this._showEffect(this));
 					this._showEffectContext.addEventListener(Event.COMPLETE, showEffectContext_completeHandler);
@@ -925,15 +925,18 @@ package feathers.core
 				EventDispatcher(this._styleProvider).removeEventListener(Event.CHANGE, styleProvider_changeHandler);
 			}
 			this._styleProvider = value;
-			if(this._styleProvider !== null && this.isInitialized)
+			if(this._styleProvider !== null)
 			{
-				this._applyingStyles = true;
-				this._styleProvider.applyStyles(this);
-				this._applyingStyles = false;
-			}
-			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
-			{
-				EventDispatcher(this._styleProvider).addEventListener(Event.CHANGE, styleProvider_changeHandler);
+				if(this.isInitialized)
+				{
+					this._applyingStyles = true;
+					this._styleProvider.applyStyles(this);
+					this._applyingStyles = false;
+				}
+				if(this._styleProvider is EventDispatcher)
+				{
+					EventDispatcher(this._styleProvider).addEventListener(Event.CHANGE, styleProvider_changeHandler);
+				}
 			}
 		}
 
@@ -1206,22 +1209,28 @@ package feathers.core
 		 */
 		override public function set x(value:Number):void
 		{
-			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			var newY:Number = this.y;
+			if(this._suspendEffectsCount == 0 && this._moveEffectContext !== null)
 			{
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					newY = moveEffectContext.newY;
+				}
 				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
-			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			if(this.isCreated && this._suspendEffectsCount == 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext = IMoveEffectContext(this._moveEffectContext);
 					moveEffectContext.oldX = this.x;
 					moveEffectContext.oldY = this.y;
 					moveEffectContext.newX = value;
-					moveEffectContext.newY = this.y;
+					moveEffectContext.newY = newY;
 				}
 				else
 				{
@@ -1240,21 +1249,27 @@ package feathers.core
 		 */
 		override public function set y(value:Number):void
 		{
-			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			var newX:Number = this.x;
+			if(this._suspendEffectsCount == 0 && this._moveEffectContext !== null)
 			{
+				if(this._moveEffectContext is IMoveEffectContext)
+				{
+					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					newX = moveEffectContext.newX;
+				}
 				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
-			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			if(this.isCreated && this._suspendEffectsCount == 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
 				if(this._moveEffectContext is IMoveEffectContext)
 				{
-					var moveEffectContext:IMoveEffectContext = IMoveEffectContext(this._moveEffectContext);
+					moveEffectContext = IMoveEffectContext(this._moveEffectContext);
 					moveEffectContext.oldX = this.x;
 					moveEffectContext.oldY = this.y;
-					moveEffectContext.newX = this.x;
+					moveEffectContext.newX = newX;
 					moveEffectContext.newY = value;
 				}
 				else
@@ -1329,11 +1344,12 @@ package feathers.core
 		override public function set width(value:Number):void
 		{
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this._explicitWidth !== this._explicitWidth)
+			if(valueIsNaN &&
+				this._explicitWidth !== this._explicitWidth) //isNaN
 			{
 				return;
 			}
-			if(this.scaleX !== 1)
+			if(this.scaleX != 1)
 			{
 				value /= this.scaleX;
 			}
@@ -1342,22 +1358,28 @@ package feathers.core
 				return;
 			}
 			var hasSetExplicitWidth:Boolean = false;
-			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
+			var newHeight:Number = this.actualHeight;
+			if(this._suspendEffectsCount == 0 && this._resizeEffectContext !== null)
 			{
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					newHeight = resizeEffectContext.newHeight;
+				}
 				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
-			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount == 0 && this._resizeEffect !== null)
 			{
 				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
-					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
 					resizeEffectContext.oldWidth = this.actualWidth;
 					resizeEffectContext.oldHeight = this.actualHeight;
 					resizeEffectContext.newWidth = value;
-					resizeEffectContext.newHeight = this.actualHeight;
+					resizeEffectContext.newHeight = newHeight;
 				}
 				else
 				{
@@ -1464,11 +1486,12 @@ package feathers.core
 		override public function set height(value:Number):void
 		{
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this._explicitHeight !== this._explicitHeight)
+			if(valueIsNaN &&
+				this._explicitHeight !== this._explicitHeight) //isNaN
 			{
 				return;
 			}
-			if(this.scaleY !== 1)
+			if(this.scaleY != 1)
 			{
 				value /= this.scaleY;
 			}
@@ -1477,21 +1500,27 @@ package feathers.core
 				return;
 			}
 			var hasSetExplicitHeight:Boolean = false;
-			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
+			var newWidth:Number = this.actualWidth;
+			if(this._suspendEffectsCount == 0 && this._resizeEffectContext !== null)
 			{
+				if(this._resizeEffectContext is IResizeEffectContext)
+				{
+					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					newWidth = resizeEffectContext.newWidth;
+				}
 				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
-			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			if(!valueIsNaN && this.isCreated && this._suspendEffectsCount == 0 && this._resizeEffect !== null)
 			{
 				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
 				if(this._resizeEffectContext is IResizeEffectContext)
 				{
-					var resizeEffectContext:IResizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
+					resizeEffectContext = IResizeEffectContext(this._resizeEffectContext);
 					resizeEffectContext.oldWidth = this.actualWidth;
 					resizeEffectContext.oldHeight = this.actualHeight;
-					resizeEffectContext.newWidth = this.actualWidth;
+					resizeEffectContext.newWidth = newWidth;
 					resizeEffectContext.newHeight = value;
 				}
 				else
@@ -1656,11 +1685,12 @@ package feathers.core
 		public function set minWidth(value:Number):void
 		{
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this._explicitMinWidth !== this._explicitMinWidth)
+			if(valueIsNaN &&
+				this._explicitMinWidth !== this._explicitMinWidth) //isNaN
 			{
 				return;
 			}
-			if(this.scaleX !== 1)
+			if(this.scaleX != 1)
 			{
 				value /= this.scaleX;
 			}
@@ -1681,8 +1711,8 @@ package feathers.core
 				//value for the comparisons below
 				var actualWidth:Number = this.actualWidth;
 				this.saveMeasurements(actualWidth, this.actualHeight, value, this.actualMinHeight);
-				if(this._explicitWidth !== this._explicitWidth &&
-					(actualWidth < value || actualWidth === oldValue))
+				if(this._explicitWidth !== this._explicitWidth && //isNaN
+					(actualWidth < value || actualWidth == oldValue))
 				{
 					//only invalidate if this change might affect the width
 					//because everything else was handled in saveMeasurements()
@@ -1753,11 +1783,12 @@ package feathers.core
 		public function set minHeight(value:Number):void
 		{
 			var valueIsNaN:Boolean = value !== value; //isNaN
-			if(valueIsNaN && this._explicitMinHeight !== this._explicitMinHeight)
+			if(valueIsNaN &&
+				this._explicitMinHeight !== this._explicitMinHeight) //isNaN
 			{
 				return;
 			}
-			if(this.scaleY !== 1)
+			if(this.scaleY != 1)
 			{
 				value /= this.scaleY;
 			}
@@ -1779,7 +1810,7 @@ package feathers.core
 				var actualHeight:Number = this.actualHeight;
 				this.saveMeasurements(this.actualWidth, actualHeight, this.actualMinWidth, value);
 				if(this._explicitHeight !== this._explicitHeight && //isNaN
-					(actualHeight < value || actualHeight === oldValue))
+					(actualHeight < value || actualHeight == oldValue))
 				{
 					//only invalidate if this change might affect the height
 					//because everything else was handled in saveMeasurements()
@@ -1845,7 +1876,7 @@ package feathers.core
 			var oldValue:Number = this._explicitMaxWidth;
 			this._explicitMaxWidth = value;
 			if(this._explicitWidth !== this._explicitWidth && //isNaN
-				(this.actualWidth > value || this.actualWidth === oldValue))
+				(this.actualWidth > value || this.actualWidth == oldValue))
 			{
 				//only invalidate if this change might affect the width
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -1909,7 +1940,7 @@ package feathers.core
 			var oldValue:Number = this._explicitMaxHeight;
 			this._explicitMaxHeight = value;
 			if(this._explicitHeight !== this._explicitHeight && //isNaN
-				(this.actualHeight > value || this.actualHeight === oldValue))
+				(this.actualHeight > value || this.actualHeight == oldValue))
 			{
 				//only invalidate if this change might affect the width
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -2465,7 +2496,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusPaddingTop === value)
+			if(this._focusPaddingTop == value)
 			{
 				return;
 			}
@@ -2495,7 +2526,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusPaddingRight === value)
+			if(this._focusPaddingRight == value)
 			{
 				return;
 			}
@@ -2525,7 +2556,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusPaddingBottom === value)
+			if(this._focusPaddingBottom == value)
 			{
 				return;
 			}
@@ -2555,7 +2586,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusPaddingLeft === value)
+			if(this._focusPaddingLeft == value)
 			{
 				return;
 			}
@@ -2896,7 +2927,7 @@ package feathers.core
 				this._hasValidated = true;
 				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
 
-				if(this._suspendEffectsCount === 0 && this.stage !== null && this._addedEffect !== null)
+				if(this._suspendEffectsCount == 0 && this.stage !== null && this._addedEffect !== null)
 				{
 					this._addedEffectContext = IEffectContext(this._addedEffect(this));
 					this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);
@@ -2940,14 +2971,14 @@ package feathers.core
 		public function setSize(width:Number, height:Number):void
 		{
 			var hasSetExplicitSize:Boolean = false;
-			if(this._suspendEffectsCount === 0 && this._resizeEffectContext !== null)
+			if(this._suspendEffectsCount == 0 && this._resizeEffectContext !== null)
 			{
 				this._resizeEffectContext.interrupt();
 				this._resizeEffectContext = null;
 			}
-			var widthIsNaN:Boolean = width !== width;
-			var heightIsNaN:Boolean = height !== height;
-			if((!widthIsNaN || !heightIsNaN) && this.isCreated && this._suspendEffectsCount === 0 && this._resizeEffect !== null)
+			var widthIsNaN:Boolean = width !== width; //isNaN
+			var heightIsNaN:Boolean = height !== height; //isNaN
+			if((!widthIsNaN || !heightIsNaN) && this.isCreated && this._suspendEffectsCount == 0 && this._resizeEffect !== null)
 			{
 				this._resizeEffectContext = IEffectContext(this._resizeEffect(this));
 				this._resizeEffectContext.addEventListener(Event.COMPLETE, resizeEffectContext_completeHandler);
@@ -3022,12 +3053,12 @@ package feathers.core
 		 */
 		public function move(x:Number, y:Number):void
 		{
-			if(this._suspendEffectsCount === 0 && this._moveEffectContext !== null)
+			if(this._suspendEffectsCount == 0 && this._moveEffectContext !== null)
 			{
 				this._moveEffectContext.interrupt();
 				this._moveEffectContext = null;
 			}
-			if(this.isCreated && this._suspendEffectsCount === 0 && this._moveEffect !== null)
+			if(this.isCreated && this._suspendEffectsCount == 0 && this._moveEffect !== null)
 			{
 				this._moveEffectContext = IEffectContext(this._moveEffect(this));
 				this._moveEffectContext.addEventListener(Event.COMPLETE, moveEffectContext_completeHandler);
@@ -3097,7 +3128,7 @@ package feathers.core
 		 */
 		public function removeFromParentWithEffect(effect:Function, dispose:Boolean = false):void
 		{
-			if(this.isCreated && this._suspendEffectsCount === 0)
+			if(this.isCreated && this._suspendEffectsCount == 0)
 			{
 				this._disposeAfterRemovedEffect = dispose;
 				this._removedEffectContext = IEffectContext(effect(this));
@@ -3315,24 +3346,24 @@ package feathers.core
 				scaleY = -scaleY;
 			}
 			var resized:Boolean = false;
-			if(this.actualWidth !== width)
+			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
 				this.refreshHitAreaX();
 				resized = true;
 			}
-			if(this.actualHeight !== height)
+			if(this.actualHeight != height)
 			{
 				this.actualHeight = height;
 				this.refreshHitAreaY();
 				resized = true;
 			}
-			if(this.actualMinWidth !== minWidth)
+			if(this.actualMinWidth != minWidth)
 			{
 				this.actualMinWidth = minWidth;
 				resized = true;
 			}
-			if(this.actualMinHeight !== minHeight)
+			if(this.actualMinHeight != minHeight)
 			{
 				this.actualMinHeight = minHeight;
 				resized = true;
@@ -3343,7 +3374,7 @@ package feathers.core
 			this.scaledActualHeight = this.actualHeight * scaleY;
 			this.scaledActualMinWidth = this.actualMinWidth * scaleX;
 			this.scaledActualMinHeight = this.actualMinHeight * scaleY;
-			if(width !== this.scaledActualWidth || height !== this.scaledActualHeight)
+			if(width != this.scaledActualWidth || height != this.scaledActualHeight)
 			{
 				resized = true;
 				this.dispatchEventWith(Event.RESIZE);
@@ -3582,7 +3613,7 @@ package feathers.core
 				this._focusOutEffectContext = null;
 			}
 
-			if(this._suspendEffectsCount === 0 && this._focusInEffect !== null)
+			if(this._suspendEffectsCount == 0 && this._focusInEffect !== null)
 			{
 				this._focusInEffectContext = IEffectContext(this._focusInEffect(this));
 				this._focusInEffectContext.addEventListener(Event.COMPLETE, focusInEffectContext_completeHandler);
@@ -3607,7 +3638,7 @@ package feathers.core
 				this._focusInEffectContext = null;
 			}
 
-			if(this._suspendEffectsCount === 0 && this._focusOutEffect !== null)
+			if(this._suspendEffectsCount == 0 && this._focusOutEffect !== null)
 			{
 				this._focusOutEffectContext = IEffectContext(this._focusOutEffect(this));
 				this._focusOutEffectContext.addEventListener(Event.COMPLETE, focusOutEffectContext_completeHandler);
@@ -3645,7 +3676,7 @@ package feathers.core
 				this._removedEffectContext.interrupt();
 			}
 
-			if(this.isCreated && this._suspendEffectsCount === 0 && this._addedEffect !== null)
+			if(this.isCreated && this._suspendEffectsCount == 0 && this._addedEffect !== null)
 			{
 				this._addedEffectContext = IEffectContext(this._addedEffect(this));
 				this._addedEffectContext.addEventListener(Event.COMPLETE, addedEffectContext_completeHandler);

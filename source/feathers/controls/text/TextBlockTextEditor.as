@@ -675,7 +675,7 @@ package feathers.controls.text
 		 */
 		public function get selectionActiveIndex():int
 		{
-			if(this._selectionAnchorIndex === this._selectionBeginIndex)
+			if(this._selectionAnchorIndex == this._selectionBeginIndex)
 			{
 				return this._selectionEndIndex;
 			}
@@ -789,7 +789,7 @@ package feathers.controls.text
 			}
 			this._selectionBeginIndex = beginIndex;
 			this._selectionEndIndex = endIndex;
-			if(beginIndex === endIndex)
+			if(beginIndex == endIndex)
 			{
 				this._selectionAnchorIndex = beginIndex;
 				if(beginIndex < 0)
@@ -959,10 +959,10 @@ package feathers.controls.text
 		{
 			var showSelection:Boolean = (this._isEditable || this._isSelectable) &&
 				this._selectionBeginIndex >= 0 &&
-				this._selectionBeginIndex !== this._selectionEndIndex;
+				this._selectionBeginIndex != this._selectionEndIndex;
 			var showCursor:Boolean = this._isEditable &&
 				this._selectionBeginIndex >= 0 &&
-				this._selectionBeginIndex === this._selectionEndIndex;
+				this._selectionBeginIndex == this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = showSelection;
 			this.refreshCursorBlink();
@@ -972,7 +972,10 @@ package feathers.controls.text
 				//if there isn't a focus manager, we need to set focus manually
 				starling.nativeStage.focus = this._nativeFocus;
 			}
-			this._nativeFocus.requestSoftKeyboard();
+			if(this._isEditable)
+			{
+				this._nativeFocus.requestSoftKeyboard();
+			}
 			if(this._hasFocus)
 			{
 				return;
@@ -992,12 +995,12 @@ package feathers.controls.text
 		protected function refreshCursorBlink():void
 		{
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-			if(this._cursorDelayID === uint.MAX_VALUE && this._cursorSkin.visible)
+			if(this._cursorDelayID == uint.MAX_VALUE && this._cursorSkin.visible)
 			{
 				this._cursorSkin.alpha = 1;
 				this._cursorDelayID = starling.juggler.delayCall(toggleCursorSkin, this._cursorDelay);
 			}
-			else if(this._cursorDelayID !== uint.MAX_VALUE && !this._cursorSkin.visible)
+			else if(this._cursorDelayID != uint.MAX_VALUE && !this._cursorSkin.visible)
 			{
 				starling.juggler.removeByID(this._cursorDelayID);
 				this._cursorDelayID = uint.MAX_VALUE;
@@ -1033,7 +1036,7 @@ package feathers.controls.text
 			var line:TextLine = this._textLines[0];
 			if((pointX - line.x) <= 0)
 			{
-				if(this._bidiLevel === 1)
+				if(this._bidiLevel == 1)
 				{
 					return this._text.length;
 				}
@@ -1041,7 +1044,7 @@ package feathers.controls.text
 			}
 			else if((pointX - line.x) >= line.width)
 			{
-				if(this._bidiLevel === 1)
+				if(this._bidiLevel == 1)
 				{
 					return 0;
 				}
@@ -1083,7 +1086,7 @@ package feathers.controls.text
 			{
 				displayText = this._imeText;
 			}
-			if(!displayText || this._textLines.length === 0)
+			if(!displayText || this._textLines.length == 0)
 			{
 				if(this._currentHorizontalAlign == TextFormatAlign.CENTER)
 				{
@@ -1098,7 +1101,7 @@ package feathers.controls.text
 			var line:TextLine = this._textLines[0];
 			if(index === displayText.length)
 			{
-				if(this._bidiLevel === 1)
+				if(this._bidiLevel == 1)
 				{
 					return line.x;
 				}
@@ -1107,7 +1110,7 @@ package feathers.controls.text
 			var atomIndex:int = line.getAtomIndexAtCharIndex(index);
 			var atomBounds:Rectangle = line.getAtomBounds(atomIndex);
 			var result:Number = line.x + atomBounds.x;
-			if(this._bidiLevel === 1)
+			if(this._bidiLevel == 1)
 			{
 				result += atomBounds.width;
 			}
@@ -1364,7 +1367,7 @@ package feathers.controls.text
 				{
 					return;
 				}
-				if(touch.tapCount === 2)
+				if(touch.tapCount == 2)
 				{
 					var start:int = TextInputNavigation.findCurrentWordStartIndex(this._text, this._selectionBeginIndex);
 					var end:int = TextInputNavigation.findCurrentWordEndIndex(this._text, this._selectionEndIndex);

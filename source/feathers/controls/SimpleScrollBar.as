@@ -619,7 +619,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingTop === value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
@@ -649,7 +649,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingRight === value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
@@ -679,7 +679,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingBottom === value)
+			if(this._paddingBottom == value)
 			{
 				return;
 			}
@@ -709,7 +709,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._paddingLeft === value)
+			if(this._paddingLeft == value)
 			{
 				return;
 			}
@@ -1068,7 +1068,7 @@ package feathers.controls
 
 			var range:Number = this._maximum - this._minimum;
 			var adjustedPage:Number = this._page;
-			if(adjustedPage === 0)
+			if(adjustedPage == 0)
 			{
 				//fall back to using step!
 				adjustedPage = this._step;
@@ -1084,7 +1084,7 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = this.thumb.width;
-				if(this._direction !== Direction.VERTICAL && adjustedPage !== 0)
+				if(this._direction !== Direction.VERTICAL && adjustedPage != 0)
 				{
 					newWidth *= range / adjustedPage;
 				}
@@ -1093,7 +1093,7 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this.thumb.height;
-				if(this._direction === Direction.VERTICAL && adjustedPage !== 0)
+				if(this._direction === Direction.VERTICAL && adjustedPage != 0)
 				{
 					newHeight *= range / adjustedPage;
 				}
@@ -1109,7 +1109,7 @@ package feathers.controls
 				{
 					newMinWidth = this.thumb.width;
 				}
-				if(this._direction !== Direction.VERTICAL && adjustedPage !== 0)
+				if(this._direction !== Direction.VERTICAL && adjustedPage != 0)
 				{
 					newMinWidth *= range / adjustedPage;
 				}
@@ -1125,7 +1125,7 @@ package feathers.controls
 				{
 					newMinHeight = this.thumb.height;
 				}
-				if(this._direction === Direction.VERTICAL && adjustedPage !== 0)
+				if(this._direction === Direction.VERTICAL && adjustedPage != 0)
 				{
 					newMinHeight *= range / adjustedPage;
 				}
@@ -1366,7 +1366,7 @@ package feathers.controls
 		{
 			var range:Number = this._maximum - this._minimum;
 			var adjustedPage:Number = this._page;
-			if(adjustedPage === 0)
+			if(adjustedPage == 0)
 			{
 				adjustedPage = this._step;
 			}
@@ -1377,7 +1377,7 @@ package feathers.controls
 			if(this._touchValue < this._pageStartValue)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - adjustedPage);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundDownToNearest(newValue, this._step);
 				}
@@ -1387,7 +1387,7 @@ package feathers.controls
 			else if(this._touchValue > this._pageStartValue)
 			{
 				newValue = Math.min(this._touchValue, this._value + adjustedPage);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundUpToNearest(newValue, this._step);
 				}

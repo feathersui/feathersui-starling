@@ -96,7 +96,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+					(this._actualVisibleWidth < value || this._actualVisibleWidth == oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -124,7 +124,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+				(this._actualVisibleWidth > value || this._actualVisibleWidth == oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -148,7 +148,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleWidth = value;
-			if(this._actualVisibleWidth !== value)
+			if(this._actualVisibleWidth != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -190,7 +190,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+					(this._actualVisibleHeight < value || this._actualVisibleHeight == oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -218,7 +218,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+				(this._actualVisibleHeight > value || this._actualVisibleHeight == oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -242,7 +242,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleHeight = value;
-			if(this._actualVisibleHeight !== value)
+			if(this._actualVisibleHeight != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -1114,16 +1114,28 @@ package feathers.controls.supportClasses
 
 		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
 		{
+			if(item is XML || item is XMLList)
+			{
+				return IGroupedListItemRenderer(this._itemRendererMap[item.toXMLString()]);
+			}
 			return IGroupedListItemRenderer(this._itemRendererMap[item]);
 		}
 
 		public function headerDataToHeaderRenderer(headerData:Object):IGroupedListHeaderRenderer
 		{
+			if(headerData is XML || headerData is XMLList)
+			{
+				return IGroupedListHeaderRenderer(this._headerRendererMap[headerData.toXMLString()]);
+			}
 			return IGroupedListHeaderRenderer(this._headerRendererMap[headerData]);
 		}
 
 		public function footerDataToFooterRenderer(footerData:Object):IGroupedListFooterRenderer
 		{
+			if(footerData is XML || footerData is XMLList)
+			{
+				return IGroupedListFooterRenderer(this._footerRendererMap[footerData.toXMLString()]);
+			}
 			return IGroupedListFooterRenderer(this._footerRendererMap[footerData]);
 		}
 
@@ -1311,7 +1323,7 @@ package feathers.controls.supportClasses
 			//a null value at index 0. this is the only time we allow null.
 			if(typicalItem !== null || newTypicalItemIsInDataProvider)
 			{
-				var typicalItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
+				var typicalItemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(typicalItem);
 				if(typicalItemRenderer)
 				{
 					//at this point, the item already has an item renderer.
@@ -1512,7 +1524,15 @@ package feathers.controls.supportClasses
 			{
 				if(this._typicalItemIsInDataProvider)
 				{
-					delete this._itemRendererMap[this._typicalItemRenderer.data];
+					var item:Object = this._typicalItemRenderer.data;
+					if(item is XML || item is XMLList)
+					{
+						delete this._itemRendererMap[item.toXMLString()];
+					}
+					else
+					{
+						delete this._itemRendererMap[item];
+					}
 				}
 				this.destroyItemRenderer(this._typicalItemRenderer);
 				this._typicalItemRenderer = null;
@@ -1781,8 +1801,8 @@ package feathers.controls.supportClasses
 					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
 						if(this._typicalItemRenderer && this._typicalItemIsInDataProvider &&
-							this._typicalItemRenderer.groupIndex === i &&
-							this._typicalItemRenderer.itemIndex === j)
+							this._typicalItemRenderer.groupIndex == i &&
+							this._typicalItemRenderer.itemIndex == j)
 						{
 							//the indices may have changed if items were added, removed,
 							//or reordered in the data provider
@@ -1847,14 +1867,21 @@ package feathers.controls.supportClasses
 		
 		private function findRendererForItem(item:Object, groupIndex:int, itemIndex:int, layoutIndex:int):void
 		{
-			var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+			var itemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(item);
 			if(this._factoryIDFunction !== null && itemRenderer !== null)
 			{
 				var newFactoryID:String = this.getFactoryID(itemRenderer.data, groupIndex, itemIndex);
 				if(newFactoryID !== itemRenderer.factoryID)
 				{
 					itemRenderer = null;
-					delete this._itemRendererMap[item];
+					if(item is XML || item is XMLList)
+					{
+						delete this._itemRendererMap[item.toXMLString()];
+					}
+					else
+					{
+						delete this._itemRendererMap[item];
+					}
 				}
 			}
 			if(itemRenderer !== null)
@@ -1915,14 +1942,21 @@ package feathers.controls.supportClasses
 
 		private function findRendererForHeader(header:Object, groupIndex:int, layoutIndex:int):void
 		{
-			var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[header]);
+			var headerRenderer:IGroupedListHeaderRenderer = this.headerDataToHeaderRenderer(header);
 			if(this._headerFactoryIDFunction !== null && headerRenderer !== null)
 			{
 				var newFactoryID:String = this.getHeaderFactoryID(headerRenderer.data, groupIndex);
 				if(newFactoryID !== headerRenderer.factoryID)
 				{
 					headerRenderer = null;
-					delete this._headerRendererMap[header];
+					if(header is XML || header is XMLList)
+					{
+						delete this._headerRendererMap[header.toXMLString()];
+					}
+					else
+					{
+						delete this._headerRendererMap[header];
+					}
 				}
 			}
 			if(headerRenderer !== null)
@@ -1962,14 +1996,21 @@ package feathers.controls.supportClasses
 
 		private function findRendererForFooter(footer:Object, groupIndex:int, layoutIndex:int):void
 		{
-			var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[footer]);
+			var footerRenderer:IGroupedListFooterRenderer = this.footerDataToFooterRenderer(footer);
 			if(this._footerFactoryIDFunction !== null && footerRenderer !== null)
 			{
 				var newFactoryID:String = this.getFooterFactoryID(footerRenderer.data, groupIndex);
 				if(newFactoryID !== footerRenderer.factoryID)
 				{
 					footerRenderer = null;
-					delete this._footerRendererMap[footer];
+					if(footer is XML || footer is XMLList)
+					{
+						delete this._footerRendererMap[footer.toXMLString()];
+					}
+					else
+					{
+						delete this._footerRendererMap[footer];
+					}
 				}
 			}
 			if(footerRenderer !== null)
@@ -2063,7 +2104,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
-				delete this._itemRendererMap[itemRenderer.data];
+				var item:Object = itemRenderer.data;
+				if(item is XML || item is XMLList)
+				{
+					delete this._itemRendererMap[item.toXMLString()];
+				}
+				else
+				{
+					delete this._itemRendererMap[item];
+				}
 			}
 		}
 
@@ -2079,7 +2128,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, headerRenderer);
-				delete this._headerRendererMap[headerRenderer.data];
+				var headerData:Object = headerRenderer.data;
+				if(headerData is XML || headerData is XMLList)
+				{
+					delete this._headerRendererMap[headerData.toXMLString()];
+				}
+				else
+				{
+					delete this._headerRendererMap[headerData];
+				}
 			}
 		}
 
@@ -2095,7 +2152,15 @@ package feathers.controls.supportClasses
 					continue;
 				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, footerRenderer);
-				delete this._footerRendererMap[footerRenderer.data];
+				var footerData:Object = footerRenderer.data;
+				if(footerData is XML || footerData is XMLList)
+				{
+					delete this._footerRendererMap[footerData.toXMLString()];
+				}
+				else
+				{
+					delete this._footerRendererMap[footerData];
+				}
 			}
 		}
 
@@ -2211,7 +2276,7 @@ package feathers.controls.supportClasses
 			var customStyleName:String = this.indexToCustomStyleName(groupIndex, itemIndex);
 			var inactiveItemRenderers:Vector.<IGroupedListItemRenderer> = storage.inactiveItemRenderers;
 			var activeItemRenderers:Vector.<IGroupedListItemRenderer> = storage.activeItemRenderers;
-			if(!useCache || isTemporary || inactiveItemRenderers.length === 0)
+			if(!useCache || isTemporary || inactiveItemRenderers.length == 0)
 			{
 				var itemRenderer:IGroupedListItemRenderer;
 				if(itemRendererFactory !== null)
@@ -2244,7 +2309,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._itemRendererMap[item] = itemRenderer;
+				if(item is XML || item is XMLList)
+				{
+					this._itemRendererMap[item.toXMLString()] = itemRenderer;
+				}
+				else
+				{
+					this._itemRendererMap[item] = itemRenderer;
+				}
 				activeItemRenderers.push(itemRenderer);
 				itemRenderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				itemRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
@@ -2262,7 +2334,7 @@ package feathers.controls.supportClasses
 			var storage:HeaderRendererFactoryStorage = this.headerFactoryIDToStorage(factoryID);
 			var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
 			var activeHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.activeHeaderRenderers;
-			if(isTemporary || inactiveHeaderRenderers.length === 0)
+			if(isTemporary || inactiveHeaderRenderers.length == 0)
 			{
 				var headerRenderer:IGroupedListHeaderRenderer;
 				if(headerRendererFactory !== null)
@@ -2293,7 +2365,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._headerRendererMap[header] = headerRenderer;
+				if(header is XML || header is XMLList)
+				{
+					this._headerRendererMap[header.toXMLString()] = headerRenderer;
+				}
+				else
+				{
+					this._headerRendererMap[header] = headerRenderer;
+				}
 				activeHeaderRenderers.push(headerRenderer);
 				headerRenderer.addEventListener(FeathersEventType.RESIZE, headerRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, headerRenderer);
@@ -2309,7 +2388,7 @@ package feathers.controls.supportClasses
 			var storage:FooterRendererFactoryStorage = this.footerFactoryIDToStorage(factoryID);
 			var inactiveFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.inactiveFooterRenderers;
 			var activeFooterRenderers:Vector.<IGroupedListFooterRenderer> = storage.activeFooterRenderers;
-			if(isTemporary || inactiveFooterRenderers.length === 0)
+			if(isTemporary || inactiveFooterRenderers.length == 0)
 			{
 				var footerRenderer:IGroupedListFooterRenderer;
 				if(footerRendererFactory !== null)
@@ -2340,7 +2419,14 @@ package feathers.controls.supportClasses
 
 			if(!isTemporary)
 			{
-				this._footerRendererMap[footer] = footerRenderer;
+				if(footer is XML || footer is XMLList)
+				{
+					this._footerRendererMap[footer.toXMLString()] = footerRenderer;
+				}
+				else
+				{
+					this._footerRendererMap[footer] = footerRenderer;
+				}
 				activeFooterRenderers[activeFooterRenderers.length] = footerRenderer;
 				footerRenderer.addEventListener(FeathersEventType.RESIZE, footerRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, footerRenderer);
@@ -2481,7 +2567,7 @@ package feathers.controls.supportClasses
 				if(totalCount > displayIndex)
 				{
 					var itemIndex:int = displayIndex - (totalCount - groupLength);
-					if(itemIndex === -1)
+					if(itemIndex == -1)
 					{
 						result[0] = -1;
 						result[1] = -1;
@@ -2555,9 +2641,9 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
-				if(this._singleItemRendererType !== null && groupLength === 1)
+				if(this._singleItemRendererType !== null && groupLength == 1)
 				{
 					return this._singleItemRendererType;
 				}
@@ -2566,7 +2652,7 @@ package feathers.controls.supportClasses
 					return this._firstItemRendererType;
 				}
 			}
-			if(this._lastItemRendererType !== null && itemIndex === (groupLength - 1))
+			if(this._lastItemRendererType !== null && itemIndex == (groupLength - 1))
 			{
 				return this._lastItemRendererType;
 			}
@@ -2583,9 +2669,9 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
-				if(this._customSingleItemRendererStyleName !== null && groupLength === 1)
+				if(this._customSingleItemRendererStyleName !== null && groupLength == 1)
 				{
 					return this._customSingleItemRendererStyleName;
 				}
@@ -2594,7 +2680,7 @@ package feathers.controls.supportClasses
 					return this._customFirstItemRendererStyleName;
 				}
 			}
-			if(this._customLastItemRendererStyleName !== null && itemIndex === (groupLength - 1))
+			if(this._customLastItemRendererStyleName !== null && itemIndex == (groupLength - 1))
 			{
 				return this._customLastItemRendererStyleName;
 			}
@@ -2606,7 +2692,7 @@ package feathers.controls.supportClasses
 			var factoryID:String = null;
 			if(this._factoryIDFunction !== null)
 			{
-				if(this._factoryIDFunction.length === 1)
+				if(this._factoryIDFunction.length == 1)
 				{
 					factoryID = this._factoryIDFunction(item);
 				}
@@ -2627,12 +2713,12 @@ package feathers.controls.supportClasses
 				groupLength = this._dataProvider.getLengthAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
 			}
-			if(itemIndex === 0)
+			if(itemIndex == 0)
 			{
 				if((this._singleItemRendererType !== null ||
 					this._singleItemRendererFactory !== null ||
 					this._customSingleItemRendererStyleName !== null) &&
-					groupLength === 1)
+					groupLength == 1)
 				{
 					return SINGLE_ITEM_RENDERER_FACTORY_ID;
 				}
@@ -2644,7 +2730,7 @@ package feathers.controls.supportClasses
 			if((this._lastItemRendererType !== null ||
 				this._lastItemRendererFactory !== null ||
 				this._customLastItemRendererStyleName !== null) &&
-				itemIndex === (groupLength - 1))
+				itemIndex == (groupLength - 1))
 			{
 				return LAST_ITEM_RENDERER_FACTORY_ID;
 			}
@@ -2721,7 +2807,7 @@ package feathers.controls.supportClasses
 			{
 				return null;
 			}
-			if(this._headerFactoryIDFunction.length === 1)
+			if(this._headerFactoryIDFunction.length == 1)
 			{
 				return this._headerFactoryIDFunction(header);
 			}
@@ -2734,7 +2820,7 @@ package feathers.controls.supportClasses
 			{
 				return null;
 			}
-			if(this._footerFactoryIDFunction.length === 1)
+			if(this._footerFactoryIDFunction.length == 1)
 			{
 				return this._footerFactoryIDFunction(footer);
 			}
@@ -2926,7 +3012,7 @@ package feathers.controls.supportClasses
 				LOCATION_HELPER_VECTOR[1] = itemIndex;
 				var item:Object = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
 				LOCATION_HELPER_VECTOR.length = 0;
-				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+				var itemRenderer:IGroupedListItemRenderer = this.itemToItemRenderer(item);
 				if(itemRenderer !== null)
 				{
 					//in order to display the same item with modified properties, this
@@ -2934,8 +3020,8 @@ package feathers.controls.supportClasses
 					//a different item to render.
 					itemRenderer.data = null;
 					itemRenderer.data = item;
-					if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
-						this._explicitVisibleHeight !== this._explicitVisibleHeight)
+					if(this._explicitVisibleWidth !== this._explicitVisibleWidth || //isNaN
+						this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
 					{
 						this.invalidate(INVALIDATION_FLAG_SIZE);
 						this.invalidateParent(INVALIDATION_FLAG_SIZE);
@@ -2952,10 +3038,10 @@ package feathers.controls.supportClasses
 				{
 					LOCATION_HELPER_VECTOR[1] = i;
 					item = this._dataProvider.getItemAtLocation(LOCATION_HELPER_VECTOR);
-					if(item)
+					if(item !== null)
 					{
-						itemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-						if(itemRenderer)
+						itemRenderer = this.itemToItemRenderer(item);
+						if(itemRenderer !== null)
 						{
 							itemRenderer.data = null;
 							itemRenderer.data = item;
@@ -2968,7 +3054,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToHeaderData(group);
 				if(item)
 				{
-					var headerRenderer:IGroupedListHeaderRenderer = IGroupedListHeaderRenderer(this._headerRendererMap[item]);
+					var headerRenderer:IGroupedListHeaderRenderer = this.headerDataToHeaderRenderer(item);
 					if(headerRenderer)
 					{
 						headerRenderer.data = null;
@@ -2978,7 +3064,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToFooterData(group);
 				if(item)
 				{
-					var footerRenderer:IGroupedListFooterRenderer = IGroupedListFooterRenderer(this._footerRendererMap[item]);
+					var footerRenderer:IGroupedListFooterRenderer = this.footerDataToFooterRenderer(item);
 					if(footerRenderer)
 					{
 						footerRenderer.data = null;

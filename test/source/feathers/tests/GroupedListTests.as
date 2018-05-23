@@ -443,7 +443,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 1 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.name === firstItemName)
 				{
 					usedFirstItemRendererFactory = true;
@@ -466,7 +466,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 1 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(firstStyleName))
 				{
 					containsFirstItemRendererStyleName = true;
@@ -552,7 +552,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.name === firstItemName)
 				{
 					usedFirstItemRendererFactory = true;
@@ -577,7 +577,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(firstStyleName))
 				{
 					containsFirstItemRendererStyleName = true;
@@ -619,7 +619,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.name === singleItemName)
 				{
 					usedSingleItemRendererFactory = true;
@@ -646,7 +646,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(singleStyleName))
 				{
 					containsSingleItemRendererStyleName = true;
@@ -674,7 +674,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.name === componentName)
 				{
 					usedLastItemRendererFactory = true;
@@ -697,7 +697,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(styleName))
 				{
 					containsLastItemRendererStyleName = true;
@@ -795,7 +795,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 1 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 1 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(firstStyleName) &&
 					itemRenderer.defaultSkin !== null)
 				{
@@ -843,7 +843,7 @@ package feathers.tests
 					return;
 				}
 				var itemRenderer:DefaultGroupedListItemRenderer = DefaultGroupedListItemRenderer(event.data);
-				if(itemRenderer.groupIndex === 2 && itemRenderer.itemIndex === 0 &&
+				if(itemRenderer.groupIndex == 2 && itemRenderer.itemIndex == 0 &&
 					itemRenderer.styleNameList.contains(singleStyleName) &&
 					itemRenderer.defaultSkin !== null)
 				{

@@ -440,8 +440,8 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth;
-			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight;
+			var needsExplicitWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
+			var needsExplicitHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			var distributedHeight:Number;
 			if(!needsExplicitHeight && this._distributeHeights)
 			{
@@ -537,11 +537,11 @@ package feathers.layout
 			{
 				if(!this._useVirtualLayout)
 				{
-					if(this._maxRowCount > 0 && this._maxRowCount === i)
+					if(this._maxRowCount > 0 && this._maxRowCount == i)
 					{
 						maxRowAvailableHeight = positionY;
 					}
-					if(this._requestedRowCount > 0 && this._requestedRowCount === i)
+					if(this._requestedRowCount > 0 && this._requestedRowCount == i)
 					{
 						requestedRowAvailableHeight = positionY;
 					}
@@ -551,12 +551,12 @@ package feathers.layout
 				//adjust i to account for the missing items in the array
 				var iNormalized:int = i + indexOffset;
 
-				if(nextHeaderIndex === iNormalized)
+				if(nextHeaderIndex == iNormalized)
 				{
 					//if the sticky header is enabled, we need to find its index
 					//we look for the first header that is visible at the top of
 					//the view port. the previous one should be sticky.
-					if((positionY - startPositionY) < scrollY)
+					if(positionY < scrollY)
 					{
 						headerIndicesIndex++;
 						if(headerIndicesIndex < headerCount)
@@ -627,7 +627,7 @@ package feathers.layout
 						continue;
 					}
 					var pivotY:Number = item.pivotY;
-					if(pivotY !== 0)
+					if(pivotY != 0)
 					{
 						pivotY *= item.scaleY;
 					}
@@ -672,7 +672,7 @@ package feathers.layout
 							//if all items must have the same height, we will
 							//use the height of the typical item (calculatedTypicalItemHeight).
 							itemHeight = calculatedTypicalItemHeight;
-							if(item !== this._typicalItem || item.height !== itemHeight)
+							if(item !== this._typicalItem || item.height != itemHeight)
 							{
 								//ensure that the typical item's height is not
 								//set explicitly so that it can resize
@@ -835,7 +835,7 @@ package feathers.layout
 				}
 
 				var pivotX:Number = item.pivotX;
-				if(pivotX !== 0)
+				if(pivotX != 0)
 				{
 					pivotX *= item.scaleX;
 				}
@@ -1184,9 +1184,9 @@ package feathers.layout
 			var positionY:Number = startPositionY;
 			for(i = 0; i < itemCount; i++)
 			{
-				if(nextHeaderIndex === i)
+				if(nextHeaderIndex == i)
 				{
-					if((positionY - startPositionY) < scrollY)
+					if(positionY < scrollY)
 					{
 						headerIndicesIndex++;
 						if(headerIndicesIndex < headerCount)
@@ -1281,7 +1281,7 @@ package feathers.layout
 				}
 				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
-					if(i === nextHeaderIndex)
+					if(i == nextHeaderIndex)
 					{
 						continue;
 					}
@@ -1302,7 +1302,7 @@ package feathers.layout
 				}
 				for(i = startIndex; i < endIndex; i++)
 				{
-					if(i === nextHeaderIndex)
+					if(i == nextHeaderIndex)
 					{
 						continue;
 					}
@@ -1393,7 +1393,7 @@ package feathers.layout
 
 			var backwards:Boolean = false;
 			var result:int = index;
-			if(keyCode === Keyboard.HOME)
+			if(keyCode == Keyboard.HOME)
 			{
 				backwards = true;
 				if(itemCount > 0)
@@ -1401,11 +1401,11 @@ package feathers.layout
 					result = 0;
 				}
 			}
-			else if(keyCode === Keyboard.END)
+			else if(keyCode == Keyboard.END)
 			{
 				result = itemCount - 1;
 			}
-			else if(keyCode === Keyboard.PAGE_UP)
+			else if(keyCode == Keyboard.PAGE_UP)
 			{
 				backwards = true;
 				var indexOffset:int = 0;
@@ -1423,7 +1423,7 @@ package feathers.layout
 					}
 					if(iNormalized < 0 || iNormalized >= itemArrayCount)
 					{
-						if(cachedHeight === cachedHeight)
+						if(cachedHeight === cachedHeight) //!isNaN
 						{
 							yPosition += cachedHeight;
 						}
@@ -1437,7 +1437,7 @@ package feathers.layout
 						var item:DisplayObject = items[iNormalized];
 						if(item === null)
 						{
-							if(cachedHeight === cachedHeight)
+							if(cachedHeight === cachedHeight) //!isNaN
 							{
 								yPosition += cachedHeight;
 							}
@@ -1459,7 +1459,7 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.PAGE_DOWN)
+			else if(keyCode == Keyboard.PAGE_DOWN)
 			{
 				yPosition = 0;
 				indexOffset = 0;
@@ -1512,12 +1512,12 @@ package feathers.layout
 					result = i;
 				}
 			}
-			else if(keyCode === Keyboard.UP)
+			else if(keyCode == Keyboard.UP)
 			{
 				backwards = true;
 				result--;
 			}
-			else if(keyCode === Keyboard.DOWN)
+			else if(keyCode == Keyboard.DOWN)
 			{
 				result++;
 			}
@@ -1529,11 +1529,11 @@ package feathers.layout
 			{
 				result = itemCount - 1;
 			}
-			while(this._headerIndices !== null && this._headerIndices.indexOf(result) !== -1)
+			while(this._headerIndices !== null && this._headerIndices.indexOf(result) != -1)
 			{
 				if(backwards)
 				{
-					if(result === 0)
+					if(result == 0)
 					{
 						backwards = false;
 						result++;
@@ -1591,7 +1591,7 @@ package feathers.layout
 
 			var verticalAlign:String = this._scrollPositionVerticalAlign;
 			if(this._headerIndices !== null &&
-				this._headerIndices.indexOf(index) !== -1)
+				this._headerIndices.indexOf(index) != -1)
 			{
 				verticalAlign = this._headerScrollPositionVerticalAlign;
 			}
@@ -2093,7 +2093,7 @@ package feathers.layout
 					lastHeight = itemHeight;
 				}
 				positionY += lastHeight + gap;
-				if(nextHeaderIndex === iNormalized)
+				if(nextHeaderIndex == iNormalized)
 				{
 					lastHeaderHeight = lastHeight;
 					//if the sticky header is enabled, we need to find its index
@@ -2110,7 +2110,7 @@ package feathers.layout
 			result.x = positionY - height;
 			if(this._stickyHeader &&
 				this._headerIndices !== null &&
-				this._headerIndices.indexOf(index) === -1)
+				this._headerIndices.indexOf(index) == -1)
 			{
 				//if the headers are sticky, adjust the scroll range if we're
 				//scrolling to an item because the sticky header should not hide

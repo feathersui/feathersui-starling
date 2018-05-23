@@ -783,11 +783,11 @@ package feathers.controls
 			}
 			this.currentSkin.x = 0;
 			this.currentSkin.y = 0;
-			if(this.currentSkin.width !== this.actualWidth)
+			if(this.currentSkin.width != this.actualWidth)
 			{
 				this.currentSkin.width = this.actualWidth;
 			}
-			if(this.currentSkin.height !== this.actualHeight)
+			if(this.currentSkin.height != this.actualHeight)
 			{
 				this.currentSkin.height = this.actualHeight;
 			}

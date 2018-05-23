@@ -1553,7 +1553,7 @@ package feathers.controls
 			}
 
 			var buttonWidth:Number = this._explicitWidth;
-			if(buttonWidth !== buttonWidth)
+			if(buttonWidth !== buttonWidth) //isNaN
 			{
 				//we save the button's explicitWidth (and other explicit
 				//dimensions) after the buttonFactory() returns so that
@@ -1562,17 +1562,17 @@ package feathers.controls
 				buttonWidth = this.buttonExplicitWidth;
 			}
 			var buttonHeight:Number = this._explicitHeight;
-			if(buttonHeight !== buttonHeight)
+			if(buttonHeight !== buttonHeight) //isNaN
 			{
 				buttonHeight = this.buttonExplicitHeight;
 			}
 			var buttonMinWidth:Number = this._explicitMinWidth;
-			if(buttonMinWidth !== buttonMinWidth)
+			if(buttonMinWidth !== buttonMinWidth) //isNaN
 			{
 				buttonMinWidth = this.buttonExplicitMinWidth;
 			}
 			var buttonMinHeight:Number = this._explicitMinHeight;
-			if(buttonMinHeight !== buttonMinHeight)
+			if(buttonMinHeight !== buttonMinHeight) //isNaN
 			{
 				buttonMinHeight = this.buttonExplicitMinHeight;
 			}
@@ -1959,7 +1959,7 @@ package feathers.controls
 		 */
 		protected function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
-			if(index === this._selectedIndex)
+			if(index == this._selectedIndex)
 			{
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}

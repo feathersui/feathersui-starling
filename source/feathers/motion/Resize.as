@@ -127,8 +127,8 @@ package feathers.motion
 				{
 					var oldExplicitWidth:Number = IFeathersControl(target).explicitWidth;
 					var oldExplicitHeight:Number = IFeathersControl(target).explicitHeight;
-					if(oldExplicitWidth === oldExplicitWidth ||
-						oldExplicitHeight === oldExplicitHeight) //isNaN
+					if(oldExplicitWidth === oldExplicitWidth || //!isNaN
+						oldExplicitHeight === oldExplicitHeight) //!isNaN
 					{
 						tween.onComplete = function():void
 						{
@@ -169,7 +169,7 @@ package feathers.motion
 				if(target is IFeathersControl)
 				{
 					var oldExplicitWidth:Number = IFeathersControl(target).explicitWidth;
-					if(oldExplicitWidth === oldExplicitWidth) //isNaN
+					if(oldExplicitWidth === oldExplicitWidth) //!isNaN
 					{
 						tween.onComplete = function():void
 						{
@@ -207,7 +207,7 @@ package feathers.motion
 				if(target is IFeathersControl)
 				{
 					var oldExplicitHeight:Number = IFeathersControl(target).explicitHeight;
-					if(oldExplicitHeight === oldExplicitHeight) //isNaN
+					if(oldExplicitHeight === oldExplicitHeight) //!isNaN
 					{
 						tween.onComplete = function():void
 						{

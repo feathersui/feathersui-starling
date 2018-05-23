@@ -624,7 +624,7 @@ package feathers.data
 			{
 				this.refreshFilterAndSort();
 			}
-			if(this.length === 0)
+			if(this.length == 0)
 			{
 				return;
 			}
@@ -787,7 +787,7 @@ package feathers.data
 		 */
 		public function contains(item:Object):Boolean
 		{
-			return this.xmlListIndexOf(item) !== -1;
+			return this.xmlListIndexOf(item) != -1;
 		}
 
 		/**

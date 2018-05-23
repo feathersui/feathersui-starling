@@ -99,7 +99,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleWidth = value;
 				if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-					(this._actualVisibleWidth < value || this._actualVisibleWidth === oldValue))
+					(this._actualVisibleWidth < value || this._actualVisibleWidth == oldValue))
 				{
 					//only invalidate if this change might affect the visibleWidth
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -127,7 +127,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleWidth;
 			this._maxVisibleWidth = value;
 			if(this._explicitVisibleWidth !== this._explicitVisibleWidth && //isNaN
-				(this._actualVisibleWidth > value || this._actualVisibleWidth === oldValue))
+				(this._actualVisibleWidth > value || this._actualVisibleWidth == oldValue))
 			{
 				//only invalidate if this change might affect the visibleWidth
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -151,7 +151,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleWidth = value;
-			if(this._actualVisibleWidth !== value)
+			if(this._actualVisibleWidth != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -193,7 +193,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualMinVisibleHeight = value;
 				if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-					(this._actualVisibleHeight < value || this._actualVisibleHeight === oldValue))
+					(this._actualVisibleHeight < value || this._actualVisibleHeight == oldValue))
 				{
 					//only invalidate if this change might affect the visibleHeight
 					this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -221,7 +221,7 @@ package feathers.controls.supportClasses
 			var oldValue:Number = this._maxVisibleHeight;
 			this._maxVisibleHeight = value;
 			if(this._explicitVisibleHeight !== this._explicitVisibleHeight && //isNaN
-				(this._actualVisibleHeight > value || this._actualVisibleHeight === oldValue))
+				(this._actualVisibleHeight > value || this._actualVisibleHeight == oldValue))
 			{
 				//only invalidate if this change might affect the visibleHeight
 				this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -245,7 +245,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._explicitVisibleHeight = value;
-			if(this._actualVisibleHeight !== value)
+			if(this._actualVisibleHeight != value)
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
@@ -567,8 +567,8 @@ package feathers.controls.supportClasses
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&
-				(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
-				this._explicitVisibleHeight !== this._explicitVisibleHeight);
+				(this._explicitVisibleWidth !== this._explicitVisibleWidth || //isNaN
+				this._explicitVisibleHeight !== this._explicitVisibleHeight); //isNaN
 		}
 
 		public function calculateNavigationDestination(index:int, keyCode:uint):int
@@ -820,7 +820,7 @@ package feathers.controls.supportClasses
 			var rowRenderer:DataGridRowRenderer = null;
 			do
 			{
-				if(!useCache || isTemporary || inactiveRowRenderers.length === 0)
+				if(!useCache || isTemporary || inactiveRowRenderers.length == 0)
 				{
 					rowRenderer = new DataGridRowRenderer();
 					this.addChild(DisplayObject(rowRenderer));
@@ -1006,7 +1006,7 @@ package feathers.controls.supportClasses
 				//added the typical row renderer to the active renderers. if
 				//not, we need to do it here.
 				var activeRendererCount:int = activeRowRenderers.length;
-				if(activeRendererCount === 0)
+				if(activeRendererCount == 0)
 				{
 					activeRowRenderers[activeRendererCount] = this._typicalRowRenderer;
 				}
@@ -1283,8 +1283,8 @@ package feathers.controls.supportClasses
 			//a different item to render.
 			rowRenderer.data = null;
 			rowRenderer.data = item;
-			if(this._explicitVisibleWidth !== this._explicitVisibleWidth ||
-				this._explicitVisibleHeight !== this._explicitVisibleHeight)
+			if(this._explicitVisibleWidth !== this._explicitVisibleWidth || //isNaN
+				this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 				this.invalidateParent(INVALIDATION_FLAG_SIZE);

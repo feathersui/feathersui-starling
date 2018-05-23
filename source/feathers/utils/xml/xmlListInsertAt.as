@@ -19,7 +19,7 @@ package feathers.utils.xml
 		//the XMLList, so we add it to an XML and insert there instead
 		var wrapper:XML = <wrapper/>;
 		wrapper.appendChild(xmlList);
-		if(index === listLength)
+		if(index == listLength)
 		{
 			var lastItem:XML = xmlList[index - 1];
 			wrapper.insertChildAfter(lastItem, xmlToInsert);

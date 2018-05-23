@@ -277,17 +277,17 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
-			if(event.keyCode === this._cancelKeyCode)
+			if(event.keyCode == this._cancelKeyCode)
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				return;
 			}
-			if(event.keyCode !== this._keyCode)
+			if(event.keyCode != this._keyCode)
 			{
 				return;
 			}
-			if(this._keyLocation !== uint.MAX_VALUE &&
-				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			if(this._keyLocation != uint.MAX_VALUE &&
+				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
 				return;	
 			}
@@ -303,12 +303,12 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
-			if(event.keyCode !== this._keyCode)
+			if(event.keyCode != this._keyCode)
 			{
 				return;
 			}
-			if(this._keyLocation !== uint.MAX_VALUE &&
-				!((event.keyLocation === this._keyLocation) || (this._keyLocation === 4 && DeviceCapabilities.simulateDPad)))
+			if(this._keyLocation != uint.MAX_VALUE &&
+				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
 				return;	
 			}

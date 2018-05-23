@@ -1243,8 +1243,8 @@ package feathers.controls.text
 			{
 				var matrix:Matrix = Pool.getMatrix();
 				this.getTransformationMatrix(this.stage, matrix);
-				if(matrixToScaleX(matrix) !== this._lastGlobalScaleX ||
-					matrixToScaleY(matrix) !== this._lastGlobalScaleY)
+				if(matrixToScaleX(matrix) != this._lastGlobalScaleX ||
+					matrixToScaleY(matrix) != this._lastGlobalScaleY)
 				{
 					//the snapshot needs to be updated because the scale has
 					//changed since the last snapshot was taken.
@@ -1648,8 +1648,8 @@ package feathers.controls.text
 				var viewPort:Rectangle = this.stageText.viewPort;
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot ||
-					(textureRoot !== null && (textureRoot.scale !== starling.contentScaleFactor ||
-					viewPort.width !== textureRoot.nativeWidth || viewPort.height !== textureRoot.nativeHeight));
+					(textureRoot !== null && (textureRoot.scale != starling.contentScaleFactor ||
+					viewPort.width != textureRoot.nativeWidth || viewPort.height != textureRoot.nativeHeight));
 			}
 
 			if(!this._stageTextHasFocus && (stateInvalid || stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
@@ -1811,7 +1811,7 @@ package feathers.controls.text
 			this.stageText.autoCorrect = this._autoCorrect;
 			if(this._isEnabled)
 			{
-				if(this._color === uint.MAX_VALUE)
+				if(this._color == uint.MAX_VALUE)
 				{
 					if(textFormat !== null)
 					{
@@ -1829,9 +1829,9 @@ package feathers.controls.text
 			}
 			else //disabled
 			{
-				if(this._disabledColor === uint.MAX_VALUE)
+				if(this._disabledColor == uint.MAX_VALUE)
 				{
-					if(this._color === uint.MAX_VALUE)
+					if(this._color == uint.MAX_VALUE)
 					{
 						if(textFormat !== null)
 						{
@@ -2511,13 +2511,13 @@ package feathers.controls.text
 			}
 			if(FocusManager.isEnabledForStage(this.stage))
 			{
-				if(event.keyCode === Keyboard.TAB)
+				if(event.keyCode == Keyboard.TAB)
 				{
 					event.preventDefault();
 					this.dispatchKeyFocusChangeEvent(event);
 				}
-				if((event.keyLocation === KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
-					(event.keyCode === Keyboard.ENTER || event.keyCode === Keyboard.UP || event.keyCode === Keyboard.DOWN))
+				if((event.keyLocation == KeyLocation.D_PAD || DeviceCapabilities.simulateDPad) &&
+					(event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN))
 				{
 					event.preventDefault();
 					this.dispatchKeyboardEventToStage(event);
@@ -2534,7 +2534,7 @@ package feathers.controls.text
 			{
 				event.preventDefault();
 			}
-			if(event.keyCode === Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
+			if(event.keyCode == Keyboard.TAB && FocusManager.isEnabledForStage(this.stage))
 			{
 				event.preventDefault();
 			}

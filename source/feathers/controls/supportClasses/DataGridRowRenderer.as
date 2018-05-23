@@ -105,7 +105,7 @@ package feathers.controls.supportClasses
 		 */
 		public function set index(value:int):void
 		{
-			if(this._index === value)
+			if(this._index == value)
 			{
 				return;
 			}
@@ -402,7 +402,7 @@ package feathers.controls.supportClasses
 			var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = storage.inactiveCellRenderers;
 			do
 			{
-				if(inactiveCellRenderers.length === 0)
+				if(inactiveCellRenderers.length == 0)
 				{
 					var cellRendererFactory:Function = column.cellRendererFactory;
 					if(cellRendererFactory === null)

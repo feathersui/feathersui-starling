@@ -582,7 +582,7 @@ package feathers.controls
 			if(value !== null)
 			{
 				var result:Vector.<int> = this._dataProvider.getItemLocation(value, this._helperLocation);
-				if(result === null || result.length === 0)
+				if(result === null || result.length == 0)
 				{
 					value = null;
 				}
@@ -766,7 +766,7 @@ package feathers.controls
 		 *
 		 * tree.factoryIDFunction = function( item:Object, location:Vector.&lt;int&gt; ):String
 		 * {
-		 *     if(location.length === 1 &amp;&amp; location[0] === 0)
+		 *     if(location.length == 1 &amp;&amp; location[0] == 0)
 		 *     {
 		 *         return "first-item";
 		 *     }
@@ -889,7 +889,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._keyScrollDuration === value)
+			if(this._keyScrollDuration == value)
 			{
 				return;
 			}
@@ -994,7 +994,7 @@ package feathers.controls
 			var index:int = this._openBranches.getItemIndex(branch);
 			if(open)
 			{
-				if(index !== -1)
+				if(index != -1)
 				{
 					//the branch is already open
 					return;
@@ -1004,7 +1004,7 @@ package feathers.controls
 			}
 			else //close
 			{
-				if(index === -1)
+				if(index == -1)
 				{
 					//the branch is already closed
 					return;
@@ -1027,7 +1027,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			return this._openBranches.getItemIndex(branch) !== -1;
+			return this._openBranches.getItemIndex(branch) != -1;
 		}
 
 		[Bindable(event="change")]
@@ -1105,12 +1105,12 @@ package feathers.controls
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
 			if(this.pendingLocation !== null &&
-				this.pendingLocation.length === location.length &&
-				this.pendingScrollDuration === animationDuration)
+				this.pendingLocation.length == location.length &&
+				this.pendingScrollDuration == animationDuration)
 			{
 				var locationsEqual:Boolean = this.pendingLocation.every(function(item:int, index:int, source:Vector.<int>):Boolean
 				{
-					return item === location[index];
+					return item == location[index];
 				});
 				if(locationsEqual)
 				{
@@ -1251,7 +1251,7 @@ package feathers.controls
 				return;
 			}
 			var selectedItemLocation:Vector.<int> = this._dataProvider.getItemLocation(this._selectedItem, this._helperLocation);
-			if(selectedItemLocation === null || selectedItemLocation.length === 0)
+			if(selectedItemLocation === null || selectedItemLocation.length == 0)
 			{
 				this.selectedItem = null;
 			}
@@ -1367,8 +1367,8 @@ package feathers.controls
 				return;
 			}
 			if(this._selectedItem !== null &&
-				(event.keyCode === Keyboard.SPACE ||
-				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+				(event.keyCode == Keyboard.SPACE ||
+				((event.keyLocation == 4 || DeviceCapabilities.simulateDPad) && event.keyCode == Keyboard.ENTER)))
 			{
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}

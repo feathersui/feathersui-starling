@@ -1162,7 +1162,7 @@ package feathers.controls
 		 * 
 		 * list.factoryIDFunction = function( item:Object, index:int ):String
 		 * {
-		 *     if(index === 0)
+		 *     if(index == 0)
 		 *     {
 		 *         return "header-item";
 		 *     }
@@ -1762,18 +1762,18 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._selectedIndex !== -1 && (event.keyCode === Keyboard.SPACE ||
-				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			if(this._selectedIndex != -1 && (event.keyCode == Keyboard.SPACE ||
+				((event.keyLocation == 4 || DeviceCapabilities.simulateDPad) && event.keyCode == Keyboard.ENTER)))
 			{
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
-			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
-				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
-				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
-				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
+			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
+				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
-				if(this.selectedIndex !== newIndex)
+				if(this.selectedIndex != newIndex)
 				{
 					event.preventDefault();
 					this.selectedIndex = newIndex;
@@ -1812,12 +1812,12 @@ package feathers.controls
 			{
 				keyCode = Keyboard.LEFT;
 			}
-			if(keyCode === int.MAX_VALUE)
+			if(keyCode == int.MAX_VALUE)
 			{
 				return;
 			}
 			var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, keyCode);
-			if(this.selectedIndex !== newIndex)
+			if(this.selectedIndex != newIndex)
 			{
 				event.stopImmediatePropagation();
 				//event.preventDefault();
@@ -1925,7 +1925,7 @@ package feathers.controls
 		 */
 		protected function refreshSelectedIndicesAfterFilterOrSort():void
 		{
-			if(this._selectedIndex === -1)
+			if(this._selectedIndex == -1)
 			{
 				return;
 			}
@@ -1940,7 +1940,7 @@ package feathers.controls
 				var newIndex:int = this._dataProvider.getItemIndex(selectedItem);
 				if(newIndex >= 0)
 				{
-					if(newIndex !== oldIndex)
+					if(newIndex != oldIndex)
 					{
 						//the item was not filtered, but it moved to a new index
 						selectionChanged = true;

@@ -378,7 +378,7 @@ package feathers.core
 			{
 				throw new ArgumentError("Attempting to set index of an item that has not been added to this ToggleGroup.");
 			}
-			if(oldIndex === index)
+			if(oldIndex == index)
 			{
 				//no change needed
 				return;

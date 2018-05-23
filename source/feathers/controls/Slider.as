@@ -961,7 +961,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._thumbOffset === value)
+			if(this._thumbOffset == value)
 			{
 				return;
 			}
@@ -991,7 +991,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._minimumPadding === value)
+			if(this._minimumPadding == value)
 			{
 				return;
 			}
@@ -1021,7 +1021,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._maximumPadding === value)
+			if(this._maximumPadding == value)
 			{
 				return;
 			}
@@ -2344,7 +2344,7 @@ package feathers.controls
 				IValidating(this.thumb).validate();
 			}
 			
-			if(this._minimum === this._maximum)
+			if(this._minimum == this._maximum)
 			{
 				var percentage:Number = 1;
 			}
@@ -2578,7 +2578,7 @@ package feathers.controls
 			if(this._touchValue < this._pageStartValue)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - page);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundDownToNearest(newValue, this._step);
 				}
@@ -2587,7 +2587,7 @@ package feathers.controls
 			else if(this._touchValue > this._pageStartValue)
 			{
 				newValue = Math.min(this._touchValue, this._value + page);
-				if(this._step !== 0 && newValue !== this._maximum && newValue !== this._minimum)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundUpToNearest(newValue, this._step);
 				}

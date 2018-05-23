@@ -193,20 +193,20 @@ package feathers.utils
 			//customize Capabilities.screenDPI, and SystemUtil.isDesktop
 			//incorrectly returns true when testing in Animate CC, this is a
 			//hacky way to make it work for those who prefer to use Animate CC.
-			if(SystemUtil.isDesktop && DeviceCapabilities.dpi === Capabilities.screenDPI)
+			if(SystemUtil.isDesktop && DeviceCapabilities.dpi == Capabilities.screenDPI)
 			{
 				//Starling will handle nativeStage.contentsScaleFactor
 				return 1;
 			}
 			var nativeStage:Stage = this._starling.nativeStage;
 			var screenDensity:Number = DeviceCapabilities.dpi;
-			if(Capabilities.os.indexOf("tvOS") !== -1)
+			if(Capabilities.os.indexOf("tvOS") != -1)
 			{
 				//tvOS devices report a lower DPI than Android TV devices
 				//for the same resolution
 				screenDensity *= 2;
 			}
-			else if(Capabilities.version.indexOf("IOS") !== -1 &&
+			else if(Capabilities.version.indexOf("IOS") != -1 &&
 				DeviceCapabilities.isTablet(nativeStage))
 			{
 				//workaround because these rules derived from Android's behavior

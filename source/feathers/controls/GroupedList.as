@@ -1247,7 +1247,7 @@ package feathers.controls
 		 *
 		 * list.factoryIDFunction = function( item:Object, groupIndex:int, itemIndex:int ):String
 		 * {
-		 *     if(index === 0)
+		 *     if(index == 0)
 		 *     {
 		 *         return "first-item";
 		 *     }
@@ -2592,7 +2592,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._keyScrollDuration === value)
+			if(this._keyScrollDuration == value)
 			{
 				return;
 			}
@@ -3109,25 +3109,25 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._selectedGroupIndex !== -1 && this._selectedItemIndex !== -1 &&
-				(event.keyCode === Keyboard.SPACE ||
-				((event.keyLocation === 4 || DeviceCapabilities.simulateDPad) && event.keyCode === Keyboard.ENTER)))
+			if(this._selectedGroupIndex != -1 && this._selectedItemIndex != -1 &&
+				(event.keyCode == Keyboard.SPACE ||
+				((event.keyLocation == 4 || DeviceCapabilities.simulateDPad) && event.keyCode == Keyboard.ENTER)))
 			{
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
-			if(event.keyCode === Keyboard.HOME || event.keyCode === Keyboard.END ||
-				event.keyCode === Keyboard.PAGE_UP ||event.keyCode === Keyboard.PAGE_DOWN ||
-				event.keyCode === Keyboard.UP ||event.keyCode === Keyboard.DOWN ||
-				event.keyCode === Keyboard.LEFT ||event.keyCode === Keyboard.RIGHT)
+			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
+				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
 			{
 				this.dataViewPort.calculateNavigationDestination(this._selectedGroupIndex, this._selectedItemIndex, event.keyCode, this._helperLocation);
 				var newGroupIndex:int = this._helperLocation[0];
 				var newItemIndex:int = this._helperLocation[1];
-				if(newGroupIndex === -1 || newItemIndex === -1)
+				if(newGroupIndex == -1 || newItemIndex == -1)
 				{
 					this.setSelectedLocation(-1, -1);
 				}
-				else if(this._selectedGroupIndex !== newGroupIndex || this._selectedItemIndex !== newItemIndex)
+				else if(this._selectedGroupIndex != newGroupIndex || this._selectedItemIndex != newItemIndex)
 				{
 					event.preventDefault();
 					this.setSelectedLocation(newGroupIndex, newItemIndex);
