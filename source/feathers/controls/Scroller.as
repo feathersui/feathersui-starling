@@ -39,6 +39,7 @@ package feathers.controls
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -46,7 +47,6 @@ package feathers.controls
 	import starling.events.TouchPhase;
 	import starling.utils.MathUtil;
 	import starling.utils.Pool;
-	import starling.display.DisplayObjectContainer;
 
 	/**
 	 * If <code>true</code>, the background's <code>visible</code> property
