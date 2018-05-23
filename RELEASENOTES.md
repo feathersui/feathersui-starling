@@ -7,6 +7,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * AnchorLayout: fixed issue where measurement could be incorrect when using horizontalCenter or verticalCenter.
 * BitmapFontTextEditor, TextBlockTextEditor: added Shift+Home, Shift+End, Shift+Up, and Shift+Down keyboard shortcuts.
 * BitmapFontTextEditor, TextBlockTextEditor: when pasting text, new lines are removed because TextInput displays only a single line.
+* BitmapFontTextEditor, TextBlockTextEditor: fixed issue where soft keyboard incorrectly opened on mobile when not editable.
 * BitmapFontTextEditor, TextBlockTextEditor, TextFieldTextEditor: fixed issue where touching outside the text editor incorrectly cleared focus when the FocusManager was enabled (it should only do that without a FocusManager).
 * BottomDrawerPopUpContentManager: added panelFactory and closeButtonFactory to allow these components to be more easily customized.
 * DataGrid, List, TabBar: fixed issue where sorting the collection did not update the selected indices.
@@ -18,6 +19,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * FeathersControl: Listens for Event.CHANGE on IStyleProvider to allow themes to modify their style providers and have changes reflected automatically.
 * FeathersControl: added showEffect, hideEffect, moveEffect, resizeEffect, focusInEffect, focusOutEffect, addedEffect, and removeFromParentWithEffect().
 * fontStyles: In addition to restricting this style when the property is set, also listens for Event.CHANGE.
+* GroupedList, Tree: fixed issue where using a data provider that returned XML could cause runtime errors because the item renderer could not be found.
 * Header: improved "extra" top padding for iPhone X when app is not full screen.
 * HorizontalLayout, VerticalLayout: fixed issue where scaleX and scaleY were not accounted for when an item uses pivotX or pivotY.
 * ImageLoader: added loaderContext property to support a custom flash.system.LoaderContext.
@@ -27,6 +29,7 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * ProgressBar: if the fill skin has a minimum size, and the progress bar's value is equal to its minimum value, the fill skin is hidden.
 * Scroller: fixed issue where a null reference error could be thrown in the TouchEvent.TOUCH listener under certain conditions.
 * Scroller: if thrown, a new touch automatically stops scrolling and once again requires dragging a minimum distance to start scrolling. This more closely matches native behavior to allow other containers to take over scrolling if dragged in a new direction.
+* Scroller: fixed issue where items in the view port might not be positioned correctly when snapScrollPositionsToPixels is true, causing jittery scrolling as items jump between pixels.
 * ScrollText: added outerPadding, outerPaddingTop, outerPaddingRight, outerPaddingBottom, and outerPaddingLeft properties.
 * Slider: fixed issue where thumb did not go into down state when using TrackInteractionMode.TO_VALUE.
 * SpinnerList: Fixed issue where performance could drop temporarily when transitioning from the end back to the beginning (or vice versa) when items repeat.
@@ -42,7 +45,9 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * TiledColumnsLayout: fixed issue where the columns could be incorrectly aligned horizontally when alignment should not be possible.
 * TiledColumnsLayout: fixed issue where an incorrect number of visible columns was calculated when distributeHeights is true.
 * Tree: added scrollToDisplayLocation() method.
+* ValidationQueue: reduced memory allocations to avoid unnecessary garbage collection.
 * VectorHierarchicalCollection: Fixed issue that caused compilation to fail with classic Adobe Flex SDK.
+* VerticalLayout: fixed issue where a sticky header might disappear too early if paddingTop is greater than zero.
 * VideoPlayer: added missing API documentation for FeathersEventType.ERROR.
 
 ## 3.4.1 - February 2018

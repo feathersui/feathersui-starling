@@ -1,4 +1,4 @@
-# Feathers 3.5.0-beta
+# Feathers 3.5.0-beta2
 
 ---
 
