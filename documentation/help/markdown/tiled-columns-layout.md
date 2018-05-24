@@ -59,7 +59,7 @@ layout.verticalGap = 6;
 
 ### Alignment
 
-We can *align* the items in the layout using the [`horizontalLayout`](../api-reference/feathers/layout/TiledColumnsLayout.html#horizontalAlign) and [`verticalLayout`](../api-reference/feathers/layout/TiledColumnsLayout.html#hverticalAlign) properties. Horizontal alignment may be used in two cases. In the first case, it will always apply when the tiles are divided into pages. Second, it will also apply when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout, regardless of whether the layout uses paging. Let's adjust the alignments so that the content will be aligned to the top left:
+We can *align* the items in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/TiledColumnsLayout.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/layout/TiledColumnsLayout.html#hverticalAlign) properties. Horizontal alignment may be used in two cases. In the first case, it will always apply when the tiles are divided into pages. Second, it will also apply when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout, regardless of whether the layout uses paging. Let's adjust the alignments so that the content will be aligned to the top left:
 
 ``` code
 layout.horizontalAlign = HorizontalAlign.LEFT;
