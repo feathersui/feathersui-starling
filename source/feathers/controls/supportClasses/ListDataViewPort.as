@@ -1540,24 +1540,10 @@ package feathers.controls.supportClasses
 					if(itemRendererFactory !== null)
 					{
 						itemRenderer = IListItemRenderer(itemRendererFactory());
-						//effects and other things might cause these values to
-						//change after creation, and we should restore them if
-						//this item renderer is reused later.
-						storage.explicitWidth = itemRenderer.explicitWidth;
-						storage.explicitHeight = itemRenderer.explicitHeight;
-						storage.explicitMinWidth = itemRenderer.explicitMinWidth;
-						storage.explicitMinHeight = itemRenderer.explicitMinHeight;
 					}
 					else
 					{
 						itemRenderer = IListItemRenderer(new this._itemRendererType());
-						//if effects or anything else changed these values after
-						//creation, then we need to reset them for proper
-						//measurement.
-						itemRenderer.width = storage.explicitWidth;
-						itemRenderer.height = storage.explicitHeight;
-						itemRenderer.minWidth = storage.explicitMinWidth;
-						itemRenderer.minHeight = storage.explicitMinHeight;
 					}
 					if(this._customItemRendererStyleName && this._customItemRendererStyleName.length > 0)
 					{
@@ -1885,8 +1871,4 @@ class ItemRendererFactoryStorage
 	
 	public var activeItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
-	public var explicitWidth:Number;
-	public var explicitHeight:Number;
-	public var explicitMinWidth:Number;
-	public var explicitMinHeight:Number;
 }
