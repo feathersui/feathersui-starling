@@ -567,10 +567,6 @@ package feathers.layout
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedColumnCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
-		 * 
-		 * <p>Note: If the <code>distributeWidths</code> property is set to
-		 * <code>true</code>, the <code>useSquareTiles</code> property will be
-		 * automatically changed to <code>false</code>.</p>
 		 *
 		 * @default false
 		 * 
@@ -591,10 +587,6 @@ package feathers.layout
 				return;
 			}
 			this._distributeWidths = value;
-			if(value)
-			{
-				this.useSquareTiles = false;
-			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -611,10 +603,6 @@ package feathers.layout
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedRowCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
-		 * 
-		 * <p>Note: If the <code>distributeHeights</code> property is set to
-		 * <code>true</code>, the <code>useSquareTiles</code> property will be
-		 * automatically changed to <code>false</code>.</p>
 		 *
 		 * @default false
 		 *
@@ -636,10 +624,6 @@ package feathers.layout
 				return;
 			}
 			this._distributeHeights = value;
-			if(value)
-			{
-				this.useSquareTiles = false;
-			}
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
