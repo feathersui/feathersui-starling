@@ -494,6 +494,12 @@ package feathers.layout
 				//distribute remaining space
 				tileHeight = (availableHeight - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
 			}
+			
+			if (this._tileVerticalAlign == TILE_VERTICAL_ALIGN_JUSTIFY && requestedRowCount > 0 && viewPortBounds.explicitHeight > 0) {
+				var pad:int = _paddingTop + _paddingBottom;
+				var gap:int = _verticalGap * (requestedRowCount - 1);
+				tileHeight = (viewPortBounds.explicitHeight - pad - gap) / requestedRowCount;
+			}
 
 			var totalPageContentWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
 			var totalPageContentHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
