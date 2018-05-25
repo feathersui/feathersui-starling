@@ -495,7 +495,7 @@ package feathers.layout
 				tileHeight = (availableHeight - this._paddingTop - this._paddingBottom - (verticalTileCount * this._verticalGap) + this._verticalGap) / verticalTileCount;
 			}
 			
-			if (this._tileVerticalAlign == TILE_VERTICAL_ALIGN_JUSTIFY && requestedRowCount > 0 && viewPortBounds.explicitHeight > 0) {
+			if (this._tileVerticalAlign == VerticalAlign.JUSTIFY && requestedRowCount > 0 && viewPortBounds.explicitHeight > 0) {
 				var pad:int = _paddingTop + _paddingBottom;
 				var gap:int = _verticalGap * (requestedRowCount - 1);
 				tileHeight = (viewPortBounds.explicitHeight - pad - gap) / requestedRowCount;
