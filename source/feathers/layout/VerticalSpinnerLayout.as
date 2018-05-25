@@ -331,6 +331,9 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
+		 * 
+		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+		 * constant is not supported.</p>
 		 *
 		 * @default feathers.layout.VerticalAlign.MIDDLE
 		 *

@@ -119,6 +119,9 @@ package feathers.controls
 
 	/**
 	 * The horizontal alignment of the callout, relative to the origin.
+	 * 
+	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.HorizontalAlign.CENTER
 	 *
@@ -335,6 +338,9 @@ package feathers.controls
 
 	/**
 	 * The vertical alignment of the callout, relative to the origin.
+	 * 
+	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.VerticalAlign.MIDDLE
 	 *

@@ -382,12 +382,17 @@ package feathers.layout
 		/**
 		 * If the total column height is less than the bounds, the items in the
 		 * column can be aligned vertically.
+		 * 
+		 * <p><strong>Note:</strong> VerticalAlign.JUSTIFY is not supported.
+		 * The <code>distributeHeights</code> property may be used to fill the
+		 * available space when the content is not large enough.</p>
 		 *
 		 * @default feathers.layout.VerticalAlign.TOP
 		 *
 		 * @see feathers.layout.VerticalAlign#TOP
 		 * @see feathers.layout.VerticalAlign#MIDDLE
 		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see #distributeHeights
 		 */
 		public function get verticalAlign():String
 		{
@@ -416,12 +421,17 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
+		 * 
+		 * <p><strong>Note:</strong> HorizontalAlign.JUSTIFY is not supported.
+		 * The <code>distributeWidths</code> property may be used to fill the
+		 * available space when the content is not large enough.</p>
 		 *
 		 * @default feathers.layout.HorizontalAlign.CENTER
 		 *
 		 * @see feathers.layout.HorizontalAlign#LEFT
 		 * @see feathers.layout.HorizontalAlign#CENTER
 		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see #distributeWidths
 		 */
 		public function get horizontalAlign():String
 		{

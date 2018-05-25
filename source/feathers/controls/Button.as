@@ -241,6 +241,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.HorizontalAlign.CENTER
 	 *
@@ -541,6 +544,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.verticalAlign = VerticalAlign.TOP;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.VerticalAlign.MIDDLE
 	 *
