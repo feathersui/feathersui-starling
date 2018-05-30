@@ -69,7 +69,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.removeFromParent(true);
 				};
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -105,7 +105,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.dispose();
 				}
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -143,7 +143,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.dispose();
 				};
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -179,7 +179,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.removeFromParent(true);
 				}
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -214,7 +214,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.dispose();
 				}
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -250,7 +250,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.removeFromParent(true);
 				};
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -285,7 +285,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.dispose();
 				}
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -321,7 +321,7 @@ package feathers.motion
 					target.mask = oldMask;
 					mask.removeFromParent(true);
 				}
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(target, tween);
 			}
 		}
 
@@ -348,7 +348,7 @@ package feathers.motion
 				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -378,7 +378,7 @@ package feathers.motion
 				var tween:WipeTween = new WipeTween(newScreen, oldScreen, xOffset, 0, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -408,7 +408,7 @@ package feathers.motion
 				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -438,7 +438,7 @@ package feathers.motion
 				var tween:WipeTween = new WipeTween(newScreen, oldScreen, 0, yOffset, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

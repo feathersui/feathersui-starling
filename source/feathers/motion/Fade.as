@@ -85,7 +85,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -116,7 +116,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -144,7 +144,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -191,7 +191,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -239,7 +239,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -282,7 +282,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

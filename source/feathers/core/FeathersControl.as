@@ -447,7 +447,7 @@ package feathers.core
 		 *     target.alpha = 0;
 		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
 		 *     tween.fadeTo(1);
-		 *     return new TweenEffectContext(tween);
+		 *     return new TweenEffectContext(target, tween);
 		 * };</listing>
 		 *
 		 * @default null
@@ -515,7 +515,7 @@ package feathers.core
 		 * {
 		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
 		 *     tween.fadeTo(0);
-		 *     return new TweenEffectContext(tween);
+		 *     return new TweenEffectContext(target, tween);
 		 * };</listing>
 		 *
 		 * @default null
@@ -735,7 +735,7 @@ package feathers.core
 		 *     target.alpha = 0;
 		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
 		 *     tween.fadeTo(1);
-		 *     return new TweenEffectContext(tween);
+		 *     return new TweenEffectContext(target, tween);
 		 * };</listing>
 		 *
 		 * @default null
@@ -3066,7 +3066,7 @@ package feathers.core
 		 * {
 		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
 		 *     tween.fadeTo(0);
-		 *     return new TweenEffectContext(tween);
+		 *     return new TweenEffectContext(target, tween);
 		 * }
 		 * control.removeFromParentWithEffect(customEffect, true);</listing>
 		 *

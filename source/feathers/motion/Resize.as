@@ -41,7 +41,7 @@ package feathers.motion
 			return function(target:DisplayObject):IResizeEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				var context:TweenResizeEffectContext = new TweenResizeEffectContext(tween);
+				var context:TweenResizeEffectContext = new TweenResizeEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -63,7 +63,7 @@ package feathers.motion
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", toWidth);
 				tween.animate("height", toHeight);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -82,7 +82,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", toWidth);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -101,7 +101,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", toHeight);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -148,7 +148,7 @@ package feathers.motion
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", oldWidth);
 				tween.animate("height", oldHeight);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -186,7 +186,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", oldWidth);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -224,7 +224,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", oldHeight);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -247,7 +247,7 @@ package feathers.motion
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", target.width + widthBy);
 				tween.animate("height", target.height + heightBy);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -266,7 +266,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("width", target.width + widthBy);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -285,7 +285,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.animate("height", target.height + heightBy);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}

@@ -27,7 +27,7 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenEffectContext(tween:Tween, interruptBehavior:String = EffectInterruptBehavior.END)
+		public function TweenEffectContext(target:DisplayObject, tween:Tween, interruptBehavior:String = EffectInterruptBehavior.END)
 		{
 			this._tween = tween;
 			this._interruptBehavior = interruptBehavior;
@@ -44,7 +44,12 @@ package feathers.motion.effectClasses
 			this._tween.onStart = null;
 			this._tween.onComplete = null;
 
-			super(DisplayObject(this._tween.target), this._tween.totalTime, transitionFunc);
+			if(target === null)
+			{
+				target = tween.target as DisplayObject;
+			}
+
+			super(target, this._tween.totalTime, transitionFunc);
 		}
 
 		/**

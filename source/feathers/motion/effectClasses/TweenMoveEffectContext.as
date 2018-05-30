@@ -10,6 +10,7 @@ package feathers.motion.effectClasses
 	import feathers.core.IFeathersControl;
 
 	import starling.animation.Tween;
+	import starling.display.DisplayObject;
 
 	/**
 	 * A move effect context for a <code>starling.animation.Tween</code>.
@@ -25,9 +26,9 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenMoveEffectContext(tween:Tween)
+		public function TweenMoveEffectContext(target:DisplayObject, tween:Tween)
 		{
-			super(tween);
+			super(target, tween);
 			this._oldX = this._target.x;
 			this._oldY = this._target.y;
 			this._newX = this._target.x;
