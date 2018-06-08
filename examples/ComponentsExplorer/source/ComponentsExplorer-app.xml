@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/29.0">
+<application xmlns="http://ns.adobe.com/air/application/30.0">
 	<id>com.feathersui.examples.ComponentsExplorer</id>
 	<filename>Components</filename>
 	<name>Components</name>
-	<versionNumber>3.5.0</versionNumber>
+	<versionNumber>4.0.0</versionNumber>
 	<description>Components Explorer example application built with Feathers UI controls for Starling</description>
 	<copyright>2018 Bowler Hat LLC</copyright>
 
