@@ -815,42 +815,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
 
-		[Deprecated(replacement="feathers.controls.TextInputState.ENABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_ENABLED:String = "enabled";
-
-		[Deprecated(replacement="feathers.controls.TextInputState.DISABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.DISABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DISABLED:String = "disabled";
-
-		[Deprecated(replacement="feathers.controls.TextInputState.FOCUSED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.FOCUSED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_FOCUSED:String = "focused";
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the text
 		 * editor.
@@ -896,54 +860,6 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextInput</code>
@@ -2040,40 +1956,6 @@ package feathers.controls
 
 		/**
 		 * @private
-		 */
-		protected var _stateToSkinFunction:Function;
-
-		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
-		 * and pass to the <code>backgroundSkin</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get stateToSkinFunction():Function
-		{
-			return this._stateToSkinFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToSkinFunction(value:Function):void
-		{
-			if(this._stateToSkinFunction == value)
-			{
-				return;
-			}
-			this._stateToSkinFunction = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
-		}
-
-		/**
-		 * @private
 		 * The width of the first icon that was displayed.
 		 */
 		protected var _originalIconWidth:Number = NaN;
@@ -2181,39 +2063,6 @@ package feathers.controls
 		public function set errorIcon(value:DisplayObject):void
 		{
 			this.setIconForState(TextInputState.ERROR, value);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateToIconFunction:Function;
-
-		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0")]
-		/**
-		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
-		 * and pass to the <code>defaultIcon</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get stateToIconFunction():Function
-		{
-			return this._stateToIconFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToIconFunction(value:Function):void
-		{
-			if(this._stateToIconFunction == value)
-			{
-				return;
-			}
-			this._stateToIconFunction = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -3540,10 +3389,6 @@ package feathers.controls
 		 */
 		protected function getCurrentSkin():DisplayObject
 		{
-			if(this._stateToSkinFunction !== null)
-			{
-				return DisplayObject(this._stateToSkinFunction(this, this._currentState, this.currentBackground));
-			}
 			var result:DisplayObject = this._stateToSkin[this._currentState] as DisplayObject;
 			if(result !== null)
 			{
@@ -3557,10 +3402,6 @@ package feathers.controls
 		 */
 		protected function getCurrentIcon():DisplayObject
 		{
-			if(this._stateToIconFunction !== null)
-			{
-				return DisplayObject(this._stateToIconFunction(this, this._currentState, this.currentIcon));
-			}
 			var result:DisplayObject = this._stateToIcon[this._currentState] as DisplayObject;
 			if(result !== null)
 			{

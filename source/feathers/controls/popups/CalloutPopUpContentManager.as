@@ -98,84 +98,43 @@ package feathers.controls.popups
 		public var calloutFactory:Function;
 
 		/**
-		 * The direction of the callout.
+		 * The position of the callout, relative to its origin. Accepts a
+		 * <code>Vector.&lt;String&gt;</code> containing one or more of the
+		 * constants from <code>feathers.layout.RelativePosition</code> or
+		 * <code>null</code>. If <code>null</code>, the callout will attempt to
+		 * position itself using values in the following order:
+		 * 
+		 * <ul>
+		 *     <li><code>RelativePosition.BOTTOM</code></li>
+		 *     <li><code>RelativePosition.TOP</code></li>
+		 *     <li><code>RelativePosition.RIGHT</code></li>
+		 *     <li><code>RelativePosition.LEFT</code></li>
+		 * </ul>
 		 *
 		 * <p>Note: If you change this value while a callout is open, the new
 		 * value will not go into effect until the callout is closed and a new
 		 * callout is opened.</p>
 		 *
-		 * <p>In the following example, the callout direction is restricted to down:</p>
+		 * <p>In the following example, the callout's supported positions are
+		 * restricted to the top and bottom of the origin:</p>
 		 *
 		 * <listing version="3.0">
-		 * manager.direction = Callout.DIRECTION_DOWN;</listing>
+		 * manager.supportedPositions = new &lt;String&gt;[RelativePosition.TOP, RelativePosition.BOTTOM];</listing>
 		 *
-		 * @see feathers.controls.Callout#DIRECTION_ANY
-		 * @see feathers.controls.Callout#DIRECTION_UP
-		 * @see feathers.controls.Callout#DIRECTION_DOWN
-		 * @see feathers.controls.Callout#DIRECTION_LEFT
-		 * @see feathers.controls.Callout#DIRECTION_RIGHT
+		 * <p>In the following example, the callout's position is restricted to
+		 * the right of the origin:</p>
 		 *
-		 * @default Callout.DIRECTION_ANY
+		 * <listing version="3.0">
+		 * manager.supportedPositions = new &lt;String&gt;[RelativePosition.RIGHT];</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.layout.RelativePosition#TOP
+		 * @see feathers.layout.RelativePosition#RIGHT
+		 * @see feathers.layout.RelativePosition#BOTTOM
+		 * @see feathers.layout.RelativePosition#LEFT
 		 */
 		public var supportedPositions:Vector.<String> = Callout.DEFAULT_POSITIONS;
-
-		/**
-		 * @private
-		 */
-		protected var _direction:String = null;
-
-		[Deprecated(replacement="supportedPositions",since="3.2.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by the <code>supportedPositions</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get direction():String
-		{
-			return this._direction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set supportedDirections(value:String):void
-		{
-			var positions:Vector.<String> = null;
-			if(value === "any")
-			{
-				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.LEFT];
-			}
-			else if(value === "horizontal")
-			{
-				positions = new <String>[RelativePosition.RIGHT, RelativePosition.LEFT];
-			}
-			else if(value === "vertical")
-			{
-				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP];
-			}
-			else if(value === "up")
-			{
-				positions = new <String>[RelativePosition.TOP];
-			}
-			else if(value === "down")
-			{
-				positions = new <String>[RelativePosition.BOTTOM];
-			}
-			else if(value === "right")
-			{
-				positions = new <String>[RelativePosition.RIGHT];
-			}
-			else if(value === "left")
-			{
-				positions = new <String>[RelativePosition.LEFT];
-			}
-			this._direction = value;
-			this.supportedPositions = positions;
-		}
 
 		/**
 		 * Determines if the callout will be modal or not.

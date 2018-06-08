@@ -262,42 +262,6 @@ package feathers.controls
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-date-time-spinner-list";
 
-		[Deprecated(replacement="feathers.controls.DateTimeMode.DATE_AND_TIME",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE_AND_TIME</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const EDITING_MODE_DATE_AND_TIME:String = "dateAndTime";
-
-		[Deprecated(replacement="feathers.controls.DateTimeMode.TIME",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.TIME</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const EDITING_MODE_TIME:String = "time";
-
-		[Deprecated(replacement="feathers.controls.DateTimeMode.DATE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DateTimeMode.DATE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const EDITING_MODE_DATE:String = "date";
-
 		/**
 		 * @private
 		 */

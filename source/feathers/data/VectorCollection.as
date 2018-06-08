@@ -299,26 +299,6 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-		[Deprecated(replacement="vectorData",since="3.3.0")]
-		/**
-		 * @private
-		 * This will be removed when the deprecated IListCollection data
-		 * property is removed. 
-		 */
-		public function get data():Object
-		{
-			return this.vectorData;
-		}
-
-		[Deprecated(replacement="vectorData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function set data(value:Object):void
-		{
-			this.vectorData = value;
-		}
-
 		/**
 		 * @private
 		 */
@@ -394,15 +374,6 @@ package feathers.data
 				return (this._filterAndSortData as Vector.<*>).length;
 			}
 			return (this._vectorData as Vector.<*>).length;
-		}
-
-		[Deprecated(message="Use refresh() instead of refreshFilter().")]
-		/**
-		 * @private
-		 */
-		public function refreshFilter():void
-		{
-			this.refresh();
 		}
 
 		/**

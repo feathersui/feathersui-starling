@@ -229,28 +229,6 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-		[Deprecated(replacement="arrayData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function get data():Object
-		{
-			return this.arrayData;
-		}
-
-		[Deprecated(replacement="arrayData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function set data(value:Object):void
-		{
-			if(!(value is Array))
-			{
-				throw new ArgumentError("ArrayHierarchicalCollection data must be of type Array.");
-			}
-			this.arrayData = value as Array;
-		}
-
 		/**
 		 * @private
 		 */

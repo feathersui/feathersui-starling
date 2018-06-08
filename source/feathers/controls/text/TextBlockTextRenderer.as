@@ -166,42 +166,6 @@ package feathers.controls.text
 		 */
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_RIGHT:String = "right";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextBlockTextRenderer</code>
 		 * components.

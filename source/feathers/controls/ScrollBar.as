@@ -397,54 +397,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY:String = "incrementButtonFactory";
 
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the minimum
 		 * track.

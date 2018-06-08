@@ -259,30 +259,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
 
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *

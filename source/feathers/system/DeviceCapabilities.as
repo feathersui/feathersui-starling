@@ -36,29 +36,6 @@ package feathers.system
 		 */
 		public static var simulateDPad:Boolean = false;
 
-		[Deprecated(replacement="feathers.system.DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches",since="3.5.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.system.DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.5. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static function get tabletScreenMinimumInches():Number
-		{
-			return DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches;
-		}
-
-		/**
-		 * @private
-		 */
-		public static function set tabletScreenMinimumInches(value:Number):void
-		{
-			DeviceCapabilities.tabletScreenLandscapeWidthMinimumInches = value;
-		}
-
 		//early Android tablets were frequently 600x1024 170 DPI, which results
 		//in a portrait width slightly larger than 3.5 inches
 		/**

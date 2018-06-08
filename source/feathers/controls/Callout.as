@@ -449,141 +449,6 @@ package feathers.controls
 			RelativePosition.LEFT,
 		];
 
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
-		 * <code>feathers.layout.RelativePosition</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_ANY:String = "any";
-
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
-		 * <code>feathers.layout.RelativePosition</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by a Vector.&lt;String&gt; containing values from
-		 * <code>feathers.layout.RelativePosition</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_UP:String = "up";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_DOWN:String = "down";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ARROW_POSITION_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ARROW_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ARROW_POSITION_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ARROW_POSITION_LEFT:String = "left";
-
 		/**
 		 * @private
 		 */
@@ -768,7 +633,7 @@ package feathers.controls
 		 * }</listing>
 		 */
 		public static function show(content:DisplayObject, origin:DisplayObject,
-			supportedPositions:Object = null, isModal:Boolean = true, customCalloutFactory:Function = null,
+			supportedPositions:Vector.<String> = null, isModal:Boolean = true, customCalloutFactory:Function = null,
 			customOverlayFactory:Function = null):Callout
 		{
 			if(origin.stage === null)
@@ -786,16 +651,7 @@ package feathers.controls
 			}
 			var callout:Callout = Callout(factory());
 			callout.content = content;
-			if(supportedPositions is String)
-			{
-				//fallback for deprecated options
-				callout._supportedDirections = supportedPositions as String;
-				callout.supportedPositions = getSupportedPositionsFromDirections(callout._supportedDirections);
-			}
-			else
-			{
-				callout.supportedPositions = supportedPositions as Vector.<String>;
-			}
+			callout.supportedPositions = supportedPositions;
 			callout.origin = origin;
 			factory = customOverlayFactory;
 			if(factory === null)
@@ -1023,43 +879,6 @@ package feathers.controls
 				callout.arrowOffset = idealYPosition - yPosition;
 				callout.arrowPosition = RelativePosition.RIGHT;
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		private static function getSupportedPositionsFromDirections(value:String):Vector.<String>
-		{
-			var positions:Vector.<String> = null;
-			if(value === "any")
-			{
-				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.LEFT];
-			}
-			else if(value === "horizontal")
-			{
-				positions = new <String>[RelativePosition.RIGHT, RelativePosition.LEFT];
-			}
-			else if(value === "vertical")
-			{
-				positions = new <String>[RelativePosition.BOTTOM, RelativePosition.TOP];
-			}
-			else if(value === "up")
-			{
-				positions = new <String>[RelativePosition.TOP];
-			}
-			else if(value === "down")
-			{
-				positions = new <String>[RelativePosition.BOTTOM];
-			}
-			else if(value === "right")
-			{
-				positions = new <String>[RelativePosition.RIGHT];
-			}
-			else if(value === "left")
-			{
-				positions = new <String>[RelativePosition.LEFT];
-			}
-			return positions;
 		}
 
 		/**
@@ -1387,35 +1206,6 @@ package feathers.controls
 				this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_ORIGIN);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _supportedDirections:String = null;
-
-		[Deprecated(replacement="position",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by the <code>position</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get supportedDirections():String
-		{
-			return this._supportedDirections;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set supportedDirections(value:String):void
-		{
-			this._supportedDirections = value;
-			this.supportedPositions = getSupportedPositionsFromDirections(value);
 		}
 
 		/**

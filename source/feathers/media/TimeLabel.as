@@ -69,54 +69,6 @@ package feathers.media
 	 */
 	public class TimeLabel extends Label implements IMediaPlayerControl
 	{
-		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_TIME",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_TIME</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DISPLAY_MODE_CURRENT_TIME:String = "currentTime";
-
-		[Deprecated(replacement="feathers.media.MediaTimeMode.TOTAL_TIME",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.TOTAL_TIME</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DISPLAY_MODE_TOTAL_TIME:String = "totalTime";
-
-		[Deprecated(replacement="feathers.media.MediaTimeMode.REMAINING_TIME",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.REMAINING_TIME</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DISPLAY_MODE_REMAINING_TIME:String = "remainingTime";
-
-		[Deprecated(replacement="feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.media.MediaTimeMode.CURRENT_AND_TOTAL_TIMES</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DISPLAY_MODE_CURRENT_AND_TOTAL_TIMES:String = "currentAndTotalTimes";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>TimeLabel</code> components.

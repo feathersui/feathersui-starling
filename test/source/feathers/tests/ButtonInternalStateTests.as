@@ -200,61 +200,6 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testLabelProperties():void
-		{
-			this._button.defaultSkin = new Quad(200, 200);
-			
-			var defaultFontSize:Number = 10;
-			var upFontSize:Number = 11;
-			var hoverFontSize:Number = 12;
-			var downFontSize:Number = 13;
-			var disabledFontSize:Number = 14;
-			
-			var font:BitmapFont = new BitmapFont();
-			this._button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(font, defaultFontSize);
-			//the following lines will produce deprecation warnings.
-			//these are expected, and this test will be removed when they are
-			//removed in the future.
-			this._button.upLabelProperties.textFormat = new BitmapFontTextFormat(font, upFontSize);
-			this._button.hoverLabelProperties.textFormat = new BitmapFontTextFormat(font, hoverFontSize);
-			this._button.downLabelProperties.textFormat = new BitmapFontTextFormat(font, downFontSize);
-			this._button.disabledLabelProperties.textFormat = new BitmapFontTextFormat(font, disabledFontSize);
-			
-			this._button.validate();
-			var textRenderer:BitmapFontTextRenderer = BitmapFontTextRenderer(this._button.labelTextRendererInternal);
-			
-			Assert.assertStrictlyEquals("Button state is not ButtonState.UP with no touch", ButtonState.UP, this._button.currentState);
-			Assert.assertStrictlyEquals("Button label font size does not match format set with upLabelProperties when currentState is ButtonState.UP", upFontSize, textRenderer.textFormat.size);
-
-			this._button.isEnabled = false;
-			this._button.validate();
-			Assert.assertStrictlyEquals("Button state is not ButtonState.DISABLED when isEnabled is false", ButtonState.DISABLED, this._button.currentState);
-			Assert.assertStrictlyEquals("Button label font size does not match format set with disabledLabelProperties when currentState is ButtonState.DISABLED", disabledFontSize, textRenderer.textFormat.size);
-
-			this._button.isEnabled = true;
-
-			var position:Point = new Point(10, 10);
-			var target:DisplayObject = this._button.stage.hitTest(position);
-			Assert.assertStrictlyEquals("Touch target must be button", this._button, target);
-			var touch:Touch = new Touch(0);
-			touch.target = target;
-			touch.phase = TouchPhase.HOVER;
-			touch.globalX = position.x;
-			touch.globalY = position.y;
-			var touches:Vector.<Touch> = new <Touch>[touch];
-			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			this._button.validate();
-			Assert.assertStrictlyEquals("Button state is not ButtonState.HOVER on TouchPhase.HOVER", ButtonState.HOVER, this._button.currentState);
-			Assert.assertStrictlyEquals("Button label font size does not match format set with hoverLabelProperties when currentState is ButtonState.HOVER and icon not provided for this state", hoverFontSize, textRenderer.textFormat.size);
-
-			touch.phase = TouchPhase.BEGAN;
-			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			this._button.validate();
-			Assert.assertStrictlyEquals("Button state is not ButtonState.DOWN on TouchPhase.BEGAN", ButtonState.DOWN, this._button.currentState);
-			Assert.assertStrictlyEquals("Button icon label font size does not match format set with downLabelProperties when currentState is ButtonState.DOWN and icon not provided for this state", downFontSize, textRenderer.textFormat.size);
-		}
-
-		[Test]
 		public function testGetScaleForStateWithoutSetSkinForState():void
 		{
 			Assert.assertTrue("Button getScaleForState(ButtonState.UP) must be NaN when setScaleForState() is not called",
