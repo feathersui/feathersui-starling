@@ -1,9 +1,9 @@
 ---
-title: Why do the Feathers component skins and font sizes appear very small?  
+title: Why do the Feathers component skins and font sizes appear very small when simulating a mobile device on my computer?  
 author: Josh Tynjala
 
 ---
-# Why do the Feathers component skins and font sizes appear very small?
+# Why do the Feathers component skins and font sizes appear very small when simulating a mobile device on my computer?
 
 Unfortunately, while many IDEs provide a list of common mobile devices to simulate, some will only simulate the stage dimensions of these devices, but not the screen density (also referred to as DPI or PPI) or the name of the platform. In those cases, your computer's screen density (which is often very different from a phone or tablet) and your desktop platform (Windows or Mac instead of iOS or Android) will be reported during testing. This can make Feathers behave in unexpected ways, such as scaling components incorrectly.
 
