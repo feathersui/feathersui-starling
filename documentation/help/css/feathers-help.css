@@ -85,22 +85,23 @@ a[href^="http://"], a[href^="https://"], a[href^="//"]
 	padding: 0 0 0 20px;
 }
 
-a[href^="http://feathersui.com/examples/"]
+a[href*="//feathersui.com/examples/"]
 {
 	background: transparent;
 	padding: 0;
 }
 
-a[href^="http://doc.starling-framework.org"],
+a[href*="//doc.starling-framework.org"],
 	a[href^="../api-reference/"],
 	a[href^="../../api-reference/"],
-	a[href^="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/"]
+	a[href*="//help.adobe.com/en_US/FlashPlatform/reference/actionscript/"]
 {
 	background: url(../images/book_open.png) center left no-repeat;
 	padding: 0 0 0 20px;
 }
 
-a[href^="http://wiki.starling-framework.org"]
+a[href*="//wiki.starling-framework.org"],
+	a[href*="//manual.starling-framework.org"]
 {
 	background: url(../images/starling.png) center left no-repeat;
 	padding: 0 0 0 20px;
@@ -110,7 +111,8 @@ a[href^="http://wiki.starling-framework.org"]
 	screen and (min--moz-device-pixel-ratio: 2),
 	screen and (min-device-pixel-ratio: 2)
 {
-	a[href^="http://wiki.starling-framework.org"]
+	a[href*="//wiki.starling-framework.org"],
+		a[href*="//manual.starling-framework.org"]
 	{
 		background: url(../images/starling@2x.png) center left no-repeat;
 		background-size: 16px 16px;
