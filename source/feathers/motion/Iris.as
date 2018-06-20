@@ -174,7 +174,7 @@ package feathers.motion
 					tween.animate("y", originY);
 				}
 			}
-			var context:TweenEffectContext = new TweenEffectContext(tween);
+			var context:TweenEffectContext = new TweenEffectContext(target, tween);
 			context.interruptBehavior = interruptBehavior;
 			context.addEventListener(Event.COMPLETE, function(event:Event, stopped:Boolean):void
 			{
@@ -321,7 +321,7 @@ package feathers.motion
 					tween.animate("y", originY);
 				}
 			}
-			var context:TweenEffectContext = new TweenEffectContext(tween);
+			var context:TweenEffectContext = new TweenEffectContext(target, tween);
 			context.interruptBehavior = interruptBehavior;
 			context.addEventListener(Event.COMPLETE, function(event:Event, stopped:Boolean):void
 			{
@@ -372,7 +372,7 @@ package feathers.motion
 				var tween:IrisTween = new IrisTween(newScreen, oldScreen, originX, originY, true, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -399,7 +399,7 @@ package feathers.motion
 				var tween:IrisTween = new IrisTween(newScreen, oldScreen, x, y, true, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -436,7 +436,7 @@ package feathers.motion
 				var tween:IrisTween = new IrisTween(newScreen, oldScreen, originX, originY, false, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -463,7 +463,7 @@ package feathers.motion
 				var tween:IrisTween = new IrisTween(newScreen, oldScreen, x, y, false, duration, ease, onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

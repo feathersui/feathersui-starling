@@ -137,13 +137,15 @@ package feathers.controls.renderers
 	 *
 	 * <listing version="3.0">
 	 * headerRenderer.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.HorizontalAlign.LEFT
 	 *
 	 * @see feathers.layout.HorizontalAlign#LEFT
 	 * @see feathers.layout.HorizontalAlign#CENTER
 	 * @see feathers.layout.HorizontalAlign#RIGHT
-	 * @see feathers.layout.HorizontalAlign#JUSTIFY
 	 */
 	[Style(name="horizontalAlign",type="String")]
 
@@ -265,13 +267,15 @@ package feathers.controls.renderers
 	 *
 	 * <listing version="3.0">
 	 * headerRenderer.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.VerticalAlign.MIDDLE
 	 *
 	 * @see feathers.layout.VerticalAlign#TOP
 	 * @see feathers.layout.VerticalAlign#MIDDLE
 	 * @see feathers.layout.VerticalAlign#BOTTOM
-	 * @see feathers.layout.VerticalAlign#JUSTIFY
 	 */
 	[Style(name="verticalAlign",type="String")]
 

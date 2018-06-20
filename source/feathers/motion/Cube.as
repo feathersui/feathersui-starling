@@ -55,7 +55,7 @@ package feathers.motion
 				var tween:CubeTween = new CubeTween(newScreen, oldScreen, Math.PI / 2, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -83,7 +83,7 @@ package feathers.motion
 				var tween:CubeTween = new CubeTween(newScreen, oldScreen, -Math.PI / 2, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -111,7 +111,7 @@ package feathers.motion
 				var tween:CubeTween = new CubeTween(newScreen, oldScreen, 0, -Math.PI / 2, duration, ease, managed ? null : onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -139,7 +139,7 @@ package feathers.motion
 				var tween:CubeTween = new CubeTween(newScreen, oldScreen, 0, Math.PI / 2, duration, ease, managed ? null : onComplete, tweenProperties);
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

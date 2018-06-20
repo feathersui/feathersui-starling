@@ -63,7 +63,7 @@ package feathers.motion
 					var tween:CoverTween = new CoverTween(newScreen, oldScreen, -oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -103,7 +103,7 @@ package feathers.motion
 					var tween:CoverTween = new CoverTween(newScreen, oldScreen, oldScreen.width, 0, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -143,7 +143,7 @@ package feathers.motion
 					var tween:CoverTween = new CoverTween(newScreen, oldScreen, 0, -oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -183,7 +183,7 @@ package feathers.motion
 					var tween:CoverTween = new CoverTween(newScreen, oldScreen, 0, oldScreen.height, duration, ease, managed ? null : onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -218,7 +218,7 @@ package feathers.motion
 			tween.onComplete = onComplete;
 			if(managed)
 			{
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(null, tween);
 			}
 			Starling.juggler.add(tween);
 			return null;

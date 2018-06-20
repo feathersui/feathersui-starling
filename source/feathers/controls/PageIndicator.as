@@ -37,6 +37,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.direction = Direction.VERTICAL;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.Direction.HORIZONTAL
 	 *
@@ -65,6 +68,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.HorizontalAlign.CENTER
 	 *
@@ -219,6 +225,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.VerticalAlign.MIDDLE
 	 *

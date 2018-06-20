@@ -107,7 +107,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

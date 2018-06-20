@@ -321,7 +321,6 @@ package feathers.layout
 		 */
 		override public function get distributeWidths():Boolean
 		{
-			//this is an override so that this class can have its own documentation.
 			return this._distributeWidths;
 		}
 
@@ -334,8 +333,9 @@ package feathers.layout
 		 * <code>requestedRowCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
 		 * 
-		 * <p>Note: If <code>useSquareTiles</code> is <code>true</code>, the
-		 * <code>distributeHeights</code> property will be ignored.</p>
+		 * <p>Note: If the <code>distributeHeights</code> property is set to
+		 * <code>true</code>, the <code>useSquareTiles</code> property will be
+		 * automatically changed to <code>false</code>.</p>
 		 *
 		 * @default false
 		 *
@@ -344,8 +344,19 @@ package feathers.layout
 		 */
 		override public function get distributeHeights():Boolean
 		{
-			//this is an override so that this class can have its own documentation.
 			return this._distributeHeights;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set distributeHeights(value:Boolean):void
+		{
+			super.distributeHeights = value;
+			if(value)
+			{
+				this.useSquareTiles = false;
+			}
 		}
 
 		/**

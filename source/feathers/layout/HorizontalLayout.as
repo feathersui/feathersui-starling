@@ -127,6 +127,9 @@ package feathers.layout
 		 *
 		 * If the total item width is less than the bounds, the positions of
 		 * the items can be aligned horizontally, on the x-axis.
+		 * 
+		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+		 * constant is not supported.</p>
 		 *
 		 * @default feathers.layout.HorizontalAlign.LEFT
 		 *

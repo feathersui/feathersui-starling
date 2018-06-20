@@ -107,6 +107,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * loader.horizontalAlign = HorizontalAlign.RIGHT;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.HorizontalAlign.LEFT
 	 *
@@ -353,6 +356,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * loader.verticalAlign = VerticalAlign.BOTTOM;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.VerticalAlign.TOP
 	 *

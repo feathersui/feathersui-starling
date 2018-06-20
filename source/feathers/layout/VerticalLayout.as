@@ -154,6 +154,9 @@ package feathers.layout
 		/**
 		 * If the total item height is less than the bounds, the positions of
 		 * the items can be aligned vertically, on the y-axis.
+		 * 
+		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+		 * constant is not supported.</p>
 		 *
 		 * @default feathers.layout.VerticalAlign.TOP
 		 *

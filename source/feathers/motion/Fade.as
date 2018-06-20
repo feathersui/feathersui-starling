@@ -36,12 +36,8 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades in the target component by
-		 * animating the <code>alpha</code> property from its current value to
+		 * animating the <code>alpha</code> property from <code>0.0</code> to
 		 * <code>1.0</code>.
-		 * 
-		 * <p>To force the target to start at a specific <code>alpha</code>
-		 * value (such as <code>0.0</code>), use
-		 * <code>createFadeBetweenEffect()</code> instead.</p>
 		 * 
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeOutEffect()
@@ -49,17 +45,13 @@ package feathers.motion
 		 */
 		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createFadeToEffect(1, duration, ease, interruptBehavior);
+			return createFadeBetweenEffect(0.0, 1.0, duration, ease, interruptBehavior);
 		}
 
 		/**
 		 * Creates an effect function that fades out the target component by
-		 * animating the <code>alpha</code> property from its current value to
+		 * animating the <code>alpha</code> property from <code>1.0</code> to
 		 * <code>0.0</code>.
-		 * 
-		 * <p>To force the target to start at a specific <code>alpha</code>
-		 * value (such as <code>1.0</code>), use
-		 * <code>createFadeBetweenEffect()</code> instead.</p>
 		 * 
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeInEffect()
@@ -67,13 +59,13 @@ package feathers.motion
 		 */
 		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return createFadeToEffect(0, duration, ease, interruptBehavior);
+			return createFadeBetweenEffect(1.0, 0.0, duration, ease, interruptBehavior);
 		}
 
 		/**
 		 * Creates an effect function that fades the target component by
-		 * animating the <code>alpha</code> property from its current value to a new
-		 * value.
+		 * animating the <code>alpha</code> property from its current value to a
+		 * new value.
 		 * 
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeFromEffect()
@@ -85,7 +77,7 @@ package feathers.motion
 			{
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -116,7 +108,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -124,8 +116,8 @@ package feathers.motion
 
 		/**
 		 * Creates an effect function that fades the target component by
-		 * animating the <code>alpha</code> property between a start value and an ending
-		 * value.
+		 * animating the <code>alpha</code> property between a start value and
+		 * an ending value.
 		 * 
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
@@ -144,7 +136,7 @@ package feathers.motion
 				}
 				var tween:Tween = new Tween(target, duration, ease);
 				tween.fadeTo(endAlpha);
-				var context:TweenEffectContext = new TweenEffectContext(tween);
+				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -191,7 +183,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -239,7 +231,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;
@@ -282,7 +274,7 @@ package feathers.motion
 				}
 				if(managed)
 				{
-					return new TweenEffectContext(tween);
+					return new TweenEffectContext(null, tween);
 				}
 				Starling.juggler.add(tween);
 				return null;

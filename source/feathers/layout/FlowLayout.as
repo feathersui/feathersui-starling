@@ -442,6 +442,9 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
+		 * 
+		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+		 * constant is not supported.</p>
 		 *
 		 * @default feathers.layout.HorizontalAlign.LEFT
 		 *
@@ -479,6 +482,9 @@ package feathers.layout
 		/**
 		 * If the total height of the content is less than the bounds, the
 		 * content may be aligned vertically.
+		 * 
+		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+		 * constant is not supported.</p>
 		 *
 		 * @default feathers.layout.VerticalAlign.TOP
 		 *

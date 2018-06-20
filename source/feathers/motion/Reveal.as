@@ -64,7 +64,7 @@ package feathers.motion
 					var tween:RevealTween = new RevealTween(oldScreen, newScreen, -newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -105,7 +105,7 @@ package feathers.motion
 					var tween:RevealTween = new RevealTween(oldScreen, newScreen, newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -145,7 +145,7 @@ package feathers.motion
 					var tween:RevealTween = new RevealTween(oldScreen, newScreen, 0, -newScreen.height, duration, ease, onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -185,7 +185,7 @@ package feathers.motion
 					var tween:RevealTween = new RevealTween(oldScreen, newScreen, 0, newScreen.height, duration, ease, onComplete, tweenProperties);
 					if(managed)
 					{
-						return new TweenEffectContext(tween);
+						return new TweenEffectContext(null, tween);
 					}
 					Starling.juggler.add(tween);
 					return null;
@@ -221,7 +221,7 @@ package feathers.motion
 			tween.onComplete = onComplete;
 			if(managed)
 			{
-				return new TweenEffectContext(tween);
+				return new TweenEffectContext(null, tween);
 			}
 			Starling.juggler.add(tween);
 			return null;

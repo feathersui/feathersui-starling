@@ -10,6 +10,7 @@ package feathers.motion.effectClasses
 	import feathers.core.IFeathersControl;
 
 	import starling.animation.Tween;
+	import starling.display.DisplayObject;
 
 	/**
 	 * A resize effect context for a <code>starling.animation.Tween</code>.
@@ -25,9 +26,9 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenResizeEffectContext(tween:Tween)
+		public function TweenResizeEffectContext(target:DisplayObject, tween:Tween)
 		{
-			super(tween);
+			super(target, tween);
 			this._oldWidth = this._target.width;
 			this._oldHeight = this._target.height;
 			this._newWidth = this._target.width;

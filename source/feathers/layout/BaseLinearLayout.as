@@ -283,8 +283,17 @@ package feathers.layout
 		[Bindable(event="change")]
 		/**
 		 * The alignment of the items vertically, on the x-axis.
+		 * 
+		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
+		 * constant is not supported by <code>VerticalLayout</code>. It may be
+		 * used with <code>HorizontalLayout</code> only.</p>
 		 *
 		 * @default feathers.layout.VerticalAlign.TOP
+		 *
+		 * @see feathers.layout.VerticalAlign#TOP
+		 * @see feathers.layout.VerticalAlign#MIDDLE
+		 * @see feathers.layout.VerticalAlign#BOTTOM
+		 * @see feathers.layout.VerticalAlign#JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -312,8 +321,17 @@ package feathers.layout
 		[Bindable(event="change")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
+		 * 
+		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
+		 * constant is not supported by <code>HorizontalLayout</code>. It may be
+		 * used with <code>VerticalLayout</code> only.</p>
 		 *
 		 * @default feathers.layout.HorizontalAlign.LEFT
+		 *
+		 * @see feathers.layout.HorizontalAlign#LEFT
+		 * @see feathers.layout.HorizontalAlign#CENTER
+		 * @see feathers.layout.HorizontalAlign#RIGHT
+		 * @see feathers.layout.HorizontalAlign#JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{

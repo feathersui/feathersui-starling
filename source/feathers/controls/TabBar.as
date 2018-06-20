@@ -116,6 +116,9 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * tabs.direction = Direction.VERTICAL;</listing>
+	 * 
+	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
+	 * constant is not supported.</p>
 	 *
 	 * @default feathers.layout.Direction.HORIZONTAL
 	 *
