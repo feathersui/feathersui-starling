@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
-## 3.5.0 - In Development
+## 3.5.0 - June 2018
 
 * AnchorLayout: fixed issue where measurement could be incorrect when using horizontalCenter or verticalCenter.
 * BitmapFontTextEditor, TextBlockTextEditor: added Shift+Home, Shift+End, Shift+Up, and Shift+Down keyboard shortcuts.
@@ -44,6 +44,8 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 * Themes: fixed issue where pivots in texture atlas caused some skins to appear at incorrect locations with Starling 2.3.
 * TiledColumnsLayout: fixed issue where the columns could be incorrectly aligned horizontally when alignment should not be possible.
 * TiledColumnsLayout: fixed issue where an incorrect number of visible columns was calculated when distributeHeights is true.
+* TiledColumnsLayout: if distributeWidths is set to true, useSquareTiles is changed to false automatically (or distributeWidths would have no effect).
+* TiledRowsLayout: if distributeHeights is set to true, useSquareTiles is changed to false automatically (or distributeHeights would have no effect).
 * Tree: added scrollToDisplayLocation() method.
 * ValidationQueue: reduced memory allocations to avoid unnecessary garbage collection.
 * VectorHierarchicalCollection: Fixed issue that caused compilation to fail with classic Adobe Flex SDK.
