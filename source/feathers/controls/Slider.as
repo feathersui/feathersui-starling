@@ -2597,11 +2597,11 @@ package feathers.controls
 				if(this._direction == Direction.VERTICAL)
 				{
 					this._thumbStartX = location.x;
-					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height - this._maximumPadding, Math.max(this._minimumPadding, location.y - this.thumb.height / 2));
 				}
 				else //horizontal
 				{
-					this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
+					this._thumbStartX = Math.min(this.actualWidth - this.thumb.width - this._maximumPadding, Math.max(this._minimumPadding, location.x - this.thumb.width / 2));
 					this._thumbStartY = location.y;
 				}
 				this._touchStartX = location.x;
