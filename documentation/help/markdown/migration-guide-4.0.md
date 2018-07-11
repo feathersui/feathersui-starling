@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 This guide explains how to migrate an application created with Feathers 3 to Feathers 4.0.
 
--   [Removed APIs deprecated in Feathers 3](#removed-apis-that-were-deprecated-in-feathers-3)
+-   [Removed APIs that were deprecated in Feathers 3](#removed-apis-that-were-deprecated-in-feathers-3)
 -   [Themes and `AssetManager`](#themes-and-assetmanager)
 
 ## Removed APIs that were deprecated in Feathers 3
