@@ -1174,6 +1174,7 @@ package feathers.media
 		 */
 		protected function videoPlayer_enterFrameHandler(event:Event):void
 		{
+			this.setRequiresRedraw();
 			this._currentTime = this._netStream.time;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 		}
