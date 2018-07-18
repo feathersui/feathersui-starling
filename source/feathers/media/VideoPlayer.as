@@ -1163,6 +1163,9 @@ package feathers.media
 			{
 				return;
 			}
+
+			this.removeEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+
 			this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 			this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			this._netStream.close();
