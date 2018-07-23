@@ -14,6 +14,8 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.dragDrop.IDragSource;
+	import feathers.dragDrop.IDropTarget;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -233,7 +235,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class List extends Scroller implements IFocusContainer
+	public class List extends Scroller implements IFocusContainer, IDragSource, IDropTarget
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>List</code>
@@ -1181,6 +1183,58 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			if(this._dragEnabled == value)
+			{
+				return;
+			}
+			this._dragEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropEnabled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropEnabled(value:Boolean):void
+		{
+			if(this._dropEnabled == value)
+			{
+				return;
+			}
+			this._dropEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1498,6 +1552,8 @@ package feathers.controls
 			this.dataViewPort.layout = this._layout;
 			this.dataViewPort.addedItems = this._addedItems;
 			this.dataViewPort.removedItems = this._removedItems;
+			this.dataViewPort.dragEnabled = this._dragEnabled;
+			this.dataViewPort.dropEnabled = this._dropEnabled;
 			this._addedItems = null;
 			this._removedItems = null;
 		}

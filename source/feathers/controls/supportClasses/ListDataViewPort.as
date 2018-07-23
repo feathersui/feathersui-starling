@@ -16,7 +16,10 @@ package feathers.controls.supportClasses
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.DragDropManager;
 	import feathers.events.CollectionEventType;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
@@ -33,6 +36,9 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.Pool;
 
 	/**
@@ -44,6 +50,7 @@ package feathers.controls.supportClasses
 	public class ListDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
+		private static const DEFAULT_DRAG_FORMAT:String = "feathers-list-item";
 
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
@@ -686,6 +693,34 @@ package feathers.controls.supportClasses
 			}
 			this._removedItems = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		protected var _dragTouchPointID:int = -1;
+
+		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+
+		protected var _dragEnabled:Boolean = false;
+
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		public function set dragEnabled(value:Boolean):void
+		{
+			this._dragEnabled = value;
+		}
+
+		protected var _dropEnabled:Boolean = false;
+
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		public function set dropEnabled(value:Boolean):void
+		{
+			this._dropEnabled = value;
 		}
 
 		public function get requiresMeasurementOnScroll():Boolean
@@ -1573,6 +1608,7 @@ package feathers.controls.supportClasses
 				itemRenderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				itemRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				itemRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+				itemRenderer.addEventListener(TouchEvent.TOUCH, itemRenderer_drag_touchHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, itemRenderer);
 			}
 
@@ -1584,6 +1620,7 @@ package feathers.controls.supportClasses
 			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 			renderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
 			renderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+			renderer.removeEventListener(TouchEvent.TOUCH, itemRenderer_drag_touchHandler);
 			renderer.owner = null;
 			renderer.data = null;
 			renderer.factoryID = null;
@@ -1856,6 +1893,66 @@ package feathers.controls.supportClasses
 			var activeIndex:int = activeItemRenderers.indexOf(itemRenderer);
 			activeItemRenderers.removeAt(activeIndex);
 			this.destroyRenderer(itemRenderer);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function itemRenderer_drag_touchHandler(event:TouchEvent):void
+		{
+			if(!this._dragEnabled)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			var itemRenderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
+			if(DragDropManager.isDragging)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			if(this._dragTouchPointID != -1)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(itemRenderer.stage);
+				if(exclusiveTouch.getClaim(this._dragTouchPointID))
+				{
+					this._dragTouchPointID = -1;
+					return;
+				}
+				var touch:Touch = event.getTouch(DisplayObject(itemRenderer), null, this._dragTouchPointID);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var dragData:DragData = new DragData();
+					dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
+					var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
+					avatar.width = itemRenderer.width;
+					avatar.height = itemRenderer.height;
+					avatar.alpha = 0.8;
+					var point:Point = Pool.getPoint();
+					touch.getLocation(DisplayObject(itemRenderer), point);
+					DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
+					Pool.putPoint(point);
+					exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));
+					this._dragTouchPointID = -1;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._dragTouchPointID = -1;
+				}
+			}
+			else
+			{
+				
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(DisplayObject(itemRenderer), TouchPhase.BEGAN);
+				if(!touch)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				this._dragTouchPointID = touch.id;
+			}
 		}
 	}
 }
