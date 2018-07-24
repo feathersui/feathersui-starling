@@ -238,6 +238,11 @@ package feathers.controls
 	public class List extends Scroller implements IFocusContainer, IDragSource, IDropTarget
 	{
 		/**
+		 * @private
+		 */
+		protected static const DEFAULT_DRAG_FORMAT:String = "feathers-list-item";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>List</code>
 		 * components.
 		 *
@@ -1185,6 +1190,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+
+		/**
+		 * @private
+		 */
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragFormat(value:String):void
+		{
+			if(!value)
+			{
+				value = DEFAULT_DRAG_FORMAT;
+			}
+			if(this._dragFormat == value)
+			{
+				return;
+			}
+			this._dragFormat = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _dragEnabled:Boolean = false;
 
 		/**
@@ -1552,6 +1587,7 @@ package feathers.controls
 			this.dataViewPort.layout = this._layout;
 			this.dataViewPort.addedItems = this._addedItems;
 			this.dataViewPort.removedItems = this._removedItems;
+			this.dataViewPort.dragFormat = this._dragFormat;
 			this.dataViewPort.dragEnabled = this._dragEnabled;
 			this.dataViewPort.dropEnabled = this._dropEnabled;
 			this._addedItems = null;

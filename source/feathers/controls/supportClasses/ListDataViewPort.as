@@ -40,6 +40,7 @@ package feathers.controls.supportClasses
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import feathers.events.DragDropEvent;
 
 	/**
 	 * @private
@@ -50,7 +51,6 @@ package feathers.controls.supportClasses
 	public class ListDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
-		private static const DEFAULT_DRAG_FORMAT:String = "feathers-list-item";
 
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
@@ -286,7 +286,23 @@ package feathers.controls.supportClasses
 
 		public function set owner(value:List):void
 		{
+			if(this._owner == value)
+			{
+				return;
+			}
+			if(this._owner)
+			{
+				this._owner.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
 			this._owner = value;
+			if(this._owner)
+			{
+				this._owner.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
 		}
 
 		private var _updateForDataReset:Boolean = false;
@@ -697,7 +713,17 @@ package feathers.controls.supportClasses
 
 		protected var _dragTouchPointID:int = -1;
 
-		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+		protected var _dragFormat:String;
+
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		public function set dragFormat(value:String):void
+		{
+			this._dragFormat = value;
+		}
 
 		protected var _dragEnabled:Boolean = false;
 
@@ -1898,6 +1924,60 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		protected function dragEnterHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			DragDropManager.acceptDrag(this._owner);
+		}
+
+		protected var _droppedOnSelf:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected function dragDropHandler(event:DragDropEvent):void
+		{
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			if(event.dragSource == this._owner)
+			{
+				//if we wait to remove this item in the dragComplete handler,
+				//the wrong index might be removed.
+				this._dataProvider.removeItem(item);
+				this._droppedOnSelf = true;
+			}
+			this._dataProvider.addItemAt(item, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragCompleteHandler(event:DragDropEvent):void
+		{
+			if(!event.isDropped)
+			{
+				//nothing to modify
+				return;
+			}
+			if(this._droppedOnSelf)
+			{
+				//already modified the data provider in the dragDrop handler
+				this._droppedOnSelf = false;
+				return;
+			}
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			this._dataProvider.removeItem(item);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function itemRenderer_drag_touchHandler(event:TouchEvent):void
 		{
 			if(!this._dragEnabled)
@@ -1930,6 +2010,7 @@ package feathers.controls.supportClasses
 					avatar.alpha = 0.8;
 					var point:Point = Pool.getPoint();
 					touch.getLocation(DisplayObject(itemRenderer), point);
+					this._droppedOnSelf = false;
 					DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
 					Pool.putPoint(point);
 					exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));
