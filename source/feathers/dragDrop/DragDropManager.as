@@ -21,6 +21,7 @@ package feathers.dragDrop
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * Handles drag and drop operations based on Starling touch events.
@@ -33,11 +34,6 @@ package feathers.dragDrop
 	 */
 	public class DragDropManager
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * @private
 		 */
@@ -164,21 +160,23 @@ package feathers.dragDrop
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
 			_dragSourceStage = DisplayObject(source).stage;
-			touch.getLocation(_dragSourceStage, HELPER_POINT);
+			var point:Point = Pool.getPoint();
+			touch.getLocation(_dragSourceStage, point);
 			if(avatar)
 			{
 				avatarOldTouchable = avatar.touchable;
 				avatar.touchable = false;
-				avatar.x = HELPER_POINT.x + avatarOffsetX;
-				avatar.y = HELPER_POINT.y + avatarOffsetY;
+				avatar.x = point.x + avatarOffsetX;
+				avatar.y = point.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
 			}
 			_dragSourceStage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			var starling:Starling = _dragSourceStage.starling;
 			starling.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
-			_dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
+			_dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false, NaN, NaN, _dragSource));
 
-			updateDropTarget(HELPER_POINT);
+			updateDropTarget(point);
+			Pool.putPoint(point);
 		}
 
 		/**
@@ -218,13 +216,13 @@ package feathers.dragDrop
 			}
 			if(dropTarget)
 			{
-				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
+				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY, _dragSource));
 				dropTarget = null;
 			}
 			var source:IDragSource = _dragSource;
 			var data:DragData = _dragData;
 			cleanup();
-			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, data, isDropped));
+			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, data, isDropped, NaN, NaN, source));
 		}
 
 		/**
@@ -269,7 +267,7 @@ package feathers.dragDrop
 				if(dropTarget)
 				{
 					//notice that we can reuse the previously saved location
-					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY, _dragSource));
 				}
 				dropTarget = IDropTarget(target);
 				isAccepted = false;
@@ -277,14 +275,14 @@ package feathers.dragDrop
 				{
 					dropTargetLocalX = location.x;
 					dropTargetLocalY = location.y;
-					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_ENTER, _dragData, false, dropTargetLocalX, dropTargetLocalY));
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_ENTER, _dragData, false, dropTargetLocalX, dropTargetLocalY, _dragSource));
 				}
 			}
 			else if(dropTarget)
 			{
 				dropTargetLocalX = location.x;
 				dropTargetLocalY = location.y;
-				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, false, dropTargetLocalX, dropTargetLocalY));
+				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, false, dropTargetLocalX, dropTargetLocalY, _dragSource));
 			}
 		}
 
@@ -313,13 +311,15 @@ package feathers.dragDrop
 			}
 			if(touch.phase == TouchPhase.MOVED)
 			{
-				touch.getLocation(stage, HELPER_POINT);
+				var point:Point = Pool.getPoint();
+				touch.getLocation(stage, point);
 				if(avatar)
 				{
-					avatar.x = HELPER_POINT.x + avatarOffsetX;
-					avatar.y = HELPER_POINT.y + avatarOffsetY;
+					avatar.x = point.x + avatarOffsetX;
+					avatar.y = point.y + avatarOffsetY;
 				}
-				updateDropTarget(HELPER_POINT);
+				updateDropTarget(point);
+				Pool.putPoint(point);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -327,7 +327,7 @@ package feathers.dragDrop
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
-					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_DROP, _dragData, true, dropTargetLocalX, dropTargetLocalY));
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_DROP, _dragData, true, dropTargetLocalX, dropTargetLocalY, _dragSource));
 					isDropped = true;
 				}
 				dropTarget = null;
