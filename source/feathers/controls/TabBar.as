@@ -14,7 +14,13 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.IListCollection;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.DragDropManager;
+	import feathers.dragDrop.IDragSource;
+	import feathers.dragDrop.IDropTarget;
 	import feathers.events.CollectionEventType;
+	import feathers.events.DragDropEvent;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
@@ -25,6 +31,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -34,6 +41,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to the first tab in this tab bar. Typically used
@@ -458,7 +469,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
+	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl, IDragSource, IDropTarget
 	{
 		/**
 		 * @private
@@ -481,6 +492,11 @@ package feathers.controls
 			"selectedDisabledIcon",
 			"name"
 		];
+
+		/**
+		 * @private
+		 */
+		protected static const DEFAULT_DRAG_FORMAT:String = "feathers-tab-bar-item";
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the tabs.
@@ -512,6 +528,9 @@ package feathers.controls
 		public function TabBar()
 		{
 			super();
+			this.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+			this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+			this.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
 		}
 
 		/**
@@ -2064,6 +2083,87 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+
+		/**
+		 * 
+		 */
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragFormat(value:String):void
+		{
+			if(!value)
+			{
+				value = DEFAULT_DRAG_FORMAT;
+			}
+			if(this._dragFormat == value)
+			{
+				return;
+			}
+			this._dragFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _droppedOnSelf:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * 
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			this._dragEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropEnabled:Boolean = false;
+
+		/**
+		 * 
+		 */
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropEnabled(value:Boolean):void
+		{
+			this._dropEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			//clearing selection now so that the data provider setter won't
@@ -2496,10 +2596,10 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
 		}
@@ -2540,10 +2640,10 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
 		}
@@ -2578,12 +2678,18 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
+		}
+
+		protected function addTabListeners(tab:ToggleButton):void
+		{
+			tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			tab.addEventListener(TouchEvent.TOUCH, tab_drag_touchHandler);
 		}
 
 		/**
@@ -2621,6 +2727,7 @@ package feathers.controls
 		{
 			this.toggleGroup.removeItem(tab);
 			this.releaseTab(tab);
+			tab.removeEventListener(TouchEvent.TOUCH, tab_drag_touchHandler);
 			this.removeChild(tab, true);
 		}
 
@@ -2934,6 +3041,121 @@ package feathers.controls
 			var index:int = this.activeTabs.indexOf(tab);
 			var item:Object = this._dataProvider.getItemAt(index);
 			this.dispatchEventWith(Event.TRIGGERED, false, item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragEnterHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			DragDropManager.acceptDrag(this);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragDropHandler(event:DragDropEvent):void
+		{
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			if(event.dragSource == this)
+			{
+				//if we wait to remove this item in the dragComplete handler,
+				//the wrong index might be removed.
+				this._dataProvider.removeItem(item);
+				this._droppedOnSelf = true;
+			}
+			this._dataProvider.addItemAt(item, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragCompleteHandler(event:DragDropEvent):void
+		{
+			if(!event.isDropped)
+			{
+				//nothing to modify
+				return;
+			}
+			if(this._droppedOnSelf)
+			{
+				//already modified the data provider in the dragDrop handler
+				this._droppedOnSelf = false;
+				return;
+			}
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			this._dataProvider.removeItem(item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function tab_drag_touchHandler(event:TouchEvent):void
+		{
+			if(!this._dragEnabled)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			if(DragDropManager.isDragging)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			var tab:ToggleButton = ToggleButton(event.currentTarget);
+			if(this._dragTouchPointID != -1)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(tab.stage);
+				if(exclusiveTouch.getClaim(this._dragTouchPointID))
+				{
+					this._dragTouchPointID = -1;
+					return;
+				}
+				var touch:Touch = event.getTouch(tab, null, this._dragTouchPointID);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var index:int = this.activeTabs.indexOf(tab);
+					var item:Object = this._dataProvider.getItemAt(index);
+					var dragData:DragData = new DragData();
+					dragData.setDataForFormat(this._dragFormat, item);
+					var avatar:ToggleButton = this.createTab(item);
+					avatar.width = tab.width;
+					avatar.height = tab.height;
+					avatar.alpha = 0.8;
+					var point:Point = Pool.getPoint();
+					touch.getLocation(tab, point);
+					this._droppedOnSelf = false;
+					DragDropManager.startDrag(this, touch, dragData, avatar, -point.x, -point.y);
+					Pool.putPoint(point);
+					exclusiveTouch.claimTouch(this._dragTouchPointID, tab);
+					this._dragTouchPointID = -1;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._dragTouchPointID = -1;
+				}
+			}
+			else
+			{
+				
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(tab, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				this._dragTouchPointID = touch.id;
+			}
 		}
 
 		/**
