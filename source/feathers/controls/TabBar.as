@@ -2727,6 +2727,7 @@ package feathers.controls
 		{
 			this.toggleGroup.removeItem(tab);
 			this.releaseTab(tab);
+			tab.removeEventListener(Event.TRIGGERED, tab_triggeredHandler);
 			tab.removeEventListener(TouchEvent.TOUCH, tab_drag_touchHandler);
 			this.removeChild(tab, true);
 		}
