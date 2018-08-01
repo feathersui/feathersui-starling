@@ -280,7 +280,7 @@ package feathers.layout
 			if(needsExplicitWidth && this._distributeWidths)
 			{
 				//if we didn't calculate this before, we need to do it now.
-				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth, false);
+				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth, true);
 			}
 			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
 
