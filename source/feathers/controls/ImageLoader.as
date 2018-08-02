@@ -44,6 +44,8 @@ package feathers.controls
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 	import starling.utils.SystemUtil;
+	import starling.styles.MeshStyle;
+	import starling.display.Mesh;
 
 	/**
 	 * The tint value to use on the internal
@@ -927,6 +929,48 @@ package feathers.controls
 				return;
 			}
 			this._textureSmoothing = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _defaultStyle:MeshStyle = null;
+
+		/**
+		 * @private
+		 */
+		protected var _style:MeshStyle = null;
+
+		/**
+		 * The style that is used to render the loader's image.
+		 *
+		 * <p>In the following example, the loader uses a custom style:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.style = new CustomMeshStyle();</listing>
+		 *
+		 * @default null
+		 */
+		public function get style():MeshStyle
+		{
+			return this._style;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set style(value:MeshStyle):void
+		{
+			if(this._style == value)
+			{
+				return;
+			}
+			this._style = value;
+			if(this._style)
+			{
+				this._defaultStyle = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1878,6 +1922,18 @@ package feathers.controls
 			this.image.scale9Grid = this._scale9Grid;
 			this.image.tileGrid = this._tileGrid;
 			this.image.pixelSnapping = this._pixelSnapping;
+			if(this._style !== null)
+			{
+				this.image.style = this._style;
+			}
+			else
+			{
+				if(this._defaultStyle === null)
+				{
+					this._defaultStyle = Mesh.createDefaultStyle(this.image);
+				}
+				this.image.style = this._defaultStyle;
+			}
 		}
 
 		/**
@@ -2022,6 +2078,7 @@ package feathers.controls
 				{
 					this.removeChild(this.image, true);
 					this.image = null;
+					this._defaultStyle = null;
 				}
 				return;
 			}
