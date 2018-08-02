@@ -1848,7 +1848,7 @@ package feathers.controls
 		 */
 		override public function render(painter:Painter):void
 		{
-			var scale:Number = this.getCurrentScale();
+			var scale:Number = this.getScaleForCurrentState();
 			if(scale != 1)
 			{
 				var matrix:Matrix = Pool.getMatrix();
@@ -2429,7 +2429,7 @@ package feathers.controls
 				return;
 			}
 			super.changeState(state);
-			if(this.getCurrentScale() != 1)
+			if(this.getScaleForCurrentState() != this.getScaleForCurrentState(oldState))
 			{
 				this.setRequiresRedraw();
 			}
@@ -2566,11 +2566,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function getCurrentScale():Number
+		protected function getScaleForCurrentState(state:String = null):Number
 		{
-			if(this._currentState in this._stateToScale)
+			if(state === null)
 			{
-				return this._stateToScale[this._currentState];
+				state = this._currentState;
+			}
+			if(state in this._stateToScale)
+			{
+				return this._stateToScale[state];
 			}
 			return 1;
 		}

@@ -953,9 +953,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function getCurrentScale():Number
+		override protected function getScaleForCurrentState(state:String = null):Number
 		{
-			var state:String = this.currentState;
+			if(state === null)
+			{
+				state = this._currentState;
+			}
 			if(state in this._stateToScale)
 			{
 				return this._stateToScale[state];
