@@ -957,7 +957,7 @@ package feathers.controls
 		{
 			if(state === null)
 			{
-				state = this._currentState;
+				state = this.currentState;
 			}
 			if(state in this._stateToScale)
 			{

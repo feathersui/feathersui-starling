@@ -355,6 +355,6 @@ class ButtonWithInternalState extends Button
 
 	public function get currentScaleInternal():Number
 	{
-		return this.getCurrentScale();
+		return this.getScaleForCurrentState();
 	}
 }
