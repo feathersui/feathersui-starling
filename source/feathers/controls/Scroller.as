@@ -3352,7 +3352,7 @@ package feathers.controls
 			if(this._topPullView !== null)
 			{
 				this._topPullView.mask.dispose();
-				this._leftPullView.mask = null;
+				this._topPullView.mask = null;
 				if(this._topPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._topPullView, false);
