@@ -349,6 +349,8 @@ package feathers.controls.supportClasses
 			this.preLayout();
 			this._ignoreChildChanges = oldIgnoreChildChanges;
 
+			this.refreshSelectionEvents();
+
 			super.draw();
 		}
 
@@ -389,6 +391,15 @@ package feathers.controls.supportClasses
 					this.freeInactiveCellRenderers(storage);
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSelectionEvents():void
+		{
+			this._tapToSelect.isEnabled = this._isEnabled;
+			this._tapToSelect.tapToDeselect = this._owner.allowMultipleSelection;
 		}
 
 		/**
