@@ -528,9 +528,6 @@ package feathers.controls
 		public function TabBar()
 		{
 			super();
-			this.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
-			this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
-			this.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
 		}
 
 		/**
@@ -2137,7 +2134,19 @@ package feathers.controls
 		 */
 		public function set dragEnabled(value:Boolean):void
 		{
+			if(this._dragEnabled == value)
+			{
+				return;
+			}
 			this._dragEnabled = value;
+			if(this._dragEnabled)
+			{
+				this.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
+			else
+			{
+				this.removeEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
 		}
 
 		/**
@@ -2158,7 +2167,52 @@ package feathers.controls
 		 */
 		public function set dropEnabled(value:Boolean):void
 		{
+			if(this._dropEnabled == value)
+			{
+				return;
+			}
 			this._dropEnabled = value;
+			if(this._dropEnabled)
+			{
+				this.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this.addEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+			}
+			else
+			{
+				this.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this.removeEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._dropIndicatorSkin = value;
 		}
 
 		/**
@@ -2166,6 +2220,13 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this._dropIndicatorSkin !== null &&
+				this._dropIndicatorSkin.parent === null)
+			{
+				this._dropIndicatorSkin.dispose();
+				this._dropIndicatorSkin = null;
+			}
+
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndex = -1;
@@ -2920,6 +2981,104 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function getDropIndex(event:DragDropEvent):int
+		{
+			var point:Point = Pool.getPoint(event.localX, event.localY);
+			this.localToGlobal(point, point);
+			var globalX:Number = point.x;
+			var globalY:Number = point.y;
+			Pool.putPoint(point);
+
+			var tabCount:int = this.activeTabs.length;
+			for(var i:int = 0; i < tabCount; i++)
+			{
+				var tab:ToggleButton = this.activeTabs[i];
+				if(this._direction === Direction.HORIZONTAL)
+				{
+					point = Pool.getPoint(tab.width / 2, 0);
+				}
+				else
+				{
+					point = Pool.getPoint(0, tab.height / 2);
+				}
+				tab.localToGlobal(point, point);
+				var tabGlobalMiddleX:Number = point.x;
+				var tabGlobalMiddleY:Number = point.y;
+				Pool.putPoint(point);
+				if(this._direction === Direction.VERTICAL)
+				{
+					if(globalY < tabGlobalMiddleY)
+					{
+						return i;
+					}
+				}
+				else //horizontal
+				{
+					if(globalX < tabGlobalMiddleX)
+					{
+						return i;
+					}
+				}
+			}
+			return tabCount;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDropIndicator(event:DragDropEvent):void
+		{
+			if(!this._dropIndicatorSkin)
+			{
+				return;
+			}
+			var dropIndex:int = this.getDropIndex(event);
+			if(this._direction == Direction.VERTICAL)
+			{
+				var dropIndicatorY:Number = 0;
+				if(dropIndex == this.activeTabs.length)
+				{
+					dropIndicatorY = this.actualHeight - this._dropIndicatorSkin.height;
+				}
+				else if(dropIndex == 0)
+				{
+					dropIndicatorY = 0;
+				}
+				else
+				{
+					var tab:ToggleButton = this.activeTabs[dropIndex];
+					dropIndicatorY = tab.y - (this._gap + this._dropIndicatorSkin.height) / 2;
+				}
+				this._dropIndicatorSkin.x = 0;
+				this._dropIndicatorSkin.y = dropIndicatorY;
+				this._dropIndicatorSkin.width = this.actualWidth;
+			}
+			else //horizontal
+			{
+				var dropIndicatorX:Number = 0;
+				if(dropIndex == this.activeTabs.length)
+				{
+					dropIndicatorX = this.actualWidth - this._dropIndicatorSkin.width;
+				}
+				else if(dropIndex == 0)
+				{
+					dropIndicatorX = 0;
+				}
+				else
+				{
+					tab = this.activeTabs[dropIndex];
+					dropIndicatorX = tab.x - (this._gap + this._dropIndicatorSkin.width) / 2;
+				}
+				this._dropIndicatorSkin.x = dropIndicatorX;
+				this._dropIndicatorSkin.y = 0;
+				this._dropIndicatorSkin.height = this.actualHeight;
+			}
+			this.addChild(this._dropIndicatorSkin);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -3058,6 +3217,23 @@ package feathers.controls
 				return;
 			}
 			DragDropManager.acceptDrag(this);
+			this.refreshDropIndicator(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragMoveHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			this.refreshDropIndicator(event);
 		}
 
 		/**
@@ -3065,15 +3241,31 @@ package feathers.controls
 		 */
 		protected function dragDropHandler(event:DragDropEvent):void
 		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+			var index:int = this.getDropIndex(event);
 			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			var selectItem:Boolean = this._selectedItem == item;
 			if(event.dragSource == this)
 			{
 				//if we wait to remove this item in the dragComplete handler,
 				//the wrong index might be removed.
-				this._dataProvider.removeItem(item);
+				var oldIndex:int = this._dataProvider.getItemIndex(item);
+				this._dataProvider.removeItemAt(oldIndex);
 				this._droppedOnSelf = true;
+				if(index > oldIndex)
+				{
+					index--;
+				}
 			}
-			this._dataProvider.addItemAt(item, 0);
+			this._dataProvider.addItemAt(item, index);
+			if(selectItem)
+			{
+				this.selectedIndex = index;
+			}
+			
 		}
 
 		/**
