@@ -244,7 +244,7 @@ package feathers.controls.renderers
 		 */
 		override protected function getDataToRender():Object
 		{
-			if(this._dataField === null)
+			if(this._data === null || this._dataField === null)
 			{
 				return this._data;
 			}
