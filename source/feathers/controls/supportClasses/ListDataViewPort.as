@@ -749,6 +749,27 @@ package feathers.controls.supportClasses
 			this._dropEnabled = value;
 		}
 
+		/**
+		 * @private
+		 */
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			this._dropIndicatorSkin = value;
+		}
+
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&

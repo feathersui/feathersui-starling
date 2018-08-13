@@ -34,6 +34,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import starling.display.DisplayObject;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -55,6 +56,19 @@ package feathers.controls
 	 * @see feathers.core.FeathersControl#styleNameList
 	 */
 	[Style(name="customItemRendererStyleName",type="String")]
+
+	/**
+	 * A skin to display when dragging one an item to indicate where it can be
+	 * dropped.
+	 *
+	 * <p>In the following example, the list's drop indicator is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.dropIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dropIndicatorSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The duration, in seconds, of the animation when the selected item is
@@ -1193,7 +1207,16 @@ package feathers.controls
 		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
 
 		/**
-		 * @private
+		 * Drag and drop is restricted to components that have the same
+		 * <code>dragFormat</code>.
+		 * 
+		 * <p>In the following example, the drag format of two lists is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list1.dragFormat = "my-custom-format";
+		 * list2.dragFormat = "my-custom-format";</listing>
+		 * 
+		 * @default "feathers-list-item"
 		 */
 		public function get dragFormat():String
 		{
@@ -1223,7 +1246,18 @@ package feathers.controls
 		protected var _dragEnabled:Boolean = false;
 
 		/**
-		 * @private
+		 * Indicates if this list can initiate drag and drop operations by
+		 * touching an item and dragging it. The <code>dragEnabled</code>
+		 * property enables dragging items, but dropping items must be enabled
+		 * separately with the <code>dropEnabled</code> property.
+		 * 
+		 * <p>In the following example, a list's items may be dragged:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dragEnabled = true;</listing>
+		 * 
+		 * @see #dropEnabled
+		 * @see #dragFormat
 		 */
 		public function get dragEnabled():Boolean
 		{
@@ -1249,7 +1283,16 @@ package feathers.controls
 		protected var _dropEnabled:Boolean = false;
 
 		/**
-		 * @private
+		 * Indicates if this list can accept items that are dragged and
+		 * dropped over the list's hit area.
+		 * 
+		 * <p>In the following example, a list's items may be dropped:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dropEnabled = true;</listing>
+		 * 
+		 * @see #dragEnabled
+		 * @see #dragFormat
 		 */
 		public function get dropEnabled():Boolean
 		{
@@ -1267,6 +1310,35 @@ package feathers.controls
 			}
 			this._dropEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._dropIndicatorSkin = value;
 		}
 
 		/**
@@ -1590,6 +1662,7 @@ package feathers.controls
 			this.dataViewPort.dragFormat = this._dragFormat;
 			this.dataViewPort.dragEnabled = this._dragEnabled;
 			this.dataViewPort.dropEnabled = this._dropEnabled;
+			this.dataViewPort.dropIndicatorSkin = this._dropIndicatorSkin;
 			this._addedItems = null;
 			this._removedItems = null;
 		}
