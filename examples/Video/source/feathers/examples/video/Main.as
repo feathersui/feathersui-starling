@@ -57,7 +57,9 @@ package feathers.examples.video
 			this._videoPlayer.autoSizeMode = AutoSizeMode.STAGE;
 			this._videoPlayer.layout = new AnchorLayout();
 			this._videoPlayer.addEventListener(Event.READY, videoPlayer_readyHandler);
+			this._videoPlayer.addEventListener(FeathersEventType.CLEAR, videoPlayer_clearHandler);
 			this._videoPlayer.addEventListener(MediaPlayerEventType.DISPLAY_STATE_CHANGE, videoPlayer_displayStateChangeHandler);
+			this._videoPlayer.addEventListener(Event.IO_ERROR, videoPlayer_errorHandler);
 			this._videoPlayer.addEventListener(FeathersEventType.ERROR, videoPlayer_errorHandler);
 			this.addChild(this._videoPlayer);
 			
@@ -151,6 +153,12 @@ package feathers.examples.video
 		{
 			this._view.source = this._videoPlayer.texture;
 			this._controls.touchable = true;
+		}
+		
+		protected function videoPlayer_clearHandler(event:Event):void
+		{
+			this._view.source = null;
+			this._controls.touchable = false;
 		}
 
 		protected function videoPlayer_displayStateChangeHandler(event:Event):void
