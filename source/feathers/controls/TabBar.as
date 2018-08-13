@@ -157,6 +157,19 @@ package feathers.controls
 	[Style(name="distributeTabSizes",type="Boolean")]
 
 	/**
+	 * A skin to display when dragging one an item to indicate where it can be
+	 * dropped.
+	 *
+	 * <p>In the following example, the tab bar's drop indicator is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.dropIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dropIndicatorSkin",type="starling.display.DisplayObject")]
+
+	/**
 	 * Space, in pixels, between the first two tabs. If <code>NaN</code>,
 	 * the default <code>gap</code> property will be used.
 	 *
@@ -2083,7 +2096,16 @@ package feathers.controls
 		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
 
 		/**
+		 * Drag and drop is restricted to components that have the same
+		 * <code>dragFormat</code>.
 		 * 
+		 * <p>In the following example, the drag format of two tab bars is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs1.dragFormat = "my-custom-format";
+		 * tabs2.dragFormat = "my-custom-format";</listing>
+		 * 
+		 * @default "feathers-tab-bar-item"
 		 */
 		public function get dragFormat():String
 		{
@@ -2122,7 +2144,18 @@ package feathers.controls
 		protected var _dragEnabled:Boolean = false;
 
 		/**
+		 * Indicates if this tab bar can initiate drag and drop operations by
+		 * touching an item and dragging it. The <code>dragEnabled</code>
+		 * property enables dragging items, but dropping items must be enabled
+		 * separately with the <code>dropEnabled</code> property.
 		 * 
+		 * <p>In the following example, a tab bar's items may be dragged:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.dragEnabled = true;</listing>
+		 * 
+		 * @see #dropEnabled
+		 * @see #dragFormat
 		 */
 		public function get dragEnabled():Boolean
 		{
@@ -2155,7 +2188,16 @@ package feathers.controls
 		protected var _dropEnabled:Boolean = false;
 
 		/**
+		 * Indicates if this tab bar can accept items that are dragged and
+		 * dropped over the tab bar's hit area.
 		 * 
+		 * <p>In the following example, a tab bar's items may be dropped:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.dropEnabled = true;</listing>
+		 * 
+		 * @see #dragEnabled
+		 * @see #dragFormat
 		 */
 		public function get dropEnabled():Boolean
 		{
