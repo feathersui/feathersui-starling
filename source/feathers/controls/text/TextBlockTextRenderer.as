@@ -1647,10 +1647,6 @@ package feathers.controls.text
 			if(needsWidth)
 			{
 				newWidth = this._explicitMaxWidth;
-				if(newWidth > MAX_TEXT_LINE_WIDTH)
-				{
-					newWidth = MAX_TEXT_LINE_WIDTH;
-				}
 			}
 			if(needsHeight)
 			{
@@ -2334,6 +2330,21 @@ package feathers.controls.text
 			textLineParent:DisplayObjectContainer, width:Number, height:Number,
 			result:MeasureTextResult = null):MeasureTextResult
 		{
+			//clamp the width and height values to a valid range so that it
+			//doesn't break the measurement
+			if(width < 0)
+			{
+				width = 0;
+			}
+			else if(width > MAX_TEXT_LINE_WIDTH)
+			{
+				width = MAX_TEXT_LINE_WIDTH;
+			}
+			if(height < 0)
+			{
+				height = 0;
+			}
+
 			var lineCount:int = textLines.length;
 			//copy the invalid text lines over to the helper vector so that we
 			//can reuse them
