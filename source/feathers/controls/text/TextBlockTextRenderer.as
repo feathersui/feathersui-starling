@@ -1693,9 +1693,9 @@ package feathers.controls.text
 			if(needsHeight)
 			{
 				newHeight = Math.ceil(this._lastMeasurementHeight);
-				if(newHeight <= 0 && this._elementFormat)
+				if(newHeight <= 0 && this._textElement !== null)
 				{
-					newHeight = this._elementFormat.fontSize;
+					newHeight = this._textElement.elementFormat.fontSize;
 				}
 			}
 
