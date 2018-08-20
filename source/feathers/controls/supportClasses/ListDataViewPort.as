@@ -293,6 +293,8 @@ package feathers.controls.supportClasses
 			if(this._owner)
 			{
 				this._owner.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
 				this._owner.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
 				this._owner.removeEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
 			}
@@ -300,6 +302,8 @@ package feathers.controls.supportClasses
 			if(this._owner)
 			{
 				this._owner.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
 				this._owner.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
 				this._owner.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
 			}
@@ -394,9 +398,6 @@ package feathers.controls.supportClasses
 			return this._itemRendererFactories;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set itemRendererFactories(value:Object):void
 		{
 			if(this._itemRendererFactories === value)
@@ -419,9 +420,6 @@ package feathers.controls.supportClasses
 			return this._factoryIDFunction;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set factoryIDFunction(value:Function):void
 		{
 			if(this._factoryIDFunction === value)
@@ -749,22 +747,15 @@ package feathers.controls.supportClasses
 			this._dropEnabled = value;
 		}
 
-		/**
-		 * @private
-		 */
+		protected var _droppedOnSelf:Boolean = false;
+
 		protected var _dropIndicatorSkin:DisplayObject = null;
 
-		/**
-		 * @private
-		 */
 		public function get dropIndicatorSkin():DisplayObject
 		{
 			return this._dropIndicatorSkin;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set dropIndicatorSkin(value:DisplayObject):void
 		{
 			this._dropIndicatorSkin = value;
@@ -810,6 +801,12 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
+			if(this._dropIndicatorSkin !== null &&
+				this._dropIndicatorSkin.parent === null)
+			{
+				this._dropIndicatorSkin.dispose();
+				this._dropIndicatorSkin = null;
+			}
 			this.refreshInactiveRenderers(null, true);
 			if(this._storageMap)
 			{
@@ -1718,6 +1715,18 @@ package feathers.controls.supportClasses
 			return this._defaultStorage;
 		}
 
+		protected function refreshDropIndicator(event:DragDropEvent):void
+		{
+			if(!this._dropIndicatorSkin)
+			{
+				return;
+			}
+			this._dropIndicatorSkin.x = 0;
+			this._dropIndicatorSkin.y = this._verticalScrollPosition + this.actualVisibleHeight / 2;
+			this._dropIndicatorSkin.width = this.actualVisibleWidth;
+			this.addChild(this._dropIndicatorSkin);
+		}
+
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1942,9 +1951,6 @@ package feathers.controls.supportClasses
 			this.destroyRenderer(itemRenderer);
 		}
 
-		/**
-		 * @private
-		 */
 		protected function dragEnterHandler(event:DragDropEvent):void
 		{
 			if(!this._dropEnabled)
@@ -1956,15 +1962,36 @@ package feathers.controls.supportClasses
 				return;
 			}
 			DragDropManager.acceptDrag(this._owner);
+			this.refreshDropIndicator(event);
 		}
 
-		protected var _droppedOnSelf:Boolean = false;
+		protected function dragMoveHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			this.refreshDropIndicator(event);
+		}
 
-		/**
-		 * @private
-		 */
+		protected function dragExitHandler(event:DragDropEvent):void
+		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+		}
+
 		protected function dragDropHandler(event:DragDropEvent):void
 		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
 			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
 			if(event.dragSource == this._owner)
 			{
@@ -1976,9 +2003,6 @@ package feathers.controls.supportClasses
 			this._dataProvider.addItemAt(item, 0);
 		}
 
-		/**
-		 * @private
-		 */
 		protected function dragCompleteHandler(event:DragDropEvent):void
 		{
 			if(!event.isDropped)
@@ -1996,9 +2020,6 @@ package feathers.controls.supportClasses
 			this._dataProvider.removeItem(item);
 		}
 
-		/**
-		 * @private
-		 */
 		protected function itemRenderer_drag_touchHandler(event:TouchEvent):void
 		{
 			if(!this._dragEnabled)
