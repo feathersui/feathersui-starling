@@ -2218,12 +2218,14 @@ package feathers.controls
 			{
 				this.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
 				this.addEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.addEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
 				this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
 			}
 			else
 			{
 				this.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
 				this.removeEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.removeEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
 				this.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
 			}
 		}
@@ -3276,6 +3278,17 @@ package feathers.controls
 				return;
 			}
 			this.refreshDropIndicator(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragExitHandler(event:DragDropEvent):void
+		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
 		}
 
 		/**
