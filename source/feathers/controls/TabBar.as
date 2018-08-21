@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -2233,6 +2234,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitDropIndicatorWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _dropIndicatorSkin:DisplayObject = null;
 
 		/**
@@ -2257,6 +2268,17 @@ package feathers.controls
 				return;
 			}
 			this._dropIndicatorSkin = value;
+			if(this._dropIndicatorSkin is IMeasureDisplayObject)
+			{
+				var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._dropIndicatorSkin);
+				this._explicitDropIndicatorWidth = measureSkin.explicitWidth;
+				this._explicitDropIndicatorHeight = measureSkin.explicitHeight;
+			}
+			else if(this._dropIndicatorSkin)
+			{
+				this._explicitDropIndicatorWidth = this._dropIndicatorSkin.width;
+				this._explicitDropIndicatorHeight = this._dropIndicatorSkin.height;
+			}
 		}
 
 		/**
@@ -3096,6 +3118,8 @@ package feathers.controls
 				this._dropIndicatorSkin.x = 0;
 				this._dropIndicatorSkin.y = dropIndicatorY;
 				this._dropIndicatorSkin.width = this.actualWidth;
+				//just in case the direction changed, reset this value
+				this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
 			}
 			else //horizontal
 			{
@@ -3115,6 +3139,8 @@ package feathers.controls
 				}
 				this._dropIndicatorSkin.x = dropIndicatorX;
 				this._dropIndicatorSkin.y = 0;
+				//just in case the direction changed, reset this value
+				this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
 				this._dropIndicatorSkin.height = this.actualHeight;
 			}
 			this.addChild(this._dropIndicatorSkin);
