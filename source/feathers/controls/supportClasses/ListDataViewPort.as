@@ -12,6 +12,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
@@ -19,6 +20,7 @@ package feathers.controls.supportClasses
 	import feathers.dragDrop.DragData;
 	import feathers.dragDrop.DragDropManager;
 	import feathers.events.CollectionEventType;
+	import feathers.events.DragDropEvent;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
@@ -40,7 +42,6 @@ package feathers.controls.supportClasses
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import feathers.events.DragDropEvent;
 
 	/**
 	 * @private
@@ -749,6 +750,16 @@ package feathers.controls.supportClasses
 
 		protected var _droppedOnSelf:Boolean = false;
 
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorHeight:Number = NaN;
+
 		protected var _dropIndicatorSkin:DisplayObject = null;
 
 		public function get dropIndicatorSkin():DisplayObject
@@ -758,7 +769,22 @@ package feathers.controls.supportClasses
 
 		public function set dropIndicatorSkin(value:DisplayObject):void
 		{
+			if(this._dropIndicatorSkin === value)
+			{
+				return;
+			}
 			this._dropIndicatorSkin = value;
+			if(this._dropIndicatorSkin is IMeasureDisplayObject)
+			{
+				var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._dropIndicatorSkin);
+				this._explicitDropIndicatorWidth = measureSkin.explicitWidth;
+				this._explicitDropIndicatorHeight = measureSkin.explicitHeight;
+			}
+			else if(this._dropIndicatorSkin)
+			{
+				this._explicitDropIndicatorWidth = this._dropIndicatorSkin.width;
+				this._explicitDropIndicatorHeight = this._dropIndicatorSkin.height;
+			}
 		}
 
 		public function get requiresMeasurementOnScroll():Boolean
@@ -1724,6 +1750,7 @@ package feathers.controls.supportClasses
 			this._dropIndicatorSkin.x = 0;
 			this._dropIndicatorSkin.y = this._verticalScrollPosition + this.actualVisibleHeight / 2;
 			this._dropIndicatorSkin.width = this.actualVisibleWidth;
+			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
 			this.addChild(this._dropIndicatorSkin);
 		}
 
