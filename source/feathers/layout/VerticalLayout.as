@@ -13,6 +13,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -27,7 +28,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class VerticalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
+	public class VerticalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout, IDragDropLayout
 	{
 		/**
 		 * Constructor.
@@ -1518,6 +1519,141 @@ package feathers.layout
 			result.y = maxScrollY;
 
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		public function getDropRegion(index:int, items:Vector.<DisplayObject>, result:Rectangle = null):Rectangle
+		{
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				//if the layout is virtualized, and the items all have the same
+				//height, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+			}
+			var indexMinusOffset:int = index - indexOffset;
+
+			if(index < totalItemCount)
+			{
+				var item:DisplayObject = items[indexMinusOffset];
+				var y:Number = item.y;
+			}
+			else //after the last item
+			{
+				item = items[indexMinusOffset - 1];
+				y = item.y + item.height;
+			}
+
+			if(!result)
+			{
+				result = new Rectangle(item.x, y, item.width, 0);
+			}
+			else
+			{
+				result.setTo(item.x, y, item.width, 0);
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		public function getDropIndex(x:Number, y:Number, items:Vector.<DisplayObject>,
+			boundsX:Number, boundsY:Number, width:Number, height:Number):int
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var positionY:Number = boundsY + this._paddingTop;
+			var lastHeight:Number = 0;
+			var gap:Number = this._gap;
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				//if the layout is virtualized, and the items all have the same
+				//height, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+				positionY += (this._beforeVirtualizedItemCount * (calculatedTypicalItemHeight + this._gap));
+				if(hasFirstGap && this._beforeVirtualizedItemCount > 0)
+				{
+					positionY = positionY - this._gap + this._firstGap;
+				}
+			}
+			var secondToLastIndex:int = totalItemCount - 2;
+			for(var i:int = 0; i <= totalItemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				var iNormalized:int = i + indexOffset;
+				if(hasFirstGap && iNormalized == 0)
+				{
+					gap = this._firstGap;
+				}
+				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				{
+					gap = this._lastGap;
+				}
+				else
+				{
+					gap = this._gap;
+				}
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedHeight:Number = this._virtualCache[iNormalized];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedHeight !== cachedHeight) //isNaN
+					{
+						lastHeight = calculatedTypicalItemHeight;
+					}
+					else
+					{
+						lastHeight = cachedHeight;
+					}
+				}
+				else
+				{
+					var itemHeight:Number = item.height;
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							if(itemHeight != cachedHeight)
+							{
+								this._virtualCache[iNormalized] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemHeight >= 0)
+						{
+							itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					lastHeight = itemHeight;
+				}
+				if(y < (positionY + (lastHeight / 2)))
+				{
+					return iNormalized;
+				}
+				positionY += lastHeight + gap;
+			}
+			return 0;
 		}
 
 		/**

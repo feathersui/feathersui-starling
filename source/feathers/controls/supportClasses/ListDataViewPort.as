@@ -23,6 +23,7 @@ package feathers.controls.supportClasses
 	import feathers.events.DragDropEvent;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.IDragDropLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.ITrimmedVirtualLayout;
@@ -34,6 +35,7 @@ package feathers.controls.supportClasses
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
@@ -1747,11 +1749,39 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this._dropIndicatorSkin.x = 0;
-			this._dropIndicatorSkin.y = this._verticalScrollPosition + this.actualVisibleHeight / 2;
-			this._dropIndicatorSkin.width = this.actualVisibleWidth;
-			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
+			var dropIndex:int = this._dataProvider.length;
+			var dropRegion:Rectangle = Pool.getRectangle();
+			if(this._layout is IDragDropLayout)
+			{
+				var layout:IDragDropLayout = IDragDropLayout(this._layout);
+				dropIndex = layout.getDropIndex(
+					this._horizontalScrollPosition + event.localX,
+					this._verticalScrollPosition + event.localY,
+					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
+				layout.getDropRegion(dropIndex, this._layoutItems, dropRegion);
+			}
+			if(dropRegion.width == 0)
+			{
+				this._dropIndicatorSkin.x = dropRegion.x + (dropRegion.width - this._explicitDropIndicatorWidth) / 2;
+				this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
+			}
+			else
+			{
+				this._dropIndicatorSkin.x = dropRegion.x;
+				this._dropIndicatorSkin.width = dropRegion.width;
+			}
+			if(dropRegion.height == 0)
+			{
+				this._dropIndicatorSkin.y = dropRegion.y + (dropRegion.height - this._explicitDropIndicatorHeight) / 2;
+				this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
+			}
+			else
+			{
+				this._dropIndicatorSkin.y = dropRegion.y;
+				this._dropIndicatorSkin.height = dropRegion.height;
+			}
 			this.addChild(this._dropIndicatorSkin);
+			Pool.putRectangle(dropRegion);
 		}
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
@@ -2020,14 +2050,30 @@ package feathers.controls.supportClasses
 				this._dropIndicatorSkin.removeFromParent(false);
 			}
 			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			var dropIndex:int = this._dataProvider.length;
+			if(this._layout is IDragDropLayout)
+			{
+				var layout:IDragDropLayout = IDragDropLayout(this._layout);
+				dropIndex = layout.getDropIndex(
+					this._horizontalScrollPosition + event.localX,
+					this._verticalScrollPosition + event.localY,
+					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
+			}
+			var dropOffset:int = 0;
 			if(event.dragSource == this._owner)
 			{
+				var oldIndex:int = this._dataProvider.getItemIndex(item);
+				if(oldIndex < dropIndex)
+				{
+					dropOffset = -1;
+				}
+
 				//if we wait to remove this item in the dragComplete handler,
 				//the wrong index might be removed.
 				this._dataProvider.removeItem(item);
 				this._droppedOnSelf = true;
 			}
-			this._dataProvider.addItemAt(item, 0);
+			this._dataProvider.addItemAt(item, dropIndex + dropOffset);
 		}
 
 		protected function dragCompleteHandler(event:DragDropEvent):void
