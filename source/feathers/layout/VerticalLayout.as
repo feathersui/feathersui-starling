@@ -1524,7 +1524,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		public function getDropRegion(index:int, items:Vector.<DisplayObject>, result:Rectangle = null):Rectangle
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int, items:Vector.<DisplayObject>):void
 		{
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
@@ -1539,26 +1539,31 @@ package feathers.layout
 			}
 			var indexMinusOffset:int = index - indexOffset;
 
+			if(dropIndicator is IValidating)
+			{
+				IValidating(dropIndicator).validate();
+			}
+
+			dropIndicator.x = this._paddingLeft;
+			var yPosition:Number = 0;
 			if(index < totalItemCount)
 			{
 				var item:DisplayObject = items[indexMinusOffset];
-				var y:Number = item.y;
+				yPosition = item.y;
+				dropIndicator.width = item.width;
 			}
 			else //after the last item
 			{
 				item = items[indexMinusOffset - 1];
-				y = item.y + item.height;
+				yPosition = item.y + item.height;
+				dropIndicator.width = item.width;
 			}
-
-			if(!result)
+			yPosition -= dropIndicator.height / 2;
+			if(yPosition < 0)
 			{
-				result = new Rectangle(item.x, y, item.width, 0);
+				yPosition = 0;
 			}
-			else
-			{
-				result.setTo(item.x, y, item.width, 0);
-			}
-			return result;
+			dropIndicator.y = yPosition;
 		}
 
 		/**

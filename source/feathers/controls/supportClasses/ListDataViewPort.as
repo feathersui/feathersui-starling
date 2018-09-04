@@ -1745,43 +1745,20 @@ package feathers.controls.supportClasses
 
 		protected function refreshDropIndicator(event:DragDropEvent):void
 		{
-			if(!this._dropIndicatorSkin)
+			if(!this._dropIndicatorSkin || !(this._layout is IDragDropLayout))
 			{
 				return;
 			}
-			var dropIndex:int = this._dataProvider.length;
-			var dropRegion:Rectangle = Pool.getRectangle();
-			if(this._layout is IDragDropLayout)
-			{
-				var layout:IDragDropLayout = IDragDropLayout(this._layout);
-				dropIndex = layout.getDropIndex(
+			var layout:IDragDropLayout = IDragDropLayout(this._layout);
+			this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
+			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
+			
+			var dropIndex:int = layout.getDropIndex(
 					this._horizontalScrollPosition + event.localX,
 					this._verticalScrollPosition + event.localY,
 					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
-				layout.getDropRegion(dropIndex, this._layoutItems, dropRegion);
-			}
-			if(dropRegion.width == 0)
-			{
-				this._dropIndicatorSkin.x = dropRegion.x + (dropRegion.width - this._explicitDropIndicatorWidth) / 2;
-				this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
-			}
-			else
-			{
-				this._dropIndicatorSkin.x = dropRegion.x;
-				this._dropIndicatorSkin.width = dropRegion.width;
-			}
-			if(dropRegion.height == 0)
-			{
-				this._dropIndicatorSkin.y = dropRegion.y + (dropRegion.height - this._explicitDropIndicatorHeight) / 2;
-				this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
-			}
-			else
-			{
-				this._dropIndicatorSkin.y = dropRegion.y;
-				this._dropIndicatorSkin.height = dropRegion.height;
-			}
+			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex, this._layoutItems);
 			this.addChild(this._dropIndicatorSkin);
-			Pool.putRectangle(dropRegion);
 		}
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void

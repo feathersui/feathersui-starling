@@ -23,9 +23,9 @@ package feathers.layout
 			boundsX:Number, boundsY:Number, width:Number, height:Number):int;
 
 		/**
-		 * Returns the region at the edge of an item where the drop indicator
-		 * should be positioned.
+		 * Positions the drop indicator in the layout. Must be called after
+		 * <code>layout()</code>.
 		 */
-		function getDropRegion(index:int, items:Vector.<DisplayObject>, result:Rectangle = null):Rectangle
+		function positionDropIndicator(dropIndicator:DisplayObject, index:int, items:Vector.<DisplayObject>):void;
 	}
 }
