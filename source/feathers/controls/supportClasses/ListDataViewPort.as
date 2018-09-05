@@ -1757,7 +1757,7 @@ package feathers.controls.supportClasses
 					this._horizontalScrollPosition + event.localX,
 					this._verticalScrollPosition + event.localY,
 					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
-			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex, this._layoutItems);
+			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex, this._layoutItems, this.actualWidth, this.actualHeight);
 			this.addChild(this._dropIndicatorSkin);
 		}
 

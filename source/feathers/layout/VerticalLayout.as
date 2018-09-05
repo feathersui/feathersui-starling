@@ -1524,7 +1524,8 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		public function positionDropIndicator(dropIndicator:DisplayObject, index:int, items:Vector.<DisplayObject>):void
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
+			items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;

@@ -13,7 +13,7 @@ package feathers.layout
 	/**
 	 * Methods for layouts that support drag and drop.
 	 */
-	public interface IDragDropLayout
+	public interface IDragDropLayout extends ILayout
 	{
 		/**
 		 * Returns the index of the item if it were dropped at the specified
@@ -26,6 +26,7 @@ package feathers.layout
 		 * Positions the drop indicator in the layout. Must be called after
 		 * <code>layout()</code>.
 		 */
-		function positionDropIndicator(dropIndicator:DisplayObject, index:int, items:Vector.<DisplayObject>):void;
+		function positionDropIndicator(dropIndicator:DisplayObject, index:int,
+			items:Vector.<DisplayObject>, width:Number, height:Number):void;
 	}
 }
