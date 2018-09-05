@@ -25,7 +25,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class HorizontalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout
+	public class HorizontalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IDragDropLayout
 	{
 		/**
 		 * Constructor.
@@ -1242,6 +1242,146 @@ package feathers.layout
 			result.y = 0;
 
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int, items:Vector.<DisplayObject>):void
+		{
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				//if the layout is virtualized, and the items all have the same
+				//height, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+			}
+			var indexMinusOffset:int = index - indexOffset;
+
+			if(dropIndicator is IValidating)
+			{
+				IValidating(dropIndicator).validate();
+			}
+
+			dropIndicator.y = this._paddingTop;
+			var xPosition:Number = 0;
+			if(index < totalItemCount)
+			{
+				var item:DisplayObject = items[indexMinusOffset];
+				xPosition = item.x;
+				dropIndicator.height = item.height;
+			}
+			else //after the last item
+			{
+				item = items[indexMinusOffset - 1];
+				xPosition = item.x + item.width;
+				dropIndicator.height = item.height;
+			}
+			xPosition -= dropIndicator.width / 2;
+			if(xPosition < 0)
+			{
+				xPosition = 0;
+			}
+			dropIndicator.x = xPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function getDropIndex(x:Number, y:Number, items:Vector.<DisplayObject>,
+			boundsX:Number, boundsY:Number, width:Number, height:Number):int
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var positionX:Number = boundsX + this._paddingLeft;
+			var lastWidth:Number = 0;
+			var gap:Number = this._gap;
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				//if the layout is virtualized, and the items all have the same
+				//height, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+				positionX += (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + this._gap));
+				if(hasFirstGap && this._beforeVirtualizedItemCount > 0)
+				{
+					positionX = positionX - this._gap + this._firstGap;
+				}
+			}
+			var secondToLastIndex:int = totalItemCount - 2;
+			for(var i:int = 0; i <= totalItemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				var iNormalized:int = i + indexOffset;
+				if(hasFirstGap && iNormalized == 0)
+				{
+					gap = this._firstGap;
+				}
+				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				{
+					gap = this._lastGap;
+				}
+				else
+				{
+					gap = this._gap;
+				}
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedWidth:Number = this._virtualCache[iNormalized];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedWidth !== cachedWidth) //isNaN
+					{
+						lastWidth = calculatedTypicalItemWidth;
+					}
+					else
+					{
+						lastWidth = cachedWidth;
+					}
+				}
+				else
+				{
+					var itemWidth:Number = item.width;
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							if(itemWidth != cachedWidth)
+							{
+								this._virtualCache[iNormalized] = itemWidth;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemWidth >= 0)
+						{
+							itemWidth = calculatedTypicalItemWidth;
+						}
+					}
+					lastWidth = itemWidth;
+				}
+				if(x < (positionX + (lastWidth / 2)))
+				{
+					return iNormalized;
+				}
+				positionX += lastWidth + gap;
+			}
+			return 0;
 		}
 
 		/**
