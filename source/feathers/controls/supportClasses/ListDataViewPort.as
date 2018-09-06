@@ -1753,11 +1753,12 @@ package feathers.controls.supportClasses
 			this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
 			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
 			
-			var dropIndex:int = layout.getDropIndex(
-					this._horizontalScrollPosition + event.localX,
-					this._verticalScrollPosition + event.localY,
+			var dropX:Number = this._horizontalScrollPosition + event.localX;
+			var dropY:Number = this._verticalScrollPosition + event.localY;
+			var dropIndex:int = layout.getDropIndex(dropX, dropY,
 					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
-			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex, this._layoutItems, this.actualWidth, this.actualHeight);
+			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex,
+				dropX, dropY, this._layoutItems, this.actualWidth, this.actualHeight);
 			this.addChild(this._dropIndicatorSkin);
 		}
 

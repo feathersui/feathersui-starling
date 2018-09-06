@@ -1293,7 +1293,7 @@ package feathers.layout
 		 * @inheritDoc
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			if(dropIndicator is IValidating)
 			{
