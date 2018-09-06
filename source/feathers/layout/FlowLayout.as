@@ -1261,7 +1261,12 @@ package feathers.layout
 							}
 						}
 					}
-					if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
+					var endOfRow:Boolean = rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight);
+					if((endOfRow || x < (positionX + (itemWidth / 2))) && y < (positionY + itemHeight + (gap / 2)))
+					{
+						return i;
+					}
+					if(endOfRow)
 					{
 						//we've reached the end of the row, so go to next
 						break;
@@ -1275,10 +1280,6 @@ package feathers.layout
 						//case where the height of the view port needs to be
 						//calculated by the layout.
 						maxItemHeight = itemHeight;
-					}
-					if(x < (positionX + (itemWidth / 2)) && y < (positionY + (itemHeight / 2)))
-					{
-						return i;
 					}
 					positionX += itemWidth + horizontalGap;
 					rowItemCount++;
