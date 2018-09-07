@@ -1310,6 +1310,16 @@ package feathers.layout
 			{
 				if(i > 0)
 				{
+					if(y < (positionY + itemHeight + (verticalGap / 2)))
+					{
+						//if the x/y position is closer to the previous row,
+						//then display the drop indicator at the end of that row
+						var item:DisplayObject = items[i - 1];
+						dropIndicator.x = item.x + item.width - dropIndicator.width / 2;
+						dropIndicator.y = item.y;
+						dropIndicator.height = item.height;
+						return;
+					}
 					positionY += maxItemHeight + verticalGap;
 				}
 				//this section prepares some variables needed for the following loop
@@ -1318,7 +1328,7 @@ package feathers.layout
 				var rowItemCount:int = 0;
 				for(; i < itemCount; i++)
 				{
-					var item:DisplayObject = items[i];
+					item = items[i];
 					var itemWidth:Number = item.width;
 					var itemHeight:Number = item.height;
 					if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
