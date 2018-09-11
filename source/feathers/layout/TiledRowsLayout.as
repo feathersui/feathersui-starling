@@ -25,7 +25,7 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class TiledRowsLayout extends BaseTiledLayout implements IVirtualLayout
+	public class TiledRowsLayout extends BaseTiledLayout implements IVirtualLayout, IDragDropLayout
 	{
 		/**
 		 * Constructor.
@@ -892,6 +892,346 @@ package feathers.layout
 		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			return this.calculateScrollPositionForIndex(index, items, x, y, width, height, result, false);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getDropIndex(x:Number, y:Number, items:Vector.<DisplayObject>,
+			boundsX:Number, boundsY:Number, width:Number, height:Number):int
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem();
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var itemCount:int = items.length;
+			var tileWidth:Number = this._useVirtualLayout ? calculatedTypicalItemWidth : 0;
+			var tileHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
+			//a virtual layout assumes that all items are the same size as
+			//the typical item, so we don't need to measure every item in
+			//that case
+			if(!this._useVirtualLayout)
+			{
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					var itemWidth:Number = item.width;
+					var itemHeight:Number = item.height;
+					if(itemWidth > tileWidth)
+					{
+						tileWidth = itemWidth;
+					}
+					if(itemHeight > tileHeight)
+					{
+						tileHeight = itemHeight;
+					}
+				}
+			}
+			if(tileWidth < 0)
+			{
+				tileWidth = 0;
+			}
+			if(tileHeight < 0)
+			{
+				tileHeight = 0;
+			}
+			if(this._useSquareTiles)
+			{
+				if(tileWidth > tileHeight)
+				{
+					tileHeight = tileWidth;
+				}
+				else if(tileHeight > tileWidth)
+				{
+					tileWidth = tileHeight;
+				}
+			}
+			var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+			if(horizontalTileCount < 1)
+			{
+				horizontalTileCount = 1;
+			}
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+			}
+			var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
+			if(verticalTileCount < 1)
+			{
+				verticalTileCount = 1;
+			}
+			else if(this._requestedRowCount > 0 && verticalTileCount > this._requestedRowCount)
+			{
+				verticalTileCount = this._requestedRowCount;
+			}
+			var perPage:Number = horizontalTileCount * verticalTileCount;
+			var startX:Number = boundsX + this._paddingLeft;
+			var actualHorizontalTileCount:int = horizontalTileCount;
+			if(actualHorizontalTileCount > itemCount)
+			{
+				actualHorizontalTileCount = itemCount;
+			}
+			if(this._horizontalAlign == HorizontalAlign.RIGHT)
+			{
+				startX = boundsX + this._paddingLeft + (width - this._paddingLeft - this._paddingRight) -
+					((actualHorizontalTileCount * (tileWidth + this._horizontalGap)) - this._horizontalGap);
+			}
+			else if(this._horizontalAlign == HorizontalAlign.CENTER)
+			{
+				startX = boundsX + this._paddingLeft + ((width - this._paddingLeft - this._paddingRight) -
+					((actualHorizontalTileCount * (tileWidth + this._horizontalGap)) - this._horizontalGap)) / 2;
+			}
+			var startY:Number = boundsY + this._paddingTop;
+			if(this._paging != Direction.NONE || itemCount <= perPage)
+			{
+				var actualVerticalTileCount:int = verticalTileCount;
+				if(itemCount <= perPage)
+				{
+					actualVerticalTileCount = Math.ceil(itemCount / actualHorizontalTileCount);
+				}
+				if(this._verticalAlign == VerticalAlign.BOTTOM)
+				{
+					startY = boundsY + this._paddingTop + (height - this._paddingTop - this._paddingBottom) -
+						((actualVerticalTileCount * (tileHeight + this._verticalGap)) - this._verticalGap);
+				}
+				else if(this._verticalAlign == VerticalAlign.MIDDLE)
+				{
+					startY = boundsY + this._paddingTop + ((height - this._paddingTop - this._paddingBottom) -
+						((actualVerticalTileCount * (tileHeight + this._verticalGap)) - this._verticalGap)) / 2;
+				}
+			}
+			var pageIndex:int = 0;
+			var nextPageStartIndex:int = perPage;
+			var pageStartX:Number = startX;
+			var positionX:Number = startX;
+			var positionY:Number = startY;
+			for(i = 0; i < itemCount; i++)
+			{
+				item = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				if(i != 0 && i % horizontalTileCount == 0)
+				{
+					if(y < (positionY + tileHeight + (this._verticalGap / 2)))
+					{
+						return i;
+					}
+					positionX = pageStartX;
+					positionY += tileHeight + this._verticalGap;
+				}
+				if(i == nextPageStartIndex)
+				{
+					pageIndex++;
+					nextPageStartIndex += perPage;
+
+					//we can use availableWidth and availableHeight here without
+					//checking if they're NaN because we will never reach a
+					//new page without them already being calculated.
+					if(this._paging === Direction.HORIZONTAL)
+					{
+						positionX = pageStartX = startX + width * pageIndex;
+						positionY = startY;
+					}
+					else if(this._paging === Direction.VERTICAL)
+					{
+						positionY = startY + height * pageIndex;
+					}
+				}
+				if((x < (positionX + (tileWidth / 2))) && y < (positionY + tileHeight + (this._verticalGap / 2)))
+				{
+					return i;
+				}
+				positionX += tileWidth + this._horizontalGap;
+			}
+			return i;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
+			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem();
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var itemCount:int = items.length;
+			var tileWidth:Number = this._useVirtualLayout ? calculatedTypicalItemWidth : 0;
+			var tileHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
+			//a virtual layout assumes that all items are the same size as
+			//the typical item, so we don't need to measure every item in
+			//that case
+			if(!this._useVirtualLayout)
+			{
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
+					var itemWidth:Number = item.width;
+					var itemHeight:Number = item.height;
+					if(itemWidth > tileWidth)
+					{
+						tileWidth = itemWidth;
+					}
+					if(itemHeight > tileHeight)
+					{
+						tileHeight = itemHeight;
+					}
+				}
+			}
+			if(tileWidth < 0)
+			{
+				tileWidth = 0;
+			}
+			if(tileHeight < 0)
+			{
+				tileHeight = 0;
+			}
+			if(this._useSquareTiles)
+			{
+				if(tileWidth > tileHeight)
+				{
+					tileHeight = tileWidth;
+				}
+				else if(tileHeight > tileWidth)
+				{
+					tileWidth = tileHeight;
+				}
+			}
+			var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
+			if(horizontalTileCount < 1)
+			{
+				horizontalTileCount = 1;
+			}
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+			}
+			var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
+			if(verticalTileCount < 1)
+			{
+				verticalTileCount = 1;
+			}
+			else if(this._requestedRowCount > 0 && verticalTileCount > this._requestedRowCount)
+			{
+				verticalTileCount = this._requestedRowCount;
+			}
+			var perPage:Number = horizontalTileCount * verticalTileCount;
+			var startX:Number = this._paddingLeft;
+			var actualHorizontalTileCount:int = horizontalTileCount;
+			if(actualHorizontalTileCount > itemCount)
+			{
+				actualHorizontalTileCount = itemCount;
+			}
+			if(this._horizontalAlign == HorizontalAlign.RIGHT)
+			{
+				startX = this._paddingLeft + (width - this._paddingLeft - this._paddingRight) -
+					((actualHorizontalTileCount * (tileWidth + this._horizontalGap)) - this._horizontalGap);
+			}
+			else if(this._horizontalAlign == HorizontalAlign.CENTER)
+			{
+				startX = this._paddingLeft + ((width - this._paddingLeft - this._paddingRight) -
+					((actualHorizontalTileCount * (tileWidth + this._horizontalGap)) - this._horizontalGap)) / 2;
+			}
+			var startY:Number = this._paddingTop;
+			if(this._paging != Direction.NONE || itemCount <= perPage)
+			{
+				var actualVerticalTileCount:int = verticalTileCount;
+				if(itemCount <= perPage)
+				{
+					actualVerticalTileCount = Math.ceil(itemCount / actualHorizontalTileCount);
+				}
+				if(this._verticalAlign == VerticalAlign.BOTTOM)
+				{
+					startY = this._paddingTop + (height - this._paddingTop - this._paddingBottom) -
+						((actualVerticalTileCount * (tileHeight + this._verticalGap)) - this._verticalGap);
+				}
+				else if(this._verticalAlign == VerticalAlign.MIDDLE)
+				{
+					startY = this._paddingTop + ((height - this._paddingTop - this._paddingBottom) -
+						((actualVerticalTileCount * (tileHeight + this._verticalGap)) - this._verticalGap)) / 2;
+				}
+			}
+			var pageIndex:int = 0;
+			var nextPageStartIndex:int = perPage;
+			var pageStartX:Number = startX;
+			var positionX:Number = startX;
+			var positionY:Number = startY;
+			var rowItemCount:int = 0;
+			for(i = 0; i < itemCount; i++)
+			{
+				item = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				if(i != 0 && i % horizontalTileCount == 0)
+				{
+					positionX = pageStartX;
+					positionY += tileHeight + this._verticalGap;
+					rowItemCount = 0;
+				}
+				if(i == nextPageStartIndex)
+				{
+					pageIndex++;
+					nextPageStartIndex += perPage;
+					if(this._paging === Direction.HORIZONTAL)
+					{
+						positionX = pageStartX = startX + width * pageIndex;
+						positionY = startY;
+					}
+					else if(this._paging === Direction.VERTICAL)
+					{
+						positionY = startY + height * pageIndex;
+					}
+				}
+				if((x < (positionX + (tileWidth / 2))) && y < (positionY + tileHeight + (this._verticalGap / 2)))
+				{
+					dropIndicator.x = positionX - dropIndicator.width / 2;
+					dropIndicator.y = positionY;
+					dropIndicator.height = tileHeight;
+					return;
+				}
+				positionX += tileWidth + this._horizontalGap;
+				if(rowItemCount > 0 && (positionX + tileWidth) > (width - this._paddingRight) &&
+					(y < (positionY + tileHeight + (this._verticalGap / 2))))
+				{
+					//index on next row, but position drop indicator at the end
+					//of the current row
+					dropIndicator.x = positionX - this._horizontalGap - dropIndicator.width / 2;
+					dropIndicator.y = positionY;
+					dropIndicator.height = tileHeight;
+					return;
+				}
+				rowItemCount++;
+			}
+			dropIndicator.x = positionX - dropIndicator.width / 2;
+			dropIndicator.y = positionY;
+			dropIndicator.height = tileHeight;
 		}
 
 		/**
