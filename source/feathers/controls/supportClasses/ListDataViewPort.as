@@ -1756,9 +1756,9 @@ package feathers.controls.supportClasses
 			var dropX:Number = this._horizontalScrollPosition + event.localX;
 			var dropY:Number = this._verticalScrollPosition + event.localY;
 			var dropIndex:int = layout.getDropIndex(dropX, dropY,
-					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
+					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
 			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex,
-				dropX, dropY, this._layoutItems, this.actualWidth, this.actualHeight);
+				dropX, dropY, this._layoutItems, this.actualVisibleWidth, this.actualVisibleHeight);
 			this.addChild(this._dropIndicatorSkin);
 		}
 
@@ -2035,7 +2035,7 @@ package feathers.controls.supportClasses
 				dropIndex = layout.getDropIndex(
 					this._horizontalScrollPosition + event.localX,
 					this._verticalScrollPosition + event.localY,
-					this._layoutItems, 0, 0, this.actualWidth, this.actualHeight);
+					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
 			}
 			var dropOffset:int = 0;
 			if(event.dragSource == this._owner)
