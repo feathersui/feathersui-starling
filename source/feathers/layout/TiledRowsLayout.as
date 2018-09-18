@@ -1025,8 +1025,10 @@ package feathers.layout
 				}
 				if(i != 0 && i % horizontalTileCount == 0)
 				{
-					if(y < (positionY + tileHeight + (this._verticalGap / 2)))
+					if((x < (pageStartX + width)) && (y < (positionY + tileHeight + (this._verticalGap / 2))))
 					{
+						//we're at the end of the previous row (but we also make
+						//sure that we're not on the next page)
 						return i;
 					}
 					positionX = pageStartX;
@@ -1209,7 +1211,8 @@ package feathers.layout
 						positionY = startY + height * pageIndex;
 					}
 				}
-				if((x < (positionX + (tileWidth / 2))) && y < (positionY + tileHeight + (this._verticalGap / 2)))
+				if((x < (positionX + (tileWidth / 2))) &&
+					(y < (positionY + tileHeight + (this._verticalGap / 2))))
 				{
 					dropIndicator.x = positionX - dropIndicator.width / 2;
 					dropIndicator.y = positionY;
@@ -1217,7 +1220,9 @@ package feathers.layout
 					return;
 				}
 				positionX += tileWidth + this._horizontalGap;
-				if(rowItemCount > 0 && (positionX + tileWidth) > (width - this._paddingRight) &&
+				
+				if(rowItemCount > 0 &&
+					(positionX + tileWidth) > (width - this._paddingRight) &&
 					(y < (positionY + tileHeight + (this._verticalGap / 2))))
 				{
 					//index on next row, but position drop indicator at the end
