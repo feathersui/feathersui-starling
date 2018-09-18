@@ -12,7 +12,7 @@ before_script:
   - brew cask install flash-player-debugger
   # air
   - mkdir -p air_sdk
-  - wget -O AIRSDK_Compiler.tbz2 http://airdownload.adobe.com/air/mac/download/latest/AIRSDK_Compiler.tbz2
+  - wget -O AIRSDK_Compiler.tbz2 https://airdownload.adobe.com/air/mac/download/latest/AIRSDK_Compiler.tbz2
   - tar -xjf AIRSDK_Compiler.tbz2 -C air_sdk
   - mkdir -p air_sdk/frameworks/libs/player/11.1/
   - wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/installers/archive/playerglobal/playerglobal19_0.swc
