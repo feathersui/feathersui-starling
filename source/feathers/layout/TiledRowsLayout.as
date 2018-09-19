@@ -1193,12 +1193,14 @@ package feathers.layout
 				}
 				if(i != 0 && i % horizontalTileCount == 0)
 				{
+					//start of a new row
 					positionX = pageStartX;
 					positionY += tileHeight + this._verticalGap;
 					rowItemCount = 0;
 				}
 				if(i == nextPageStartIndex)
 				{
+					//start of a new page
 					pageIndex++;
 					nextPageStartIndex += perPage;
 					if(this._paging === Direction.HORIZONTAL)
@@ -1222,6 +1224,7 @@ package feathers.layout
 				positionX += tileWidth + this._horizontalGap;
 				
 				if(rowItemCount > 0 &&
+					(x < (positionX + (tileWidth / 2))) &&
 					(positionX + tileWidth) > (width - this._paddingRight) &&
 					(y < (positionY + tileHeight + (this._verticalGap / 2))))
 				{
