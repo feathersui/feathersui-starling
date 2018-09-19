@@ -868,6 +868,8 @@ package feathers.layout
 				}
 			}
 			var pageIndex:int = 0;
+			var columnIndex:int = 0;
+			var lastColumnIndex:int = int((itemCount - 1) / verticalTileCount);
 			var nextPageStartIndex:int = perPage;
 			var pageStartY:Number = startY;
 			var positionX:Number = startX;
@@ -908,7 +910,8 @@ package feathers.layout
 						positionY = pageStartY = startY + height * pageIndex;
 					}
 				}
-				if((y < (positionY + (tileHeight / 2))) && x < (positionX + tileWidth + (this._horizontalGap / 2)))
+				if((y < (positionY + (tileHeight / 2))) &&
+					((x < (positionX + tileWidth + (this._horizontalGap / 2))) || (columnIndex == lastColumnIndex)))
 				{
 					return i;
 				}
@@ -1035,6 +1038,8 @@ package feathers.layout
 				}
 			}
 			var pageIndex:int = 0;
+			var columnIndex:int = 0;
+			var lastColumnIndex:int = int((itemCount - 1) / verticalTileCount);
 			var nextPageStartIndex:int = perPage;
 			var pageStartY:Number = startY;
 			var positionX:Number = startX;
@@ -1053,6 +1058,7 @@ package feathers.layout
 					positionX += tileWidth + this._horizontalGap;
 					positionY = pageStartY;
 					columnItemCount = 0;
+					columnIndex++;
 				}
 				if(i == nextPageStartIndex)
 				{
@@ -1071,7 +1077,7 @@ package feathers.layout
 					}
 				}
 				if((y < (positionY + (tileHeight / 2))) &&
-					(x < (positionX + tileWidth + (this._horizontalGap / 2))))
+					((x < (positionX + tileWidth + (this._horizontalGap / 2))) || (columnIndex == lastColumnIndex)))
 				{
 					dropIndicator.x = positionX;
 					dropIndicator.y = positionY - dropIndicator.height / 2;
@@ -1082,6 +1088,7 @@ package feathers.layout
 				
 				if(columnItemCount > 0 &&
 					(y < (positionY + (tileHeight / 2))) &&
+					(y < (pageStartY + height)) && //not on next page
 					(positionY + tileHeight) > (height - this._paddingBottom) &&
 					(x < (positionX + tileWidth + (this._horizontalGap / 2))))
 				{

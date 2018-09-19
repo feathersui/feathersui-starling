@@ -1012,6 +1012,8 @@ package feathers.layout
 				}
 			}
 			var pageIndex:int = 0;
+			var rowIndex:int = 0;
+			var lastRowIndex:int = int((itemCount - 1) / horizontalTileCount);
 			var nextPageStartIndex:int = perPage;
 			var pageStartX:Number = startX;
 			var positionX:Number = startX;
@@ -1025,7 +1027,8 @@ package feathers.layout
 				}
 				if(i != 0 && i % horizontalTileCount == 0)
 				{
-					if((x < (pageStartX + width)) && (y < (positionY + tileHeight + (this._verticalGap / 2))))
+					if((x < (pageStartX + width)) &&
+						(y < (positionY + tileHeight + (this._verticalGap / 2))))
 					{
 						//we're at the end of the previous row (but we also make
 						//sure that we're not on the next page)
@@ -1033,6 +1036,7 @@ package feathers.layout
 					}
 					positionX = pageStartX;
 					positionY += tileHeight + this._verticalGap;
+					rowIndex++;
 				}
 				if(i == nextPageStartIndex)
 				{
@@ -1052,7 +1056,8 @@ package feathers.layout
 						positionY = startY + height * pageIndex;
 					}
 				}
-				if((x < (positionX + (tileWidth / 2))) && y < (positionY + tileHeight + (this._verticalGap / 2)))
+				if((x < (positionX + (tileWidth / 2))) &&
+					((y < (positionY + tileHeight + (this._verticalGap / 2))) || (rowIndex == lastRowIndex)))
 				{
 					return i;
 				}
@@ -1179,6 +1184,8 @@ package feathers.layout
 				}
 			}
 			var pageIndex:int = 0;
+			var rowIndex:int = 0;
+			var lastRowIndex:int = int((itemCount - 1) / horizontalTileCount);
 			var nextPageStartIndex:int = perPage;
 			var pageStartX:Number = startX;
 			var positionX:Number = startX;
@@ -1197,6 +1204,7 @@ package feathers.layout
 					positionX = pageStartX;
 					positionY += tileHeight + this._verticalGap;
 					rowItemCount = 0;
+					rowIndex++;
 				}
 				if(i == nextPageStartIndex)
 				{
@@ -1214,7 +1222,7 @@ package feathers.layout
 					}
 				}
 				if((x < (positionX + (tileWidth / 2))) &&
-					(y < (positionY + tileHeight + (this._verticalGap / 2))))
+					((y < (positionY + tileHeight + (this._verticalGap / 2))) || (rowIndex == lastRowIndex)))
 				{
 					dropIndicator.x = positionX - dropIndicator.width / 2;
 					dropIndicator.y = positionY;
@@ -1225,6 +1233,7 @@ package feathers.layout
 				
 				if(rowItemCount > 0 &&
 					(x < (positionX + (tileWidth / 2))) &&
+					(x < (pageStartX + width)) && //not on next page
 					(positionX + tileWidth) > (width - this._paddingRight) &&
 					(y < (positionY + tileHeight + (this._verticalGap / 2))))
 				{
