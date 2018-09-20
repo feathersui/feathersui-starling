@@ -44,6 +44,8 @@ package feathers.controls.supportClasses
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import feathers.system.DeviceCapabilities;
+	import starling.core.Starling;
 
 	/**
 	 * @private
@@ -787,6 +789,21 @@ package feathers.controls.supportClasses
 				this._explicitDropIndicatorWidth = this._dropIndicatorSkin.width;
 				this._explicitDropIndicatorHeight = this._dropIndicatorSkin.height;
 			}
+		}
+
+		protected var _startDragX:Number;
+		protected var _startDragY:Number;
+
+		protected var _minimumDragDropDistance:Number = 0.04;
+
+		public function get minimumDragDropDistance():Number
+		{
+			return this._minimumDragDropDistance;
+		}
+
+		public function set minimumDragDropDistance(value:Number):void
+		{
+			this._minimumDragDropDistance = value;
 		}
 
 		public function get requiresMeasurementOnScroll():Boolean
@@ -2095,19 +2112,30 @@ package feathers.controls.supportClasses
 				var touch:Touch = event.getTouch(DisplayObject(itemRenderer), null, this._dragTouchPointID);
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					var dragData:DragData = new DragData();
-					dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
-					var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
-					avatar.width = itemRenderer.width;
-					avatar.height = itemRenderer.height;
-					avatar.alpha = 0.8;
-					var point:Point = Pool.getPoint();
-					touch.getLocation(DisplayObject(itemRenderer), point);
-					this._droppedOnSelf = false;
-					DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
+					var point:Point = touch.getLocation(this, Pool.getPoint());
+					var currentDragX:Number = point.x;
+					var currentDragY:Number = point.y;
 					Pool.putPoint(point);
-					exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));
-					this._dragTouchPointID = -1;
+					
+					var starling:Starling = this.stage.starling;
+					var verticalInchesMoved:Number = (currentDragX - this._startDragX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+					var horizontalInchesMoved:Number = (currentDragY - this._startDragY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+					if(Math.abs(horizontalInchesMoved) > this._minimumDragDropDistance ||
+						Math.abs(verticalInchesMoved) > this._minimumDragDropDistance)
+					{
+						var dragData:DragData = new DragData();
+						dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
+						var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
+						avatar.width = itemRenderer.width;
+						avatar.height = itemRenderer.height;
+						avatar.alpha = 0.8;
+						this._droppedOnSelf = false;
+						point = touch.getLocation(DisplayObject(itemRenderer),  Pool.getPoint());
+						DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
+						Pool.putPoint(point);
+						exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));
+						this._dragTouchPointID = -1;
+					}
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -2116,7 +2144,6 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				
 				//we aren't tracking another touch, so let's look for a new one.
 				touch = event.getTouch(DisplayObject(itemRenderer), TouchPhase.BEGAN);
 				if(!touch)
@@ -2126,6 +2153,10 @@ package feathers.controls.supportClasses
 					return;
 				}
 				this._dragTouchPointID = touch.id;
+				point = touch.getLocation(this, Pool.getPoint());
+				this._startDragX = point.x;
+				this._startDragY = point.y;
+				Pool.putPoint(point);
 			}
 		}
 	}
