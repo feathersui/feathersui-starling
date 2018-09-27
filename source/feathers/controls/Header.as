@@ -2148,7 +2148,14 @@ package feathers.controls
 			//because future devices will need to be added to this list
 			//manually!
 			var osString:String = Capabilities.os;
-			var notchIDs:Vector.<String> = new <String>["iPhone10,3", "iPhone10,6"];
+			var notchIDs:Vector.<String> = new <String>[
+				"iPhone10,3", //iPhone X
+				"iPhone10,6", //iPhone X
+				"iPhone11,2", //iPhone XS
+				"iPhone11,4", //iPhone XS Max
+				"iPhone11,6", //iPhone XS Max
+				"iPhone11,8", //iPhone XR
+			];
 			var idCount:int = notchIDs.length;
 			for(var i:int = 0; i < idCount; i++)
 			{
