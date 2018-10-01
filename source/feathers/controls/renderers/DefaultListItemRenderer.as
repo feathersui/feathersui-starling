@@ -10,6 +10,22 @@ package feathers.controls.renderers
 	import feathers.controls.List;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import starling.display.DisplayObject;
+	import feathers.core.IValidating;
+	import feathers.core.IFeathersControl;
+	import starling.events.Event;
+
+	/**
+	 * An optional icon used to drag and drop the list item.
+	 *
+	 * <p>The following example gives the item renderer a drag icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.dragIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dragIcon",type="starling.display.DisplayObject")]
 
 	/**
 	 * The default item renderer for List control. Supports up to three optional
@@ -145,10 +161,150 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _dragIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dragIcon():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragIcon(value:DisplayObject):void
+		{
+			if(this._dragIcon === value)
+			{
+				return;
+			}
+			if(this._dragIcon !== null)
+			{
+				if(this._dragIcon is IFeathersControl)
+				{
+					IFeathersControl(this._dragIcon).removeEventListener(FeathersEventType.RESIZE, dragIcon_resizeHandler);
+				}
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				if(this._dragIcon.parent === this)
+				{
+					this._dragIcon.removeFromParent(false);
+				}
+				this._dragIcon = null;
+			}
+			this._dragIcon = value;
+			if(this._dragIcon !== null)
+			{
+				this.addChild(this._dragIcon);
+				if(this._dragIcon is IFeathersControl)
+				{
+					IFeathersControl(this._dragIcon).addEventListener(FeathersEventType.RESIZE, dragIcon_resizeHandler);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragGap:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		public function get dragGap():Number
+		{
+			return this._dragGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragGap(value:Number):void
+		{
+			if(this._dragGap == value)
+			{
+				return;
+			}
+			this._dragGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreDragIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dragProxy():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.owner = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshOffsets():void
+		{
+			super.refreshOffsets();
+			var dragGap:Number = this._gap;
+			if(this._dragGap === this._dragGap) //!isNaN
+			{
+				dragGap = this._dragGap;
+			}
+			if(this._dragIcon !== null)
+			{
+				var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
+				this._ignoreDragIconResizes = true;
+				if(this._dragIcon is IValidating)
+				{
+					IValidating(this._dragIcon).validate();
+				}
+				this._ignoreDragIconResizes = oldIgnoreIconResizes;
+				this._leftOffset += this._dragIcon.width + dragGap;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutContent():void
+		{
+			super.layoutContent();
+			if(this._dragIcon !== null)
+			{
+				var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
+				this._ignoreDragIconResizes = true;
+				if(this._dragIcon is IValidating)
+				{
+					IValidating(this._dragIcon).validate();
+				}
+				this._ignoreDragIconResizes = oldIgnoreIconResizes;
+				this._dragIcon.x = this._paddingLeft;
+				this._dragIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._dragIcon.height) / 2;
+			}
+		}
+
+		protected function dragIcon_resizeHandler(event:Event):void
+		{
+			if(this._ignoreDragIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

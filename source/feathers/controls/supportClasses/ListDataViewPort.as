@@ -2101,6 +2101,15 @@ package feathers.controls.supportClasses
 				this._dragTouchPointID = -1;
 				return;
 			}
+			var dragProxy:DisplayObject = itemRenderer.dragProxy;
+			if(dragProxy)
+			{
+				var touch:Touch = event.getTouch(dragProxy, null, this._dragTouchPointID);
+				if(!touch)
+				{
+					return;
+				}
+			}
 			if(this._dragTouchPointID != -1)
 			{
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(itemRenderer.stage);
@@ -2109,7 +2118,7 @@ package feathers.controls.supportClasses
 					this._dragTouchPointID = -1;
 					return;
 				}
-				var touch:Touch = event.getTouch(DisplayObject(itemRenderer), null, this._dragTouchPointID);
+				touch = event.getTouch(DisplayObject(itemRenderer), null, this._dragTouchPointID);
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					var point:Point = touch.getLocation(this, Pool.getPoint());

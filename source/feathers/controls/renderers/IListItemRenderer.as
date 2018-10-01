@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.List;
 	import feathers.core.IToggle;
+	import starling.display.DisplayObject;
 
 	/**
 	 * Dispatched when the the user taps or clicks the item renderer. The touch
@@ -95,5 +96,12 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set factoryID(value:String):void;
+
+		/**
+		 * An optional display object to use to trigger drag and drop in the
+		 * list component. If <code>null</code>, the entire item renderer can
+		 * be dragged.
+		 */
+		function get dragProxy():DisplayObject;
 	}
 }
