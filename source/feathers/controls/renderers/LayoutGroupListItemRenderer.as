@@ -245,14 +245,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		public function get dragProxy():DisplayObject
-		{
-			return null;
-		}
-
-		/**
-		 * @private
-		 */
 		override public function dispose():void
 		{
 			this.owner = null;

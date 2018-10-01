@@ -37,7 +37,7 @@ package feathers.controls.renderers
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
+	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer, IDragAndDropItemRenderer
 	{
 		/**
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_DRILL_DOWN
@@ -161,6 +161,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			if(this._dragEnabled === value)
+			{
+				return;
+			}
+			this._dragEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _dragIcon:DisplayObject = null;
 
 		/**
@@ -265,7 +291,7 @@ package feathers.controls.renderers
 			{
 				dragGap = this._dragGap;
 			}
-			if(this._dragIcon !== null)
+			if(this._dragEnabled && this._dragIcon !== null)
 			{
 				var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
 				this._ignoreDragIconResizes = true;
@@ -286,15 +312,23 @@ package feathers.controls.renderers
 			super.layoutContent();
 			if(this._dragIcon !== null)
 			{
-				var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
-				this._ignoreDragIconResizes = true;
-				if(this._dragIcon is IValidating)
+				if(this._dragEnabled)
 				{
-					IValidating(this._dragIcon).validate();
+					var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
+					this._ignoreDragIconResizes = true;
+					if(this._dragIcon is IValidating)
+					{
+						IValidating(this._dragIcon).validate();
+					}
+					this._ignoreDragIconResizes = oldIgnoreIconResizes;
+					this._dragIcon.x = this._paddingLeft;
+					this._dragIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._dragIcon.height) / 2;
+					this._dragIcon.visible = true;
 				}
-				this._ignoreDragIconResizes = oldIgnoreIconResizes;
-				this._dragIcon.x = this._paddingLeft;
-				this._dragIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._dragIcon.height) / 2;
+				else
+				{
+					this._dragIcon.visible = false;
+				}
 			}
 		}
 

@@ -46,6 +46,7 @@ package feathers.controls.supportClasses
 	import starling.utils.Pool;
 	import feathers.system.DeviceCapabilities;
 	import starling.core.Starling;
+	import feathers.controls.renderers.IDragAndDropItemRenderer;
 
 	/**
 	 * @private
@@ -1127,6 +1128,10 @@ package feathers.controls.supportClasses
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
+					if(typicalRenderer is IDragAndDropItemRenderer)
+					{
+						IDragAndDropItemRenderer(typicalRenderer).dragEnabled = this._dragEnabled;
+					}
 				}
 				if(!typicalRenderer && this._typicalItemRenderer)
 				{
@@ -1481,6 +1486,10 @@ package feathers.controls.supportClasses
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					itemRenderer.index = index;
+					if(itemRenderer is IDragAndDropItemRenderer)
+					{
+						IDragAndDropItemRenderer(itemRenderer).dragEnabled = this._dragEnabled;
+					}
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!
 					itemRenderer.visible = true;
@@ -1689,6 +1698,10 @@ package feathers.controls.supportClasses
 			itemRenderer.index = index;
 			itemRenderer.owner = this._owner;
 			itemRenderer.factoryID = factoryID;
+			if(itemRenderer is IDragAndDropItemRenderer)
+			{
+				IDragAndDropItemRenderer(itemRenderer).dragEnabled = this._dragEnabled;
+			}
 
 			if(!isTemporary)
 			{
@@ -2101,13 +2114,16 @@ package feathers.controls.supportClasses
 				this._dragTouchPointID = -1;
 				return;
 			}
-			var dragProxy:DisplayObject = itemRenderer.dragProxy;
-			if(dragProxy)
+			if(itemRenderer is IDragAndDropItemRenderer)
 			{
-				var touch:Touch = event.getTouch(dragProxy, null, this._dragTouchPointID);
-				if(!touch)
+				var dragProxy:DisplayObject = IDragAndDropItemRenderer(itemRenderer).dragProxy;
+				if(dragProxy)
 				{
-					return;
+					var touch:Touch = event.getTouch(dragProxy, null, this._dragTouchPointID);
+					if(!touch)
+					{
+						return;
+					}
 				}
 			}
 			if(this._dragTouchPointID != -1)

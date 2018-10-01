@@ -9,7 +9,6 @@ This guide explains how to migrate an application created with Feathers 3 to Fea
 
 -   [Removed APIs that were deprecated in Feathers 3](#removed-apis-that-were-deprecated-in-feathers-3)
 -   [Themes and `AssetManager`](#themes-and-assetmanager)
--   [New `dragProxy` property on `IListItemRenderer`]
 
 ## Removed APIs that were deprecated in Feathers 3
 
@@ -31,25 +30,6 @@ theme.addEventListener(FeathersEventType.ERROR, function(event:Event, error:Stri
 ```
 
 The `Event.COMPLETE` event dispatched by the example themes has not changed.
-
-## New `dragProxy` property on `IListItemRenderer`
-
-A new [`dragProxy`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#dragProxy) property has been added to the [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface to allow customization of drag and drop behavior. If you have created a custom item renderer that directly implements the `IListItemRenderer` interface, you will need to add a new getter function for `dragProxy`.
-
-In most cases, you can add the following implementation that simply returns `null`:
-
-``` code
-public function get dragProxy():DisplayObject
-{
-	return null;
-}
-```
-
-You may return any child of the item renderer instead, if needed.
-
-If your custom item renderer extends [`LayoutGroupListItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html), this method is already implemented and you don't need to do anything. However, you may override it if you need to return a custom value.
-
-The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html) class implements this the `dragProxy` getter too, and it returns the value of the new [`dragIcon`](../api-reference/feathers/controls/renderers/DefaultListItemRenderer.html#dragIcon) property.
 
 ## Related Links
 
