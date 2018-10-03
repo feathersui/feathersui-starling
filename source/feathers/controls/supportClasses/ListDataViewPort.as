@@ -9,6 +9,7 @@ package feathers.controls.supportClasses
 {
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
+	import feathers.controls.renderers.IDragAndDropItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -32,21 +33,20 @@ package feathers.controls.supportClasses
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import feathers.system.DeviceCapabilities;
-	import starling.core.Starling;
-	import feathers.controls.renderers.IDragAndDropItemRenderer;
+	import starling.events.EnterFrameEvent;
 
 	/**
 	 * @private
@@ -753,6 +753,18 @@ package feathers.controls.supportClasses
 			this._dropEnabled = value;
 		}
 
+		protected var _minimumAutoScrollDistance:Number = 0.04;
+
+		public function get minimumAutoScrollDistance():Number
+		{
+			return this._minimumAutoScrollDistance;
+		}
+
+		public function set minimumAutoScrollDistance(value:Number):void
+		{
+			this._minimumAutoScrollDistance = value;
+		}
+
 		protected var _droppedOnSelf:Boolean = false;
 
 		/**
@@ -794,6 +806,9 @@ package feathers.controls.supportClasses
 
 		protected var _startDragX:Number;
 		protected var _startDragY:Number;
+
+		protected var _dragLocalX:Number = -1;
+		protected var _dragLocalY:Number = -1;
 
 		protected var _minimumDragDropDistance:Number = 0.04;
 
@@ -955,6 +970,11 @@ package feathers.controls.supportClasses
 			this.validateItemRenderers();
 
 			this.handlePendingItemRendererEffects();
+
+			if(scrollInvalid && this.hasEventListener(Event.ENTER_FRAME, this.dragScroll_enterFrameHandler))
+			{
+				this.refreshDropIndicator(this._dragLocalX, this._dragLocalY)
+			}
 		}
 
 		private function handlePendingItemRendererEffects():void
@@ -1773,7 +1793,7 @@ package feathers.controls.supportClasses
 			return this._defaultStorage;
 		}
 
-		protected function refreshDropIndicator(event:DragDropEvent):void
+		protected function refreshDropIndicator(localX:Number, localY:Number):void
 		{
 			if(!this._dropIndicatorSkin || !(this._layout is IDragDropLayout))
 			{
@@ -1783,8 +1803,8 @@ package feathers.controls.supportClasses
 			this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
 			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
 			
-			var dropX:Number = this._horizontalScrollPosition + event.localX;
-			var dropY:Number = this._verticalScrollPosition + event.localY;
+			var dropX:Number = this._horizontalScrollPosition + localX;
+			var dropY:Number = this._verticalScrollPosition + localY;
 			var dropIndex:int = layout.getDropIndex(dropX, dropY,
 					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
 			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex,
@@ -2027,7 +2047,11 @@ package feathers.controls.supportClasses
 				return;
 			}
 			DragDropManager.acceptDrag(this._owner);
-			this.refreshDropIndicator(event);
+			this.refreshDropIndicator(event.localX, event.localY);
+
+			this._dragLocalX = event.localX;
+			this._dragLocalY = event.localY;
+			this.addEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
 		}
 
 		protected function dragMoveHandler(event:DragDropEvent):void
@@ -2040,7 +2064,43 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.refreshDropIndicator(event);
+			this.refreshDropIndicator(event.localX, event.localY);
+
+			this._dragLocalX = event.localX;
+			this._dragLocalY = event.localY;
+		}
+
+		protected function dragScroll_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			var starling:Starling = this.stage.starling;
+			var minAutoScrollPixels:Number = this._minimumAutoScrollDistance * (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var velocity:Number = event.passedTime * 60;
+			if(this._owner.maxVerticalScrollPosition > this._owner.minVerticalScrollPosition)
+			{
+				if(this._verticalScrollPosition < this._owner.maxVerticalScrollPosition &&
+					this._dragLocalY > (this.visibleHeight - minAutoScrollPixels))
+				{
+					this._owner.verticalScrollPosition += velocity;
+				}
+				else if(this._verticalScrollPosition > this._owner.minVerticalScrollPosition &&
+					this._dragLocalY < minAutoScrollPixels)
+				{
+					this._owner.verticalScrollPosition -= velocity;
+				}
+			}
+			if(this._owner.maxHorizontalScrollPosition > this._owner.minHorizontalScrollPosition)
+			{
+				if(this._horizontalScrollPosition < this._owner.maxHorizontalScrollPosition &&
+					this._dragLocalX > (this.visibleWidth - minAutoScrollPixels))
+				{
+					this._owner.horizontalScrollPosition += velocity;
+				}
+				else if(this._horizontalScrollPosition > this._owner.minHorizontalScrollPosition &&
+					this._dragLocalX < minAutoScrollPixels)
+				{
+					this._owner.horizontalScrollPosition -= velocity;
+				}
+			}
 		}
 
 		protected function dragExitHandler(event:DragDropEvent):void
@@ -2049,6 +2109,9 @@ package feathers.controls.supportClasses
 			{
 				this._dropIndicatorSkin.removeFromParent(false);
 			}
+			this._dragLocalX = -1;
+			this._dragLocalY = -1;
+			this.removeEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
 		}
 
 		protected function dragDropHandler(event:DragDropEvent):void
@@ -2057,6 +2120,10 @@ package feathers.controls.supportClasses
 			{
 				this._dropIndicatorSkin.removeFromParent(false);
 			}
+			this._dragLocalX = -1;
+			this._dragLocalY = -1;
+			this.removeEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
+
 			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
 			var dropIndex:int = this._dataProvider.length;
 			if(this._layout is IDragDropLayout)

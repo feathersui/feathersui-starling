@@ -1342,6 +1342,41 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _minimumAutoScrollDistance:Number = 0.2;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must be from
+		 * the edge of the container during a drag and drop action before the
+		 * container starts scrolling.
+		 *
+		 * <p>In the following example, the minimum auto-scroll distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumAutoScrollDistance = 0.1;</listing>
+		 *
+		 * @default 0.3
+		 */
+		public function get minimumAutoScrollDistance():Number
+		{
+			return this._minimumAutoScrollDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumAutoScrollDistance(value:Number):void
+		{
+			if(this._minimumAutoScrollDistance == value)
+			{
+				return;
+			}
+			this._minimumAutoScrollDistance = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1663,6 +1698,7 @@ package feathers.controls
 			this.dataViewPort.dragEnabled = this._dragEnabled;
 			this.dataViewPort.dropEnabled = this._dropEnabled;
 			this.dataViewPort.dropIndicatorSkin = this._dropIndicatorSkin;
+			this.dataViewPort.minimumAutoScrollDistance = this._minimumAutoScrollDistance;
 			this._addedItems = null;
 			this._removedItems = null;
 		}
