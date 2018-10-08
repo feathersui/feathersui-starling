@@ -1589,27 +1589,23 @@ package feathers.layout
 			var totalItemCount:int = itemCount;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
-				//if the layout is virtualized, and the items all have the same
-				//height, we can make our loops smaller by skipping some items
-				//at the beginning and end. this improves performance.
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
 				indexOffset = this._beforeVirtualizedItemCount;
-				positionY += (this._beforeVirtualizedItemCount * (calculatedTypicalItemHeight + this._gap));
-				if(hasFirstGap && this._beforeVirtualizedItemCount > 0)
-				{
-					positionY = positionY - this._gap + this._firstGap;
-				}
 			}
 			var secondToLastIndex:int = totalItemCount - 2;
 			for(var i:int = 0; i <= totalItemCount; i++)
 			{
-				var item:DisplayObject = items[i];
-				var iNormalized:int = i + indexOffset;
-				if(hasFirstGap && iNormalized == 0)
+				var item:DisplayObject = null;
+				var indexMinusOffset:int = i - indexOffset;
+				if(indexMinusOffset >= 0 && indexMinusOffset < itemCount)
+				{
+					item = items[indexMinusOffset];
+				}
+				if(hasFirstGap && i == 0)
 				{
 					gap = this._firstGap;
 				}
-				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				else if(hasLastGap && i > 0 && i == secondToLastIndex)
 				{
 					gap = this._lastGap;
 				}
@@ -1619,7 +1615,7 @@ package feathers.layout
 				}
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedHeight:Number = this._virtualCache[iNormalized];
+					var cachedHeight:Number = this._virtualCache[i];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -1642,7 +1638,7 @@ package feathers.layout
 						{
 							if(itemHeight != cachedHeight)
 							{
-								this._virtualCache[iNormalized] = itemHeight;
+								this._virtualCache[i] = itemHeight;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
@@ -1655,7 +1651,7 @@ package feathers.layout
 				}
 				if(y < (positionY + (lastHeight / 2)))
 				{
-					return iNormalized;
+					return i;
 				}
 				positionY += lastHeight + gap;
 			}

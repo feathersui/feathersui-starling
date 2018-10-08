@@ -1312,27 +1312,23 @@ package feathers.layout
 			var totalItemCount:int = itemCount;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
-				//if the layout is virtualized, and the items all have the same
-				//height, we can make our loops smaller by skipping some items
-				//at the beginning and end. this improves performance.
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
 				indexOffset = this._beforeVirtualizedItemCount;
-				positionX += (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + this._gap));
-				if(hasFirstGap && this._beforeVirtualizedItemCount > 0)
-				{
-					positionX = positionX - this._gap + this._firstGap;
-				}
 			}
 			var secondToLastIndex:int = totalItemCount - 2;
 			for(var i:int = 0; i <= totalItemCount; i++)
 			{
-				var item:DisplayObject = items[i];
-				var iNormalized:int = i + indexOffset;
-				if(hasFirstGap && iNormalized == 0)
+				var item:DisplayObject = null;
+				var indexMinusOffset:int = i - indexOffset;
+				if(indexMinusOffset >= 0 && indexMinusOffset < itemCount)
+				{
+					item = items[indexMinusOffset];
+				}
+				if(hasFirstGap && i == 0)
 				{
 					gap = this._firstGap;
 				}
-				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				else if(hasLastGap && i > 0 && i == secondToLastIndex)
 				{
 					gap = this._lastGap;
 				}
@@ -1342,7 +1338,7 @@ package feathers.layout
 				}
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
-					var cachedWidth:Number = this._virtualCache[iNormalized];
+					var cachedWidth:Number = this._virtualCache[i];
 				}
 				if(this._useVirtualLayout && !item)
 				{
@@ -1365,7 +1361,7 @@ package feathers.layout
 						{
 							if(itemWidth != cachedWidth)
 							{
-								this._virtualCache[iNormalized] = itemWidth;
+								this._virtualCache[i] = itemWidth;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
@@ -1378,7 +1374,7 @@ package feathers.layout
 				}
 				if(x < (positionX + (lastWidth / 2)))
 				{
-					return iNormalized;
+					return i;
 				}
 				positionX += lastWidth + gap;
 			}
