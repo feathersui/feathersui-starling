@@ -2074,18 +2074,35 @@ package feathers.controls.supportClasses
 		{
 			var starling:Starling = this.stage.starling;
 			var minAutoScrollPixels:Number = this._minimumAutoScrollDistance * (DeviceCapabilities.dpi / starling.contentScaleFactor);
-			var velocity:Number = event.passedTime * 60;
+			var velocity:Number = event.passedTime * 500;
 			if(this._owner.maxVerticalScrollPosition > this._owner.minVerticalScrollPosition)
 			{
 				if(this._verticalScrollPosition < this._owner.maxVerticalScrollPosition &&
 					this._dragLocalY > (this.visibleHeight - minAutoScrollPixels))
 				{
-					this._owner.verticalScrollPosition += velocity;
+					velocity *= (1 - ((this.visibleHeight - this._dragLocalY) / minAutoScrollPixels));
 				}
 				else if(this._verticalScrollPosition > this._owner.minVerticalScrollPosition &&
 					this._dragLocalY < minAutoScrollPixels)
 				{
-					this._owner.verticalScrollPosition -= velocity;
+					velocity *= -(1 - (this._dragLocalY / minAutoScrollPixels));
+				}
+				else
+				{
+					velocity = 0;
+				}
+				if(velocity != 0)
+				{
+					var verticalScrollPosition:Number = this._owner.verticalScrollPosition + velocity;
+					if(verticalScrollPosition > this._owner.maxVerticalScrollPosition)
+					{
+						verticalScrollPosition = this._owner.maxVerticalScrollPosition;
+					}
+					else if(verticalScrollPosition < this._owner.minVerticalScrollPosition)
+					{
+						verticalScrollPosition = this._owner.minVerticalScrollPosition;
+					}
+					this._owner.verticalScrollPosition = verticalScrollPosition;
 				}
 			}
 			if(this._owner.maxHorizontalScrollPosition > this._owner.minHorizontalScrollPosition)
@@ -2093,12 +2110,29 @@ package feathers.controls.supportClasses
 				if(this._horizontalScrollPosition < this._owner.maxHorizontalScrollPosition &&
 					this._dragLocalX > (this.visibleWidth - minAutoScrollPixels))
 				{
-					this._owner.horizontalScrollPosition += velocity;
+					velocity *= (1 - ((this.visibleWidth - this._dragLocalX) / minAutoScrollPixels));
 				}
 				else if(this._horizontalScrollPosition > this._owner.minHorizontalScrollPosition &&
 					this._dragLocalX < minAutoScrollPixels)
 				{
-					this._owner.horizontalScrollPosition -= velocity;
+					velocity *= -(1 - (this._dragLocalX / minAutoScrollPixels));
+				}
+				else
+				{
+					velocity = 0;
+				}
+				if(velocity != 0)
+				{
+					var horizontalScrollPosition:Number = this._owner.horizontalScrollPosition + velocity;
+					if(horizontalScrollPosition > this._owner.maxHorizontalScrollPosition)
+					{
+						horizontalScrollPosition = this._owner.maxHorizontalScrollPosition;
+					}
+					else if(verticalScrollPosition < this._owner.minHorizontalScrollPosition)
+					{
+						horizontalScrollPosition = this._owner.minHorizontalScrollPosition;
+					}
+					this._owner.horizontalScrollPosition = horizontalScrollPosition;
 				}
 			}
 		}
