@@ -604,6 +604,7 @@ package feathers.themes
 		protected var dataGridVerticalDividerSkinTexture:Texture;
 		protected var dataGridColumnResizeSkinTexture:Texture;
 		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
+		protected var dragHandleIcon:Texture;
 		
 		//media textures
 		protected var playPauseButtonPlayUpIconTexture:Texture;
@@ -813,6 +814,8 @@ package feathers.themes
 			this.insetItemRendererSingleUpSkinTexture = this.atlas.getTexture("single-inset-item-renderer-up-skin0000");
 			this.insetItemRendererSingleSelectedSkinTexture = this.atlas.getTexture("single-inset-item-renderer-selected-up-skin0000");
 
+			this.dragHandleIcon = this.atlas.getTexture("drag-handle-icon0000");
+
 			var headerBackgroundSkinTexture:Texture = this.atlas.getTexture("header-background-skin0000");
 			var popUpHeaderBackgroundSkinTexture:Texture = this.atlas.getTexture("header-popup-background-skin0000");
 			this.headerBackgroundSkinTexture = Texture.fromTexture(headerBackgroundSkinTexture, HEADER_SKIN_TEXTURE_REGION);
@@ -940,7 +943,7 @@ package feathers.themes
 
 			//list
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setListItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 
@@ -1849,8 +1852,22 @@ package feathers.themes
 		protected function setListStyles(list:List):void
 		{
 			this.setScrollerStyles(list);
+
 			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
+
+			var dropIndicatorSkin:Quad = new Quad(2, 2, 0xffffff);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+		}
+
+		protected function setListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIcon);
+			dragIcon.minTouchWidth = this.gridSize;
+			dragIcon.minTouchHeight = this.gridSize;
+			itemRenderer.dragIcon = dragIcon;
 		}
 
 		protected function setItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
