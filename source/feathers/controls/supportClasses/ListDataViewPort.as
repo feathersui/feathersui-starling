@@ -2251,10 +2251,13 @@ package feathers.controls.supportClasses
 					{
 						var dragData:DragData = new DragData();
 						dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
+						
 						var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
+						this.refreshOneItemRendererStyles(avatar);
 						avatar.width = itemRenderer.width;
 						avatar.height = itemRenderer.height;
 						avatar.alpha = 0.8;
+
 						this._droppedOnSelf = false;
 						point = touch.getLocation(DisplayObject(itemRenderer),  Pool.getPoint());
 						DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
