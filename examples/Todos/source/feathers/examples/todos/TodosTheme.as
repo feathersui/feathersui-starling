@@ -6,9 +6,8 @@ package feathers.examples.todos
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
+	import feathers.skins.ImageSkin;
 	import feathers.themes.MetalWorksMobileTheme;
-
-	import starling.display.Image;
 
 	public class TodosTheme extends MetalWorksMobileTheme
 	{
@@ -45,7 +44,7 @@ package feathers.examples.todos
 		
 		protected function setTodoItemRendererStyles(itemRenderer:TodoItemRenderer):void
 		{
-			var backgroundSkin:Image = new Image(this.itemRendererUpSkinTexture);
+			var backgroundSkin:ImageSkin = new ImageSkin(this.itemRendererUpSkinTexture);
 			backgroundSkin.scale9Grid = ITEM_RENDERER_SCALE9_GRID;
 			itemRenderer.backgroundSkin = backgroundSkin;
 
@@ -54,6 +53,9 @@ package feathers.examples.todos
 			layout.padding = this.smallGutterSize;
 			layout.verticalAlign = VerticalAlign.MIDDLE;
 			itemRenderer.layout = layout;
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIcon);
+			itemRenderer.dragIcon = dragIcon;
 		}
 	}
 }

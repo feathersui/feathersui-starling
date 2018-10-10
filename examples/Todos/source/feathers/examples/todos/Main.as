@@ -14,7 +14,6 @@ package feathers.examples.todos
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.data.ArrayCollection;
-	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.todos.TodoItem;
@@ -25,9 +24,6 @@ package feathers.examples.todos
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
 	public class Main extends PanelScreen
 	{
@@ -36,6 +32,7 @@ package feathers.examples.todos
 			//set up the theme right away!
 			new TodosTheme();
 			super();
+
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
@@ -47,9 +44,6 @@ package feathers.examples.todos
 		private var _clearButton:Button;
 		private var _editButton:ToggleButton;
 		private var _items:VectorCollection;
-		
-		private var _touchID:int = -1;
-		private var _previousGlobalTouchY:Number;
 
 		private function customHeaderFactory():IFeathersControl
 		{
@@ -154,26 +148,6 @@ package feathers.examples.todos
 			listLayoutData.bottomAnchorDisplayObject = this._tabs;
 			listLayoutData.left = 0;
 			this._list.layoutData = listLayoutData;
-			this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
-		}
-
-		private function dragToolbar(touch:Touch):void
-		{
-			var currentGlobalTouchY:Number = touch.globalY;
-			var newPosition:Number = this._toolbar.y + currentGlobalTouchY - this._previousGlobalTouchY;
-			var minHeaderPosition:Number = -this._toolbar.height;
-			if(newPosition < minHeaderPosition)
-			{
-				newPosition = minHeaderPosition;
-			}
-			if(newPosition > 0)
-			{
-				newPosition = 0;
-			}
-			this._previousGlobalTouchY = currentGlobalTouchY;
-
-			var headerLayoutData:AnchorLayoutData = AnchorLayoutData(this._toolbar.layoutData);
-			headerLayoutData.top = newPosition;
 		}
 
 		private function includeActiveItems(item:TodoItem):Boolean
@@ -226,9 +200,13 @@ package feathers.examples.todos
 		private function editButton_changeHandler(event:Event):void
 		{
 			var isEditing:Boolean = this._editButton.isSelected;
-			this._list.itemRendererProperties.isEditable = isEditing;
+
+			this._list.dragEnabled = isEditing;
+			this._list.dropEnabled = isEditing;
+
 			this._clearButton.visible = isEditing;
 			this._clearButton.includeInLayout = isEditing;
+
 			this._input.visible = !isEditing;
 			this._input.includeInLayout = !isEditing;
 		}
@@ -286,36 +264,6 @@ package feathers.examples.todos
 		{
 			this.width = this.stage.stageWidth;
 			this.height = this.stage.stageHeight;
-		}
-
-		private function list_touchHandler(event:TouchEvent):void
-		{
-			if(this._touchID >= 0)
-			{
-				var touch:Touch = event.getTouch(this._list, null, this._touchID);
-				if(!touch)
-				{
-					return;
-				}
-				if(touch.phase == TouchPhase.MOVED)
-				{
-					this.dragToolbar(touch);
-				}
-				else if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchID = -1;
-				}
-			}
-			else
-			{
-				touch = event.getTouch(this._list, TouchPhase.BEGAN);
-				if(!touch)
-				{
-					return;
-				}
-				this._touchID = touch.id;
-				this._previousGlobalTouchY = touch.globalY;
-			}
 		}
 
 		private function tabs_changeHandler(event:Event):void

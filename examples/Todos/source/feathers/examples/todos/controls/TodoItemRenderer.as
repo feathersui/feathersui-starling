@@ -12,8 +12,14 @@ package feathers.examples.todos.controls
 	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
+	import starling.display.DisplayObject;
+	import feathers.controls.renderers.IDragAndDropItemRenderer;
+	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 
-	public class TodoItemRenderer extends LayoutGroupListItemRenderer
+	public class TodoItemRenderer extends LayoutGroupListItemRenderer implements IDragAndDropItemRenderer
 	{
 		public static var globalStyleProvider:IStyleProvider;
 		
@@ -31,21 +37,62 @@ package feathers.examples.todos.controls
 			return globalStyleProvider;
 		}
 
-		private var _isEditable:Boolean = false;
+		private var _dragEnabled:Boolean = false;
 
-		public function get isEditable():Boolean
+		public function get dragEnabled():Boolean
 		{
-			return this._isEditable;
+			return this._dragEnabled;
 		}
 
-		public function set isEditable(value:Boolean):void
+		public function set dragEnabled(value:Boolean):void
 		{
-			if(this._isEditable == value)
+			if(this._dragEnabled == value)
 			{
 				return;
 			}
-			this._isEditable = value;
+			this._dragEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		public function get dragProxy():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		private var _dragIconContainer:LayoutGroup;
+
+		private var _dragIcon:DisplayObject;
+
+		public function get dragIcon():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		public function set dragIcon(value:DisplayObject):void
+		{
+			if(this._dragIcon == value)
+			{
+				return;
+			}
+			if(this._dragIcon && this._dragIcon.parent == this._dragIconContainer)
+			{
+				this._dragIcon.removeFromParent(false);
+			}
+			this._dragIcon = value;
+			if(this._dragIcon)
+			{
+				if(!this._dragIconContainer)
+				{
+					this._dragIconContainer = new LayoutGroup();
+					var layout:HorizontalLayout = new HorizontalLayout();
+					layout.horizontalAlign = HorizontalAlign.CENTER;
+					layout.verticalAlign = VerticalAlign.MIDDLE;
+					this._dragIconContainer.layout = layout;
+					this.addChildAt(this._dragIconContainer, 0);
+				}
+				this._dragIconContainer.addChild(this._dragIcon)
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		override public function dispose():void
@@ -89,6 +136,17 @@ package feathers.examples.todos.controls
 			}
 		}
 
+		override protected function preLayout():void
+		{
+			if(this._dragIconContainer)
+			{
+				this.check.validate();
+				this._dragIconContainer.width = this.check.width;
+				this._dragIconContainer.height = this.check.height;
+				this.setChildIndex(this._dragIconContainer, 0);
+			}
+		}
+
 		override protected function commitData():void
 		{
 			super.commitData();
@@ -100,10 +158,18 @@ package feathers.examples.todos.controls
 			this.label.text = item.description;
 			
 			this.check.isSelected = item.isCompleted;
-			this.check.isEnabled = this._isEnabled && !this._isEditable;
+			this.check.isEnabled = this._isEnabled;
+			this.check.includeInLayout = !this._dragEnabled;
+			this.check.visible = !this._dragEnabled;
 			
-			this.deleteButton.includeInLayout = this._isEditable;
-			this.deleteButton.visible = this._isEditable;
+			this.deleteButton.includeInLayout = this._dragEnabled;
+			this.deleteButton.visible = this._dragEnabled;
+			
+			if(this._dragIconContainer)
+			{
+				this._dragIconContainer.includeInLayout = this._dragEnabled;
+				this._dragIconContainer.visible = this._dragEnabled;
+			}
 		}
 
 		protected function check_changeHandler(event:Event):void
