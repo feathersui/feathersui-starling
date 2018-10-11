@@ -1,6 +1,6 @@
 # Todos Example for Feathers
 
-This [Feathers](http://feathersui.com/) example mocks up a simple application to track things that need to get done. It extends the MetalWorksMobileTheme and uses a custom list item renderer that can switch into an editing mode to delete items.
+This [Feathers UI](http://feathersui.com/) example mocks up a simple application to track things that need to get done. The app can add and remove todo items, mark them as completed, and it even supports drag and drop to change the order of items. A custom list item renderer based on the `LayoutGroup` component is used, and it can switch between a normal checkbox and label and an editable mode that adds a drag handle and a delete button.
 
 ## Requirements
 
