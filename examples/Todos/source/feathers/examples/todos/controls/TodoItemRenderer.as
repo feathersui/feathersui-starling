@@ -21,6 +21,8 @@ package feathers.examples.todos.controls
 
 	public class TodoItemRenderer extends LayoutGroupListItemRenderer implements IDragAndDropItemRenderer
 	{
+		public static const EVENT_DELETE_ITEM:String = "deleteItem";
+
 		public static var globalStyleProvider:IStyleProvider;
 		
 		public function TodoItemRenderer()
@@ -179,7 +181,13 @@ package feathers.examples.todos.controls
 			{
 				return;
 			}
-			item.isCompleted = this.check.isSelected;
+			var isCompleted:Boolean = this.check.isSelected;
+			if(item.isCompleted == isCompleted)
+			{
+				return;
+			}
+			item.isCompleted = isCompleted;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		protected function deleteButton_triggeredHandler(event:Event):void
@@ -194,7 +202,7 @@ package feathers.examples.todos.controls
 
 		private function confirmButton_triggeredHandler(event:Event):void
 		{
-			List(this._owner).dataProvider.removeItemAt(this._index);
+			this.dispatchEventWith(EVENT_DELETE_ITEM, false, this._data);
 		}
 	}
 }

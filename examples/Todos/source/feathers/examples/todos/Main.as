@@ -24,6 +24,9 @@ package feathers.examples.todos
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import flash.net.SharedObject;
+	import feathers.controls.renderers.IListItemRenderer;
+	import flash.net.registerClassAlias;
 
 	public class Main extends PanelScreen
 	{
@@ -32,6 +35,9 @@ package feathers.examples.todos
 			//set up the theme right away!
 			new TodosTheme();
 			super();
+			
+			registerClassAlias("feathers.examples.todos.TodoItem", TodoItem);
+			this._sharedObject = SharedObject.getLocal("todos");
 
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -44,6 +50,7 @@ package feathers.examples.todos
 		private var _clearButton:Button;
 		private var _editButton:ToggleButton;
 		private var _items:VectorCollection;
+		private var _sharedObject:SharedObject;
 
 		private function customHeaderFactory():IFeathersControl
 		{
@@ -89,12 +96,24 @@ package feathers.examples.todos
 			this._tabs.addEventListener(Event.CHANGE, tabs_changeHandler);
 			this.addChild(this._tabs);
 
-			this._items = new VectorCollection(new <TodoItem>[]);
+			var itemsToRestore:Vector.<TodoItem> = this._sharedObject.data.items;
+			if(!itemsToRestore)
+			{
+				//if the shared object is empty, create a new vector
+				itemsToRestore = new <TodoItem>[];
+			}
+			this._items = new VectorCollection(itemsToRestore);
 
 			this._list = new List();
 			this._list.isSelectable = false;
 			this._list.dataProvider = this._items;
-			this._list.itemRendererType = TodoItemRenderer;
+			this._list.itemRendererFactory = function():IListItemRenderer
+			{
+				var itemRenderer:TodoItemRenderer = new TodoItemRenderer();
+				itemRenderer.addEventListener(Event.CHANGE, itemRenderer_changeHandler);
+				itemRenderer.addEventListener(TodoItemRenderer.EVENT_DELETE_ITEM, itemRenderer_deleteItemHandler);
+				return itemRenderer;
+			};
 			this.addChild(this._list);
 
 			this._toolbar = new LayoutGroup();
@@ -176,6 +195,12 @@ package feathers.examples.todos
 			}
 		}
 
+		private function saveItems():void
+		{
+			this._sharedObject.data.items = this._items.vectorData;
+			this._sharedObject.flush();
+		}
+
 		private function addedToStageHandler():void
 		{
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
@@ -195,6 +220,8 @@ package feathers.examples.todos
 
 			this._items.addItem(new TodoItem(this._input.text));
 			this._input.text = "";
+
+			this.saveItems();
 		}
 
 		private function editButton_changeHandler(event:Event):void
@@ -258,6 +285,19 @@ package feathers.examples.todos
 			}
 			//be sure to restore the filter
 			this.refreshFilterFunction();
+
+			this.saveItems();
+		}
+
+		private function itemRenderer_changeHandler(event:Event):void
+		{
+			this.saveItems();
+		}
+
+		private function itemRenderer_deleteItemHandler(event:Event, item:Object):void
+		{
+			this._items.removeItem(item);
+			this.saveItems();
 		}
 
 		private function stage_resizeHandler():void
