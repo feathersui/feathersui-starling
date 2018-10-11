@@ -2160,7 +2160,8 @@ package feathers.controls
 			for(var i:int = 0; i < idCount; i++)
 			{
 				var id:String = notchIDs[i];
-				if(osString.lastIndexOf(id) == osString.length - id.length)
+				var index:int = osString.lastIndexOf(id);
+				if(index != -1 && index == osString.length - id.length)
 				{
 					return true;
 				}
