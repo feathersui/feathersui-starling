@@ -1378,7 +1378,7 @@ package feathers.layout
 				}
 				positionX += lastWidth + gap;
 			}
-			return 0;
+			return totalItemCount;
 		}
 
 		/**
