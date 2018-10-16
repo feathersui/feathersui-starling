@@ -1550,16 +1550,15 @@ package feathers.layout
 			if(index < totalItemCount)
 			{
 				var item:DisplayObject = items[indexMinusOffset];
-				yPosition = item.y;
+				yPosition = item.y - dropIndicator.height / 2;
 				dropIndicator.width = item.width;
 			}
 			else //after the last item
 			{
 				item = items[indexMinusOffset - 1];
-				yPosition = item.y + item.height;
+				yPosition = item.y + item.height - dropIndicator.height;
 				dropIndicator.width = item.width;
 			}
-			yPosition -= dropIndicator.height / 2;
 			if(yPosition < 0)
 			{
 				yPosition = 0;
