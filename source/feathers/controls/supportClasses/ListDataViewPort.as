@@ -810,6 +810,8 @@ package feathers.controls.supportClasses
 		protected var _dragLocalX:Number = -1;
 		protected var _dragLocalY:Number = -1;
 
+		protected var _acceptedDrag:Boolean = false;
+
 		protected var _minimumDragDropDistance:Number = 0.04;
 
 		public function get minimumDragDropDistance():Number
@@ -880,6 +882,19 @@ package feathers.controls.supportClasses
 			this.layout = null;
 			this.dataProvider = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(localPoint);
+			if(result && this._acceptedDrag)
+			{
+				return this._owner;
+			}
+			return result;
 		}
 
 		override protected function draw():void
@@ -2038,6 +2053,7 @@ package feathers.controls.supportClasses
 
 		protected function dragEnterHandler(event:DragDropEvent):void
 		{
+			this._acceptedDrag = false;
 			if(!this._dropEnabled)
 			{
 				return;
@@ -2049,6 +2065,7 @@ package feathers.controls.supportClasses
 			DragDropManager.acceptDrag(this._owner);
 			this.refreshDropIndicator(event.localX, event.localY);
 
+			this._acceptedDrag = true;
 			this._dragLocalX = event.localX;
 			this._dragLocalY = event.localY;
 			this.addEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
@@ -2139,6 +2156,7 @@ package feathers.controls.supportClasses
 
 		protected function dragExitHandler(event:DragDropEvent):void
 		{
+			this._acceptedDrag = false;
 			if(this._dropIndicatorSkin)
 			{
 				this._dropIndicatorSkin.removeFromParent(false);
@@ -2150,6 +2168,7 @@ package feathers.controls.supportClasses
 
 		protected function dragDropHandler(event:DragDropEvent):void
 		{
+			this._acceptedDrag = false;
 			if(this._dropIndicatorSkin)
 			{
 				this._dropIndicatorSkin.removeFromParent(false);
