@@ -1731,6 +1731,9 @@ package feathers.themes
 			backgroundSkin.height = this.controlSize;
 			list.backgroundSkin = backgroundSkin;
 
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, PRIMARY_TEXT_COLOR);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+
 			list.padding = this.borderSize;
 		}
 

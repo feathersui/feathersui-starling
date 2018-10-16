@@ -1529,6 +1529,9 @@ package feathers.themes
 			backgroundDisabledSkin.height = this.controlSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, PRIMARY_TEXT_COLOR);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+
 			list.padding = this.borderSize;
 			list.paddingRight = 0;
 		}
