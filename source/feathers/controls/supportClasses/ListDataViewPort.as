@@ -2223,7 +2223,7 @@ package feathers.controls.supportClasses
 
 		protected function itemRenderer_drag_touchHandler(event:TouchEvent):void
 		{
-			if(!this._dragEnabled)
+			if(!this._dragEnabled || !this.stage)
 			{
 				this._dragTouchPointID = -1;
 				return;
@@ -2248,7 +2248,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._dragTouchPointID != -1)
 			{
-				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(itemRenderer.stage);
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
 				if(exclusiveTouch.getClaim(this._dragTouchPointID))
 				{
 					this._dragTouchPointID = -1;
