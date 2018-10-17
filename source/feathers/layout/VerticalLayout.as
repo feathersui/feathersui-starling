@@ -1545,18 +1545,19 @@ package feathers.layout
 				IValidating(dropIndicator).validate();
 			}
 
-			dropIndicator.x = this._paddingLeft;
 			var yPosition:Number = 0;
 			if(index < totalItemCount)
 			{
 				var item:DisplayObject = items[indexMinusOffset];
 				yPosition = item.y - dropIndicator.height / 2;
+				dropIndicator.x = item.x;
 				dropIndicator.width = item.width;
 			}
 			else //after the last item
 			{
 				item = items[indexMinusOffset - 1];
 				yPosition = item.y + item.height - dropIndicator.height;
+				dropIndicator.x = item.x;
 				dropIndicator.width = item.width;
 			}
 			if(yPosition < 0)
