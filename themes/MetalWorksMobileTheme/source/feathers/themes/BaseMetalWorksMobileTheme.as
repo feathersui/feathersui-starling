@@ -1856,7 +1856,7 @@ package feathers.themes
 			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
 
-			var dropIndicatorSkin:Quad = new Quad(2, 2, 0xffffff);
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, LIGHT_TEXT_COLOR);
 			list.dropIndicatorSkin = dropIndicatorSkin;
 		}
 
