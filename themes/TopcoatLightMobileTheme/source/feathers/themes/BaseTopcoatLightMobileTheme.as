@@ -314,6 +314,7 @@ package feathers.themes
 		protected var dataGridColumnResizeSkinTexture:Texture;
 		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dragHandleIconTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -458,6 +459,8 @@ package feathers.themes
 			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
 			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+
+			this.dragHandleIconTexture = this.atlas.getTexture("drag-handle-icon0000");
 		}
 
 		protected function initializeFonts():void
@@ -558,7 +561,7 @@ package feathers.themes
 
 			//list
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setListItemRendererStyles;
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
@@ -1255,6 +1258,19 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 			list.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, COLOR_TEXT_DARK);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+		}
+
+		protected function setListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIconTexture);
+			dragIcon.minTouchWidth = this.gridSize;
+			dragIcon.minTouchHeight = this.gridSize;
+			itemRenderer.dragIcon = dragIcon;
 		}
 
 		protected function setBaseItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
