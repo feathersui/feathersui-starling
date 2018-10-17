@@ -344,6 +344,7 @@ package feathers.themes
 		protected var itemRendererSelectedUpSkinTexture:Texture;
 		protected var checkItemRendererSelectedIconTexture:Texture;
 		protected var spinnerListSelectionOverlaySkinTexture:Texture;
+		protected var dragHandleIcon:Texture;
 
 		protected var headerSkinTexture:Texture;
 		protected var panelHeaderSkinTexture:Texture;
@@ -566,6 +567,8 @@ package feathers.themes
 
 			this.spinnerListSelectionOverlaySkinTexture = this.atlas.getTexture("spinner-list-selection-overlay-skin0000");
 
+			this.dragHandleIcon = this.atlas.getTexture("drag-handle-icon0000");
+
 			this.headerSkinTexture = this.atlas.getTexture("header-background-skin0000");
 			this.panelHeaderSkinTexture = this.atlas.getTexture("panel-header-background-skin0000");
 
@@ -692,7 +695,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
 
 			//item renderers for lists
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setListItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
@@ -1480,6 +1483,19 @@ package feathers.themes
 			this.setScrollerStyles(list);
 
 			list.backgroundSkin = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, PRIMARY_TEXT_COLOR);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+		}
+
+		protected function setListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIcon);
+			dragIcon.minTouchWidth = this.gridSize;
+			dragIcon.minTouchHeight = this.gridSize;
+			itemRenderer.dragIcon = dragIcon;
 		}
 
 		protected function setItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
