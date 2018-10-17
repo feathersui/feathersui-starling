@@ -1631,6 +1631,10 @@ package feathers.layout
 				}
 				else
 				{
+					//use the y position of the item to account for vertical
+					//alignment, in case the total height of the items is less
+					//than the height of the container
+					positionY = item.y;
 					var itemHeight:Number = item.height;
 					if(this._useVirtualLayout)
 					{

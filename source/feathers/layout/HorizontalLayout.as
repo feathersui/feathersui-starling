@@ -1355,6 +1355,10 @@ package feathers.layout
 				}
 				else
 				{
+					//use the x position of the item to account for horizontal
+					//alignment, in case the total width of the items is less
+					//than the width of the container
+					positionX = item.x;
 					var itemWidth:Number = item.width;
 					if(this._useVirtualLayout)
 					{
