@@ -19,10 +19,12 @@ package feathers.controls
 	import feathers.text.FontStylesSet;
 	import starling.display.DisplayObject;
 	import feathers.core.IFeathersControl;
-	import flash.utils.setTimeout;
-	import flash.utils.clearTimeout;
 	import feathers.data.IListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalLayout;
+	import flash.utils.getTimer;
+	import feathers.motion.Fade;
+	import feathers.motion.effectClasses.IEffectContext;
 
 	/**
 	 *
@@ -65,10 +67,83 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static var _maxVisibleToasts:int = 1;
+
+		/**
+		 * The maximum number of toasts that can be displayed simultaneously.
+		 * Additional toasts will be queued up to display after the current
+		 * toasts are removed.
+		 */
+		public static function get maxVisibleToasts():int
+		{
+			return _maxVisibleToasts;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set maxVisibleToasts(value:int):void
+		{
+			if(_maxVisibleToasts == value)
+			{
+				return;
+			}
+			if(value <= 0)
+			{
+				throw new RangeError("maxVisibleToasts must be greater than 0.");
+			}
+			_maxVisibleToasts = value;
+			while(_activeToasts.length < _maxVisibleToasts && _queue.length > 0)
+			{
+				showNextInQueue();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		private static var _queueMode:String = ToastQueueMode.CANCEL_TIMEOUT;
+
+		/**
+		 * Determines how timeouts are treated when toasts need to be queued up
+		 * because there are already <code>maxVisibleToasts</code> visible.
+		 * Either waits until the timeout is complete, or immediately closes an
+		 * existing toast and shows the queued toast after the closing effect is
+		 * done.
+		 */
+		public static function get queueMode():String
+		{
+			return _queueMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set queueMode(value:String):void
+		{
+			_queueMode = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static var _activeToasts:Vector.<Toast> = new <Toast>[];
+
+		/**
+		 * @private
+		 */
+		protected static var _queue:Vector.<Toast> = new <Toast>[];
+
+		/**
+		 * @private
+		 */
 		protected static var _container:LayoutGroup = null;
 
 		/**
 		 * Shows a toast with custom content.
+		 * 
+		 * @see #showMessage()
+		 * @see #showMessageWithActions()
 		 */
 		public static function showContent(content:DisplayObject, timeout:Number = 4):void
 		{
@@ -79,6 +154,9 @@ package feathers.controls
 
 		/**
 		 * Shows a toast with a simple text message.
+		 * 
+		 * @see #showMessageWithActions()
+		 * @see #showContent()
 		 */
 		public static function showMessage(message:String, timeout:Number = 4):void
 		{
@@ -89,6 +167,9 @@ package feathers.controls
 
 		/**
 		 * Shows a toast with a text message and some action buttons.
+		 * 
+		 * @see #showMessage()
+		 * @see #showContent()
 		 */
 		public static function showMessageWithActions(message:String, actions:IListCollection, timeout:Number = 4):void
 		{
@@ -99,27 +180,62 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Shows a toast instance.
+		 * 
+		 * @see #showMessage()
+		 * @see #showMessageWithActions()
+		 * @see #showContent()
 		 */
-		protected static function showToast(toast:Toast, timeout:Number):void
+		public static function showToast(toast:Toast, timeout:Number):void
 		{
 			createContainer();
+			toast.timeout = timeout;
+			if(_activeToasts.length >= _maxVisibleToasts)
+			{
+				_queue[_queue.length] = toast;
+				if(_queueMode == ToastQueueMode.CANCEL_TIMEOUT)
+				{
+					var toastCount:int = _activeToasts.length;
+					for(var i:int = 0; i < toastCount; i++)
+					{
+						var activeToast:Toast = _activeToasts[i];
+						if(activeToast.timeout < Number.POSITIVE_INFINITY)
+						{
+							activeToast.close(activeToast.disposeOnSelfClose);
+							break;
+						}
+					}
+				}
+				return;
+			}
+			_activeToasts[_activeToasts.length] = toast;
+			toast.addEventListener(Event.CLOSE, toast_closeHandler);
 			Toast._container.addChild(toast);
-			if(timeout === Number.POSITIVE_INFINITY)
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function showNextInQueue():void
+		{
+			if(_queue.length == 0)
 			{
 				return;
 			}
-			function removedHandler():void
-			{
-				clearTimeout(timeoutID);
-			}
-			toast.addEventListener(Event.REMOVED_FROM_STAGE, removedHandler);
-			var timeoutID:uint = setTimeout(function():void
-			{
-				timeoutID = -1;
-				toast.removeEventListener(Event.REMOVED_FROM_STAGE, removedHandler);
-				toast.close();
-			}, timeout * 1000);
+			var toast:Toast = _queue.shift();
+			showToast(toast, toast.timeout);
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function toast_closeHandler(event:Event):void
+		{
+			var toast:Toast = Toast(event.currentTarget);
+			toast.removeEventListener(Event.CLOSE, toast_closeHandler);
+			var index:int = _activeToasts.indexOf(toast);
+			_activeToasts.removeAt(index);
+			showNextInQueue();
 		}
 
 		/**
@@ -162,11 +278,13 @@ package feathers.controls
 		public function Toast()
 		{
 			super();
+			this._addedEffect = Fade.createFadeInEffect();
 			if(this._fontStylesSet === null)
 			{
 				this._fontStylesSet = new FontStylesSet();
 				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
 			}
+			this.addEventListener(Event.ADDED_TO_STAGE, toast_addedToStageHandler);
 		}
 
 		/**
@@ -263,6 +381,74 @@ package feathers.controls
 			}
 			this._actions = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _startTime:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _timeout:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The time, in seconds, when the toast will automatically close. Set
+		 * to <code>Number.POSITIVE_INFINITY</code> to require the toast to be
+		 * closed manually.
+		 * 
+		 * @default Number.POSITIVE_INFINITY
+		 */
+		public function get timeout():Number
+		{
+			return this._timeout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set timeout(value:Number):void
+		{
+			if(this._timeout == value)
+			{
+				return;
+			}
+			this._timeout = value;
+			if(this.stage)
+			{
+				this.startTimeout();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _closeEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _closeEffect:Function = Fade.createFadeOutEffect();
+
+		/**
+		 * 
+		 */
+		public function get closeEffect():Function
+		{
+			return this._closeEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set closeEffect(value:Function):void
+		{
+			if(this._closeEffect == value)
+			{
+				return;
+			}
+			this._closeEffect = value;
 		}
 
 		/**
@@ -503,6 +689,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _disposeFromCloseCall:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _disposeOnSelfClose:Boolean = true;
+
+		/**
+		 * Determines if the toast will be disposed when <code>close()</code>
+		 * is called internally. Close may be called internally in a variety of
+		 * cases, depending on values such as <code>timeout</code> and
+		 * <code>actions</code>. If set to <code>false</code>, you may reuse the
+		 * toast later by passing it to <code>Toast.showToast()</code>.
+		 *
+		 * <p>In the following example, the toast will not be disposed when it
+		 * closes itself:</p>
+		 *
+		 * <listing version="3.0">
+		 * toast.disposeOnSelfClose = false;</listing>
+		 * 
+		 * @default true
+		 *
+		 * @see #close()
+		 */
+		public function get disposeOnSelfClose():Boolean
+		{
+			return this._disposeOnSelfClose;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disposeOnSelfClose(value:Boolean):void
+		{
+			this._disposeOnSelfClose = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._fontStylesSet !== null)
@@ -516,10 +742,24 @@ package feathers.controls
 		/**
 		 * @inheritDoc
 		 */
-		public function close():void
+		public function close(dispose:Boolean = true):void
 		{
-			this.dispatchEventWith(Event.CLOSE);
-			this.removeFromParent(true);
+			if(!this.parent)
+			{
+				return;
+			}
+			this._disposeFromCloseCall = dispose;
+			this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
+			if(this._closeEffect)
+			{
+				this._closeEffectContext = IEffectContext(this._closeEffect(this));
+				this._closeEffectContext.addEventListener(Event.COMPLETE, closeEffectContext_completeHandler);
+				this._closeEffectContext.play();
+			}
+			else
+			{
+				this.completeClose();
+			}
 		}
 
 		/**
@@ -529,8 +769,8 @@ package feathers.controls
 		{
 			if(this._layout === null)
 			{
-				var layout:VerticalLayout = new VerticalLayout();
-				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.horizontalAlign = HorizontalAlign.CENTER;
 				this.ignoreNextStyleRestriction();
 				this.layout = layout;
 			}
@@ -663,6 +903,49 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function startTimeout():void
+		{
+			if(this._timeout == Number.POSITIVE_INFINITY)
+			{
+				this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
+				return;
+			}
+			this._startTime = getTimer();
+			this.addEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function completeClose():void
+		{
+			this.dispatchEventWith(Event.CLOSE);
+			this.removeFromParent(this._disposeFromCloseCall);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toast_addedToStageHandler(event:Event):void
+		{
+			this.startTimeout();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toast_timeout_enterFrameHandler(event:Event):void
+		{
+			var totalTime:int = (getTimer() - this._startTime) / 1000;
+			if(totalTime > this._timeout)
+			{
+				this.close(this._disposeOnSelfClose);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function fontStyles_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -674,7 +957,15 @@ package feathers.controls
 		protected function actionsGroup_triggeredHandler(event:Event, data:Object):void
 		{
 			this.dispatchEventWith(Event.TRIGGERED, false, data);
-			this.close();
+			this.close(this._disposeOnSelfClose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function closeEffectContext_completeHandler(event:Event):void
+		{
+			this.completeClose();
 		}
 	}
 }
