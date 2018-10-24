@@ -199,7 +199,8 @@ package feathers.controls
 					for(var i:int = 0; i < toastCount; i++)
 					{
 						var activeToast:Toast = _activeToasts[i];
-						if(activeToast.timeout < Number.POSITIVE_INFINITY)
+						if(activeToast.timeout < Number.POSITIVE_INFINITY &&
+							!activeToast.isClosing)
 						{
 							activeToast.close(activeToast.disposeOnSelfClose);
 							break;
@@ -222,7 +223,14 @@ package feathers.controls
 			{
 				return;
 			}
-			var toast:Toast = _queue.shift();
+			do
+			{
+				var toast:Toast = _queue.shift();
+			}
+			//keep skipping toasts that have a timeout
+			while(_queueMode == ToastQueueMode.CANCEL_TIMEOUT &&
+				_queue.length > 0 &&
+				toast.timeout < Number.POSITIVE_INFINITY)
 			showToast(toast, toast.timeout);
 		}
 
@@ -729,6 +737,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isClosing:Boolean = false;
+
+		/**
+		 * Indicates if the toast is currently closing.
+		 */
+		public function get isClosing():Boolean
+		{
+			return this._isClosing;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._fontStylesSet !== null)
@@ -744,10 +765,11 @@ package feathers.controls
 		 */
 		public function close(dispose:Boolean = true):void
 		{
-			if(!this.parent)
+			if(!this.parent || this._isClosing)
 			{
 				return;
 			}
+			this._isClosing = true;
 			this._disposeFromCloseCall = dispose;
 			this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
 			if(this._closeEffect)
@@ -919,6 +941,7 @@ package feathers.controls
 		 */
 		protected function completeClose():void
 		{
+			this._isClosing = false;
 			this.dispatchEventWith(Event.CLOSE);
 			this.removeFromParent(this._disposeFromCloseCall);
 		}
