@@ -107,6 +107,7 @@ package feathers.themes
 	import feathers.controls.DataGrid;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.controls.Toast;
 
 	/**
 	 * The base class for the "Metal Works" theme for mobile Feathers apps.
@@ -1020,6 +1021,10 @@ package feathers.themes
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
+
+			//toast
+			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS_GROUP, this.setToastActionsGroupStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -2569,6 +2574,34 @@ package feathers.themes
 
 			callout.fontStyles = this.lightFontStyles.clone();
 			callout.disabledFontStyles = this.lightDisabledFontStyles.clone();
+		}
+
+	//-------------------------
+	// Toast
+	//-------------------------
+
+		protected function setToastStyles(toast:Toast):void
+		{
+			var backgroundSkin:Image = new Image(this.backgroundLightBorderSkinTexture);
+			backgroundSkin.scale9Grid = SMALL_BACKGROUND_SCALE9_GRID;
+			toast.backgroundSkin = backgroundSkin;
+
+			toast.fontStyles = this.lightFontStyles.clone();
+
+			var layout:HorizontalLayout = new HorizontalLayout();
+			layout.paddingTop = this.gutterSize;
+			layout.paddingRight = this.gutterSize;
+			layout.paddingBottom = this.gutterSize;
+			layout.paddingLeft = this.gutterSize;
+			layout.gap = this.smallGutterSize;
+			layout.verticalAlign = VerticalAlign.MIDDLE;
+			toast.layout = layout;
+		}
+
+		protected function setToastActionsGroupStyles(group:ButtonGroup):void
+		{
+			group.direction = Direction.HORIZONTAL;
+			group.customButtonStyleName = Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON;
 		}
 
 	//-------------------------
