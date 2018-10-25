@@ -8,23 +8,27 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
-	import feathers.layout.HorizontalAlign;
-	import feathers.layout.VerticalAlign;
-	import feathers.core.PopUpManager;
-	import feathers.skins.IStyleProvider;
-	import feathers.core.ITextRenderer;
-	import feathers.layout.VerticalLayout;
-	import starling.events.Event;
-	import starling.text.TextFormat;
-	import feathers.text.FontStylesSet;
-	import starling.display.DisplayObject;
 	import feathers.core.IFeathersControl;
+	import feathers.core.ITextRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.data.IListCollection;
-	import feathers.events.FeathersEventType;
+	import feathers.layout.HorizontalAlign;
 	import feathers.layout.HorizontalLayout;
-	import flash.utils.getTimer;
+	import feathers.layout.VerticalAlign;
+	import feathers.layout.VerticalLayout;
 	import feathers.motion.Fade;
 	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.skins.IStyleProvider;
+	import feathers.text.FontStylesSet;
+
+	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
+
+	import starling.core.Starling;
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.events.Event;
+	import starling.text.TextFormat;
 
 	/**
 	 *
@@ -137,7 +141,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static var _container:LayoutGroup = null;
+		protected static var _containers:Dictionary = new Dictionary(true);
 
 		/**
 		 * Shows a toast with custom content.
@@ -188,7 +192,6 @@ package feathers.controls
 		 */
 		public static function showToast(toast:Toast, timeout:Number):void
 		{
-			createContainer();
 			toast.timeout = timeout;
 			if(_activeToasts.length >= _maxVisibleToasts)
 			{
@@ -211,7 +214,8 @@ package feathers.controls
 			}
 			_activeToasts[_activeToasts.length] = toast;
 			toast.addEventListener(Event.CLOSE, toast_closeHandler);
-			Toast._container.addChild(toast);
+			var container:DisplayObjectContainer = getContainerForStarling(Starling.current);
+			container.addChild(toast);
 		}
 
 		/**
@@ -249,25 +253,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function createContainer():void
+		protected static function getContainerForStarling(starling:Starling):DisplayObjectContainer
 		{
-			if(Toast._container)
+			if(starling in Toast._containers)
 			{
-				return;
+				return DisplayObjectContainer(Toast._containers[starling]);
 			}
-			Toast._container = new LayoutGroup();
-			Toast._container.addEventListener(Event.REMOVED_FROM_STAGE, function():void
+			var container:DisplayObjectContainer = DisplayObjectContainer(defaultContainerFactory());
+			Toast._containers[starling] = container;
+			container.addEventListener(Event.REMOVED_FROM_STAGE, function(event:Event):void
 			{
-				Toast._container = null;
+				delete Toast._containers[starling];
 			})
-			Toast._container.autoSizeMode = AutoSizeMode.STAGE;
+			PopUpManager.forStarling(starling).addPopUp(container, false, false);
+			return container;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = HorizontalAlign.LEFT;
 			layout.verticalAlign = VerticalAlign.BOTTOM;
 			layout.padding = 20;
 			layout.gap = 8;
-			Toast._container.layout = layout;
-			PopUpManager.addPopUp(Toast._container, false, false);
+			container.layout = layout;
+			return container;
 		}
 
 		/**
