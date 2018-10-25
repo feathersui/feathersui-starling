@@ -139,6 +139,8 @@ A more detailed look at each of the components that Feathers provides.
 
 -   [`TextInput`](text-input.html)
 
+-   [`Toast`](toast.html)
+
 -   [`ToggleButton`](toggle-button.html)
 
 -   [`ToggleSwitch`](toggle-switch.html)
