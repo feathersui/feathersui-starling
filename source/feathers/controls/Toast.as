@@ -152,7 +152,7 @@ package feathers.controls
 		public static function showContent(content:DisplayObject, timeout:Number = 4):void
 		{
 			var toast:Toast = new Toast();
-			toast.addChild(content);
+			toast.content = content;
 			showToast(toast, timeout);
 		}
 
@@ -403,6 +403,40 @@ package feathers.controls
 				return;
 			}
 			this._actions = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _content:DisplayObject = null;
+
+		/**
+		 * Optional custom content to display in the toast.
+		 */
+		public function get content():DisplayObject
+		{
+			return this._content;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set content(value:DisplayObject):void
+		{
+			if(this._content == value)
+			{
+				return;
+			}
+			if(this._content && this._content.parent == this)
+			{
+				this._content.removeFromParent(false);
+			}
+			this._content = value;
+			if(this._content)
+			{
+				this.addChild(this._content);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -735,6 +769,7 @@ package feathers.controls
 		 * @default true
 		 *
 		 * @see #close()
+		 * @see #disposeContent
 		 */
 		public function get disposeOnSelfClose():Boolean
 		{
@@ -747,6 +782,39 @@ package feathers.controls
 		public function set disposeOnSelfClose(value:Boolean):void
 		{
 			this._disposeOnSelfClose = value;
+		}
+
+		/**
+		 * @private
+		 */
+		public var _disposeContent:Boolean = true;
+
+		/**
+		 * Determines if the toast's content will be disposed when the toast
+		 * is disposed. If set to <code>false</code>, the toast's content may
+		 * be added to the display list again later.
+		 *
+		 * <p>In the following example, the toast's content will not be
+		 * disposed when the toast is disposed:</p>
+		 *
+		 * <listing version="3.0">
+		 * toast.disposeContent = false;</listing>
+		 * 
+		 * @default true
+		 * 
+		 * @see #disposeOnSelfClose
+		 */
+		public function get disposeContent():Boolean
+		{
+			return this._disposeContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disposeContent(value:Boolean):void
+		{
+			this._disposeContent = value;
 		}
 
 		/**
@@ -771,6 +839,13 @@ package feathers.controls
 			{
 				this._fontStylesSet.dispose();
 				this._fontStylesSet = null;
+			}
+			var savedContent:DisplayObject = this._content;
+			this.content = null;
+			//remove the content safely if it should not be disposed
+			if(savedContent !== null && this._disposeContent)
+			{
+				savedContent.dispose();
 			}
 			super.dispose();
 		}
@@ -898,6 +973,10 @@ package feathers.controls
 		 */
 		protected function refreshMessageStyles():void
 		{
+			if(!this.messageTextRenderer)
+			{
+				return;
+			}
 			this.messageTextRenderer.fontStyles = this._fontStylesSet;
 		}
 
