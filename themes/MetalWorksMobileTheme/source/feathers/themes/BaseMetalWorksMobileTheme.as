@@ -2588,14 +2588,14 @@ package feathers.themes
 
 			toast.fontStyles = this.lightFontStyles.clone();
 
-			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.paddingTop = this.gutterSize;
-			layout.paddingRight = this.gutterSize;
-			layout.paddingBottom = this.gutterSize;
-			layout.paddingLeft = this.gutterSize;
-			layout.gap = this.smallGutterSize;
-			layout.verticalAlign = VerticalAlign.MIDDLE;
-			toast.layout = layout;
+			toast.paddingTop = this.gutterSize;
+			toast.paddingRight = this.gutterSize;
+			toast.paddingBottom = this.gutterSize;
+			toast.paddingLeft = this.gutterSize;
+			toast.gap = Number.POSITIVE_INFINITY;
+			toast.minGap = this.smallGutterSize;
+			toast.horizontalAlign = HorizontalAlign.LEFT;
+			toast.verticalAlign = VerticalAlign.MIDDLE;
 		}
 
 		protected function setToastActionsGroupStyles(group:ButtonGroup):void

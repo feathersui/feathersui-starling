@@ -9,18 +9,22 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.data.IListCollection;
 	import feathers.layout.HorizontalAlign;
-	import feathers.layout.HorizontalLayout;
+	import feathers.layout.RelativePosition;
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
 	import feathers.motion.Fade;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.skins.IStyleProvider;
 	import feathers.text.FontStylesSet;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
+	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 
@@ -29,12 +33,13 @@ package feathers.controls
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.text.TextFormat;
+	import starling.utils.Pool;
 
 	/**
 	 *
 	 * @productversion Feathers 4.0.0
 	 */
-	public class Toast extends LayoutGroup
+	public class Toast extends FeathersControl
 	{
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
@@ -357,6 +362,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitMessageWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMessageHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMessageMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMessageMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMessageMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitMessageMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _message:String = null;
 
 		/**
@@ -409,6 +444,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitContentWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitContentMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _content:DisplayObject = null;
 
 		/**
@@ -435,9 +500,34 @@ package feathers.controls
 			this._content = value;
 			if(this._content)
 			{
+				if(this._content is IFeathersControl)
+				{
+					IFeathersControl(this._content).initializeNow();
+				}
+				if(this._content is IMeasureDisplayObject)
+				{
+					var measureContent:IMeasureDisplayObject = IMeasureDisplayObject(this._content);
+					this._explicitContentWidth = measureContent.explicitWidth;
+					this._explicitContentHeight = measureContent.explicitHeight;
+					this._explicitContentMinWidth = measureContent.explicitMinWidth;
+					this._explicitContentMinHeight = measureContent.explicitMinHeight;
+					this._explicitContentMaxWidth = measureContent.explicitMaxWidth;
+					this._explicitContentMaxHeight = measureContent.explicitMaxHeight;
+				}
+				else
+				{
+					this._explicitContentWidth = this._content.width;
+					this._explicitContentHeight = this._content.height;
+					this._explicitContentMinWidth = this._explicitContentWidth;
+					this._explicitContentMinHeight = this._explicitContentHeight;
+					this._explicitContentMaxWidth = this._explicitContentWidth;
+					this._explicitContentMaxHeight = this._explicitContentHeight;
+				}
 				this.addChild(this._content);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_ACTIONS_FACTORY);
 		}
 
 		/**
@@ -833,6 +923,405 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _explicitBackgroundSkinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMinWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMinHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMaxWidth:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitBackgroundSkinMaxHeight:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			if(this._backgroundSkin === value)
+			{
+				return;
+			}
+			if(this._backgroundSkin !== null && this._backgroundSkin.parent === this)
+			{
+				//we need to restore these values so that they won't be lost the
+				//next time that this skin is used for measurement
+				this._backgroundSkin.width = this._explicitBackgroundSkinWidth;
+				this._backgroundSkin.height = this._explicitBackgroundSkinHeight;
+				if(this._backgroundSkin is IMeasureDisplayObject)
+				{
+					var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._backgroundSkin);
+					measureSkin.minWidth = this._explicitBackgroundSkinMinWidth;
+					measureSkin.minHeight = this._explicitBackgroundSkinMinHeight;
+					measureSkin.maxWidth = this._explicitBackgroundSkinMaxWidth;
+					measureSkin.maxHeight = this._explicitBackgroundSkinMaxHeight;
+				}
+				this._backgroundSkin.removeFromParent(false);
+			}
+			this._backgroundSkin = value;
+			if(this._backgroundSkin !== null)
+			{
+				if(this._backgroundSkin is IFeathersControl)
+				{
+					IFeathersControl(this._backgroundSkin).initializeNow();
+				}
+				if(this._backgroundSkin is IMeasureDisplayObject)
+				{
+					measureSkin = IMeasureDisplayObject(this._backgroundSkin);
+					this._explicitBackgroundSkinWidth = measureSkin.explicitWidth;
+					this._explicitBackgroundSkinHeight = measureSkin.explicitHeight;
+					this._explicitBackgroundSkinMinWidth = measureSkin.explicitMinWidth;
+					this._explicitBackgroundSkinMinHeight = measureSkin.explicitMinHeight;
+					this._explicitBackgroundSkinMaxWidth = measureSkin.explicitMaxWidth;
+					this._explicitBackgroundSkinMaxHeight = measureSkin.explicitMaxHeight;
+				}
+				else
+				{
+					this._explicitBackgroundSkinWidth = this._backgroundSkin.width;
+					this._explicitBackgroundSkinHeight = this._backgroundSkin.height;
+					this._explicitBackgroundSkinMinWidth = this._explicitBackgroundSkinWidth;
+					this._explicitBackgroundSkinMinHeight = this._explicitBackgroundSkinHeight;
+					this._explicitBackgroundSkinMaxWidth = this._explicitBackgroundSkinWidth;
+					this._explicitBackgroundSkinMaxHeight = this._explicitBackgroundSkinHeight;
+				}
+				this.addChildAt(this._backgroundSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HorizontalAlign.CENTER;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * @private
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._horizontalAlign === value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VerticalAlign.MIDDLE;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
+		/**
+		 * @private
+		 */
+		public function get verticalAlign():String
+		{
+			return this._verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._verticalAlign === value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _gap:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get gap():Number
+		{
+			return this._gap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gap(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._gap == value)
+			{
+				return;
+			}
+			this._gap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minGap:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get minGap():Number
+		{
+			return this._minGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minGap(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._minGap == value)
+			{
+				return;
+			}
+			this._minGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _actionsPosition:String = RelativePosition.RIGHT;
+
+		[Inspectable(type="String",enumeration="top,right,bottom,left")]
+		/**
+		 * @private
+		 */
+		public function get actionsPosition():String
+		{
+			return this._actionsPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set actionsPosition(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._actionsPosition === value)
+			{
+				return;
+			}
+			this._actionsPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._fontStylesSet !== null)
@@ -877,24 +1366,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			if(this._layout === null)
-			{
-				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.horizontalAlign = HorizontalAlign.CENTER;
-				this.ignoreNextStyleRestriction();
-				this.layout = layout;
-			}
-			super.initialize();
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
@@ -931,7 +1406,379 @@ package feathers.controls
 				}
 			}
 
-			super.draw();
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			this.layoutChildren();
+		}
+
+		/**
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>saveMeasurements()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
+			{
+				return false;
+			}
+			
+			var adjustedGap:Number = this._gap;
+			if(adjustedGap == Number.POSITIVE_INFINITY)
+			{
+				adjustedGap = this._minGap;
+			}
+
+			resetFluidChildDimensionsForMeasurement(this._backgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
+				this._explicitBackgroundSkinWidth, this._explicitBackgroundSkinHeight,
+				this._explicitBackgroundSkinMinWidth, this._explicitBackgroundSkinMinHeight,
+				this._explicitBackgroundSkinMaxWidth, this._explicitBackgroundSkinMaxHeight);
+			var measureSkin:IMeasureDisplayObject = this._backgroundSkin as IMeasureDisplayObject;
+			
+			resetFluidChildDimensionsForMeasurement(this._content,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
+				this._explicitContentWidth, this._explicitContentHeight,
+				this._explicitContentMinWidth, this._explicitContentMinHeight,
+				this._explicitContentMaxWidth, this._explicitContentMaxHeight);
+			var measureContent:IMeasureDisplayObject = this._content as IMeasureDisplayObject;
+
+			if(this._content is IValidating)
+			{
+				IValidating(this._content).validate();
+			}
+			var messageSize:Point = Pool.getPoint();
+			if(this.messageTextRenderer !== null)
+			{
+				this.refreshMessageTextRendererDimensions(true);
+				this.messageTextRenderer.measureText(messageSize);
+			}
+			if(this.actionsGroup)
+			{
+				this.actionsGroup.validate();
+			}
+			if(this._backgroundSkin is IValidating)
+			{
+				IValidating(this._backgroundSkin).validate();
+			}
+			
+			var newMinWidth:Number = this._explicitMinWidth;
+			if(needsMinWidth)
+			{
+				if(this._content !== null)
+				{
+					if(measureContent !== null)
+					{
+						newMinWidth = measureContent.minWidth;
+					}
+					else
+					{
+						newMinWidth = this._content.width;
+					}
+				}
+				else if(this.messageTextRenderer !== null)
+				{
+					newMinWidth = messageSize.x;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				if(this.actionsGroup !== null)
+				{
+					if(this.messageTextRenderer !== null) //both message and actions
+					{
+						if(this._actionsPosition !== RelativePosition.TOP &&
+							this._actionsPosition !== RelativePosition.BOTTOM)
+						{
+							newMinWidth += adjustedGap;
+							newMinWidth += this.actionsGroup.minWidth;
+						}
+						else //top or bottom
+						{
+							var iconMinWidth:Number = this.actionsGroup.minWidth;
+							if(iconMinWidth > newMinWidth)
+							{
+								newMinWidth = iconMinWidth;
+							}
+						}
+					}
+					else //no message
+					{
+						newMinWidth = this.actionsGroup.minWidth;
+					}
+				}
+				newMinWidth += this._paddingLeft + this._paddingRight;
+				if(this._backgroundSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minWidth > newMinWidth)
+						{
+							newMinWidth = measureSkin.minWidth;
+						}
+					}
+					else if(this._explicitBackgroundSkinMinWidth > newMinWidth)
+					{
+						newMinWidth = this._explicitBackgroundSkinMinWidth;
+					}
+				}
+			}
+
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsMinHeight)
+			{
+				if(this._content !== null)
+				{
+					if(measureContent !== null)
+					{
+						newMinHeight = measureContent.minHeight;
+					}
+					else
+					{
+						newMinHeight = this._content.height;
+					}
+				}
+				else if(this.messageTextRenderer !== null)
+				{
+					newMinHeight = messageSize.y;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				if(this.actionsGroup !== null)
+				{
+					if(this.messageTextRenderer !== null) //both message and actions
+					{
+						if(this._actionsPosition === RelativePosition.TOP ||
+							this._actionsPosition === RelativePosition.BOTTOM)
+						{
+							newMinHeight += adjustedGap;
+							newMinHeight += this.actionsGroup.minHeight;
+						}
+						else //left or right
+						{
+							var iconMinHeight:Number = this.actionsGroup.minHeight;
+							if(iconMinHeight > newMinHeight)
+							{
+								newMinHeight = iconMinHeight;
+							}
+						}
+					}
+					else //no message
+					{
+						newMinHeight = this.actionsGroup.minHeight;
+					}
+				}
+				newMinHeight += this._paddingTop + this._paddingBottom;
+				if(this._backgroundSkin !== null)
+				{
+					if(measureSkin !== null)
+					{
+						if(measureSkin.minHeight > newMinHeight)
+						{
+							newMinHeight = measureSkin.minHeight;
+						}
+					}
+					else if(this._explicitBackgroundSkinMinHeight > newMinHeight)
+					{
+						newMinHeight = this._explicitBackgroundSkinMinHeight;
+					}
+				}
+			}
+			
+			var newWidth:Number = this._explicitWidth;
+			if(needsWidth)
+			{
+				if(this._content !== null)
+				{
+					newWidth = this._content.width;
+				}
+				else if(this.messageTextRenderer !== null)
+				{
+					newWidth = messageSize.x;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+				if(this.actionsGroup !== null)
+				{
+					if(this.messageTextRenderer !== null) //both message and actions
+					{
+						if(this._actionsPosition !== RelativePosition.TOP &&
+							this._actionsPosition !== RelativePosition.BOTTOM)
+						{
+							newWidth += adjustedGap + this.actionsGroup.width;
+						}
+						else if(this.actionsGroup.width > newWidth) //top or bottom
+						{
+							newWidth = this.actionsGroup.width;
+						}
+					}
+					else //no message
+					{
+						newWidth = this.actionsGroup.width;
+					}
+				}
+				newWidth += this._paddingLeft + this._paddingRight;
+				if(this._backgroundSkin !== null &&
+					this._backgroundSkin.width > newWidth)
+				{
+					newWidth = this._backgroundSkin.width;
+				}
+			}
+
+			var newHeight:Number = this._explicitHeight;
+			if(needsHeight)
+			{
+				if(this._content !== null)
+				{
+					newHeight = this._content.height;
+				}
+				else if(this.messageTextRenderer !== null)
+				{
+					newHeight = messageSize.y;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				if(this.actionsGroup !== null)
+				{
+					if(this.messageTextRenderer !== null) //both message and actions
+					{
+						if(this._actionsPosition === RelativePosition.TOP ||
+							this._actionsPosition === RelativePosition.BOTTOM)
+						{
+							newHeight += adjustedGap + this.actionsGroup.height;
+						}
+						else if(this.actionsGroup.height > newHeight) //left or right
+						{
+							newHeight = this.actionsGroup.height;
+						}
+					}
+					else //no message
+					{
+						newHeight = this.actionsGroup.height;
+					}
+				}
+				newHeight += this._paddingTop + this._paddingBottom;
+				if(this._backgroundSkin !== null &&
+					this._backgroundSkin.height > newHeight)
+				{
+					newHeight = this._backgroundSkin.height;
+				}
+			}
+
+			Pool.putPoint(messageSize);
+
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMessageTextRendererDimensions(forMeasurement:Boolean):void
+		{
+			if(this.actionsGroup !== null)
+			{
+				this.actionsGroup.validate();
+			}
+			if(!this.messageTextRenderer)
+			{
+				return;
+			}
+			var calculatedWidth:Number = this.actualWidth;
+			var calculatedHeight:Number = this.actualHeight;
+			if(forMeasurement)
+			{
+				calculatedWidth = this._explicitWidth;
+				if(calculatedWidth !== calculatedWidth) //isNaN
+				{
+					calculatedWidth = this._explicitMaxWidth;
+				}
+				calculatedHeight = this._explicitHeight;
+				if(calculatedHeight !== calculatedHeight) //isNaN
+				{
+					calculatedHeight = this._explicitMaxHeight;
+				}
+			}
+			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+			calculatedHeight -= (this._paddingTop + this._paddingBottom);
+			if(this.actionsGroup !== null)
+			{
+				var adjustedGap:Number = this._gap;
+				if(adjustedGap == Number.POSITIVE_INFINITY)
+				{
+					adjustedGap = this._minGap;
+				}
+				if(this._actionsPosition === RelativePosition.LEFT || 
+					this._actionsPosition === RelativePosition.RIGHT)
+				{
+					calculatedWidth -= (this.actionsGroup.width + adjustedGap);
+				}
+				if(this._actionsPosition === RelativePosition.TOP || this._actionsPosition === RelativePosition.BOTTOM)
+				{
+					calculatedHeight -= (this.actionsGroup.height + adjustedGap);
+				}
+			}
+			if(calculatedWidth < 0)
+			{
+				calculatedWidth = 0;
+			}
+			if(calculatedHeight < 0)
+			{
+				calculatedHeight = 0;
+			}
+			if(calculatedWidth > this._explicitMessageMaxWidth)
+			{
+				calculatedWidth = this._explicitMessageMaxWidth;
+			}
+			if(calculatedHeight > this._explicitMessageMaxHeight)
+			{
+				calculatedHeight = this._explicitMessageMaxHeight;
+			}
+			this.messageTextRenderer.width = this._explicitMessageWidth;
+			this.messageTextRenderer.height = this._explicitMessageHeight;
+			this.messageTextRenderer.minWidth = this._explicitMessageMinWidth;
+			this.messageTextRenderer.minHeight = this._explicitMessageMinHeight;
+			this.messageTextRenderer.maxWidth = calculatedWidth;
+			this.messageTextRenderer.maxHeight = calculatedHeight;
+			this.messageTextRenderer.validate();
+			if(!forMeasurement)
+			{
+				calculatedWidth = this.messageTextRenderer.width;
+				calculatedHeight = this.messageTextRenderer.height;
+				//setting all of these dimensions explicitly means that the text
+				//renderer won't measure itself again when it validates, which
+				//helps performance. we'll reset them when the toast needs to
+				//measure itself.
+				this.messageTextRenderer.width = calculatedWidth;
+				this.messageTextRenderer.height = calculatedHeight;
+				this.messageTextRenderer.minWidth = calculatedWidth;
+				this.messageTextRenderer.minHeight = calculatedHeight;
+			}
 		}
 
 		/**
@@ -966,6 +1813,12 @@ package feathers.controls
 			uiTextRenderer.styleNameList.add(messageStyleName);
 			uiTextRenderer.touchable = false;
 			this.addChild(DisplayObject(this.messageTextRenderer));
+			this._explicitMessageWidth = this.messageTextRenderer.explicitWidth;
+			this._explicitMessageHeight = this.messageTextRenderer.explicitHeight;
+			this._explicitMessageMinWidth = this.messageTextRenderer.explicitMinWidth;
+			this._explicitMessageMinHeight = this.messageTextRenderer.explicitMinHeight;
+			this._explicitMessageMaxWidth = this.messageTextRenderer.explicitMaxWidth;
+			this._explicitMessageMaxHeight = this.messageTextRenderer.explicitMaxHeight;
 		}
 
 		/**
@@ -981,15 +1834,15 @@ package feathers.controls
 		}
 
 		/**
-		 * Creates and adds the <code>buttonGroupFooter</code> sub-component and
+		 * Creates and adds the <code>actionsGroup</code> sub-component and
 		 * removes the old instance, if one exists.
 		 *
 		 * <p>Meant for internal use, and subclasses may override this function
 		 * with a custom implementation.</p>
 		 *
-		 * @see #buttonGroupFooter
-		 * @see #buttonGroupFactory
-		 * @see #style:customButtonGroupStyleName
+		 * @see #actionsGroup
+		 * @see #actionsGroupFactory
+		 * @see #style:customActionsGroupStyleName
 		 */
 		protected function createActions():void
 		{
@@ -1014,6 +1867,187 @@ package feathers.controls
 			this.actionsGroup.styleNameList.add(actionsGroupStyleName);
 			this.actionsGroup.addEventListener(Event.TRIGGERED, actionsGroup_triggeredHandler);
 			this.addChild(this.actionsGroup);
+		}
+
+		/**
+		 * Positions and sizes the toast's content.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 */
+		protected function layoutChildren():void
+		{
+			if(this._backgroundSkin)
+			{
+				this._backgroundSkin.width = this.actualWidth;
+				this._backgroundSkin.height = this.actualHeight;
+			}
+			if(this._content)
+			{
+				this._content.x = this._paddingLeft;
+				this._content.y = this._paddingTop;
+				this._content.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this._content.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
+			
+			this.refreshMessageTextRendererDimensions(false);
+			if(this.actionsGroup)
+			{
+				this.positionSingleChild(DisplayObject(this.messageTextRenderer));
+				this.positionActionsRelativeToMessage();
+			}
+			else if(this.messageTextRenderer)
+			{
+				this.positionSingleChild(DisplayObject(this.messageTextRenderer))
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionSingleChild(displayObject:DisplayObject):void
+		{
+			if(this._horizontalAlign == HorizontalAlign.LEFT)
+			{
+				displayObject.x = this._paddingLeft;
+			}
+			else if(this._horizontalAlign == HorizontalAlign.RIGHT)
+			{
+				displayObject.x = this.actualWidth - this._paddingRight - displayObject.width;
+			}
+			else //center
+			{
+				displayObject.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2);
+			}
+			if(this._verticalAlign == VerticalAlign.TOP)
+			{
+				displayObject.y = this._paddingTop;
+			}
+			else if(this._verticalAlign == VerticalAlign.BOTTOM)
+			{
+				displayObject.y = this.actualHeight - this._paddingBottom - displayObject.height;
+			}
+			else //middle
+			{
+				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function positionActionsRelativeToMessage():void
+		{
+			if(this._actionsPosition == RelativePosition.TOP)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.actionsGroup.y = this._paddingTop;
+					this.messageTextRenderer.y = this.actualHeight - this._paddingBottom - this.messageTextRenderer.height;
+				}
+				else
+				{
+					if(this._verticalAlign == VerticalAlign.TOP)
+					{
+						this.messageTextRenderer.y += this.actionsGroup.height + this._gap;
+					}
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
+					{
+						this.messageTextRenderer.y += Math.round((this.actionsGroup.height + this._gap) / 2);
+					}
+					this.actionsGroup.y = this.messageTextRenderer.y - this.actionsGroup.height - this._gap;
+				}
+			}
+			else if(this._actionsPosition == RelativePosition.RIGHT)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.messageTextRenderer.x = this._paddingLeft;
+					this.actionsGroup.x = this.actualWidth - this._paddingRight - this.actionsGroup.width;
+				}
+				else
+				{
+					if(this._horizontalAlign == HorizontalAlign.RIGHT)
+					{
+						this.messageTextRenderer.x -= this.actionsGroup.width + this._gap;
+					}
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
+					{
+						this.messageTextRenderer.x -= Math.round((this.actionsGroup.width + this._gap) / 2);
+					}
+					this.actionsGroup.x = this.messageTextRenderer.x + this.messageTextRenderer.width + this._gap;
+				}
+			}
+			else if(this._actionsPosition == RelativePosition.BOTTOM)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.messageTextRenderer.y = this._paddingTop;
+					this.actionsGroup.y = this.actualHeight - this._paddingBottom - this.actionsGroup.height;
+				}
+				else
+				{
+					if(this._verticalAlign == VerticalAlign.BOTTOM)
+					{
+						this.messageTextRenderer.y -= this.actionsGroup.height + this._gap;
+					}
+					else if(this._verticalAlign == VerticalAlign.MIDDLE)
+					{
+						this.messageTextRenderer.y -= Math.round((this.actionsGroup.height + this._gap) / 2);
+					}
+					this.actionsGroup.y = this.messageTextRenderer.y + this.messageTextRenderer.height + this._gap;
+				}
+			}
+			else if(this._actionsPosition == RelativePosition.LEFT)
+			{
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.actionsGroup.x = this._paddingLeft;
+					this.messageTextRenderer.x = this.actualWidth - this._paddingRight - this.messageTextRenderer.width;
+				}
+				else
+				{
+					if(this._horizontalAlign == HorizontalAlign.LEFT)
+					{
+						this.messageTextRenderer.x += this._gap + this.actionsGroup.width;
+					}
+					else if(this._horizontalAlign == HorizontalAlign.CENTER)
+					{
+						this.messageTextRenderer.x += Math.round((this._gap + this.actionsGroup.width) / 2);
+					}
+					this.actionsGroup.x = this.messageTextRenderer.x - this._gap - this.actionsGroup.width;
+				}
+			}
+			
+			if(this._actionsPosition == RelativePosition.LEFT || this._actionsPosition == RelativePosition.RIGHT)
+			{
+				if(this._verticalAlign == VerticalAlign.TOP)
+				{
+					this.actionsGroup.y = this._paddingTop;
+				}
+				else if(this._verticalAlign == VerticalAlign.BOTTOM)
+				{
+					this.actionsGroup.y = this.actualHeight - this._paddingBottom - this.actionsGroup.height;
+				}
+				else
+				{
+					this.actionsGroup.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - this.actionsGroup.height) / 2);
+				}
+			}
+			else //top or bottom
+			{
+				if(this._horizontalAlign == HorizontalAlign.LEFT)
+				{
+					this.actionsGroup.x = this._paddingLeft;
+				}
+				else if(this._horizontalAlign == HorizontalAlign.RIGHT)
+				{
+					this.actionsGroup.x = this.actualWidth - this._paddingRight - this.actionsGroup.width;
+				}
+				else
+				{
+					this.actionsGroup.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - this.actionsGroup.width) / 2);
+				}
+			}
 		}
 
 		/**
