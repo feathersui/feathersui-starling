@@ -154,11 +154,11 @@ package feathers.controls
 		 * @see #showMessage()
 		 * @see #showMessageWithActions()
 		 */
-		public static function showContent(content:DisplayObject, timeout:Number = 4):void
+		public static function showContent(content:DisplayObject, timeout:Number = 4):Toast
 		{
 			var toast:Toast = new Toast();
 			toast.content = content;
-			showToast(toast, timeout);
+			return showToast(toast, timeout);
 		}
 
 		/**
@@ -167,11 +167,11 @@ package feathers.controls
 		 * @see #showMessageWithActions()
 		 * @see #showContent()
 		 */
-		public static function showMessage(message:String, timeout:Number = 4):void
+		public static function showMessage(message:String, timeout:Number = 4):Toast
 		{
 			var toast:Toast = new Toast();
 			toast.message = message;
-			showToast(toast, timeout);
+			return showToast(toast, timeout);
 		}
 
 		/**
@@ -180,12 +180,12 @@ package feathers.controls
 		 * @see #showMessage()
 		 * @see #showContent()
 		 */
-		public static function showMessageWithActions(message:String, actions:IListCollection, timeout:Number = 4):void
+		public static function showMessageWithActions(message:String, actions:IListCollection, timeout:Number = 4):Toast
 		{
 			var toast:Toast = new Toast();
 			toast.message = message;
 			toast.actions = actions;
-			showToast(toast, timeout);
+			return showToast(toast, timeout);
 		}
 
 		/**
@@ -195,7 +195,7 @@ package feathers.controls
 		 * @see #showMessageWithActions()
 		 * @see #showContent()
 		 */
-		public static function showToast(toast:Toast, timeout:Number):void
+		public static function showToast(toast:Toast, timeout:Number):Toast
 		{
 			toast.timeout = timeout;
 			if(_activeToasts.length >= _maxVisibleToasts)
@@ -215,12 +215,13 @@ package feathers.controls
 						}
 					}
 				}
-				return;
+				return toast;
 			}
 			_activeToasts[_activeToasts.length] = toast;
 			toast.addEventListener(Event.CLOSE, toast_closeHandler);
 			var container:DisplayObjectContainer = getContainerForStarling(Starling.current);
 			container.addChild(toast);
+			return toast;
 		}
 
 		/**
