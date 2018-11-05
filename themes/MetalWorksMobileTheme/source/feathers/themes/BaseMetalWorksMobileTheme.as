@@ -2588,9 +2588,10 @@ package feathers.themes
 
 			toast.fontStyles = this.lightFontStyles.clone();
 
-			toast.paddingTop = this.gutterSize;
+			toast.width = this.popUpFillSize;
+			toast.paddingTop = this.smallGutterSize;
 			toast.paddingRight = this.gutterSize;
-			toast.paddingBottom = this.gutterSize;
+			toast.paddingBottom = this.smallGutterSize;
 			toast.paddingLeft = this.gutterSize;
 			toast.gap = Number.POSITIVE_INFINITY;
 			toast.minGap = this.smallGutterSize;
