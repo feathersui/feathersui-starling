@@ -34,6 +34,7 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
+	import feathers.system.DeviceCapabilities;
 
 	/**
 	 *
@@ -283,10 +284,17 @@ package feathers.controls
 			var container:LayoutGroup = new LayoutGroup();
 			container.autoSizeMode = AutoSizeMode.STAGE;
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = HorizontalAlign.LEFT;
 			layout.verticalAlign = VerticalAlign.BOTTOM;
-			layout.padding = 20;
-			layout.gap = 8;
+			if(DeviceCapabilities.isPhone())
+			{
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			}
+			else
+			{
+				layout.horizontalAlign = HorizontalAlign.LEFT;
+			}
+			layout.padding = 10;
+			layout.gap = 10;
 			container.layout = layout;
 			return container;
 		}
