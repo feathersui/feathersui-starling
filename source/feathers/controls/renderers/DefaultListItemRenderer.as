@@ -332,6 +332,9 @@ package feathers.controls.renderers
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function dragIcon_resizeHandler(event:Event):void
 		{
 			if(this._ignoreDragIconResizes)
