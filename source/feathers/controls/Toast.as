@@ -37,6 +37,255 @@ package feathers.controls
 	import feathers.system.DeviceCapabilities;
 
 	/**
+	 * The primary background to display behind the toast's content.
+	 *
+	 * <p>In the following example, the toast's background is set to an image:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.backgroundSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
+
+	/**
+	 * A style name to add to the toast's actions button group sub-component.
+	 * Typically used by a theme to provide different styles to different toasts.
+	 *
+	 * <p>In the following example, a custom actions button group style name is
+	 * passed to the toast:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.customActionsStyleName = "my-custom-toast-actions";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( ButtonGroup ).setFunctionForStyleName( "my-custom-toast-actions", setCustomToastActionsStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_ACTIONS
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #actionsFactory
+	 */
+	[Style(name="customActionsStyleName",type="String")]
+
+	/**
+	 * A style name to add to the toast's message text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different toasts.
+	 *
+	 * <p>In the following example, a custom message style name is passed to
+	 * the toast:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.customMessageStyleName = "my-custom-toast-message";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-toast-message", setCustomToastMessageStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_MESSAGE
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #messageFactory
+	 */
+	[Style(name="customLabelStyleName",type="String")]
+
+	/**
+	 * The font styles used to display the toast's message when the button is
+	 * disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>messageFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:fontStyles
+	 */
+	[Style(name="disabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the toast's message.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>messageFactory</code> to set more advanced styles.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #disabledFontStyles
+	 */
+	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The space, in pixels, between the message text renderer and the actions
+	 * button group. Applies to either horizontal or vertical spacing, depending
+	 * on the value of <code>actionsPosition</code>.
+	 *
+	 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+	 * the message and actions will be positioned as far apart as possible. In
+	 * other words, they will be positioned at the edges of the toast,
+	 * adjusted for padding.</p>
+	 *
+	 * <p>The following example creates a gap of 50 pixels between the label
+	 * and the icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.gap = 50;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:iconPosition
+	 * @see #style:minGap
+	 */
+	[Style(name="gap",type="Number")]
+
+	/**
+	 * If the value of the <code>gap</code> property is
+	 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+	 * fill as much space as possible, the final calculated value will not be
+	 * smaller than the value of the <code>minGap</code> property.
+	 *
+	 * <p>The following example ensures that the gap is never smaller than
+	 * 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.gap = Number.POSITIVE_INFINITY;
+	 * toast.minGap = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:gap
+	 */
+	[Style(name="minGap",type="Number")]
+
+	/**
+	 * Quickly sets all padding properties to the same value. The
+	 * <code>padding</code> getter always returns the value of
+	 * <code>paddingTop</code>, but the other padding values may be
+	 * different.
+	 *
+	 * <p>In the following example, the padding of all sides of the toast
+	 * is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.padding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:paddingTop
+	 * @see #style:paddingRight
+	 * @see #style:paddingBottom
+	 * @see #style:paddingLeft
+	 */
+	[Style(name="padding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the toast's top edge and the
+	 * toast's content.
+	 *
+	 * <p>In the following example, the padding on the top edge of the
+	 * toast is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.paddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:padding
+	 */
+	[Style(name="paddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the toast's right edge and
+	 * the toast's content.
+	 *
+	 * <p>In the following example, the padding on the right edge of the
+	 * toast is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.paddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the toast's bottom edge and
+	 * the toast's content.
+	 *
+	 * <p>In the following example, the padding on the bottom edge of the
+	 * toast is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.paddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the toast's left edge and the
+	 * toast's content.
+	 *
+	 * <p>In the following example, the padding on the left edge of the
+	 * toast is set to 20 pixels:</p>
+	 *
+	 * <listing version="3.0">
+	 * toast.paddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:padding
+	 */
+	[Style(name="paddingLeft",type="Number")]
+
+	/**
+	 * Displays a notification-like message in a popup over the rest of your
+	 * app's content. May contain a message and optional actions, or completely
+	 * custom content.
+	 *
+	 * <p>In the following example, a toast displaying a message and actions is
+	 * triggered:</p>
+	 *
+	 * <listing version="3.0">
+	 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
+	 * 
+	 * function button_triggeredHandler( event:Event ):void
+	 * {
+	 *     Toast.showMessageWithActions( "Item deleted", new ArrayCollection([{ label: "Undo" }]) );
+	 * }</listing>
+	 *
+	 * @see ../../../help/toast.html How to use the Feathers Toast component
+	 * @see #showMessage()
+	 * @see #showMessageWithActions()
+	 * @see #showContent()
 	 *
 	 * @productversion Feathers 4.0.0
 	 */
@@ -53,11 +302,11 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
-		 * actions butotn group.
+		 * actions button group.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_STYLE_NAME_ACTIONS_GROUP:String = "feathers-toast-actions";
+		public static const DEFAULT_CHILD_STYLE_NAME_ACTIONS:String = "feathers-toast-actions";
 
 		/**
 		 * @private
@@ -301,10 +550,10 @@ package feathers.controls
 
 		/**
 		 * The default factory that creates the action button group. To use a
-		 * different factory, you need to set <code>actionsGroupFactory</code>
+		 * different factory, you need to set <code>actionsFactory</code>
 		 * to a <code>Function</code> instance.
 		 */
-		public static function defaultActionsGroupFactory():ButtonGroup
+		public static function defaultActionsFactory():ButtonGroup
 		{
 			return new ButtonGroup();
 		}
@@ -340,11 +589,11 @@ package feathers.controls
 		 * actions button group. This variable is <code>protected</code> so
 		 * that sub-classes can customize the actions style name in their
 		 * constructors instead of using the default style name defined by
-		 * <code>DEFAULT_CHILD_STYLE_NAME_ACTIONS_GROUP</code>.
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ACTIONS</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var actionsGroupStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACTIONS_GROUP;
+		protected var actionsStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACTIONS;
 
 		/**
 		 * The message text renderer sub-component.
@@ -588,7 +837,47 @@ package feathers.controls
 		protected var _closeEffect:Function = Fade.createFadeOutEffect();
 
 		/**
+		 * An optional effect that is activated when the toast is closed.
+		 *
+		 * <p>In the following example, a close effect fades the toast's
+		 * <code>alpha</code> property from <code>1</code> to <code>0</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * toast.closeEffect = Fade.createFadeBetweenEffect(1, 0);</listing>
+		 *
+		 * <p>A number of animated effects may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these effects. It's possible
+		 * to create custom effects too.</p>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IEffectContext</pre>
+		 *
+		 * <p>The <code>IEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it.</p>
 		 * 
+		 * <p>Custom animated effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenEffectContext</code>. In the following example, we
+		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
+		 * previous example.</p>
+		 * 
+		 * <listing version="3.0">
+		 * toast.closeEffect = function(target:DisplayObject):IEffectContext
+		 * {
+		 *     toast.alpha = 1;
+		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
+		 *     tween.fadeTo(0);
+		 *     return new TweenEffectContext(target, tween);
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.FeathersControl#addedEffect
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
+		 * @see feathers.motion.effectClasses.IEffectContext
+		 * @see feathers.motion.effectClasses.TweenEffectContext
 		 */
 		public function get closeEffect():Function
 		{
@@ -768,7 +1057,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _actionsGroupFactory:Function = null;
+		protected var _actionsFactory:Function = null;
 
 		/**
 		 * A function used to generate the toast's button group sub-component.
@@ -785,7 +1074,7 @@ package feathers.controls
 		 * provided to the toast:</p>
 		 *
 		 * <listing version="3.0">
-		 * toast.actionsGroupFactory = function():ButtonGroup
+		 * toast.actionsFactory = function():ButtonGroup
 		 * {
 		 *     return new ButtonGroup();
 		 * };</listing>
@@ -794,51 +1083,51 @@ package feathers.controls
 		 *
 		 * @see feathers.controls.ButtonGroup
 		 */
-		public function get actionsGroupFactory():Function
+		public function get actionsFactory():Function
 		{
-			return this._actionsGroupFactory;
+			return this._actionsFactory;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set actionsGroupFactory(value:Function):void
+		public function set actionsFactory(value:Function):void
 		{
-			if(this._actionsGroupFactory == value)
+			if(this._actionsFactory == value)
 			{
 				return;
 			}
-			this._actionsGroupFactory = value;
+			this._actionsFactory = value;
 			this.invalidate(INVALIDATION_FLAG_ACTIONS_FACTORY);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customActionsGroupStyleName:String = null;
+		protected var _customActionsStyleName:String = null;
 
 		/**
 		 * @private
 		 */
-		public function get customActionsGroupStyleName():String
+		public function get customActionsStyleName():String
 		{
-			return this._customActionsGroupStyleName;
+			return this._customActionsStyleName;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set customActionsGroupStyleName(value:String):void
+		public function set customActionsStyleName(value:String):void
 		{
 			if(this.processStyleRestriction(arguments.callee))
 			{
 				return;
 			}
-			if(this._customActionsGroupStyleName === value)
+			if(this._customActionsStyleName === value)
 			{
 				return;
 			}
-			this._customActionsGroupStyleName = value;
+			this._customActionsStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_ACTIONS_FACTORY);
 		}
 
@@ -1349,7 +1638,10 @@ package feathers.controls
 		}
 
 		/**
-		 * @inheritDoc
+		 * Closes the toast and optionally disposes it. If a
+		 * <code>closeEffect</code> has been specified, it will be played.
+		 * 
+		 * @see #closeEffect
 		 */
 		public function close(dispose:Boolean = true):void
 		{
@@ -1360,7 +1652,7 @@ package feathers.controls
 			this._isClosing = true;
 			this._disposeFromCloseCall = dispose;
 			this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
-			if(this._closeEffect)
+			if(this._closeEffect !== null)
 			{
 				this._closeEffectContext = IEffectContext(this._closeEffect(this));
 				this._closeEffectContext.addEventListener(Event.COMPLETE, closeEffectContext_completeHandler);
@@ -1850,8 +2142,8 @@ package feathers.controls
 		 * with a custom implementation.</p>
 		 *
 		 * @see #actionsGroup
-		 * @see #actionsGroupFactory
-		 * @see #style:customActionsGroupStyleName
+		 * @see #actionsFactory
+		 * @see #style:customActionsStyleName
 		 */
 		protected function createActions():void
 		{
@@ -1866,14 +2158,14 @@ package feathers.controls
 			{
 				return;
 			}
-			var factory:Function = this._actionsGroupFactory !== null ? this._actionsGroupFactory : defaultActionsGroupFactory;
+			var factory:Function = this._actionsFactory !== null ? this._actionsFactory : defaultActionsFactory;
 			if(factory === null)
 			{
 				return;
 			}
-			var actionsGroupStyleName:String = this._customActionsGroupStyleName != null ? this._customActionsGroupStyleName : this.actionsGroupStyleName;
+			var actionsStyleName:String = this._customActionsStyleName != null ? this._customActionsStyleName : this.actionsStyleName;
 			this.actionsGroup = ButtonGroup(factory());
-			this.actionsGroup.styleNameList.add(actionsGroupStyleName);
+			this.actionsGroup.styleNameList.add(actionsStyleName);
 			this.actionsGroup.addEventListener(Event.TRIGGERED, actionsGroup_triggeredHandler);
 			this.addChild(this.actionsGroup);
 		}
