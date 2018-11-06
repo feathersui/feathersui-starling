@@ -1024,7 +1024,7 @@ package feathers.themes
 
 			//toast
 			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
-			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS_GROUP, this.setToastActionsGroupStyles);
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -2599,7 +2599,7 @@ package feathers.themes
 			toast.verticalAlign = VerticalAlign.MIDDLE;
 		}
 
-		protected function setToastActionsGroupStyles(group:ButtonGroup):void
+		protected function setToastActionsStyles(group:ButtonGroup):void
 		{
 			group.direction = Direction.HORIZONTAL;
 			group.customButtonStyleName = Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON;
