@@ -108,6 +108,8 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 	import feathers.controls.Toast;
+	import feathers.controls.AutoSizeMode;
+	import starling.display.DisplayObjectContainer;
 
 	/**
 	 * The base class for the "Metal Works" theme for mobile Feathers apps.
@@ -235,6 +237,12 @@ package feathers.themes
 		 * The theme's custom style name for the item renderer of the DateTimeSpinner's SpinnerLists.
 		 */
 		protected static const THEME_STYLE_NAME_DATE_TIME_SPINNER_LIST_ITEM_RENDERER:String = "metal-works-mobile-date-time-spinner-list-item-renderer";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the action buttons of a toast.
+		 */
+		protected static const THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON:String = "metal-works-mobile-toast-actions-button";
 
 		/**
 		 * The default global text renderer factory for this theme creates a
@@ -677,6 +685,7 @@ package feathers.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+			Toast.containerFactory = toastContainerFactory;
 
 			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, true);
@@ -1025,6 +1034,7 @@ package feathers.themes
 			//toast
 			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON, this.setToastActionsButtonStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -1094,6 +1104,29 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
 			skin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			if(DeviceCapabilities.isPhone())
+			{
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+				layout.padding = this.smallGutterSize;
+				layout.gap = this.smallGutterSize;
+			}
+			else
+			{
+				layout.horizontalAlign = HorizontalAlign.LEFT;
+				layout.padding = this.gutterSize;
+				layout.gap = this.gutterSize;
+			}
+			container.layout = layout;
+			return container;
 		}
 
 	//-------------------------
@@ -2589,9 +2622,9 @@ package feathers.themes
 			toast.fontStyles = this.lightFontStyles.clone();
 
 			toast.width = this.popUpFillSize;
-			toast.paddingTop = this.smallGutterSize;
+			toast.paddingTop = this.gutterSize;
 			toast.paddingRight = this.gutterSize;
-			toast.paddingBottom = this.smallGutterSize;
+			toast.paddingBottom = this.gutterSize;
 			toast.paddingLeft = this.gutterSize;
 			toast.gap = Number.POSITIVE_INFINITY;
 			toast.minGap = this.smallGutterSize;
@@ -2602,7 +2635,14 @@ package feathers.themes
 		protected function setToastActionsStyles(group:ButtonGroup):void
 		{
 			group.direction = Direction.HORIZONTAL;
-			group.customButtonStyleName = Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON;
+			group.gap = this.smallGutterSize;
+			group.customButtonStyleName = THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON;
+		}
+
+		protected function setToastActionsButtonStyles(button:Button):void
+		{
+			button.fontStyles = this.lightFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.selectedFontStyles);
 		}
 
 	//-------------------------
