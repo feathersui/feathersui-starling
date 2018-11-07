@@ -2641,8 +2641,8 @@ package feathers.themes
 
 		protected function setToastActionsButtonStyles(button:Button):void
 		{
-			button.fontStyles = this.lightFontStyles.clone();
-			button.setFontStylesForState(ButtonState.DOWN, this.selectedFontStyles);
+			button.fontStyles = this.selectedUIFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.lightUIFontStyles);
 		}
 
 	//-------------------------
