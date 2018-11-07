@@ -386,6 +386,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static var _containerFactory:Function = defaultContainerFactory;
+
+		/**
+		 * Create a container for toasts that is added to the pop-up manager.
+		 * Useful for customizing the layout of toasts.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():DisplayObjectContainer</pre>
+		 *
+		 * <p>The following example shows how to create a custom toast container:</p>
+		 *
+		 * <listing version="3.0">
+		 * Toast.containerFactory = function():DisplayObjectContainer
+		 * {
+		 *     var container:LayoutGroup = new LayoutGroup();
+		 *     container.layout = new VerticalLayout();
+		 *     return container;
+		 * };</listing>
+		 *
+		 * @see #showMessage()
+		 * @see #showMessageWithStyles()
+		 * @see #showContent()
+		 */
+		public static function get containerFactory():Function
+		{
+			return Toast._containerFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set containerFactory(value:Function):void
+		{
+			Toast._containerFactory = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected static var _activeToasts:Vector.<Toast> = new <Toast>[];
 
 		/**
@@ -515,7 +555,8 @@ package feathers.controls
 			{
 				return DisplayObjectContainer(Toast._containers[starling]);
 			}
-			var container:DisplayObjectContainer = DisplayObjectContainer(defaultContainerFactory());
+			var factory:Function = Toast._containerFactory !== null ? Toast._containerFactory : defaultContainerFactory;
+			var container:DisplayObjectContainer = DisplayObjectContainer(factory());
 			Toast._containers[starling] = container;
 			container.addEventListener(Event.REMOVED_FROM_STAGE, function(event:Event):void
 			{
@@ -542,8 +583,6 @@ package feathers.controls
 			{
 				layout.horizontalAlign = HorizontalAlign.LEFT;
 			}
-			layout.padding = 10;
-			layout.gap = 10;
 			container.layout = layout;
 			return container;
 		}
