@@ -683,27 +683,6 @@ package feathers.themes
 			return quad;
 		}
 
-		protected static function toastContainerFactory():DisplayObjectContainer
-		{
-			var container:LayoutGroup = new LayoutGroup();
-			container.autoSizeMode = AutoSizeMode.STAGE;
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalAlign.BOTTOM;
-			if(DeviceCapabilities.isPhone())
-			{
-				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			}
-			else
-			{
-				layout.horizontalAlign = HorizontalAlign.LEFT;
-				layout.padding = 10;
-				layout.gap = 10;
-			}
-			container.layout = layout;
-			return container;
-		}
-
 		protected static function scrollBarFactory():SimpleScrollBar
 		{
 			return new SimpleScrollBar();
@@ -743,6 +722,27 @@ package feathers.themes
 			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
 			skin.minTouchWidth = this.controlSize;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			if(DeviceCapabilities.isPhone())
+			{
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			}
+			else
+			{
+				layout.horizontalAlign = HorizontalAlign.LEFT;
+				layout.padding = this.gutterSize;
+				layout.gap = this.gutterSize;
+			}
+			container.layout = layout;
+			return container;
 		}
 
 	//-------------------------
