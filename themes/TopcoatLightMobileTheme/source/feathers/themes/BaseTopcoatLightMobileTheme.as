@@ -108,6 +108,9 @@ package feathers.themes
 		[Embed(source="/../assets/fonts/SourceSansPro-Regular.ttf", fontFamily="SourceSansPro", fontWeight="normal", mimeType="application/x-font", embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_REGULAR:Class;
 
+		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",mimeType="application/x-font",embedAsCFF="true")]
+		protected static const SOURCE_SANS_PRO_SEMIBOLD:Class;
+
 		/**
 		 * The name of the embedded font used by controls in this theme.
 		 */
@@ -219,6 +222,8 @@ package feathers.themes
 		protected var largeDarkDisabledFontStyles:TextFormat;
 		protected var darkScrollTextFontStyles:TextFormat;
 		protected var darkScrollTextDisabledFontStyles:TextFormat;
+		protected var lightBoldFontStyles:TextFormat;
+		protected var selectedBoldFontStyles:TextFormat;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -479,6 +484,10 @@ package feathers.themes
 			this.actionDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_ACTION_DISABLED, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.darkCenteredFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK, HorizontalAlign.CENTER, VerticalAlign.TOP);
 			this.darkCenteredDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK_DISABLED, HorizontalAlign.CENTER, VerticalAlign.TOP);
+			this.lightBoldFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_LIGHT, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightBoldFontStyles.bold = true;
+			this.selectedBoldFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.selectedBoldFontStyles.bold = true;
 
 			this.smallDarkFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, COLOR_TEXT_DARK, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.smallSelectedFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);
@@ -1971,8 +1980,8 @@ package feathers.themes
 
 		protected function setToastActionsButtonStyles(button:Button):void
 		{
-			button.fontStyles = this.lightFontStyles.clone();
-			button.setFontStylesForState(ButtonState.DOWN, this.selectedFontStyles);
+			button.fontStyles = this.selectedBoldFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.lightBoldFontStyles);
 		}
 
 	//-------------------------
