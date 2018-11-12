@@ -389,6 +389,11 @@ package feathers.themes
 		protected var wideControlSize:int = 152;
 
 		/**
+		 * The width, in pixels, of very large UI controls.
+		 */
+		protected var extraWideControlSize:int = 210;
+
+		/**
 		 * The size, in pixels, of a typical UI control.
 		 */
 		protected var controlSize:int = 22;
@@ -2587,7 +2592,7 @@ package feathers.themes
 			toast.fontStyles = this.defaultFontStyles.clone();
 			toast.disabledFontStyles = this.disabledFontStyles.clone();
 
-			toast.width = this.wideControlSize;
+			toast.width = this.extraWideControlSize;
 			toast.paddingTop = this.gutterSize;
 			toast.paddingRight = this.gutterSize;
 			toast.paddingBottom = this.gutterSize;
