@@ -26,11 +26,13 @@ package feathers.themes
 {
 	import feathers.controls.Alert;
 	import feathers.controls.AutoComplete;
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ButtonState;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DataGrid;
 	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
@@ -65,12 +67,15 @@ package feathers.themes
 	import feathers.controls.TextCallout;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInputState;
+	import feathers.controls.Toast;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
 	import feathers.controls.Tree;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
@@ -99,6 +104,7 @@ package feathers.themes
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Stage;
@@ -107,9 +113,6 @@ package feathers.themes
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
-	import feathers.controls.DataGrid;
-	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
-	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Minimal" theme for desktop Feathers apps. Handles
@@ -196,6 +199,12 @@ package feathers.themes
 		 * @private
 		 */
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "minimal-desktop-alert-button-group-button";
+		
+		/**
+		 * @private
+		 * The theme's custom style name for a button in a Toast.
+		 */
+		protected static const THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON:String = "minimal-mobile-toast-actions-button";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf-ronda-seven-font";
 
@@ -314,6 +323,11 @@ package feathers.themes
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
 		protected var wideControlSize:int = 98;
+
+		/**
+		 * The width, in pixels, of very large UI controls.
+		 */
+		protected var extraWideControlSize:int = 210;
 
 		/**
 		 * The minimum width, in pixels, of some types of buttons.
@@ -531,6 +545,7 @@ package feathers.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+			Toast.containerFactory = toastContainerFactory;
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
@@ -819,6 +834,11 @@ package feathers.themes
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
 
+			//toast
+			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON, this.setToastActionsButtonStyles);
+
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
@@ -876,6 +896,21 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.dataGridHeaderDividerSkinTexture);
 			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			layout.horizontalAlign = HorizontalAlign.LEFT;
+			layout.padding = this.gutterSize;
+			layout.gap = this.gutterSize;
+			container.layout = layout;
+
+			return container;
 		}
 
 	//-------------------------
@@ -2290,6 +2325,42 @@ package feathers.themes
 			this.setDangerTextCalloutStyles(callout);
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
+		}
+
+	//-------------------------
+	// Toast
+	//-------------------------
+
+		protected function setToastStyles(toast:Toast):void
+		{
+			var backgroundSkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
+			toast.backgroundSkin = backgroundSkin;
+
+			toast.fontStyles = this.primaryFontStyles.clone();
+			toast.disabledFontStyles = this.disabledFontStyles.clone();
+
+			toast.width = this.extraWideControlSize;
+			toast.paddingTop = this.smallGutterSize;
+			toast.paddingRight = this.gutterSize;
+			toast.paddingBottom = this.smallGutterSize;
+			toast.paddingLeft = this.gutterSize;
+			toast.gap = Number.POSITIVE_INFINITY;
+			toast.minGap = this.smallGutterSize;
+			toast.horizontalAlign = HorizontalAlign.LEFT;
+			toast.verticalAlign = VerticalAlign.MIDDLE;
+		}
+
+		protected function setToastActionsStyles(group:ButtonGroup):void
+		{
+			group.direction = Direction.HORIZONTAL;
+			group.gap = this.smallGutterSize;
+			group.customButtonStyleName = THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON;
+		}
+
+		protected function setToastActionsButtonStyles(button:Button):void
+		{
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.primaryFontStyles.clone();
 		}
 
 	//-------------------------
