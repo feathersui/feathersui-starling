@@ -267,6 +267,31 @@ package feathers.controls
 	[Style(name="paddingLeft",type="Number")]
 
 	/**
+	 * Dispatched when the toast is closed. The <code>data</code> property of
+	 * the event object will contain the item from the <code>ButtonGroup</code>
+	 * data provider for the button that is triggered. If no button is
+	 * triggered, then the <code>data</code> property will be <code>null</code>.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.CLOSE
+	 */
+	[Event(name="close",type="starling.events.Event")]
+
+	/**
 	 * Displays a notification-like message in a popup over the rest of your
 	 * app's content. May contain a message and optional actions, or completely
 	 * custom content.
@@ -1250,6 +1275,11 @@ package feathers.controls
 		protected var _isClosing:Boolean = false;
 
 		/**
+		 * @private
+		 */
+		protected var _closeData:Object = null;
+
+		/**
 		 * Indicates if the toast is currently closing.
 		 */
 		public function get isClosing():Boolean
@@ -1684,23 +1714,7 @@ package feathers.controls
 		 */
 		public function close(dispose:Boolean = true):void
 		{
-			if(!this.parent || this._isClosing)
-			{
-				return;
-			}
-			this._isClosing = true;
-			this._disposeFromCloseCall = dispose;
-			this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
-			if(this._closeEffect !== null)
-			{
-				this._closeEffectContext = IEffectContext(this._closeEffect(this));
-				this._closeEffectContext.addEventListener(Event.COMPLETE, closeEffectContext_completeHandler);
-				this._closeEffectContext.play();
-			}
-			else
-			{
-				this.completeClose();
-			}
+			this.closeToast(null, dispose);
 		}
 
 		/**
@@ -2409,9 +2423,13 @@ package feathers.controls
 		 */
 		protected function completeClose():void
 		{
+			var closeData:Object = this._closeData;
+			var dispose:Boolean = this._disposeFromCloseCall;
+			this._closeData = null;
+			this._disposeFromCloseCall = false;
 			this._isClosing = false;
-			this.dispatchEventWith(Event.CLOSE);
-			this.removeFromParent(this._disposeFromCloseCall);
+			this.dispatchEventWith(Event.CLOSE, false, closeData);
+			this.removeFromParent(dispose);
 		}
 
 		/**
@@ -2442,13 +2460,34 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		protected function closeToast(data:Object, dispose:Boolean):void
+		{
+			if(!this.parent || this._isClosing)
+			{
+				return;
+			}
+			this._isClosing = true;
+			this._closeData = data;
+			this._disposeFromCloseCall = dispose;
+			this.removeEventListener(Event.ENTER_FRAME, this.toast_timeout_enterFrameHandler);
+			if(this._closeEffect !== null)
+			{
+				this._closeEffectContext = IEffectContext(this._closeEffect(this));
+				this._closeEffectContext.addEventListener(Event.COMPLETE, closeEffectContext_completeHandler);
+				this._closeEffectContext.play();
+			}
+			else
+			{
+				this.completeClose();
+			}
+		}
+
 		/**
 		 * @private
 		 */
 		protected function actionsGroup_triggeredHandler(event:Event, data:Object):void
 		{
-			this.dispatchEventWith(Event.TRIGGERED, false, data);
-			this.close(this._disposeOnSelfClose);
+			this.closeToast(data, this._disposeOnSelfClose);
 		}
 
 		/**
