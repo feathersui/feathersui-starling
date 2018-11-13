@@ -26,11 +26,13 @@ package feathers.themes
 {
 	import feathers.controls.Alert;
 	import feathers.controls.AutoComplete;
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ButtonState;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DataGrid;
 	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
@@ -64,12 +66,15 @@ package feathers.themes
 	import feathers.controls.TextCallout;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInputState;
+	import feathers.controls.Toast;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
 	import feathers.controls.Tree;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
@@ -98,15 +103,13 @@ package feathers.themes
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Stage;
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-	import feathers.controls.DataGrid;
-	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
-	import feathers.controls.renderers.DefaultDataGridCellRenderer;
 
 	/**
 	 * The base class for the "Metal Works" theme for desktop Feathers apps.
@@ -292,6 +295,12 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metalworks-desktop-alert-button-group-button";
 
 		/**
+		 * @private
+		 * The theme's custom style name for the action buttons of a toast.
+		 */
+		protected static const THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON:String = "metal-works-mobile-toast-actions-button";
+
+		/**
 		 * The default global text renderer factory for this theme creates a
 		 * TextBlockTextRenderer.
 		 */
@@ -384,6 +393,11 @@ package feathers.themes
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
 		protected var wideControlSize:int = 144;
+
+		/**
+		 * The width, in pixels, of very large UI controls.
+		 */
+		protected var extraWideControlSize:int = 210;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
@@ -681,6 +695,7 @@ package feathers.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+			Toast.containerFactory = toastContainerFactory;
 
 			var stage:Stage = this.starling.stage;
 			FocusManager.setEnabledForStage(stage, true);
@@ -1031,6 +1046,11 @@ package feathers.themes
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
 
+			//toast
+			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON, this.setToastActionsButtonStyles);
+
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
@@ -1102,6 +1122,21 @@ package feathers.themes
 			var skin:ImageSkin = new ImageSkin(this.dataGridVerticalDividerSkinTexture);
 			skin.scale9Grid = DATA_GRID_VERTICAL_DIVIDER_SCALE_9_GRID;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			layout.horizontalAlign = HorizontalAlign.LEFT;
+			layout.padding = this.gutterSize;
+			layout.gap = this.gutterSize;
+			container.layout = layout;
+
+			return container;
 		}
 
 	//-------------------------
@@ -2678,6 +2713,42 @@ package feathers.themes
 			var icon:ImageSkin = new ImageSkin(this.searchIconTexture);
 			icon.disabledTexture = this.searchIconDisabledTexture;
 			input.defaultIcon = icon;
+		}
+
+	//-------------------------
+	// Toast
+	//-------------------------
+
+		protected function setToastStyles(toast:Toast):void
+		{
+			var backgroundSkin:Image = new Image(this.backgroundPopUpSkinTexture);
+			backgroundSkin.scale9Grid = SIMPLE_SCALE9_GRID;
+			toast.backgroundSkin = backgroundSkin;
+
+			toast.fontStyles = this.lightFontStyles.clone();
+
+			toast.width = this.extraWideControlSize;
+			toast.paddingTop = this.gutterSize;
+			toast.paddingRight = this.gutterSize;
+			toast.paddingBottom = this.gutterSize;
+			toast.paddingLeft = this.gutterSize;
+			toast.gap = Number.POSITIVE_INFINITY;
+			toast.minGap = this.smallGutterSize;
+			toast.horizontalAlign = HorizontalAlign.LEFT;
+			toast.verticalAlign = VerticalAlign.MIDDLE;
+		}
+
+		protected function setToastActionsStyles(group:ButtonGroup):void
+		{
+			group.direction = Direction.HORIZONTAL;
+			group.gap = this.smallGutterSize;
+			group.customButtonStyleName = THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON;
+		}
+
+		protected function setToastActionsButtonStyles(button:Button):void
+		{
+			button.fontStyles = this.selectedUIFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.lightUIFontStyles);
 		}
 
 	//-------------------------
