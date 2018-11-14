@@ -86,6 +86,136 @@ Toast.showContent( image );
 
 Any Starling display object or Feathers component may be used as the content. To include multiple items in the content, you may add them all to a parent [`LayoutGroup`](layout-group.html).
 
+## Skinning a `Toast`
+
+A number of styles may be customized on a toast, including the message font styles, the background skin, and layout properties. Additionally, a toast has a button group sub-component that may be styled. For full details about which properties are available, see the [`Toast` API reference](../api-reference/feathers/controls/Toast.html). We'll look at a few of the most common ways of styling a toast below.
+
+### Font styles
+
+The font styles of the toast's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Toast.html#fontStyles) property:
+
+``` code
+toast.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
+```
+
+Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object, which will work with any type of [text renderer](text-renderers.html).
+
+The font styles of the toast's action buttons may be customized through the toast's `ButtonGroup` component. See [How to use the Feathers `ButtonGroup` component](button-group.html) for details.
+
+### Background skin
+
+The background skin fills the full width and height of the toast. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
+
+``` code
+var skin:Image = new Image( enabledTexture );
+skin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
+toast.backgroundSkin = skin;
+```
+
+It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/controls/Toast.html#backgroundSkin) property.
+
+### Layout
+
+Padding may be added around the edges of the toast. This padding is applied around the edges of the message text renderer, and is generally used to show a bit of the background as a border.
+
+``` code
+toast.paddingTop = 15;
+toast.paddingRight = 20;
+toast.paddingBottom = 15;
+toast.paddingLeft = 20;
+```
+
+If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Toast.html#padding) property to quickly set them all at once:
+
+``` code
+toast.padding = 20;
+```
+
+If the optional action buttons are displayed, you may use the [`gap`](../api-reference/feathers/controls/Toast.html#gap) property to add some space between the message and the actions:
+
+``` code
+toast.gap = 12;
+```
+
+### Skinning the action buttons
+
+This section only explains how to access the button group sub-component. Please read [How to use the Feathers `ButtonGroup` component](button-group.html) for full details about the skinning properties that are available on `ButtonGroup` components.
+
+#### With a Theme
+
+If you're creating a [theme](themes.html), you can target the [`Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS`](../api-reference/feathers/controls/Toast.html#DEFAULT_CHILD_STYLE_NAME_ACTIONS) style name.
+
+``` code
+getStyleProviderForClass( ButtonGroup )
+	.setFunctionForStyleName( Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, setToastActionsStyles );
+```
+
+The styling function might look like this:
+
+``` code
+private function setToastActionsStyles( group:ButtonGroup ):void
+{
+	group.gap = 20;
+}
+```
+
+You can override the default style name to use a different one in your theme, if you prefer:
+
+``` code
+toast.customActionsStyleName = "custom-actions";
+```
+
+You can set the styling function for the [`customActionsStyleName`](../api-reference/feathers/controls/Toast.html#customActionsStyleName) like this:
+
+``` code
+getStyleProviderForClass( ButtonGroup )
+	.setFunctionForStyleName( "custom-actions", setToastCustomActionsStyles );
+```
+
+#### Without a Theme
+
+If you are not using a theme, you can use [`actionsFactory`](../api-reference/feathers/controls/Toast.html#actionsFactory) to provide skins for the toast's action buttons group:
+
+``` code
+toast.actionsFactory = function():Header
+{
+	var group:ButtonGroup = new ButtonGroup();
+	
+	//skin the button group here, if you're not using a theme
+	group.gap = 20;
+	
+	return group;
+}
+```
+
+### Using a factory to skin a `Toast` without a theme
+
+If you're not using a theme, you can specify a factory to create the toast, including setting skins, in a couple of different ways. The first is to set the [`Toast.toastFactory`](../api-reference/feathers/controls/Toast.html#toastFactory) static property to a function that provides skins for the toast. This factory will be called any time that [`Toast.showMessage()`](../api-reference/feathers/controls/Toast.html#showMessage()), [`Toast.showMessageWithActions()`](../api-reference/feathers/controls/Toast.html#showMessageWithActions()), or [`Toast.showContent()`](../api-reference/feathers/controls/Toast.html#showContent()) is used to create a toast.
+
+``` code
+function skinnedToastFactory():Toast
+{
+	var toast:Toast = new Toast();
+	toast.backgroundSkin = new Image( texture );
+	// etc...
+	return toast;
+};
+Toast.toastFactory = skinnedToastFactory;
+```
+
+Another option is to pass a toast factory to `Toast.showMessage()` or one of the other static methods to create a toast. This allows you to create a specific toast differently than the default global `Toast.toastFactory`.
+
+``` code
+function skinnedToastFactory():Toast
+{
+	var toast:Toast = new Toast();
+	toast.backgroundSkin = new Image( texture );
+	// etc...
+	return toast;
+};
+Toast.showMessage( message, 4, skinnedToastFactory );
+```
+
 ## Closing and Disposal
 
 When manually closing the toast, you may call the [`close()`](../api-reference/feathers/controls/Toast.html#close()) function and pass in `true` or `false` for the `dispose` argument.
