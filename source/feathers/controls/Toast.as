@@ -411,6 +411,49 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static var _toastFactory:Function = defaultToastFactory;
+
+		/**
+		 * Used to create a new <code>Toast</code> instance in the
+		 * <code>showMessage()</code>, <code>showMessageWithActions()</code>, or
+		 * <code>showContent()</code> functions. Useful for customizing the
+		 * styles of toasts without a theme.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():Toast</pre>
+		 *
+		 * <p>The following example shows how to create a custom toast factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * Toast.toastFactory = function():Toast
+		 * {
+		 *     var toast:Toast = new Toast();
+		 *     toast.backgroundSkin = new Image( texture );
+		 *     toast.padding = 10;
+		 *     return toast;
+		 * };</listing>
+		 *
+		 * @see #showMessage()
+		 * @see #showMessageWithStyles()
+		 * @see #showContent()
+		 */
+		public static function get toastFactory():Function
+		{
+			return Toast._toastFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set toastFactory(value:Function):void
+		{
+			Toast._toastFactory = value;
+		}
+
+		/**
+		 * @private
+		 */
 		private static var _containerFactory:Function = defaultContainerFactory;
 
 		/**
@@ -469,9 +512,14 @@ package feathers.controls
 		 * @see #showMessage()
 		 * @see #showMessageWithActions()
 		 */
-		public static function showContent(content:DisplayObject, timeout:Number = 4):Toast
+		public static function showContent(content:DisplayObject, timeout:Number = 4, toastFactory:Function = null):Toast
 		{
-			var toast:Toast = new Toast();
+			var factory:Function = toastFactory !== null ? toastFactory : Toast._toastFactory;
+			if(factory === null)
+			{
+				factory = defaultToastFactory;
+			}
+			var toast:Toast = Toast(factory());
 			toast.content = content;
 			return showToast(toast, timeout);
 		}
@@ -482,9 +530,14 @@ package feathers.controls
 		 * @see #showMessageWithActions()
 		 * @see #showContent()
 		 */
-		public static function showMessage(message:String, timeout:Number = 4):Toast
+		public static function showMessage(message:String, timeout:Number = 4, toastFactory:Function = null):Toast
 		{
-			var toast:Toast = new Toast();
+			var factory:Function = toastFactory !== null ? toastFactory : Toast._toastFactory;
+			if(factory === null)
+			{
+				factory = defaultToastFactory;
+			}
+			var toast:Toast = Toast(factory());
 			toast.message = message;
 			return showToast(toast, timeout);
 		}
@@ -495,9 +548,14 @@ package feathers.controls
 		 * @see #showMessage()
 		 * @see #showContent()
 		 */
-		public static function showMessageWithActions(message:String, actions:IListCollection, timeout:Number = 4):Toast
+		public static function showMessageWithActions(message:String, actions:IListCollection, timeout:Number = 4, toastFactory:Function = null):Toast
 		{
-			var toast:Toast = new Toast();
+			var factory:Function = toastFactory !== null ? toastFactory : Toast._toastFactory;
+			if(factory === null)
+			{
+				factory = defaultToastFactory;
+			}
+			var toast:Toast = Toast(factory());
 			toast.message = message;
 			toast.actions = actions;
 			return showToast(toast, timeout);
@@ -589,6 +647,14 @@ package feathers.controls
 			})
 			PopUpManager.forStarling(starling).addPopUp(container, false, false);
 			return container;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultToastFactory():Toast
+		{
+			return new Toast();
 		}
 
 		/**
