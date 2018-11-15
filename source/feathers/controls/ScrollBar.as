@@ -183,6 +183,19 @@ package feathers.controls
 	[Style(name="direction",type="String")]
 
 	/**
+	 * Determines if the scroll bar's thumb will be resized based on the
+	 * scrollable range, or if it will be rendered at its preferred size.
+	 *
+	 * <p>In the following example, the thumb size is fixed:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.fixedThumbSize = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="fixedThumbSize",type="Boolean")]
+
+	/**
 	 * Quickly sets all padding properties to the same value. The
 	 * <code>padding</code> getter always returns the value of
 	 * <code>paddingTop</code>, but the other padding values may be
@@ -730,6 +743,36 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
 			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fixedThumbSize:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get fixedThumbSize():Boolean
+		{
+			return this._fixedThumbSize;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fixedThumbSize(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._fixedThumbSize === value)
+			{
+				return;
+			}
+			this._fixedThumbSize = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -2855,7 +2898,14 @@ package feathers.controls
 					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
 				}
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
+				if(this._fixedThumbSize)
+				{
+					this.thumb.height = this.thumbOriginalHeight;
+				}
+				else
+				{
+					this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
+				}
 				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				this.thumb.y = this.decrementButton.height + this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
@@ -2868,7 +2918,14 @@ package feathers.controls
 				{
 					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
 				}
-				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
+				if(this._fixedThumbSize)
+				{
+					this.thumb.width = this.thumbOriginalWidth;
+				}
+				else
+				{
+					this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
+				}
 				this.thumb.height = this.thumbOriginalHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this.decrementButton.width + this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
