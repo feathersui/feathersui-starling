@@ -1703,7 +1703,7 @@ package feathers.controls
 				return;
 			}
 			this._customPromptStyleName = value;
-			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_PROMPT_FACTORY);
 		}
 
 		/**
