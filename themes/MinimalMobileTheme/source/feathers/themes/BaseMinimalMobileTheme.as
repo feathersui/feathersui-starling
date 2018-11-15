@@ -2235,6 +2235,9 @@ package feathers.themes
 			textArea.fontStyles = this.scrollTextFontStyles.clone();
 			textArea.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
+			textArea.promptFontStyles = this.primaryFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.disabledFontStyles.clone();
+
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 

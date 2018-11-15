@@ -2474,6 +2474,9 @@ package feathers.themes
 			textArea.fontStyles = this.defaultFontStyles.clone();
 			textArea.disabledFontStyles = this.disabledFontStyles.clone();
 
+			textArea.promptFontStyles = this.defaultFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.disabledFontStyles.clone();
+
 			textArea.focusPadding = -2;
 			textArea.padding = this.borderSize;
 		}

@@ -1870,6 +1870,9 @@ package feathers.themes
 			textArea.fontStyles = this.darkScrollTextFontStyles.clone();
 			textArea.disabledFontStyles = this.darkScrollTextDisabledFontStyles.clone();
 
+			textArea.promptFontStyles = this.darkFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.darkDisabledFontStyles.clone();
+
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 

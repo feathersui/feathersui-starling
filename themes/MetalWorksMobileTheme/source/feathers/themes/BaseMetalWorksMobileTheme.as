@@ -2578,6 +2578,9 @@ package feathers.themes
 			textArea.fontStyles = this.lightInputFontStyles.clone();
 			textArea.disabledFontStyles = this.lightDisabledInputFontStyles.clone();
 
+			textArea.promptFontStyles = this.lightFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.lightDisabledFontStyles.clone();
+
 			textArea.textEditorFactory = textAreaTextEditorFactory;
 		}
 

@@ -2623,6 +2623,9 @@ package feathers.themes
 			textArea.fontStyles = this.lightScrollTextFontStyles.clone();
 			textArea.disabledFontStyles = this.lightDisabledScrollTextFontStyles.clone();
 
+			textArea.promptFontStyles = this.lightFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.lightDisabledFontStyles.clone();
+
 			textArea.padding = this.borderSize;
 		}
 
