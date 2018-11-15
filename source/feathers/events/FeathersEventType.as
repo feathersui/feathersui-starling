@@ -263,7 +263,7 @@ package feathers.events
 		 * 
 		 * @see feathers.core.IStateContext
 		 */
-		public static const STATE_CHANGE:String = "stageChange";
+		public static const STATE_CHANGE:String = "stateChange";
 
 		/**
 		 * The <code>FeathersEventType.PULLING</code> event type is used by
