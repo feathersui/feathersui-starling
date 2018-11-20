@@ -8328,7 +8328,7 @@ package feathers.controls
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
-				newHorizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+				newHorizontalScrollPosition = Math.max(this._minHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.RIGHT)
 			{
