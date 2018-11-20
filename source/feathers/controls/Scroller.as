@@ -7756,8 +7756,14 @@ package feathers.controls
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isScrollingStopped = false;
-			this._isDraggingVertically = false;
-			this._isDraggingHorizontally = false;
+			if(!this._isScrolling || !this._snapToPages)
+			{
+				//if snapToPages is enabled, we need it to snap to the nearest
+				//page on TouchPhase.ENDED, even if we don't drag again
+				//BowlerHatLLC/feathers#1771
+				this._isDraggingVertically = false;
+				this._isDraggingHorizontally = false;
+			}
 			if(this._isScrolling)
 			{
 				//if it was scrolling, stop it immediately
