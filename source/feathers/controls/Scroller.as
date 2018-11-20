@@ -8334,12 +8334,14 @@ package feathers.controls
 			{
 				newHorizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
-			if(this._horizontalScrollPosition != newHorizontalScrollPosition)
+			if(this._horizontalScrollPosition != newHorizontalScrollPosition &&
+				this._horizontalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.horizontalScrollPosition = newHorizontalScrollPosition;
 			}
-			if(this._verticalScrollPosition != newVerticalScrollPosition)
+			if(this._verticalScrollPosition != newVerticalScrollPosition &&
+				this._verticalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.verticalScrollPosition = newVerticalScrollPosition;
