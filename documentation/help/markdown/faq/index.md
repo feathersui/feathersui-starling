@@ -87,7 +87,7 @@ Double check that your development environment has been set up correctly. Instru
 
 ### When I add a Feathers component to the display list, why don't I see anything?
 
-Have you provided skins for the component? The Feathers components don't have default skins. Default skins would add unnecessary extra filesize to your projects and they wouldn't be very styleable due to the bitmap-centric nature of GPUs. On mobile, every byte counts (especially since Adobe AIR's captive runtime is rather large), and forcing every Feathers app to include a texture atlas for a default skin would be too much of a burden for many developers. Take a look at [Getting Started with Feathers](getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
+Have you provided skins for the component? The Feathers components don't have default skins. Default skins would add unnecessary extra filesize to your projects and they wouldn't be very styleable due to the bitmap-centric nature of GPUs. On mobile, every byte counts (especially since Adobe AIR's captive runtime is rather large), and forcing every Feathers app to include a texture atlas for a default skin would be too much of a burden for many developers. Take a look at [Getting Started with Feathers](../getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
 
 To quickly get up and running with some sample skins, you may want to use a [theme](../themes.html). Take a look at [Getting Started with Feathers](../getting-started.html) to see how to instantiate an example theme to help you get started. It's only one line of code.
 
