@@ -644,7 +644,6 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
@@ -1874,11 +1873,8 @@ package feathers.themes
 			textArea.promptDisabledFontStyles = this.darkDisabledFontStyles.clone();
 
 			textArea.textEditorFactory = textAreaTextEditorFactory;
-		}
-
-		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
-		{
-			textEditor.padding = this.smallGutterSize;
+			
+			textArea.innerPadding = this.smallGutterSize;
 		}
 
 	//-------------------------
