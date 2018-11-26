@@ -37,7 +37,7 @@ If you don't replace it, the default text editor factory returns a [`StageTextTe
 
 When an individual component doesn't have a custom text editor factory specified, it calls the function [`FeathersControl.defaultTextEditorFactory()`](../api-reference/feathers/core/FeathersControl.html#defaultTextEditorFactory()). This is a static variable that references a `Function`, and it can be changed to a different function, as needed. The default implementation of this function looks like this:
 
-``` code
+``` actionscript
 function():ITextEditor
 {
     return new StageTextTextEditor();
@@ -46,7 +46,7 @@ function():ITextEditor
 
 If you would prefer to use a different text editor as the default in your app, you can easily change the variable to point to a different function. For instance, you might want to add this code to your application to use the [`TextFieldTextEditor`](../api-reference/feathers/controls/text/TextFieldTextEditor.html) instead:
 
-``` code
+``` actionscript
 FeathersControl.defaultTextEditorFactory = function():ITextEditor
 {
     return new TextFieldTextEditor();
@@ -57,7 +57,7 @@ FeathersControl.defaultTextEditorFactory = function():ITextEditor
 
 You can tell a specific `TextInput` not to use the default text editor. For instance, you can pass in a custom [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) that will be used to create the input's text editor:
 
-``` code
+``` actionscript
 input.textEditorFactory = function():ITextEditor
 {
     return new TextFieldTextEditor();
@@ -66,7 +66,7 @@ input.textEditorFactory = function():ITextEditor
 
 You can even customize advanced font properties in the factory before returning the text editor:
 
-``` code
+``` actionscript
 input.textEditorFactory = function():ITextEditor
 {
     var textEditor:TextFieldTextEditor = new TextFieldTextEditor();

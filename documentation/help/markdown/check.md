@@ -20,7 +20,7 @@ The [`Check`](../api-reference/feathers/controls/Check.html) component is actual
 
 A `Check` component can be created much like a `ToggleButton`:
 
-``` code
+``` actionscript
 var check:Check = new Check();
 check.label = "Click Me";
 check.isSelected = true;

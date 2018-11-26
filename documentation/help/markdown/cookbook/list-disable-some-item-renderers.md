@@ -7,7 +7,7 @@ author: Josh Tynjala
 
 In your data provider, add a new property to the items that will indicate whether the item renderer should be enabled or not. In this example, we call it `enabled`, but you can choose any name:
 
-``` code
+``` actionscript
 list.dataProvider = new ArrayCollection(
 [
 	{ text: "Some Item", enabled: true },
@@ -17,7 +17,7 @@ list.dataProvider = new ArrayCollection(
 
 In your `itemRendererFactory`, set the `itemHasEnabled` property of the item renderer to `true`. Then, pass the name of the new property to the `enabledField` property:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
 	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -32,14 +32,14 @@ list.itemRendererFactory = function():IListItemRenderer
 
 To update whether an item renderer is enabled or not after the `List` has been created, change the property in the data provider:
 
-``` code
+``` actionscript
 var item:Object = list.dataProvider.getItemAt(4);
 item.enabled = false;
 ```
 
 Then, call `updateItemAt()` with the item's index to update the item renderer with the new data:
 
-``` code
+``` actionscript
 list.dataProvider.updateItemAt(4);
 ```
 

@@ -19,7 +19,7 @@ In this tutorial, we extend `MetalWorksMobileTheme`, one of the example themes i
 
 To get started, we'll subclass the `MetalWorksMobileTheme` class:
 
-``` code
+``` actionscript
 package com.example
 {
     import feathers.themes.MetalWorksMobileTheme;
@@ -36,13 +36,13 @@ package com.example
 
 Where we instantiate `MetalWorksMobileTheme` when our app first starts up, we must change it to instantiate our new subclass instead:
 
-``` code
+``` actionscript
 new CustomTheme();
 ```
 
 Next, let's add a function that will provide different skins for our special button. Inside the `CustomTheme` class, add the following `setCustomButtonStyles()` function:
 
-``` code
+``` actionscript
 protected function setCustomButtonStyles( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xff0000 );
@@ -58,7 +58,7 @@ Every example theme included with Feathers uses this same architecture. Themes p
 
 We want to override the `initializeStyleProviders()` function so that we can tell the `Button` global style provider about our `setCustomButtonStyles()` function:
 
-``` code
+``` actionscript
 override protected function initializeStyleProviders():void
 {
     super.initializeStyleProviders(); // don't forget this!
@@ -76,7 +76,7 @@ We call `setFunctionForStyleName()` and pass in a "custom-button" style name (yo
 
 That's all we need to add to the theme. Next, let's make a little tweak to the code that creates our special button:
 
-``` code
+``` actionscript
 var specialButton:Button = new Button();
 specialButton.label = "Special!";
 specialButton.styleNameList.add( "custom-button" );
@@ -91,7 +91,7 @@ By default, a custom component will inherit the default style provider from its 
 
 However, if you want the subclass to use a different default style provider than its superclass, then you need to add a couple of properties to your component's class. First, it needs a static global style provider:
 
-``` code
+``` actionscript
 public class CustomComponent extends FeathersControl
 {
     public static var globalStyleProvider:IStyleProvider;
@@ -100,7 +100,7 @@ public class CustomComponent extends FeathersControl
 
 Second, it needs to override the non-static `defaultStyleProvider` getter:
 
-``` code
+``` actionscript
 override protected function get defaultStyleProvider():IStyleProvider
 {
     return CustomComponent.globalStyleProvider;
@@ -111,7 +111,7 @@ For the vast majority of components, the `defaultStyleProvider` getter should si
 
 However, the default style provider can certainly be customized. For instance, the `ToggleButton` component will return `Button.globalStyleProvider` if `ToggleButton.globalStyleProvider` is `null`:
 
-``` code
+``` actionscript
 override protected function get defaultStyleProvider():IStyleProvider
 {
     if( ToggleButton.globalStyleProvider )
@@ -126,7 +126,7 @@ Similarly, your custom component could also provide a fallback default style pro
 
 To add the custom component to the theme, override the `initializeStyleProviders()` function, just like in the previous example:
 
-``` code
+``` actionscript
 override protected function initializeStyleProviders():void
 {
     super.initializeStyleProviders(); // don't forget this!

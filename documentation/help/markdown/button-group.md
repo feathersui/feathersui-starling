@@ -20,14 +20,14 @@ The [`ButtonGroup`](../api-reference/feathers/controls/ButtonGroup.html) class d
 
 First, let's create a `ButtonGroup` control and add it to the display list:
 
-``` code
+``` actionscript
 var group:ButtonGroup = new ButtonGroup();
 this.addChild(group);
 ```
 
 This won't display anything because we haven't populated the data provider with information about the buttons we want. Let's do that next:
 
-``` code
+``` actionscript
 group.dataProvider = new ArrayCollection(
 [
     { label: "One", triggered: oneButton_triggeredHandler },
@@ -44,7 +44,7 @@ A number of fields in each item from the collection are automatically detected b
 
 Additionally, we can add a few event listeners to each button, including `Event.TRIGGERED` and `Event.CHANGE` (using the `String` values, `triggered` and `change`). In the example above, we add a listener to `triggered`. The listener on the first item might look something like this:
 
-``` code
+``` actionscript
 function oneButton_triggeredHandler( event:Event ):void
 {
     var button:Button = Button( event.currentTarget );
@@ -60,7 +60,7 @@ A button group's buttons may all be skinned, with the first and last buttons hav
 
 The `ButtonGroup` has a strict horizontal or vertical layout that you can customize using the [`direction`](../api-reference/feathers/controls/ButtonGroup.html#direction) property. Additionally, you can set the [`gap`](../api-reference/feathers/controls/ButtonGroup.html#gap) between buttons, including special gaps for the first and last buttons.
 
-``` code
+``` actionscript
 group.direction = Direction.VERTICAL;
 group.gap = 10;
 group.lastGap = 20;
@@ -78,14 +78,14 @@ This section only explains how to access the button sub-components. Please read 
 
 If you're creating a [theme](themes.html), you can target the [`ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON`](../api-reference/feathers/controls/ButtonGroup.html#DEFAULT_CHILD_STYLE_NAME_BUTTON) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON, setButtonGroupButtonStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setButtonGroupButtonStyles( button:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -97,13 +97,13 @@ private function setButtonGroupButtonStyles( button:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 group.customButtonStyleName = "my-custom-button";
 ```
 
 You can set the styling function for the [`customButtonStyleName`](../api-reference/feathers/controls/ButtonGroup.html#customButtonStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "my-custom-button", setButtonGroupCustomButtonStyles );
 ```
@@ -112,7 +112,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`buttonFactory`](../api-reference/feathers/controls/ButtonGroup.html#buttonFactory) to provide skins for the buttons:
 
-``` code
+``` actionscript
 group.buttonFactory = function():Button
 {
     var button:Button = new Button();

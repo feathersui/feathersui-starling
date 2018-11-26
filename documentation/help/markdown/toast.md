@@ -26,7 +26,7 @@ We create a `Toast` a bit differently than other components. Rather than calling
 
 Let's see how this works by displaying some simple text in a `Toast` when we touch a button. First, let's create the button:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
@@ -35,7 +35,7 @@ this.addChild( button );
 
 Then, in the listener for the `Event.TRIGGERED` event, we create the toast:
 
-``` code
+``` actionscript
 function button_triggeredHandler( event:Event ):void
 {
     var button:Button = Button( event.currentTarget );
@@ -45,13 +45,13 @@ function button_triggeredHandler( event:Event ):void
 
 In addition to the string to display in the toast, [`Toast.showMessage()`](../api-reference/feathers/controls/Toast.html#showMessage()) accepts a second argument, the timeout when the toast will be closed automatically. This value is measured in seconds.
 
-``` code
+``` actionscript
 Toast.showMessage( "I am a toast", 6.5 );
 ```
 
 In the example above, the timeout will be closed in six and a half seconds. If we don't want the toast to close automatically, we can set the timeout to `Number.POSITIVE_INFINITY`. We can close the toast manually by calling its [`close()`](../api-reference/feathers/controls/Toast.html#close()) method:
 
-``` code
+``` actionscript
 toast.close();
 ```
 
@@ -59,7 +59,7 @@ toast.close();
 
 A toast may optionally include one or more action buttons by creating it with [`Toast.showMessageWithActions()`](../api-reference/feathers/controls/Toast.html#showMessageWithActions()). In the following example, we display a toast with an **Undo** button:
 
-``` code
+``` actionscript
 Toast.showMessageWithActions( "Item deleted", new ArrayCollection(
 [
     { label: "Undo", triggered: undoButton_triggeredHandler }
@@ -68,7 +68,7 @@ Toast.showMessageWithActions( "Item deleted", new ArrayCollection(
 
 Each item in the colllection may contain its own separate `Event.TRIGGERED` listener, or you can listen for `Event.CLOSE` on the `Toast` instance. If one of the buttons was triggered, the event's data will contain an item from the collection.
 
-``` code
+``` actionscript
 toast.addEventListener( Event.CLOSE, function(event:Event, item:Object):void
 {
     trace( item.label );
@@ -79,7 +79,7 @@ toast.addEventListener( Event.CLOSE, function(event:Event, item:Object):void
 
 A toast may be created without a message and actions and use completely custom content instead by calling [`Toast.showContent()`](../api-reference/feathers/controls/Toast.html#showContent()). In the following example, we display a toast that contains an `Image`:
 
-``` code
+``` actionscript
 var image:Image = new Image( texture );
 Toast.showContent( image );
 ```
@@ -94,7 +94,7 @@ A number of styles may be customized on a toast, including the message font styl
 
 The font styles of the toast's message may be customized using the [`fontStyles`](../api-reference/feathers/controls/Toast.html#fontStyles) property:
 
-``` code
+``` actionscript
 toast.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -106,7 +106,7 @@ The font styles of the toast's action buttons may be customized through the toas
 
 The background skin fills the full width and height of the toast. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( enabledTexture );
 skin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
 toast.backgroundSkin = skin;
@@ -118,7 +118,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 Padding may be added around the edges of the toast. This padding is applied around the edges of the message text renderer, and is generally used to show a bit of the background as a border.
 
-``` code
+``` actionscript
 toast.paddingTop = 15;
 toast.paddingRight = 20;
 toast.paddingBottom = 15;
@@ -127,13 +127,13 @@ toast.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Toast.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 toast.padding = 20;
 ```
 
 If the optional action buttons are displayed, you may use the [`gap`](../api-reference/feathers/controls/Toast.html#gap) property to add some space between the message and the actions:
 
-``` code
+``` actionscript
 toast.gap = 12;
 ```
 
@@ -145,14 +145,14 @@ This section only explains how to access the button group sub-component. Please 
 
 If you're creating a [theme](themes.html), you can target the [`Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS`](../api-reference/feathers/controls/Toast.html#DEFAULT_CHILD_STYLE_NAME_ACTIONS) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ButtonGroup )
 	.setFunctionForStyleName( Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, setToastActionsStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setToastActionsStyles( group:ButtonGroup ):void
 {
 	group.gap = 20;
@@ -161,13 +161,13 @@ private function setToastActionsStyles( group:ButtonGroup ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 toast.customActionsStyleName = "custom-actions";
 ```
 
 You can set the styling function for the [`customActionsStyleName`](../api-reference/feathers/controls/Toast.html#customActionsStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ButtonGroup )
 	.setFunctionForStyleName( "custom-actions", setToastCustomActionsStyles );
 ```
@@ -176,7 +176,7 @@ getStyleProviderForClass( ButtonGroup )
 
 If you are not using a theme, you can use [`actionsFactory`](../api-reference/feathers/controls/Toast.html#actionsFactory) to provide skins for the toast's action buttons group:
 
-``` code
+``` actionscript
 toast.actionsFactory = function():Header
 {
 	var group:ButtonGroup = new ButtonGroup();
@@ -192,7 +192,7 @@ toast.actionsFactory = function():Header
 
 If you're not using a theme, you can specify a factory to create the toast, including setting skins, in a couple of different ways. The first is to set the [`Toast.toastFactory`](../api-reference/feathers/controls/Toast.html#toastFactory) static property to a function that provides skins for the toast. This factory will be called any time that [`Toast.showMessage()`](../api-reference/feathers/controls/Toast.html#showMessage()), [`Toast.showMessageWithActions()`](../api-reference/feathers/controls/Toast.html#showMessageWithActions()), or [`Toast.showContent()`](../api-reference/feathers/controls/Toast.html#showContent()) is used to create a toast.
 
-``` code
+``` actionscript
 function skinnedToastFactory():Toast
 {
 	var toast:Toast = new Toast();
@@ -205,7 +205,7 @@ Toast.toastFactory = skinnedToastFactory;
 
 Another option is to pass a toast factory to `Toast.showMessage()` or one of the other static methods to create a toast. This allows you to create a specific toast differently than the default global `Toast.toastFactory`.
 
-``` code
+``` actionscript
 function skinnedToastFactory():Toast
 {
 	var toast:Toast = new Toast();

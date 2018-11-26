@@ -20,7 +20,7 @@ The [`ProgressBar`](../api-reference/feathers/controls/ProgressBar.html) class d
 
 First, let's create a `ProgressBar` control, set up its range of values, and add it to the display list.
 
-``` code
+``` actionscript
 var progress:ProgressBar = new ProgressBar();
 progress.minimum = 0;
 progress.maximum = 100;
@@ -32,7 +32,7 @@ The [`minimum`](../api-reference/feathers/controls/ProgressBar.html#minimum) and
 
 By default, the progress bar direction is horizontal. You can change the [`direction`](../api-reference/feathers/controls/ProgressBar.html#direction) property to make the progress bar vertically-oriented instead.
 
-``` code
+``` actionscript
 progress.direction = Direction.VERTICAL;
 ```
 
@@ -44,7 +44,7 @@ A progress bar provides a number of properties that can be used to customize its
 
 The [`backgroundSkin`](../api-reference/feathers/controls/ProgressBar.html#backgroundSkin) and [`fillSkin`](../api-reference/feathers/controls/ProgressBar.html#fillSkin) properties are used to customize the appearance of the progress bar.
 
-``` code
+``` actionscript
 var backgroundSkin:Image = new Image( backgroundTexture );
 backgroundSkin.width = 150;
 progress.backgroundSkin = backgroundSkin;
@@ -64,7 +64,7 @@ Additionally, two other skin properties, [`backgroundDisabledSkin`](../api-refer
 
 Like many components, the progress bar has padding values. These can be used to add space between the edge of the background and the edge of the fill. For instance, you might want to display part of the background as a border around the fill.
 
-``` code
+``` actionscript
 progress.paddingTop = 2;
 progress.paddingRight = 3;
 progress.paddingBottom = 2;
@@ -73,7 +73,7 @@ progress.paddingLeft = 3;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/ProgressBar.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 progress.padding = 20;
 ```
 

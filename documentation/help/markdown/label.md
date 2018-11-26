@@ -22,7 +22,7 @@ The [`Label`](../api-reference/feathers/controls/Label.html) component is for di
 
 First, let's create a `Label` control, give it some text to display, and add it to the display list:
 
-``` code
+``` actionscript
 var label:Label = new Label();
 label.text = "I am the very model of a modern Major General";
 this.addChild( label );
@@ -30,7 +30,7 @@ this.addChild( label );
 
 The text may be wrapped if it is too long to fit on one line:
 
-``` code
+``` actionscript
 label.width = 100;
 label.wordWrap = true;
 ```
@@ -45,7 +45,7 @@ A number of styles may be customized on a label, including the font styles, the 
 
 The font styles of the label may be customized using the [`fontStyles`](../api-reference/feathers/controls/Label.html#fontStyles) property.
 
-``` code
+``` actionscript
 label.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -53,7 +53,7 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the label should use different font styles when it is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/Label.html#disabledFontStyles) property too:
 
-``` code
+``` actionscript
 label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
@@ -61,7 +61,7 @@ label.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 
 Let's give the label a background skin that stretches to fill the entire width and height of the label. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 label.backgroundSkin = skin;
@@ -71,7 +71,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the label a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 label.backgroundDisabledSkin = skin;
@@ -83,7 +83,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Label.html#bac
 
 Similar to many Feathers components, a `Label` provides several properties to add padding around its content:
 
-``` code
+``` actionscript
 label.paddingTop = 15;
 label.paddingRight = 20;
 label.paddingBottom = 15;
@@ -92,7 +92,7 @@ label.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Label.html#padding) property to set them all at once:
 
-``` code
+``` actionscript
 label.padding = 20;
 ```
 
@@ -100,7 +100,7 @@ label.padding = 20;
 
 By default, a `Label` will use the global [`FeathersControl.defaultTextRendererFactory()`](../api-reference/feathers/core/FeathersControl.html#defaultTextRendererFactory) to create its text renderer. If you want to change the type of text renderer used by an individual `Label`, you can provide a custom factory:
 
-``` code
+``` actionscript
 label.textRendererFactory = function():ITextRenderer
 {
 	return new TextBlockTextRenderer();

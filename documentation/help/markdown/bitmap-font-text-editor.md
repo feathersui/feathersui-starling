@@ -27,7 +27,7 @@ Bitmap fonts may be scaled, but because they use bitmaps, only scaling down is r
 
 <aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
-``` code
+``` actionscript
 input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -35,7 +35,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To use bitmap fonts with `TextInput`, create a [`BitmapFontTextEditor`](../api-reference/feathers/controls/text/BitmapFontTextEditor.html) class in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
 
-``` code
+``` actionscript
 var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
@@ -52,7 +52,7 @@ input.textEditorFactory = function():ITextEditor
 
 Font styles may be customized by passing a [`BitmapFontTextFormat`](../api-reference/feathers/text/BitmapFontTextFormat.html) instance to the text editor's [`textFormat`](../api-reference/feathers/controls/text/BitmapFontTextRenderer.html#textFormat) property.
 
-``` code
+``` actionscript
 var format:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName" );
 ```
 
@@ -60,7 +60,7 @@ Pass the font to display to the `BitmapFontTextFormat` constructor. In the code 
 
 The tint of the text can be customized with the [`color`](../api-reference/feathers/text/BitmapFontTextFormat.html#color) property:
 
-``` code
+``` actionscript
 format.color = 0xc4c4c4;
 ```
 
@@ -70,13 +70,13 @@ The RGB values of the tint color are multiplied with the RGB values of each of t
 
 The alignment of the text can be customized with the [`align`](../api-reference/feathers/text/BitmapFontTextFormat.html#align) property:
 
-``` code
+``` actionscript
 format.align = TextFormatAlign.CENTER;
 ```
 
 Bitmap fonts have one primary font size. They may be scaled, but scaled bitmap fonts may not render as nicely as scaled vector fonts. However, if needed, we can use the [`size`](../api-reference/feathers/text/BitmapFontTextFormat.html#size) property:
 
-``` code
+``` actionscript
 format.size = 18;
 ```
 
@@ -90,7 +90,7 @@ In most cases, it's not necessary to set the `size` property. The primary font s
 
 For instance, we can provide a different font style for the focused state of a `TextInput` by calling [`setTextFormatForState()`](../api-reference/feathers/controls/text/BitmapFontTextEditor.html#setTextFormatForState()):
 
-```code
+``` actionscript
 var defaultFormat:BitmapFontTextFormat = new BitmapFontTextFormat( "FontName", 20, 0xc4c4c4 );
 textEditor.textFormat = defaultFormat;
 

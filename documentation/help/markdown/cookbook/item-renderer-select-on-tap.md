@@ -9,7 +9,7 @@ author: Josh Tynjala
 
 Using the [`TapToSelect`](../../api-reference/feathers/utils/touch/TapToSelect.html) class, it's easy to change the `isSelected` property on tap or click:
 
-``` code
+``` actionscript
 public class CustomItemRenderer extends LayoutGroupListItemRenderer
 {
     public function CustomItemRenderer()
@@ -26,7 +26,7 @@ public class CustomItemRenderer extends LayoutGroupListItemRenderer
 
 You may notice that the item renderer is selected on tap, but not deselected when you tap again. Generally, that's how you want a list to behave. The item renderer will be deselected when another item renderer is selected. However, sometimes the list supports multiple selection, and you want to deselect the item renderer on tap or click. Simply set the [`tapToDeselect`](../../api-reference/feathers/utils/touch/TapToSelect.html#tapToDeselect) property of the `TapToSelect` instance to `true`:
 
-``` code
+``` actionscript
 this._select.tapToDeselect = true;
 ```
 
@@ -38,7 +38,7 @@ All item renderers should also dispatch [`Event.TRIGGERED`](../../api-reference/
 
 Similar to `TapToSelect`, you can use [`TapToTrigger`](../../api-reference/feathers/utils/touch/TapToTrigger.html) to set this up automatically:
 
-``` code
+``` actionscript
 public class CustomItemRenderer extends LayoutGroupListItemRenderer
 {
     public function CustomItemRenderer()

@@ -11,7 +11,7 @@ A [`PickerList`](../picker-list.html) component contains two sub-components, a b
 
 We can customize the button inside the picker list's [`buttonFactory`](../../api-reference/feathers/controls/PickerList.html#buttonFactory). As long as we aren't setting any advanced font styles on the button's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the button's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var pickerList:PickerList = new PickerList();
 pickerList.buttonFactory = function():Button
 {
@@ -27,7 +27,7 @@ If we wanted to change the button's font styles inside the theme, we could set t
 
 Using the picker list's [`listFactory`](../../api-reference/feathers/controls/PickerList.html#listFactory) that creates the pop-up list, we can access the pop-up list's [`itemRendererFactory`](../../api-reference/feathers/controls/List.html#itemRendererFactory) to customize the item renderers. As long as we aren't setting any advanced font styles on the item renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly the item renderer's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var pickerList:PickerList = new PickerList();
 pickerList.itemRendererFactory = function():IListItemRenderer
 {

@@ -17,7 +17,7 @@ The [`SimpleScrollBar`](../api-reference/feathers/controls/SimpleScrollBar.html)
 
 You can use the `SimpleScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) or the [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory).
 
-``` code
+``` actionscript
 list.horizontalScrollBarFactory = function():IScrollBar
 {
     return new SimpleScrollBar();
@@ -40,14 +40,14 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 If you're creating a [theme](themes.html), you can target the [`SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/SimpleScrollBar.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setScrollBarThumbStyles( thumb:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -58,13 +58,13 @@ private function setScrollBarThumbStyles( thumb:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 scrollBar.customThumbStyleName = "custom-thumb";
 ```
 
 You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/SimpleScrollBar.html#customThumbStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-thumb", setScrollBarCustomThumbStyles );
 ```
@@ -73,7 +73,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/SimpleScrollBar.html#thumbFactory) to provide skins for the scroll bar's thumb:
 
-``` code
+``` actionscript
 scrollBar.thumbFactory = function():Button
 {
     var button:Button = new Button();

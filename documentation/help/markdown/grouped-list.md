@@ -32,7 +32,7 @@ The [`GroupedList`](../api-reference/feathers/controls/GroupedList.html) class r
 
 First, let's create our `GroupedList` control and add it to the display list:
 
-``` code
+``` actionscript
 var list:GroupedList = new GroupedList();
 list.width = 250;
 list.height = 300;
@@ -41,7 +41,7 @@ this.addChild( list );
 
 Next, we want the grouped list to display some items, so let's create a [`ArrayHierarchicalCollection`](../api-reference/feathers/data/ArrayHierarchicalCollection.html) as its data provider. In the example below, a specially-formatted set of objects is passed to the `ArrayHierarchicalCollection`:
 
-``` code
+``` actionscript
 var groceryList:ArrayHierarchicalCollection = new ArrayHierarchicalCollection(
 [
     {
@@ -88,13 +88,13 @@ By default, a list renders items from the data provider using the [`DefaultGroup
 
 Start by taking a moment to review one of the items from the data provider:
 
-``` code
+``` actionscript
 { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) }
 ```
 
 The item's `text` property contains a string, and the `thumbnail` property contains a texture. We can tell the default item renderer to use the values from these two properties to display two children: a label and an icon.
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
 	var itemRenderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
@@ -120,7 +120,7 @@ To customize what content is passed to the header from a group in the data provi
 
 Consider the following group from the data provider:
 
-``` code
+``` actionscript
 {
     header: { text: "Bakery" },
     children:
@@ -132,7 +132,7 @@ Consider the following group from the data provider:
 
 For the list to display the text in the header, it needs to know about the group's `header` property:
 
-``` code
+``` actionscript
 list.headerField = "header";
 ```
 
@@ -142,7 +142,7 @@ For footers, a grouped list provides [`footerField`](../api-reference/feathers/c
 
 Once the header or footer renderer has its data, it may need to drill down further into the properties, similar to an item renderer. The default header and footer renderer has a [`contentLabelField`](../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField) property that is similar to the item renderer's `labelField` property.
 
-``` code
+``` actionscript
 list.headerRendererFactory = function():IGroupedListHeaderRenderer
 {
 	var headerRenderer:DefaultGroupedListHeaderOrFooterRenderer = new DefaultGroupedListHeaderOrFooterRenderer();
@@ -159,13 +159,13 @@ The `GroupedList` component may have one selected item. You can access informati
 
 To listen for when the selection changes, listen to the [`Event.CHANGE`](../api-reference/feathers/controls/GroupedList.html#event:change) event:
 
-``` code
+``` actionscript
 list.addEventListener( Event.CHANGE, list_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 private function list_changeHandler( event:Event ):void
 {
     var list:GroupedList = GroupedList( event.currentTarget );
@@ -175,7 +175,7 @@ private function list_changeHandler( event:Event ):void
 
 You can manually change the selection, if needed:
 
-``` code
+``` actionscript
 list.setSelectedLocation(0, 4);
 ```
 
@@ -183,19 +183,19 @@ Selection indices start at `0`, so the above code would select the fifth item in
 
 If you prefer, you can change selection by passing in an item from the data provider:
 
-``` code
+``` actionscript
 list.selectedItem = item;
 ```
 
 If needed, you can clear selection manually:
 
-``` code
+``` actionscript
 list.setSelectedLocation(-1, -1);
 ```
 
 To disable selection completely, use the [`isSelectable`](../api-reference/feathers/controls/GroupedList.html#isSelectable) property:
 
-``` code
+``` actionscript
 list.isSelectable = false;
 ```
 
@@ -207,7 +207,7 @@ A grouped list has a background skin and a layout. Much of the ability to custom
 
 We can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 header.backgroundSkin = skin;
@@ -217,7 +217,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the list a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 list.backgroundDisabledSkin = skin;
@@ -229,7 +229,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 Padding may be added around the edges of the grouped list's content. This padding is different than any type of padding that may be provided by the `layout` property. The layout padding is applied inside the grouped list's content, but the grouped list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
-``` code
+``` actionscript
 list.paddingTop = 15;
 list.paddingRight = 20;
 list.paddingBottom = 15;
@@ -238,13 +238,13 @@ list.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 list.padding = 20;
 ```
 
 The default layout for a grouped list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.verticalAlign = VerticalAlign.JUSTIFY;
 layout.gap = 10;
@@ -254,7 +254,7 @@ list.layout = layout;
 
 When the grouped list automatically defaults to a [`VerticalLayout`](vertical-layout.html), it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we're switching to a horizontal layout, the scroll policies won't be updated automatically, so we should also manually adjust the scroll policies:
 
-``` code
+``` actionscript
 list.horizontalScrollPolicy = ScrollPolicy.AUTO;
 list.verticalScrollPolicy = ScrollPolicy.OFF;
 ```
@@ -271,7 +271,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -280,7 +280,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -289,14 +289,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 list.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 list.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -307,7 +307,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the list's scroll bars:
 
-``` code
+``` actionscript
 list.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
@@ -329,13 +329,13 @@ This section only explains how to access the item renderer sub-components. Pleas
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultGroupedListItemRenderer ).defaultStyleFunction = setItemRendererStyles;
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -348,13 +348,13 @@ private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):voi
 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
 
-``` code
+``` actionscript
 list.customItemRendererStyleName = "custom-item-renderer";
 ```
 
 You can set the function for the custom [`customItemRendererStyleName`](../api-reference/feathers/controls/GroupedList.html#customItemRendererStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultGroupedListItemRenderer )
     .setFunctionForStyleName( "custom-item-renderer", setCustomItemRendererStyles );
 ```
@@ -365,7 +365,7 @@ To customize the appearance of the first, last, and a single item renderer in a 
 
 If you are not using a theme, you can use [`itemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#itemRendererFactory) to provide skins for the grouped list's item renderers:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
     var itemRenderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
@@ -389,13 +389,13 @@ If the default item renderer doesn't have the features that you need, the `Group
 
 The easiest way to tell a grouped list to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/GroupedList.html#itemRendererType) property:
 
-``` code
+``` actionscript
 list.itemRendererType = ExampleCustomItemRenderer;
 ```
 
 Sometimes, you might want to change some properties on each item renderer as it is created. You can use the [`itemRendererFactory`](../api-reference/feathers/controls/GroupedList.html#itemRendererFactory) property instead of itemRendererType to call a function that returns a newly created item renderer:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
     var itemRenderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
@@ -428,13 +428,13 @@ Each of the type and factory properties work similarly to the `itemRendererType`
 
 To pass in a custom header renderer, use the [`headerRendererType`](../api-reference/feathers/controls/GroupedList.html#headerRendererType) property, similar to the `itemRendererType` property:
 
-``` code
+``` actionscript
 list.headerRendererType = ExampleCustomHeaderRenderer;
 ```
 
 You can also use a [`headerRendererFactory`](../api-reference/feathers/controls/GroupedList.html#headerRendererFactory), similar to `itemRendererFactory`:
 
-``` code
+``` actionscript
 list.headerRendererFunction = function():IGroupedListHeaderOrFooterRenderer
 {
     var headerRenderer:ExampleCustomHeaderRenderer = new ExampleCustomHeaderRenderer();
@@ -449,7 +449,7 @@ To customize the type or properties of footer renderers, you can use `footerRend
 
 A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/GroupedList.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
 
-``` code
+``` actionscript
 function regularItemFactory():IGroupedListItemRenderer
 {
     return new DefaultGroupedListItemRenderer();
@@ -467,7 +467,7 @@ Each factory should be given a unique `String` identifier. We'll use these value
 
 The [`factoryIDFunction`](../api-reference/feathers/controls/GroupedList.html#factoryIDFunction) is used to determine which item renderer factory should be used for a particular item. In the example below, we use `factoryIDFunction` to give the first item in the data provider a different item renderer than the other items:
  
-``` code
+``` actionscript
 list.factoryIDFunction = function( item:Object, index:int ):String
 {
     if(index == 0)

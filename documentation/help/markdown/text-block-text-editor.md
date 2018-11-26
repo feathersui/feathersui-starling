@@ -29,7 +29,7 @@ Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes.
 
 <aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
-``` code
+``` actionscript
 input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -37,7 +37,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To use Flash Text Engine with `TextInput`, create a [`TextBlockTextEditor`](../api-reference/feathers/controls/text/TextBlockTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
 
-``` code
+``` actionscript
 var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
@@ -54,7 +54,7 @@ input.textEditorFactory = function():ITextEditor
 
 Advanced font styles may be customized using the native [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) class. Pass an instance of `ElementFormat` to the text editor's [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextEditor.html#elementFormat) property:
 
-``` code
+``` actionscript
 var fontDescription:FontDescription = new FontDescription( "Source Sans Pro", FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE );
 textEditor.elementFormat = new ElementFormat( fontDescription, 16, 0xcccccc );
 ```
@@ -63,7 +63,7 @@ The first parameter to the `ElementFormat` constructor is a [`FontDescription`](
 
 The `ElementFormat` allows you to customize font size, color, alpha, and more.
 
-``` code
+``` actionscript
 var format:ElementFormat = new ElementFormat( fontDescription );
 format.fontSize = 20;
 format.color = 0xc4c4c4;
@@ -78,7 +78,7 @@ format.alpha = 0.5;
 
 We can provide a different font style for the focused state of a `TextInput` by calling [`setElementFormatForState()`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#setElementFormatForState())
 
-```code
+``` actionscript
 var defaultFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0xc4c4c4 );
 textEditor.elementFormat = defaultFormat;
 
@@ -92,7 +92,7 @@ We didn't provide separate font styles for other states, like `TextInput.STATE_D
 
 To embed a TTF or OTF font for `TextBlockTextEditor`, use `[Embed]` metadata, like this:
 
-``` code
+``` actionscript
 [Embed(source="my-font.ttf",fontFamily="My Font Name",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="true")]
 private static const MY_FONT:Class;
 ```
@@ -108,7 +108,7 @@ Here are the parameters:
 
 To use an embedded font with `TextBlockTextEditor`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `FontDescription` object.
 
-``` code
+``` actionscript
 var font:FontDescription = new FontDescription(
 	"My Font Name", FontWeight.BOLD, FontPosture.ITALIC );
 font.fontLookup = FontLookup.EMBEDDED_CFF;

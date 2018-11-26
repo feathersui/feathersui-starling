@@ -91,7 +91,7 @@ If we want to access the `value` property of the `Slider` in our event listener,
 
 Now, we can reference the `Slider` that we created in MXML like a member variable on an ActionScript class:
 
-``` code
+``` actionscript
 private function button_triggeredHandler(event:Event):void
 {
     trace( "slider value changed! " + this.slider.value );
@@ -210,7 +210,7 @@ The `states` property may contain two or more `feathers.states.State` objects. T
 
 To switch between view states, set the `currentState` property to the name of the new state:
 
-``` code
+``` actionscript
 private function submitButton_onTriggered(event:Event):void
 {
     this.currentState = "submittedForm";

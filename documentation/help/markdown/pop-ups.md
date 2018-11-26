@@ -13,7 +13,7 @@ If the [focus management](focus.html) is enabled, modal pop-ups will be given th
 
 [`PopUpManager.addPopUp()`](../api-reference/feathers/core/PopUpManager.html#addPopUp()) is used to add a display object as a pop up. You must create the display object beforehand:
 
-``` code
+``` actionscript
 var popUp:Image = new Image( texture );
 PopUpManager.addPopUp( popUp, true, true );
 ```
@@ -30,7 +30,7 @@ A fourth argument, also optional, allows you to pass in a custom factory for the
 
 There are two ways to remove pop-ups. The first is by calling [`PopUpManager.removePopUp()`](../api-reference/feathers/core/PopUpManager.html#removePopUp()):
 
-``` code
+``` actionscript
 PopUpManager.removePopUp( popUp, true );
 ```
 
@@ -38,7 +38,7 @@ The first argument is the pop-up to remove. If the object passed in is not a pop
 
 If you prefer, you may also use the standard [`removeFromParent()`](http://doc.starling-framework.org/core/starling/display/DisplayObject.html#removeFromParent()) function available to all Starling display objects:
 
-``` code
+``` actionscript
 popUp.removeFromParent( true );
 ```
 
@@ -58,7 +58,7 @@ By customizing [`PopUpManager.overlayFactory`](../api-reference/feathers/core/Po
 
 If you wanted to use a semi-transparent, colored Quad or another Starling display object for overlays, you can pass in a new `overlayFactory`:
 
-``` code
+``` actionscript
 PopUpManager.overlayFactory = function():DisplayObject
 {
     var quad:Quad = new Quad(100, 100, 0x000000);
@@ -71,7 +71,7 @@ In the example above, the modal overlay is a black `Quad` with 75% opacity.
 
 As mentioned above, you can customize the modal overlay for a specific pop-up only by passing in a custom overlay factory to [`PopUpManager.addPopUp()`](../api-reference/feathers/core/PopUpManager.html#addPopUp()):
 
-``` code
+``` actionscript
 PopUpManager.addPopUp( popUp, true, true, function():DisplayObject
 {
     var quad:Quad = new Quad(100, 100, 0x000000);
@@ -82,7 +82,7 @@ PopUpManager.addPopUp( popUp, true, true, function():DisplayObject
 
 You may customize the [`root`](../api-reference/feathers/core/PopUpManager.html#root) property of `PopUpManager`. This is the display object where pop-ups are added. By default, `PopUpManager` adds all pop-ups directly to the Starling stage.
 
-``` code
+``` actionscript
 var popUpContainer:Sprite = new Sprite();
 this.stage.addChild( popUpContainer );
 PopUpManager.root = popUpContainer;

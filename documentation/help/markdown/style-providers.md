@@ -15,7 +15,7 @@ If you want more than one button to use the same skins, you might be looking for
 
 Let's create one of the simplest style providers, called [`FunctionStyleProvider`](../api-reference/feathers/skins/FunctionStyleProvider.html):
 
-``` code
+``` actionscript
 function skinButton( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xcccccc );
@@ -29,7 +29,7 @@ As you can see, we've created a function that we can call when we want to skin t
 
 Telling a component to use a style provider is as simple as passing it to the [`styleProvider`](../api-reference/feathers/core/FeathersControl.html#styleProvider) property:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "Cancel";
 button1.styleProvider = customButtonStyles;
@@ -50,7 +50,7 @@ In the previous example, we created the [`FunctionStyleProvider`](../api-referen
 
 Each component class (such as [`Button`](button.html), [`Slider`](slider.html), or [`List`](list.html)) provides a static `globalStyleProvider` property. In the following example, we'll set the global style provider for all buttons:
 
-``` code
+``` actionscript
 function skinButton( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xcccccc );
@@ -64,7 +64,7 @@ As you can see, we created the `FunctionStyleProvider` the same way we did it in
 
 Now, when we create our buttons, we don't need to set the `styleProvider` property at all:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "Cancel";
 this.addChild( button1 );
@@ -77,7 +77,7 @@ this.addChild( button2 );
 
 When a `Button` is created, Feathers automatically sets its `styleProvider` property to the value of `Button.globalStyleProvider` in the constructor:
 
-``` code
+``` actionscript
 trace( button1.styleProvider == Button.globalStyleProvider ); //true
 ```
 
@@ -85,7 +85,7 @@ trace( button1.styleProvider == Button.globalStyleProvider ); //true
 
 Let's say that we're creating a `Button`, but we don't want it to use one the global style provider. The easiest way to replace the default skins with our own skins is to start from scratch by clearing the button's `styleProvider` property:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "Click Me";
  
@@ -109,7 +109,7 @@ Alternatively, instead of setting the `styleProvider` property to `null`, you co
 
 What if we want several buttons to look different from the default? Obviously, we could pass different style providers to each component:
 
-``` code
+``` actionscript
 function skinNormalButton( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xcccccc );
@@ -135,7 +135,7 @@ this.addChild( button2 );
 
 However, just like before, it would be better if we could use `Button.globalStyleProvider` so that we don't need to set the `styleProvider` property on every `Button` instance. Thankfully, `FunctionStyleProvider` isn't the only style provider available. There's another one called [`StyleNameFunctionStyleProvider`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html) that allows us to define multiple functions.
 
-``` code
+``` actionscript
 function skinNormalButton( button:Button ):void
 {
     button.defaultSkin = new Quad( 200, 60, 0xcccccc );
@@ -157,7 +157,7 @@ As you can see, the default function to skin a `Button` will still be the same `
 
 A style name is a string that allows us to differentiate different types of the same component. We can add a style name to any component with the [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) property:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "Cancel";
 this.addChild( button1 );

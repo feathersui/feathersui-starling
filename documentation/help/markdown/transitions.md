@@ -13,14 +13,14 @@ Feathers offers a number of classes to quickly create common transitions. Screen
 
 With a [`ColorFade`](../api-reference/feathers/motion/ColorFade.html) transition, the old screen is hidden as a solid color fades in over it. Then, the solid color fades back out to show that the new screen has replaced the old screen.
 
-``` code
+``` actionscript
 var color:uint = 0xff851b;
 ColorFade.createColorFadeTransition( color );
 ```
 
 The `ColorFade` class offers two convienence functions, one for black and one for white:
 
-``` code
+``` actionscript
 ColorFade.createBlackFadeTransition();
 ColorFade.createWhiteFadeTransition();
 ```
@@ -29,7 +29,7 @@ ColorFade.createWhiteFadeTransition();
 
 A [`Cover`](../api-reference/feathers/motion/Cover.html) transition slides the new screen into view, animating the `x` or `y` property, to cover up the old screen. The new screen may slide up, right, down, or left. The old screen remains stationary.
 
-``` code
+``` actionscript
 Cover.createCoverLeftTransition();
 Cover.createCoverRightTransition();
 Cover.createCoverUpTransition();
@@ -40,7 +40,7 @@ Cover.createCoverownTransition();
 
 A [`Cube`](../api-reference/feathers/motion/Cube.html) transition positions the screens in 3D space as if they are on two adjacent sides of a cube. The cube may rotate up or down around the x-axis, or it may rotate left or right around the y-axis.
 
-``` code
+``` actionscript
 Cube.createCubeLeftTransition();
 Cube.createCubeRightTransition();
 Cube.createCubeUpTransition();
@@ -55,7 +55,7 @@ The [`Fade`](../api-reference/feathers/motion/Fade.html) transition animates the
 
 The new screen may fade in, animating the `alpha` property from `0.0` to `1.0`, while the old screen remains fully opaque at a lower depth.
 
-``` code
+``` actionscript
 Fade.createFadeInTransition();
 ```
 
@@ -63,7 +63,7 @@ Fade.createFadeInTransition();
 
 Alternatively, the old screen may fade out, animating the `alpha` property from `1.0` to `0.0`, while the new screen remains fully opaque at a lower depth. 
 
-``` code
+``` actionscript
 Fade.createFadeOutTransition();
 ```
 
@@ -71,7 +71,7 @@ Fade.createFadeOutTransition();
 
 A third option is to crossfade the screens. In other words, the old screen fades out, animating the `alpha` property from `1.0` to `0.0`. Simultaneously, the new screen fades in, animating its `alpha` property from `0.0` to `1.0`.
 
-``` code
+``` actionscript
 Fade.createCrossfadeTransition();
 ```
 
@@ -81,7 +81,7 @@ Since both screens are semi-transparent during a crossfade, the background behin
 
 The [`Flip`](../api-reference/feathers/motion/Flip.html) transition positions the screens in 3D space is if they are printed on opposite sides of a postcard. The old screen appears on the front, and the card rotates around its center to show the new screen on the back side. The screens may rotate up or down around the x-axis, or they may rotate left or right around the y-axis.
 
-``` code
+``` actionscript
 Flip.createFlipLeftTransition();
 Flip.createFlipRightTransition();
 Flip.createFlipUpTransition();
@@ -92,7 +92,7 @@ Flip.createFlipDownTransition();
 
 The [`Iris`](../api-reference/feathers/motion/Iris.html) transition shows or hides a screen by masking it with circle that grows or shrinks in radius.
 
-``` code
+``` actionscript
 Iris.createIrisOpenTransition();
 Iris.createIrisOpenTransitionAt(x, y);
 Iris.createIrisCloseTransition();
@@ -103,7 +103,7 @@ Iris.createIrisCloseTransitionAt(x, y);
 
 A [`Reveal`](../api-reference/feathers/motion/Reveal.html) transition slides the old screen out of view, animating the `x` or `y` property, to reveal the new screen under it. The old screen may slide up, right, down, or left. The new screen remains stationary.
 
-``` code
+``` actionscript
 Reveal.createRevealLeftTransition();
 Reveal.createRevealRightTransition();
 Reveal.createRevealUpTransition();
@@ -114,7 +114,7 @@ Reveal.createRevealDownTransition();
 
 With a [`Slide`](../api-reference/feathers/motion/Slide.html) transition, the new screen slides in from off-stage, pushing the old screen in the same direction. The screens may slide up, right, down, or left.
 
-``` code
+``` actionscript
 Slide.createSlideLeftTransition();
 Slide.createSlideRightTransition();
 Slide.createSlideUpTransition();
@@ -125,7 +125,7 @@ Slide.createSlideDownTransition();
 
 With a [`Wipe`](../api-reference/feathers/motion/Wipe.html) transition, the old screen is wiped away, revealing the new screen under it. Both screens remain stationary, and clipping rectangles are used to alter their appearance. The screens may be wiped up, right, down, or left.
 
-``` code
+``` actionscript
 Wipe.createWipeLeftTransition();
 Wipe.createWipeRightTransition();
 Wipe.createWipeUpTransition();
@@ -136,7 +136,7 @@ Wipe.createWipeDownTransition();
 
  The `pushTransition` and `popTransition` properties on `StackScreenNavigator` (or the `transition` property on `ScreenNavigator`) are simply typed as `Function`. Let's take a look at the required function signature:
 
-``` code
+``` actionscript
 function( oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function ):void
 ```
 
@@ -148,7 +148,7 @@ To better understand custom transitions, we'll look at a couple of examples. Let
 
 This transition simply calls the `completeCallback` to say that it has finished:
 
-``` code
+``` actionscript
 navigator.transition = function( oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function ):void
 {
     completeCallback();
@@ -165,7 +165,7 @@ Let's create a transition that's kind of a combination between `Cover` and `Fade
 
 Let's start with a simple function that sets the initial conditions before the animation starts:
 
-``` code
+``` actionscript
 function( oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function ):void
 {
 	newScreen.x = newScreen.width;
@@ -177,7 +177,7 @@ The new screen will start on the right side, so we should update its `x` propert
 
 Next, we'll create a `Tween` that animates properties on the new screen:
 
-``` code
+``` actionscript
 var tween:Tween = new Tween( newScreen, 1.0, Transitions.EASE_IN_OUT );
 tween.animate( "x", 0 );
 tween.animate( "alpha", 1 );
@@ -189,13 +189,13 @@ As you can see, we animate the `x` and `alpha` properties for a duration of one 
 
 Now, we need to use the callback to notify the screen navigator when the animation is complete. If there isn't anything to clean up after the animation is complete, then we can simply pass to callback to its `onComplete` property:
 
-``` code
+``` actionscript
 tween.onComplete = completeCallback;
 ```
 
 If some kind of cleanup is needed after the tween completes, we can create a closure that uses the callback when it is done:
 
-``` code
+``` actionscript
 tween.onComplete = function():void
 {
 	// clean up here
@@ -208,7 +208,7 @@ In this case, there is nothing to clean up. More advanced transitions might need
 
 Finally, add the `Tween` to the Starling juggler to start the animation:
 
-``` code
+``` actionscript
 Starling.juggler.add( tween );
 ```
 
@@ -222,7 +222,7 @@ For completeness, since were are animating properties on the new screen, we shou
 
 At the start of the function, we'll simply check if the new screen is `null`:
 
-``` code
+``` actionscript
 function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void
 {
 	if(!newScreen)
@@ -240,7 +240,7 @@ Truly, our custom transition is now complete. Let's combine all of the source co
 
 ### Full custom transition source code
 
-``` code
+``` actionscript
 function( oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function ):void
 {
 	if(!newScreen)
@@ -265,7 +265,7 @@ In most cases, the callback passed to a transition function should be called wit
 
 The callback passed to a transition function has the following signature:
 
-``` code
+``` actionscript
 function completeCallback( cancelTransition:Boolean = false ):void
 ```
 
@@ -273,13 +273,13 @@ The callback accepts one optional argument that indicates if the transition was 
 
 Most transitions cannot be canceled. With that in mind, you should usually call the complete callback with no arguments when the animation is complete:
 
-``` code
+``` actionscript
 completeCallback();
 ```
 
 If you need to cancel a transition to return to the old screen, you can pass `true` to the callback:
 
-``` code
+``` actionscript
 completeCallback( true );
 ```
 

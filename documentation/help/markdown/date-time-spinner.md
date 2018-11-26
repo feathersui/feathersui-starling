@@ -20,7 +20,7 @@ The [`DateTimeSpinner`](../api-reference/feathers/controls/DateTimeSpinner.html)
 
 First, let's create a `DateTimeSpinner` control, set up its editing mode and its range of values, and add it to the display list.
 
-``` code
+``` actionscript
 var spinner:DateTimeSpinner = new DateTimeSpinner();
 spinner.editingMode = DateTimeMode.DATE;
 spinner.minimum = new Date(1970, 0, 1);
@@ -39,13 +39,13 @@ The [`editingMode`](../api-reference/feathers/controls/DateTimeSpinner.html#edit
 
 Add a listener to the [`Event.CHANGE`](../api-reference/feathers/controls/DateTimeSpinner.html#event:change) event to know when the `value` property changes:
 
-``` code
+``` actionscript
 spinner.addEventListener( Event.CHANGE, spinner_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 function spinner_changeHandler( event:Event ):void
 {
     var spinner:DateTimeSpinner = DateTimeSpinner( event.currentTarget );
@@ -65,14 +65,14 @@ This section only explains how to access the `SpinnerList` sub-components. Pleas
 
 If you're creating a [theme](themes.html), you can target the [`DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST`](../api-reference/feathers/controls/DateTimeSpinner.html#DEFAULT_CHILD_STYLE_NAME_LIST) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( SpinnerList )
     .setFunctionForStyleName( DateTimeSpinner.DEFAULT_CHILD_STYLE_NAME_LIST, setDateTimeSpinnerListStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setDateTimeSpinnerListStyles( list:SpinnerList ):void
 {
 	var skin:Image = new Image( texture );
@@ -83,13 +83,13 @@ private function setDateTimeSpinnerListStyles( list:SpinnerList ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 spinner.customListStyleName = "custom-list";
 ```
 
 You can set the function for the [`customListStyleName`](../api-reference/feathers/controls/DateTimeSpinner.html#customListStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( SpinnerList )
     .setFunctionForStyleName( "custom-list", setDateTimeSpinnerCustomListStyles );
 ```
@@ -98,7 +98,7 @@ getStyleProviderForClass( SpinnerList )
 
 If you are not using a theme, you can use [`listFactory`](../api-reference/feathers/controls/DateTimeSpinner.html#listFactory) to provide skins for the list sub-components:
 
-``` code
+``` actionscript
 spinner.listFactory = function():SpinnerList
 {
     var list:SpinnerList = new SpinnerList();

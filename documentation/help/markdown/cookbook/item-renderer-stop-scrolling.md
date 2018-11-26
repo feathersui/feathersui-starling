@@ -11,13 +11,13 @@ How you implement this depends on the sub-component's type. Some components may 
 
 For most display objects, you can usually simply listen for `TouchEvent.TOUCH` on the child:
 
-``` code
+``` actionscript
 child.addEventListener( TouchEvent.TOUCH, child_touchHandler );
 ```
 
 In the listener, we'll track the ID of the touch and then wait to see if the list starts scrolling:
 
-``` code
+``` actionscript
 protected function child_touchHandler( event:TouchEvent ):void
 {
     if(!this._isEnabled)
@@ -52,7 +52,7 @@ protected function child_touchHandler( event:TouchEvent ):void
 
 If the list attempts to start scrolling, it will dispatch `FeathersEventType.SCROLL_START`. If we call [`stopScrolling()`](../../api-reference/feathers/controls/Scroller.html#stopScrolling()) right away, this will tell the list that it should not scroll right now because we're busy with the touch:
 
-``` code
+``` actionscript
 protected function owner_scrollStartHandler( event:Event ):void
 {
     if(this.childTouchID < 0)

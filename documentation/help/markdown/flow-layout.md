@@ -13,7 +13,7 @@ The [`FlowLayout`](../api-reference/feathers/layout/FlowLayout.html) class may b
 
 Let's create a flow layout and add it to a [`LayoutGroup`](layout-group.html):
 
-``` code
+``` actionscript
 var layout:FlowLayout = new FlowLayout();
  
 var container:LayoutGroup = new LayoutGroup();
@@ -27,13 +27,13 @@ There are a number of simple properties that may be used to affect positioning a
 
 The *padding* is the space around the edges of the container. Let's set the [`padding`](../api-reference/feathers/layout/FlowLayout.html#padding) property to `12` pixels:
 
-``` code
+``` actionscript
 layout.padding = 12;
 ```
 
 If needed, the padding on each side of the container may be set separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/FlowLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/FlowLayout.html#paddingBottom) to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/FlowLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/FlowLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingTop = 10;
 layout.paddingRight = 15;
 layout.paddingBottom = 10;
@@ -42,13 +42,13 @@ layout.paddingLeft = 15;
 
 The *gap* is the space between items, both horizontally or vertically. Let's set the [`gap`](../api-reference/feathers/layout/FlowLayout.html#gap) property to `5` pixels:
 
-``` code
+``` actionscript
 layout.gap = 5;
 ```
 
 If needed, the horizontal and vertical gaps may be set separately. We'll set the [`horizontalGap`](../api-reference/feathers/layout/FlowLayout.html#horizontalGap) property to `4` pixels and the [`verticalGap`](../api-reference/feathers/layout/FlowLayout.html#verticalGap) property to `6` pixels:
 
-``` code
+``` actionscript
 layout.horizontalGap = 4;
 layout.verticalGap = 6;
 ```
@@ -57,14 +57,14 @@ layout.verticalGap = 6;
 
 We can *align* the items in the layout using the [`horizontalLayout`](../api-reference/feathers/layout/FlowLayout.html#horizontalAlign) and [`verticalLayout`](../api-reference/feathers/layout/FlowLayout.html#verticalAlign) properties. Vertical alignment will only apply when the total height of the content (including padding and gap values) is less than or equal to the height of the container that uses the layout. Let's adjust the alignments so that the content will be aligned to the top left:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.LEFT;
 layout.verticalAlign = VerticalAlign.TOP;
 ```
 
 Since items may be smaller than the height of a row, we can align items within their rows separately from the alignment of the complete content. We'll align the items vertically in the middle of their rows:
 
-``` code
+``` actionscript
 layout.rowVerticalAlign = VerticalAlign.MIDDLE;
 ```
 
@@ -76,7 +76,7 @@ A virtualized layout will need as estimate about how big a "virtual" item render
 
 By default [`useVirtualLayout`](../api-reference/feathers/layout/FlowLayout.html#useVirtualLayout) is `true` for containers that support it. We can disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, `useVirtualLayout` should rarely be disabled.
 
-``` code
+``` actionscript
 layout.useVirtualLayout = false;
 ```
 

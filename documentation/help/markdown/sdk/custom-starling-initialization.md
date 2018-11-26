@@ -21,7 +21,7 @@ In your project's application, you can add `[Frame]` metadata to provide your ow
 
 A simple startup class might look something like this:
 
-``` code
+``` actionscript
 package com.example
 {
 	import flash.display.Sprite;
@@ -71,7 +71,7 @@ You'll notice that we're manually instantiating the theme in our custom bootstra
 
 One reason to use a custom bootstrap is to preload your assets before starting your app. Let's expand the previous example by loading some files using the Starling `AssetManager`:
 
-``` code
+``` actionscript
 private var _assets:AssetManager;
 
 private function starling_context3DCreateHandler( event:Event ):void
@@ -90,7 +90,7 @@ Similar to before, we wait until the Stage 3D context is ready. This time, we cr
 
 Next, let's implement the `assets_onProgress` function to track the loading progress of our assets:
 
-``` code
+``` actionscript
 private function assets_onProgress( ratio:Number ):void
 {
 	if( ratio < 1 )

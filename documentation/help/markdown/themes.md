@@ -19,7 +19,7 @@ In the following example, we'll use the example `MetalWorksMobileTheme` included
 
 In our project's root Starling display object, let's instantiate the theme right away in the constructor.
 
-``` code
+``` actionscript
 import starling.display.Sprite;
 import feathers.themes.MetalWorksMobileTheme;
 
@@ -37,7 +37,7 @@ public class Main extends Sprite
 
 To test it out, let's create a button. First, listen for `Event.ADDED_TO_STAGE`:
 
-``` code
+``` actionscript
 public function Main()
 {
 	new MetalWorksMobileTheme();
@@ -53,7 +53,7 @@ private function addedToStageHandler(event:Event):void
 
 Inside the listener function, create the button:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.x = 200;
@@ -69,7 +69,7 @@ Most of the example projects included with the Feathers library use themes. Take
 
 If you've chosen to use a theme, it's considered best practice to keep all of your styling code inside the theme, just to keep things organized. However, it's certainly possible to customize styles on any component in your app so that they're different than the theme's defaults. Let's customize a button's font styles:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.fontStyles = new TextFormat( "_sans", 20, 0x4c4c4c );
@@ -88,7 +88,7 @@ There are a couple of different ways to tell a component not to use the default 
 
 The most drastic thing we can do is tell a component not to use the theme at all, by setting its `styleProvider` property to `null`:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.styleProvider = null; //no theme!
 button.label = "Click Me";
@@ -114,7 +114,7 @@ Let's look at another example. The `GroupedList` component has a regular skin th
 
 Alternate style names get exposed as public static constants on any class that provides them. For instance, `GroupedList` defines `ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST`. The inset style can be used by adding the constant to a grouped list's `styleNameList`, like this:
 
-``` code
+``` actionscript
 var list:GroupedList = new GroupedList();
 list.styleNameList.add( GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST );
 this.addChild( list );

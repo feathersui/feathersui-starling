@@ -22,7 +22,7 @@ The [`Button`](../api-reference/feathers/controls/Button.html) class displays a 
 
 First, let's create a `Button` control, give it a label, and add it to the display list:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 this.addChild( button );
@@ -30,7 +30,7 @@ this.addChild( button );
 
 If we want to know when the button is tapped or clicked, we can listen for [`Event.TRIGGERED`](../api-reference/feathers/controls/BasicButton.html#event:triggered):
 
-``` code
+``` actionscript
 button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
 ```
 
@@ -38,7 +38,7 @@ This event is dispatched when the touch ends *and* the touch was not dragged out
 
 The listener function might look like this:
 
-``` code
+``` actionscript
 function button_triggeredHandler( event:Event ):void
 {
     trace( "button triggered" );
@@ -64,7 +64,7 @@ A number of styles may be customized on a button, including the font styles, the
 
 The font styles of the button's label text renderer may be customized using the [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 button.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -72,13 +72,13 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the button's label should use different font styles when the button is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/Button.html#disabledFontStyles) property too:
 
-``` code
+``` actionscript
 button.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
 Finally, we can even customize the font styles for each of the button's specific states:
 
-```code
+``` actionscript
 button.setFontStylesForState( ButtonState.DOWN,
 	new TextFormat( "Helvetica", 20, 0xcc0000 ) );
 ```
@@ -91,7 +91,7 @@ When font styles aren't available for a specific state, the button will use the 
 
 Let's give our button its background skin. In the following example, we'll use an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html), but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:ImageSkin = new ImageSkin( upTexture );
 skin.scale9Grid = new Rectangle( 2, 3, 3, 8 );
 button.defaultSkin = skin;
@@ -99,7 +99,7 @@ button.defaultSkin = skin;
 
 We can change the appearance of the button's skin when the state changes. In the next example, we provide another texture to the same `ImageSkin` for the button's "down" state:
 
-``` code
+``` actionscript
 skin.setTextureForState( ButtonState.DOWN, downTexture );
 ```
 
@@ -107,7 +107,7 @@ The `ImageSkin` automatically listens for changes to the button's state and upda
 
 We can also provide different display objects for specific states, if needed. In the next example, we have a texture for the "disabled" state that requires a different `scale9Grid` than the other textures. We can create a separate `ImageSkin` for this state:
 
-``` code
+``` actionscript
 var disabledSkin:ImageSkin = new ImageSkin( disabledTexture );
 disabledSkin.scale9Grid = new Rectangle( 4, 2, 2, 10 );
 button.setSkinForState( ButtonState.DISABLED, disabledSkin );
@@ -121,7 +121,7 @@ If a skin is not provided for a specific state, the button will display its `def
 
 Let's also add an icon to the `Button`. Icons may be customized for each of the button's states (just like the background skin), but let's simply use one icon. In this example, we'll pass in a `starling.display.Image`:
 
-``` code
+``` actionscript
 button.defaultIcon = new Image( iconTexture );
 ```
 
@@ -133,7 +133,7 @@ If we wanted to change the appearance of the icon when the button's state change
 
 Padding may be added on each side of the button:
 
-``` code
+``` actionscript
 button.paddingTop = 5;
 button.paddingRight = 8;
 button.paddingBottom = 5;
@@ -142,13 +142,13 @@ button.paddingLeft = 8;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Button.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 button.padding = 6;
 ```
 
 The icon may be positioned on any side of the button's label. Let's move the icon above the label so that they are stacked vertically:
 
-``` code
+``` actionscript
 button.iconPosition = RelativePosition.TOP;
 ```
 
@@ -156,13 +156,13 @@ We set the [`iconPosition`](../api-reference/feathers/controls/Button.html#iconP
 
 The [`gap`](../api-reference/feathers/controls/Button.html#gap) refers to the space, measured in pixels, between the icon and the label:
 
-``` code
+``` actionscript
 button.gap = 10;
 ```
 
 The [`horizontalAlign`](../api-reference/feathers/controls/Button.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/Button.html#verticalAlign) properties will adjust the alignment of the icon and label inside the button, allowing you to anchor them at the edges or in the center.
 
-``` code
+``` actionscript
 button.horizontalAlign = HorizontalAlign.CENTER;
 button.verticalAlign = VerticalAlign.MIDDLE;
 ```

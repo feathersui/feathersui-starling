@@ -25,7 +25,7 @@ The format is what actually gets passed between the drag source and the drop tar
 
 Usually, if you're simply dragging a display object around (that has no data associated with it like a list item would), you could add the display object itself as the drag data. Something like this is probably fine:
 
-``` code
+``` actionscript
 var dragData:DragData = new DragData();
 dragData.setDataForFormat("display-object-drag-format", theDisplayObject);
 ```
@@ -34,7 +34,7 @@ In this case, I randomly called the format `"display-object-drag-format"`, but c
 
 Then in your `DragDropEvent.DRAG_ENTER` listener, you can check for that format:
 
-``` code
+``` actionscript
 function(event:DragDropEvent, dragData:DragData):void
 {
     if(dragData.hasDataForFormat("display-object-drag-format"))

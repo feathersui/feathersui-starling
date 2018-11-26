@@ -9,7 +9,7 @@ A [custom item renderer](../item-renderers.html) should dispatch [`Event.TRIGGER
 
 Using the [`TapToTrigger`](../../api-reference/feathers/utils/touch/TapToTrigger.html) class, it's easy to dispatch `Event.TRIGGERED` on tap or click:
 
-``` code
+``` actionscript
 public class CustomItemRenderer extends LayoutGroupListItemRenderer
 {
     public function CustomItemRenderer()

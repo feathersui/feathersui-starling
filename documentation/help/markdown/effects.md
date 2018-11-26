@@ -9,7 +9,7 @@ A Feathers component supports playing animations triggered by certain moments in
 
 Let's start by looking at a quick example of how to use an effect:
 
-``` code
+``` actionscript
 component.addedEffect = Fade.createFadeInEffect();
 ```
 
@@ -25,7 +25,7 @@ The [`Fade`](../api-reference/feathers/motion/Fade.html) effect animates the opa
 
 The component may fade in, animating the `alpha` property from `0.0` to `1.0`.
 
-``` code
+``` actionscript
 Fade.createFadeInEffect();
 ```
 
@@ -33,7 +33,7 @@ Fade.createFadeInEffect();
 
 Alternatively, the component may fade out, animating the `alpha` property from `1.0` to `0.0`.
 
-``` code
+``` actionscript
 Fade.createFadeOutEffect();
 ```
 
@@ -41,7 +41,7 @@ Fade.createFadeOutEffect();
 
 A third option is to fade to a specific `alpha` value starting from the component's current `alpha` value.
 
-``` code
+``` actionscript
 Fade.createFadeToEffect(0.5);
 ```
 
@@ -49,7 +49,7 @@ Fade.createFadeToEffect(0.5);
 
 Similarly, we can start from a custom `alpha` value and fade to the component's current `alpha` value.
 
-``` code
+``` actionscript
 Fade.createFadeFromEffect(0.0);
 ```
 
@@ -57,7 +57,7 @@ Fade.createFadeFromEffect(0.0);
 
 The final option is to fade between a custom starting `alpha` value and a custom ending `alpha` value.
 
-``` code
+``` actionscript
 Fade.createFadeBetweenEffect(1.0, 0.5);
 ```
 
@@ -65,7 +65,7 @@ Fade.createFadeBetweenEffect(1.0, 0.5);
 
 The [`Iris`](../api-reference/feathers/motion/Iris.html) effect adds a circular mask to the target component, and animates its radius to either reveal or hide the component.
 
-``` code
+``` actionscript
 Iris.createIrisOpenEffect();
 Iris.createIrisCloseEffect();
 ```
@@ -78,7 +78,7 @@ The [`Move`](../api-reference/feathers/motion/Move.html) effect animates the `x`
 
 You may animate the component to a new position, starting from its current position:
 
-``` code
+``` actionscript
 Move.createMoveToEffect();
 Move.createMoveXToEffect();
 Move.createMoveYToEffect();
@@ -88,7 +88,7 @@ Move.createMoveYToEffect();
 
 You may animate the component from a specific position to its current position:
 
-``` code
+``` actionscript
 Move.createMoveFromEffect();
 Move.createMoveXFromEffect();
 Move.createMoveYFromEffect();
@@ -98,7 +98,7 @@ Move.createMoveYFromEffect();
 
 You may animate the component's position by a specific offset, starting from its current position:
 
-``` code
+``` actionscript
 Move.createMoveByffect();
 Move.createMoveXByEffect();
 Move.createMoveYByEffect();
@@ -108,7 +108,7 @@ Move.createMoveYByEffect();
 
 To animate a component's size any time that the `x` or `y` setters are called, pass the result of [`Move.createMoveEffect()`](../api-reference/feathers/motion/Move.html#createMoveEffect()) to the [`moveEffect`](../api-reference/feathers/core/FeathersControl.html#moveEffect) property:
 
-``` code
+``` actionscript
 component.moveEffect = Move.createMoveEffect();
 ```
 
@@ -116,7 +116,7 @@ component.moveEffect = Move.createMoveEffect();
 
 A [`Parallel`](../api-reference/feathers/motion/Parallel.html) effect can play multiple effects simulataeously, ending when all of them have completed.
 
-``` code
+``` actionscript
 Parallel.createParallelEffect(
 	Fade.createFadeInEffect(),
 	Iris.createIrisOpenEffect()
@@ -131,7 +131,7 @@ The [`Resize`](../api-reference/feathers/motion/Resize.html) effect animates the
 
 You may animate the component's size to new dimensions, starting from its current dimensions:
 
-``` code
+``` actionscript
 Resize.createResizeToEffect();
 Resize.createResizeWidthToEffect();
 Resize.createResizeHeightToEffect();
@@ -141,7 +141,7 @@ Resize.createResizeHeightToEffect();
 
 You may animate the component's size from custom dimensions to its current dimensions:
 
-``` code
+``` actionscript
 Resize.createResizeFromEffect();
 Resize.createResizeWidthFromEffect();
 Resize.createResizeHeightFromEffect();
@@ -151,7 +151,7 @@ Resize.createResizeHeightFromEffect();
 
 You may animate the component's size by a specific offset, starting from its current dimensions:
 
-``` code
+``` actionscript
 Resize.createResizeByEffect();
 Resize.createResizeWidthByEffect();
 Resize.createResizeHeightByEffect();
@@ -161,7 +161,7 @@ Resize.createResizeHeightByEffect();
 
 To animate a component's size any time that the `width` or `height` setters are called, pass the result of [`Resize.createResizeEffect()`](../api-reference/feathers/motion/Resize.html#createResizeEffect()) to the [`resizeEffect`](../api-reference/feathers/core/FeathersControl.html#resizeEffect) property:
 
-``` code
+``` actionscript
 component.resizeEffect = Resize.createResizeEffect();
 ```
 
@@ -169,7 +169,7 @@ component.resizeEffect = Resize.createResizeEffect();
 
 A [`Sequence`](../api-reference/feathers/motion/Sequence.html) effect plays multiple effects one at a time, moving on to the next as each one completes.
 
-``` code
+``` actionscript
 Sequence.createSequenceEffect(
 	Fade.createFadeInEffect(),
 	Move.createMoveToEffect(100, 50)
@@ -183,7 +183,7 @@ With a [`Wipe`](../api-reference/feathers/motion/Wipe.html) effect, the target c
  A *wipe in* effect can show the target component:
 
 
-``` code
+``` actionscript
 Wipe.createWipeInLeftEffect();
 Wipe.createWipeInRightEffect();
 Wipe.createWipeInUpEffect();
@@ -192,7 +192,7 @@ Wipe.createWipeInDownEffect();
 
 A *wipe out* effect can hide the target component:
 
-``` code
+``` actionscript
 Wipe.createWipeOutLeftEffect();
 Wipe.createWipeOutRightEffect();
 Wipe.createWipeOutUpEffect();
@@ -203,7 +203,7 @@ Wipe.createWipeOutDownEffect();
 
 Effect properties on Feathers components are simply typed as `Function`. Let's start by taking a look at the required function signature:
 
-``` code
+``` actionscript
 function( target:DisplayObject ):IEffectContext
 ```
 
@@ -215,7 +215,7 @@ Let's create a custom effect that's a simplified version of the built-in [`Fade.
 
 Let's start with a simple function that sets the initial conditions before the animation starts:
 
-``` code
+``` actionscript
 function( target:DisplayObject ):IEffectContext
 {
 	target.alpha = 0.0;
@@ -227,7 +227,7 @@ The target component will start completely hidden, so we should set its `alpha` 
 
 Next, we'll create a `Tween` that animates the `alpha` property on the target component:
 
-``` code
+``` actionscript
 var tween:Tween = new Tween( target, 1.0, Transitions.EASE_OUT );
 tween.animate( "alpha", 1.0 );
 ```
@@ -238,7 +238,7 @@ As you can see, we animate the `alpha` property for a duration of one second, an
 
 Finally, we need to pass our `Tween` instance to a `TweenEffectContext` to return from our function.
 
-``` code
+``` actionscript
 return new TweenEffectContext(target, tween);
 ```
 
@@ -246,7 +246,7 @@ That's it! When this effect is triggered, the component's alpha property will fa
 
 ### Full custom transition source code
 
-``` code
+``` actionscript
 function( target:DisplayObject ):IEffectContext
 {
 	target.alpha = 0.0;

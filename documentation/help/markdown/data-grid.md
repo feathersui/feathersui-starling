@@ -26,7 +26,7 @@ The [`DataGrid`](../api-reference/feathers/controls/DataGrid.html) class display
 
 First, let's create a `DataGrid` control and add it to the display list:
 
-``` code
+``` actionscript
 var grid:DataGrid = new DataGrid();
 grid.width = 300;
 grid.height = 250;
@@ -35,7 +35,7 @@ this.addChild( grid );
 
 Next, we want the data grid to display some items, so let's create an [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) as its data provider.
 
-``` code
+``` actionscript
 var items:ArrayCollection = new ArrayCollection(
 [
 	{ item: "Chicken breast", dept: "Meat", price: "5.90" },
@@ -64,13 +64,13 @@ It's even possible for anyone to create new `IListCollection` implementations to
 
 Now, we should define the columns in the data grid, so that it knows which fields from the data provider's items to display. Let's start by taking a moment to review one of the items from the data provider:
 
-``` code
+``` actionscript
 { item: "Broccoli", dept: "Produce", price: "2.99" },
 ```
 
 The item has three fields, `item`, `dept`, and `price`. We can define a [`DataGridColumn`](../api-reference/feathers/controls/DataGridColumn.html) for each of them, and pass them to the `columns` property in a collection.
 
-``` code
+``` actionscript
 grid.columns = new ArrayCollection(
 [
 	new DataGridColumn("item", "Item"),
@@ -89,13 +89,13 @@ The `DataGrid` component may have one selected item, which selects an entire row
 
 To listen for when the selection changes, listen to [`Event.CHANGE`](../api-reference/feathers/controls/DataGrid.html#event:change):
 
-``` code
+``` actionscript
 grid.addEventListener( Event.CHANGE, grid_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 private function grid_changeHandler( event:Event ):void
 {
     var grid:DataGrid = DataGrid( event.currentTarget );
@@ -105,7 +105,7 @@ private function grid_changeHandler( event:Event ):void
 
 You can manually change the selection, if needed:
 
-``` code
+``` actionscript
 grid.selectedIndex = 4;
 ```
 
@@ -113,25 +113,25 @@ Selection indices start at `0`, so the above code would select the fifth row in 
 
 If you prefer, you can change selection by passing in an item from the data provider:
 
-``` code
+``` actionscript
 grid.selectedItem = item;
 ```
 
 If needed, you can clear selection manually:
 
-``` code
+``` actionscript
 grid.selectedIndex = -1;
 ```
 
 To disable selection completely, use the [`isSelectable`](../api-reference/feathers/controls/DataGrid.html#isSelectable) property:
 
-``` code
+``` actionscript
 grid.isSelectable = false;
 ```
 
 To support the selection of more than one item, set the [`allowMultipleSelection`](../api-reference/feathers/controls/DataGrid.html#allowMultipleSelection) property to `true`:
 
-``` code
+``` actionscript
 grid.allowMultipleSelection = true;
 ```
 
@@ -143,7 +143,7 @@ A data grid has a main background skin and one for its headers. It also supports
 
 We can give the data grid a background skin that fills the entire width and height of the data grid. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 grid.backgroundSkin = skin;
@@ -153,7 +153,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the data grid a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( disabledTexture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 grid.backgroundDisabledSkin = skin;
@@ -165,7 +165,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 The data grid's header may be skinned using the [`headerBackgroundSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundSkin) and [`headerBackgroundDisabledSkin`](../api-reference/feathers/controls/DataGrid.html#headerBackgroundDisabledSkin) properties:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 2, 2, 6 );
 grid.headerBackgroundSkin = skin;
@@ -181,7 +181,7 @@ A data grid's columns may have dividers between them to enhance visual separatio
 
 In the following example, we provide the data grid's vertical dividers:
 
-``` code
+``` actionscript
 grid.verticalDividerFactory = function():DisplayObject
 {
     return new Quad(1, 1, 0x000000);
@@ -190,7 +190,7 @@ grid.verticalDividerFactory = function():DisplayObject
 
 We used a simple `starling.display.Quad`, but it's also possible to skin the dividers with a texture using something like `feathers.skins.ImageSkin`. We can see the use of `ImageSkin` in the following example that provides the header dividers:
 
-``` code
+``` actionscript
 grid.headerDividerFactory = function():DisplayObject
 {
     var dividerSkin:ImageSkin = new ImageSkin( dividerTexture );
@@ -207,7 +207,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -216,7 +216,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -225,14 +225,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 grid.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 grid.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -243,7 +243,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the data grid's scroll bars:
 
-``` code
+``` actionscript
 grid.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
@@ -267,13 +267,13 @@ This section only explains how to access the cell renderer sub-components. Pleas
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultDataGridCellRenderer ).defaultStyleFunction = setCellRendererStyles;
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -286,13 +286,13 @@ private function setCellRendererStyles(cellRenderer:DefaultDataGridCellRenderer)
 
 If you want to customize a specific cell renderer to look different than the default, you may use a custom style name to call a different function:
 
-``` code
+``` actionscript
 grid.customCellRendererStyleName = "custom-cell-renderer";
 ```
 
 You can set the function for the custom [`customCellRendererStyleName`](../api-reference/feathers/controls/DataGrid.html#customCellRendererStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultDataGridCellRenderer )
     .setFunctionForStyleName( "custom-cell-renderer", setCustomCellRendererStyles );
 ```
@@ -301,7 +301,7 @@ getStyleProviderForClass( DefaultDataGridCellRenderer )
 
 If you are not using a theme, you can use [`cellRendererFactory`](../api-reference/feathers/controls/DataGrid.html#cellRendererFactory) to provide skins for the data grid's cell renderers:
 
-``` code
+``` actionscript
 grid.cellRendererFactory = function():IDataGridCellRenderer
 {
     var cellRenderer:DefaultDataGridCellRenderer = new DefaultDataGridCellRenderer();
@@ -325,13 +325,13 @@ The row of headers at the top of the data grid may be skinned.
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultDataGridHeaderRenderer ).defaultStyleFunction = setHeaderRendererStyles;
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRenderer):void
 {
     headerRenderer.backgroundSkin = new ImageSkin( texture );
@@ -341,13 +341,13 @@ private function setHeaderRendererStyles(headerRenderer:DefaultDataGridHeaderRen
 
 If you want to customize a specific header renderer to look different than the default, you may use a custom style name to call a different function:
 
-``` code
+``` actionscript
 grid.customHeaderRendererStyleName = "custom-header-renderer";
 ```
 
 You can set the function for the custom [`customHeaderRendererStyleName`](../api-reference/feathers/controls/DataGrid.html#customHeaderRendererStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultDataGridHeaderRenderer )
     .setFunctionForStyleName( "custom-header-renderer", setCustomHeaderRendererStyles );
 ```
@@ -356,7 +356,7 @@ getStyleProviderForClass( DefaultDataGridHeaderRenderer )
 
 If you are not using a theme, you can use [`headerRendererFactory`](../api-reference/feathers/controls/DataGrid.html#headerRendererFactory) to provide skins for the data grid's header renderers:
 
-``` code
+``` actionscript
 grid.headerRendererFactory = function():IDataGridHeaderRenderer
 {
     var headerRenderer:DefaultDataGridHeaderRenderer = new DefaultDataGridHeaderRenderer();
@@ -377,7 +377,7 @@ If the default cell renderer doesn't have the features that you need, the `DataG
 
 You may set the [`cellRendererFactory`](../api-reference/feathers/controls/DataGrid.html#cellRendererFactory) property to specify a function that returns a newly created cell renderer:
 
-``` code
+``` actionscript
 grid.cellRendererFactory = function():IDataGridCellRenderer
 {
     var cellRenderer:ExampleCustomCellRenderer = new ExampleCustomCellRenderer();
@@ -388,7 +388,7 @@ grid.cellRendererFactory = function():IDataGridCellRenderer
 
 Additionally, each column may use different cell renderers, if necessary. In the following example, a column provides its own `cellRendererFactory` to override the default factory from the data grid:
 
-``` code
+``` actionscript
 var column:DataGridColumn = new DataGridColumn("text");
 column.cellRendererFactory = function():IDataGridCellRenderer
 {
@@ -402,7 +402,7 @@ You may also provide a factory for custom header renderers. Custom header render
 
 You may set the [`headerRendererFactory`](../api-reference/feathers/controls/DataGrid.html#headerRendererFactory) property to specify a function that returns a newly created header renderer:
 
-``` code
+``` actionscript
 grid.headerRendererFactory = function():IDataGridHeaderRenderer
 {
     var headerRenderer:ExampleCustomHeaderRenderer = new ExampleCustomHeaderRenderer();
@@ -413,7 +413,7 @@ grid.headerRendererFactory = function():IDataGridHeaderRenderer
 
 Additionally, each column may use different header renderers, if necessary. In the following example, a column provides its own `headerRendererFactory` to override the default factory from the data grid:
 
-``` code
+``` actionscript
 var column:DataGridColumn = new DataGridColumn("text");
 column.headerRendererFactory = function():IDataGridHeaderRenderer
 {
@@ -425,7 +425,7 @@ column.headerRendererFactory = function():IDataGridHeaderRenderer
 
 Listening to events dispatched by a custom cell renderer isn't too difficult. Simply dispatch the event normally from the cell renderer. No need for bubbling. As an example, let's say that we want to dispatch `Event.COMPLETE` from an cell renderer when something happens:
 
-``` code
+``` actionscript
 function someEventHandler( event:Event ):void
 {
     this.dispatchEventWith( Event.COMPLETE );
@@ -434,13 +434,13 @@ function someEventHandler( event:Event ):void
 
 On our data grid, first we need to listen for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 grid.addEventListener( FeathersEventType.RENDERER_ADD, grid_rendererAddHandler );
 ```
 
 Inside the listener for `FeathersEventType.RENDERER_ADD`, we add a listener for our event dispatched by the cell renderer:
 
-``` code
+``` actionscript
 function grid_rendererAddHandler( event:Event ):void
 {
     var cellRenderer:IDataGridCellRenderer = event.data as IDataGridCellRenderer;
@@ -460,13 +460,13 @@ function cellRenderer_customCompleteHandler( event:Event ):void
 
 Finally, we want to be sure to remove the listeners from the cell renderers, so we should also listen for `FeathersEventType.RENDERER_REMOVE`:
 
-``` code
+``` actionscript
 grid.addEventListener( FeathersEventType.RENDERER_REMOVE, grid_rendererRemoveHandler );
 ```
 
 The listener for `FeathersEventType.RENDERER_REMOVE` looks very similar to the listener for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 function grid_rendererRemoveHandler( event:Event ):void
 {
     var cellRenderer:IDataGridCellRenderer = event.data as IDataGridCellRenderer;

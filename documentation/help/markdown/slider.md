@@ -20,7 +20,7 @@ The [`Slider`](../api-reference/feathers/controls/Slider.html) component selects
 
 First, let's create a `Slider` control, set up its range of values, and add it to the display list.
 
-``` code
+``` actionscript
 var slider:Slider = new Slider();
 slider.minimum = 0;
 slider.maximum = 100;
@@ -30,7 +30,7 @@ this.addChild( slider );
 
 The [`value`](../api-reference/feathers/controls/Slider.html#value) property indicates the current value of the slider, while the [`minimum`](../api-reference/feathers/controls/Slider.html#minimum) and [`maximum`](../api-reference/feathers/controls/Slider.html#maximum) properties establish a range of possible values. We can further control the slider's behavior with a couple more useful properties:
 
-``` code
+``` actionscript
 slider.step = 1;
 slider.page = 10;
 ```
@@ -39,13 +39,13 @@ The [`step`](../api-reference/feathers/controls/Slider.html#step) property contr
 
 Add a listener to the [`Event.CHANGE`](../api-reference/feathers/controls/Slider.html#event:change) event to know when the `value` property changes:
 
-``` code
+``` actionscript
 slider.addEventListener( Event.CHANGE, slider_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 function slider_changeHandler( event:Event ):void
 {
     var slider:Slider = Slider( event.currentTarget );
@@ -55,7 +55,7 @@ function slider_changeHandler( event:Event ):void
 
 Finally, the [`direction`](../api-reference/feathers/controls/Slider.html#direction) property may be used to change whether the slider is oriented horizontally or vertically:
 
-``` code
+``` actionscript
 slider.direction = Direction.VERTICAL;
 ```
 
@@ -71,7 +71,7 @@ The slider's track is made from either one or two buttons, depending on the valu
 
 If we'd like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set `trackLayoutMode` to [`TrackLayoutMode.SPLIT`](../api-reference/feathers/controls/TrackLayoutMode.html#SPLIT). In this mode, the width or height of each track (depending on the direction of the slider) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
 
-``` code
+``` actionscript
 slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 ```
 
@@ -79,13 +79,13 @@ slider.trackLayoutMode = TrackLayoutMode.SPLIT;
 
 When the value of `trackLayoutMode` is `TrackLayoutMode.SINGLE`, the slider's will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is draggable.
 
-``` code
+``` actionscript
 slider.trackLayoutMode = TrackLayoutMode.SINGLE;
 ```
 
 Padding can be added at the beginning and end of the track to control how far the thumb may be dragged:
 
-``` code
+``` actionscript
 slider.minimumPadding = 6;
 slider.maximumPadding = 6;
 ```
@@ -98,14 +98,14 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_THUMB, setSliderThumbStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setSliderThumbStyles( thumb:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -116,13 +116,13 @@ private function setSliderThumbStyles( thumb:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 slider.customThumbStyleName = "custom-thumb";
 ```
 
 You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/Slider.html#customThumbStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-thumb", setSliderCustomThumbStyles );
 ```
@@ -131,7 +131,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/Slider.html#thumbFactory) to provide skins for the slider's thumb:
 
-``` code
+``` actionscript
 slider.thumbFactory = function():Button
 {
     var button:Button = new Button();
@@ -153,14 +153,14 @@ This section only explains how to access the minimum track sub-component. Please
 
 If you're creating a [theme](themes.html), you can target the [`Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setSliderMinimumTrackStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setSliderMinimumTrackStyles( track:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -171,13 +171,13 @@ private function setSliderMinimumTrackStyles( track:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 slider.customMinimumTrackStyleName = "custom-minimum-track";
 ```
 
 You can set the function for the [`customMinimumTrackStyleName`](../api-reference/feathers/controls/Slider.html#customMinimumTrackStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-minimum-track", setSliderCustomMinimumTrackStyles );
 ```
@@ -186,7 +186,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`minimumTrackFactory`](../api-reference/feathers/controls/Slider.html#minimumTrackFactory) to provide skins for the slider's minimum track:
 
-``` code
+``` actionscript
 slider.minimumTrackFactory = function():Button
 {
     var track:Button = new Button();

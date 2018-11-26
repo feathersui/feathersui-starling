@@ -11,7 +11,7 @@ Media players can have many different types of sub-components for customizing th
 
 The [`FullScreenToggleButton`](../api-reference/feathers/media/FullScreenToggleButton.html) class is a special toggle button component that controls whether a video player is displayed in full screen mode or not.
 
-``` code
+``` actionscript
 var button:FullScreenToggleButton = new FullScreenToggleButton();
 videoPlayer.addChild( button );
 ```
@@ -20,7 +20,7 @@ videoPlayer.addChild( button );
 
 The [`MuteToggleButton`](../api-reference/feathers/media/MuteToggleButton.html) class is a special toggle button component that controls whether the media player's audio is muted or not.
 
-``` code
+``` actionscript
 var button:MuteToggleButton = new MuteToggleButton();
 mediaPlayer.addChild( button );
 ```
@@ -29,7 +29,7 @@ mediaPlayer.addChild( button );
 
 The [`PlayPauseToggleButton`](../api-reference/feathers/media/PlayPauseToggleButton.html) class is a special toggle button component that controls whether the media player's media is playing or paused.
 
-``` code
+``` actionscript
 var button:PlayPauseToggleButton = new PlayPauseToggleButton();
 mediaPlayer.addChild( button );
 ```
@@ -38,7 +38,7 @@ mediaPlayer.addChild( button );
 
 The [`SeekSlider`](../api-reference/feathers/media/SeekSlider.html) class is a special slider component that displays and changes the current time of the playing media.
 
-``` code
+``` actionscript
 var slider:SeekSlider = new SeekSlider();
 mediaPlayer.addChild( slider );
 ```
@@ -47,7 +47,7 @@ mediaPlayer.addChild( slider );
 
 The [`TimeLabel`](../api-reference/feathers/media/TimeLabel.html) class is a special label component that displays the current time, the remaining time, or the total time of the playing media. It can also display the current time and the total time together.
 
-``` code
+``` actionscript
 var label:TimeLabel = new TimeLabel();
 label.displayMode = TimeLabel.DISPLAY_MODE_CURRENT_TIME;
 mediaPlayer.addChild( label );
@@ -57,7 +57,7 @@ mediaPlayer.addChild( label );
 
 The [`VolumeSlider`](../api-reference/feathers/media/VolumeSlider.html) class is a special slider component that changes the current volume of the playing media.
 
-``` code
+``` actionscript
 var slider:VolumeSlider = new VolumeSlider();
 mediaPlayer.addChild( slider );
 ```

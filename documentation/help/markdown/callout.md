@@ -22,7 +22,7 @@ The [`Callout`](../api-reference/feathers/controls/Callout.html) class renders c
 
 We create a `Callout` a bit differently than other components. Rather than calling a constructor, we call the static function [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()). Let's see how this works by displaying a [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html) in a `Callout` when we touch a button. First, let's create the button:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
@@ -31,7 +31,7 @@ this.addChild( button );
 
 Then, in the listener for the `Event.TRIGGERED` event, we create the callout:
 
-``` code
+``` actionscript
 function button_triggeredHandler( event:Event ):void
 {
     var button:Button = Button( event.currentTarget );
@@ -52,13 +52,13 @@ The next is the callout's position, which is where the callout appears relative 
 
 The positions should be passed in as a `Vector.<String>`, so the following value could be used instead of `null` to get the same behavior: 
 
-``` code
+``` actionscript
 new <String>[RelativePosition.TOP, RelativePosition.RIGHT, RelativePosition.BOTTOM, RelativePosition.LEFT]
 ```
 
 The exact position will be chosen automatically based on a number of factors to place the callout in an ideal location. You can change this argument to allow fewer positions if you never want the callout to open on certain sides of the origin. For instance, if you always wanted the callout to appear to the top of the origin, you would pass in the following value:
 
-``` code
+``` actionscript
 new <String>[RelativePosition.TOP]
 ```
 
@@ -75,7 +75,7 @@ Following the position is the `isModal` parameter. This determines whether there
 
 Callouts are displayed using the [`PopUpManager`](pop-ups.html). By default, modal overlays are managed by the `PopUpManager`, but you can give a custom overlay to callouts (that will be different from other modal pop-ups) when you set the static property, [`calloutOverlayFactory`](../api-reference/feathers/controls/Callout.html#calloutOverlayFactory):
 
-``` code
+``` actionscript
 Callout.calloutOverlayFactory = function():DisplayObject
 {
     var tiledBackground:Image = new Image( texture );
@@ -90,7 +90,7 @@ When [`PopUpManager.addPopUp()`](../api-reference/feathers/core/PopUpManager.htm
 
 When a callout is created with `Callout.show()`, the function stored by the [`Callout.calloutFactory()`](../api-reference/feathers/controls/Callout.html#calloutFactory) property is called to instantiate a `Callout` instance. The final argument of `Callout.show()` allows you to specify a custom callout factory. This let's you customize an individual callout to be different than other callouts. For instance, let's say that a particular callout should have different skins than others. We might create a callout factory function like this:
 
-``` code
+``` actionscript
 function customCalloutFactory():Callout
 {
     var callout:Callout = new Callout();
@@ -110,7 +110,7 @@ Callouts have a number of skin and style properties to let you customize their a
 
 Let's give the callout a background skin that appears behind the content and stretches to fill the entire width and height of the callout. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( enabledTexture );
 skin.scale9Grid = new Rectangle( 2, 4, 3, 8 );
 callout.backgroundSkin = skin;
@@ -120,7 +120,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 You may also skin the callout's arrow that points to its origin. Depending on which position the callout opens relative to the origin, the arrow may be on any of the callout's four sides.
 
-``` code
+``` actionscript
 callout.topArrowSkin = new Image( topArrowTexture );
 callout.rightArrowSkin = new Image( rightArrowTexture );
 callout.bottomArrowSkin = new Image( bottomArrowTexture );
@@ -133,7 +133,7 @@ If you know that the callout will always open in one position, you can provide a
 
 The callout can have a gap in between the background skin and the arrow skin. In fact, this "gap" can be negative, meaning that the arrow skin will overlap the background skin. This will allow the arrow skins to seamlessly transition into the background while covering up part of the background's border:
 
-``` code
+``` actionscript
 callout.topArrowGap = -2;
 ```
 
@@ -141,7 +141,7 @@ Above, we set the [`topArrowGap`](../api-reference/feathers/controls/Callout.htm
 
 Speaking of borders, you can use padding styles to ensure that the callout's edges are visible around the callout's content.
 
-``` code
+``` actionscript
 callout.paddingTop = 6;
 callout.paddingRight = 8;
 callout.paddingBottom = 6;
@@ -150,13 +150,13 @@ callout.paddingLeft = 8;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Callout.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 button.padding = 6;
 ```
 
 Finally, there are static properties for the stage's padding. These ensure that callouts are positioned a certain number of pixels away from the edges of the stage.
 
-``` code
+``` actionscript
 Callout.stagePaddingTop = 8;
 Callout.stagePaddingRight = 10;
 Callout.stagePaddingBottom = 8;
@@ -167,7 +167,7 @@ Callout.stagePaddingLeft = 10;
 
 If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the [`Callout.calloutFactory`](../api-reference/feathers/controls/Callout.html#calloutFactory) static property to a function that provides skins for the callout. This factory will be called any time that [`Callout.show()`](../api-reference/feathers/controls/Callout.html#show()) is used to create a callout.
 
-``` code
+``` actionscript
 function skinnedCalloutFactory():Callout
 {
     var callout:Callout = new Callout();
@@ -181,7 +181,7 @@ Callout.calloutFactory = skinnedCalloutFactory;
 
 Another option is to pass a callout factory to `Callout.show()`. This allows you to create a specific callout differently than the default global `Callout.calloutFactory`.
 
-``` code
+``` actionscript
 function skinnedCalloutFactory():Callout
 {
     var callout:Callout = new Callout();

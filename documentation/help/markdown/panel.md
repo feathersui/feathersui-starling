@@ -22,20 +22,20 @@ The [`Panel`](../api-reference/feathers/controls/Panel.html) component is a cont
 
 First, let's create a `Panel` container and add it to the display list:
 
-``` code
+``` actionscript
 var panel:Panel = new Panel();
 this.addChild( panel );
 ```
 
 We can easily add a title to the panel's header by setting the [`title`](../api-reference/feathers/controls/Panel.html#title) property.
 
-``` code
+``` actionscript
 panel.title = "Tools";
 ```
 
 A `Panel` works a lot like any [`DisplayObjectContainer`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html), so you can use the standard `addChild()`, `removeChild()` and other display list manipulation functions.
 
-``` code
+``` actionscript
 var xPosition:Number = 0;
 for(var i:int = 0; i < 5; i++)
 {
@@ -50,7 +50,7 @@ The children of a `Panel` do not need to be Feathers UI controls. As you can see
 
 By default, the `Panel` will automatically resize itself to fit the area that the children occupy (plus its header and footer). We can set the width and height manually, if desired, to override this behavior:
 
-``` code
+``` actionscript
 panel.width = 200;
 panel.height = 200;
 ```
@@ -61,7 +61,7 @@ By default, a panel's header sub-component is an instance of the [`Header`](head
 
 You can customize the panel's header in a couple of different ways. The first way is to provide a custom [`headerFactory`](../api-reference/feathers/controls/Panel.html#headerFactory):
 
-``` code
+``` actionscript
 panel.headerFactory = function():Header
 {
     var header:Header = new Header();
@@ -79,7 +79,7 @@ You can set any properties that you desire on the header inside this factory (in
 
 Remember, the panel's header does not need to be a `Header` instance. It simply needs to be a Feathers component. If you wanted to make a `Panel` with a clickable header, you could provide a `headerFactory` that returns a [`Button`](button.html):
 
-``` code
+``` actionscript
 panel.headerFactory = function():Button
 {
     var button:Button = new Button();
@@ -90,7 +90,7 @@ panel.headerFactory = function():Button
 
 In this case, you should also update the [`headerTitleField`](../api-reference/feathers/controls/Panel.html#headerTitleField) property so that the panel's title is correctly displayed by the button's [`label`](../api-reference/feathers/controls/Button.html#label):
 
-``` code
+``` actionscript
 panel.headerTitleField = "label";
 ```
 
@@ -102,7 +102,7 @@ By default, a panel doesn't have a footer. However, if you want to add a footer,
 
 You can customize the panel's footer in two ways. The first way is to provide a custom [`footerFactory`](../api-reference/feathers/controls/Panel.html#footerFactory):
 
-``` code
+``` actionscript
 panel.footerFactory = function():LayoutGroup
 {
     var footer:LayoutGroup = new LayoutGroup();
@@ -117,7 +117,7 @@ You can set any properties that you desire on the footer inside this factory (in
 
 We manually positioned the quads in the example code above. Instead, let's apply a [`HorizontalLayout`](horizontal-layout.html) to the children of a `Panel` to do the positioning manually:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.gap = 10;
 panel.layout = layout;
@@ -135,7 +135,7 @@ The skins for a `Panel` control are divided into the header, the content, and th
 
 We can give the `Panel` a background skin that stretches to fill the entire width and height of the panel. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 panel.backgroundSkin = skin;
@@ -145,7 +145,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the `Panel` a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 panel.backgroundDisabledSkin = skin;
@@ -157,7 +157,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 Padding may be added around the edges of the panel's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the panel's content, but the panel's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
-``` code
+``` actionscript
 panel.paddingTop = 15;
 panel.paddingRight = 20;
 panel.paddingBottom = 15;
@@ -166,7 +166,7 @@ panel.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 panel.padding = 20;
 ```
 
@@ -180,14 +180,14 @@ This section only explains how to access the header sub-component. The header ma
 
 If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CHILD_STYLE_NAME_HEADER`](../api-reference/feathers/controls/Panel.html#DEFAULT_CHILD_STYLE_NAME_HEADER) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Header )
     .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelHeaderStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPanelHeaderStyles( header:Header ):void
 {
     header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
@@ -196,13 +196,13 @@ private function setPanelHeaderStyles( header:Header ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 panel.customHeaderStyleName = "custom-header";
 ```
 
 You can set the function for the [`customHeaderStyleName`](../api-reference/feathers/controls/Panel.html#customHeaderStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Header )
     .setFunctionForStyleName( "custom-header", setPanelCustomHeaderStyles );
 ```
@@ -211,7 +211,7 @@ getStyleProviderForClass( Header )
 
 If you are not using a theme, you can use [`headerFactory`](../api-reference/feathers/controls/Panel.html#headerFactory) to provide skins for the panel's header:
 
-``` code
+``` actionscript
 panel.headerFactory = function():Header
 {
     var header:Header = new Header();
@@ -231,14 +231,14 @@ This section only explains how to access the footer sub-component. The footer ma
 
 If you're creating a [theme](themes.html), you can target the [`Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER`](../api-reference/feathers/controls/Panel.html#DEFAULT_CHILD_STYLE_NAME_FOOTER) style name. In the following example, we'll assume that the footer is a `LayoutGroup`, but it could be any type of Feathers component.
 
-``` code
+``` actionscript
 getStyleProviderForClass( LayoutGroup )
     .setFunctionForStyleName( Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelFooterStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPanelFooterStyles( footer:LayoutGroup ):void
 {
     var skin:Image = new Image( texture );
@@ -249,13 +249,13 @@ private function setPanelFooterStyles( footer:LayoutGroup ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 panel.customFooterStyleName = "custom-footer";
 ```
 
 You can set the function for the [`customFooterStyleName`](../api-reference/feathers/controls/Panel.html#customFooterStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollContainer )
     .setFunctionForStyleName( "custom-footer", setPanelCustomFooterStyles );
 ```
@@ -264,7 +264,7 @@ getStyleProviderForClass( ScrollContainer )
 
 If you are not using a theme, you can use [`footerFactory`](../api-reference/feathers/controls/Panel.html#footerFactory) to provide skins for the panel's footer:
 
-``` code
+``` actionscript
 panel.footerFactory = function():LayoutGroup
 {
     var footer:LayoutGroup = new LayoutGroup();
@@ -286,7 +286,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -295,7 +295,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -304,14 +304,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 panel.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 panel.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -322,7 +322,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the panel's scroll bars:
 
-``` code
+``` actionscript
 panel.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

@@ -24,7 +24,7 @@ The [`AutoComplete`](../api-reference/feathers/controls/AutoComplete.html) class
 
 First, let's create an `AutoComplete` control and add it to the display list:
 
-``` code
+``` actionscript
 var input:AutoComplete = new AutoComplete();
 this.addChild( input );
 ```
@@ -39,7 +39,7 @@ An [`IAutoCompleteSource`](../api-reference/feathers/data/IAutoCompleteSource.ht
 
 The simplest option involves passing a collection, such as [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), to [`LocalAutoCompleteSource`](../api-reference/feathers/data/LocalAutoCompleteSource.html). As the user types, the collection will be filtered to display appropriate suggestions. 
 
-``` code
+``` actionscript
 input.source = new LocalAutoCompleteSource( new VectorCollection(new <String>
 [
 	"Apple",
@@ -56,7 +56,7 @@ When one types "ap" into the `AutoComplete`, the list of suggestions will includ
 
 If the default behavior doesn't quite fit our needs, we can use a custom [`compareFunction`](../api-reference/feathers/data/LocalAutoCompleteSource.html#compareFunction) to handle the filtering. In the following example, we create a `compareFunction` where the entered text must be at the very beginning of the suggestion:
 
-``` code
+``` actionscript
 var source:LocalAutoCompleteSource = new LocalAutoCompleteSource();
 source.compareFunction = function( item:Object, textToMatch:String ):Boolean
 {
@@ -76,7 +76,7 @@ In some cases, you may want to request personalized suggestions from a server in
 
 To load suggestions from the web, we need a URL. The [`urlRequestFunction`](../api-reference/feathers/data/URLAutoCompleteSource.html#urlRequestFunction) property can be used to generate a [`URLRequest`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html):
 
-``` code
+``` actionscript
 function createURLRequest( textToMatch:String ):URLRequest
 {
 	var request:URLRequest = new URLRequest( "http://example.com/search_suggestions" );
@@ -92,7 +92,7 @@ The `urlRequestFunction` takes one argument, the text entered into the `AutoComp
 
 By default, `URLAutoCompleteSource` parses the result as a JSON array. If the result returned by the API looks similar to the example below, it can be parsed automatically:
 
-``` code
+``` actionscript
 [
 	"adobe",
 	"adobe flash",
@@ -105,7 +105,7 @@ However, if the API returns data in a different format, we can use the [`parseRe
 
 Let's create a `parseResultFunction` for some XML in the following format:
 
-``` code
+``` actionscript
 <search>
 	<suggestion>adobe</suggestion>
 	<suggestion>adobe flash</suggestion>
@@ -116,7 +116,7 @@ Let's create a `parseResultFunction` for some XML in the following format:
 
 In the custom `parseResultFunction` below, we loop through each `<suggestion>` element in the result and extract the string. We'll return an `Array` of these strings:
 
-``` code
+``` actionscript
 source.parseResultFunction = function( result:String ):Object
 {
 	var parsedSuggestions:Array = [];
@@ -137,7 +137,7 @@ The `parseResultFunction` may return an [`IListCollection`](../api-reference/fea
 
 The [`minimumAutoCompleteLength`](../api-reference/feathers/controls/AutoComplete.html#minimumAutoCompleteLength) property determines how many characters must be entered into the input before displaying suggestions:
 
-``` code
+``` actionscript
 input.minimumAutoCompleteLength = 3;
 ```
 
@@ -145,7 +145,7 @@ By default, the input will not make suggestions until at least `2` characters ha
 
 The [`autoCompleteDelay`](../api-reference/feathers/controls/AutoComplete.html#autoCompleteDelay) property determines how long to wait after the text in the input has been edited before updating the suggestions:
 
-``` code
+``` actionscript
 input.autoCompleteDelay = 0.25;
 ```
 
@@ -163,14 +163,14 @@ This section only explains how to access the pop-up list sub-component. Please r
 
 If you're creating a [theme](themes.html), you can target the [`AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST`](../api-reference/feathers/controls/AutoComplete.html#DEFAULT_CHILD_STYLE_NAME_LIST) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( List )
 	.setFunctionForStyleName( AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, setAutoCompleteListStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setAutoCompleteListStyles( list:List ):void
 {
 	list.backgroundSkin = new Image( listBackgroundTexture );
@@ -179,13 +179,13 @@ private function setAutoCompleteListStyles( list:List ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 input.customListStyleName = "custom-list";
 ```
 
 You can set the styling function for the [`customListStyleName`](../api-reference/feathers/controls/AutoComplete.html#customListStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( List )
 	.setFunctionForStyleName( "custom-list", setAutoCompleteCustomListStyles );
 ```
@@ -194,7 +194,7 @@ getStyleProviderForClass( List )
 
 If you are not using a theme, you can use [`listFactory`](../api-reference/feathers/controls/AutoComplete.html#listFactory) to provide skins for the pop-up list
 
-``` code
+``` actionscript
 input.listFactory = function():List
 {
 	var list:List = new List();

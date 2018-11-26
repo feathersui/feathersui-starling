@@ -23,7 +23,7 @@ The [`Screen`](../api-reference/feathers/controls/Screen.html) component is mean
 
 Just like [`LayoutGroup`](layout-group.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `Screen` and add children there:
 
-``` code
+``` actionscript
 protected function initialize():void
 {
 	// never forget to call this!
@@ -49,7 +49,7 @@ Some devices, such as Android phones and tablets, have hardware keys. These may 
 
 Screen provides [`backButtonHandler`](../api-reference/feathers/controls/Screen.html#backButtonHandler), [`menuButtonHandler`](../api-reference/feathers/controls/Screen.html#menuButtonHandler), and [`searchButtonHandler`](../api-reference/feathers/controls/Screen.html#searchButtonHandler).
 
-``` code
+``` actionscript
 this.backButtonHandler = function():void
 {
     trace( "the back button has been pressed." );
@@ -64,13 +64,13 @@ When the screen is shown by the screen navigator, the screen dispatches [`Feathe
 
 Let's listen for `FeathersEventType.TRANSITION_IN_COMPLETE`:
 
-``` code
+``` actionscript
 this.addEventListener( FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function transitionInCompleteHandler( event:Event ):void
 {
     // do something after the screen transitions in

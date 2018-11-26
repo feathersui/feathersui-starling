@@ -29,7 +29,7 @@ Because each passage of vector text needs to be drawn to `BitmapData`, each sepa
 
 <aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
-``` code
+``` actionscript
 input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -37,7 +37,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To use `flash.text.StageText` with `TextInput`, create a [`StageTextTextEditor`](../api-reference/feathers/controls/text/StageTextTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
 
-``` code
+``` actionscript
 var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
@@ -54,7 +54,7 @@ input.textEditorFactory = function():ITextEditor
 
 Advanced font styles may be customized using the text editor's properties like [`fontFamily`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontFamily), [`fontSize`](../api-reference/feathers/controls/text/StageTextTextEditor.html#fontSize), and [`color`](../api-reference/feathers/controls/text/StageTextTextEditor.html#color). Many of the property names defined by `StageText` are duplicated on `StageTextTextEditor`:
 
-``` code
+``` actionscript
 textEditor.fontFamily = "Arial";
 textEditor.fontSize = 16;
 textEditor.color = 0xcccccc;

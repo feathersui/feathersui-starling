@@ -9,20 +9,20 @@ author: Josh Tynjala
 
 The `buttonInitializer` is a function that is called for each item in the data provider. The `ButtonGroup` passes in a [`Button`](../button.html) and an item from the data provider. The function signature looks like this:
 
-``` code
+``` actionscript
 function( button:Button, item:Object ):void
 ```
 
 If we want the `ButtonGroup` to support additional properties on its buttons, we can pass in a custom `buttonInitializer`. First, though, let's save a reference to the default `buttonInitializer` in a variable because we want to preserve the default behavior:
 
-``` code
+``` actionscript
 var group:ButtonGroup = new ButtonGroup();
 var defaultButtonInitializer:Function = group.buttonInitializer;
 ```
 
 Now, we can create our own custom `buttonInitializer` function that sets additional properties:
 
-``` code
+``` actionscript
 function customButtonInitializer( button:Button, item:Object ):void
 {
 	// keep the default behavior
@@ -41,7 +41,7 @@ Afterwards, we've also chosen to copy the `scaleWhenDown` property from the item
 
 If we wanted to make some properties optional, we could call `hasOwnProperty()` before setting them, like this:
 
-``` code
+``` actionscript
 if( item.hasOwnProperty( "scaleWhenDown" ) )
 {
 	button.scaleWhenDown = item.scaleWhenDown;

@@ -13,7 +13,7 @@ The [`VerticalLayout`](../api-reference/feathers/layout/VerticalLayout.html) cla
 
 First, let's create a `VerticalLayout` and pass it to a [`LayoutGroup`](layout-group.html):
 
-``` code
+``` actionscript
 var layout:VerticalLayout = new VerticalLayout();
  
 var container:LayoutGroup = new LayoutGroup();
@@ -27,13 +27,13 @@ There are a number of simple properties that may be used to affect positioning a
 
 The *padding* is the space around the edges of the container. Let's set the [`padding`](../api-reference/feathers/layout/VerticalLayout.html#padding) property to `12` pixels:
 
-``` code
+``` actionscript
 layout.padding = 12;
 ```
 
 If needed, the padding on each side of the container may be set separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/VerticalLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/VerticalLayout.html#paddingBottom) to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/VerticalLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/VerticalLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingTop = 10;
 layout.paddingRight = 15;
 layout.paddingBottom = 10;
@@ -42,7 +42,7 @@ layout.paddingLeft = 15;
 
 The *gap* is the space between items. Let's set the [`gap`](../api-reference/feathers/layout/VerticalLayout.html#gap) property to `5` pixels:
 
-``` code
+``` actionscript
 layout.gap = 5;
 ```
 
@@ -50,7 +50,7 @@ layout.gap = 5;
 
 We can *align* the items in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/VerticalLayout.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/layout/VerticalLayout.html#verticalAlign) properties. Vertical alignment may be used only when the total height of the content (including padding and gap values) is less than or equal to the height of the container that uses the layout. Let's adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.CENTER;
 layout.verticalAlign = VerticalAlign.MIDDLE;
 ```
@@ -63,7 +63,7 @@ We can pass [`VerticalLayoutData`](../api-reference/feathers/layout/VerticalLayo
 
 In the following example, we add two buttons to a container using `VerticalLayout`. The first button takes up 25% of the container's height, and the second button takes up 75% of the container's height:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 var button1LayoutData:VerticalLayoutData = new VerticalLayoutData();
@@ -83,7 +83,7 @@ If there are other children in the container with fixed pixel heights, [`percent
 
 In the following example, we have two buttons again, but this time, the first button is a fixed 300 pixels high. Now, the percentages are based on the height of the container *minus 300 pixels*. We want the second button to simply fill the remaining vertical space in the container, so we set `percentHeight` to `100`:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 button1.height = 300;
@@ -103,7 +103,7 @@ We can also set [`percentWidth`](../api-reference/feathers/layout/VerticalLayout
 
 Let's use the same height values from the previous example, but we'll specify 100% width on the first button:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 button1.height = 300;
@@ -124,13 +124,13 @@ Notice that we can mix and match fixed pixel values with percentage values on th
 
 As a shortcut, we can optionally specify both `percentWidth` and `percentHeight` in the `VerticalLayoutData` constructor:
 
-``` code
+``` actionscript
 new VerticalLayoutData( 100, 50 ); //width: 100%, height: 50%
 ```
 
 The value `NaN` may be used to say that we do not want to use percentage dimensions. For instance, if we wanted a button that is 100% width and 300 pixels high, like in the earlier example, we might do it like this:
 
-``` code
+``` actionscript
 button1.height = 300;
 button1.layoutData = new VerticalLayoutData( 100, NaN );
 ```
@@ -145,7 +145,7 @@ A virtualized layout will need as estimate about how big a "virtual" item render
 
 By default [`useVirtualLayout`](../api-reference/feathers/layout/VerticalLayout.html#useVirtualLayout) is `true` for containers that support it. We can disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, `useVirtualLayout` should rarely be disabled.
 
-``` code
+``` actionscript
 layout.useVirtualLayout = false;
 ```
 
@@ -155,7 +155,7 @@ The [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.
 
 By default, a virtualized vertical layout will assume that all items will have the same height. This restriction helps improve performance, and most lists won't need items with variable heights. However, we can set the [`hasVariableItemDimensions`](../api-reference/feathers/layout/VerticalLayout.html#hasVariableItemDimensions) property to `true`, if we need our list's item renderers to have different height values. When we do this, the typical item height is used as an estimated height for virtual item renderers, and the real height value for each item renderer is stored as it comes into view, improving the accuracy of the layout over time.
 
-``` code
+``` actionscript
 layout.hasVariableItemDimensions = false;
 ```
 

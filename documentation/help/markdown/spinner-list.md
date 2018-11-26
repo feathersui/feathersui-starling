@@ -20,14 +20,14 @@ The [`SpinnerList`](../api-reference/feathers/controls/SpinnerList.html) class e
 
 First, let's create a `SpinnerList` control and add it to the display list:
 
-``` code
+``` actionscript
 var list:SpinnerList = new SpinnerList();
 this.addChild( list );
 ```
 
 Similar to a `List`, we can pass an [`IListCollection`](../api-reference/feathers/data/IListCollection.html) implementation, such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) or [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), to the [`dataProvider`](../api-reference/feathers/controls/List.html#dataProvider) property:
 
-``` code
+``` actionscript
 list.dataProvider = new ArrayCollection(
 [
     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -39,7 +39,7 @@ list.dataProvider = new ArrayCollection(
 
 We'll set up the label and icon in the item renderer the same way too:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -51,13 +51,13 @@ list.itemRendererFactory = function():IListItemRenderer
 
 We can listen for selection changes with [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change):
 
-``` code
+``` actionscript
 list.addEventListener( Event.CHANGE, list_changeHandler );
 ```
 
 Likewise, we can use the [`selectedIndex`](../api-reference/feathers/controls/List.html#selectedIndex) and [`selectedItem`](../api-reference/feathers/controls/List.html#selectedItem) properties:
 
-``` code
+``` actionscript
 list.selectedIndex = 3;
 trace( list.selectedItem.text ); //Chicken
 ```
@@ -74,7 +74,7 @@ A spinner list provides a number of properties to customize its appearance. For 
 
 We can add a display object above the selected item to visually highlight it. For instance, we might display a border with a transparency in the center that reveals the selected item. In the following example, we pass in a `starling.display.Image` to the [`selectionOverlaySkin`](../api-reference/feathers/controls/SpinnerList.html#selectionOverlaySkin) property, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 list.selectionOverlaySkin = new Image( texture );
 ```
 

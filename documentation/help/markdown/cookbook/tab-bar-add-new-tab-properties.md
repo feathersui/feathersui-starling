@@ -9,20 +9,20 @@ author: Josh Tynjala
 
 The `tabInitializer` is a function that is called for each item in the data provider. The `TabBar` passes in a [`ToggleButton`](../toggle-button.html) and an item from the data provider. The function signature looks like this:
 
-``` code
+``` actionscript
 function( tab:ToggleButton, item:Object ):void
 ```
 
 If we want the `TabBar` to support additional properties on its tabs, we can pass in a custom `tabInitializer`. First, though, let's save a reference to the default `tabInitializer` in a variable because we want to preserve the default behavior:
 
-``` code
+``` actionscript
 var group:TabBar = new TabBar();
 var defaultTabInitializer:Function = group.tabInitializer;
 ```
 
 Now, we can create our own custom `tabInitializer` function that sets additional properties:
 
-``` code
+``` actionscript
 function customTabInitializer( tab:ToggleButton, item:Object ):void
 {
 	// keep the default behavior
@@ -41,7 +41,7 @@ Afterwards, we've also chosen to copy the `scaleWhenDown` property from the item
 
 If we wanted to make some properties optional, we could call `hasOwnProperty()` before setting them, like this:
 
-``` code
+``` actionscript
 if( item.hasOwnProperty( "scaleWhenDown" ) )
 {
 	tab.scaleWhenDown = item.scaleWhenDown;

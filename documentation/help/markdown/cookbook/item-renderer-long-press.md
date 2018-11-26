@@ -9,7 +9,7 @@ A [custom item renderer](../item-renderers.html) may optionally dispatch [`Feath
 
 Using the [`LongPress`](../../api-reference/feathers/utils/touch/LongPress.html) class, it's easy to dispatch `FeathersEventType.LONG_PRESS`:
 
-``` code
+``` actionscript
 public class CustomItemRenderer extends LayoutGroupListItemRenderer
 {
     public function CustomItemRenderer()
@@ -30,7 +30,7 @@ If you plan to combine, `LongPress` with [`TapToTrigger`](../../api-reference/fe
 
 First, always create the `LongPress` instance before the `TapToTrigger` and `TapToSelect` instances. This ensures that the `TouchEvent.TOUCH` listener in `LongPress` gets a higher priority.
 
-``` code
+``` actionscript
 this._longPress = new LongPress(this);
 this._trigger = new TapToTrigger(this);
 this._select = new TapToSelect(this);
@@ -38,7 +38,7 @@ this._select = new TapToSelect(this);
 
 Then, pass the `TapToTrigger` and `TapToSelect` instances to the `LongPress` so that it can disable them temporarily after a long press.
 
-``` code
+``` actionscript
 this._longPress.tapToTrigger = this._trigger;
 this._longPress.tapToSelect = this._select;
 ```

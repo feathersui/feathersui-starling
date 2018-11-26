@@ -20,7 +20,7 @@ The [`PageIndicator`](../api-reference/feathers/controls/PageIndicator.html) com
 
 First, let's create a `PageIndicator` control, give it a number of pages, and add it to the display list.
 
-``` code
+``` actionscript
 var pages:PageIndicator = new PageIndicator();
 pages.pageCount = 5;
 this.addChild( pages );
@@ -30,13 +30,13 @@ The number of symbols that a page indicator displays is controlled by the [`page
 
 If we want to react to the selected index changing, we can add a listener for [`Event.CHANGE`](../api-reference/feathers/controls/PageIndicator.html#event:change):
 
-``` code
+``` actionscript
 pages.addEventListener( Event.CHANGE, pageIndicator_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 function pageIndicator_changeHandler( event:Event ):void
 {
     var pages:PageIndicator = PageIndicator( event.currentTarget );
@@ -52,13 +52,13 @@ You can customize the layout of a page indicator, and you can customize the appe
 
 You may set the [`direction`](../api-reference/feathers/controls/PageIndicator.html#direction) of a page indicator to [`Direction.HORIZONTAL`](../api-reference/feathers/layout/Direction.html#HORIZONTAL) or [`Direction.VERTICAL`](../api-reference/feathers/layout/Direction.html#VERTICAL). The default layout direction is horizontal. Below, we change it to vertical:
 
-``` code
+``` actionscript
 pages.direction = Direction.VERTICAL;
 ```
 
 We can set other layout properies, such as the [`gap`](../api-reference/feathers/controls/PageIndicator.html#gap) between symbols, the padding around the edges, and the alignment, both [`horizontalAlign`](../api-reference/feathers/controls/PageIndicator.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/controls/PageIndicator.html#verticalAlign):
 
-``` code
+``` actionscript
 pages.gap = 4;
 pages.paddingTop = 4;
 pages.paddingRight = 4;
@@ -72,7 +72,7 @@ pages.verticalAlign = VerticalAlign.MIDDLE;
 
 The symbols may be created using the [`normalSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#normalSymbolFactory) and [`selectedSymbolFactory`](../api-reference/feathers/controls/PageIndicator.html#selectedSymbolFactory) for normal and selected symbols, respectively. These functions may return any type of Starling display object. Below, we return Starling Images with different textures for normal and selected states:
 
-``` code
+``` actionscript
 pages.normalSymbolFactory = function():DisplayObject
 {
     return new Image( normalSymbolTexture );

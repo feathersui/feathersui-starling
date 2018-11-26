@@ -23,7 +23,7 @@ The [`PanelScreen`](../api-reference/feathers/controls/PanelScreen.html) compone
 
 Just like [`Panel`](panel.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `PanelScreen` and add children there:
 
-``` code
+``` actionscript
 protected function initialize():void
 {
 	// never forget to call this!
@@ -52,7 +52,7 @@ Some devices, such as Android phones and tablets, have hardware keys. These may 
 
 Screen provides [`backButtonHandler`](../api-reference/feathers/controls/PanelScreen.html#backButtonHandler), [`menuButtonHandler`](../api-reference/feathers/controls/PanelScreen.html#menuButtonHandler), and [`searchButtonHandler`](../api-reference/feathers/controls/PanelScreen.html#searchButtonHandler).
 
-``` code
+``` actionscript
 this.backButtonHandler = function():void
 {
     trace( "the back button has been pressed." );
@@ -67,13 +67,13 @@ When the screen is shown by the screen navigator, the screen dispatches [`Feathe
 
 Let's listen for `FeathersEventType.TRANSITION_IN_COMPLETE`:
 
-``` code
+``` actionscript
 this.addEventListener( FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function transitionInCompleteHandler( event:Event ):void
 {
     // do something after the screen transitions in
@@ -104,14 +104,14 @@ This section only explains how to access the header sub-component. The header ma
 
 If you're creating a [theme](themes.html), you can target the [`PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER`](../api-reference/feathers/controls/PanelScreen.html#DEFAULT_CHILD_STYLE_NAME_HEADER) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Header )
     .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER, setPanelScreenHeaderStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPanelScreenHeaderStyles( header:Header ):void
 {
     header.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
@@ -120,13 +120,13 @@ private function setPanelScreenHeaderStyles( header:Header ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 screen.customHeaderStyleName = "custom-header";
 ```
 
 You can set the function for the [`customHeaderStyleName`](../api-reference/feathers/controls/Panel.html#customHeaderStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Header )
     .setFunctionForStyleName( "custom-header", setPanelScreenCustomHeaderStyles );
 ```
@@ -135,7 +135,7 @@ getStyleProviderForClass( Header )
 
 If you are not using a theme, you can use [`headerFactory`](../api-reference/feathers/controls/Panel.html#headerFactory) to provide skins for the panel's header:
 
-``` code
+``` actionscript
 screen.headerFactory = function():Header
 {
     var header:Header = new Header();
@@ -155,14 +155,14 @@ This section only explains how to access the footer sub-component. The footer ma
 
 If you're creating a [theme](themes.html), you can target the [`PanelScreen.DEFAULT_CHILD_STYLE_NAME_FOOTER`](../api-reference/feathers/controls/PanelScreen.html#DEFAULT_CHILD_STYLE_NAME_FOOTER) style name. In the following example, we'll assume that the footer is a `LayoutGroup`, but it could be any type of Feathers component.
 
-``` code
+``` actionscript
 getStyleProviderForClass( LayoutGroup )
     .setFunctionForStyleName( PanelScreen.DEFAULT_CHILD_STYLE_NAME_FOOTER, setPanelScreenFooterStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPanelScreenFooterStyles( footer:LayoutGroup ):void
 {
     var skin:Image = new Image( texture );
@@ -173,13 +173,13 @@ private function setPanelScreenFooterStyles( footer:LayoutGroup ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 this.customFooterStyleName = "custom-footer";
 ```
 
 You can set the function for the [`customFooterStyleName`](../api-reference/feathers/controls/Panel.html#customFooterStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( LayoutGroup )
     .setFunctionForStyleName( "custom-footer", setPanelScreenCustomFooterStyles );
 ```
@@ -188,7 +188,7 @@ getStyleProviderForClass( LayoutGroup )
 
 If you are not using a theme, you can use [`footerFactory`](../api-reference/feathers/controls/Panel.html#footerFactory) to provide skins for the panel screen's footer:
 
-``` code
+``` actionscript
 screen.footerFactory = function():ScrollContainer
 {
     var footer:LayoutGroup = new LayoutGroup();
@@ -210,7 +210,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -219,7 +219,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -228,14 +228,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 screen.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 screen.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -246,7 +246,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the panel's scroll bars:
 
-``` code
+``` actionscript
 screen.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

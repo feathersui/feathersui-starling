@@ -20,7 +20,7 @@ The [`ToggleButton`](../api-reference/feathers/controls/ToggleButton.html) class
 
 First, let's create a `ToggleButton` control, give it a label, and add it to the display list:
 
-``` code
+``` actionscript
 var toggle:ToggleButton = new ToggleButton();
 toggle.label = "Click Me";
 this.addChild( toggle );
@@ -28,19 +28,19 @@ this.addChild( toggle );
 
 A toggle button may be selected and deselected when it is triggered, or we can change the button's selection programatically by setting the [`isSelected`](../api-reference/feathers/controls/ToggleButton.html#isSelected) property:
 
-``` code
+``` actionscript
 button.isSelected = true;
 ```
 
 If we listen to the [`Event.CHANGE`](../api-reference/feathers/controls/ToggleButton.html#event:change) event, we can track whether the user has triggered the button to change the selection:
 
-``` code
+``` actionscript
 toggle.addEventListener( Event.CHANGE, toggle_changeHandler );
 ```
 
 Check for the new value of `isSelected` in the listener:
 
-``` code
+``` actionscript
 function toggle_changeHandler( event:Event ):void
 {
     var toggle:ToggleButton = ToggleButton( event.currentTarget );

@@ -11,7 +11,7 @@ A [`DateTimeSpinner`](../date-time-spinner.html) component contains two or more 
 
 We can customize the item renderers inside the date time spinner's [`itemRendererFactory`](../../api-reference/feathers/controls/DateTimeSpinner.html#itemRendererFactory). As long as we aren't setting any advanced font styles on the item renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the item renderer's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var spinner:DateTimeSpinner = new DateTimeSpinner();
 spinner.itemRendererFactory = function():IListItemRenderer
 {

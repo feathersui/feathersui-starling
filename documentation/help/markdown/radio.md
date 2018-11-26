@@ -22,7 +22,7 @@ The [`Radio`](../api-reference/feathers/controls/Radio.html) component is actual
 
 If no [`ToggleGroup`](../api-reference/feathers/core/ToggleGroup.html) is provided, a `Radio` will automatically add itself to [`Radio.defaultRadioGroup`](../api-reference/feathers/controls/Radio.html#defaultRadioGroup). In general, though, you should always create a `ToggleGroup` for a distinct set of radio buttons.
 
-``` code
+``` actionscript
 var group:ToggleGroup = new ToggleGroup();
  
 var radio1:Radio = new Radio();
@@ -45,13 +45,13 @@ Simply pass the `ToggleGroup` instance to the [`toggleGroup`](../api-reference/f
 
 Listen for the [`Event.CHANGE`](../api-reference/feathers/core/ToggleGroup.html#event:change) event dispatched by the toggle group to know when the selected radio button has changed.
 
-``` code
+``` actionscript
 group.addEventListener( Event.CHANGE, group_changeHandler );
 ```
 
 A listener might look like this:
 
-``` code
+``` actionscript
 function group_changeHandler( event:Event ):void
 {
     var group:ToggleGroup = ToggleGroup( event.currentTarget );
@@ -61,7 +61,7 @@ function group_changeHandler( event:Event ):void
 
 Use the [`selectedIndex`](../api-reference/feathers/core/ToggleGroup.html#selectedIndex) to get the numeric index of the selected radio button (based on the order that the radio buttons were added to the toggle group). The [`selectedItem`](../api-reference/feathers/core/ToggleGroup.html#selectedItem) will reference the selected radio button directly:
 
-``` code
+``` actionscript
 var radio:Radio = Radio( group.selectedItem );
 trace( "radio.label:", radio.label );
 ```

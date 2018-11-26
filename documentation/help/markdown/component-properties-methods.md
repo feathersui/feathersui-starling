@@ -51,7 +51,7 @@ For more information about component style names, please read [Introduction to F
 
 Properties that affect the visual appearance of a Feathers component are called "styles". When a style is set outside of a [theme](themes.html), the component needs to set a flag that ensures that the theme cannot replace the style's new value. The `processStyleRestriction()` method should be called inside the style's setter function to determine if a style should be ignored or not.
 
-``` code
+``` actionscript
 public function set customStyle(value:Object):void
 {
 	if(this.processStyleRestriction(arguments.callee))
@@ -66,7 +66,7 @@ Calling `processStyleRestriction()` requires one argument to identify the style 
 
 Display objects, such as for a background skins, should be disposed if the style property is considered restricted. Otherwise, you may have memory leaks.
 
-``` code
+``` actionscript
 public function set customStyle(value:DisplayObject):void
 {
 	if(this.processStyleRestriction(arguments.callee))
@@ -89,7 +89,7 @@ The `width` and `height` getters and setters expose the component's dimensions e
 
 The `_explicitWidth` and `_explicitHeight` variables are changed if the `width` and `height` setters are called with valid numeric values. In the following example, a `Button` control is created, and its `width` property is set to `150` pixels. Internally, the button will store this value in the `_explicitWidth` variable.
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.width = 150;
 ```

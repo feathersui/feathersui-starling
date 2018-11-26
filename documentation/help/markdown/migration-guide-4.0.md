@@ -23,7 +23,7 @@ The new `AssetManager` handles errors differently, so the example themes now dis
 
 An example event listener for `FeathersEventType.ERROR` appears below:
 
-``` code
+``` actionscript
 theme.addEventListener(FeathersEventType.ERROR, function(event:Event, error:String):void
 {
 	trace("AssetManager error:", error);
