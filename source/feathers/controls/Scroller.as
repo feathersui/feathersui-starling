@@ -7756,8 +7756,14 @@ package feathers.controls
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isScrollingStopped = false;
-			this._isDraggingVertically = false;
-			this._isDraggingHorizontally = false;
+			if(!this._isScrolling || !this._snapToPages)
+			{
+				//if snapToPages is enabled, we need it to snap to the nearest
+				//page on TouchPhase.ENDED, even if we don't drag again
+				//BowlerHatLLC/feathers#1771
+				this._isDraggingVertically = false;
+				this._isDraggingHorizontally = false;
+			}
 			if(this._isScrolling)
 			{
 				//if it was scrolling, stop it immediately
@@ -8328,18 +8334,20 @@ package feathers.controls
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
-				newHorizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+				newHorizontalScrollPosition = Math.max(this._minHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.RIGHT)
 			{
 				newHorizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
-			if(this._horizontalScrollPosition != newHorizontalScrollPosition)
+			if(this._horizontalScrollPosition != newHorizontalScrollPosition &&
+				this._horizontalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.horizontalScrollPosition = newHorizontalScrollPosition;
 			}
-			if(this._verticalScrollPosition != newVerticalScrollPosition)
+			if(this._verticalScrollPosition != newVerticalScrollPosition &&
+				this._verticalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.verticalScrollPosition = newVerticalScrollPosition;

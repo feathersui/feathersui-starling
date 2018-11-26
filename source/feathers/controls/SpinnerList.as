@@ -524,6 +524,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function scroller_removedFromStageHandler(event:Event):void
+		{
+			if(this._verticalAutoScrollTween)
+			{
+				this._verticalAutoScrollTween.advanceTime(this._verticalAutoScrollTween.totalTime);
+			}
+			if(this._horizontalAutoScrollTween)
+			{
+				this._horizontalAutoScrollTween.advanceTime(this._horizontalAutoScrollTween.totalTime);
+			}
+			super.scroller_removedFromStageHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function spinnerList_scrollCompleteHandler(event:Event):void
 		{
 			var itemCount:int = this._dataProvider.length;

@@ -84,6 +84,19 @@ package feathers.controls
 	[Style(name="direction",type="String")]
 
 	/**
+	 * Determines if the scroll bar's thumb will be resized based on the
+	 * scrollable range, or if it will be rendered at its preferred size.
+	 *
+	 * <p>In the following example, the thumb size is fixed:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.fixedThumbSize = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="fixedThumbSize",type="Boolean")]
+
+	/**
 	 * Quickly sets all padding properties to the same value. The
 	 * <code>padding</code> getter always returns the value of
 	 * <code>paddingTop</code>, but the other padding values may be
@@ -379,6 +392,36 @@ package feathers.controls
 			this._direction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fixedThumbSize:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get fixedThumbSize():Boolean
+		{
+			return this._fixedThumbSize;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fixedThumbSize(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._fixedThumbSize === value)
+			{
+				return;
+			}
+			this._fixedThumbSize = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1239,19 +1282,26 @@ package feathers.controls
 				{
 					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
 				}
-				var thumbHeight:Number = contentHeight * adjustedPage / range;
-				var heightOffset:Number = contentHeight - thumbHeight;
-				if(heightOffset > thumbHeight)
+				if(this._fixedThumbSize)
 				{
-					heightOffset = thumbHeight;
+					this.thumb.height = this._thumbExplicitHeight;
 				}
-				heightOffset *=  valueOffset / (range * thumbHeight / contentHeight);
-				thumbHeight -= heightOffset;
-				if(thumbHeight < thumbMinHeight)
+				else
 				{
-					thumbHeight = thumbMinHeight;
+					var thumbHeight:Number = contentHeight * adjustedPage / range;
+					var heightOffset:Number = contentHeight - thumbHeight;
+					if(heightOffset > thumbHeight)
+					{
+						heightOffset = thumbHeight;
+					}
+					heightOffset *=  valueOffset / (range * thumbHeight / contentHeight);
+					thumbHeight -= heightOffset;
+					if(thumbHeight < thumbMinHeight)
+					{
+						thumbHeight = thumbMinHeight;
+					}
+					this.thumb.height = thumbHeight;
 				}
-				this.thumb.height = thumbHeight;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				var thumbY:Number = trackScrollableHeight * (this._value - this._minimum) / range;
@@ -1272,19 +1322,26 @@ package feathers.controls
 				{
 					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
 				}
-				var thumbWidth:Number = contentWidth * adjustedPage / range;
-				var widthOffset:Number = contentWidth - thumbWidth;
-				if(widthOffset > thumbWidth)
+				if(this._fixedThumbSize)
 				{
-					widthOffset = thumbWidth;
+					this.thumb.width = this._thumbExplicitWidth;
 				}
-				widthOffset *= valueOffset / (range * thumbWidth / contentWidth);
-				thumbWidth -= widthOffset;
-				if(thumbWidth < thumbMinWidth)
+				else
 				{
-					thumbWidth = thumbMinWidth;
+					var thumbWidth:Number = contentWidth * adjustedPage / range;
+					var widthOffset:Number = contentWidth - thumbWidth;
+					if(widthOffset > thumbWidth)
+					{
+						widthOffset = thumbWidth;
+					}
+					widthOffset *= valueOffset / (range * thumbWidth / contentWidth);
+					thumbWidth -= widthOffset;
+					if(thumbWidth < thumbMinWidth)
+					{
+						thumbWidth = thumbMinWidth;
+					}
+					this.thumb.width = thumbWidth;
 				}
-				this.thumb.width = thumbWidth;
 				this.thumb.height = contentHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				var thumbX:Number = trackScrollableWidth * (this._value - this._minimum) / range;
