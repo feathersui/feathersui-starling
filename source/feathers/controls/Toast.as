@@ -307,6 +307,15 @@ package feathers.controls
 	 *     Toast.showMessageWithActions( "Item deleted", new ArrayCollection([{ label: "Undo" }]) );
 	 * }</listing>
 	 *
+	 * <p><a href="https://feathersui.com/help/beta-policy.html" target="_blank"><strong>Beta Component:</strong></a> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a href="https://feathersui.com/help/deprecation-policy.html" target="_blank">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see ../../../help/toast.html How to use the Feathers Toast component
 	 * @see #showMessage()
 	 * @see #showMessageWithActions()
