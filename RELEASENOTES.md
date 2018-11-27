@@ -2,6 +2,41 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
+## 4.0.0-beta - December 2018
+
+See the [Feathers 4.0 Migration Guide](https://feathersui.com/beta/help/migration-guide-4.0.html) for details about how to upgrade to Feathers 4.0.
+
+* Drag and drop: Added support for drag-and-drop in List and TabBar components.
+* Toast: New component for displaying in-app notifications.
+* Removed APIs that were deprecated in Feathers 3.x.
+* Button: Fixed issue where scaleWhenDown or scaleWhenHovering could get stuck when returning back to a scale of 1, if no other changes to the button state resulted in a call to setRequiresRedraw().
+* DataGrid: Fixed issue where multiple cells could be incorrectly deselected when allowMultipleSelection is true.
+* DataGrid: Fixed issue where measurement did not account for total combined width of headers.
+* DefaultDataGridCellRenderer: If dataField is null, uses the data for the entire row instead.
+* FeathersEventType: Fixed typo in "stateChange" string.
+* HorizontalLayout: Fixed issue where distributeWidths did not properly use the largest item width when the container's explicit width was not set.
+* Header: Added detection for iPhone XS, XS Max, and XR to increase status bar height for notch.
+* ImageLoader: Added new style property to support a custom MeshStyle.
+* KeyToEvent, KeyToSelect, KeyToState: Fixed null reference error in KeyboardEvent.KEY_DOWN listener if target lost focus before listener was called.
+* Navigators: Fixed issue where transitionDElayEvent was ignored if it was dispatched before CREATION_COMPLETE.
+* SimpleScrollBar, ScrollBar: Added fixedThumbSize style to allow the thumb size to remain fixed, even when the scrolling range changes.
+* Scroller: Fixed issue where pressing left key on keyboard incorrectly jumped to maximum horizontal scroll position.
+* Scroller: Fixed issue where scrolling was possible with keyboard when using ScrollPolicy.OFF.
+* Scroller: Fixed null reference error caused by removing mask from leftPullView instead of topPullView when changing the topPullView.
+* Scroller: Fixed issue where touching a container with snapToPages set to true while it was animating might not continue the animation if needed after TouchPhase.ENDED.
+* Slider: Fixed issue where touching track with TrackInteractionMode.TO_VALUE would incorrectly limit the range if minimumPadding or maximumPadding is negative.
+* SpinnerList: Fixed issue where removing from stage before animation completed could change the selectedIndex unexpectedly.
+* TextArea: Added prompt property, similar to TextInput.
+* TextArea: Added innerPadding styles to add padding around both prompt and the text in the view port. Breaking change: You must inner padding on the TextArea instead of setting the padding property on TextFieldTextEditorViewPort.
+* TextBlockTextRenderer: Fixed issue where the measurement might be wrong if width of height set to negative values.
+* TextBlockTextRenderer: Fixed issue where height measurement might be wrong when using starling.text.TextFormat.
+* Themes: Use new starling.assets.AssetManager.
+* Todos Example: Can reorder items with drag and drop.
+* Todos Example: Persists todos with SharedObject.
+* ToggleButton: Fixed issue where the scale for the current state was incorrect when selected.
+* ToolTipManager: Fixed cast that incorrectly required all custom tooltips to extend Label instead of implement the IToolTip interface.
+* VideoPlayer: Automatically calls setRequiresRedraw() during playback so that skipUnchangedFrames may remain enabled.
+
 ## 3.5.0 - June 2018
 
 * AnchorLayout: fixed issue where measurement could be incorrect when using horizontalCenter or verticalCenter.
