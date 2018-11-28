@@ -166,42 +166,6 @@ package feathers.controls.text
 		 */
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TEXT_ALIGN_RIGHT:String = "right";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextBlockTextRenderer</code>
 		 * components.
@@ -1683,10 +1647,6 @@ package feathers.controls.text
 			if(needsWidth)
 			{
 				newWidth = this._explicitMaxWidth;
-				if(newWidth > MAX_TEXT_LINE_WIDTH)
-				{
-					newWidth = MAX_TEXT_LINE_WIDTH;
-				}
 			}
 			if(needsHeight)
 			{
@@ -1733,9 +1693,9 @@ package feathers.controls.text
 			if(needsHeight)
 			{
 				newHeight = Math.ceil(this._lastMeasurementHeight);
-				if(newHeight <= 0 && this._elementFormat)
+				if(newHeight <= 0 && this._textElement !== null)
 				{
-					newHeight = this._elementFormat.fontSize;
+					newHeight = this._textElement.elementFormat.fontSize;
 				}
 			}
 
@@ -2370,6 +2330,21 @@ package feathers.controls.text
 			textLineParent:DisplayObjectContainer, width:Number, height:Number,
 			result:MeasureTextResult = null):MeasureTextResult
 		{
+			//clamp the width and height values to a valid range so that it
+			//doesn't break the measurement
+			if(width < 0)
+			{
+				width = 0;
+			}
+			else if(width > MAX_TEXT_LINE_WIDTH)
+			{
+				width = MAX_TEXT_LINE_WIDTH;
+			}
+			if(height < 0)
+			{
+				height = 0;
+			}
+
 			var lineCount:int = textLines.length;
 			//copy the invalid text lines over to the helper vector so that we
 			//can reuse them

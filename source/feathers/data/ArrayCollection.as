@@ -287,28 +287,6 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-		[Deprecated(replacement="arrayData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function get data():Object
-		{
-			return this.arrayData;
-		}
-
-		[Deprecated(replacement="arrayData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function set data(value:Object):void
-		{
-			if(!(value is Array))
-			{
-				throw new ArgumentError("ArrayCollection data must be of type Array.");
-			}
-			this.arrayData = value as Array;
-		}
-
 		/**
 		 * @private
 		 */
@@ -384,15 +362,6 @@ package feathers.data
 				return this._filterAndSortData.length;
 			}
 			return this._arrayData.length;
-		}
-
-		[Deprecated(message="Use refresh() instead of refreshFilter().")]
-		/**
-		 * @private
-		 */
-		public function refreshFilter():void
-		{
-			this.refresh();
 		}
 
 		/**

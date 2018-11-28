@@ -234,18 +234,6 @@ package feathers.data
 	 */
 	public interface IListCollection extends IFeathersEventDispatcher
 	{
-		[Deprecated(message="Cast to appropriate IListCollection implementation and set a more specific property. For example, if the dataProvider is an ArrayCollection, set the arrayData property.")]
-		/**
-		 * @private
-		 */
-		function get data():Object;
-
-		[Deprecated(message="Cast to appropriate IListCollection implementation and set a more specific property. For example, if the dataProvider is an ArrayCollection, set the arrayData property.")]
-		/**
-		 * @private
-		 */
-		function set data(value:Object):void;
-
 		/**
 		 * The number of items in the collection.
 		 */
@@ -317,12 +305,6 @@ package feathers.data
 		 * @private
 		 */
 		function set sortCompareFunction(value:Function):void;
-
-		[Deprecated(message="Use refresh() instead of refreshFilter().")]
-		/**
-		 * @private
-		 */
-		function refreshFilter():void;
 
 		/**
 		 * Refreshes the collection using the <code>filterFunction</code>

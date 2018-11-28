@@ -1163,6 +1163,9 @@ package feathers.media
 			{
 				return;
 			}
+
+			this.removeEventListener(Event.ENTER_FRAME, videoPlayer_progress_enterFrameHandler);
+
 			this._netStream.removeEventListener(NetStatusEvent.NET_STATUS, netStream_netStatusHandler);
 			this._netStream.removeEventListener(IOErrorEvent.IO_ERROR, netStream_ioErrorHandler);
 			this._netStream.close();
@@ -1174,6 +1177,7 @@ package feathers.media
 		 */
 		protected function videoPlayer_enterFrameHandler(event:Event):void
 		{
+			this.setRequiresRedraw();
 			this._currentTime = this._netStream.time;
 			this.dispatchEventWith(MediaPlayerEventType.CURRENT_TIME_CHANGE);
 		}

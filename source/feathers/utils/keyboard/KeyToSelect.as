@@ -277,6 +277,12 @@ package feathers.utils.keyboard
 			{
 				return;
 			}
+			if(event.currentTarget !== this._stage)
+			{
+				//Github issue #1762: the stage may have been set to null in a
+				//previous KeyboardEvent.KEY_DOWN listener
+				return;
+			}
 			if(event.keyCode == this._cancelKeyCode)
 			{
 				this._stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

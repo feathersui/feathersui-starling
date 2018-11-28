@@ -280,7 +280,7 @@ package feathers.core
 			if(!this._toolTip)
 			{
 				var factory:Function = this._toolTipFactory !== null ? this._toolTipFactory : defaultToolTipFactory;
-				var toolTip:Label = factory();
+				var toolTip:IToolTip = IToolTip(factory());
 				toolTip.touchable = false;
 				this._toolTip = toolTip;
 			}

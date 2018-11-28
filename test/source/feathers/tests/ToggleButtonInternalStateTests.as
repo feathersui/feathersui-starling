@@ -516,6 +516,6 @@ class ToggleButtonWithInternalState extends ToggleButton
 
 	public function get currentScaleInternal():Number
 	{
-		return this.getCurrentScale();
+		return this.getScaleForCurrentState();
 	}
 }

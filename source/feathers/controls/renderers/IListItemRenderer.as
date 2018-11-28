@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.List;
 	import feathers.core.IToggle;
+	import starling.display.DisplayObject;
 
 	/**
 	 * Dispatched when the the user taps or clicks the item renderer. The touch

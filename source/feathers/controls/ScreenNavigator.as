@@ -84,30 +84,6 @@ package feathers.controls
 	 */
 	public class ScreenNavigator extends BaseScreenNavigator
 	{
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
-
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ScreenNavigator</code>
 		 * components.

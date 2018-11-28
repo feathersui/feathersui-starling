@@ -438,15 +438,6 @@ package feathers.data
 			return this._dataDescriptor.getLength(this._data);
 		}
 
-		[Deprecated(message="Use refresh() instead of refreshFilter().")]
-		/**
-		 * @private
-		 */
-		public function refreshFilter():void
-		{
-			this.refresh();
-		}
-
 		/**
 		 * @copy feathers.data.IListCollection#refresh()
 		 */

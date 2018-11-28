@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.IDataGridHeaderRenderer;
 	import feathers.controls.supportClasses.DataGridDataViewPort;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.data.ArrayCollection;
 	import feathers.data.IListCollection;
@@ -35,6 +36,7 @@ package feathers.controls
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
@@ -1870,6 +1872,145 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
+			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
+			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
+			var needsMinHeight:Boolean = this._explicitMinHeight !== this._explicitMinHeight; //isNaN
+			if(!needsWidth && !needsHeight && !needsMinWidth && !needsMinHeight)
+			{
+				return false;
+			}
+
+			resetFluidChildDimensionsForMeasurement(this.currentBackgroundSkin,
+				this._explicitWidth, this._explicitHeight,
+				this._explicitMinWidth, this._explicitMinHeight,
+				this._explicitMaxWidth, this._explicitMaxHeight,
+				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
+				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
+				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
+			var measureBackground:IMeasureDisplayObject = this.currentBackgroundSkin as IMeasureDisplayObject;
+			if(this.currentBackgroundSkin is IValidating)
+			{
+				IValidating(this.currentBackgroundSkin).validate();
+			}
+			
+			//we don't measure the header and footer here because they are
+			//handled in calculateViewPortOffsets(), which is automatically
+			//called by Scroller before autoSizeIfNeeded().
+
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
+			var newMinWidth:Number = this._explicitMinWidth;
+			var newMinHeight:Number = this._explicitMinHeight;
+			if(needsWidth)
+			{
+				if(this._measureViewPort)
+				{
+					newWidth = this._viewPort.visibleWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+				newWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				var headerWidth:Number = this._headerGroup.width;
+				if(headerWidth > newWidth)
+				{
+					newWidth = headerWidth;
+				}
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.width > newWidth)
+				{
+					newWidth = this.currentBackgroundSkin.width;
+				}
+			}
+			if(needsHeight)
+			{
+				if(this._measureViewPort)
+				{
+					newHeight = this._viewPort.visibleHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+				newHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
+				if(this.currentBackgroundSkin !== null &&
+					this.currentBackgroundSkin.height > newHeight)
+				{
+					newHeight = this.currentBackgroundSkin.height;
+				}
+			}
+			if(needsMinWidth)
+			{
+				if(this._measureViewPort)
+				{
+					newMinWidth = this._viewPort.minVisibleWidth;
+				}
+				else
+				{
+					newMinWidth = 0;
+				}
+				newMinWidth += this._rightViewPortOffset + this._leftViewPortOffset;
+				var headerMinWidth:Number = this._headerGroup.minWidth;
+				if(headerMinWidth > newMinWidth)
+				{
+					newMinWidth = headerMinWidth;
+				}
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minWidth > newMinWidth)
+						{
+							newMinWidth = measureBackground.minWidth;
+						}
+					}
+					else if(this._explicitBackgroundMinWidth > newMinWidth)
+					{
+						newMinWidth = this._explicitBackgroundMinWidth;
+					}
+				}
+			}
+			if(needsMinHeight)
+			{
+				if(this._measureViewPort)
+				{
+					newMinHeight = this._viewPort.minVisibleHeight;
+				}
+				else
+				{
+					newMinHeight = 0;
+				}
+				newMinHeight += this._bottomViewPortOffset + this._topViewPortOffset;
+				//we don't need to account for the header and footer because
+				//they're already included in the top and bottom offsets
+				if(this.currentBackgroundSkin !== null)
+				{
+					if(measureBackground !== null)
+					{
+						if(measureBackground.minHeight > newMinHeight)
+						{
+							newMinHeight = measureBackground.minHeight;
+						}
+					}
+					else if(this._explicitBackgroundMinHeight > newMinHeight)
+					{
+						newMinHeight = this._explicitBackgroundMinHeight;
+					}
+				}
+			}
+
+			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
+		}
+
+		/**
 		 * @private
 		 * If the columns are not defined, we can try to create them automatically.
 		 */
@@ -1911,11 +2052,14 @@ package feathers.controls
 			if(useActualBounds)
 			{
 				this._headerGroup.width = this.actualWidth;
+				this._headerGroup.minWidth = this.actualMinWidth;
 			}
 			else
 			{
 				this._headerGroup.width = this._explicitWidth;
+				this._headerGroup.minWidth = this._explicitMinWidth;
 			}
+			this._headerGroup.maxWidth = this._explicitMaxWidth;
 			this._headerGroup.validate();
 			this._topViewPortOffset += this._headerGroup.height;
 		}

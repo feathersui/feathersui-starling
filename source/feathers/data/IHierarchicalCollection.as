@@ -186,18 +186,6 @@ package feathers.data
 	 */
 	public interface IHierarchicalCollection extends IFeathersEventDispatcher
 	{
-		[Deprecated(message="Cast to appropriate IHierarchicalCollection implementation and set a more specific property. For example, if the dataProvider is an ArrayHierarchicalCollection, set the arrayData property.")]
-		/**
-		 * @private
-		 */
-		function get data():Object;
-
-		[Deprecated(message="Cast to appropriate IHierarchicalCollection implementation and set a more specific property. For example, if the dataProvider is an ArrayHierarchicalCollection, set the arrayData property.")]
-		/**
-		 * @private
-		 */
-		function set data(value:Object):void;
-
 		/**
 		 * Determines if a node from the data source is a branch.
 		 */

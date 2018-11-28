@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.events
 {
 	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.IDragSource;
 
 	import starling.events.Event;
 
@@ -71,12 +72,13 @@ package feathers.events
 		/**
 		 * Constructor.
 		 */
-		public function DragDropEvent(type:String, dragData:DragData, isDropped:Boolean, localX:Number = NaN, localY:Number = NaN)
+		public function DragDropEvent(type:String, dragData:DragData, isDropped:Boolean, localX:Number = NaN, localY:Number = NaN, dragSource:IDragSource = null)
 		{
 			super(type, false, dragData);
 			this.isDropped = isDropped;
 			this.localX = localX;
 			this.localY = localY;
+			this.dragSource = dragSource;
 		}
 
 		/**
@@ -95,6 +97,9 @@ package feathers.events
 		/**
 		 * The x location, in pixels, of the current action, in the local
 		 * coordinate system of the <code>IDropTarget</code>.
+		 * 
+		 * <p>Value will always be <code>NaN</code> for <code>DRAG_START</code>
+		 * and <code>DRAG_COMPLETE</code> events.</p>
 		 *
 		 * @see feathers.dragDrop.IDropTarget
 		 */
@@ -103,9 +108,17 @@ package feathers.events
 		/**
 		 * The y location, in pixels, of the current action, in the local
 		 * coordinate system of the <code>IDropTarget</code>.
+		 * 
+		 * <p>Value will always be <code>NaN</code> for <code>DRAG_START</code>
+		 * and <code>DRAG_COMPLETE</code> events.</p>
 		 *
 		 * @see feathers.dragDrop.IDropTarget
 		 */
 		public var localY:Number;
+
+		/**
+		 * The source where the drag started.
+		 */
+		public var dragSource:IDragSource;
 	}
 }

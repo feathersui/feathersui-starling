@@ -26,11 +26,13 @@ package feathers.themes
 {
 	import feathers.controls.Alert;
 	import feathers.controls.AutoComplete;
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ButtonState;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.DataGrid;
 	import feathers.controls.DateTimeSpinner;
 	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
@@ -60,6 +62,7 @@ package feathers.themes
 	import feathers.controls.TextCallout;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInputState;
+	import feathers.controls.Toast;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
@@ -67,6 +70,8 @@ package feathers.themes
 	import feathers.controls.popups.BottomDrawerPopUpContentManager;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.controls.renderers.DefaultDataGridCellRenderer;
+	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
@@ -77,6 +82,7 @@ package feathers.themes
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
@@ -98,18 +104,15 @@ package feathers.themes
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.display.Stage;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
-	import starling.display.Stage;
-	import feathers.core.FocusManager;
-	import feathers.controls.DataGrid;
-	import feathers.controls.renderers.DefaultDataGridCellRenderer;
-	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;
 
 	/**
 	 * The base class for the "Minimal" theme for mobile Feathers apps. Handles
@@ -166,6 +169,12 @@ package feathers.themes
 		 * The theme's custom style name for a button in an Alert's button group.
 		 */
 		protected static const THEME_STYLE_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "minimal-mobile-alert-button-group-button";
+		
+		/**
+		 * @private
+		 * The theme's custom style name for a button in a Toast.
+		 */
+		protected static const THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON:String = "minimal-mobile-toast-actions-button";
 
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
@@ -344,6 +353,7 @@ package feathers.themes
 		protected var itemRendererSelectedUpSkinTexture:Texture;
 		protected var checkItemRendererSelectedIconTexture:Texture;
 		protected var spinnerListSelectionOverlaySkinTexture:Texture;
+		protected var dragHandleIcon:Texture;
 
 		protected var headerSkinTexture:Texture;
 		protected var panelHeaderSkinTexture:Texture;
@@ -421,6 +431,11 @@ package feathers.themes
 		 * The width, in pixels, of UI controls that span across multiple grid regions.
 		 */
 		protected var wideControlSize:int = 154;
+
+		/**
+		 * The width, in pixels, of very large UI controls.
+		 */
+		protected var extraWideControlSize:int = 308;
 
 		/**
 		 * The size, in pixels, of a typical UI control.
@@ -508,6 +523,7 @@ package feathers.themes
 		{
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+			Toast.containerFactory = toastContainerFactory;
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
@@ -565,6 +581,8 @@ package feathers.themes
 			this.checkItemRendererSelectedIconTexture = this.atlas.getTexture("check-item-renderer-selected-icon0000");
 
 			this.spinnerListSelectionOverlaySkinTexture = this.atlas.getTexture("spinner-list-selection-overlay-skin0000");
+
+			this.dragHandleIcon = this.atlas.getTexture("drag-handle-icon0000");
 
 			this.headerSkinTexture = this.atlas.getTexture("header-background-skin0000");
 			this.panelHeaderSkinTexture = this.atlas.getTexture("panel-header-background-skin0000");
@@ -692,7 +710,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
 
 			//item renderers for lists
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setListItemRendererStyles;
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN, this.setDrillDownItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(DefaultListItemRenderer.ALTERNATE_STYLE_NAME_CHECK, this.setCheckItemRendererStyles);
 			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_STYLE_NAME_SPINNER_LIST_ITEM_RENDERER, this.setSpinnerListItemRendererStyles);
@@ -779,11 +797,15 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextAreaErrorCalloutStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
+
+			//toast
+			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON, this.setToastActionsButtonStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
@@ -841,6 +863,27 @@ package feathers.themes
 			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
 			skin.minTouchWidth = this.controlSize;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			if(DeviceCapabilities.isPhone())
+			{
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			}
+			else
+			{
+				layout.horizontalAlign = HorizontalAlign.LEFT;
+				layout.padding = this.gutterSize;
+				layout.gap = this.gutterSize;
+			}
+			container.layout = layout;
+			return container;
 		}
 
 	//-------------------------
@@ -1480,6 +1523,19 @@ package feathers.themes
 			this.setScrollerStyles(list);
 
 			list.backgroundSkin = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, PRIMARY_TEXT_COLOR);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+		}
+
+		protected function setListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIcon);
+			dragIcon.minTouchWidth = this.gridSize;
+			dragIcon.minTouchHeight = this.gridSize;
+			itemRenderer.dragIcon = dragIcon;
 		}
 
 		protected function setItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
@@ -2178,12 +2234,12 @@ package feathers.themes
 			textArea.fontStyles = this.scrollTextFontStyles.clone();
 			textArea.disabledFontStyles = this.scrollTextDisabledFontStyles.clone();
 
-			textArea.textEditorFactory = textAreaTextEditorFactory;
-		}
+			textArea.promptFontStyles = this.primaryFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.disabledFontStyles.clone();
 
-		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
-		{
-			textEditor.padding = this.smallGutterSize;
+			textArea.textEditorFactory = textAreaTextEditorFactory;
+			
+			textArea.innerPadding = this.smallGutterSize;
 		}
 
 		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void
@@ -2273,6 +2329,42 @@ package feathers.themes
 
 			callout.horizontalAlign = HorizontalAlign.LEFT;
 			callout.verticalAlign = VerticalAlign.TOP;
+		}
+
+	//-------------------------
+	// Toast
+	//-------------------------
+
+		protected function setToastStyles(toast:Toast):void
+		{
+			var backgroundSkin:Quad = new Quad(1, 1, MODAL_OVERLAY_COLOR);
+			toast.backgroundSkin = backgroundSkin;
+
+			toast.fontStyles = this.primaryFontStyles.clone();
+			toast.disabledFontStyles = this.disabledFontStyles.clone();
+
+			toast.width = this.extraWideControlSize;
+			toast.paddingTop = this.smallGutterSize;
+			toast.paddingRight = this.gutterSize;
+			toast.paddingBottom = this.smallGutterSize;
+			toast.paddingLeft = this.gutterSize;
+			toast.gap = Number.POSITIVE_INFINITY;
+			toast.minGap = this.smallGutterSize;
+			toast.horizontalAlign = HorizontalAlign.LEFT;
+			toast.verticalAlign = VerticalAlign.MIDDLE;
+		}
+
+		protected function setToastActionsStyles(group:ButtonGroup):void
+		{
+			group.direction = Direction.HORIZONTAL;
+			group.gap = this.smallGutterSize;
+			group.customButtonStyleName = THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON;
+		}
+
+		protected function setToastActionsButtonStyles(button:Button):void
+		{
+			button.fontStyles = this.primaryFontStyles.clone();
+			button.disabledFontStyles = this.primaryFontStyles.clone();
 		}
 
 	//-------------------------

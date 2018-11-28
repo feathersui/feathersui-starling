@@ -800,174 +800,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_PENDING_PULL_VIEW:String = "pendingPullView";
 
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.AUTO",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_AUTO:String = "auto";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.ON",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.ON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_ON:String = "on";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.OFF",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.OFF</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_OFF:String = "off";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.NONE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.NONE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH:String = "touch";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.MOUSE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_MOUSE:String = "mouse";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
-
 		/**
 		 * Flag to indicate that the clipping has changed.
 		 */
@@ -996,30 +828,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.NORMAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.FAST",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
@@ -3558,7 +3366,7 @@ package feathers.controls
 			if(this._topPullView !== null)
 			{
 				this._topPullView.mask.dispose();
-				this._leftPullView.mask = null;
+				this._topPullView.mask = null;
 				if(this._topPullView.parent === this)
 				{
 					this.removeRawChildInternal(this._topPullView, false);
@@ -7962,8 +7770,14 @@ package feathers.controls
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isScrollingStopped = false;
-			this._isDraggingVertically = false;
-			this._isDraggingHorizontally = false;
+			if(!this._isScrolling || !this._snapToPages)
+			{
+				//if snapToPages is enabled, we need it to snap to the nearest
+				//page on TouchPhase.ENDED, even if we don't drag again
+				//BowlerHatLLC/feathers#1771
+				this._isDraggingVertically = false;
+				this._isDraggingHorizontally = false;
+			}
 			if(this._isScrolling)
 			{
 				//if it was scrolling, stop it immediately
@@ -8534,18 +8348,20 @@ package feathers.controls
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
-				newHorizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+				newHorizontalScrollPosition = Math.max(this._minHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
 			}
 			else if(event.keyCode == Keyboard.RIGHT)
 			{
 				newHorizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
-			if(this._horizontalScrollPosition != newHorizontalScrollPosition)
+			if(this._horizontalScrollPosition != newHorizontalScrollPosition &&
+				this._horizontalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.horizontalScrollPosition = newHorizontalScrollPosition;
 			}
-			if(this._verticalScrollPosition != newVerticalScrollPosition)
+			if(this._verticalScrollPosition != newVerticalScrollPosition &&
+				this._verticalScrollPolicy != ScrollPolicy.OFF)
 			{
 				event.preventDefault();
 				this.verticalScrollPosition = newVerticalScrollPosition;

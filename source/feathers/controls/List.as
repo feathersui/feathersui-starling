@@ -14,6 +14,8 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.dragDrop.IDragSource;
+	import feathers.dragDrop.IDropTarget;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.HorizontalAlign;
 	import feathers.layout.ILayout;
@@ -32,6 +34,7 @@ package feathers.controls
 
 	import starling.events.Event;
 	import starling.utils.Pool;
+	import starling.display.DisplayObject;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically
@@ -53,6 +56,19 @@ package feathers.controls
 	 * @see feathers.core.FeathersControl#styleNameList
 	 */
 	[Style(name="customItemRendererStyleName",type="String")]
+
+	/**
+	 * A skin to display when dragging one an item to indicate where it can be
+	 * dropped.
+	 *
+	 * <p>In the following example, the list's drop indicator is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.dropIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dropIndicatorSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The duration, in seconds, of the animation when the selected item is
@@ -234,199 +250,12 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class List extends Scroller implements IFocusContainer
+	public class List extends Scroller implements IFocusContainer, IDragSource, IDropTarget
 	{
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.AUTO",since="3.0.0")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
-		public static const SCROLL_POLICY_AUTO:String = "auto";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.ON",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.ON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_ON:String = "on";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.OFF",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.OFF</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_OFF:String = "off";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.NONE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.NONE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH:String = "touch";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.MOUSE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_MOUSE:String = "mouse";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.NORMAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.FAST",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_FAST:Number = 0.99;
+		protected static const DEFAULT_DRAG_FORMAT:String = "feathers-list-item";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>List</code>
@@ -1379,6 +1208,181 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+
+		/**
+		 * Drag and drop is restricted to components that have the same
+		 * <code>dragFormat</code>.
+		 * 
+		 * <p>In the following example, the drag format of two lists is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list1.dragFormat = "my-custom-format";
+		 * list2.dragFormat = "my-custom-format";</listing>
+		 * 
+		 * @default "feathers-list-item"
+		 */
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragFormat(value:String):void
+		{
+			if(!value)
+			{
+				value = DEFAULT_DRAG_FORMAT;
+			}
+			if(this._dragFormat == value)
+			{
+				return;
+			}
+			this._dragFormat = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * Indicates if this list can initiate drag and drop operations by
+		 * touching an item and dragging it. The <code>dragEnabled</code>
+		 * property enables dragging items, but dropping items must be enabled
+		 * separately with the <code>dropEnabled</code> property.
+		 * 
+		 * <p>In the following example, a list's items may be dragged:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dragEnabled = true;</listing>
+		 * 
+		 * @see #dropEnabled
+		 * @see #dragFormat
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			if(this._dragEnabled == value)
+			{
+				return;
+			}
+			this._dragEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropEnabled:Boolean = false;
+
+		/**
+		 * Indicates if this list can accept items that are dragged and
+		 * dropped over the list's hit area.
+		 * 
+		 * <p>In the following example, a list's items may be dropped:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dropEnabled = true;</listing>
+		 * 
+		 * @see #dragEnabled
+		 * @see #dragFormat
+		 */
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropEnabled(value:Boolean):void
+		{
+			if(this._dropEnabled == value)
+			{
+				return;
+			}
+			this._dropEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._dropIndicatorSkin = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumAutoScrollDistance:Number = 0.2;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must be from
+		 * the edge of the container during a drag and drop action before the
+		 * container starts scrolling.
+		 *
+		 * <p>In the following example, the minimum auto-scroll distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumAutoScrollDistance = 0.1;</listing>
+		 *
+		 * @default 0.3
+		 */
+		public function get minimumAutoScrollDistance():Number
+		{
+			return this._minimumAutoScrollDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumAutoScrollDistance(value:Number):void
+		{
+			if(this._minimumAutoScrollDistance == value)
+			{
+				return;
+			}
+			this._minimumAutoScrollDistance = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1696,6 +1700,11 @@ package feathers.controls
 			this.dataViewPort.layout = this._layout;
 			this.dataViewPort.addedItems = this._addedItems;
 			this.dataViewPort.removedItems = this._removedItems;
+			this.dataViewPort.dragFormat = this._dragFormat;
+			this.dataViewPort.dragEnabled = this._dragEnabled;
+			this.dataViewPort.dropEnabled = this._dropEnabled;
+			this.dataViewPort.dropIndicatorSkin = this._dropIndicatorSkin;
+			this.dataViewPort.minimumAutoScrollDistance = this._minimumAutoScrollDistance;
 			this._addedItems = null;
 			this._removedItems = null;
 		}

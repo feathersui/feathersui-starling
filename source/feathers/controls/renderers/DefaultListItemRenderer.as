@@ -10,6 +10,22 @@ package feathers.controls.renderers
 	import feathers.controls.List;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+	import starling.display.DisplayObject;
+	import feathers.core.IValidating;
+	import feathers.core.IFeathersControl;
+	import starling.events.Event;
+
+	/**
+	 * An optional icon used to drag and drop the list item.
+	 *
+	 * <p>The following example gives the item renderer a drag icon:</p>
+	 *
+	 * <listing version="3.0">
+	 * itemRenderer.dragIcon = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dragIcon",type="starling.display.DisplayObject")]
 
 	/**
 	 * The default item renderer for List control. Supports up to three optional
@@ -21,7 +37,7 @@ package feathers.controls.renderers
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
+	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer, IDragAndDropItemRenderer
 	{
 		/**
 		 * @copy feathers.controls.renderers.BaseDefaultItemRenderer#ALTERNATE_STYLE_NAME_DRILL_DOWN
@@ -57,342 +73,6 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.UP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_UP:String = "up";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DOWN:String = "down";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_HOVER:String = "hover";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DISABLED:String = "disabled";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.UP_AND_SELECTED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP_AND_SELECTED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_UP_AND_SELECTED:String = "upAndSelected";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN_AND_SELECTED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN_AND_SELECTED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DOWN_AND_SELECTED:String = "downAndSelected";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER_AND_SELECTED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER_AND_SELECTED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_HOVER_AND_SELECTED:String = "hoverAndSelected";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED_AND_SELECTED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED_AND_SELECTED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DISABLED_AND_SELECTED:String = "disabledAndSelected";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_MANUAL:String = "manual";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ACCESSORY_POSITION_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ACCESSORY_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ACCESSORY_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
-
-		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ACCESSORY_ICON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const LAYOUT_ORDER_LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
-
-		[Deprecated(replacement="feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ItemRendererLayoutOrder.LABEL_ICON_ACCESSORY</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>DefaultListItemRenderer</code>
@@ -481,10 +161,187 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			if(this._dragEnabled === value)
+			{
+				return;
+			}
+			this._dragEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragIcon:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dragIcon():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragIcon(value:DisplayObject):void
+		{
+			if(this._dragIcon === value)
+			{
+				return;
+			}
+			if(this._dragIcon !== null)
+			{
+				if(this._dragIcon is IFeathersControl)
+				{
+					IFeathersControl(this._dragIcon).removeEventListener(FeathersEventType.RESIZE, dragIcon_resizeHandler);
+				}
+				//if this icon needs to be reused somewhere else, we need to
+				//properly clean it up
+				if(this._dragIcon.parent === this)
+				{
+					this._dragIcon.removeFromParent(false);
+				}
+				this._dragIcon = null;
+			}
+			this._dragIcon = value;
+			if(this._dragIcon !== null)
+			{
+				this.addChild(this._dragIcon);
+				if(this._dragIcon is IFeathersControl)
+				{
+					IFeathersControl(this._dragIcon).addEventListener(FeathersEventType.RESIZE, dragIcon_resizeHandler);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragGap:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		public function get dragGap():Number
+		{
+			return this._dragGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragGap(value:Number):void
+		{
+			if(this._dragGap == value)
+			{
+				return;
+			}
+			this._dragGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreDragIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get dragProxy():DisplayObject
+		{
+			return this._dragIcon;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.owner = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshOffsets():void
+		{
+			super.refreshOffsets();
+			var dragGap:Number = this._gap;
+			if(this._dragGap === this._dragGap) //!isNaN
+			{
+				dragGap = this._dragGap;
+			}
+			if(this._dragEnabled && this._dragIcon !== null)
+			{
+				var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
+				this._ignoreDragIconResizes = true;
+				if(this._dragIcon is IValidating)
+				{
+					IValidating(this._dragIcon).validate();
+				}
+				this._ignoreDragIconResizes = oldIgnoreIconResizes;
+				this._leftOffset += this._dragIcon.width + dragGap;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutContent():void
+		{
+			super.layoutContent();
+			if(this._dragIcon !== null)
+			{
+				if(this._dragEnabled)
+				{
+					var oldIgnoreIconResizes:Boolean = this._ignoreDragIconResizes;
+					this._ignoreDragIconResizes = true;
+					if(this._dragIcon is IValidating)
+					{
+						IValidating(this._dragIcon).validate();
+					}
+					this._ignoreDragIconResizes = oldIgnoreIconResizes;
+					this._dragIcon.x = this._paddingLeft;
+					this._dragIcon.y = this._paddingTop + ((this.actualHeight - this._paddingTop - this._paddingBottom) - this._dragIcon.height) / 2;
+					this._dragIcon.visible = true;
+				}
+				else
+				{
+					this._dragIcon.visible = false;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragIcon_resizeHandler(event:Event):void
+		{
+			if(this._ignoreDragIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

@@ -24,11 +24,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.themes
 {
+	import feathers.events.FeathersEventType;
+
+	import starling.assets.AssetManager;
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
-	import starling.utils.AssetManager;
 
 	/**
 	 * @copy feathers.themes.IAsyncTheme#event:complete
@@ -38,7 +40,7 @@ package feathers.themes
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the theme's assets fail to load due to an IO error.
+	 * Dispatched when the theme's assets fail to load due to an error.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -48,61 +50,16 @@ package feathers.themes
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The URL that could not be loaded.</td></tr>
+	 * <tr><td><code>data</code></td><td>The error string.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType starling.events.Event.IO_ERROR
+	 * @eventType feathers.events.FeathersEventType.ERROR
 	 */
-	[Event(name="ioError",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the theme's assets fail to load due to a security error.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The URL that could not be loaded.</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType starling.events.Event.SECURITY_ERROR
-	 */
-	[Event(name="securityError",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the theme's assets fail to load due to a parsing error.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>The name of the asset that could not be
-	 *   parsed.</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType starling.events.Event.PARSE_ERROR
-	 */
-	[Event(name="parseError",type="starling.events.Event")]
+	[Event(name="error",type="starling.events.Event")]
 
 	/**
 	 * The "Minimal" theme for mobile Feathers apps.
@@ -216,27 +173,13 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		protected function assetManager_onProgress(progress:Number):void
-		{
-			if(progress < 1)
-			{
-				return;
-			}
-			this.initialize();
-			this.isComplete = true;
-			this.dispatchEventWith(Event.COMPLETE, false, Starling.current);
-		}
-
-		/**
-		 * @private
-		 */
 		protected function loadAssets(assetsBasePath:String, assetManager:AssetManager):void
 		{
 			var oldScaleFactor:Number = -1;
 			if(assetManager)
 			{
-				oldScaleFactor = assetManager.scaleFactor;
-				assetManager.scaleFactor = ATLAS_SCALE_FACTOR;
+				oldScaleFactor = assetManager.textureOptions.scale;
+				assetManager.textureOptions.scale = ATLAS_SCALE_FACTOR;
 			}
 			else
 			{
@@ -258,20 +201,27 @@ package feathers.themes
 			if(oldScaleFactor != -1)
 			{
 				//restore the old scale factor, just in case
-				this.assetManager.scaleFactor = oldScaleFactor;
+				this.assetManager.textureOptions.scale = oldScaleFactor;
 			}
-			this.assetManager.addEventListener(Event.IO_ERROR, assetManager_errorHandler);
-			this.assetManager.addEventListener(Event.SECURITY_ERROR, assetManager_errorHandler);
-			this.assetManager.addEventListener(Event.PARSE_ERROR, assetManager_errorHandler);
-			this.assetManager.loadQueue(assetManager_onProgress);
+			this.assetManager.loadQueue(assetManager_onComplete, assetManager_onError);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function assetManager_errorHandler(event:Event):void
+		protected function assetManager_onComplete():void
 		{
-			this.dispatchEventWith(event.type, false, event.data);
+			this.initialize();
+			this.isComplete = true;
+			this.dispatchEventWith(Event.COMPLETE, false, Starling.current);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function assetManager_onError(error:String):void
+		{
+			this.dispatchEventWith(FeathersEventType.ERROR, false, error);
 		}
 	}
 }

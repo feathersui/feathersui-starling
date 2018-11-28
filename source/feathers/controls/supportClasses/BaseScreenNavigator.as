@@ -133,30 +133,6 @@ package feathers.controls.supportClasses
 		 */
 		protected static var SIGNAL_TYPE:Class;
 
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
-
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
-
 		/**
 		 * The default transition function.
 		 */
@@ -289,6 +265,11 @@ package feathers.controls.supportClasses
 		 * @private
 		 */
 		protected var _delayedTransition:Function = null;
+
+		/**
+		 * @private
+		 */
+		protected var _waitingForDelayedTransition:Boolean = false;
 
 		/**
 		 * @private
@@ -723,6 +704,15 @@ package feathers.controls.supportClasses
 			var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
 			this._activeScreenID = id;
+			if(item.transitionDelayEvent !== null)
+			{
+				this._waitingForDelayedTransition = true;
+				this._activeScreen.addEventListener(item.transitionDelayEvent, screen_transitionDelayHandler);
+			}
+			else
+			{
+				this._waitingForDelayedTransition = false;
+			}
 			for(var propertyName:String in properties)
 			{
 				this._activeScreen[propertyName] = properties[propertyName];
@@ -775,7 +765,7 @@ package feathers.controls.supportClasses
 			{
 				this.validate();
 			}
-
+			
 			if(isSameInstance)
 			{
 				//we can't transition if both screens are the same display
@@ -784,14 +774,20 @@ package feathers.controls.supportClasses
 				this._previousScreenInTransitionID = null;
 				this._isTransitionActive = false;
 			}
-			else if(item.transitionDelayEvent !== null)
+			else if(item.transitionDelayEvent !== null && this._waitingForDelayedTransition)
 			{
+				this._waitingForDelayedTransition = false;
 				this._activeScreen.visible = false;
 				this._delayedTransition = transition;
-				this._activeScreen.addEventListener(item.transitionDelayEvent, screen_transitionDelayHandler);
 			}
 			else
 			{
+				if(item.transitionDelayEvent !== null)
+				{
+					//if we skipped the delay because the event was already
+					//dispatched, then don't forget to remove the listener
+					this._activeScreen.removeEventListener(item.transitionDelayEvent, screen_transitionDelayHandler);
+				}
 				this.startTransition(transition);
 			}
 
@@ -905,6 +901,8 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
+				//the screen may have been hidden if the transition was delayed
+				this._activeScreen.visible = true;
 				defaultTransition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 			}
 		}
@@ -1063,7 +1061,15 @@ package feathers.controls.supportClasses
 		protected function screen_transitionDelayHandler(event:Event):void
 		{
 			this._activeScreen.removeEventListener(event.type, screen_transitionDelayHandler);
-			this.startTransition(this._delayedTransition);
+			var wasWaiting:Boolean = this._waitingForDelayedTransition;
+			this._waitingForDelayedTransition = false;
+			if(wasWaiting)
+			{
+				return;
+			}
+			var transition:Function = this._delayedTransition;
+			this._delayedTransition = null;
+			this.startTransition(transition);
 		}
 
 		/**

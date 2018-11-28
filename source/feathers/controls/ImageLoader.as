@@ -44,6 +44,8 @@ package feathers.controls
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 	import starling.utils.SystemUtil;
+	import starling.styles.MeshStyle;
+	import starling.display.Mesh;
 
 	/**
 	 * The tint value to use on the internal
@@ -536,78 +538,6 @@ package feathers.controls
 		 */
 		protected static var textureQueueTail:ImageLoader;
 
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ImageLoader</code>
 		 * components.
@@ -999,6 +929,48 @@ package feathers.controls
 				return;
 			}
 			this._textureSmoothing = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _defaultStyle:MeshStyle = null;
+
+		/**
+		 * @private
+		 */
+		protected var _style:MeshStyle = null;
+
+		/**
+		 * The style that is used to render the loader's image.
+		 *
+		 * <p>In the following example, the loader uses a custom style:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.style = new CustomMeshStyle();</listing>
+		 *
+		 * @default null
+		 */
+		public function get style():MeshStyle
+		{
+			return this._style;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set style(value:MeshStyle):void
+		{
+			if(this._style == value)
+			{
+				return;
+			}
+			this._style = value;
+			if(this._style)
+			{
+				this._defaultStyle = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1950,6 +1922,18 @@ package feathers.controls
 			this.image.scale9Grid = this._scale9Grid;
 			this.image.tileGrid = this._tileGrid;
 			this.image.pixelSnapping = this._pixelSnapping;
+			if(this._style !== null)
+			{
+				this.image.style = this._style;
+			}
+			else
+			{
+				if(this._defaultStyle === null)
+				{
+					this._defaultStyle = Mesh.createDefaultStyle(this.image);
+				}
+				this.image.style = this._defaultStyle;
+			}
 		}
 
 		/**
@@ -2094,6 +2078,7 @@ package feathers.controls
 				{
 					this.removeChild(this.image, true);
 					this.image = null;
+					this._defaultStyle = null;
 				}
 				return;
 			}

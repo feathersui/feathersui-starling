@@ -168,30 +168,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.STAGE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.STAGE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
-
-		[Deprecated(replacement="feathers.controls.AutoSizeMode.CONTENT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.AutoSizeMode.CONTENT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
-
 		/**
 		 * An alternate style name to use with <code>LayoutGroup</code> to
 		 * allow a theme to give it a toolbar style. If a theme does not provide

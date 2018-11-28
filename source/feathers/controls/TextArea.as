@@ -9,12 +9,14 @@ package feathers.controls
 {
 	import feathers.controls.text.ITextEditorViewPort;
 	import feathers.controls.text.TextFieldTextEditorViewPort;
+	import feathers.core.FeathersControl;
 	import feathers.core.IAdvancedNativeFocusOwner;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.INativeFocusOwner;
 	import feathers.core.IStateContext;
 	import feathers.core.IStateObserver;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
@@ -131,6 +133,31 @@ package feathers.controls
 	[Style(name="customErrorCalloutStyleName",type="String")]
 
 	/**
+	 * A style name to add to the text area's prompt text renderer
+	 * sub-component. Typically used by a theme to provide different styles
+	 * to different text inputs.
+	 *
+	 * <p>In the following example, a custom prompt text renderer style name
+	 * is passed to the text area:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.customPromptStyleName = "my-custom-text-area-prompt";</listing>
+	 *
+	 * <p>In your theme, you can target this sub-component style name to
+	 * provide different styles than the default:</p>
+	 *
+	 * <listing version="3.0">
+	 * getStyleProviderForClass( BitmapFontTextRenderer ).setFunctionForStyleName( "my-custom-text-area-prompt", setCustomTextAreaPromptStyles );</listing>
+	 *
+	 * @default null
+	 *
+	 * @see #DEFAULT_CHILD_STYLE_NAME_PROMPT
+	 * @see feathers.core.FeathersControl#styleNameList
+	 * @see #promptFactory
+	 */
+	[Style(name="customPromptStyleName",type="String")]
+
+	/**
 	 * A style name to add to the text area's text editor sub-component.
 	 * Typically used by a theme to provide different styles to different
 	 * text areas.
@@ -208,6 +235,136 @@ package feathers.controls
 	[Style(name="fontStyles",type="starling.text.TextFormat")]
 
 	/**
+	 * Quickly sets all inner padding properties to the same value. The
+	 * <code>innerPadding</code> getter always returns the value of
+	 * <code>innerPaddingTop</code>, but the other innert padding values may be
+	 * different.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on all
+	 * sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPadding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPaddingTop
+	 * @see #style:innerPaddingRight
+	 * @see #style:innerPaddingBottom
+	 * @see #style:innerPaddingLeft
+	 */
+	[Style(name="innerPadding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's top edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the top edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's right edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's bottom edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the bottom edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's left edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the left edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingLeft",type="Number")]
+
+	/**
+	 * The font styles used to display the text area's prompt when the text area
+	 * is disabled.
+	 *
+	 * <p>In the following example, the disabled font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.promptDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x999999 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>promptFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:promptFontStyles
+	 * @see #setPromptFontStylesForState()
+	 */
+	[Style(name="promptDisabledFontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * The font styles used to display the text area's prompt text.
+	 *
+	 * <p>In the following example, the font styles are customized:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.promptFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );</listing>
+	 *
+	 * <p>Note: The <code>starling.text.TextFormat</code> class defines a
+	 * number of common font styles, but the text renderer being used may
+	 * support a larger number of ways to be customized. Use the
+	 * <code>promptFactory</code> to set more advanced styles on the
+	 * text renderer.</p>
+	 *
+	 * @default null
+	 *
+	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+	 * @see #style:promptDisabledFontStyles
+	 * @see #setPromptFontStylesForState()
+	 */
+	[Style(name="promptFontStyles",type="starling.text.TextFormat")]
+
+	/**
 	 * Dispatched when the text area's <code>text</code> property changes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
@@ -277,234 +434,6 @@ package feathers.controls
 	 */
 	public class TextArea extends Scroller implements IAdvancedNativeFocusOwner, IStateContext
 	{
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.AUTO",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.AUTO</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_AUTO:String = "auto";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.ON",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.ON</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_ON:String = "on";
-
-		[Deprecated(replacement="feathers.controls.ScrollPolicy.OFF",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollPolicy.OFF</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_POLICY_OFF:String = "off";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.FIXED_FLOAT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
-
-		[Deprecated(replacement="feathers.controls.ScrollBarDisplayMode.NONE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollBarDisplayMode.NONE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH:String = "touch";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.MOUSE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.MOUSE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_MOUSE:String = "mouse";
-
-		[Deprecated(replacement="feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ScrollInteractionMode.TOUCH_AND_SCROLL_BARS</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.NORMAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.NORMAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
-
-		[Deprecated(replacement="feathers.controls.DecelerationRate.FAST",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.DecelerationRate.FAST</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DECELERATION_RATE_FAST:Number = 0.99;
-
-		[Deprecated(replacement="feathers.controls.TextInputState.ENABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.ENABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_ENABLED:String = "enabled";
-
-		[Deprecated(replacement="feathers.controls.TextInputState.DISABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.DISABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DISABLED:String = "disabled";
-
-		[Deprecated(replacement="feathers.controls.TextInputState.FOCUSED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TextInputState.FOCUSED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_FOCUSED:String = "focused";
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the text
 		 * editor.
@@ -512,6 +441,14 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR:String = "feathers-text-area-text-editor";
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * prompt text renderer.
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const DEFAULT_CHILD_STYLE_NAME_PROMPT:String = "feathers-text-input-prompt";
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
@@ -525,6 +462,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY:String = "errorCalloutFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextArea</code>
@@ -545,6 +487,11 @@ package feathers.controls
 			{
 				this._fontStylesSet = new FontStylesSet();
 				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
+			}
+			if(this._promptFontStylesSet === null)
+			{
+				this._promptFontStylesSet = new FontStylesSet();
+				this._promptFontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
 			}
 			this._measureViewPort = false;
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
@@ -567,6 +514,13 @@ package feathers.controls
 		protected var callout:TextCallout;
 
 		/**
+		 * The prompt text renderer sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 */
+		protected var promptTextRenderer:ITextRenderer;
+
+		/**
 		 * The value added to the <code>styleNameList</code> of the text editor.
 		 * This variable is <code>protected</code> so that sub-classes can
 		 * customize the text editor style name in their constructors instead of
@@ -580,6 +534,21 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textEditorStyleName:String = DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR;
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the prompt text
+		 * renderer. This variable is <code>protected</code> so that sub-classes
+		 * can customize the prompt text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_PROMPT</code>.
+		 *
+		 * <p>To customize the prompt text renderer style name without
+		 * subclassing, see <code>customPromptStyleName</code>.</p>
+		 *
+		 * @see #style:customPromptStyleName
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var promptStyleName:String = DEFAULT_CHILD_STYLE_NAME_PROMPT;
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the error
@@ -749,6 +718,40 @@ package feathers.controls
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _prompt:String = null;
+
+		/**
+		 * The prompt, hint, or description text displayed by the text area when
+		 * the value of its text is empty.
+		 *
+		 * <p>In the following example, the text area's prompt is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.prompt = "User Name";</listing>
+		 *
+		 * @default null
+		 */
+		public function get prompt():String
+		{
+			return this._prompt;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set prompt(value:String):void
+		{
+			if(this._prompt == value)
+			{
+				return;
+			}
+			this._prompt = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -948,40 +951,6 @@ package feathers.controls
 		public function set backgroundErrorSkin(value:DisplayObject):void
 		{
 			this.setSkinForState(TextInputState.ERROR, value);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateToSkinFunction:Function;
-
-		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
-		 * and pass to the <code>backgroundSkin</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get stateToSkinFunction():Function
-		{
-			return this._stateToSkinFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToSkinFunction(value:Function):void
-		{
-			if(this._stateToSkinFunction == value)
-			{
-				return;
-			}
-			this._stateToSkinFunction = value;
-			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -1217,6 +1186,160 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _promptFontStylesSet:FontStylesSet;
+
+		/**
+		 * @private
+		 */
+		public function get promptFontStyles():TextFormat
+		{
+			return this._promptFontStylesSet.format;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptFontStyles(value:TextFormat):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
+			this._promptFontStylesSet.format = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		public function get promptDisabledFontStyles():TextFormat
+		{
+			return this._promptFontStylesSet.disabledFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptDisabledFontStyles(value:TextFormat):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			var savedCallee:Function = arguments.callee;
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(savedCallee);
+			}
+			if(value !== null)
+			{
+				value.removeEventListener(Event.CHANGE, changeHandler);
+			}
+			this._promptFontStylesSet.disabledFormat = value;
+			if(value !== null)
+			{
+				value.addEventListener(Event.CHANGE, changeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _promptFactory:Function;
+
+		/**
+		 * A function used to instantiate the prompt text renderer. If null,
+		 * <code>FeathersControl.defaultTextRendererFactory</code> is used
+		 * instead. The prompt text renderer must be an instance of
+		 * <code>ITextRenderer</code>. This factory can be used to change
+		 * properties on the prompt when it is first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set styles on the prompt.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>If the <code>prompt</code> property is <code>null</code>, the
+		 * prompt text renderer will not be created.</p>
+		 *
+		 * <p>In the following example, a custom prompt factory is passed to the
+		 * text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.promptFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #prompt
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 */
+		public function get promptFactory():Function
+		{
+			return this._promptFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptFactory(value:Function):void
+		{
+			if(this._promptFactory == value)
+			{
+				return;
+			}
+			this._promptFactory = value;
+			this.invalidate(INVALIDATION_FLAG_PROMPT_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customPromptStyleName:String;
+
+		/**
+		 * @private
+		 */
+		public function get customPromptStyleName():String
+		{
+			return this._customPromptStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customPromptStyleName(value:String):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._customPromptStyleName === value)
+			{
+				return;
+			}
+			this._customPromptStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _customErrorCalloutStyleName:String;
 
 		/**
@@ -1242,6 +1365,145 @@ package feathers.controls
 			}
 			this._customErrorCalloutStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		public function get innerPadding():Number
+		{
+			return this._innerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPadding(value:Number):void
+		{
+			this.innerPaddingTop = value;
+			this.innerPaddingRight = value;
+			this.innerPaddingBottom = value;
+			this.innerPaddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingTop:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingTop():Number
+		{
+			return this._innerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingTop(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingTop == value)
+			{
+				return;
+			}
+			this._innerPaddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingRight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingRight():Number
+		{
+			return this._innerPaddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingRight(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingRight == value)
+			{
+				return;
+			}
+			this._innerPaddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingBottom:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddinnerPaddingBottomingBottom():Number
+		{
+			return this._innerPaddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingBottom(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingBottom == value)
+			{
+				return;
+			}
+			this._innerPaddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingLeft:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingLeft():Number
+		{
+			return this._innerPaddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingLeft(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingLeft == value)
+			{
+				return;
+			}
+			this._innerPaddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1366,6 +1628,11 @@ package feathers.controls
 				this._fontStylesSet.dispose();
 				this._fontStylesSet = null;
 			}
+			if(this._promptFontStylesSet !== null)
+			{
+				this._promptFontStylesSet.dispose();
+				this._promptFontStylesSet = null;
+			}
 			super.dispose();
 		}
 
@@ -1429,6 +1696,65 @@ package feathers.controls
 		}
 
 		/**
+		 * Gets the font styles to be used to display the text area's prompt
+		 * when the text area's <code>currentState</code> property matches the
+		 * specified state value.
+		 *
+		 * <p>If prompt font styles are not defined for a specific state, returns
+		 * <code>null</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #setPromptFontStylesForState()
+		 * @see #promptFontStyles
+		 */
+		public function getPromptFontStylesForState(state:String):TextFormat
+		{
+			if(this._promptFontStylesSet === null)
+			{
+				return null;
+			}
+			return this._promptFontStylesSet.getFormatForState(state);
+		}
+
+		/**
+		 * Sets the font styles to be used to display the text area's prompt
+		 * when the text area's <code>currentState</code> property matches the
+		 * specified state value.
+		 *
+		 * <p>If prompt font styles are not defined for a specific state, the
+		 * value of the <code>promptFontStyles</code> property will be used instead.</p>
+		 *
+		 * <p>Note: if the text renderer has been customized with advanced font
+		 * formatting, it may override the values specified with
+		 * <code>setPromptFontStylesForState()</code> and properties like
+		 * <code>promptFontStyles</code> and <code>promptDisabledFontStyles</code>.</p>
+		 *
+		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
+		 * @see #promptFontStyles
+		 */
+		public function setPromptFontStylesForState(state:String, format:TextFormat):void
+		{
+			var key:String = "setPromptFontStylesForState--" + state;
+			if(this.processStyleRestriction(key))
+			{
+				return;
+			}
+			function changeHandler(event:Event):void
+			{
+				processStyleRestriction(key);
+			}
+			if(format !== null)
+			{
+				format.removeEventListener(Event.CHANGE, changeHandler);
+			}
+			this._promptFontStylesSet.setFormatForState(state, format);
+			if(format !== null)
+			{
+				format.addEventListener(Event.CHANGE, changeHandler);
+			}
+		}
+
+		/**
 		 * Gets the skin to be used by the text area when its
 		 * <code>currentState</code> property matches the specified state value.
 		 *
@@ -1485,10 +1811,16 @@ package feathers.controls
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
 
 			if(textEditorInvalid)
 			{
 				this.createTextEditor();
+			}
+
+			if(promptFactoryInvalid || (this._prompt !== null && !this.promptTextRenderer))
+			{
+				this.createPrompt();
 			}
 
 			if(textEditorInvalid || stylesInvalid)
@@ -1502,6 +1834,24 @@ package feathers.controls
 				this._ignoreTextChanges = true;
 				this.textEditorViewPort.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
+			}
+
+			if(promptFactoryInvalid || stylesInvalid)
+			{
+				this.refreshPromptProperties();
+			}
+
+			if(this.promptTextRenderer)
+			{
+				if(promptFactoryInvalid || dataInvalid || stylesInvalid)
+				{
+					this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
+				}
+
+				if(promptFactoryInvalid || stateInvalid)
+				{
+					this.promptTextRenderer.isEnabled = this._isEnabled;
+				}
 			}
 
 			if(textEditorInvalid || stateInvalid)
@@ -1576,6 +1926,29 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function createPrompt():void
+		{
+			if(this.promptTextRenderer)
+			{
+				this.removeChild(DisplayObject(this.promptTextRenderer), true);
+				this.promptTextRenderer = null;
+			}
+
+			if(this._prompt === null)
+			{
+				return;
+			}
+
+			var factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
+			this.promptTextRenderer = ITextRenderer(factory());
+			var promptStyleName:String = this._customPromptStyleName != null ? this._customPromptStyleName : this.promptStyleName;
+			this.promptTextRenderer.styleNameList.add(promptStyleName);
+			this.addChild(DisplayObject(this.promptTextRenderer));
+		}
+
+		/**
+		 * @private
+		 */
 		protected function createErrorCallout():void
 		{
 			if(this.callout !== null)
@@ -1645,11 +2018,28 @@ package feathers.controls
 			this.textEditorViewPort.maxChars = this._maxChars;
 			this.textEditorViewPort.restrict = this._restrict;
 			this.textEditorViewPort.isEditable = this._isEditable;
+			this.textEditorViewPort.paddingTop = this._innerPaddingTop;
+			this.textEditorViewPort.paddingRight = this._innerPaddingRight;
+			this.textEditorViewPort.paddingBottom = this._innerPaddingBottom;
+			this.textEditorViewPort.paddingLeft = this._innerPaddingLeft;
 			for(var propertyName:String in this._textEditorProperties)
 			{
 				var propertyValue:Object = this._textEditorProperties[propertyName];
 				this.textEditorViewPort[propertyName] = propertyValue;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshPromptProperties():void
+		{
+			if(!this.promptTextRenderer)
+			{
+				return;
+			}
+			this.promptTextRenderer.text = this._prompt;
+			this.promptTextRenderer.fontStyles = this._promptFontStylesSet;
 		}
 
 		/**
@@ -1704,10 +2094,6 @@ package feathers.controls
 		 */
 		override protected function getCurrentBackgroundSkin():DisplayObject
 		{
-			if(this._stateToSkinFunction != null)
-			{
-				return DisplayObject(this._stateToSkinFunction(this, this._currentState, this.currentBackgroundSkin));
-			}
 			var result:DisplayObject = this._stateToSkin[this._currentState] as DisplayObject;
 			if(result !== null)
 			{
@@ -1761,6 +2147,22 @@ package feathers.controls
 			if(this.callout !== null)
 			{
 				this.callout.text = this._errorString;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function layoutChildren():void
+		{
+			super.layoutChildren();
+			
+			if(this.promptTextRenderer !== null)
+			{
+				this.promptTextRenderer.x = this._leftViewPortOffset + this._innerPaddingLeft;
+				this.promptTextRenderer.y = this._topViewPortOffset + this._innerPaddingTop;
+				this.promptTextRenderer.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - this._innerPaddingLeft - this._innerPaddingRight;
+				this.promptTextRenderer.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - this._innerPaddingTop - this._innerPaddingBottom;
 			}
 		}
 

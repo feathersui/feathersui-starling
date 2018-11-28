@@ -552,54 +552,6 @@ package feathers.controls
 		 */
 		protected static const INVALIDATION_FLAG_OFF_TRACK_FACTORY:String = "offTrackFactory";
 
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Removed with no replacement.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const LABEL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Removed with no replacement.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const LABEL_ALIGN_BASELINE:String = "baseline";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
-
 		/**
 		 * The default value added to the <code>styleNameList</code> of the "off
 		 * label" text renderer.
@@ -1284,39 +1236,6 @@ package feathers.controls
 			{
 				this._offLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _labelAlign:String = "middle";
-
-		[Deprecated(since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Removed with no replacement.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get labelAlign():String
-		{
-			return this._labelAlign;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set labelAlign(value:String):void
-		{
-			if(this._labelAlign === value)
-			{
-				return;
-			}
-			this._labelAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -3137,27 +3056,18 @@ package feathers.controls
 
 			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
-			var labelHeight:Number;
-			if(this._labelAlign == "middle")
-			{
-				labelHeight = totalLabelHeight;
-			}
-			else //baseline
-			{
-				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
-			}
 
 			var mask:DisplayObject = this.onTextRenderer.mask;
 			mask.width = maxLabelWidth;
 			mask.height = totalLabelHeight;
 
-			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
+			this.onTextRenderer.y = (this.actualHeight - totalLabelHeight) / 2;
 
 			mask = this.offTextRenderer.mask;
 			mask.width = maxLabelWidth;
 			mask.height = totalLabelHeight;
 
-			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
+			this.offTextRenderer.y = (this.actualHeight - totalLabelHeight) / 2;
 
 			this.layoutTracks();
 		}

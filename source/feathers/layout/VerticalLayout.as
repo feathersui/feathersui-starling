@@ -13,6 +13,7 @@ package feathers.layout
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
@@ -27,92 +28,8 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class VerticalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout
+	public class VerticalLayout extends BaseLinearLayout implements IVariableVirtualLayout, ITrimmedVirtualLayout, IGroupedLayout, IDragDropLayout
 	{
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
-
 		/**
 		 * Constructor.
 		 */
@@ -1609,6 +1526,147 @@ package feathers.layout
 			result.y = maxScrollY;
 
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
+			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+		{
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				//if the layout is virtualized, and the items all have the same
+				//height, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+			}
+			var indexMinusOffset:int = index - indexOffset;
+
+			if(dropIndicator is IValidating)
+			{
+				IValidating(dropIndicator).validate();
+			}
+
+			var yPosition:Number = 0;
+			if(index < totalItemCount)
+			{
+				var item:DisplayObject = items[indexMinusOffset];
+				yPosition = item.y - dropIndicator.height / 2;
+				dropIndicator.x = item.x;
+				dropIndicator.width = item.width;
+			}
+			else //after the last item
+			{
+				item = items[indexMinusOffset - 1];
+				yPosition = item.y + item.height - dropIndicator.height;
+				dropIndicator.x = item.x;
+				dropIndicator.width = item.width;
+			}
+			if(yPosition < 0)
+			{
+				yPosition = 0;
+			}
+			dropIndicator.y = yPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function getDropIndex(x:Number, y:Number, items:Vector.<DisplayObject>,
+			boundsX:Number, boundsY:Number, width:Number, height:Number):int
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var positionY:Number = boundsY + this._paddingTop;
+			var lastHeight:Number = 0;
+			var gap:Number = this._gap;
+			var indexOffset:int = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				indexOffset = this._beforeVirtualizedItemCount;
+			}
+			var secondToLastIndex:int = totalItemCount - 2;
+			for(var i:int = 0; i <= totalItemCount; i++)
+			{
+				var item:DisplayObject = null;
+				var indexMinusOffset:int = i - indexOffset;
+				if(indexMinusOffset >= 0 && indexMinusOffset < itemCount)
+				{
+					item = items[indexMinusOffset];
+				}
+				if(hasFirstGap && i == 0)
+				{
+					gap = this._firstGap;
+				}
+				else if(hasLastGap && i > 0 && i == secondToLastIndex)
+				{
+					gap = this._lastGap;
+				}
+				else
+				{
+					gap = this._gap;
+				}
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedHeight:Number = this._virtualCache[i];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedHeight !== cachedHeight) //isNaN
+					{
+						lastHeight = calculatedTypicalItemHeight;
+					}
+					else
+					{
+						lastHeight = cachedHeight;
+					}
+				}
+				else
+				{
+					//use the y position of the item to account for vertical
+					//alignment, in case the total height of the items is less
+					//than the height of the container
+					positionY = item.y;
+					var itemHeight:Number = item.height;
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							if(itemHeight != cachedHeight)
+							{
+								this._virtualCache[i] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemHeight >= 0)
+						{
+							itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					lastHeight = itemHeight;
+				}
+				if(y < (positionY + (lastHeight / 2)))
+				{
+					return i;
+				}
+				positionY += lastHeight + gap;
+			}
+			return totalItemCount;
 		}
 
 		/**

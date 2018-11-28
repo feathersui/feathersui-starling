@@ -162,7 +162,7 @@ package feathers.controls
 	 * vertically. When this value changes, the scroll bar's width and
 	 * height values do not change automatically.
 	 *
-	 * <p>Note: When using a <code>SimpleScrollBar</code> with a scrolling
+	 * <p>Note: When using a <code>ScrollBar</code> with a scrolling
 	 * container, the container will automatically set the correct
 	 * <code>direction</code> value. Generally, you should not need to set this
 	 * style manually.</p>
@@ -181,6 +181,19 @@ package feathers.controls
 	 * @see feathers.layout.Direction#VERTICAL
 	 */
 	[Style(name="direction",type="String")]
+
+	/**
+	 * Determines if the scroll bar's thumb will be resized based on the
+	 * scrollable range, or if it will be rendered at its preferred size.
+	 *
+	 * <p>In the following example, the thumb size is fixed:</p>
+	 *
+	 * <listing version="3.0">
+	 * scrollBar.fixedThumbSize = true;</listing>
+	 *
+	 * @default false
+	 */
+	[Style(name="fixedThumbSize",type="Boolean")]
 
 	/**
 	 * Quickly sets all padding properties to the same value. The
@@ -396,54 +409,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY:String = "incrementButtonFactory";
-
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SINGLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SINGLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
-
-		[Deprecated(replacement="feathers.controls.TrackLayoutMode.SPLIT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.TrackLayoutMode.SPLIT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the minimum
@@ -778,6 +743,36 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
 			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _fixedThumbSize:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		public function get fixedThumbSize():Boolean
+		{
+			return this._fixedThumbSize;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set fixedThumbSize(value:Boolean):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._fixedThumbSize === value)
+			{
+				return;
+			}
+			this._fixedThumbSize = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -2904,7 +2899,14 @@ package feathers.controls
 					thumbMinHeight = IMeasureDisplayObject(this.thumb).minHeight;
 				}
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
+				if(this._fixedThumbSize)
+				{
+					this.thumb.height = this.thumbOriginalHeight;
+				}
+				else
+				{
+					this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPage / range);
+				}
 				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				this.thumb.y = this.decrementButton.height + this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
@@ -2917,7 +2919,14 @@ package feathers.controls
 				{
 					thumbMinWidth = IMeasureDisplayObject(this.thumb).minWidth;
 				}
-				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
+				if(this._fixedThumbSize)
+				{
+					this.thumb.width = this.thumbOriginalWidth;
+				}
+				else
+				{
+					this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPage / range);
+				}
 				this.thumb.height = this.thumbOriginalHeight;
 				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this.decrementButton.width + this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));

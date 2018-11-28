@@ -755,210 +755,6 @@ package feathers.controls
 		 */
 		public static const ALTERNATE_STYLE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
 
-		[Deprecated(replacement="feathers.controls.ButtonState.UP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.UP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_UP:String = "up";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DOWN",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DOWN</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DOWN:String = "down";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.HOVER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.HOVER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_HOVER:String = "hover";
-
-		[Deprecated(replacement="feathers.controls.ButtonState.DISABLED",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.controls.ButtonState.DISABLED</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const STATE_DISABLED:String = "disabled";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.MANUAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.MANUAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_MANUAL:String = "manual";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.LEFT_BASELINE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.LEFT_BASELINE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
-
-		[Deprecated(replacement="feathers.layout.RelativePosition.RIGHT_BASELINE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.RelativePosition.RIGHT_BASELINE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-		
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.VerticalALign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalALign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalALign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Button</code>
 		 * components.
@@ -1557,112 +1353,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _stateToIconFunction:Function;
-
-		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0",message="Pass a feathers.skins.ImageSkin the defaultIcon property.")]
-		/**
-		 * @private
-		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
-		 * and pass to the <code>defaultIcon</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get stateToIconFunction():Function
-		{
-			return this._stateToIconFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToIconFunction(value:Function):void
-		{
-			if(this._stateToIconFunction == value)
-			{
-				return;
-			}
-			this._stateToIconFunction = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateToLabelPropertiesFunction:Function;
-
-		[Deprecated(replacement="setFontStylesForState",since="3.1.0",message="Pass starling.text.TextFormat objects to the setFontStylesForState() method.")]
-		/**
-		 * @private
-		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
-		 * with the appropriate <code>ButtonState</code> constant and pass in a
-		 * <code>starling.text.TextFormat</code> object.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 * 
-		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState
-		 */
-		public function get stateToLabelPropertiesFunction():Function
-		{
-			return this._stateToLabelPropertiesFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToLabelPropertiesFunction(value:Function):void
-		{
-			if(this._stateToLabelPropertiesFunction == value)
-			{
-				return;
-			}
-			this._stateToLabelPropertiesFunction = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateToSkinFunction:Function;
-
-		[Deprecated(replacement="feathers.skins.ImageSkin",since="3.0.0",message="Pass a feathers.skins.ImageSkin the defaultSkin property.")]
-		/**
-		 * @private
-		 * DEPRECATED: Create a <code>feathers.skins.ImageSkin</code> instead,
-		 * and pass to the <code>defaultSkin</code> property.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public function get stateToSkinFunction():Function
-		{
-			return this._stateToSkinFunction;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set stateToSkinFunction(value:Function):void
-		{
-			if(this._stateToSkinFunction == value)
-			{
-				return;
-			}
-			this._stateToSkinFunction = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _fontStylesSet:FontStylesSet;
 
 		/**
@@ -1892,206 +1582,6 @@ package feathers.controls
 			if(this._defaultLabelProperties !== null)
 			{
 				this._defaultLabelProperties.addOnChangeCallback(childProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _stateToLabelProperties:Object = {};
-
-		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Use the <code>fontStyles</code> property, or call the
-		 * <code>setFontStylesForState()</code> function with
-		 * <code>ButtonState.UP</code> and pass in a
-		 * <code>starling.text.TextFormat</code> object instead.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 * 
-		 * @see #style:fontStyles
-		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState#UP
-		 */
-		public function get upLabelProperties():Object
-		{
-			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP]);
-			if(!value)
-			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._stateToLabelProperties[ButtonState.UP] = value;
-			}
-			return value;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set upLabelProperties(value:Object):void
-		{
-			if(!(value is PropertyProxy))
-			{
-				value = PropertyProxy.fromObject(value);
-			}
-			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.UP]);
-			if(oldValue)
-			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._stateToLabelProperties[ButtonState.UP] = value;
-			if(value)
-			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
-		 * with <code>ButtonState.DOWN</code> and pass in a
-		 * <code>starling.text.TextFormat</code> object instead.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 * 
-		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState#DOWN
-		 */
-		public function get downLabelProperties():Object
-		{
-			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN]);
-			if(!value)
-			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._stateToLabelProperties[ButtonState.DOWN] = value;
-			}
-			return value;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set downLabelProperties(value:Object):void
-		{
-			if(!(value is PropertyProxy))
-			{
-				value = PropertyProxy.fromObject(value);
-			}
-			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DOWN]);
-			if(oldValue)
-			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._stateToLabelProperties[ButtonState.DOWN] = value;
-			if(value)
-			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		[Deprecated(replacement="setFontStylesForState",since="3.1.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Call the <code>setFontStylesForState()</code> function
-		 * with <code>ButtonState.HOVER</code> and pass in a
-		 * <code>starling.text.TextFormat</code> object instead.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState#HOVER
-		 */
-		public function get hoverLabelProperties():Object
-		{
-			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER]);
-			if(!value)
-			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._stateToLabelProperties[ButtonState.HOVER] = value;
-			}
-			return value;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set hoverLabelProperties(value:Object):void
-		{
-			if(!(value is PropertyProxy))
-			{
-				value = PropertyProxy.fromObject(value);
-			}
-			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.HOVER]);
-			if(oldValue)
-			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._stateToLabelProperties[ButtonState.HOVER] = value;
-			if(value)
-			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		[Deprecated(replacement="disabledFontStyles",since="3.1.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Use the <code>disabledFontStyles</code> property, or call
-		 * the <code>setFontStylesForState()</code> function with
-		 * <code>ButtonState.DISABLED</code> and pass in a
-		 * <code>starling.text.TextFormat</code> object instead.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 *
-		 * @see #setFontStylesForState()
-		 * @see feathers.controls.ButtonState#DISABLED
-		 */
-		public function get disabledLabelProperties():Object
-		{
-			var value:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED]);
-			if(!value)
-			{
-				value = new PropertyProxy(childProperties_onChange);
-				this._stateToLabelProperties[ButtonState.DISABLED] = value;
-			}
-			return value;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set disabledLabelProperties(value:Object):void
-		{
-			if(!(value is PropertyProxy))
-			{
-				value = PropertyProxy.fromObject(value);
-			}
-			var oldValue:PropertyProxy = PropertyProxy(this._stateToLabelProperties[ButtonState.DISABLED]);
-			if(oldValue)
-			{
-				oldValue.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._stateToLabelProperties[ButtonState.DISABLED] = value;
-			if(value)
-			{
-				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2359,7 +1849,7 @@ package feathers.controls
 		 */
 		override public function render(painter:Painter):void
 		{
-			var scale:Number = this.getCurrentScale();
+			var scale:Number = this.getScaleForCurrentState();
 			if(scale != 1)
 			{
 				var matrix:Matrix = Pool.getMatrix();
@@ -2940,7 +2430,7 @@ package feathers.controls
 				return;
 			}
 			super.changeState(state);
-			if(this.getCurrentScale() != 1)
+			if(this.getScaleForCurrentState() != this.getScaleForCurrentState(oldState))
 			{
 				this.setRequiresRedraw();
 			}
@@ -3064,24 +2554,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function getCurrentSkin():DisplayObject
-		{
-			if(this._stateToSkinFunction !== null)
-			{
-				return DisplayObject(this._stateToSkinFunction(this, this._currentState, this.currentSkin));
-			}
-			return super.getCurrentSkin();
-		}
-
-		/**
-		 * @private
-		 */
 		protected function getCurrentIcon():DisplayObject
 		{
-			if(this._stateToIconFunction !== null)
-			{
-				return DisplayObject(this._stateToIconFunction(this, this._currentState, this.currentIcon));
-			}
 			var result:DisplayObject = this._stateToIcon[this._currentState] as DisplayObject;
 			if(result !== null)
 			{
@@ -3093,11 +2567,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function getCurrentScale():Number
+		protected function getScaleForCurrentState(state:String = null):Number
 		{
-			if(this._currentState in this._stateToScale)
+			if(state === null)
 			{
-				return this._stateToScale[this._currentState];
+				state = this._currentState;
+			}
+			if(state in this._stateToScale)
+			{
+				return this._stateToScale[state];
 			}
 			return 1;
 		}
@@ -3113,29 +2591,11 @@ package feathers.controls
 			}
 			this.labelTextRenderer.fontStyles = this._fontStylesSet;
 			this.labelTextRenderer.wordWrap = this._wordWrap;
-			var properties:Object = this.getCurrentLabelProperties();
-			for(var propertyName:String in properties)
+			for(var propertyName:String in this._defaultLabelProperties)
 			{
-				var propertyValue:Object = properties[propertyName];
+				var propertyValue:Object = this._defaultLabelProperties[propertyName];
 				this.labelTextRenderer[propertyName] = propertyValue;
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function getCurrentLabelProperties():Object
-		{
-			if(this._stateToLabelPropertiesFunction !== null)
-			{
-				return this._stateToLabelPropertiesFunction(this, this._currentState);
-			}
-			var result:Object = this._stateToLabelProperties[this._currentState];
-			if(result !== null)
-			{
-				return result;
-			}
-			return this._defaultLabelProperties;
 		}
 
 		/**

@@ -244,24 +244,6 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-		[Deprecated(replacement="vectorData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function get data():Object
-		{
-			return this.vectorData;
-		}
-
-		[Deprecated(replacement="vectorData",since="3.3.0")]
-		/**
-		 * @private
-		 */
-		public function set data(value:Object):void
-		{
-			this.vectorData = value as Vector.<*>;
-		}
-
 		/**
 		 * @private
 		 */

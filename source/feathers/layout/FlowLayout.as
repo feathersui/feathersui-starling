@@ -49,80 +49,8 @@ package feathers.layout
 	 *
 	 * @productversion Feathers 2.2.0
 	 */
-	public class FlowLayout extends BaseVariableVirtualLayout implements IVariableVirtualLayout
+	public class FlowLayout extends BaseVariableVirtualLayout implements IVariableVirtualLayout, IDragDropLayout
 	{
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
 		/**
 		 * Constructor.
 		 */
@@ -1227,6 +1155,224 @@ package feathers.layout
 			result.y = maxScrollY - Math.round((height - itemHeight) / 2);
 
 			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getDropIndex(x:Number, y:Number, items:Vector.<DisplayObject>,
+			boundsX:Number, boundsY:Number, width:Number, height:Number):int
+		{
+			if(this._useVirtualLayout)
+			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
+				if(this._typicalItem is IValidating)
+				{
+					IValidating(this._typicalItem).validate();
+				}
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var horizontalGap:Number = this._horizontalGap;
+			var verticalGap:Number = this._verticalGap;
+			var maxItemHeight:Number = 0;
+			var positionY:Number = this._paddingTop;
+			var i:int = 0;
+			var itemCount:int = items.length;
+			do
+			{
+				if(i > 0)
+				{
+					positionY += maxItemHeight + verticalGap;
+				}
+				//this section prepares some variables needed for the following loop
+				maxItemHeight = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
+				var positionX:Number = this._paddingLeft;
+				var rowItemCount:int = 0;
+				for(; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+
+					if(this._useVirtualLayout && this._hasVariableItemDimensions)
+					{
+						var cachedWidth:Number = this._widthCache[i];
+						var cachedHeight:Number = this._heightCache[i];
+					}
+					if(this._useVirtualLayout && !item)
+					{
+						//the item is null, and the layout is virtualized, so we
+						//need to estimate the width of the item.
+
+						if(this._hasVariableItemDimensions)
+						{
+							if(cachedWidth !== cachedWidth) //isNaN
+							{
+								var itemWidth:Number = calculatedTypicalItemWidth;
+							}
+							else
+							{
+								itemWidth = cachedWidth;
+							}
+							if(cachedHeight !== cachedHeight) //isNaN
+							{
+								var itemHeight:Number = calculatedTypicalItemHeight;
+							}
+							else
+							{
+								itemHeight = cachedHeight;
+							}
+						}
+						else
+						{
+							itemWidth = calculatedTypicalItemWidth;
+							itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					else
+					{
+						//we get here if the item isn't null. it is never null if
+						//the layout isn't virtualized.
+						if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+						{
+							continue;
+						}
+						if(item is IValidating)
+						{
+							IValidating(item).validate();
+						}
+						itemWidth = item.width;
+						itemHeight = item.height;
+						if(this._useVirtualLayout && this._hasVariableItemDimensions)
+						{
+							if(this._hasVariableItemDimensions)
+							{
+								if(itemWidth != cachedWidth)
+								{
+									this._widthCache[i] = itemWidth;
+									this.dispatchEventWith(Event.CHANGE);
+								}
+								if(itemHeight != cachedHeight)
+								{
+									this._heightCache[i] = itemHeight;
+									this.dispatchEventWith(Event.CHANGE);
+								}
+							}
+							else
+							{
+								if(calculatedTypicalItemWidth >= 0)
+								{
+									itemWidth = calculatedTypicalItemWidth;
+								}
+								if(calculatedTypicalItemHeight >= 0)
+								{
+									itemHeight = calculatedTypicalItemHeight;
+								}
+							}
+						}
+					}
+					var endOfRow:Boolean = rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight);
+					if((endOfRow || x < (positionX + (itemWidth / 2))) && y < (positionY + itemHeight + (gap / 2)))
+					{
+						return i;
+					}
+					if(endOfRow)
+					{
+						//we've reached the end of the row, so go to next
+						break;
+					}
+					//we compare with > instead of Math.max() because the rest
+					//arguments on Math.max() cause extra garbage collection and
+					//hurt performance
+					if(itemHeight > maxItemHeight)
+					{
+						//we need to know the maximum height of the items in the
+						//case where the height of the view port needs to be
+						//calculated by the layout.
+						maxItemHeight = itemHeight;
+					}
+					positionX += itemWidth + horizontalGap;
+					rowItemCount++;
+				}
+			}
+			while(i < itemCount)
+			return itemCount;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
+			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+		{
+			if(dropIndicator is IValidating)
+			{
+				IValidating(dropIndicator).validate();
+			}
+
+			var horizontalGap:Number = this._horizontalGap;
+			var verticalGap:Number = this._verticalGap;
+			var maxItemHeight:Number = 0;
+			var positionY:Number = this._paddingTop;
+			var i:int = 0;
+			var itemCount:int = items.length;
+			do
+			{
+				if(i > 0)
+				{
+					if(y < (positionY + itemHeight + (verticalGap / 2)))
+					{
+						//if the x/y position is closer to the previous row,
+						//then display the drop indicator at the end of that row
+						var item:DisplayObject = items[i - 1];
+						dropIndicator.x = item.x + item.width - dropIndicator.width / 2;
+						dropIndicator.y = item.y;
+						dropIndicator.height = item.height;
+						return;
+					}
+					positionY += maxItemHeight + verticalGap;
+				}
+				//this section prepares some variables needed for the following loop
+				maxItemHeight = 0;
+				var positionX:Number = this._paddingLeft;
+				var rowItemCount:int = 0;
+				for(; i < itemCount; i++)
+				{
+					item = items[i];
+					var itemWidth:Number = item.width;
+					var itemHeight:Number = item.height;
+					if(rowItemCount > 0 && (positionX + itemWidth) > (width - this._paddingRight))
+					{
+						//we've reached the end of the row, so go to next
+						break;
+					}
+					//we compare with > instead of Math.max() because the rest
+					//arguments on Math.max() cause extra garbage collection and
+					//hurt performance
+					if(itemHeight > maxItemHeight)
+					{
+						//we need to know the maximum height of the items in the
+						//case where the height of the view port needs to be
+						//calculated by the layout.
+						maxItemHeight = itemHeight;
+					}
+					if(i == index)
+					{
+						dropIndicator.x = item.x - dropIndicator.width / 2;
+						dropIndicator.y = item.y;
+						dropIndicator.height = item.height;
+						return;
+					}
+					positionX += itemWidth + horizontalGap;
+					rowItemCount++;
+				}
+			}
+			while(i < itemCount)
+			var lastItem:DisplayObject = items[itemCount - 1];
+			dropIndicator.x = lastItem.x + lastItem.width - dropIndicator.width / 2;
+			dropIndicator.y = lastItem.y;
+			dropIndicator.height = lastItem.height;
 		}
 
 		/**

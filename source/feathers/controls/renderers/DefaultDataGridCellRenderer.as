@@ -246,7 +246,7 @@ package feathers.controls.renderers
 		{
 			if(this._data === null || this._dataField === null)
 			{
-				return null;
+				return this._data;
 			}
 			return this._data[this._dataField];
 		}

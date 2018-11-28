@@ -26,6 +26,7 @@ package feathers.themes
 {
 	import feathers.controls.Alert;
 	import feathers.controls.AutoComplete;
+	import feathers.controls.AutoSizeMode;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.ButtonState;
@@ -60,6 +61,7 @@ package feathers.themes
 	import feathers.controls.TextCallout;
 	import feathers.controls.TextInput;
 	import feathers.controls.TextInputState;
+	import feathers.controls.Toast;
 	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.TrackLayoutMode;
@@ -94,6 +96,7 @@ package feathers.themes
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.text.TextFormat;
@@ -104,6 +107,9 @@ package feathers.themes
 	{
 		[Embed(source="/../assets/fonts/SourceSansPro-Regular.ttf", fontFamily="SourceSansPro", fontWeight="normal", mimeType="application/x-font", embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_REGULAR:Class;
+
+		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",mimeType="application/x-font",embedAsCFF="true")]
+		protected static const SOURCE_SANS_PRO_SEMIBOLD:Class;
 
 		/**
 		 * The name of the embedded font used by controls in this theme.
@@ -131,6 +137,7 @@ package feathers.themes
 		protected static const COLOR_DRAWERS_DIVIDER:uint = 0x9DACA9;
 		protected static const ALPHA_DATA_GRID_DRAG_OVERLAY:Number = 0.5;
 		protected static const COLOR_DATA_GRID_DRAG_OVERLAY:uint = 0xDFE2E2;
+		protected static const COLOR_TOAST_BACKGROUND:uint = 0x454545;
 
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(7, 7, 1, 1);
 		protected static const BACK_BUTTON_SCALE9_GRID:Rectangle = new Rectangle(26, 5, 10, 40);
@@ -173,6 +180,7 @@ package feathers.themes
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER:String = "topcoat-light-mobile-pop-up-drawer";
 		protected static const THEME_STYLE_NAME_POP_UP_DRAWER_HEADER:String = "topcoat-light-mobile-pop-up-drawer-header";
 		protected static const THEME_STYLE_NAME_TABLET_PICKER_LIST_ITEM_RENDERER:String = "topcoat-light-mobile-tablet-picker-list-item-renderer";
+		protected static const THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON:String = "topcoat-light-mobile-toast-actions-button";
 
 		public function BaseTopcoatLightMobileTheme()
 		{
@@ -214,6 +222,8 @@ package feathers.themes
 		protected var largeDarkDisabledFontStyles:TextFormat;
 		protected var darkScrollTextFontStyles:TextFormat;
 		protected var darkScrollTextDisabledFontStyles:TextFormat;
+		protected var lightBoldFontStyles:TextFormat;
+		protected var selectedBoldFontStyles:TextFormat;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -314,6 +324,7 @@ package feathers.themes
 		protected var dataGridColumnResizeSkinTexture:Texture;
 		protected var dataGridColumnDropIndicatorSkinTexture:Texture;
 		protected var dataGridHeaderDividerSkinTexture:Texture;
+		protected var dragHandleIconTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -458,6 +469,8 @@ package feathers.themes
 			this.dataGridColumnResizeSkinTexture = this.atlas.getTexture("data-grid-column-resize-skin0000");
 			this.dataGridColumnDropIndicatorSkinTexture = this.atlas.getTexture("data-grid-column-drop-indicator-skin0000");
 			this.dataGridHeaderDividerSkinTexture = this.atlas.getTexture("data-grid-header-divider-skin0000");
+
+			this.dragHandleIconTexture = this.atlas.getTexture("drag-handle-icon0000");
 		}
 
 		protected function initializeFonts():void
@@ -471,6 +484,10 @@ package feathers.themes
 			this.actionDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_ACTION_DISABLED, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.darkCenteredFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK, HorizontalAlign.CENTER, VerticalAlign.TOP);
 			this.darkCenteredDisabledFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_DARK_DISABLED, HorizontalAlign.CENTER, VerticalAlign.TOP);
+			this.lightBoldFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_LIGHT, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.lightBoldFontStyles.bold = true;
+			this.selectedBoldFontStyles = new TextFormat(FONT_NAME, this.regularFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);
+			this.selectedBoldFontStyles.bold = true;
 
 			this.smallDarkFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, COLOR_TEXT_DARK, HorizontalAlign.LEFT, VerticalAlign.TOP);
 			this.smallSelectedFontStyles = new TextFormat(FONT_NAME, this.smallFontSize, COLOR_TEXT_SELECTED, HorizontalAlign.LEFT, VerticalAlign.TOP);
@@ -489,6 +506,7 @@ package feathers.themes
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePadding = this.smallGutterSize;
+			Toast.containerFactory = toastContainerFactory;
 		}
 
 		protected function initializeStyleProviders():void
@@ -558,7 +576,7 @@ package feathers.themes
 
 			//list
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
-			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setListItemRendererStyles;
 
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
@@ -626,10 +644,14 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 
 			//text callout
 			this.getStyleProviderForClass(TextCallout).defaultStyleFunction = this.setTextCalloutStyles;
+
+			//toast
+			this.getStyleProviderForClass(Toast).defaultStyleFunction = this.setToastStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Toast.DEFAULT_CHILD_STYLE_NAME_ACTIONS, this.setToastActionsStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON, this.setToastActionsButtonStyles);
 
 			//toggle button
 			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setToggleButtonStyles;
@@ -708,6 +730,27 @@ package feathers.themes
 			skin.scale9Grid = DATA_GRID_HEADER_DIVIDER_SCALE_9_GRID;
 			skin.minTouchWidth = this.controlSize;
 			return skin;
+		}
+
+		protected function toastContainerFactory():DisplayObjectContainer
+		{
+			var container:LayoutGroup = new LayoutGroup();
+			container.autoSizeMode = AutoSizeMode.STAGE;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalAlign.BOTTOM;
+			if(DeviceCapabilities.isPhone())
+			{
+				layout.horizontalAlign = HorizontalAlign.JUSTIFY;
+			}
+			else
+			{
+				layout.horizontalAlign = HorizontalAlign.LEFT;
+				layout.padding = this.gutterSize;
+				layout.gap = this.gutterSize;
+			}
+			container.layout = layout;
+			return container;
 		}
 
 	//-------------------------
@@ -1255,6 +1298,19 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 			list.backgroundSkin = new Quad(10, 10, COLOR_BACKGROUND_LIGHT);
+
+			var dropIndicatorSkin:Quad = new Quad(this.borderSize, this.borderSize, COLOR_TEXT_DARK);
+			list.dropIndicatorSkin = dropIndicatorSkin;
+		}
+
+		protected function setListItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
+		{
+			this.setItemRendererStyles(itemRenderer);
+
+			var dragIcon:ImageSkin = new ImageSkin(this.dragHandleIconTexture);
+			dragIcon.minTouchWidth = this.gridSize;
+			dragIcon.minTouchHeight = this.gridSize;
+			itemRenderer.dragIcon = dragIcon;
 		}
 
 		protected function setBaseItemRendererStyles(itemRenderer:BaseDefaultItemRenderer):void
@@ -1813,12 +1869,12 @@ package feathers.themes
 			textArea.fontStyles = this.darkScrollTextFontStyles.clone();
 			textArea.disabledFontStyles = this.darkScrollTextDisabledFontStyles.clone();
 
-			textArea.textEditorFactory = textAreaTextEditorFactory;
-		}
+			textArea.promptFontStyles = this.darkFontStyles.clone();
+			textArea.promptDisabledFontStyles = this.darkDisabledFontStyles.clone();
 
-		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
-		{
-			textEditor.padding = this.smallGutterSize;
+			textArea.textEditorFactory = textAreaTextEditorFactory;
+			
+			textArea.innerPadding = this.smallGutterSize;
 		}
 
 	//-------------------------
@@ -1890,6 +1946,41 @@ package feathers.themes
 			input.promptDisabledFontStyles = this.darkDisabledFontStyles.clone();
 
 			this.setBaseTextInputStyles(input);
+		}
+
+	//-------------------------
+	// Toast
+	//-------------------------
+
+		protected function setToastStyles(toast:Toast):void
+		{
+			var backgroundSkin:Quad = new Quad(1, 1, COLOR_TOAST_BACKGROUND);
+			toast.backgroundSkin = backgroundSkin;
+
+			toast.fontStyles = this.lightFontStyles.clone();
+
+			toast.width = this.popUpFillSize;
+			toast.paddingTop = this.smallGutterSize;
+			toast.paddingRight = this.gutterSize;
+			toast.paddingBottom = this.smallGutterSize;
+			toast.paddingLeft = this.gutterSize;
+			toast.gap = Number.POSITIVE_INFINITY;
+			toast.minGap = this.smallGutterSize;
+			toast.horizontalAlign = HorizontalAlign.LEFT;
+			toast.verticalAlign = VerticalAlign.MIDDLE;
+		}
+
+		protected function setToastActionsStyles(group:ButtonGroup):void
+		{
+			group.direction = Direction.HORIZONTAL;
+			group.gap = this.smallGutterSize;
+			group.customButtonStyleName = THEME_STYLE_NAME_TOAST_ACTIONS_BUTTON;
+		}
+
+		protected function setToastActionsButtonStyles(button:Button):void
+		{
+			button.fontStyles = this.selectedBoldFontStyles.clone();
+			button.setFontStylesForState(ButtonState.DOWN, this.lightBoldFontStyles);
 		}
 
 	//-------------------------

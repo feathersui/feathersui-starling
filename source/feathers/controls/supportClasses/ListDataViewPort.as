@@ -9,15 +9,22 @@ package feathers.controls.supportClasses
 {
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
+	import feathers.controls.renderers.IDragAndDropItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.DragDropManager;
 	import feathers.events.CollectionEventType;
+	import feathers.events.DragDropEvent;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.IDragDropLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.ISpinnerLayout;
 	import feathers.layout.ITrimmedVirtualLayout;
@@ -26,14 +33,20 @@ package feathers.controls.supportClasses
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 	import feathers.motion.effectClasses.IEffectContext;
+	import feathers.system.DeviceCapabilities;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.utils.Pool;
+	import starling.events.EnterFrameEvent;
 
 	/**
 	 * @private
@@ -279,7 +292,27 @@ package feathers.controls.supportClasses
 
 		public function set owner(value:List):void
 		{
+			if(this._owner == value)
+			{
+				return;
+			}
+			if(this._owner)
+			{
+				this._owner.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+				this._owner.removeEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
 			this._owner = value;
+			if(this._owner)
+			{
+				this._owner.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+				this._owner.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
 		}
 
 		private var _updateForDataReset:Boolean = false;
@@ -371,9 +404,6 @@ package feathers.controls.supportClasses
 			return this._itemRendererFactories;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set itemRendererFactories(value:Object):void
 		{
 			if(this._itemRendererFactories === value)
@@ -396,9 +426,6 @@ package feathers.controls.supportClasses
 			return this._factoryIDFunction;
 		}
 
-		/**
-		 * @private
-		 */
 		public function set factoryIDFunction(value:Function):void
 		{
 			if(this._factoryIDFunction === value)
@@ -688,6 +715,115 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		protected var _dragTouchPointID:int = -1;
+
+		protected var _dragFormat:String;
+
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		public function set dragFormat(value:String):void
+		{
+			this._dragFormat = value;
+		}
+
+		protected var _dragEnabled:Boolean = false;
+
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		public function set dragEnabled(value:Boolean):void
+		{
+			this._dragEnabled = value;
+		}
+
+		protected var _dropEnabled:Boolean = false;
+
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		public function set dropEnabled(value:Boolean):void
+		{
+			this._dropEnabled = value;
+		}
+
+		protected var _minimumAutoScrollDistance:Number = 0.04;
+
+		public function get minimumAutoScrollDistance():Number
+		{
+			return this._minimumAutoScrollDistance;
+		}
+
+		public function set minimumAutoScrollDistance(value:Number):void
+		{
+			this._minimumAutoScrollDistance = value;
+		}
+
+		protected var _droppedOnSelf:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorHeight:Number = NaN;
+
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			if(this._dropIndicatorSkin === value)
+			{
+				return;
+			}
+			this._dropIndicatorSkin = value;
+			if(this._dropIndicatorSkin is IMeasureDisplayObject)
+			{
+				var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._dropIndicatorSkin);
+				this._explicitDropIndicatorWidth = measureSkin.explicitWidth;
+				this._explicitDropIndicatorHeight = measureSkin.explicitHeight;
+			}
+			else if(this._dropIndicatorSkin)
+			{
+				this._explicitDropIndicatorWidth = this._dropIndicatorSkin.width;
+				this._explicitDropIndicatorHeight = this._dropIndicatorSkin.height;
+			}
+		}
+
+		protected var _startDragX:Number;
+		protected var _startDragY:Number;
+
+		protected var _dragLocalX:Number = -1;
+		protected var _dragLocalY:Number = -1;
+
+		protected var _acceptedDrag:Boolean = false;
+
+		protected var _minimumDragDropDistance:Number = 0.04;
+
+		public function get minimumDragDropDistance():Number
+		{
+			return this._minimumDragDropDistance;
+		}
+
+		public function set minimumDragDropDistance(value:Number):void
+		{
+			this._minimumDragDropDistance = value;
+		}
+
 		public function get requiresMeasurementOnScroll():Boolean
 		{
 			return this._layout.requiresLayoutOnScroll &&
@@ -728,6 +864,12 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
+			if(this._dropIndicatorSkin !== null &&
+				this._dropIndicatorSkin.parent === null)
+			{
+				this._dropIndicatorSkin.dispose();
+				this._dropIndicatorSkin = null;
+			}
 			this.refreshInactiveRenderers(null, true);
 			if(this._storageMap)
 			{
@@ -740,6 +882,19 @@ package feathers.controls.supportClasses
 			this.layout = null;
 			this.dataProvider = null;
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(localPoint);
+			if(result && this._acceptedDrag)
+			{
+				return this._owner;
+			}
+			return result;
 		}
 
 		override protected function draw():void
@@ -830,6 +985,11 @@ package feathers.controls.supportClasses
 			this.validateItemRenderers();
 
 			this.handlePendingItemRendererEffects();
+
+			if(scrollInvalid && this.hasEventListener(Event.ENTER_FRAME, this.dragScroll_enterFrameHandler))
+			{
+				this.refreshDropIndicator(this._dragLocalX, this._dragLocalY)
+			}
 		}
 
 		private function handlePendingItemRendererEffects():void
@@ -1003,6 +1163,10 @@ package feathers.controls.supportClasses
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
+					if(typicalRenderer is IDragAndDropItemRenderer)
+					{
+						IDragAndDropItemRenderer(typicalRenderer).dragEnabled = this._dragEnabled;
+					}
 				}
 				if(!typicalRenderer && this._typicalItemRenderer)
 				{
@@ -1357,6 +1521,10 @@ package feathers.controls.supportClasses
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					itemRenderer.index = index;
+					if(itemRenderer is IDragAndDropItemRenderer)
+					{
+						IDragAndDropItemRenderer(itemRenderer).dragEnabled = this._dragEnabled;
+					}
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!
 					itemRenderer.visible = true;
@@ -1565,6 +1733,10 @@ package feathers.controls.supportClasses
 			itemRenderer.index = index;
 			itemRenderer.owner = this._owner;
 			itemRenderer.factoryID = factoryID;
+			if(itemRenderer is IDragAndDropItemRenderer)
+			{
+				IDragAndDropItemRenderer(itemRenderer).dragEnabled = this._dragEnabled;
+			}
 
 			if(!isTemporary)
 			{
@@ -1573,6 +1745,7 @@ package feathers.controls.supportClasses
 				itemRenderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				itemRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				itemRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+				itemRenderer.addEventListener(TouchEvent.TOUCH, itemRenderer_drag_touchHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, itemRenderer);
 			}
 
@@ -1584,6 +1757,7 @@ package feathers.controls.supportClasses
 			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 			renderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
 			renderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+			renderer.removeEventListener(TouchEvent.TOUCH, itemRenderer_drag_touchHandler);
 			renderer.owner = null;
 			renderer.data = null;
 			renderer.factoryID = null;
@@ -1632,6 +1806,25 @@ package feathers.controls.supportClasses
 				return storage;
 			}
 			return this._defaultStorage;
+		}
+
+		protected function refreshDropIndicator(localX:Number, localY:Number):void
+		{
+			if(!this._dropIndicatorSkin || !(this._layout is IDragDropLayout))
+			{
+				return;
+			}
+			var layout:IDragDropLayout = IDragDropLayout(this._layout);
+			this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
+			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
+			
+			var dropX:Number = this._horizontalScrollPosition + localX;
+			var dropY:Number = this._verticalScrollPosition + localY;
+			var dropIndex:int = layout.getDropIndex(dropX, dropY,
+					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
+			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex,
+				dropX, dropY, this._layoutItems, this.actualVisibleWidth, this.actualVisibleHeight);
+			this.addChild(this._dropIndicatorSkin);
 		}
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
@@ -1856,6 +2049,263 @@ package feathers.controls.supportClasses
 			var activeIndex:int = activeItemRenderers.indexOf(itemRenderer);
 			activeItemRenderers.removeAt(activeIndex);
 			this.destroyRenderer(itemRenderer);
+		}
+
+		protected function dragEnterHandler(event:DragDropEvent):void
+		{
+			this._acceptedDrag = false;
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			DragDropManager.acceptDrag(this._owner);
+			this.refreshDropIndicator(event.localX, event.localY);
+
+			this._acceptedDrag = true;
+			this._dragLocalX = event.localX;
+			this._dragLocalY = event.localY;
+			this.addEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
+		}
+
+		protected function dragMoveHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			this.refreshDropIndicator(event.localX, event.localY);
+
+			this._dragLocalX = event.localX;
+			this._dragLocalY = event.localY;
+		}
+
+		protected function dragScroll_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			var starling:Starling = this.stage.starling;
+			var minAutoScrollPixels:Number = this._minimumAutoScrollDistance * (DeviceCapabilities.dpi / starling.contentScaleFactor);
+			var velocity:Number = event.passedTime * 500;
+			if(this._owner.maxVerticalScrollPosition > this._owner.minVerticalScrollPosition)
+			{
+				if(this._verticalScrollPosition < this._owner.maxVerticalScrollPosition &&
+					this._dragLocalY > (this.visibleHeight - minAutoScrollPixels))
+				{
+					velocity *= (1 - ((this.visibleHeight - this._dragLocalY) / minAutoScrollPixels));
+				}
+				else if(this._verticalScrollPosition > this._owner.minVerticalScrollPosition &&
+					this._dragLocalY < minAutoScrollPixels)
+				{
+					velocity *= -(1 - (this._dragLocalY / minAutoScrollPixels));
+				}
+				else
+				{
+					velocity = 0;
+				}
+				if(velocity != 0)
+				{
+					var verticalScrollPosition:Number = this._owner.verticalScrollPosition + velocity;
+					if(verticalScrollPosition > this._owner.maxVerticalScrollPosition)
+					{
+						verticalScrollPosition = this._owner.maxVerticalScrollPosition;
+					}
+					else if(verticalScrollPosition < this._owner.minVerticalScrollPosition)
+					{
+						verticalScrollPosition = this._owner.minVerticalScrollPosition;
+					}
+					this._owner.verticalScrollPosition = verticalScrollPosition;
+				}
+			}
+			if(this._owner.maxHorizontalScrollPosition > this._owner.minHorizontalScrollPosition)
+			{
+				if(this._horizontalScrollPosition < this._owner.maxHorizontalScrollPosition &&
+					this._dragLocalX > (this.visibleWidth - minAutoScrollPixels))
+				{
+					velocity *= (1 - ((this.visibleWidth - this._dragLocalX) / minAutoScrollPixels));
+				}
+				else if(this._horizontalScrollPosition > this._owner.minHorizontalScrollPosition &&
+					this._dragLocalX < minAutoScrollPixels)
+				{
+					velocity *= -(1 - (this._dragLocalX / minAutoScrollPixels));
+				}
+				else
+				{
+					velocity = 0;
+				}
+				if(velocity != 0)
+				{
+					var horizontalScrollPosition:Number = this._owner.horizontalScrollPosition + velocity;
+					if(horizontalScrollPosition > this._owner.maxHorizontalScrollPosition)
+					{
+						horizontalScrollPosition = this._owner.maxHorizontalScrollPosition;
+					}
+					else if(verticalScrollPosition < this._owner.minHorizontalScrollPosition)
+					{
+						horizontalScrollPosition = this._owner.minHorizontalScrollPosition;
+					}
+					this._owner.horizontalScrollPosition = horizontalScrollPosition;
+				}
+			}
+		}
+
+		protected function dragExitHandler(event:DragDropEvent):void
+		{
+			this._acceptedDrag = false;
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+			this._dragLocalX = -1;
+			this._dragLocalY = -1;
+			this.removeEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
+		}
+
+		protected function dragDropHandler(event:DragDropEvent):void
+		{
+			this._acceptedDrag = false;
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+			this._dragLocalX = -1;
+			this._dragLocalY = -1;
+			this.removeEventListener(Event.ENTER_FRAME, dragScroll_enterFrameHandler);
+
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			var dropIndex:int = this._dataProvider.length;
+			if(this._layout is IDragDropLayout)
+			{
+				var layout:IDragDropLayout = IDragDropLayout(this._layout);
+				dropIndex = layout.getDropIndex(
+					this._horizontalScrollPosition + event.localX,
+					this._verticalScrollPosition + event.localY,
+					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
+			}
+			var dropOffset:int = 0;
+			if(event.dragSource == this._owner)
+			{
+				var oldIndex:int = this._dataProvider.getItemIndex(item);
+				if(oldIndex < dropIndex)
+				{
+					dropOffset = -1;
+				}
+
+				//if we wait to remove this item in the dragComplete handler,
+				//the wrong index might be removed.
+				this._dataProvider.removeItem(item);
+				this._droppedOnSelf = true;
+			}
+			this._dataProvider.addItemAt(item, dropIndex + dropOffset);
+		}
+
+		protected function dragCompleteHandler(event:DragDropEvent):void
+		{
+			if(!event.isDropped)
+			{
+				//nothing to modify
+				return;
+			}
+			if(this._droppedOnSelf)
+			{
+				//already modified the data provider in the dragDrop handler
+				this._droppedOnSelf = false;
+				return;
+			}
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			this._dataProvider.removeItem(item);
+		}
+
+		protected function itemRenderer_drag_touchHandler(event:TouchEvent):void
+		{
+			if(!this._dragEnabled || !this.stage)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			var itemRenderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
+			if(DragDropManager.isDragging)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			if(itemRenderer is IDragAndDropItemRenderer)
+			{
+				var dragProxy:DisplayObject = IDragAndDropItemRenderer(itemRenderer).dragProxy;
+				if(dragProxy)
+				{
+					var touch:Touch = event.getTouch(dragProxy, null, this._dragTouchPointID);
+					if(!touch)
+					{
+						return;
+					}
+				}
+			}
+			if(this._dragTouchPointID != -1)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				if(exclusiveTouch.getClaim(this._dragTouchPointID))
+				{
+					this._dragTouchPointID = -1;
+					return;
+				}
+				touch = event.getTouch(DisplayObject(itemRenderer), null, this._dragTouchPointID);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var point:Point = touch.getLocation(this, Pool.getPoint());
+					var currentDragX:Number = point.x;
+					var currentDragY:Number = point.y;
+					Pool.putPoint(point);
+					
+					var starling:Starling = this.stage.starling;
+					var verticalInchesMoved:Number = (currentDragX - this._startDragX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+					var horizontalInchesMoved:Number = (currentDragY - this._startDragY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
+					if(Math.abs(horizontalInchesMoved) > this._minimumDragDropDistance ||
+						Math.abs(verticalInchesMoved) > this._minimumDragDropDistance)
+					{
+						var dragData:DragData = new DragData();
+						dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
+						
+						var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
+						this.refreshOneItemRendererStyles(avatar);
+						avatar.width = itemRenderer.width;
+						avatar.height = itemRenderer.height;
+						avatar.alpha = 0.8;
+
+						this._droppedOnSelf = false;
+						point = touch.getLocation(DisplayObject(itemRenderer),  Pool.getPoint());
+						DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
+						Pool.putPoint(point);
+						exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));
+						this._dragTouchPointID = -1;
+					}
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._dragTouchPointID = -1;
+				}
+			}
+			else
+			{
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(DisplayObject(itemRenderer), TouchPhase.BEGAN);
+				if(!touch)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				this._dragTouchPointID = touch.id;
+				point = touch.getLocation(this, Pool.getPoint());
+				this._startDragX = point.x;
+				this._startDragY = point.y;
+				Pool.putPoint(point);
+			}
 		}
 	}
 }

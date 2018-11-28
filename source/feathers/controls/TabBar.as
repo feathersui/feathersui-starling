@@ -9,12 +9,19 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMeasureDisplayObject;
 	import feathers.core.ITextBaselineControl;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.IListCollection;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.DragDropManager;
+	import feathers.dragDrop.IDragSource;
+	import feathers.dragDrop.IDropTarget;
 	import feathers.events.CollectionEventType;
+	import feathers.events.DragDropEvent;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.Direction;
 	import feathers.layout.HorizontalAlign;
@@ -25,6 +32,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -34,6 +42,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
+	import starling.utils.Pool;
 
 	/**
 	 * A style name to add to the first tab in this tab bar. Typically used
@@ -144,6 +156,19 @@ package feathers.controls
 	 * @default true
 	 */
 	[Style(name="distributeTabSizes",type="Boolean")]
+
+	/**
+	 * A skin to display when dragging one an item to indicate where it can be
+	 * dropped.
+	 *
+	 * <p>In the following example, the tab bar's drop indicator is provided:</p>
+	 *
+	 * <listing version="3.0">
+	 * tabs.dropIndicatorSkin = new Image( texture );</listing>
+	 *
+	 * @default null
+	 */
+	[Style(name="dropIndicatorSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * Space, in pixels, between the first two tabs. If <code>NaN</code>,
@@ -460,7 +485,7 @@ package feathers.controls
 	 *
 	 * @productversion Feathers 1.0.0
 	 */
-	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
+	public class TabBar extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl, IDragSource, IDropTarget
 	{
 		/**
 		 * @private
@@ -484,125 +509,10 @@ package feathers.controls
 			"name"
 		];
 
-		[Deprecated(replacement="feathers.layout.Direction.HORIZONTAL",since="3.0.0")]
 		/**
 		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.HORIZONTAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		[Deprecated(replacement="feathers.layout.Direction.VERTICAL",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.Direction.VERTICAL</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.LEFT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.LEFT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.CENTER",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.CENTER</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.RIGHT",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.RIGHT</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-
-		[Deprecated(replacement="feathers.layout.HorizontalAlign.JUSTIFY",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.HorizontalAlign.JUSTIFY</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.TOP",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.TOP</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.MIDDLE",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.MIDDLE</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.BOTTOM",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.BOTTOM</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-
-		[Deprecated(replacement="feathers.layout.VerticalAlign.JUSTIFY",since="3.0.0")]
-		/**
-		 * @private
-		 * DEPRECATED: Replaced by <code>feathers.layout.VerticalAlign.JUSTIFY</code>.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This constant is deprecated
-		 * starting with Feathers 3.0. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
-		 */
-		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
+		protected static const DEFAULT_DRAG_FORMAT:String = "feathers-tab-bar-item";
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the tabs.
@@ -2187,8 +2097,205 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _dragFormat:String = DEFAULT_DRAG_FORMAT;
+
+		/**
+		 * Drag and drop is restricted to components that have the same
+		 * <code>dragFormat</code>.
+		 * 
+		 * <p>In the following example, the drag format of two tab bars is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs1.dragFormat = "my-custom-format";
+		 * tabs2.dragFormat = "my-custom-format";</listing>
+		 * 
+		 * @default "feathers-tab-bar-item"
+		 */
+		public function get dragFormat():String
+		{
+			return this._dragFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragFormat(value:String):void
+		{
+			if(!value)
+			{
+				value = DEFAULT_DRAG_FORMAT;
+			}
+			if(this._dragFormat == value)
+			{
+				return;
+			}
+			this._dragFormat = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dragTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _droppedOnSelf:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _dragEnabled:Boolean = false;
+
+		/**
+		 * Indicates if this tab bar can initiate drag and drop operations by
+		 * touching an item and dragging it. The <code>dragEnabled</code>
+		 * property enables dragging items, but dropping items must be enabled
+		 * separately with the <code>dropEnabled</code> property.
+		 * 
+		 * <p>In the following example, a tab bar's items may be dragged:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.dragEnabled = true;</listing>
+		 * 
+		 * @see #dropEnabled
+		 * @see #dragFormat
+		 */
+		public function get dragEnabled():Boolean
+		{
+			return this._dragEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dragEnabled(value:Boolean):void
+		{
+			if(this._dragEnabled == value)
+			{
+				return;
+			}
+			this._dragEnabled = value;
+			if(this._dragEnabled)
+			{
+				this.addEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
+			else
+			{
+				this.removeEventListener(DragDropEvent.DRAG_COMPLETE, dragCompleteHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _dropEnabled:Boolean = false;
+
+		/**
+		 * Indicates if this tab bar can accept items that are dragged and
+		 * dropped over the tab bar's hit area.
+		 * 
+		 * <p>In the following example, a tab bar's items may be dropped:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.dropEnabled = true;</listing>
+		 * 
+		 * @see #dragEnabled
+		 * @see #dragFormat
+		 */
+		public function get dropEnabled():Boolean
+		{
+			return this._dropEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropEnabled(value:Boolean):void
+		{
+			if(this._dropEnabled == value)
+			{
+				return;
+			}
+			this._dropEnabled = value;
+			if(this._dropEnabled)
+			{
+				this.addEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this.addEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.addEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
+				this.addEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+			}
+			else
+			{
+				this.removeEventListener(DragDropEvent.DRAG_ENTER, dragEnterHandler);
+				this.removeEventListener(DragDropEvent.DRAG_MOVE, dragMoveHandler);
+				this.removeEventListener(DragDropEvent.DRAG_EXIT, dragExitHandler);
+				this.removeEventListener(DragDropEvent.DRAG_DROP, dragDropHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _explicitDropIndicatorHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _dropIndicatorSkin:DisplayObject = null;
+
+		/**
+		 * @private
+		 */
+		public function get dropIndicatorSkin():DisplayObject
+		{
+			return this._dropIndicatorSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set dropIndicatorSkin(value:DisplayObject):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
+			this._dropIndicatorSkin = value;
+			if(this._dropIndicatorSkin is IMeasureDisplayObject)
+			{
+				var measureSkin:IMeasureDisplayObject = IMeasureDisplayObject(this._dropIndicatorSkin);
+				this._explicitDropIndicatorWidth = measureSkin.explicitWidth;
+				this._explicitDropIndicatorHeight = measureSkin.explicitHeight;
+			}
+			else if(this._dropIndicatorSkin)
+			{
+				this._explicitDropIndicatorWidth = this._dropIndicatorSkin.width;
+				this._explicitDropIndicatorHeight = this._dropIndicatorSkin.height;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
+			if(this._dropIndicatorSkin !== null &&
+				this._dropIndicatorSkin.parent === null)
+			{
+				this._dropIndicatorSkin.dispose();
+				this._dropIndicatorSkin = null;
+			}
+
 			//clearing selection now so that the data provider setter won't
 			//cause a selection change that triggers events.
 			this._selectedIndex = -1;
@@ -2619,10 +2726,10 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
 		}
@@ -2663,10 +2770,10 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
 		}
@@ -2701,12 +2808,18 @@ package feathers.controls
 			this._tabToItem[tab] = item;
 			if(isNewInstance)
 			{
-				//we need to listen for Event.TRIGGERED after the initializer
+				//we need to listen for events after the initializer
 				//is called to avoid runtime errors because the tab may be
 				//disposed by the time listeners in the initializer are called.
-				tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+				this.addTabListeners(tab);
 			}
 			return tab;
+		}
+
+		protected function addTabListeners(tab:ToggleButton):void
+		{
+			tab.addEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			tab.addEventListener(TouchEvent.TOUCH, tab_drag_touchHandler);
 		}
 
 		/**
@@ -2744,6 +2857,8 @@ package feathers.controls
 		{
 			this.toggleGroup.removeItem(tab);
 			this.releaseTab(tab);
+			tab.removeEventListener(Event.TRIGGERED, tab_triggeredHandler);
+			tab.removeEventListener(TouchEvent.TOUCH, tab_drag_touchHandler);
 			this.removeChild(tab, true);
 		}
 
@@ -2935,6 +3050,108 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function getDropIndex(event:DragDropEvent):int
+		{
+			var point:Point = Pool.getPoint(event.localX, event.localY);
+			this.localToGlobal(point, point);
+			var globalX:Number = point.x;
+			var globalY:Number = point.y;
+			Pool.putPoint(point);
+
+			var tabCount:int = this.activeTabs.length;
+			for(var i:int = 0; i < tabCount; i++)
+			{
+				var tab:ToggleButton = this.activeTabs[i];
+				if(this._direction === Direction.HORIZONTAL)
+				{
+					point = Pool.getPoint(tab.width / 2, 0);
+				}
+				else
+				{
+					point = Pool.getPoint(0, tab.height / 2);
+				}
+				tab.localToGlobal(point, point);
+				var tabGlobalMiddleX:Number = point.x;
+				var tabGlobalMiddleY:Number = point.y;
+				Pool.putPoint(point);
+				if(this._direction === Direction.VERTICAL)
+				{
+					if(globalY < tabGlobalMiddleY)
+					{
+						return i;
+					}
+				}
+				else //horizontal
+				{
+					if(globalX < tabGlobalMiddleX)
+					{
+						return i;
+					}
+				}
+			}
+			return tabCount;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDropIndicator(event:DragDropEvent):void
+		{
+			if(!this._dropIndicatorSkin)
+			{
+				return;
+			}
+			var dropIndex:int = this.getDropIndex(event);
+			if(this._direction == Direction.VERTICAL)
+			{
+				var dropIndicatorY:Number = 0;
+				if(dropIndex == this.activeTabs.length)
+				{
+					dropIndicatorY = this.actualHeight - this._dropIndicatorSkin.height;
+				}
+				else if(dropIndex == 0)
+				{
+					dropIndicatorY = 0;
+				}
+				else
+				{
+					var tab:ToggleButton = this.activeTabs[dropIndex];
+					dropIndicatorY = tab.y - (this._gap + this._dropIndicatorSkin.height) / 2;
+				}
+				this._dropIndicatorSkin.x = 0;
+				this._dropIndicatorSkin.y = dropIndicatorY;
+				this._dropIndicatorSkin.width = this.actualWidth;
+				//just in case the direction changed, reset this value
+				this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
+			}
+			else //horizontal
+			{
+				var dropIndicatorX:Number = 0;
+				if(dropIndex == this.activeTabs.length)
+				{
+					dropIndicatorX = this.actualWidth - this._dropIndicatorSkin.width;
+				}
+				else if(dropIndex == 0)
+				{
+					dropIndicatorX = 0;
+				}
+				else
+				{
+					tab = this.activeTabs[dropIndex];
+					dropIndicatorX = tab.x - (this._gap + this._dropIndicatorSkin.width) / 2;
+				}
+				this._dropIndicatorSkin.x = dropIndicatorX;
+				this._dropIndicatorSkin.y = 0;
+				//just in case the direction changed, reset this value
+				this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
+				this._dropIndicatorSkin.height = this.actualHeight;
+			}
+			this.addChild(this._dropIndicatorSkin);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -3057,6 +3274,165 @@ package feathers.controls
 			var index:int = this.activeTabs.indexOf(tab);
 			var item:Object = this._dataProvider.getItemAt(index);
 			this.dispatchEventWith(Event.TRIGGERED, false, item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragEnterHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			DragDropManager.acceptDrag(this);
+			this.refreshDropIndicator(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragMoveHandler(event:DragDropEvent):void
+		{
+			if(!this._dropEnabled)
+			{
+				return;
+			}
+			if(!event.dragData.hasDataForFormat(this._dragFormat))
+			{
+				return;
+			}
+			this.refreshDropIndicator(event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragExitHandler(event:DragDropEvent):void
+		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragDropHandler(event:DragDropEvent):void
+		{
+			if(this._dropIndicatorSkin)
+			{
+				this._dropIndicatorSkin.removeFromParent(false);
+			}
+			var index:int = this.getDropIndex(event);
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			var selectItem:Boolean = this._selectedItem == item;
+			if(event.dragSource == this)
+			{
+				//if we wait to remove this item in the dragComplete handler,
+				//the wrong index might be removed.
+				var oldIndex:int = this._dataProvider.getItemIndex(item);
+				this._dataProvider.removeItemAt(oldIndex);
+				this._droppedOnSelf = true;
+				if(index > oldIndex)
+				{
+					index--;
+				}
+			}
+			this._dataProvider.addItemAt(item, index);
+			if(selectItem)
+			{
+				this.selectedIndex = index;
+			}
+			
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragCompleteHandler(event:DragDropEvent):void
+		{
+			if(!event.isDropped)
+			{
+				//nothing to modify
+				return;
+			}
+			if(this._droppedOnSelf)
+			{
+				//already modified the data provider in the dragDrop handler
+				this._droppedOnSelf = false;
+				return;
+			}
+			var item:Object = event.dragData.getDataForFormat(this._dragFormat);
+			this._dataProvider.removeItem(item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function tab_drag_touchHandler(event:TouchEvent):void
+		{
+			if(!this._dragEnabled)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			if(DragDropManager.isDragging)
+			{
+				this._dragTouchPointID = -1;
+				return;
+			}
+			var tab:ToggleButton = ToggleButton(event.currentTarget);
+			if(this._dragTouchPointID != -1)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(tab.stage);
+				if(exclusiveTouch.getClaim(this._dragTouchPointID))
+				{
+					this._dragTouchPointID = -1;
+					return;
+				}
+				var touch:Touch = event.getTouch(tab, null, this._dragTouchPointID);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var index:int = this.activeTabs.indexOf(tab);
+					var item:Object = this._dataProvider.getItemAt(index);
+					var dragData:DragData = new DragData();
+					dragData.setDataForFormat(this._dragFormat, item);
+					var avatar:ToggleButton = this.createTab(item);
+					avatar.width = tab.width;
+					avatar.height = tab.height;
+					avatar.alpha = 0.8;
+					var point:Point = Pool.getPoint();
+					touch.getLocation(tab, point);
+					this._droppedOnSelf = false;
+					DragDropManager.startDrag(this, touch, dragData, avatar, -point.x, -point.y);
+					Pool.putPoint(point);
+					exclusiveTouch.claimTouch(this._dragTouchPointID, tab);
+					this._dragTouchPointID = -1;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._dragTouchPointID = -1;
+				}
+			}
+			else
+			{
+				
+				//we aren't tracking another touch, so let's look for a new one.
+				touch = event.getTouch(tab, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					//we only care about the began phase. ignore all other
+					//phases when we don't have a saved touch ID.
+					return;
+				}
+				this._dragTouchPointID = touch.id;
+			}
 		}
 
 		/**
