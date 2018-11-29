@@ -74,6 +74,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Tab Bar", screen: ScreenID.TAB_BAR },
 				{ label: "Text Callout", screen: ScreenID.TEXT_CALLOUT },
 				{ label: "Text Input and Text Area", screen: ScreenID.TEXT_INPUT },
+				{ label: "Toast", screen: ScreenID.TOAST },
 				{ label: "Toggle Switch", screen: ScreenID.TOGGLES },
 				{ label: "Tree", screen: ScreenID.TREE },
 			]);
