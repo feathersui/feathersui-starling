@@ -34,10 +34,10 @@ package feathers.examples.componentsExplorer.screens
 			this._showAlertButton = new Button();
 			this._showAlertButton.label = "Show Alert";
 			this._showAlertButton.addEventListener(Event.TRIGGERED, showAlertButton_triggeredHandler);
-			var buttonGroupLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			buttonGroupLayoutData.horizontalCenter = 0;
-			buttonGroupLayoutData.verticalCenter = 0;
-			this._showAlertButton.layoutData = buttonGroupLayoutData;
+			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			buttonLayoutData.horizontalCenter = 0;
+			buttonLayoutData.verticalCenter = 0;
+			this._showAlertButton.layoutData = buttonLayoutData;
 			this.addChild(this._showAlertButton);
 
 			this.headerFactory = this.customHeaderFactory;
