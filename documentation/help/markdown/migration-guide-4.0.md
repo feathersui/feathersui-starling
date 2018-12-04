@@ -13,7 +13,7 @@ This guide explains how to migrate an application created with Feathers 3 to Fea
 
 ## Removed APIs that were deprecated in Feathers 3
 
-A number of APIs were deprecated in Feathers 3. See the [Feathers 3.0 Migration Guide](migration-guide-3.0.html) and the [Feathers 3.3 Migration Guide](migration-guide-3.3.html) for complete details.
+A number of APIs were deprecated in Feathers 3. See the [Feathers 3.0 Migration Guide](migration-guide-3.0.html) and the [Feathers 3.3 Migration Guide](migration-guide-3.3.html) for complete details, including a number of regular expressions that you can use with Find/Replace in your IDE to ease migration away from some of the old constants.
 
 ## Themes and `AssetManager`
 
