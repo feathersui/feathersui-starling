@@ -30,6 +30,7 @@ See the [Feathers 4.0 Migration Guide](https://feathersui.com/beta/help/migratio
 * TextArea: Added innerPadding styles to add padding around both prompt and the text in the view port. Breaking change: You must inner padding on the TextArea instead of setting the padding property on TextFieldTextEditorViewPort.
 * TextBlockTextRenderer: Fixed issue where the measurement might be wrong if width of height set to negative values.
 * TextBlockTextRenderer: Fixed issue where height measurement might be wrong when using starling.text.TextFormat.
+* TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where texture was offset and cut off on context resture when using vertical align in starling.text.TextFormat.
 * Themes: Use new starling.assets.AssetManager.
 * Todos Example: Can reorder items with drag and drop.
 * Todos Example: Persists todos with SharedObject.
