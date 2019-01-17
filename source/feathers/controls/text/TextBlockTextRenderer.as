@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1829,6 +1829,8 @@ package feathers.controls.text
 			{
 				result = new Rectangle();
 			}
+			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
+			var scaleFactor:Number = starling.contentScaleFactor;
 			var resultX:Number = 0;
 			var resultY:Number = 0;
 			var resultWidth:Number = 0;
@@ -1840,8 +1842,8 @@ package feathers.controls.text
 				var filterRect:Rectangle = bitmapData.generateFilterRect(bitmapData.rect, filter);
 				var filterX:Number = filterRect.x;
 				var filterY:Number = filterRect.y;
-				var filterWidth:Number = filterRect.width;
-				var filterHeight:Number = filterRect.height;
+				var filterWidth:Number = filterRect.width * scaleFactor;
+				var filterHeight:Number = filterRect.height * scaleFactor;
 				if(resultX > filterX)
 				{
 					resultX = filterX;
@@ -2020,8 +2022,9 @@ package feathers.controls.text
 				{
 					HELPER_MATRIX.identity();
 					HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+					var offsetY:Number = self.getVerticalAlignOffsetY();
 					var bitmapData:BitmapData = self.drawTextLinesRegionToBitmapData(
-						snapshot.x, snapshot.y, texture.nativeWidth, texture.nativeHeight);
+						snapshot.x, snapshot.y - offsetY, texture.nativeWidth, texture.nativeHeight);
 					texture.root.uploadBitmapData(bitmapData);
 					bitmapData.dispose();
 				}

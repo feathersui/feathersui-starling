@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -1922,8 +1922,9 @@ package feathers.controls.text
 				var scaleFactor:Number = starling.contentScaleFactor;
 				HELPER_MATRIX.identity();
 				HELPER_MATRIX.scale(scaleFactor, scaleFactor);
+				var offsetY:Number = self.getVerticalAlignOffsetY();
 				var bitmapData:BitmapData = self.drawTextFieldRegionToBitmapData(
-					snapshot.x, snapshot.y, texture.nativeWidth, texture.nativeHeight);
+					snapshot.x, snapshot.y - offsetY, texture.nativeWidth, texture.nativeHeight);
 				texture.root.uploadBitmapData(bitmapData);
 				bitmapData.dispose();
 			};
