@@ -2,9 +2,9 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
-## 4.0.0-beta - December 2018
+## 4.0.0 - January 2019
 
-See the [Feathers 4.0 Migration Guide](https://feathersui.com/beta/help/migration-guide-4.0.html) for details about how to upgrade to Feathers 4.0.
+See the [Feathers 4.0 Migration Guide](https://feathersui.com/help/migration-guide-4.0.html) for details about how to upgrade to Feathers 4.0 from previous versions.
 
 * Drag and drop: Added support for drag-and-drop in List and TabBar components.
 * Toast: New component for displaying in-app notifications.
@@ -26,11 +26,13 @@ See the [Feathers 4.0 Migration Guide](https://feathersui.com/beta/help/migratio
 * Scroller: Fixed issue where touching a container with snapToPages set to true while it was animating might not continue the animation if needed after TouchPhase.ENDED.
 * Slider: Fixed issue where touching track with TrackInteractionMode.TO_VALUE would incorrectly limit the range if minimumPadding or maximumPadding is negative.
 * SpinnerList: Fixed issue where removing from stage before animation completed could change the selectedIndex unexpectedly.
+* StageTextTextEditor: Fixed issue where a very large width or height would cause the text editor to be positioned below the minimum allowed position.
 * TextArea: Added prompt property, similar to TextInput.
 * TextArea: Added innerPadding styles to add padding around both prompt and the text in the view port. Breaking change: You must inner padding on the TextArea instead of setting the padding property on TextFieldTextEditorViewPort.
 * TextBlockTextRenderer: Fixed issue where the measurement might be wrong if width of height set to negative values.
 * TextBlockTextRenderer: Fixed issue where height measurement might be wrong when using starling.text.TextFormat.
 * TextBlockTextRenderer, TextFieldTextRenderer: fixed issue where texture was offset and cut off on context resture when using vertical align in starling.text.TextFormat.
+* TextBlockTextRenderer: fixed issue where measurement was wrong when using nativeFilters property.
 * Themes: Use new starling.assets.AssetManager.
 * Todos Example: Can reorder items with drag and drop.
 * Todos Example: Persists todos with SharedObject.
