@@ -5,7 +5,7 @@
 	<name>Components</name>
 	<versionNumber>4.0.0</versionNumber>
 	<description>Components Explorer example application built with Feathers UI controls for Starling</description>
-	<copyright>2018 Bowler Hat LLC</copyright>
+	<copyright>2019 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>ComponentsExplorer.swf</content>
