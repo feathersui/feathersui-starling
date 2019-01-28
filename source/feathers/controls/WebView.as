@@ -428,7 +428,7 @@ package feathers.controls
 			{
 				newWidth = DEFAULT_SIZE;
 			}
-			var newHeight:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = DEFAULT_SIZE;
