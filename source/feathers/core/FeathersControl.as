@@ -544,6 +544,10 @@ package feathers.core
 		 */
 		override public function set visible(value:Boolean):void
 		{
+			if(super.visible == value)
+			{
+				return;
+			}
 			if(this._suspendEffectsCount == 0 && this._hideEffectContext !== null)
 			{
 				this._hideEffectContext.interrupt();
