@@ -542,18 +542,18 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _pendingVisibleValue:Boolean = true;
+		protected var _pendingVisible:Boolean = true;
 
 		/**
 		 * @private
 		 */
 		override public function set visible(value:Boolean):void
 		{
-			if(value == this._pendingVisibleValue)
+			if(value == this._pendingVisible)
 			{
 				return;
 			}
-			this._pendingVisibleValue = value;
+			this._pendingVisible = value;
 			if(this._suspendEffectsCount == 0 && this._hideEffectContext !== null)
 			{
 				this._hideEffectContext.interrupt();
@@ -564,9 +564,9 @@ package feathers.core
 				this._showEffectContext.interrupt();
 				this._showEffectContext = null;
 			}
-			if(this._pendingVisibleValue)
+			if(this._pendingVisible)
 			{
-				super.visible = this._pendingVisibleValue;
+				super.visible = this._pendingVisible;
 				if(this.isCreated && this._suspendEffectsCount == 0 && this._showEffect !== null && this.stage !== null)
 				{
 					this._showEffectContext = IEffectContext(this._showEffect(this));
@@ -578,7 +578,7 @@ package feathers.core
 			{
 				if(!this.isCreated || this._suspendEffectsCount > 0 || this._hideEffect === null || this.stage === null)
 				{
-					super.visible = this._pendingVisibleValue;
+					super.visible = this._pendingVisible;
 				}
 				else
 				{
@@ -3695,7 +3695,7 @@ package feathers.core
 			if(!stopped)
 			{
 				this.suspendEffects();
-				this.visible = _pendingVisibleValue;
+				this.visible = this._pendingVisible;
 				this.resumeEffects();
 			}
 		}
