@@ -544,7 +544,11 @@ package feathers.core
 		 */
 		override public function set visible(value:Boolean):void
 		{
-			if(super.visible == value)
+			if(value == true && this._showEffectContext !== null)
+			{
+				return;
+			}
+			if(value == false && this._hideEffectContext !== null)
 			{
 				return;
 			}
