@@ -49,7 +49,9 @@ package feathers.motion.effectClasses
 				target = tween.target as DisplayObject;
 			}
 
-			super(target, this._tween.totalTime, transitionFunc);
+			//the delay does not affect the totalTime, so we need to add them
+			//to calculate the full duration of the effect
+			super(target, this._tween.totalTime + this._tween.delay, transitionFunc);
 		}
 
 		/**
@@ -140,7 +142,8 @@ package feathers.motion.effectClasses
 			{
 				IFeathersControl(this._target).suspendEffects();
 			}
-			var newCurrentTime:Number = this._position * this._tween.totalTime;
+			var duration:Number = this._tween.totalTime + this._tween.delay;
+			var newCurrentTime:Number = (this._position * duration) - this._tween.delay;
 			this._tween.advanceTime(newCurrentTime - this._tween.currentTime);
 			if(this._target is IFeathersControl)
 			{
