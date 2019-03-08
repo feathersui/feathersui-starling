@@ -32,7 +32,9 @@ package feathers.motion.effectClasses
 			this._oldX = this._target.x;
 			this._oldY = this._target.y;
 			this._newX = this._target.x;
+			this._tween.animate("x", this._newX);
 			this._newY = this._target.y;
+			this._tween.animate("y", this._newY);
 		}
 
 		/**
