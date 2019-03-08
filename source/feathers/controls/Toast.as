@@ -299,7 +299,7 @@ package feathers.controls
 	 * <p>The <code>data</code> property of the event object will contain
 	 * the item from the <code>ButtonGroup</code> data provider for the button
 	 * that is triggered. If no button is triggered, then the <code>data</code>
-	 * property will be <code>null</code>.
+	 * property will be <code>null</code>.</p>
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
