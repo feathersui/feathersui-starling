@@ -242,6 +242,14 @@ package feathers.controls.renderers
 		 */
 		public function set disclosureIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._disclosureIcon === value)
 			{
 				return;
@@ -276,6 +284,14 @@ package feathers.controls.renderers
 		 */
 		public function set disclosureOpenIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._disclosureOpenIcon === value)
 			{
 				return;
@@ -310,6 +326,14 @@ package feathers.controls.renderers
 		 */
 		public function set disclosureClosedIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._disclosureClosedIcon === value)
 			{
 				return;
@@ -349,6 +373,14 @@ package feathers.controls.renderers
 		 */
 		public function set branchIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._branchIcon === value)
 			{
 				return;
@@ -383,6 +415,14 @@ package feathers.controls.renderers
 		 */
 		public function set branchOpenIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._branchOpenIcon === value)
 			{
 				return;
@@ -417,6 +457,14 @@ package feathers.controls.renderers
 		 */
 		public function set branchClosedIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._branchOpenIcon === value)
 			{
 				return;
@@ -451,6 +499,14 @@ package feathers.controls.renderers
 		 */
 		public function set leafIcon(value:DisplayObject):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				if(value !== null)
+				{
+					value.dispose();
+				}
+				return;
+			}
 			if(this._leafIcon === value)
 			{
 				return;
@@ -573,6 +629,10 @@ package feathers.controls.renderers
 		 */
 		public function set indentation(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._indentation == value)
 			{
 				return;
@@ -599,6 +659,10 @@ package feathers.controls.renderers
 		 */
 		public function set disclosureGap(value:Number):void
 		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
 			if(this._disclosureGap == value)
 			{
 				return;
