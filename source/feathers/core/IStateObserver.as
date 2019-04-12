@@ -16,7 +16,14 @@ package feathers.core
 	 */
 	public interface IStateObserver
 	{
+		/**
+		 * The current state context that is being observed.
+		 */
 		function get stateContext():IStateContext;
+
+		/**
+		 * @private
+		 */
 		function set stateContext(value:IStateContext):void;
 	}
 }
