@@ -19,7 +19,7 @@ The [`Drawers`](../api-reference/feathers/controls/Drawers.html) class provides 
 
 First, let's create a `Drawers` component and add it to the display list:
 
-``` code
+``` actionscript
 var drawers:Drawers = new Drawers();
 this.addChild( drawers );
 ```
@@ -28,14 +28,14 @@ You may also set its width and height, but that's optional because the `Drawers`
 
 First, we'll want to set its main content:
 
-``` code
+``` actionscript
 var navigator:ScreenNavigator = new ScreenNavigator();
 drawers.content = navigator;
 ```
 
 The main content will always fill the entire width and height of the `Drawers` container. In this case, we've created a [`ScreenNavigator`](screen-navigator.html) component. To properly demonstrate the capabilities of the `Drawers` component, we need a bit of boilerplate code. Let's quickly add some screens to the `ScreenNavigator`:
 
-``` code
+``` actionscript
 navigator.addScreen( "start", new ScreenNavigatorItem( StartScreen ) );
 navigator.addScreen( "options", new ScreenNavigatorItem( OptionsScreen ) );
 navigator.showScreen( "start" );
@@ -43,7 +43,7 @@ navigator.showScreen( "start" );
 
 The `StartScreen` and `OptionsScreen` classes extend [`PanelScreen`](panel-screen.html). We'll simply start out by displaying a title, and we'll add a bit more later:
 
-``` code
+``` actionscript
 package
 {
     import feathers.controls.PanelScreen;
@@ -67,7 +67,7 @@ The initial code for these two classes is almost identical, so the `OptionScreen
 
 Next, we'll want to add some content to a drawer. Let's add a [`List`](list.html) component to act as a menu.
 
-``` code
+``` actionscript
 var list:List = new List();
 list.dataProvider = new ArrayCollection(
 [
@@ -80,7 +80,7 @@ list.addEventListener( Event.CHANGE, list_changeHandler );
 
 The list's [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change) listener looks like this:
 
-``` code
+``` actionscript
 function list_changeHandler( event:Event ):void
 {
      var screen:String = list.selectedItem.screen;
@@ -90,7 +90,7 @@ function list_changeHandler( event:Event ):void
 
 To use the list as a drawer, simply set the [`leftDrawer`](../api-reference/feathers/controls/Drawers.html#leftDrawer) property:
 
-``` code
+``` actionscript
 drawers.leftDrawer = list;
 ```
 
@@ -102,7 +102,7 @@ If you run the code right now, you will see the `StartScreen` displayed and noth
 
 It's often common to open a drawer with a [button](button.html). Let's add a button to header in our `StartScreen` and dispatch an event when it is triggered:
 
-``` code
+``` actionscript
 this.headerFactory = function():Header
 {
     var header:Header = new Header();
@@ -121,7 +121,7 @@ this.headerFactory = function():Header
 
 The button's [`Event.TRIGGERED`](../api-reference/feathers/controls/Button.html#event:triggered) listener looks like this:
 
-``` code
+``` actionscript
 private function menuButton_triggeredHandler(event:Event):void
 {
     this.dispatchEventWith( "showMenu" );
@@ -130,7 +130,7 @@ private function menuButton_triggeredHandler(event:Event):void
 
 Now, the `Drawers` container can listen for that event to open a drawer:
 
-``` code
+``` actionscript
 drawers.leftDrawerToggleEventType = "showMenu";
 ```
 
@@ -142,7 +142,7 @@ Now, when you press the new menu button in the `StartScreen` header, the left dr
 
 If you want to programmatically open or close a drawer, you can simply call a function:
 
-``` code
+``` actionscript
 drawers.toggleLeftDrawer();
 ```
 
@@ -150,7 +150,7 @@ drawers.toggleLeftDrawer();
 
 In our example above, we might want to modify the listener for the list's `Event.CHANGE` to close the drawer after telling the [`ScreenNavigator`](screen-navigator.html) to show a different screen:
 
-``` code
+``` actionscript
 function list_changeHandler( event:Event ):void
 {
      var screen:String = list.selectedItem.screen;
@@ -161,7 +161,7 @@ function list_changeHandler( event:Event ):void
 
 You may easily check the [`isLeftDrawerOpen`](../api-reference/feathers/controls/Drawers.html#isLeftDrawerOpen) property to see if a drawer is open:
 
-``` code
+``` actionscript
 if( drawers.isLeftDrawerOpen )
 {
     // do something
@@ -172,7 +172,7 @@ if( drawers.isLeftDrawerOpen )
 
 If you would prefer that a drawer is open all of the time, you can "dock" it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let's dock the drawer:
 
-``` code
+``` actionscript
 drawers.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
 ```
 
@@ -182,7 +182,7 @@ There are three other options. [`Drawers.DOCK_MODE_PORTRAIT`](../api-reference/f
 
 If needed, you may check the [`isLeftDrawerDocked`](../api-reference/feathers/controls/Drawers.html#isLeftDrawerDocked) property to see if a drawer is docked:
 
-``` code
+``` actionscript
 if( drawers.isLeftDrawerDocked )
 {
     // do something

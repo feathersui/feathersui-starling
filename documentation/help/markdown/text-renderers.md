@@ -39,7 +39,7 @@ When an individual component doesn't have a custom text renderer factory specifi
 
 [`FeathersControl.defaultTextRendererFactory`](../api-reference/feathers/core/FeathersControl.html#defaultTextRendererFactory) is a static variable that may be changed to a different function, as needed. The default implementation of this function looks like this:
 
-``` code
+``` actionscript
 function():ITextRenderer
 {
     return new BitmapFontTextRenderer();
@@ -48,7 +48,7 @@ function():ITextRenderer
 
 If you would prefer to use a different text renderer as the default in your app, you can easily change the variable to point to a different function. For instance, you might want to add this code to your application to use the [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) instead:
 
-``` code
+``` actionscript
 FeathersControl.defaultTextRendererFactory = function():ITextRenderer
 {
     return new TextBlockTextRenderer();
@@ -59,7 +59,7 @@ FeathersControl.defaultTextRendererFactory = function():ITextRenderer
 
 You can tell a specific UI control not to use the default text renderer. For instance, on a [`Button`](button.html), you can pass in a [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) that will be used to create the button's label text renderer:
 
-``` code
+``` actionscript
 button.labelFactory = function():ITextRenderer
 {
     return new TextFieldTextRenderer();
@@ -68,7 +68,7 @@ button.labelFactory = function():ITextRenderer
 
 You can even customize advanced font properties in the factory before returning the text renderer:
 
-``` code
+``` actionscript
 button.labelFactory = function():ITextRenderer
 {
     var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
@@ -92,7 +92,7 @@ When using `Label` components in your app, you can also refactor more easily, sh
 
 Put another way, you wouldn't want to do something like this when you want to add a label to a form item:
 
-``` code
+``` actionscript
 var label:TextFieldTextRenderer = new TextFieldTextRenderer();
 label.text = "Email Address:";
 this.addChild( label );
@@ -100,7 +100,7 @@ this.addChild( label );
 
 Instead, you should create a `Label` component:
 
-``` code
+``` actionscript
 var label:Label = new Label();
 label.text = "Email Address:";
 this.addChild( label );

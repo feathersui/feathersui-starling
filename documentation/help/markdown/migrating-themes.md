@@ -11,14 +11,14 @@ Feathers 2.0 includes a [new skinning architecture](skinning.html). The [`Displa
 
 A legacy theme will extend the [`feathers.core.DisplayListWatcher`](../api-reference/feathers/core/DisplayListWatcher.html) class.
 
-``` code
+``` actionscript
 // legacy
 public class CustomTheme extends DisplayListWatcher
 ```
 
 To create a modern theme, extend [`feathers.themes.StyleNameFunctionTheme`](../api-reference/feathers/themes/StyleNameFunctionTheme.html) instead.
 
-``` code
+``` actionscript
 // modern
 public class CustomTheme extends StyleNameFunctionTheme
 ```
@@ -31,7 +31,7 @@ The modern [`StyleNameFunctionTheme`](../api-reference/feathers/themes/StyleName
 
 When using a legacy theme, you might call [`setInitializerForClass()`](../api-reference/feathers/core/DisplayListWatcher.html#setInitializerForClass()) and pass in a class and a function. You could optionally pass in a style name as the optional third argument, to specify function for alternate styles:
 
-``` code
+``` actionscript
 // legacy
 this.setInitializerForClass( Button, setButtonStyles );
 this.setInitializerForClass( Button, setCustomButtonStyles, "my-custom-button" );
@@ -39,7 +39,7 @@ this.setInitializerForClass( Button, setCustomButtonStyles, "my-custom-button" )
 
 In a modern theme, you first ask for then global style provider for a specific class. Then, you can either set its default style function or set a function for a specific style name:
 
-``` code
+``` actionscript
 // modern
 this.getStyleProviderForClass(Button).defaultStyleFunction = setButtonStyles;
 this.getStyleProviderForClass(Button).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );
@@ -49,7 +49,7 @@ this.getStyleProviderForClass(Button).setFunctionForStyleName( "my-custom-button
 
 Replacing every call to `setInitializerForClass()` can be time consuming and tedious. If you need to migrate faster, and you want to worry about cleaning things up later, you can copy the following function into your theme class:
 
-``` code
+``` actionscript
 public function setInitializerForClass(type:Class, styleFunction:Function, styleName:String = null):void
 {
     var styleProvider:StyleNameFunctionStyleProvider = this.getStyleProviderForClass(type);
@@ -72,14 +72,14 @@ There is no direct replacement for this function. It mainly existed to work arou
 
 Here's an example of calling [`setInitializerForClassAndSubclasses()`](../api-reference/feathers/core/DisplayListWatcher.html#setInitializerForClassAndSubclasses()) in a legacy theme:
 
-``` code
+``` actionscript
 // legacy
 this.setInitializerForClassAndSubclasses( Scroller, setScrollerStyles );
 ```
 
 You should switch to calling that function directly when you style the subclasses. For instance, if you have a function that sets common styles on the `Scroller` class, you would call that function in a function that sets specific styles on the `List` class.
 
-``` code
+``` actionscript
 // modern
 protected function setListStyles( list:List ):void
 {
@@ -95,14 +95,14 @@ When an instance of the `List` class (or any of its subclasses) needs to be styl
 
 In a legacy theme, you could exclude a component from being skinned by passing it to the [`exclude()`](../api-reference/feathers/core/DisplayListWatcher.html#exclude()) function defined by `DisplayListWatcher`.
 
-``` code
+``` actionscript
 // legacy
 theme.exclude( button );
 ```
 
 In a modern theme, you can remove a component's style provider:
 
-``` code
+``` actionscript
 // modern
 button.styleProvider = null;
 ```
@@ -115,7 +115,7 @@ In order to fix some issues developers had using [`getChildByName()`](http://doc
 
 In a legacy theme, you might add a string to the `nameList` property (or set the `name` property directly):
 
-``` code
+``` actionscript
 // legacy
 button.nameList.add( "my-custom-button" );
 // or
@@ -124,7 +124,7 @@ button.name = "my-custom-button";
 
 In a modern theme, you should use the [`styleNameList`](../api-reference/feathers/core/FeathersControl.html#styleNameList) or [`styleName`](../api-reference/feathers/core/FeathersControl.html#styleName) properties instead:
 
-``` code
+``` actionscript
 // modern
 button.styleNameList.add( "my-custom-button" );
 // or

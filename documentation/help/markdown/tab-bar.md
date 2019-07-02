@@ -20,7 +20,7 @@ The [`TabBar`](../api-reference/feathers/controls/TabBar.html) class displays a 
 
 First, let's create a `TabBar` control, set its data provider to display a few tabs, and add it to the display list:
 
-``` code
+``` actionscript
 var tabs:TabBar = new TabBar();
 tabs.dataProvider = new ArrayCollection(
 [
@@ -37,13 +37,13 @@ The `label` field in each item from the data provider will set the [`label`](../
 
 To know when the selected tab changes, we need to listen to [`Event.CHANGE`](../api-reference/feathers/controls/TabBar.html#event:change):
 
-``` code
+``` actionscript
 tabs.addEventListener( Event.CHANGE, tabs_changeHandler );
 ```
 
 A listener might look something like this:
 
-``` code
+``` actionscript
 function tabs_changeHandler( event:Event ):void
 {
     var tabs:TabBar = TabBar( event.currentTarget );
@@ -73,14 +73,14 @@ This section only explains how to access the tab sub-components, which are simpl
 
 If you're creating a [theme](themes.html), you can target the [`TabBar.DEFAULT_CHILD_STYLE_NAME_TAB`](../api-reference/feathers/controls/TabBar.html#DEFAULT_CHILD_STYLE_NAME_TAB) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ToggleButton )
     .setFunctionForStyleName( TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, setTabStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setTabStyles( tab:ToggleButton ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -92,13 +92,13 @@ private function setTabStyles( tab:ToggleButton ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 tabBar.customTabStyleName = "custom-tab";
 ```
 
 You can set the function for the [`customTabStyleName`](../api-reference/feathers/controls/TabBar.html#customTabStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ToggleButton )
     .setFunctionForStyleName( "custom-tab", setCustomTabStyles );
 ```
@@ -107,7 +107,7 @@ getStyleProviderForClass( ToggleButton )
 
 If you are not using a theme, you can use [`tabFactory`](../api-reference/feathers/controls/TabBar.html#tabFactory) to provide skins for the tabs:
 
-``` code
+``` actionscript
 tabBar.tabFactory = function():ToggleButton
 {
     var tab:ToggleButton = new ToggleButton();

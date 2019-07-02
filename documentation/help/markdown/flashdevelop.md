@@ -25,7 +25,7 @@ set FLEX_SDK=C:\flex-sdk
 
 6. Edit the **application.xml** file to update the Adobe AIR namespace. This version should be the same as the Adobe AIR version in the previous step. For example, to target Adobe AIR 15, the namespace should read:
 
-	``` code
+	``` xml
 <application xmlns="http://ns.adobe.com/air/application/15.0">
 ```
 

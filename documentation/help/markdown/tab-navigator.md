@@ -19,7 +19,7 @@ The [`TabNavigator`](../api-reference/feathers/controls/TabNavigator.html) class
 
 First, let's create a `TabNavigator` component and add it to the display list:
 
-``` code
+``` actionscript
 var navigator:TabNavigator = new TabNavigator();
 this.addChild( navigator );
 ```
@@ -28,7 +28,7 @@ You may set its `width` and `height`, but that's optional because the `TabNaviga
 
 To add a new screen that the navigator can show, call [`addScreen()`](../api-reference/feathers/controls/TabNavigator.html#addScreen()) and pass in an ID string to associate with the screen along with a [`TabNavigatorItem`](../api-reference/feathers/controls/TabNavigatorItem.html):
 
-``` code
+``` actionscript
 var newsFeedItem:TabNavigatorItem = new TabNavigatorItem( NewsFeedTab, "News" );
 navigator.addScreen( "newsFeed", newsFeedItem );
 ```
@@ -49,13 +49,13 @@ The active screen changes when the user selects a tab. When the first tab is add
 
 To show a specific screen programatically, we can set the [`selectedIndex`](../api-reference/feathers/controls/TabNavigator.html#selectedIndex):
 
-``` code
+``` actionscript
 navigator.selectedIndex = 1;
 ```
 
 Alternatively, call [`showScreen()`](../api-reference/feathers/controls/TabNavigator.html#showScreen()), and pass in the screen's ID. For this example, we'll use the `"newsFeed"` string that we registered with `addScreen()` earlier:
 
-``` code
+``` actionscript
 navigator.showScreen( "newsFeed" );
 ```
 
@@ -63,7 +63,7 @@ The `showScreen()` method supports an additional arugment that allows a custom a
 
 To access the currently visible screen, use the [`activeScreen`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreen) property.
 
-``` code
+``` actionscript
 var screen:NewsFeedTab = NewsFeedTab( navigator.activeScreen );
 ```
 
@@ -79,13 +79,13 @@ Each of the built-in transition classes has one or more static methods that you 
 
 We can pass the result to the tab navigator's [`transition`](../api-reference/feathers/controls/TabNavigator.html#transition) property:
 
-``` code
+``` actionscript
 navigator.transition = Fade.createFadeInTransition();
 ```
 
 In the code above, we didn't pass any arguments to `Fade.createFadeInTransition()`. However, this function exposes some optional parameters that we can customize, if desired. For instance, we might want to customize the duration of the animation (in seconds) and the easing function:
 
-``` code
+``` actionscript
 navigator.transition = Fade.createFadeInTransition( 0.75, Transitions.EASE_IN_OUT );
 ```
 
@@ -101,13 +101,13 @@ A `TabNavigator` dispatches [`FeathersEventType.TRANSITION_START`](../api-refere
 
 Let's listen for `FeathersEventType.TRANSITION_COMPLETE`:
 
-``` code
+``` actionscript
 navigator.addEventListener( FeathersEventType.TRANSITION_COMPLETE, navigator_transitionCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function navigator_transitionCompleteHandler( event:Event ):void
 {
     // do something after the transition animation
@@ -120,20 +120,20 @@ Optionally, we can pass properties to the screen before it is shown. If we have 
 
 When we create the `TabNavigator`, let's create an `OptionsData` instance too. In a moment, we'll pass it to each screen that needs it.
 
-``` code
+``` actionscript
 var optionsData:OptionsData = new OptionsData();
 ```
 
 Now, when we add our `OptionsScreen` to the `TabNavigator`, we pass it the `OptionsData` instance in using the [`properties`](../api-reference/feathers/controls/TabNavigatorItem.html#properties) property on the `TabNavigatorItem`:
 
-``` code
+``` actionscript
 var optionsItem:TabNavigatorItem = new TabNavigatorItem( OptionsScreen );
 optionsItem.properties.options = optionsData;
 ```
 
 In `OptionsScreen`, we need to add a variable or a getter and setter named `options` to match up with `optionsItem.properties.options`:
 
-``` code
+``` actionscript
 protected var _options:OptionsData;
  
 public function get options():OptionsData
@@ -149,7 +149,7 @@ public function set options( value:OptionsData ):void
 
 We want to update the screen when the `options` property changes, so we should invalidate the screen, and the `draw()` function will be called again:
 
-``` code
+``` actionscript
 public function set options( value:OptionsData ):void
 {
     if(this._options == value)

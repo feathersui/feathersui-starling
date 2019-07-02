@@ -20,7 +20,7 @@ The [`NumericStepper`](../api-reference/feathers/controls/NumericStepper.html) c
 
 First, let's create a `NumericStepper` control, set up its range of values, and add it to the display list.
 
-``` code
+``` actionscript
 var stepper:NumericStepper = new NumericStepper();
 stepper.minimum = 0;
 stepper.maximum = 100;
@@ -30,7 +30,7 @@ this.addChild( stepper );
 
 The [`value`](../api-reference/feathers/controls/NumericStepper.html#value) property indicates the current value of the stepper, while the [`minimum`](../api-reference/feathers/controls/NumericStepper.html#minimum) and [`maximum`](../api-reference/feathers/controls/NumericStepper.html#maximum) properties establish a range of possible values. We can further control the stepper's behavior with the [`step`](../api-reference/feathers/controls/NumericStepper.html#step) property:
 
-``` code
+``` actionscript
 stepper.step = 1;
 ```
 
@@ -38,13 +38,13 @@ The `step` property controls how the numeric stepper's value is rounded as the u
 
 Add a listener to the [`Event.CHANGE`](../api-reference/feathers/controls/NumericStepper.html#event:change) event to know when the `value` property changes:
 
-``` code
+``` actionscript
 stepper.addEventListener( Event.CHANGE, stepper_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 function stepper_changeHandler( event:Event ):void
 {
     var stepper:NumericStepper = NumericStepper( event.currentTarget );
@@ -60,7 +60,7 @@ The skins for a `NumericStepper` control are divided into three parts. There are
 
 The numeric stepper's layout can be customized to place the buttons in different locations. In the example below, we place the buttons on the right side of the text input, stacked vertically, like you see with many desktop numeric steppers using [`StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL`](../api-reference/feathers/controls/StepperButtonLayoutMode.html#RIGHT_SIDE_VERTICAL):
 
-``` code
+``` actionscript
 stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 ```
 
@@ -68,7 +68,7 @@ There are two additional options for [`buttonLayoutMode`](../api-reference/feath
 
 A gap may be placed between the text input and any button positioned next to it:
 
-``` code
+``` actionscript
 stepper.textInputGap = 10;
 ```
 
@@ -76,7 +76,7 @@ Simply set the [`textInputGap`](../api-reference/feathers/controls/NumericSteppe
 
 When the buttons are both placed on the same side of the text input, you can include a gap between them too:
 
-``` code
+``` actionscript
 stepper.buttonLayoutMode = StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL;
 stepper.buttonGap = 3;
 ```
@@ -91,14 +91,14 @@ This section only explains how to access the decrement button sub-component. Ple
 
 If you're creating a [theme](themes.html), you can target the [`NumericStepper.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON`](../api-reference/feathers/controls/NumericStepper.html#DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( NumericStepper.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, setNumericStepperDecrementButtonStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setNumericStepperDecrementButtonStyles( button:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -110,13 +110,13 @@ private function setNumericStepperDecrementButtonStyles( button:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 stepper.customDecrementButtonStyleName = "custom-decrement-button";
 ```
 
 You can set the function for the [`customDecrementButtonStyleName`](../api-reference/feathers/controls/NumericStepper.html#customDecrementButtonStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-decrement-button", setNumericStepperCustomDecrementButtonStyles );
 ```
@@ -125,7 +125,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`decrementButtonFactory`](../api-reference/feathers/controls/NumericStepper.html#decrementButtonFactory) to provide skins for the numeric stepper's decrement button:
 
-``` code
+``` actionscript
 stepper.decrementButtonFactory = function():Button
 {
     var button:Button = new Button();
@@ -148,7 +148,7 @@ The numeric stepper's increment button may be skinned similarly to the decrement
 
 <aside class="info">If your decrement button and increment buttons don't have icons, you can use [`decrementButtonLabel`](../api-reference/feathers/controls/NumericStepper.html#decrementButtonLabel) and [`incrementButtonLabel`](../api-reference/feathers/controls/NumericStepper.html#incrementButtonLabel) to set the button labels:
 
-``` code
+``` actionscript
 stepper.decrementButtonLabel = "-";
 stepper.incrementButtonLabel = "+";
 ```
@@ -162,14 +162,14 @@ This section only explains how to access the text input sub-component. Please re
 
 If you're creating a [theme](themes.html), you can target the [`NumericStepper.DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT`](../api-reference/feathers/controls/NumericStepper.html#DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( TextInput )
     .setFunctionForStyleName( NumericStepper.DEFAULT_CHILD_STYLE_NAME_TEXT_INPUT, setNumericStepperTextInputStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setNumericStepperTextInputStyles( input:TextInput ):void
 {
     input.backgroundSkin = new Image( backgroundTexture );
@@ -180,13 +180,13 @@ private function setNumericStepperTextInputStyles( input:TextInput ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 stepper.customTextInputStyleName = "custom-text-input";
 ```
 
 You can set the function for the [`customTextInputStyleName`](../api-reference/feathers/controls/NumericStepper.html#customTextInputStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( TextInput )
     .setFunctionForStyleName( "custom-text-input", setNumericStepperCustomTextInputStyles );
 ```
@@ -195,7 +195,7 @@ getStyleProviderForClass( TextInput )
 
 If you are not using a theme, you can use [`textInputFactory`](../api-reference/feathers/controls/NumericStepper.html#textInputFactory) provide skins for the numeric stepper's text input:
 
-``` code
+``` actionscript
 stepper.textInputFactory = function():TextInput
 {
     var input:TextInput = new TextInput();

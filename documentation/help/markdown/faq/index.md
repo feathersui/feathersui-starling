@@ -131,7 +131,7 @@ When you create a custom item renderer, you need to ensure that it is designed t
 
 Starling filters aren't compatible with the clipping rectangle. You need to turn off clipping.
 
-``` code
+``` actionscript
 list.clipContent = false;
 ```
 
@@ -149,6 +149,6 @@ Pass in a [`VerticalLayout`](../vertical-layout.html) with its [`hasVariableItem
 
 You can pass the item's index to [`updateItemAt()`](../../api-reference/feathers/data/IListCollection.html#updateItemAt()) on the list's data provider. The list will force the item renderer to redraw.
 
-``` code
+``` actionscript
 list.dataProvider.updateItemAt( itemIndex );
 ```

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/31.0">
+<application xmlns="http://ns.adobe.com/air/application/32.0">
 	<id>com.feathersui.examples.Magic8Chat</id>
 	<filename>Magic8Chat</filename>
 	<name>Magic8Chat</name>
 	<versionNumber>4.0.0</versionNumber>
 	<description>Magic8Chat example application built with Feathers UI controls for Starling</description>
-	<copyright>2018 Bowler Hat LLC</copyright>
+	<copyright>2019 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>Magic8Chat.swf</content>

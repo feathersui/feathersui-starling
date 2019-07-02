@@ -13,7 +13,7 @@ In desktop apps, users expect to be able to hover their mouse over a UI control 
 
 To enable tool tips, only one line is required when your app first starts up:
 
-``` code
+``` actionscript
 ToolTipManager.setEnabledForStage( this.stage, true );
 ```
 
@@ -25,7 +25,7 @@ If you are building an AIR desktop app with multiple Starling instances in multi
 
 In the following example, a [`Button`](button.html) is given a tool-tip:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.toolTip = "Some useful information";

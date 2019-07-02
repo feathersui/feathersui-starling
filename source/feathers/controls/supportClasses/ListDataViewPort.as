@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -18,6 +18,7 @@ package feathers.controls.supportClasses
 	import feathers.core.PropertyProxy;
 	import feathers.data.IListCollection;
 	import feathers.data.ListCollection;
+	import feathers.display.RenderDelegate;
 	import feathers.dragDrop.DragData;
 	import feathers.dragDrop.DragDropManager;
 	import feathers.events.CollectionEventType;
@@ -41,12 +42,12 @@ package feathers.controls.supportClasses
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.Pool;
-	import starling.events.EnterFrameEvent;
 
 	/**
 	 * @private
@@ -2271,10 +2272,11 @@ package feathers.controls.supportClasses
 						var dragData:DragData = new DragData();
 						dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
 						
-						var avatar:IListItemRenderer = this.createRenderer(itemRenderer.data, itemRenderer.index, false, true);
-						this.refreshOneItemRendererStyles(avatar);
-						avatar.width = itemRenderer.width;
-						avatar.height = itemRenderer.height;
+						//we don't create a new item renderer here because
+						//it might remove accessories or icons from the original
+						//item renderer that is still visible in the list.
+						var avatar:RenderDelegate = new RenderDelegate(DisplayObject(itemRenderer));
+						avatar.touchable = false;
 						avatar.alpha = 0.8;
 
 						this._droppedOnSelf = false;

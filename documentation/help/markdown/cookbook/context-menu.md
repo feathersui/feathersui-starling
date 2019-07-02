@@ -9,7 +9,7 @@ author: Josh Tynjala
 
 First, let's create a simple [`flash.ui.ContextMenu`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/ContextMenu.html).
 
-``` code
+``` actionscript
 function item_menuItemSelectHandler(event:ContextMenuEvent):void
 {
     trace("menu item selected");
@@ -24,13 +24,13 @@ this._menu.customItems.push(item);
 
 Next, we want to know when the right mouse button is pressed:
 
-``` code
+``` actionscript
 Starling.current.nativeStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nativeStage_rightMouseDownHandler, false, 0, true);
 ```
 
 In the listener, simply display the context menu at the appropriate location:
 
-``` code    
+``` actionscript    
 private function nativeStage_rightMouseDownHandler(event:MouseEvent):void
 {
     this._menu.display(Starling.current.nativeStage, event.stageX, event.stageY);

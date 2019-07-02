@@ -11,7 +11,7 @@ A [`List`](../list.html) component contains a number of [item renderers](../defa
 
 We can customize the item renderers inside the list's [`itemRendererFactory`](../../api-reference/feathers/controls/List.html#itemRendererFactory). As long as we aren't setting any advanced font styles on the item renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the item renderer's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {

@@ -15,7 +15,7 @@ All skins, layout options, and other styles available on Feathers components are
 
 Let's look at a simple example of skinning a [`Button`](button.html) component:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.defaultSkin = new Quad( 100, 30, 0xc4c4c4 );
@@ -37,7 +37,7 @@ Some components, like [`Button`](button.html) and [`TextInput`](text-input.html)
 
 Let's use the [`feathers.skins.ImageSkin`](../api-reference/feathers/skins/ImageSkin.html) class to change the appearance of the button's background skin when the state changes:
 
-``` code
+``` actionscript
 var skin:ImageSkin = new ImageSkin( upTexture );
 skin.setTextureForState( ButtonState.DOWN, downTexture );
 button.defaultSkin = skin;
@@ -49,7 +49,7 @@ Pass the default texture to the `ImageSkin` constructor. This texture will be us
 
 It's possible to specify different textures for many different states, like in the following example:
 
-``` code
+``` actionscript
 var skin:ImageSkin = new ImageSkin( upTexture );
 skin.setTextureForState( ButtonState.DOWN, downTexture );
 skin.setTextureForState( ButtonState.HOVER, hoverTexture );
@@ -61,7 +61,7 @@ button.defaultSkin = skin;
 
 Similar to how we can change the appearance of a button's background skin when the button's state changes, we can also change the font styles too:
 
-``` code
+``` actionscript
 var upFontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 var downFontStyles:TextFormat = new TextFormat( "Helvetica", 20, 0xff0000 );
 
@@ -79,7 +79,7 @@ Some complex Feathers components contain other components as children. For examp
 
 The easiest way to style a sub-component is to customize the *factory* function that the parent component calls to create the sub-component. The panel's header is created in its [`headerFactory`](../api-reference/feathers/controls/Panel.html#headerFactory):
 
-``` code
+``` actionscript
 var panel:Panel = new Panel();
 panel.headerFactory = function():IFeathersControl
 {
@@ -95,7 +95,7 @@ If you're using a [theme](themes.html), you may prefer to keep all of your styli
 
 A complex component will have a property to allow you to customize the style name of a sub-component. In the case of a `Panel`, we'll set the [`customHeaderStyleName`](../api-reference/feathers/controls/Panel.html#customHeaderStyleName) property:
 
-``` code
+``` actionscript
 var panel:Panel = new Panel();
 panel.customHeaderStyleName = "custom-panel-header";
 this.addChild( panel );
@@ -103,7 +103,7 @@ this.addChild( panel );
 
 Inside the theme, create a new function to style your sub-component:
 
-``` code
+``` actionscript
 private function setCustomPanelHeaderStyles( header:Header ):void
 {
     header.backgroundSkin = new Quad( 200, 50, 0x3c3c3c );
@@ -113,7 +113,7 @@ private function setCustomPanelHeaderStyles( header:Header ):void
 
 Then, tell the theme that when the sub-component has your custom style, it should pass the component to your function:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Header )
     .setFunctionForStyleName( "custom-panel-header", setCustomPanelHeaderStyles );
 ```

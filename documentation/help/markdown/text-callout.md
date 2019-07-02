@@ -20,7 +20,7 @@ The [`TextCallout`](../api-reference/feathers/controls/TextCallout.html) class i
 
 We create a `TextCallout` a bit differently than other components. Rather than calling a constructor, we call the static function [`TextCallout.show()`](../api-reference/feathers/controls/TextCallout.html#show()). Let's see how this works by displaying message in a `TextCallout` when we touch a button. First, let's create the button:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
@@ -29,7 +29,7 @@ this.addChild( button );
 
 Then, in the listener for the `Event.TRIGGERED` event, we create the callout:
 
-``` code
+``` actionscript
 function button_triggeredHandler( event:Event ):void
 {
     var button:Button = Button( event.currentTarget );
@@ -53,7 +53,7 @@ Callouts have a number of skin and style properties to let you customize their a
 
 The input's callout styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextCallout.html#fontStyles) property.
 
-``` code
+``` actionscript
 callout.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -63,7 +63,7 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If you're not using a theme, you can specify a factory to create the callout, including setting skins, in a couple of different ways. The first is to set the [`TextCallout.calloutFactory`](../api-reference/feathers/controls/TextCallout.html#calloutFactory) static property to a function that provides skins for the callout. This factory will be called any time that [`TextCallout.show()`](../api-reference/feathers/controls/TextCallout.html#show()) is used to create a callout.
 
-``` code
+``` actionscript
 function skinnedTextCalloutFactory():TextCallout
 {
     var callout:TextCallout = new TextCallout();
@@ -80,7 +80,7 @@ TextCallout.calloutFactory = skinnedTextCalloutFactory;
 
 Another option is to pass a callout factory to `TextCallout.show()`. This allows you to create a specific callout differently than the default global `TextCallout.calloutFactory`.
 
-``` code
+``` actionscript
 function skinnedTextCalloutFactory():Callout
 {
     var callout:TextCallout = new TextCallout();

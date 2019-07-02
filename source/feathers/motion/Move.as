@@ -1,16 +1,13 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion
 {
-	import feathers.core.IFeathersControl;
-	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.motion.effectClasses.IMoveEffectContext;
-	import feathers.motion.effectClasses.TweenEffectContext;
 	import feathers.motion.effectClasses.TweenMoveEffectContext;
 
 	import starling.animation.Transitions;
@@ -59,11 +56,14 @@ package feathers.motion
 		 */
 		public static function createMoveToEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.moveTo(toX, toY);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = toX;
+				context.newY = toY;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -78,11 +78,14 @@ package feathers.motion
 		 */
 		public static function createMoveXToEffect(toX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("x", toX);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = toX;
+				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -97,11 +100,14 @@ package feathers.motion
 		 */
 		public static function createMoveYToEffect(toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("y", toY);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = target.x;
+				context.newY = toY;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -119,23 +125,14 @@ package feathers.motion
 		 */
 		public static function createMoveFromEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
-				var oldX:Number = target.x;
-				var oldY:Number = target.y;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).suspendEffects();
-				}
-				target.x = fromX;
-				target.y = fromY;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).resumeEffects();
-				}
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.moveTo(oldX, oldY);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = fromX;
+				context.oldY = fromY;
+				context.newX = target.x;
+				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -150,21 +147,14 @@ package feathers.motion
 		 */
 		public static function createMoveXFromEffect(fromX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
-				var oldX:Number = target.x;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).suspendEffects();
-				}
-				target.x = fromX;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).resumeEffects();
-				}
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("x", oldX);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = fromX;
+				context.oldY = target.y;
+				context.newX = target.x;
+				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -179,21 +169,14 @@ package feathers.motion
 		 */
 		public static function createMoveYFromEffect(fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
-				var oldY:Number = target.y;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).suspendEffects();
-				}
-				target.y = fromY;
-				if(target is IFeathersControl)
-				{
-					IFeathersControl(target).resumeEffects();
-				}
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("y", oldY);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = fromY;
+				context.newX = target.x;
+				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -211,11 +194,14 @@ package feathers.motion
 		 */
 		public static function createMoveByEffect(xBy:Number, yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.moveTo(target.x + xBy, target.y + yBy);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = target.x + xBy;
+				context.newY = target.y + yBy;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -230,11 +216,14 @@ package feathers.motion
 		 */
 		public static function createMoveXByEffect(xBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("x", target.x + xBy);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = target.x + xBy;
+				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}
@@ -249,11 +238,14 @@ package feathers.motion
 		 */
 		public static function createMoveYByEffect(yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
 		{
-			return function(target:DisplayObject):IEffectContext
+			return function(target:DisplayObject):IMoveEffectContext
 			{
 				var tween:Tween = new Tween(target, duration, ease);
-				tween.animate("y", target.y + yBy);
-				var context:TweenEffectContext = new TweenEffectContext(target, tween);
+				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
+				context.oldX = target.x;
+				context.oldY = target.y;
+				context.newX = target.x;
+				context.newY = target.y + yBy;
 				context.interruptBehavior = interruptBehavior;
 				return context;
 			}

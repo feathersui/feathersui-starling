@@ -34,6 +34,7 @@ package feathers.examples.componentsExplorer
 		public static const TAB_BAR:String = "tabBar";
 		public static const TEXT_CALLOUT:String = "textCallout";
 		public static const TEXT_INPUT:String = "textInput";
+		public static const TOAST:String = "toast";
 		public static const TOGGLES:String = "toggles";
 		public static const TREE:String = "tree";
 		public static const WEB_VIEW:String = "webView";

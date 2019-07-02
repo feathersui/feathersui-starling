@@ -41,7 +41,7 @@ Starling 2.0 now offers these features natively!
 
 To replace `Scale9Image`, create an `Image` and set its `scale9Grid` property:
 
-``` code
+``` actionscript
 var image:Image = new Image( texture );
 image.scale9Grid = new Rectangle( 2, 2, 3, 6 );
 this.addChild( image );
@@ -49,7 +49,7 @@ this.addChild( image );
 
 To replace `Scale3Image`, create an `Image` and set its `scale9Grid` property. For horizontal scaling, set the grid's height to the full height of the texture. For vertical scaling, set the grid's width to the full width of the texture. In the following example, the `Image` can be scaled horizontally like the old `Scale3Image`:
 
-``` code
+``` actionscript
 var image:Image = new Image( texture );
 image.scale9Grid = new Rectangle( 2, 0, 3, texture.frameHeight );
 this.addChild( image );
@@ -57,7 +57,7 @@ this.addChild( image );
 
 To replace `TiledImage`, create an `Image` and set the `tileGrid` property to an empty `Rectangle`:
 
-``` code
+``` actionscript
 var image:Image = new Image( texture );
 image.tileGrid = new Rectangle();
 this.addChild( image );
@@ -73,7 +73,7 @@ From an optimization perspective, it would be better to use a single `Image` and
 
 Let's take a look at how a button can use `ImageSkin`:
 
-``` code
+``` actionscript
 var skin:ImageSkin = new ImageSkin( defaultTexture );
 skin.setTextureForState( ButtonState.DOWN, downTexture );
 skin.setTextureForState( ButtonState.DISABLED, disabledTexture );
@@ -91,7 +91,7 @@ In addition to being used for background skins, `ImageSkin` can also be used for
 
 [Text renderers](text-renderers.html) in Feathers components can now change their own font styles when their parent component changes state. Previously, the `Button` class managed multiple sets of properties for different states (like `defaultLabelProperties` and `downLabelProperties`) using objects that were not strictly type-checked at compile-time. The new approach is stricter, and easier to customize outside of the theme: 
 
-``` code
+``` actionscript
 button.labelFactory = function():ITextRenderer
 {
 	var textRenderer:BitmapFontTextRenderer = new BitmapFontTextRenderer();
@@ -105,7 +105,7 @@ In the code above, we create a [`BitmapFontTextRenderer`](bitmap-font-text-rende
 
 On the `BitmapFontTextRenderer`, we can call the `setTextFormatForState()` function to pass in different font styles of each of the button's states. Let's do that in the same `labelFactory`:
 
-``` code
+``` actionscript
 textRenderer.setTextFormatForState( ButtonState.DOWN,
 	new BitmapFontTextFormat( "My Font", BitmapFont.NATIVE_SIZE, 0xffcc00 ) );
 
@@ -117,20 +117,20 @@ textRenderer.setTextFormatForState( ButtonState.DISABLED,
 
 If you prefer to keep all of your styling code in your theme, you can [create a new style name](extending-themes.html) for the text renderer class. On a `Button`, you'd pass this custom style name to the `customLabelStyleName` property:
 
-``` code
+``` actionscript
 button.customLabelStyleName = "my-custom-text-renderer";
 ```
 
 In your theme, you'd add a new styling function for `BitmapFontTextRenderer`.
 
-``` code
+``` actionscript
 getStyleProviderForClass( BitmapFontTextRenderer )
 	.setFunctionForStyleName( "my-custom-text-renderer", setCustomTextRendererStyles );
 ```
 
 Just like above, we can set the default font styles, and styles for different states:
 
-``` code
+``` actionscript
 function setCustomTextRendererStyles( textRenderer: BitmapFontTextRenderer ):void
 {
 	textRenderer.textFormat = new BitmapFontTextFormat( "My Font", BitmapFont.NATIVE_SIZE, 0xffffff );
@@ -149,7 +149,7 @@ This static property was previously used to return a special icon for item rende
 
 If some of the items in the list should not display a drill down icon, use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/List.html#setItemRendererFactoryWithID()) and [`factoryIDFunction`](../api-reference/feathers/controls/List.html#factoryIDFunction) to pass multiple item renderer factories to the `List` or `GroupedList`.
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
 	var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -160,7 +160,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
 If all items in the list should have a drill down icon, you may use `customItemRendererStyleName` instead:
 
-``` code
+``` actionscript
 list.customItemRendererStyleName = DefaultListItemRenderer.ALTERNATE_STYLE_NAME_DRILL_DOWN;
 ```
 
@@ -170,19 +170,19 @@ Custom component developers should migrate to the new `saveMeasurements()` as a 
 
 In addition to the more intuitive name, `saveMeasurements()` now allows components to dynamically calculate minimum width and height:
 
-``` code
+``` actionscript
 this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 ```
 
 To maintain the previous behavior, you may pass a value of `0` for the minimum dimensions:
 
-``` code
+``` actionscript
 this.saveMeasurements(newWidth, newHeight, 0, 0);
 ```
 
 You might also consider setting the minimum dimensions to the same as the regular dimensions:
 
-``` code
+``` actionscript
 this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 ```
 
@@ -204,7 +204,7 @@ The [`ScreenDensityScaleFactorManager`](../api-reference/feathers/utils/ScreenDe
 
 The following example shows how to use `ScreenDensityScaleFactorManager` by modifying the sample [Startup Code](http://wiki.starling-framework.org/manual/startup_code) from the Starling wiki.
 
-``` code
+``` actionscript
 public class Startup extends Sprite
 {
 	private var mStarling:Starling;

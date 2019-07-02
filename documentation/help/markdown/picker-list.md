@@ -20,14 +20,14 @@ The [`PickerList`](../api-reference/feathers/controls/PickerList.html) class dis
 
 First, let's create a `PickerList` control and add it to the display list:
 
-``` code
+``` actionscript
 var list:PickerList = new PickerList();
 this.addChild( list );
 ```
 
 Next, we want to actually allow it to select some items, so like a `List` components, we pass in an [`IListCollection`](../api-reference/feathers/data/IListCollection.html) implementation, such as [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) or [`VectorCollection`](../api-reference/feathers/data/VectorCollection.html), to the [`dataProvider`](../api-reference/feathers/controls/PickerList.html#dataProvider) property.
 
-``` code
+``` actionscript
 var groceryList:ArrayCollection = new ArrayCollection(
 [
     { text: "Milk" },
@@ -40,7 +40,7 @@ list.dataProvider = groceryList;
 
 We need to tell the picker list's item renderers about the text to display, so we'll define the [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField).
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -51,7 +51,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
 Since the selected item's label is also displayed by the picker list's button, we also need to pass a value to the [`labelField`](../api-reference/feathers/controls/PickerList.html#labelField) of the picker list.
 
-``` code
+``` actionscript
 list.labelField = "text";
 ```
 
@@ -59,7 +59,7 @@ list.labelField = "text";
 
 We can provide some text to display with the button's label when no item is selected. This is often called a hint, a description, or a [`prompt`](../api-reference/feathers/controls/PickerList.html#prompt):
 
-``` code
+``` actionscript
 list.prompt = "Select an Item";
 list.selectedIndex = -1;
 ```
@@ -78,14 +78,14 @@ Please read [How to use the Feathers `Button` component](button.html) for full d
 
 If you're creating a [theme](themes.html), you can target the [`PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON`](../api-reference/feathers/controls/PickerList.html#DEFAULT_CHILD_STYLE_NAME_BUTTON) style name:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, setPickerListButtonStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPickerListButtonStyles( button:Button ):void
 {
     button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
@@ -94,13 +94,13 @@ private function setPickerListButtonStyles( button:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 list.customButtonStyleName = "custom-button-name";
 ```
 
 You can set the function for the [`customButtonStyleName`](../api-reference/feathers/controls/PickerList.html#customButtonStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-button-name", setPickerListCustomButtonStyles );
 ```
@@ -109,7 +109,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`buttonFactory`](../api-reference/feathers/controls/PickerList.html#buttonFactory) to provide skins for the picker list's button:
 
-``` code
+``` actionscript
 list.buttonFactory = function():Button
 {
     var button:Button = new Button();
@@ -129,14 +129,14 @@ Please read [How to use the Feathers `List` component](list.html) for full detai
 
 If you're creating a [theme](themes.html), you can target the [`PickerList.DEFAULT_CHILD_STYLE_NAME_LIST`](../api-reference/feathers/controls/PickerList.html#DEFAULT_CHILD_STYLE_NAME_LIST) style name:
 
-``` code
+``` actionscript
 getStyleProviderForClass( List )
     .setFunctionForStyleName( PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, setPickerListPopUpListStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setPickerListPopUpListStyles( list:List ):void
 {
     var skin:Image = new Image( texture );
@@ -147,13 +147,13 @@ private function setPickerListPopUpListStyles( list:List ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 list.customListStyleName = "custom-list";
 ```
 
 You can set the function for the [`customListStyleName`](../api-reference/feathers/controls/PickerList.html#customListStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( List )
     .setFunctionForStyleName( "custom-list", setPickerListCustomListStyles );
 ```
@@ -162,7 +162,7 @@ getStyleProviderForClass( List )
 
 If you are not using a theme, you can use [`listFactory`](../api-reference/feathers/controls/PickerList.html#listFactory) to provide skins for the picker list's pop-up list:
 
-``` code
+``` actionscript
 list.listFactory = function():List
 {
     var list:List = new List();
@@ -190,13 +190,13 @@ Feathers comes with three pop-up content managers:
 
 Selecting the pop up content manager, is as simple as instantiating it and passing it to the picker list:
 
-``` code
+``` actionscript
 list.popUpContentManager = new DropDownPopUpContentManager();
 ```
 
 You may customize properties of the pop up content manager first, if needed:
 
-``` code
+``` actionscript
 var popUpContentManager:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
 popUpContentManager.marginTop = 20;
 popUpContentManager.marginRight = 25;

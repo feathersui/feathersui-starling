@@ -15,7 +15,7 @@ The [`WebView`](../api-reference/feathers/controls/WebView.html) class displays 
 
 First, let's create a `WebView` control, resize it, and add it to the display list:
 
-``` code
+``` actionscript
 var browser:WebView = new WebView();
 browser.width = 400;
 browser.height = 300;;
@@ -24,13 +24,13 @@ this.addChild( browser );
 
 To load a URL, simply call the [`loadURL()`](../api-reference/feathers/controls/WebView.html#loadURL()) function:
 
-``` code
+``` actionscript
 browser.loadURL( "http://feathersui.com/" );
 ```
 
 If you prefer to display locally-generated HTML, call the [`loadString()`](../api-reference/feathers/controls/WebView.html#loadString()) function instead:
 
-``` code
+``` actionscript
 browser.loadString( "<!doctype html><html><body><h1>Hello World</h1></body></html>" );
 ```
 

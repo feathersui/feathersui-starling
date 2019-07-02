@@ -29,7 +29,7 @@ Flash Text Engine may render a bit slower than `flash.text.TextField` sometimes.
 
 <aside class="info">In general, you should customize font styles on the parent component of a text renderer using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`Button`](button.html) component, you'd set the button's [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -37,7 +37,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To render text with Flash Text Engine, create a [`TextBlockTextRenderer`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.labelFactory = function():ITextRenderer
@@ -55,7 +55,7 @@ button.labelFactory = function():ITextRenderer
 
 Advanced font styles may be customized by passing a [`flash.text.engine.ElementFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html) instance to the text renderer's [`elementFormat`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#elementFormat) property:
 
-``` code
+``` actionscript
 var font:FontDescription = new FontDescription(
 	"Source Sans Pro", FontWeight.BOLD, FontPosture.ITALIC );
 textRenderer.elementFormat = new ElementFormat( font, 16, 0xcccccc );
@@ -65,7 +65,7 @@ The first parameter to the `ElementFormat` constructor is a [`FontDescription`](
 
 The `ElementFormat` allows you to customize font size, color, alpha, and more.
 
-``` code
+``` actionscript
 var format:ElementFormat = new ElementFormat( fontDescription );
 format.fontSize = 20;
 format.color = 0xc4c4c4;
@@ -74,7 +74,7 @@ format.alpha = 0.5;
 
 Text alignment is not included in the `FontDescription` or the `ElementFormat`. Instead, we can set the [`textAlign`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#textAlign) property directly on the text renderer:
 
-``` code
+``` actionscript
 textRenderer.textAlign = TextBlockTextRenderer.TEXT_ALIGN_CENTER;
 ```
 
@@ -88,7 +88,7 @@ Some components, like [`Button`](button.html) and [`TextInput`](text-input.html)
 
 For instance, we can provide a different font style for the down state of a `Button` by calling [`setElementFormatForState()`](../api-reference/feathers/controls/text/TextBlockTextRenderer.html#setElementFormatForState())
 
-```code
+``` actionscript
 var defaultFormat:ElementFormat = new ElementFormat( fontDescription, 20, 0xc4c4c4 );
 textRenderer.elementFormat = defaultFormat;
 
@@ -102,7 +102,7 @@ We didn't provide separate font styles for other states, like `ButtonState.HOVER
 
 To embed a TTF or OTF font for `TextBlockTextRenderer`, use `[Embed]` metadata, like this:
 
-``` code
+``` actionscript
 [Embed(source="my-font.ttf",fontFamily="My Font Name",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="true")]
 private static const MY_FONT:Class;
 ```
@@ -118,7 +118,7 @@ Here are the parameters:
 
 To use an embedded font with `TextBlockTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `FontDescription` object.
 
-``` code
+``` actionscript
 var font:FontDescription = new FontDescription(
 	"My Font Name", FontWeight.BOLD, FontPosture.ITALIC );
 font.fontLookup = FontLookup.EMBEDDED_CFF;

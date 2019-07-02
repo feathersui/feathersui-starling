@@ -91,7 +91,7 @@ We will want to refer to our button as a variable in ActionScript, so we should 
 
 Our listener function should look something like this:
 
-``` code
+``` actionscript
 private function button_triggeredHandler( event:Event ):void
 {
     TextCallout.show( "Hi, I'm Feathers!\nHave a nice day.", this.button );

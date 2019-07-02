@@ -31,7 +31,7 @@ Let's implement a very simple item renderer. It will contain a [`Label`](label.h
 
 When it's finished, we'll want to use it like this:
 
-``` code
+``` actionscript
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {
@@ -60,7 +60,7 @@ For this example, we're creating an item renderer for a [`List`](list.html) comp
 
 Let's start out with the basic framework for our custom item renderer. We want to subclass [`feathers.controls.renderers.LayoutGroupListItemRenderer`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html):
 
-``` code
+``` actionscript
 package
 {
     import feathers.controls.renderers.LayoutGroupListItemRenderer;
@@ -80,13 +80,13 @@ This base class implements the [`IListItemRenderer`](../api-reference/feathers/c
 
 We want to display a [`Label`](label.html) component, so let's add a member variable for it:
 
-``` code
+``` actionscript
 protected var _label:Label;
 ```
 
 Next, we want to create a new instance and add it as a child. We need to override `initialize()` function:
 
-``` code
+``` actionscript
 override protected function initialize():void
 {
     this._label = new Label();
@@ -102,7 +102,7 @@ The `initialize()` function is called once the very first time that the componen
 
 Next, we want to access the item renderer's [`data`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html#data) property and display something in our `Label` component. Override the convenient [`commitData()`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html#commitData()) function to do this:
 
-``` code
+``` actionscript
 override protected function commitData():void
 {
     if(this._data)
@@ -126,7 +126,7 @@ Let's handle how the `Label` sub-component will be positioned and sized within t
 
 At the beginning of the `initialize()` function, let's create our `AnchorLayout` instance:
 
-``` code
+``` actionscript
 override protected function initialize():void
 {
     this.layout = new AnchorLayout();
@@ -134,7 +134,7 @@ override protected function initialize():void
 
 Now, in order to have the `AnchorLayout` control the `Label` component's positioning and dimensions, we need to pass an [`AnchorLayoutData`](../api-reference/feathers/layout/AnchorLayoutData.html) instance to the `Label` component. Let's do that next:
 
-``` code
+``` actionscript
 override protected function initialize():void
 {
     this.layout = new AnchorLayout();
@@ -153,7 +153,7 @@ We've constrained the `Label` component to all four edges of the item renderer. 
 
 With that finished, we now have a fully working item renderer. However, we probably don't want the `Label` component to fill the item renderer right up to the edges. We probably want a little space around the edge to allow the labels to breathe when they appear next to each other in the list. Let's add a `padding` property to customize this spacing around the edges:
 
-``` code
+``` actionscript
 protected var _padding:Number = 0;
  
 public function get padding():Number
@@ -178,7 +178,7 @@ When we change a property that requires the component to change something about 
 
 The base class offers a [`preLayout()`](../api-reference/feathers/controls/renderers/LayoutGroupListItemRenderer.html#preLayout()) function that you can override to update layout properties on children *before* the layout code is run. We're going to update the `Label` component's `AnchorLayoutData` in this function:
 
-``` code
+``` actionscript
 override protected function preLayout():void
 {
     var labelLayoutData:AnchorLayoutData = AnchorLayoutData(this._label.layoutData);
@@ -197,7 +197,7 @@ The base class also offers a [`postLayout()`](../api-reference/feathers/controls
 
 The complete source code for the `CustomLayoutGroupItemRenderer` class is included below:
 
-``` code
+``` actionscript
 package
 {
     import feathers.controls.Label;

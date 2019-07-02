@@ -9,7 +9,7 @@ Many times, when a user navigates away from a screen, they may return to the sam
 
 [`ScreenNavigatorItem`](../../api-reference/feathers/controls/ScreenNavigatorItem.html) offers a simple system for setting properties on a screen when it is created. We can take advantage of this feature to store additional properties. In the following code, we store the vertical scroll position of a list in a property named `savedVerticalScrollPosition`:
 
-``` code
+``` actionscript
 var screenItem:ScreenNavigatorItem = this.owner.getScreen(this.screenID);
 screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
 ```
@@ -18,13 +18,13 @@ We can add that code at the point when we are leaving the screen. Perhaps when s
 
 Then, in our screen class, we can simply add a new property of the same name:
 
-``` code
+``` actionscript
 public var savedVerticalScrollPosition:Number = 0;
 ```
 
 Finally, we can pass that property to the list when we initialize the screen:
 
-``` code
+``` actionscript
 override protected function initialize():void
 {
     super.initialize();

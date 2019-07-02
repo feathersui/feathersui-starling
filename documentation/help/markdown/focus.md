@@ -15,7 +15,7 @@ Feathers provides optional focus management support with the [`FocusManager`](..
 
 To enable focus management, only one line is required when your app first starts up:
 
-``` code
+``` actionscript
 FocusManager.setEnabledForStage( this.stage, true );
 ```
 
@@ -27,7 +27,7 @@ If you are building an AIR desktop app with multiple Starling instances in multi
 
 You can manually tell the <code>FocusManager</code> to change which component is current focused:
 
-``` code
+``` actionscript
 var focusManager:IFocusManager = FocusManager.getFocusManagerForStage( this.stage );
 focusManager.focus = button;
 ```
@@ -36,7 +36,7 @@ It's as simple as setting the [`focus`](../api-reference/feathers/core/IFocusMan
 
 To clear focus so that no component is focused, set this property to `null`:
 
-``` code
+``` actionscript
 var focusManager:IFocusManager = FocusManager.getFocusManagerForStage( this.stage );
 focusManager.focus = null;
 ```
@@ -47,7 +47,7 @@ By default, when the user changes focus with Tab or Shift+Tab on the keyboard, F
 
 If things end up a bit out of the ordering that you expected, you can customize the focus order using the [`nextTabFocus`](../api-reference/feathers/core/IFocusDisplayObject.html#nextTabFocus) and [`previousTabFocus`](../api-reference/feathers/core/IFocusDisplayObject.html#previousTabFocus) properties:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 this.addChild( button1 );
  

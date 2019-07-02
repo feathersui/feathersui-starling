@@ -11,7 +11,7 @@ The [`SlideShowLayout`](../api-reference/feathers/layout/SlideShowLayout.html) c
 
 First, let's create a slide show layout and pass it to a [`ScrollContainer`](scroll-container.html):
 
-``` code
+``` actionscript
 var layout:SlideShowLayout = new SlideShowLayout();
  
 var container:ScrollContainer = new ScrollContainer();
@@ -25,7 +25,7 @@ There are a number of simple properties that may be used to affect positioning a
 
 A `SlideShowLayout` positions items horizontally, from left to right, by default. Alternatively, you can tell the layout to position items vertically, from top to bottom, instead:
 
-``` code
+``` actionscript
 layout.direction = Direction.VERTICAL;
 ```
 
@@ -35,13 +35,13 @@ The [`direction`](../api-reference/feathers/layout/SlideShowLayout.html#directio
 
 The *padding* is the minimum space around the edges of each item in container. Let's set the [`padding`](../api-reference/feathers/layout/SlideShowLayout.html#padding) property to `12` pixels:
 
-``` code
+``` actionscript
 layout.padding = 12;
 ```
 
 If needed, the padding on each side of the container may be set separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/SlideShowLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/SlideShowLayout.html#paddingBottom) properties to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/SlideShowLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/SlideShowLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingTop = 10;
 layout.paddingRight = 15;
 layout.paddingBottom = 10;
@@ -54,7 +54,7 @@ We can *align* each item within its own page using the [`horizontalAlign`](../ap
 
 Let's adjust the alignments so that the content will be aligned to the top and left:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.LEFT;
 layout.verticalAlign = VerticalAlign.TOP;
 ```

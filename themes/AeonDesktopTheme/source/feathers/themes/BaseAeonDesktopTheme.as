@@ -1,5 +1,5 @@
 /*
-Copyright 2012-2018 Bowler Hat LLC
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -1034,7 +1034,6 @@ package feathers.themes
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
-			this.getStyleProviderForClass(TextFieldTextEditorViewPort).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_TEXT_EDITOR, this.setTextAreaTextEditorStyles);
 			this.getStyleProviderForClass(TextCallout).setFunctionForStyleName(TextArea.DEFAULT_CHILD_STYLE_NAME_ERROR_CALLOUT, this.setTextAreaErrorCalloutStyles);
 
 			//text callout
@@ -2479,14 +2478,11 @@ package feathers.themes
 
 			textArea.focusPadding = -2;
 			textArea.padding = this.borderSize;
-		}
-
-		protected function setTextAreaTextEditorStyles(textEditor:TextFieldTextEditorViewPort):void
-		{
-			textEditor.paddingTop = this.extraSmallGutterSize;
-			textEditor.paddingRight = this.smallGutterSize;
-			textEditor.paddingBottom = this.extraSmallGutterSize;
-			textEditor.paddingLeft = this.smallGutterSize;
+			
+			textArea.innerPaddingTop = this.extraSmallGutterSize;
+			textArea.innerPaddingRight = this.smallGutterSize;
+			textArea.innerPaddingBottom = this.extraSmallGutterSize;
+			textArea.innerPaddingLeft = this.smallGutterSize;
 		}
 
 		protected function setTextAreaErrorCalloutStyles(callout:TextCallout):void

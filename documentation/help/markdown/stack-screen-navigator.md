@@ -23,7 +23,7 @@ Navigation can be enhanced with animation, called a [*transition*](transitions.h
 
 First, let's create a `StackScreenNavigator` component and add it to the display list:
 
-``` code
+``` actionscript
 this._navigator = new StackScreenNavigator();
 this.addChild( this._navigator );
 ```
@@ -32,7 +32,7 @@ You may set its `width` and `height`, but that's optional because the `StackScre
 
 To add a new screen that the navigator can show, call [`addScreen()`](../api-reference/feathers/controls/StackScreenNavigator.html#addScreen()) and pass in an ID string to associate with the screen along with a [`StackScreenNavigatorItem`](../api-reference/feathers/controls/StackScreenNavigatorItem.html):
 
-``` code
+``` actionscript
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
 this._navigator.addScreen( "mainMenu", mainMenuItem );
 ```
@@ -45,13 +45,13 @@ The first argument required by the `StackScreenNavigatorItem` constructor may be
 
 To show the first screen, called the *root screen*, set the [`rootScreenID`](../api-reference/feathers/controls/StackScreenNavigator.html#rootScreenID) property. We'll set it to the `"mainMenu"` string that we registered with `addScreen()` earlier:
 
-``` code
+``` actionscript
 this._navigator.rootScreenID = "mainMenu";
 ```
 
 To access the currently visible screen, use the [`activeScreen`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreen) property.
 
-``` code
+``` actionscript
 var mainMenu:MainMenuScreen = MainMenuScreen( this._navigator.activeScreen );
 ```
 
@@ -63,21 +63,21 @@ If the active screen dispatches an event, the `StackScreenNavigator` can listen 
 
 Before we get to that, let's make a couple of changes to our existing code. First, let's move the main menu screen's ID into a constant. Then, let's add a second screen.
 
-``` code
+``` actionscript
 private static const MAIN_MENU:String = "mainMenu";
 private static const OPTIONS:String = "options";
 ```
 
 The constants will help us avoid typing mistakes that the compiler can easily catch. Let's use the `MAIN_MENU` constant in the call to `addScreen()`:
 
-``` code
+``` actionscript
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
 ```
 
 You probably noticed that we defined an `OPTIONS` constant too. Let's add the options screen that goes with it:
 
-``` code
+``` actionscript
 var optionsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( OptionsScreen );
 this._navigator.addScreen( OPTIONS, optionsItem );
 ```
@@ -92,7 +92,7 @@ The best way to navigate from one screen to another is to dispatch an event from
 
 Let's map an event from the main menu screen that will push the options screen onto the stack:
 
-``` code
+``` actionscript
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForPushEvent( MainMenuScreen.SHOW_OPTIONS, OPTIONS );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
@@ -102,13 +102,13 @@ Using [`setScreenIDForPushEvent()`](../api-reference/feathers/controls/StackScre
 
 Inside the `MainMenuScreen` class, we can add the constant named `SHOW_OPTIONS` for the event:
 
-``` code
+``` actionscript
 public static const SHOW_OPTIONS:String = "showOptions";
 ```
 
 Then, we might dispatch this event when a button is triggered:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this.dispatchEventWith( SHOW_OPTIONS );
@@ -119,13 +119,13 @@ Sometimes, when we push a new screen onto the stack, we want to save the state o
 
 As an example, let's say that we want to save the scroll position of a `List` so that the user doesn't lose their place when they return to this screen. Let's add a property to the screen for this saved scroll position:
 
-``` code
+``` actionscript
 public var savedVerticalScrollPosition:Number = 0;
 ```
 
 When we initially create the `List`, we can set its `verticalScrollPosition` property.
 
-``` code
+``` actionscript
 this.list.verticalScrollPosition = this.savedVerticalScrollPosition;
 ```
 
@@ -133,7 +133,7 @@ We've set the default value to `0`, which is the same default that the `List` wo
 
 When we push a new screen, we can create a set of key-value pairs (an `Object`) to map a property names to values. We'll save the `verticalScrollPosition` property of the `List` as one of these values. When we dispatch the event to push a new screen, we'll pass the `Object` to the event's `data` property:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     var savedProperties:Object =
@@ -150,7 +150,7 @@ Notice that we store the value using the name `savedVerticalScrollPosition` to m
 
 Next, let's add an event to pop the options screen from the top of the stack and return to the main menu screen:
 
-``` code
+``` actionscript
 var optionsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( OptionsScreen );
 optionsItem.addPopEvent( Event.COMPLETE );
 ```
@@ -159,7 +159,7 @@ To register an event that should pop the active screen, we call [`addPopEvent()`
 
 Inside `OptionsScreen`, we might dispatch an event when a button is triggered, similar to how we did it in `MainMenuScreen`:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this.dispatchEventWith( Event.COMPLETE );
@@ -182,14 +182,14 @@ Each of the built-in transition classes has one or more static methods that you 
 
 We can pass the results to the [`pushTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#pushTransition) and [`popTransition`](../api-reference/feathers/controls/StackScreenNavigator.html#popTransition) properties on the screen navigator:
 
-``` code
+``` actionscript
 this._navigator.pushTransition = Slide.createSlideLeftTransition();
 this._navigator.popTransition = Slide.createSlideRightTransition();
 ```
 
 In the code above, we don't need to pass any arguments to `Slide.createSlideLeftTransition()` or `Slide.createSlideRightTransition()`. However, these functions expose some optional parameters that we can customize, if desired. For instance, we might want to customize the duration of the animation (in seconds) and the easing function:
 
-``` code
+``` actionscript
 this._navigator.pushTransition = Slide.createSlideLeftTransition( 0.75, Transitions.EASE_IN_OUT );
 ```
 
@@ -201,7 +201,7 @@ Now, the animation will last a little longer while easing in and out.
 
 Let's say that we want the push and pop transitions for most screens to be the same throughout our app. However, we have a screen for quick settings changes that we want to slide in from the bottom to cover up the existing screen. Then, when the quick settings panel is closed, it should slide down to reveal the previous screen below.
 
-``` code
+``` actionscript
 var quickSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( QuickSettingsScreen );
 quickSettingsItem.addPopEvent( Event.COMPLETE );
 quickSettingsItem.pushTransition = Cover.createCoverUpTransition();
@@ -218,13 +218,13 @@ A `StackScreenNavigator` dispatches [`FeathersEventType.TRANSITION_START`](../ap
 
 Let's listen for `FeathersEventType.TRANSITION_COMPLETE`:
 
-``` code
+``` actionscript
 this._navigator.addEventListener( FeathersEventType.TRANSITION_COMPLETE, navigator_transitionCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function navigator_transitionCompleteHandler( event:Event ):void
 {
     // do something after the transition animation
@@ -237,20 +237,20 @@ Optionally, we can pass properties to the screen before it is shown. If we have 
 
 In the class where we create the `StackScreenNavigator`, let's create an `OptionsData` instance too. In a moment, we'll pass it to each screen that needs it.
 
-``` code
+``` actionscript
 this._optionsData = new OptionsData();
 ```
 
 Now, when we add our `OptionsScreen` to the `StackScreenNavigator`, we pass it the `OptionsData` instance in using the [`properties`](../api-reference/feathers/controls/StackScreenNavigatorItem.html#properties) property on the `StackScreenNavigatorItem`:
 
-``` code
+``` actionscript
 var optionsItem:StackScreenNavivatorItem = new StackScreenNavigatorItem( OptionsScreen );
 optionsItem.properties.options = this._optionsData;
 ```
 
 In `OptionsScreen`, we need to add a variable or a getter and setter named `options` to match up with `optionsItem.properties.options`:
 
-``` code
+``` actionscript
 protected var _options:OptionsData;
  
 public function get options():OptionsData
@@ -266,7 +266,7 @@ public function set options( value:OptionsData ):void
 
 We want to update the screen when the `options` property changes, so we should invalidate the screen, and the `draw()` function will be called again:
 
-``` code
+``` actionscript
 public function set options( value:OptionsData ):void
 {
     if(this._options == value)
@@ -288,7 +288,7 @@ public function set options( value:OptionsData ):void
 
 The `StackScreenNavigatorItem` event map can be used for more than simply navigating from one screen to another. You can also call a function when an event or signal is dispatched. Let's add a new event to the main menu that will be dispatched when an "About Our Product" button is clicked. We want it to open a website in the browser.
 
-``` code
+``` actionscript
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForPushEvent( MainMenuScreen.SHOW_OPTIONS, OPTIONS );
 mainMenuItem.setFunctionForPushEvent( MainMenuScreen.LINK_TO_HOME_PAGE, openHomePageLink );
@@ -296,7 +296,7 @@ mainMenuItem.setFunctionForPushEvent( MainMenuScreen.LINK_TO_HOME_PAGE, openHome
 
 The function may optionally receives the event listener arguments.
 
-``` code
+``` actionscript
 protected function openHomePageLink():void
 {
     navigateToURL( new URLRequest( "http://www.example.com/" ), "_blank" );
@@ -305,7 +305,7 @@ protected function openHomePageLink():void
 
 Optionally, the function may receive the listener arguments for the event dispatched by the screen, if needed:
 
-``` code
+``` actionscript
 protected function openHomePageLink( event:Event ):void
 ```
 
@@ -317,7 +317,7 @@ If as3-signals has been detected, the `StackScreenNavigator` will first check a 
 
 Let's rework the example above to use signals instead of events. Let's start with changing how `MainMenuScreen` is added to the `StackScreenNavigator`:
 
-``` code
+``` actionscript
 var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForPushEvent( "onOptions", OPTIONS );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
@@ -325,7 +325,7 @@ this._navigator.addScreen( MAIN_MENU, mainMenuItem );
 
 Inside `MainMenuScreen`, we add a signal called `onOptions` that will automatically be detected when the `StackScreenNavigator` reads the event map:
 
-``` code
+``` actionscript
 protected var _onOptions:Signal = new Signal();
  
 public function get onOptions():ISignal
@@ -336,7 +336,7 @@ public function get onOptions():ISignal
 
 The `MainMenuScreen` might dispatch `onOptions` when a button is triggered:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this._onOptions.dispatch();

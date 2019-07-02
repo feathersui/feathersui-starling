@@ -13,7 +13,7 @@ Let's start by looking at the complete source code for a custom layout. Don't wo
 
 This custom layout will be similar to [`VerticalLayout`](vertical-layout.html), but it won't offer so many options available to the built-in version. This `SimpleVerticalLayout` class, as we'll call it, will position items from top to bottom, aligned to the top and left. We'll offer one customizable property, a gap between items, to show how to implement something like that.
 
-``` code
+``` actionscript
 package feathersx.layout
 {
 	import feathers.core.IFeathersControl;
@@ -196,7 +196,7 @@ We'll go into the low-level details in a moment, but let's look at a couple of i
 
 This property informs the container if the layout code should be updated when the container scrolls.
 
-``` code
+``` actionscript
 public function get requiresLayoutOnScroll():Boolean
 {
 	return false;
@@ -209,7 +209,7 @@ For our layout, we don't need to change the position or size of anything after s
 
 The first function defined by the `ILayout` interface is [`layout()`](../api-reference/feathers/layout/ILayout.html#layout()). Please take a moment to review its signature below:
 
-``` code
+``` actionscript
 layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 ```
 
@@ -217,7 +217,7 @@ This function's main purpose is to set the final transformations on the items in
 
 The first argument is a `Vector.<DisplayObject>` of the items to layout. A layout implementation can loop through these items and transform them as needed. Below, you can see a this exact loop from our class:
 
-``` code
+``` actionscript
 var itemCount:int = items.length;
 for(var i:int = 0; i < itemCount; i++)
 {
@@ -250,7 +250,7 @@ Next, we check if an item is a Feathers component. If we encounters one, we need
 
 The second argument is an optional [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html) object. This object specifies restrictions on the layout, such as dimensions, starting position, and scroll position (for scrolling containers). If the `ViewPortBounds` object is not provided, the layout is expected to assume that it has no restrictions on dimensions, the container has not scrolled, and item positioning should start at the standard origin `(0,0)`. The code below will use `viewPortBounds`, if it is not `null`, or it will select sensible defaults for all values:
 
-``` code
+``` actionscript
 var startX:Number = 0;
 var startY:Number = 0;
 var explicitWidth:Number = NaN;
@@ -280,7 +280,7 @@ This argument actually becomes the return value of the `layout()` function. By p
 
 Below, we see how the dimensions of the content and some of the values from `ViewPortBounds` are used to calculate the properties on the `LayoutBoundsResult` object:
 
-``` code
+``` actionscript
 if(!result)
 {
 	result = new LayoutBoundsResult();
@@ -354,7 +354,7 @@ The [`contentX`](../api-reference/feathers/layout/LayoutBoundsResult.html#conten
 
 The second function defined by [`ILayout`](../api-reference/feathers/layout/ILayout.html) is [`getScrollPositionForIndex()`](../api-reference/feathers/layout/ILayout.html#getScrollPositionForIndex()). Please take a moment to review its signature below:
 
-``` code
+``` actionscript
 getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
 ```
 
@@ -362,7 +362,7 @@ This function may be called by a component that supports layout to calculate a s
 
 The first argument is the zero-based index of the item that needs to be fully visible in the view port. You can see that this is used for the ending condition in the `for` loop:
 
-``` code
+``` actionscript
 for(var i:int = 0; i < index; i++)
 ```
 
@@ -370,7 +370,7 @@ In other words, we don't need to loop through every item to see where the final 
 
 Next, the full list of items are passed in. In the code below, we loop through the items mentioned above, adding each item's height and the gap between the items, similar to the `layout()` function, except that we aren't setting the positions of items:
 
-``` code
+``` actionscript
 var positionY:Number = 0;
 for(var i:int = 0; i < index; i++)
 {
@@ -401,7 +401,7 @@ If the result value isn't `null`, `getScrollPositionForIndex()` must use it as t
 
 Below, we can see how we check if the result is `null` or not, and the final scroll position is set before returning:
 
-``` code
+``` actionscript
 if(!result)
 {
 	result = new Point();
@@ -417,25 +417,25 @@ The `getNearestScrollPositionForIndex()` function is very similar to the `getScr
 
 First, we're going to take advantage of the fact that our implementation of `getScrollPositionForIndex()` will position the item at the top of the view port.
 
-``` code
+``` actionscript
 result = this.getScrollPositionForIndex(index, items, x, y, viewPortWidth, viewPortHeight, result);
 ```
 
 The `y` value of the result will become the maximum possible position that we'll scroll to where the item is completely visible:
 
-``` code
+``` actionscript
 var maxPositionY:Number = result.y;
 ```
 
 Next, we want to know the minimum possible position. We can calculate that with some simple arithmetic:
 
-``` code
+``` actionscript
 var minPositionY:Number = maxPositionY - viewPortHeight + item.height;
 ```
 
 Now that we know the range of possible scroll positions, we can simply ensure that the value of scrollY is within that range:
 
-``` code
+``` actionscript
 if(scrollY < minPositionY)
 {
 	result.y = minPositionY;

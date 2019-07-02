@@ -11,7 +11,7 @@ A [`TabNavigator`](../tab-navigator.html) component displays text in its tabs, w
 
 Using the [`tabBarFactory`](../../api-reference/feathers/controls/TabNavigator.html#tabBarFactory) property that creates the `TabBar` for the `TabNavigator`, we can access the tab bar's [`tabFactory`](../../api-reference/feathers/controls/TabBar.html#tabFactory) to customize the tabs. As long as we aren't setting any advanced font styles on the tab's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly the tab's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var navigator:TabNavigator = new TabNavigator();
 navigator.tabBarFactory = function():TabBar
 {

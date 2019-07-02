@@ -20,7 +20,7 @@ The [`Header`](../api-reference/feathers/controls/Header.html) component display
 
 First, let's create a `Header` control, give it a title, and add it to the display list.
 
-``` code
+``` actionscript
 var header:Header = new Header();
 header.title = "Settings";
 this.addChild( header );
@@ -28,7 +28,7 @@ this.addChild( header );
 
 Next, we'll add a back button to the left side of the header.
 
-``` code
+``` actionscript
 var backButton:Button = new Button();
 backButton.label = "Back";
 backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
@@ -50,7 +50,7 @@ A header offers a number of properties that may be used to customize its appeara
 
 The font styles of the header's title may be customized using the [`fontStyles`](../api-reference/feathers/controls/Header.html#fontStyles) property.
 
-``` code
+``` actionscript
 header.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -58,7 +58,7 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the header's title should use different font styles when the header is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/Header.html#disabledFontStyles) property too:
 
-``` code
+``` actionscript
 header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
@@ -66,7 +66,7 @@ header.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 
 Let's give the header a background skin that stretches to fill the entire width and height of the header. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 header.backgroundSkin = skin;
@@ -76,7 +76,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the header a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 header.backgroundDisabledSkin = skin;
@@ -90,13 +90,13 @@ By default, the header's title text renderer appears in the center. The `titleAl
 
 Let's align the title to the right:
 
-``` code
+``` actionscript
 header.titleAlign = HorizontalAlign.RIGHT;
 ```
 
 Similar to many Feathers components, the `Header` provides [`gap`](../api-reference/feathers/controls/Header.html#gap) and various padding values for layouts.
 
-``` code
+``` actionscript
 header.gap = 10;
 header.paddingTop = 15;
 header.paddingRight = 20;
@@ -106,7 +106,7 @@ header.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Header.html#padding) property to set them all at once:
 
-``` code
+``` actionscript
 header.padding = 20;
 ```
 

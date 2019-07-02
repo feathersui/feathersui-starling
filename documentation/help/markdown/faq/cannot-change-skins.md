@@ -25,7 +25,7 @@ If we're generally happy with the styles provided by the theme, but we want to m
 
 Let's use an `AddOnFunctionStyleProvider` to add an icon to a `Button` component:
 
-``` code
+``` actionscript
 function setExtraStyles( button ):void
 {
     button.iconPosition = RelativePosition.TOP;

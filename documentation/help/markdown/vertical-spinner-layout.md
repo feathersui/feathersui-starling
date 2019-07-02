@@ -11,7 +11,7 @@ The [`VerticalSpinnerLayout`](../api-reference/feathers/layout/VerticalSpinnerLa
 
 First, let's create a `VerticalSpinnerLayout` and pass it to a [`SpinnerList`](spinner-list.html):
 
-``` code
+``` actionscript
 var layout:VerticalSpinnerLayout = new VerticalSpinnerLayout();
  
 var list:SpinnerList = new SpinnerList();
@@ -23,20 +23,20 @@ There are a number of simple properties that may be used to affect the layout. T
 
 The *padding* is the space around the content that the layout positions and sizes. You may set padding on the left and right sides of the container separately. Below, we set the [`paddingLeft`](../api-reference/feathers/layout/VerticalSpinnerLayout.html#paddingLeft) to `10` pixels and the [`paddingRight`](../api-reference/feathers/layout/VerticalSpinnerLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingRight = 15;
 layout.paddingLeft = 10;
 ```
 
 The *gap* is the space between items. Let's set the [`gap`](../api-reference/feathers/layout/VerticalSpinnerLayout.html#gap) property to `5` pixels:
 
-``` code
+``` actionscript
 layout.gap = 5;
 ```
 
 We can *align* the items in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/VerticalSpinnerLayout.html#horizontalAlign) property. Let's adjust it so that the content will be aligned to the center:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.CENTER;
 ```
 
@@ -48,7 +48,7 @@ A virtualized layout will need as estimate about how big a "virtual" item render
 
 By default [`useVirtualLayout`](../api-reference/feathers/layout/VerticalSpinnerLayout.html#useVirtualLayout) is `true` for containers that support it. You may disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, you should rarely disable `useVirtualLayout`.
 
-``` code
+``` actionscript
 layout.useVirtualLayout = false;
 ```
 

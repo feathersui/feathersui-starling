@@ -20,7 +20,7 @@ The [`ToggleSwitch`](../api-reference/feathers/controls/ToggleSwitch.html) compo
 
 First, let's create a toggle switch, select it, and add it to the display list.
 
-``` code
+``` actionscript
 var toggle:ToggleSwitch = new ToggleSwitch();
 toggle.isSelected = true;
 this.addChild( toggle );
@@ -28,13 +28,13 @@ this.addChild( toggle );
 
 The [`isSelected`](../api-reference/feathers/controls/ToggleSwitch.html#isSelected) property indicates if the toggle switch is on (`true`) or off (`false`). Add a listener to [`Event.CHANGE`](../api-reference/feathers/controls/ToggleSwitch.html#event:change) to know when the `isSelected` property changes:
 
-``` code
+``` actionscript
 toggle.addEventListener( Event.CHANGE, toggle_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 function toggle_changeHandler( event:Event ):void
 {
     var toggle:ToggleSwitch = ToggleSwitch( event.currentTarget );
@@ -50,7 +50,7 @@ The skins for a `ToggleSwitch` control are divided into the thumb, labels for of
 
 The font styles of the on and off labels may be customized using the [`onLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelFontStyles) and [`offLabelFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelFontStyles) properties, respectively.
 
-``` code
+``` actionscript
 toggle.onLabelFontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 toggle.offLabelFontStyles = new TextFormat( "Helvetica", 20, 0x000000 );
 ```
@@ -59,7 +59,7 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the labels should use different font styles when it is disabled, you may set the [`onLabelDisabledFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#onLabelDisabledFontStyles) and [`offLabelDisabledFontStyles`](../api-reference/feathers/controls/ToggleSwitch.html#offLabelDisabledFontStyles) properties too:
 
-``` code
+``` actionscript
 toggle.onLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 toggle.offLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
@@ -82,14 +82,14 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, setToggleSwitchThumbStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setToggleSwitchThumbStyles( thumb:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -100,13 +100,13 @@ private function setToggleSwitchThumbStyles( thumb:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 toggle.customThumbStyleName = "custom-thumb";
 ```
 
 You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customThumbStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName("custom-thumb", setToggleSwitchCustomThumbStyles );
 ```
@@ -115,7 +115,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/ToggleSwitch.html#thumbFactory) to provide skins for the toggle switch's thumb:
 
-``` code
+``` actionscript
 toggle.thumbFactory = function():Button
 {
     var button:Button = new Button();
@@ -137,14 +137,14 @@ This section only explains how to access the on track sub-component. Please read
 
 If you're creating a [theme](themes.html), you can target the [`ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK`](../api-reference/feathers/controls/ToggleSwitch.html#DEFAULT_CHILD_STYLE_NAME_ON_TRACK) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, setToggleSwitchOnTrackStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setToggleSwitchOnTrackStyles( track:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -155,13 +155,13 @@ private function setToggleSwitchOnTrackStyles( track:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 toggle.customOnTrackStyleName = "custom-on-track";
 ```
 
 You can set the function for the [`customOnTrackStyleName`](../api-reference/feathers/controls/ToggleSwitch.html#customOnTrackStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-on-track", setToggleSwitchCustomOnTrackStyles );
 ```
@@ -170,7 +170,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`onTrackFactory`](../api-reference/feathers/controls/ToggleSwitch.html#onTrackFactory) to provide skins for the toggle switch's on track:
 
-``` code
+``` actionscript
 toggle.onTrackFactory = function():Button
 {
     var button:Button = new Button();

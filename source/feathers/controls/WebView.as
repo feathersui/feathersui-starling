@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -428,7 +428,7 @@ package feathers.controls
 			{
 				newWidth = DEFAULT_SIZE;
 			}
-			var newHeight:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			if(needsHeight)
 			{
 				newHeight = DEFAULT_SIZE;

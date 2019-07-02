@@ -57,6 +57,7 @@ package feathers.examples.componentsExplorer
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import feathers.examples.componentsExplorer.screens.ToastScreen;
 
 	public class Main extends Drawers
 	{
@@ -252,6 +253,10 @@ package feathers.examples.componentsExplorer
 			var textInputItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextInputScreen);
 			textInputItem.addPopEvent(Event.COMPLETE);
 			this._navigator.addScreen(ScreenID.TEXT_INPUT, textInputItem);
+
+			var toastItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToastScreen);
+			toastItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ScreenID.TOAST, toastItem);
 
 			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleSwitchScreen);
 			togglesItem.addPopEvent(Event.COMPLETE);

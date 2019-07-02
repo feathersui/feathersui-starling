@@ -33,7 +33,7 @@ Because each passage of vector text needs to be drawn to `BitmapData`, each sepa
 
 <aside class="info">In general, you should customize font styles on the parent component of a text renderer using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`Button`](button.html) component, you'd set the button's [`fontStyles`](../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 button.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -41,7 +41,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To render text with the classic Flash `TextField`, create a [`TextFieldTextRenderer`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`labelFactory`](../api-reference/feathers/controls/Button.html#labelFactory) of a [`Button`](button.html) component:
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 button.labelFactory = function():ITextRenderer
@@ -59,13 +59,13 @@ button.labelFactory = function():ITextRenderer
 
 Advanced font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Pass an instance of `TextFormat` to the text renderer's [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#textFormat) property:
 
-``` code
+``` actionscript
 textRenderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0xcccccc );
 ```
 
 The `TextFormat` allows you to customize font size, color, alignment, and more.
 
-``` code
+``` actionscript
 var format:TextFormat = new TextFormat( "Helvetica" );
 format.size = 20;
 format.color = 0xc4c4c4;
@@ -74,7 +74,7 @@ format.align = TextFormatAlign.CENTER;
 
 To render the `text` property of the `TextFieldTextRenderer` using [a limited subset of HTML](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText), set the `isHTML` property to `true`:
 
-``` code
+``` actionscript
 textRenderer.text = "<span class='heading'>hello</span> world!";
 textRenderer.isHTML = true;
 ```
@@ -87,7 +87,7 @@ Some components, like [`Button`](button.html) and [`TextInput`](text-input.html)
 
 For instance, we can provide a different font style for the down state of a `Button` by calling [`setTextFormatForState()`](../api-reference/feathers/controls/text/TextFieldTextRenderer.html#setTextFormatForState()):
 
-```code
+``` actionscript
 var defaultFormat:TextFormat = new TextFormat( "Helvetica", 20, 0xc4c4c4 );
 textRenderer.textFormat = defaultFormat;
 
@@ -101,7 +101,7 @@ We didn't provide separate font styles for other states, like `ButtonState.HOVER
 
 To embed a TTF or OTF font for `TextFieldTextRenderer`, use `[Embed]` metadata, like this:
 
-``` code
+``` actionscript
 [Embed(source="my-font.ttf",fontFamily="My Font Name",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="false")]
 private static const MY_FONT:Class;
 ```
@@ -117,7 +117,7 @@ Here are the parameters:
 
 To use an embedded font with `TextFieldTextRenderer`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `TextFormat` object.
 
-``` code
+``` actionscript
 textRenderer.textFormat = new TextFormat( "My Font Name", 16, 0xcccccc );
 textRenderer.embedFonts = true;
 ```

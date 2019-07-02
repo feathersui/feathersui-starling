@@ -13,7 +13,7 @@ The [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html)
 
 First, let's create a horizontal layout and pass it to a [`LayoutGroup`](layout-group.html):
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
  
 var container:LayoutGroup = new LayoutGroup();
@@ -27,13 +27,13 @@ There are a number of simple properties that may be used to affect positioning a
 
 The *padding* is the space around the edges of the container. Let's set the [`padding`](../api-reference/feathers/layout/HorizontalLayout.html#padding) property to `12` pixels:
 
-``` code
+``` actionscript
 layout.padding = 12;
 ```
 
 If needed, the padding on each side of the container may be set separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/HorizontalLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/HorizontalLayout.html#paddingBottom) properties to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/HorizontalLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/HorizontalLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingTop = 10;
 layout.paddingRight = 15;
 layout.paddingBottom = 10;
@@ -42,7 +42,7 @@ layout.paddingLeft = 15;
 
 The *gap* is the space between items. Let's set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.html#gap) property to `5` pixels:
 
-``` code
+``` actionscript
 layout.gap = 5;
 ```
 
@@ -50,7 +50,7 @@ layout.gap = 5;
 
 We can *align* the items in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/HorizontalLayout.html#horizontalAlign) and [`verticalAlign`](../api-reference/feathers/layout/HorizontalLayout.html#verticalAlign) properties. Horizontal alignment may be used only when the total width of the content (including padding and gap values) is less than or equal to the width of the container that uses the layout. Let's adjust the alignments so that the content will be aligned to the horizontal center and vertical middle:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.CENTER;
 layout.verticalAlign = VerticalAlign.MIDDLE;
 ```
@@ -63,7 +63,7 @@ We can pass [`HorizontalLayoutData`](../api-reference/feathers/layout/Horizontal
 
 In the following example, we add two buttons to a container using `HorizontalLayout`. The first button takes up 25% of the container's width, and the second button takes up 75% of the container's width:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 var button1LayoutData:HorizontalLayoutData = new HorizontalLayoutData();
@@ -83,7 +83,7 @@ If there are other children in the container with fixed pixel widths, [`percentW
 
 In the following example, we have two buttons again, but this time, the first button is a fixed 300 pixels wide. Now, the percentages are based on the width of the container *minus 300 pixels*. We want the second button to simply fill the remaining horizontal space in the container, so we set `percentWidth` to `100`:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 button1.width = 300;
@@ -103,7 +103,7 @@ We can also set [`percentHeight`](../api-reference/feathers/layout/HorizontalLay
 
 Let's use the same width values from the previous example, but we'll specify 100% height on the first button:
 
-``` code
+``` actionscript
 var button1:Button = new Button();
 button1.label = "1";
 button1.width = 300;
@@ -124,13 +124,13 @@ Notice that we can mix and match fixed pixel values with percentage values on th
 
 As a shortcut, we can optionally specify both `percentWidth` and `percentHeight` in the `HorizontalLayoutData` constructor:
 
-``` code
+``` actionscript
 new HorizontalLayoutData( 50, 100 ); //width: 50%, height: 100%
 ```
 
 The value `NaN` may be used to say that we do not want to use percentage dimensions. For instance, if we wanted a button that is 300 pixels wide and 100% high, like in the earlier example, we might do it like this:
 
-``` code
+``` actionscript
 button1.width = 300;
 button1.layoutData = new HorizontalLayoutData( NaN, 100 );
 ```
@@ -145,7 +145,7 @@ A virtualized layout will need as estimate about how big a "virtual" item render
 
 By default [`useVirtualLayout`](../api-reference/feathers/layout/HorizontalLayout.html#useVirtualLayout) is `true` for containers that support it. We can disable virtual layouts by setting it to `false`. When a layout is not virtualized, every single item renderer must be created by the component. If a list has thousands of items, this means that thousands of item renderers need to be created. This can lead to significant performance issues, especially on mobile. In general, `useVirtualLayout` should rarely be disabled.
 
-``` code
+``` actionscript
 layout.useVirtualLayout = false;
 ```
 
@@ -155,7 +155,7 @@ The [`LayoutGroup`](layout-group.html) and [`ScrollContainer`](scroll-container.
 
 By default, a virtualized horizontal layout will assume that all items will have the same width. This restriction helps improve performance, and most lists won't need items with variable widths. However, we can set the [`hasVariableItemDimensions`](../api-reference/feathers/layout/HorizontalLayout.html#hasVariableItemDimensions) property to `true`, if we need our list's item renderers to have different width values. When we do this, the typical item width is used as an estimated width for virtual item renderers, and the real width value for each item renderer is stored as it comes into view, improving the accuracy of the layout over time.
 
-``` code
+``` actionscript
 layout.hasVariableItemDimensions = false;
 ```
 

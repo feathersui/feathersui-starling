@@ -26,7 +26,7 @@ The [`TextArea`](../api-reference/feathers/controls/TextArea.html) class support
 
 First, let's create a `TextArea` control and add it to the display list:
 
-``` code
+``` actionscript
 var textArea:TextArea = new TextArea();
 this.addChild( textArea );
 ```
@@ -35,7 +35,7 @@ this.addChild( textArea );
 
 Text may be changed programatically by setting the [`text`](../api-reference/feathers/controls/TextArea.html#text) property:
 
-``` code
+``` actionscript
 textArea.text = "Hello\nWorld";
 ```
 
@@ -43,19 +43,19 @@ textArea.text = "Hello\nWorld";
 
 You may programmatically set focus to the text area by calling [`setFocus()`](../api-reference/feathers/controls/TextArea.html#setFocus()):
 
-``` code
+``` actionscript
 textArea.setFocus();
 ```
 
 You can select part of the text too:
 
-``` code
+``` actionscript
 textArea.selectRange(0, textArea.text.length);
 ```
 
 If you simply want to set the position of the cursor, you can omit the second argument to [`selectRange()`](../api-reference/feathers/controls/TextArea.html#selectRange()):
 
-``` code
+``` actionscript
 textArea.selectRange(0);
 ```
 
@@ -63,7 +63,7 @@ textArea.selectRange(0);
 
 Text areas provide some useful events. One of the most common requirements is knowing, in real time, when the value of the [`text`](../api-reference/feathers/controls/TextArea.html#text) property has changed:
 
-``` code
+``` actionscript
 textArea.addEventListener( Event.CHANGE, textArea_changeHandler );
 ```
 
@@ -71,7 +71,7 @@ We can listen for [`Event.CHANGE`](../api-reference/feathers/controls/TextArea.h
 
 You might also want to know when the text area receives and loses focus:
 
-``` code
+``` actionscript
 textArea.addEventListener( FeathersEventType.FOCUS_IN, textArea_focusInHandler );
 textArea.addEventListener( FeathersEventType.FOCUS_OUT, textArea_focusOutHandler );
 ```
@@ -84,19 +84,19 @@ Several properties allow you to customize a text area's behavior.
 
 Set the [`isEditable`](../api-reference/feathers/controls/TextArea.html#isEditable) property to false to make the text uneditable, without giving the text area a disabled appearance:
 
-``` code
+``` actionscript
 textArea.isEditable = false;
 ```
 
 To limit the number of characters that may be entered, use the [`maxChars`](../api-reference/feathers/controls/TextArea.html#maxChars) property:
 
-``` code
+``` actionscript
 textArea.maxChars = 16;
 ```
 
 The [`restrict`](../api-reference/feathers/controls/TextArea.html#restrict) property limits the set of characters that can be entered into the text area. It works like the `restrict` property on `flash.text.TextField`.
 
-``` code
+``` actionscript
 textArea.restrict = "0-9";
 ```
 
@@ -110,7 +110,7 @@ A text area provides a number of properties to customize its appearance. For ful
 
 The text area's font styles may be customized using the [`fontStyles`](../api-reference/feathers/controls/TextArea.html#fontStyles) property.
 
-``` code
+``` actionscript
 textArea.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -118,13 +118,13 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the text area should use different font styles when it is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/TextArea.html#disabledFontStyles) property too:
 
-``` code
+``` actionscript
 textArea.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
 Finally, we can even customize the font styles for each of the text area's specific states:
 
-```code
+``` actionscript
 textArea.setFontStylesForState( TextInputState.ERROR,
     new TextFormat( "Helvetica", 20, 0xcc0000 ) );
 ```
@@ -137,7 +137,7 @@ When font styles aren't available for a specific state, the text area will use t
 
 Let's give our text area its background skin. In the following example, we'll use an [`ImageSkin`](../api-reference/feathers/skins/ImageSkin.html), but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:ImageSkin = new ImageSkin( upTexture );
 skin.scale9Grid = new Rectangle( 2, 3, 3, 8 );
 textArea.backgroundSkin = skin;
@@ -145,7 +145,7 @@ textArea.backgroundSkin = skin;
 
 We can change the appearance of the text area's skin when the state changes. In the next example, we provide another texture to the same `ImageSkin` for the text area's "focused" state:
 
-``` code
+``` actionscript
 skin.setTextureForState( TextInputState.FOCUSED, focusedTexture );
 ```
 
@@ -153,7 +153,7 @@ The `ImageSkin` automatically listens for changes to the text area's state and u
 
 We can also provide different display objects for specific states, if needed. In the next example, we have a texture for the "disabled" state that requires a different `scale9Grid` than the other textures. We can create a separate `ImageSkin` for this state:
 
-``` code
+``` actionscript
 var disabledSkin:ImageSkin = new ImageSkin( disabledTexture );
 textArea.scale9Grid = new Rectangle( 4, 2, 2, 10 );
 textArea.setSkinForState( TextInputState.DISABLED, disabledSkin );
@@ -167,7 +167,7 @@ If a skin is not provided for a specific state, the text area will display its `
 
 Padding may be added on each side of the text area:
 
-``` code
+``` actionscript
 textArea.paddingTop = 5;
 textArea.paddingRight = 8;
 textArea.paddingBottom = 5;
@@ -176,7 +176,7 @@ textArea.paddingLeft = 8;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 textArea.padding = 6;
 ```
 
@@ -188,7 +188,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -197,7 +197,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -206,14 +206,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 textArea.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 textArea.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the funciton for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -224,7 +224,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the text area's scroll bars:
 
-``` code
+``` actionscript
 textArea.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

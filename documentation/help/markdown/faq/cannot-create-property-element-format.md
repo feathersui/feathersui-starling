@@ -19,7 +19,7 @@ Sometimes, though, we need to use a different text renderer than the theme uses 
 
 We can simply tell the `Button` not to use the theme by removing its style provider:
 
-``` code
+``` actionscript
 button.styleProvider = null;
 ```
 
@@ -33,13 +33,13 @@ The better option is to create a new *style name* for the component. The theme o
 
 Similar to how we might add `Button.ALTERNATE_STYLE_NAME_BACK_BUTTON` to the `styleNameList` of a `Button`, we can use our own custom strings too:
 
-``` code
+``` actionscript
 button.styleNameList.add( "my-custom-button" );
 ```
 
 Now, we need to tell the theme about our custom style name. Let's start by creating the function that should be called to style the button when this style name has been added. Inside the theme, let's create a function named `setMyCustomButtonStyles()`:
 
-``` code
+``` actionscript
 protected function setMyCustomButtonStyles( button:Button ):void
 {
 
@@ -50,7 +50,7 @@ We'll add some code to the function's body in a moment. Let's make sure the them
 
 Inside the theme's `initializeStyleProviders()` function, we'll add our `"my-custom-button"` style name to the theme's style provider for the `Button` class:
 
-``` code
+``` actionscript
 override protected function initializeStyleProviders():void
 {
 	super.initializeStyleProviders();
@@ -61,7 +61,7 @@ override protected function initializeStyleProviders():void
 
 Now that everything is hooked up in the theme, let's style the button in the body of the `setMyCustomButtonStyles()` function. We'll start by copying some code from the existing function for styling buttons:
 
-``` code
+``` actionscript
 // this is the default function for buttons
 protected function setButtonStyles( button:Button ):void
 {
@@ -74,7 +74,7 @@ protected function setButtonStyles( button:Button ):void
 
 We're interested in the background skins and the padding, but we don't want to set the `elementFormat` property, since we're using a different `TextBlockTextRenderer`.
 
-``` code
+``` actionscript
 protected function setMyCustomButtonStyles( button:Button ):void
 {
 	button.defaultSkin = new Image( this.buttonUpSkinTexture );
@@ -87,7 +87,7 @@ protected function setMyCustomButtonStyles( button:Button ):void
 
 Let's finish up by telling the `Button` to use a different text renderer, and then we'll set the appropriate font styles:
 
-``` code
+``` actionscript
 protected function customTextRendererFactory():ITextRenderer
 {
 	return new TextFieldTextRenderer();

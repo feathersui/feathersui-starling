@@ -11,7 +11,7 @@ A [`GroupedList`](../grouped-list.html) component contains a number of [item ren
 
 We can customize the item renderers inside the grouped list's [`itemRendererFactory`](../../api-reference/feathers/controls/GroupedList.html#itemRendererFactory). As long as we aren't setting any advanced font styles on the item renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the item renderer's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var list:GroupedList = new GroupedList();
 list.itemRendererFactory = function():IGroupedListItemRenderer
 {
@@ -27,7 +27,7 @@ If we wanted to change the item renderer's font styles inside the theme, we coul
 
 We can customize the header renderers inside the grouped list's [`headerRendererFactory`](../../api-reference/feathers/controls/GroupedList.html#headerRendererFactory). As long as we aren't setting any advanced font styles on the header renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the header renderer's [`fontStyles`](../../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#fontStyles) property.
 
-``` code
+``` actionscript
 var list:GroupedList = new GroupedList();
 list.headerRendererFactory = function():IGroupedListHeaderRenderer
 {
@@ -43,7 +43,7 @@ If we wanted to change the header renderer's font styles inside the theme, we co
 
 We can customize the footer renderers inside the grouped list's [`footerRendererFactory`](../../api-reference/feathers/controls/GroupedList.html#footerRendererFactory). As long as we aren't setting any advanced font styles on the footer renderer's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the footer renderer's [`fontStyles`](../../api-reference/feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html#fontStyles) property.
 
-``` code
+``` actionscript
 var list:GroupedList = new GroupedList();
 list.footerRendererFactory = function():IGroupedListFooterRenderer
 {

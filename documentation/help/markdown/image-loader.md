@@ -11,7 +11,7 @@ The [`ImageLoader`](../api-reference/feathers/controls/ImageLoader.html) class w
 
 First, let's create an `ImageLoader` control, pass in a texture to display, and add it to the display list:
 
-``` code
+``` actionscript
 var loader:ImageLoader = new ImageLoader();
 loader.source = texture;
 this.addChild( loader );
@@ -19,7 +19,7 @@ this.addChild( loader );
 
 Alternatively, you can pass a URL to the [`source`](../api-reference/feathers/controls/ImageLoader.html#source) property to load an external image:
 
-``` code
+``` actionscript
 loader.source = "http://www.example.com/image.png";
 ```
 
@@ -31,13 +31,13 @@ The URL may point to any image file that may be loaded by [`flash.display.Loader
 
 You can listen for [`Event.COMPLETE`](../api-reference/feathers/controls/ImageLoader.html#event:complete) to know when the image is fully loaded:
 
-``` code
+``` actionscript
 loader.addEventListener( Event.COMPLETE, loader_completeHandler );
 ```
 
 The listener might look like this:
 
-``` code
+``` actionscript
 function loader_completeHandler( event:Event ):void
 {
     // image loaded and texture ready
@@ -46,13 +46,13 @@ function loader_completeHandler( event:Event ):void
 
 You can also listen for errors to know if the `ImageLoader` is unable to load the texture:
 
-``` code
+``` actionscript
 loader.addEventListener( Event.IO_ERROR, loader_ioErrorHandler );
 ```
 
 The listener for [`Event.IO_ERROR`](../api-reference/feathers/controls/ImageLoader.html#event:ioError) might look like this:
 
-``` code
+``` actionscript
 function loader_ioErrorHandler( event:Event, data:IOErrorEvent ):void
 {
     // loader error
@@ -71,7 +71,7 @@ If enough memory is available, it's possible to store the loaded textures withou
 
 To use, simply pass the same `TextureCache` instance to the [`textureCache`]() property of multiple `ImageLoader` components:
 
-``` code
+``` actionscript
 var cache:TextureCache = new TextureCache( 30 );
 
 var loader1:ImageLoader = new ImageLoader();
@@ -85,7 +85,7 @@ The parameter passed to the `TextureCache` constructor specifies how many textur
 
 For a `List`, we might use a `TextureCache` for icons or accessories that are loaded from URLs:
 
-``` code
+``` actionscript
 var cache:TextureCache = new TextureCache( 15 );
 list.itemRendererFactory = function():IListItemRenderer
 {
@@ -106,7 +106,7 @@ The [`dispose()`](../api-reference/feathers/utils/textures/TextureCache.html#dis
 
 In the following example, let's assume that we stored a `TextureCache` instance in a `savedTextures` member variable in one of our screens:
 
-``` code
+``` actionscript
 override public function dispose():void
 {
 	if( this.savedTextures )
@@ -124,7 +124,7 @@ When the screen is disposed, we'll simply dispose the `TextureCache`.
 
 You can snap the position of an `ImageLoader` to the nearest whole pixel using the [`pixelSnapping`](../api-reference/feathers/controls/ImageLoader.html#pixelSnapping) property:
 
-``` code
+``` actionscript
 loader.pixelSnapping = true;
 ```
 
@@ -132,7 +132,7 @@ Pixel snapping is most useful for icons where crisp edges are especially importa
 
 When images are loaded in a component like a [`List`](list.html), it's often more desirable to avoid creating new textures on the GPU while the list is scrolling. Since texture uploads are expensive, this keeps the list feeling smooth and responsive.
 
-``` code
+``` actionscript
 loader.delayTextureCreation = true;
 ```
 
@@ -142,7 +142,7 @@ If desired, we can set the [`textureQueueDuration`](../api-reference/feathers/co
 
 When you resize a regular [`starling.display.Image`](http://doc.starling-framework.org/core/starling/display/Image.html), it may distort. `ImageLoader` allows you control whether the image maintains its aspect ratio within the dimensions of the `ImageLoader`:
 
-``` code
+``` actionscript
 loader.maintainAspectRatio = true;
 ```
 
@@ -150,7 +150,7 @@ When the [`maintainAspectRatio`](../api-reference/feathers/controls/ImageLoader.
 
 You can use the [`isLoaded`](../api-reference/feathers/controls/ImageLoader.html#isLoaded) getter to know if a texture is fully loaded (in addition to listening for [`Event.COMPLETE`](../api-reference/feathers/controls/ImageLoader.html#event:complete), mentioned above):
 
-``` code
+``` actionscript
 if( loader.isLoaded )
 {
     // ready
@@ -163,7 +163,7 @@ else
 
 You may set the scale factor of the loaded texture:
 
-``` code
+``` actionscript
 loader.scaleFactor = 0.5;
 ```
 
@@ -171,7 +171,7 @@ Using this value, the texture will be scaled to an appropriate size for Starling
 
 Finally, just like `starling.display.Image`, `ImageLoader` allows you to customize the [`color`](../api-reference/feathers/controls/ImageLoader.html#color) and [`smoothing`](../api-reference/feathers/controls/ImageLoader.html#smoothing) properties:
 
-``` code
+``` actionscript
 loader.color = 0xff0000;
 loader.smoothing = TextureSmoothing.NONE;
 ```

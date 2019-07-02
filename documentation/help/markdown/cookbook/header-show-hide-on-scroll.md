@@ -11,14 +11,14 @@ In order to show as much content as possible, some mobile UIs will only reveal a
 
 Let's start by defining the [`Header`](../header.html) and [`List`](../list.html) components as member variables:
 
-``` code
+``` actionscript
 private var _header:Header;
 private var _list:List;
 ```
 
 Next, we'll instantiate them and set some basic properties:
 
-``` code
+``` actionscript
 this._header = new Header();
 this._header.title = "Test";
 this.addChild(this._header);
@@ -36,7 +36,7 @@ this.addChild(this._list);
 
 Now, we're ready to add the layout code. We'll use [`AnchorLayout`](../anchor-layout.html) to position a header and a list, with the list's position relative to the header. The header and list should be placed inside a container that supports layouts, such as [`LayoutGroup`](../layout-group.html).
 
-``` code
+``` actionscript
 this.layout = new AnchorLayout();
  
 var headerLayoutData:AnchorLayoutData = new AnchorLayoutData();
@@ -62,20 +62,20 @@ The top of the list is anchored to the header. When the header moves, the list w
 
 Let's add a listener to handle touches:
 
-``` code
+``` actionscript
 this._list.addEventListener( TouchEvent.TOUCH, list_touchHandler );
 ```
 
 Before we implement the listener, we'll need a couple of member variables to track the state of the touch that is dragging the list:
 
-``` code
+``` actionscript
 private var _touchID:int = -1;
 private var _previousGlobalTouchY:Number;
 ```
 
 Finally, let's write the listener that will reposition the header when the list is dragged:
 
-``` code
+``` actionscript
 private function list_touchHandler(event:TouchEvent):void
 {
     if(this._touchID >= 0)
@@ -109,7 +109,7 @@ private function list_touchHandler(event:TouchEvent):void
 
 It's mostly boilerplate for tracking the appropriate touch ID. There are two important things to note. First, in the section for [`TouchPhase.BEGAN`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we initialize the value of the `_previousGlobalTouchY` variable. Second, in the section for [`TouchPhase.MOVED`](http://doc.starling-framework.org/core/starling/events/TouchPhase.html#BEGAN), we call another function named `dragHeader()`. Let's implement that function now.
 
-``` code
+``` actionscript
 private function dragHeader(touch:Touch):void
 {
     var currentGlobalTouchY:Number = touch.globalY;

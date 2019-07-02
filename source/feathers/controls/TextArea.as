@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -233,6 +233,91 @@ package feathers.controls
 	 * @see #setFontStylesForState()
 	 */
 	[Style(name="fontStyles",type="starling.text.TextFormat")]
+
+	/**
+	 * Quickly sets all inner padding properties to the same value. The
+	 * <code>innerPadding</code> getter always returns the value of
+	 * <code>innerPaddingTop</code>, but the other innert padding values may be
+	 * different.
+	 *
+	 * <p>The following example gives the button 20 pixels of padding on all
+	 * sides:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPadding = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPaddingTop
+	 * @see #style:innerPaddingRight
+	 * @see #style:innerPaddingBottom
+	 * @see #style:innerPaddingLeft
+	 */
+	[Style(name="innerPadding",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's top edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the top edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingTop = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingTop",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's right edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the right edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingRight = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingRight",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's bottom edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the bottom edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingBottom = 20;</listing>
+	 *
+	 * @default 0
+	 * 
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingBottom",type="Number")]
+
+	/**
+	 * The minimum space, in pixels, between the text area's left edge and the
+	 * text area's content.
+	 *
+	 * <p>The following example gives the text area 20 pixels of inner padding
+	 * on the left edge only:</p>
+	 *
+	 * <listing version="3.0">
+	 * textArea.innerPaddingLeft = 20;</listing>
+	 *
+	 * @default 0
+	 *
+	 * @see #style:innerPadding
+	 */
+	[Style(name="innerPaddingLeft",type="Number")]
 
 	/**
 	 * The font styles used to display the text area's prompt when the text area
@@ -1281,6 +1366,145 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		public function get innerPadding():Number
+		{
+			return this._innerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPadding(value:Number):void
+		{
+			this.innerPaddingTop = value;
+			this.innerPaddingRight = value;
+			this.innerPaddingBottom = value;
+			this.innerPaddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingTop:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingTop():Number
+		{
+			return this._innerPaddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingTop(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingTop == value)
+			{
+				return;
+			}
+			this._innerPaddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingRight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingRight():Number
+		{
+			return this._innerPaddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingRight(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingRight == value)
+			{
+				return;
+			}
+			this._innerPaddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingBottom:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get paddinnerPaddingBottomingBottom():Number
+		{
+			return this._innerPaddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingBottom(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingBottom == value)
+			{
+				return;
+			}
+			this._innerPaddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _innerPaddingLeft:Number = 0;
+
+		/**
+		 * @private
+		 */
+		public function get innerPaddingLeft():Number
+		{
+			return this._innerPaddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set innerPaddingLeft(value:Number):void
+		{
+			if(this.processStyleRestriction(arguments.callee))
+			{
+				return;
+			}
+			if(this._innerPaddingLeft == value)
+			{
+				return;
+			}
+			this._innerPaddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @copy feathers.core.ITextEditor#selectionBeginIndex
 		 */
 		public function get selectionBeginIndex():int
@@ -1792,6 +2016,10 @@ package feathers.controls
 			this.textEditorViewPort.maxChars = this._maxChars;
 			this.textEditorViewPort.restrict = this._restrict;
 			this.textEditorViewPort.isEditable = this._isEditable;
+			this.textEditorViewPort.paddingTop = this._innerPaddingTop;
+			this.textEditorViewPort.paddingRight = this._innerPaddingRight;
+			this.textEditorViewPort.paddingBottom = this._innerPaddingBottom;
+			this.textEditorViewPort.paddingLeft = this._innerPaddingLeft;
 			for(var propertyName:String in this._textEditorProperties)
 			{
 				var propertyValue:Object = this._textEditorProperties[propertyName];
@@ -1929,10 +2157,10 @@ package feathers.controls
 			
 			if(this.promptTextRenderer !== null)
 			{
-				this.promptTextRenderer.x = this._leftViewPortOffset;
-				this.promptTextRenderer.y = this._topViewPortOffset;
-				this.promptTextRenderer.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-				this.promptTextRenderer.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+				this.promptTextRenderer.x = this._leftViewPortOffset + this._innerPaddingLeft;
+				this.promptTextRenderer.y = this._topViewPortOffset + this._innerPaddingTop;
+				this.promptTextRenderer.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset - this._innerPaddingLeft - this._innerPaddingRight;
+				this.promptTextRenderer.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset - this._innerPaddingTop - this._innerPaddingBottom;
 			}
 		}
 

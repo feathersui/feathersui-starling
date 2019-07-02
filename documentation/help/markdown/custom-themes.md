@@ -13,7 +13,7 @@ Many apps, including games, require heavy branding that involves styling every F
 
 Let's create a new theme from scratch. We'll create a subclass of [`StyleNameFunctionTheme`](../api-reference/feathers/themes/StyleNameFunctionTheme.html):
 
-``` code
+``` actionscript
 package
 {
 	public class CustomTheme extends StyleNameFunctionTheme
@@ -43,7 +43,7 @@ The simplest way to include assets to *embed* the assets at compile time. This a
 
 Let's start by embedding a [texture atlas](http://wiki.starling-framework.org/manual/textures_and_images#texture_atlases) in our `CustomTheme` class:
 
-``` code
+``` actionscript
 [Embed(source="/../assets/images/atlas.png")]
 private static const ATLAS_BITMAP:Class;
 
@@ -53,13 +53,13 @@ private static const ATLAS_XML:Class;
 
 A texture atlas requires of two files, an image and an XML file. Let's add a member variable to our theme to hold the [`TextureAtlas`](http://doc.starling-framework.org/core/starling/textures/TextureAtlas.html) once it is created:
 
-``` code
+``` actionscript
 private var atlas:TextureAtlas;
 ```
 
 Now, we'll add a function named `createTextureAtlas()` that will instantiate the `TextureAtlas` using our embedded assets:
 
-``` code
+``` actionscript
 private function createTextureAtlas():void
 {
 	var atlasTexture:Texture = Texture.fromEmbeddedAsset( ATLAS_BITMAP );
@@ -70,7 +70,7 @@ private function createTextureAtlas():void
 
 In the `CustomTheme` constructor, we'll call `createTextureAtlas()`, and then we can immediately call `initialize()`:
 
-``` code
+``` actionscript
 public function CustomTheme()
 {
 	super();
@@ -91,14 +91,14 @@ Similar to the previous example that used embedded assets, we want to load a [te
 
 Let's define a couple of member variables, one for the texture atlas, and one for the `AssetManager` that will load the required files:
 
-``` code
+``` actionscript
 private var atlas:TextureAtlas;
 private var assets:AssetManager;
 ```
 
 Now, we'll add a function named `loadAssets()` that will instantiate the `AssetManager` and enqueue the asset files:
 
-``` code
+``` actionscript
 private function loadAssets():void
 {
 	this.assets = new AssetManager();
@@ -110,7 +110,7 @@ private function loadAssets():void
 
 At the end, we call `loadQueue()` on the `AssetManager` to load our assets. We need to pass a callback to this function so that we know when the assets finish loading. The callback accepts a single parameter, a variable with a value between `0.0` and `1.0`. Once this value is equal to `1.0`, our assets have fully loaded:
 
-``` code
+``` actionscript
 private function assets_onProgress( progress:Number ):void
 {
 	if( progress < 1.0 )
@@ -129,7 +129,7 @@ Once we've set the `atlas` member variable, we can call `initialize()`. If our c
 
 Finally, we want to inform the rest of our app that it can proceed, so we'll dispatch `Event.COMPLETE`. The app can listen for this event very easily:
 
-``` code
+``` actionscript
 this.theme = new CustomTheme();
 this.theme.addEventListener( Event.COMPLETE, theme_completeHandler );
 ```
@@ -140,7 +140,7 @@ Once the listener is called, the app is free to start instantiating components, 
 
 Once our assets are loaded, we can start setting up the functions called to style each component in our app. Inside one of these functions, styling is simply a matter of directly setting a component's properties. It's the same type of styling you would do if you were using Feathers without a theme. For example, we might set some styles on a [`Button`](button.html):
 
-``` code
+``` actionscript
 private function setButtonStyles( button:Button ):void
 {
 	button.defaultSkin = new Image( this.atlas.getTexture( "button-up" ) );
@@ -155,7 +155,7 @@ private function setButtonStyles( button:Button ):void
 
 In our `initialize()` function, let's call a new function that we'll create in a moment, named `initializeStyleProviders()`:
 
-``` code
+``` actionscript
 private function initialize():void
 {
 	this.initializeStyleProviders();
@@ -164,7 +164,7 @@ private function initialize():void
 
 Now, let's create `initializeStyleProviders()` and set up our first style provider, the one for the `Button` class:
 
-``` code
+``` actionscript
 private function initializeStyleProviders():void
 {
 	// button
@@ -178,13 +178,13 @@ private function initializeStyleProviders():void
 
 However, it's common for different variations of the same component to exist together in one app. For instance, some buttons may be visually highlighted in red to indicate that something potentially dangerous is about to happen, like deleting some data. The [`Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON`](../api-reference/feathers/controls/Button.html#ALTERNATE_STYLE_NAME_DANGER_BUTTON) constant is defined by Feathers to help differentiate this variation of a button. You can add this style name to the component to tell the theme that it should be styled differently:
 
-``` code
+``` actionscript
 button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON );
 ```
 
 Inside our theme, we can add a new function for this button variation. We'll name it `setDangerButtonStyles()`:
 
-``` code
+``` actionscript
 private function setDangerButtonStyles( button:Button ):void
 {
 	button.defaultSkin = new Image( this.atlas.getTexture( "danger-button-up" ) );
@@ -199,7 +199,7 @@ private function setDangerButtonStyles( button:Button ):void
 
 Now, we can use the [`setFunctionForStyleName()`](../api-reference/feathers/skins/StyleNameFunctionStyleProvider.html#setFunctionForStyleName()) on the `StyleNameFunctionStyleProvider`:
 
-``` code
+``` actionscript
 this.getStyleProviderForClass( Button )
 	.setFunctionForStyleName( Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON, this.setDangerButtonStyles );
 ```
@@ -210,20 +210,20 @@ If a component has this style name, the default `setButtonStyles()` function won
 
 Some components have sub-components that need to be skinned too. For instance, the [`Slider`](slider.html) component has a thumb that is a [`Button`](button.html). These sub-components may be skinned using style names provided by their parent component. For instance, we can use [`Slider.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/Slider.html#DEFAULT_CHILD_STYLE_NAME_THUMB) to skin the thumb of a slider.
 
-``` code
+``` actionscript
 this.getStyleProviderForClass( Button )
 	.setFunctionForStyleName( Slider.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setSliderThumbStyles );
 ```
 
 Components usually provide a way to customize a sub-component's style name, in case something other than the default is needed. For a `Slider`, we can set the [`customThumbStyleName`](../api-reference/feathers/controls/Slider.html#customThumbStyleName) property:
 
-``` code
+``` actionscript
 slider.customThumbStyleName = "custom-thumb";
 ```
 
 Then, we can use that custom style name just like we would for other variations of a component:
 
-``` code
+``` actionscript
 this.getStyleProviderForClass( Button )
 	.setFunctionForStyleName( "custom-thumb", this.setSliderThumbStyles );
 ```
@@ -234,7 +234,7 @@ Certain global properties are frequently set by a theme. For instance, we might 
 
 Let's create an `initializeGlobals()` function:
 
-``` code
+``` actionscript
 private function initializeGlobals():void
 {
 	FeathersControl.defaultTextRendererFactory = function():ITextRenderer
@@ -251,7 +251,7 @@ private function initializeGlobals():void
 
 We can call this function before the call to `initializeStyleProviders()` in `initialize()`:
 
-``` code
+``` actionscript
 private function initialize():void
 {
 	this.initializeGlobals();

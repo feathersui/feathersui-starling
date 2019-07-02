@@ -19,14 +19,14 @@ The [`LayoutGroup`](../api-reference/feathers/controls/LayoutGroup.html) class p
 
 First, let's create a `LayoutGroup` container and add it to the display list:
 
-``` code
+``` actionscript
 var group:LayoutGroup = new LayoutGroup();
 this.addChild( group );
 ```
 
 A `LayoutGroup` works a lot like any [`DisplayObjectContainer`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html), so you can use the standard `addChild()`, `removeChild()` and other display list manipulation functions.
 
-``` code
+``` actionscript
 var xPosition:Number = 0;
 for(var i:int = 0; i < 5; i++)
 {
@@ -41,7 +41,7 @@ The children of a `LayoutGroup` do not need to be Feathers UI controls. As you c
 
 By default, the `LayoutGroup` will automatically resize itself to fit the area that the children occupy. We can set the width and height manually, if desired, to override this behavior:
 
-``` code
+``` actionscript
 group.width = 200;
 group.height = 200;
 ```
@@ -52,7 +52,7 @@ You'll notice that the children are still visible. By default, clipping is disab
 
 We manually positioned the quads in the example code above. Instead, let's pass a [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) to the [`layout`](../api-reference/feathers/controls/LayoutGroup.html#layout) property of the `LayoutGroup`. This layout will calculate the positioning of children for us automatically:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.gap = 10;
 group.layout = layout;
@@ -70,7 +70,7 @@ The `LayoutGroup` control are mainly the background skins. For full details abou
 
 We can give the `LayoutGroup` a background skin that stretches to fill the entire width and height of the group. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 group.backgroundSkin = skin;
@@ -80,7 +80,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the `LayoutGroup` a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 group.backgroundDisabledSkin = skin;

@@ -13,7 +13,7 @@ The [`disposeContent`](../../api-reference/feathers/controls/Callout.html#dispos
 
 We'll start with a simple class that extends [`LayoutGroup`](../layout-group.html) and we'll create the `Label`, the `Button`, and add a listener for `Event.TRIGGERED` to the `Button`:
 
-``` code
+``` actionscript
 public class Example extends LayoutGroup
 {
 	public function Example()
@@ -51,7 +51,7 @@ public class Example extends LayoutGroup
 
 Next, in the event listener, we'll show the `Label` in a `Callout`:
 
-``` code
+``` actionscript
 var callout:Callout = Callout.show( this._label, this._button );
 callout.disposeContent = false;
 ```
@@ -60,7 +60,7 @@ By setting [`disposeContent`](../../api-reference/feathers/controls/Callout.html
 
 We have one last thing to remember; we need to ensure that the `Label` is disposed eventually, so let's override `dispose()` on the `LayoutGroup`:
 
-``` code
+``` actionscript
 override public function dispose():void
 {
 	if( this._label )
@@ -78,7 +78,7 @@ This time around, let's keep showing the same `Callout` every time that the `But
 
 Again, we'll start with a simple class:
 
-``` code
+``` actionscript
 public class Example extends LayoutGroup
 {
 	public function Example()
@@ -113,7 +113,7 @@ public class Example extends LayoutGroup
 
 Notice that we haven't created the `Label` or the `Callout` yet. Let's do that now in the event listener:
 
-``` code
+``` actionscript
 if( this._callout )
 {
 	PopUpManager.addPopUp( this._callout, true, false );
@@ -131,7 +131,7 @@ The [`disposeOnSelfClose`](../../api-reference/feathers/controls/Callout.html#di
 
 Similar to the previous example, we should make sure that the `Callout` gets disposed when our `LayoutGroup` is disposed.
 
-``` code
+``` actionscript
 override public function dispose():void
 {
 	if( this._callout )

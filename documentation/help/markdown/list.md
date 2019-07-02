@@ -30,7 +30,7 @@ The [`List`](../api-reference/feathers/controls/List.html) class renders a serie
 
 First, let's create a `List` control and add it to the display list:
 
-``` code
+``` actionscript
 var list:List = new List();
 list.width = 250;
 list.height = 300;
@@ -39,7 +39,7 @@ this.addChild( list );
 
 Next, we want the list to display some items, so let's create an [`ArrayCollection`](../api-reference/feathers/data/ArrayCollection.html) as its data provider.
 
-``` code
+``` actionscript
 var groceryList:ArrayCollection = new ArrayCollection(
 [
     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -66,13 +66,13 @@ By default, a list renders items from the data provider using the [`DefaultListI
 
 Start by taking a moment to review one of the items from the data provider:
 
-``` code
+``` actionscript
 { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) }
 ```
 
 The item's `text` property contains a string, and the `thumbnail` property contains a texture. We can tell the default item renderer to use the values from these two properties to display two children: a label and an icon.
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -92,13 +92,13 @@ The `List` component may have one selected item. You can access information abou
 
 To listen for when the selection changes, listen to [`Event.CHANGE`](../api-reference/feathers/controls/List.html#event:change):
 
-``` code
+``` actionscript
 list.addEventListener( Event.CHANGE, list_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 private function list_changeHandler( event:Event ):void
 {
     var list:List = List( event.currentTarget );
@@ -108,7 +108,7 @@ private function list_changeHandler( event:Event ):void
 
 You can manually change the selection, if needed:
 
-``` code
+``` actionscript
 list.selectedIndex = 4;
 ```
 
@@ -116,25 +116,25 @@ Selection indices start at `0`, so the above code would select the fifth item in
 
 If you prefer, you can change selection by passing in an item from the data provider:
 
-``` code
+``` actionscript
 list.selectedItem = item;
 ```
 
 If needed, you can clear selection manually:
 
-``` code
+``` actionscript
 list.selectedIndex = -1;
 ```
 
 To disable selection completely, use the [`isSelectable`](../api-reference/feathers/controls/List.html#isSelectable) property:
 
-``` code
+``` actionscript
 list.isSelectable = false;
 ```
 
 To support the selection of more than one item, set the [`allowMultipleSelection`](../api-reference/feathers/controls/List.html#allowMultipleSelection) property to `true`:
 
-``` code
+``` actionscript
 list.allowMultipleSelection = true;
 ```
 
@@ -146,7 +146,7 @@ A list has a background skin and a layout. Much of the ability to customize the 
 
 We can give the list a background skin that fills the entire width and height of the list. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 list.backgroundSkin = skin;
@@ -156,7 +156,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the list a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 list.backgroundDisabledSkin = skin;
@@ -168,7 +168,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 Padding may be added around the edges of the list's content. This padding is different than any type of padding that may be provided by the `layout` property. The layout padding is applied inside the list's content, but the list's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
-``` code
+``` actionscript
 list.paddingTop = 15;
 list.paddingRight = 20;
 list.paddingBottom = 15;
@@ -177,13 +177,13 @@ list.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 list.padding = 20;
 ```
 
 The default layout for a list is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.verticalAlign = VerticalAlign.JUSTIFY;
 layout.gap = 10;
@@ -193,7 +193,7 @@ list.layout = layout;
 
 When the list automatically defaults to a [`VerticalLayout`](vertical-layout.html), it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we're switching to a horizontal layout, the scroll policies won't be updated automatically, so we should also manually adjust the scroll policies:
 
-``` code
+``` actionscript
 list.horizontalScrollPolicy = ScrollPolicy.AUTO;
 list.verticalScrollPolicy = ScrollPolicy.OFF;
 ```
@@ -210,7 +210,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -219,7 +219,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -228,14 +228,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 list.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 list.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -246,7 +246,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the list's scroll bars:
 
-``` code
+``` actionscript
 list.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
@@ -268,13 +268,13 @@ This section only explains how to access the item renderer sub-components. Pleas
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultListItemRenderer ).defaultStyleFunction = setItemRendererStyles;
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -287,13 +287,13 @@ private function setItemRendererStyles(itemRenderer:DefaultListItemRenderer):voi
 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
 
-``` code
+``` actionscript
 list.customItemRendererStyleName = "custom-item-renderer";
 ```
 
 You can set the function for the custom [`customItemRendererStyleName`](../api-reference/feathers/controls/List.html#customItemRendererStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultListItemRenderer )
     .setFunctionForStyleName( "custom-item-renderer", setCustomItemRendererStyles );
 ```
@@ -302,7 +302,7 @@ getStyleProviderForClass( DefaultListItemRenderer )
 
 If you are not using a theme, you can use [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory) to provide skins for the list's item renderers:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -326,13 +326,13 @@ If the default item renderer doesn't have the features that you need, the `List`
 
 The easiest way to tell a list to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/List.html#itemRendererType) property:
 
-``` code
+``` actionscript
 list.itemRendererType = ExampleCustomItemRenderer;
 ```
 
 Sometimes, you might want to change some properties on each item renderer as it is created. You can use the [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory) property instead of `itemRendererType` to call a function that returns a newly created item renderer:
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
@@ -345,7 +345,7 @@ list.itemRendererFactory = function():IListItemRenderer
 
 Listening to events dispatched by a custom item renderer isn't too difficult. Simply dispatch the event normally from the item renderer. No need for bubbling. As an example, let's say that we want to dispatch `Event.COMPLETE` from an item renderer when something happens:
 
-``` code
+``` actionscript
 function someEventHandler( event:Event ):void
 {
     this.dispatchEventWith( Event.COMPLETE );
@@ -354,13 +354,13 @@ function someEventHandler( event:Event ):void
 
 On our list, first we need to listen for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 list.addEventListener( FeathersEventType.RENDERER_ADD, list_rendererAddHandler );
 ```
 
 Inside the listener for `FeathersEventType.RENDERER_ADD`, we add a listener for our event dispatched by the item renderer:
 
-``` code
+``` actionscript
 function list_rendererAddHandler( event:Event, itemRenderer:IListItemRenderer ):void
 {
     itemRenderer.addEventListener( Event.COMPLETE, itemRenderer_customCompleteHandler );
@@ -374,13 +374,13 @@ function itemRenderer_customCompleteHandler( event:Event ):void
 
 Finally, we want to be sure to remove the listeners from the item renderers, so we should also listen for `FeathersEventType.RENDERER_REMOVE`:
 
-``` code
+``` actionscript
 list.addEventListener( FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler );
 ```
 
 The listener for `FeathersEventType.RENDERER_REMOVE` looks very similar to the listener for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 function list_rendererRemoveHandler( event:Event, itemRenderer:IListItemRenderer ):void
 {
     itemRenderer.removeEventListener( Event.COMPLETE, itemRenderer_customCompleteHandler );
@@ -391,7 +391,7 @@ function list_rendererRemoveHandler( event:Event, itemRenderer:IListItemRenderer
 
 A list may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/List.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
 
-``` code
+``` actionscript
 function regularItemFactory():IListItemRenderer
 {
     return new DefaultListItemRenderer();
@@ -409,7 +409,7 @@ Each factory should be given a unique `String` identifier. We'll use these value
 
 The [`factoryIDFunction`](../api-reference/feathers/controls/List.html#factoryIDFunction) is used to determine which item renderer factory should be used for a particular item. In the example below, we use `factoryIDFunction` to give the first item in the data provider a different item renderer than the other items:
  
-``` code
+``` actionscript
 list.factoryIDFunction = function( item:Object, index:int ):String
 {
     if(index == 0)

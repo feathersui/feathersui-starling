@@ -33,7 +33,7 @@ Let's expand on the example layout presented in [Introduction to Custom Feathers
 
 To begin, we'll implement `ILayoutData` with a new `SimpleVerticalLayoutData` class:
 
-``` code
+``` actionscript
 package feathersx.layout
 {
     import feathers.layout.ILayoutData;
@@ -76,7 +76,7 @@ Notice that the member variable is initialized to `NaN`. We're going to use `isN
 
 If we want to pass this layout data to a Feathers component, we might do it like this:
 
-``` code
+``` actionscript
 var buttonLayoutData:SimpleVerticalLayoutData = new SimpleVerticalLayoutData();
 buttonLayoutData.percentWidth = 100;
  
@@ -88,7 +88,7 @@ this.addChild( button );
 
 Next, let's make some modifications to the `SimpleVerticalLayout` class in order to support this new layout data. We'll start by changing the `layout()` function a bit:
 
-``` code
+``` actionscript
 var maxItemWidth:Number = 0;
 var itemCount:int = items.length;
 for(var i:int = 0; i < itemCount; i++)

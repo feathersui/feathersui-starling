@@ -26,14 +26,14 @@ The [`SoundPlayer`](../api-reference/feathers/media/SoundPlayer.html) class prov
 
 First, let's create a `SoundPlayer` component and add it to the display list:
 
-``` code
+``` actionscript
 var player:SoundPlayer = new SoundPlayer();
 this.addChild( player );
 ```
 
 To play a sound file, pass the URL (or a [`flash.media.Sound`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html) object) to the [`soundSource`](../api-reference/feathers/media/SoundPlayer.html#soundSource) property:
 
-``` code
+``` actionscript
 player.soundSource = "http://example.com/sound.mp3";
 ```
 
@@ -43,7 +43,7 @@ Next, we'll add some components as children to control playback.
 
 Let's give the `SoundPlayer` a [`PlayPauseToggleButton`](../api-reference/feathers/media/PlayPauseToggleButton.html) and a [`SeekSlider`](../api-reference/feathers/media/SeekSlider.html). It's as simple as adding them as children of the `SoundPlayer`:
 
-``` code
+``` actionscript
 var button:PlayPauseToggleButton = new PlayPauseToggleButton();
 player.addChild( button );
 
@@ -61,7 +61,7 @@ In the next section, we'll position these two children using a layout.
 
 Like a [`LayoutGroup`](layout-group.html), a `SoundPlayer` supports using layouts to automatically position and size its children. Let's pass a [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) to the [`layout`](../api-reference/feathers/controls/LayoutGroup.html#layout) property of the `SoundPlayer`:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.gap = 10;
 group.layout = layout;
@@ -71,7 +71,7 @@ Here, we've set the [`gap`](../api-reference/feathers/layout/HorizontalLayout.ht
 
 If we want our `SeekSlider` to stretch to fill as much space as possible within the `SoundPlayer`, we can pass in [`HorizontalLayoutData`](../api-reference/feathers/layout/HorizontalLayoutData.html):
 
-``` code
+``` actionscript
 var sliderLayoutData:HorizontalLayoutData = new HorizontalLayoutData();
 sliderLayoutData.percentWidth = 100;
 slider.layoutData = sliderLayoutData;
@@ -83,37 +83,37 @@ Now, because we've set the [`percentWidth`](../api-reference/feathers/layout/Hor
 
 By default, the `SoundPlayer` will automatically start playing its `soundSource`. We can use the [`autoPlay`](../api-reference/feathers/media/SoundPlayer.html#autoPlay) property to change this behavior:
 
-``` code
+``` actionscript
 player.autoPlay = false;
 ```
 
 If `autoPlay` is set to `false`, we can call `play()` to begin playback manually:
 
-``` code
+``` actionscript
 player.play();
 ```
 
 To pause, we can call `pause()` to pause playback at the current position:
 
-``` code
+``` actionscript
 player.pause();
 ```
 
 The `togglePlayPause()` method may be called to toggle between the play and pause states:
 
-``` code
+``` actionscript
 player.togglePlayPause();
 ```
 
 To stop playback and return the sound to the beginning, we may call `stop()`:
 
-``` code
+``` actionscript
 player.stop();
 ```
 
 The `seek()` function may be called to change the current time:
 
-``` code
+``` actionscript
 player.seek( 5.0 );
 ```
 
@@ -121,7 +121,7 @@ The time is measured in seconds.
 
 To change the volume, we can pass a [`flash.media.SoundTransform`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html) object to the [`soundTransform`](../api-reference/feathers/media/SoundPlayer.html#soundTransform) property:
 
-``` code
+``` actionscript
 player.soundTransform = new SoundTransform( 0.5 );
 ```
 

@@ -15,7 +15,7 @@ The [`WaterfallLayout`](../api-reference/feathers/layout/WaterfallLayout.html) c
 
 First, let's create a `WaterfallLayout` and pass it to a [`LayoutGroup`](layout-group.html):
 
-``` code
+``` actionscript
 var layout:WaterfallLayout = new WaterfallLayout();
  
 var container:LayoutGroup = new LayoutGroup();
@@ -29,13 +29,13 @@ There are a number of simple properties that may be used to affect positioning a
 
 The *padding* is the space around the edges of the container. Let's set the [`padding`](../api-reference/feathers/layout/WaterfallLayout.html#padding) property to `12` pixels:
 
-``` code
+``` actionscript
 layout.padding = 12;
 ```
 
 If needed, we may set padding on each side of the container separately. Below, we set the [`paddingTop`](../api-reference/feathers/layout/WaterfallLayout.html#paddingTop) and [`paddingBottom`](../api-reference/feathers/layout/WaterfallLayout.html#paddingBottom) to `10` pixels, and we set the [`paddingLeft`](../api-reference/feathers/layout/WaterfallLayout.html#paddingLeft) and [`paddingRight`](../api-reference/feathers/layout/WaterfallLayout.html#paddingRight) to `15` pixels:
 
-``` code
+``` actionscript
 layout.paddingTop = 10;
 layout.paddingRight = 15;
 layout.paddingBottom = 10;
@@ -44,13 +44,13 @@ layout.paddingLeft = 15;
 
 The *gap* is the space between items. Let's set the [`gap`](../api-reference/feathers/layout/WaterfallLayout.html#gap) property to `5` pixels:
 
-``` code
+``` actionscript
 layout.gap = 5;
 ```
 
 If needed, we can set the horizontal and vertical gaps separately. We'll set the [`horizontalGap`](../api-reference/feathers/layout/WaterfallLayout.html#horizontalGap) property to `4` pixels and the [`verticalGap`](../api-reference/feathers/layout/WaterfallLayout.html#verticalGap) property to `6` pixels:
 
-``` code
+``` actionscript
 layout.horizontalGap = 4;
 layout.verticalGap = 6;
 ```
@@ -59,13 +59,13 @@ layout.verticalGap = 6;
 
 We can *align* the columns in the layout using the [`horizontalAlign`](../api-reference/feathers/layout/WaterfallLayout.html#horizontalAlign) property. Let's adjust the horizontal alignment so that the content will be pulled to the right:
 
-``` code
+``` actionscript
 layout.horizontalAlign = HorizontalAlign.RIGHT;
 ```
 
 It's possible to request a specific number of columns for the layout to display. The layout may not always be able to accomodate this value because the container may be too small, but if there is enough room for the requested number of columns, that's the number it will display. Let's tell the layout to use three columns by setting the [`requestedColumnCount`](../api-reference/feathers/layout/WaterfallLayout.html#requestedColumnCount) property:
 
-``` code
+``` actionscript
 layout.requestedColumnCount = 3;
 ```
 

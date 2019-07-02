@@ -26,7 +26,7 @@ Whether using a `List`, `DataGrid`, `Tree`, or a `GroupedList`, the default item
 
 Item renderers are managed by a `List`, `DataGrid`, `Tree`, or `GroupedList` component, and you generally don't add them to the display list directly. To customize properties on a default item renderer, you can use the list's [`itemRendererFactory`](../api-reference/feathers/controls/List.html#itemRendererFactory):
 
-``` code
+``` actionscript
 list.itemRendererFactory = function():IListItemRenderer
 {
     var itemRenderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -47,13 +47,13 @@ The [`labelField`](../api-reference/feathers/controls/renderers/BaseDefaultItemR
 
 Consider the following item in a data provider:
 
-``` code
+``` actionscript
 { text: "Example Item" }
 ```
 
 For an item renderer to display "Example Item" string, it needs to know about the item's `text` property:
 
-``` code
+``` actionscript
 itemRenderer.labelField = "text";
 ```
 
@@ -69,13 +69,13 @@ To display a texture or a URL, you may use the [`iconSourceField`](../api-refere
 
 Consider the following item from the data provider:
 
-``` code
+``` actionscript
 { label: "Example Label", thumbnail: atlas.getTexture( "texture-name" ) }
 ```
 
 For an item renderer to display the texture from the altas, it needs to know about the item's `thumbnail` property:
 
-``` code
+``` actionscript
 itemRenderer.iconSourceField = "thumbnail";
 ```
 
@@ -85,7 +85,7 @@ Finally, if you need to display a Feathers component or any other type of Starli
 
 Consider the following code where a [`Slider`](slider.html) component is included in a list's data provider:
 
-``` code
+``` actionscript
 var slider:Slider = new Slider();
 slider.minimum = 0;
 slider.maximum = 10;
@@ -100,7 +100,7 @@ list.dataProvider = new ArrayCollection(
 
 For an item renderer to add the display object as a child, it needs to know about the item's `control` property:
 
-``` code
+``` actionscript
 itemRenderer.iconField = "control";
 ```
 
@@ -128,7 +128,7 @@ The [`DefaultListItemRenderer`](../api-reference/feathers/controls/renderers/Def
 
 If the item renderer's accessory is a label set using `accessoryLabelField` or `accessoryLabelFunction`, we can customize its font styles using the [`accessoryLabelFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelFontStyles) property.
 
-``` code
+``` actionscript
 itemRenderer.accessoryLabelFontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -136,13 +136,13 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the accessory label should use different font styles when the item renderer is disabled, you may set the [`accessoryLabelDisabledFontStyles`](../api-reference/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelDisabledFontStyles) property too:
 
-``` code
+``` actionscript
 itemRenderer.accessoryLabelDisabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
 Finally, we can even customize the accessory label's font styles for each of the item renderer's specific states:
 
-```code
+``` actionscript
 itemRenderer.setAccessoryLabelFontStylesForState( ButtonState.DOWN,
 	new TextFormat( "Helvetica", 20, 0xcc0000 ) );
 ```

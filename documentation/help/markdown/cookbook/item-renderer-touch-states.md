@@ -15,7 +15,7 @@ Let's use the [`TouchToState`](../../api-reference/feathers/utils/TouchToState.h
 
 Let's start by adding separate background skins for the up, down, and hover states to our custom item renderer:
 
-``` code
+``` actionscript
 private var _backgroundUpSkin:DisplayObject;
  
 public function get backgroundUpSkin():DisplayObject
@@ -76,7 +76,7 @@ Let's start out by tracking whether the user is touching the item renderer or no
 
 First, let's define a `_currentState` variable to keep track of which state the item renderer is in:
 
-``` code
+``` actionscript
 private var _currentState = ButtonState.UP;
 ```
 
@@ -84,7 +84,7 @@ We'll borrow the values defined by the `feathers.controls.ButtonState` class. Th
 
 Next, let's create the `TouchToState` utility inside an override of `initialize()`:
 
-``` code
+``` actionscript
 private var _touchToState:TouchToState;
 
 override protected function initialize():void
@@ -97,7 +97,7 @@ override protected function initialize():void
 
 We'll need to add the `setCurrentState()` function that is used by `TouchToState` to notify us when the state should change:
 
-``` code
+``` actionscript
 private function setCurrentState(newState:String):void
 {
     this._currentState = newState;
@@ -107,7 +107,7 @@ private function setCurrentState(newState:String):void
 
 Inside the `updateBackgroundSkin()` function, we can choose the correct background skin based on the value of `_currentState`:
 
-``` code
+``` actionscript
 private function updateBackgroundSkin():void
 {
     if(this._currentState == ButtonState.DOWN &&

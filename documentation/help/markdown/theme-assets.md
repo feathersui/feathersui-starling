@@ -13,7 +13,7 @@ The first approach packages everything up in one place by embedded the assets in
 
 It's the easiest way for beginners to get started with the Feathers example themes. Just drop a SWC into your project, and instantiate the theme:
 
-``` code
+``` actionscript
 new MetalWorksMobileTheme();
 ```
 
@@ -33,7 +33,7 @@ First, you need to specify the location of the assets. In an AIR app, you need t
 
 In the following example, we tell the theme that the `images` folder (which contains the two files) are placed in `File.applicationDirectory`:
 
-``` code
+``` actionscript
 var theme:MetalWorksMobileThemeWithAssetManager =
     new MetalWorksMobileThemeWithAssetManager( File.applicationDirectory.url );
 ```
@@ -42,7 +42,7 @@ You don't necessarily need to add the assets directly to `File.applicationDirect
 
 Next, let's add a listener to the theme for `Event.COMPLETE`:
 
-``` code
+``` actionscript
 theme.addEventListener( Event.COMPLETE, theme_completeHandler );
 ```
 
@@ -50,7 +50,7 @@ This event will be dispatched when the asset manager has finished loading all of
 
 The listener for this event might look something like this:
 
-``` code
+``` actionscript
 private function theme_completeHandler( event:Event ):void
 {
     // the theme is ready!
@@ -76,7 +76,7 @@ As you can see, the bitmap font file that `MinimalMobileThemeWithAssetManager` u
 
 By default, the theme will create its own `AssetManager`. If you would like to load extra assets that the theme isn't aware of, you may optionally pass in your own asset manager to the example theme's constructor:
 
-``` code
+``` actionscript
 var assets:AssetManager = new AssetManager();
 assets.enqueue( File.applicationDirectory.resolvePath( "./images/custom-asset.png" ) );
  

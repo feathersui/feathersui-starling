@@ -11,7 +11,7 @@ A [`ButtonGroup`](../button-group.html) component contains one or more [`Button`
 
 We can customize the buttons inside the button group's [`buttonFactory`](../../api-reference/feathers/controls/ButtonGroup.html#buttonFactory). As long as we aren't setting any advanced font styles on the button's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the button's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var group:ButtonGroup = new ButtonGroup();
 group.buttonFactory = function():Button
 {

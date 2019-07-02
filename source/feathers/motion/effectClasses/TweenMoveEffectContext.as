@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2018 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -32,7 +32,9 @@ package feathers.motion.effectClasses
 			this._oldX = this._target.x;
 			this._oldY = this._target.y;
 			this._newX = this._target.x;
+			this._tween.animate("x", this._newX);
 			this._newY = this._target.y;
+			this._tween.animate("y", this._newY);
 		}
 
 		/**

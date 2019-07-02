@@ -11,7 +11,7 @@ This is an advanced tutorial about creating custom layouts. Before continuing, p
 
 The first function defined by [`IVirtualLayout`](../api-reference/feathers/layout/IVirtualLayout.html) is [`measureViewPort()`](../api-reference/feathers/layout/IVirtualLayout.html#measureViewPort()). Please take a moment to review its signature below:
 
-``` code
+``` actionscript
 measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
 ```
 
@@ -21,7 +21,7 @@ Using a [`ViewPortBounds`](../api-reference/feathers/layout/ViewPortBounds.html)
 
 The second function defined by `IVirtualLayout` is [`getVisibleIndicesAtScrollPosition()`](../api-reference/feathers/layout/IVirtualLayout.html#getVisibleIndicesAtScrollPosition()). Please take a moment to review its signature below:
 
-``` code
+``` actionscript
 getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 ```
 

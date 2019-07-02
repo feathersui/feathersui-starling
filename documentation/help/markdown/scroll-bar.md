@@ -22,7 +22,7 @@ The [`ScrollBar`](../api-reference/feathers/controls/ScrollBar.html) component s
 
 You can use the `ScrollBar` with a class like `ScrollContainer` or `List` by instantiating it in the [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) or the [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory).
 
-``` code
+``` actionscript
 list.horizontalScrollBarFactory = function():IScrollBar
 {
     return new ScrollBar();
@@ -55,14 +55,14 @@ This section only explains how to access the thumb sub-component. Please read [H
 
 If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_THUMB) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setScrollBarThumbStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setScrollBarThumbStyles( thumb:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -73,13 +73,13 @@ private function setScrollBarThumbStyles( thumb:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 scrollBar.customThumbStyleName = "custom-thumb";
 ```
 
 You can set the function for the [`customThumbStyleName`](../api-reference/feathers/controls/ScrollBar.html#customThumbStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-thumb", setScrollBarCustomThumbStyles );
 ```
@@ -88,7 +88,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`thumbFactory`](../api-reference/feathers/controls/ScrollBar.html#thumbFactory) to provide skins for the scroll bar's thumb:
 
-``` code
+``` actionscript
 scrollBar.thumbFactory = function():Button
 {
     var thumb:Button = new Button();
@@ -110,14 +110,14 @@ This section only explains how to access the minimum track sub-component. Please
 
 If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK, setScrollBarMinimumTrackStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setScrollBarMinimumTrackStyles( track:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -128,13 +128,13 @@ private function setScrollBarMinimumTrackStyles( track:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 scrollBar.customMinimumTrackStyleName = "custom-minimum-track";
 ```
 
 You can set the function for the [`customMinimumTrackStyleName`](../api-reference/feathers/controls/ScrollBar.html#customMinimumTrackStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-minimum-track", setScrollBarCustomMinimumTrackStyles );
 ```
@@ -143,7 +143,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`minimumTrackFactory`](../api-reference/feathers/controls/ScrollBar.html#minimumTrackFactory) to provide skins for the scroll bar's minimum track:
 
-``` code
+``` actionscript
 scrollBar.minimumTrackFactory = function():Button
 {
     var track:Button = new Button();
@@ -171,14 +171,14 @@ This section only explains how to access the decrement button sub-component. Ple
 
 If you're creating a [theme](themes.html), you can target the [`ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON`](../api-reference/feathers/controls/ScrollBar.html#DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON) style name.
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON, setScrollBarDecrementButtonStyles );
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setScrollBarDecrementButtonStyles( button:Button ):void
 {
     var skin:ImageSkin = new ImageSkin( texture );
@@ -189,13 +189,13 @@ private function setScrollBarDecrementButtonStyles( button:Button ):void
 
 You can override the default style name to use a different one in your theme, if you prefer:
 
-``` code
+``` actionscript
 scrollBar.customDecrementButtonStyleName = "custom-decrement-button";
 ```
 
 You can set the function for the [`customDecrementButtonStyleName`](../api-reference/feathers/controls/ScrollBar.html#customDecrementButtonStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( Button )
     .setFunctionForStyleName( "custom-decrement-button", setScrollBarCustomDecrementButtonStyles );
 ```
@@ -204,7 +204,7 @@ getStyleProviderForClass( Button )
 
 If you are not using a theme, you can use [`decrementButtonFactory`](../api-reference/feathers/controls/ScrollBar.html#decrementButtonFactory) to provide skins for the scroll bar's decrement button:
 
-``` code
+``` actionscript
 scrollBar.decrementButtonFactory = function():Button
 {
     var button:Button = new Button();

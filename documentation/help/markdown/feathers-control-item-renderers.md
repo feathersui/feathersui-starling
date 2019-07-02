@@ -33,7 +33,7 @@ Let's implement a very simple item renderer. It will contain a [`Label`](label.h
 
 When it's finished, we'll want to use it like this:
 
-``` code
+``` actionscript
 var list:List = new List();
 list.itemRendererFactory = function():IListItemRenderer
 {
@@ -62,7 +62,7 @@ For this example, we're creating an item renderer for a [`List`](list.html) comp
 
 Let's start out with the basic framework for our custom item renderer. We want to subclass [`feathers.core.FeathersControl`](../api-reference/feathers/core/FeathersControl.html) and we want to implement the [`feathers.controls.renderers.IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface:
 
-``` code
+``` actionscript
 package
 {
     import feathers.controls.renderers.IListItemRenderer;
@@ -83,7 +83,7 @@ Next, we'll implement the properties required by the `IListItemRenderer` interfa
 
 The [`IListItemRenderer`](../api-reference/feathers/controls/renderers/IListItemRenderer.html) interface defines several properties, including [`owner`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#owner), [`index`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#index), [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data), [`factoryID`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#factoryID), and [`isSelected`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#isSelected). Each of these properties can be implemented the same way in most cases, and the relevant code is included below.
 
-``` code
+``` actionscript
 protected var _index:int = -1;
  
 public function get index():int
@@ -104,7 +104,7 @@ public function set index(value:int):void
 
 The `index` refers to the item's location in the data provider. One use for this property might be to display it at the beginning of a label.
 
-``` code
+``` actionscript
 protected var _owner:List;
  
 public function get owner():List
@@ -125,7 +125,7 @@ public function set owner(value:List):void
 
 Use the `owner` property to access the `List` component that uses this item renderer. You might use this to listen for events from the `List`, such as to know when it begins scrolling.
 
-``` code
+``` actionscript
 protected var _data:Object;
  
 public function get data():Object
@@ -146,7 +146,7 @@ public function set data(value:Object):void
 
 The `data` property contains the item displayed by the item renderer. The properties of this item can be used to display something in the item renderer. There are no rules for how to interpret the item's properties, but we'll show a basic example later.
 
-``` code
+``` actionscript
 protected var _factoryID:String;
 
 public function get factoryID():String
@@ -162,7 +162,7 @@ public function set factoryID(value:String):void
 
 The `factoryID` property stores the ID of the factory used by the list to create this item renderer. In general, you won't need to reference this property inside your item renderer class, but it could be used to change the item renderer's behavior or appearance if the same class were used in multiple factories. The list uses this property internally to manage its item renderers.
 
-``` code
+``` actionscript
 protected var _isSelected:Boolean;
  
 public function get isSelected():Boolean
@@ -184,7 +184,7 @@ public function set isSelected(value:Boolean):void
 
 The `isSelected` property indicates if the item has been selected. It's common for an item to be selected when it is touched, but that's not required.
 
-<aside class="info">The [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) and [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interfaces are very similar. Instead of an `index` property, thes type of item renderer has different properties to specify where in the hierarchical data provider the item is located. `Tree` has a `location` property, and `GroupedList` has `groupIndex` and `itemIndex` properties. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout. The `owner` property should be typed as `Tree` or `GroupedList` instead of `List`, obviously.</aside>
+<aside class="info">The [`ITreeItemRenderer`](../api-reference/feathers/controls/renderers/ITreeItemRenderer.html) and [`IGroupedListItemRenderer`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html) interfaces are very similar. Instead of an `index` property, this type of item renderer has different properties to specify where in the hierarchical data provider the item is located. `Tree` has a `location` property, and `GroupedList` has `groupIndex` and `itemIndex` properties. An additional [`layoutIndex`](../api-reference/feathers/controls/renderers/IGroupedListItemRenderer.html#layoutIndex) property specifies the item's order in the layout. The `owner` property should be typed as `Tree` or `GroupedList` instead of `List`, obviously.</aside>
 
 <aside class="info">Header and footer renderers in a `GroupedList` are similar to item renderers in a `GroupedList`. See the [`IGroupedListHeaderRenderer`](../api-reference/feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html) and [`IGroupedListFooterRenderer`](../api-reference/feathers/controls/renderers/IGroupedListFooterRenderer.html) interfaces. These renderers have a `groupIndex` and a `layoutIndex`, but no `itemIndex`.</aside>
 
@@ -192,13 +192,13 @@ The `isSelected` property indicates if the item has been selected. It's common f
 
 We want to display a [`Label`](label.html) component, so let's add a member variable for it:
 
-``` code
+``` actionscript
 protected var _label:Label;
 ```
 
 Next, we want to create a new instance and add it as a child. We need to override `initialize()` function:
 
-``` code
+``` actionscript
 override protected function initialize():void
 {
     this._label = new Label();
@@ -214,7 +214,7 @@ The `initialize()` function is called once the very first time that the componen
 
 Next, we want to access the [`data`](../api-reference/feathers/controls/renderers/IListItemRenderer.html#data) property and display something in our `Label` component. Let's start by overriding the `draw()` function and checking if the appropriate invalidation flag is set to indicate that the data has changed.
 
-``` code
+``` actionscript
 override protected function draw():void
 {
     var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -232,7 +232,7 @@ You may remember that we called the [`invalidate()`](../api-reference/feathers/c
 
 Let's add a `commitData()` function to call when the data changes:
 
-``` code
+``` actionscript
 protected function commitData():void
 {
     if(this._data)
@@ -254,7 +254,7 @@ Don't forget to handle the case where the data property is `null`. You don't wan
 
 Next, we want the item renderer to be able to measure itself if its width and height property haven't been set another way. Before we get to that, let's add that `padding` property that we used in the example code above to add some extra space around the edges of the `Label` component:
 
-``` code
+``` actionscript
 protected var _padding:Number = 0;
  
 public function get padding():Number
@@ -275,7 +275,7 @@ public function set padding(value:Number):void
 
 With that in place, let's add an `autoSizeIfNeeded()` function. This isn't something that's built into Feathers, but most of the core Feathers components have a function like this because it's a nice consistent place for a component to measure itself. To keep things easy to digest, we'll break it up into a few parts:
 
-``` code
+``` actionscript
 protected function autoSizeIfNeeded():Boolean
 {
     var needsWidth:Boolean = isNaN(this.explicitWidth);
@@ -292,7 +292,7 @@ Let's start by checking whether the width and height properties have been set. W
 
 Next, we update the width and height of the `Label` sub-component. If the item renderer's explicit dimensions are `NaN`, then the explicit dimensions of the `Label` will be set to `NaN` too, meaning that the `Label` should measure itself too, just like the item renderer is doing.
 
-``` code
+``` actionscript
 this._label.width = this.explicitWidth - 2 * this._padding;
 this._label.height = this.explicitHeight - 2 * this._padding;
 this._label.validate();
@@ -300,7 +300,7 @@ this._label.validate();
 
 Next, we want to use the width and height values from the `Label` to calculate the item renderer's final width and height:
 
-``` code
+``` actionscript
 var newWidth:Number = this.explicitWidth;
 if(needsWidth)
 {
@@ -317,7 +317,7 @@ In more complex item renderers, we might add together the dimensions of multiple
 
 Finally, we tell Feathers what the final dimensions will be using the [`saveMeasurements()`](../api-reference/feathers/core/FeathersControl.html#saveMeasurements()) function:
 
-``` code
+``` actionscript
 return this.saveMeasurements(newWidth, newHeight, newWidth, newHeight);
 ```
 
@@ -327,7 +327,7 @@ The return value is true if the dimensions are different than the last time that
 
 Speaking of the `draw()` function, we want to add some code to call the `autoSizeIfNeeded()` from there:
 
-``` code
+``` actionscript
 override protected function draw():void
 {
     var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -347,7 +347,7 @@ Notice that we don't actually use the returned `Boolean` value. This particular 
 
 We now have the final dimensions of the item renderer, so let's position and size the `Label` sub-component. Let's do that in a new `layoutChildren()` function:
 
-``` code
+``` actionscript
 protected function layoutChildren():void
 {
     this._label.x = this._padding;
@@ -363,7 +363,7 @@ The [`actualWidth`](../api-reference/feathers/core/FeathersControl.html#actualWi
 
 We call the `layoutChildren()` function at the end of the `draw()` function:
 
-``` code
+``` actionscript
 override protected function draw():void
 {
     var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -382,7 +382,7 @@ override protected function draw():void
 
 The complete source code for the `CustomFeathersControlItemRenderer` class is included below:
 
-``` code
+``` actionscript
 package
 {
     import feathers.controls.Label;

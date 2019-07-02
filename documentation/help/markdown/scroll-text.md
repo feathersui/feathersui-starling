@@ -24,7 +24,7 @@ The [`ScrollText`](../api-reference/feathers/controls/ScrollText.html) is design
 
 First, let's create a `ScrollText` component, give it some text to display, and add it to the display list.
 
-``` code
+``` actionscript
 var scrollText:ScrollText = new ScrollText();
 scrollText.text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 this.addChild( scrollText );
@@ -34,13 +34,13 @@ As you can see, the `ScrollText` is added to the Starling display list. This is 
 
 If we set the `width` property, the `ScrollText` content will automatically word wrap, and the height will grow.
 
-``` code
+``` actionscript
 scrollText.width = 200;
 ```
 
 If we set both the `width` and `height` properties, the `ScrollText` content will automatically allow scrolling if the content is taller than the height of the `ScrollText`.
 
-``` code
+``` actionscript
 scrollText.width = 200;
 scrollText.height = 200;
 ```
@@ -53,7 +53,7 @@ For full details about what skin and style properties are available, see the [`S
 
 The font styles of the `ScrollText` may be customized using the [`fontStyles`](../api-reference/feathers/controls/ScrollText.html#fontStyles) property.
 
-``` code
+``` actionscript
 scrollText.fontStyles = new TextFormat( "Helvetica", 20, 0x3c3c3c );
 ```
 
@@ -61,7 +61,7 @@ Pass in a [`starling.text.TextFormat`](http://doc.starling-framework.org/current
 
 If the `ScrollText` should use different font styles when it is disabled, you may set the [`disabledFontStyles`](../api-reference/feathers/controls/ScrollText.html#disabledFontStyles) property too:
 
-``` code
+``` actionscript
 scrollText.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 ```
 
@@ -69,7 +69,7 @@ scrollText.disabledFontStyles = new TextFormat( "Helvetica", 20, 0x9a9a9a );
 
 Use the [`isHTML`](../api-reference/feathers/controls/ScrollText.html#isHTML) property to display the text as HTML, with the same capabilities as the `htmlText` property of `flash.text.TextField`.
 
-``` code
+``` actionscript
 scrollText.isHTML = true;
 scrollText.text = "<font color=\"#ff0000\">Hello world</font>";
 ```
@@ -84,7 +84,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -93,7 +93,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -102,14 +102,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 scrollText.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 scrollText.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles,  );
 getStyleProviderForClass( ScrollBar )
@@ -120,7 +120,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the scroll bars:
 
-``` code
+``` actionscript
 scrollText.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

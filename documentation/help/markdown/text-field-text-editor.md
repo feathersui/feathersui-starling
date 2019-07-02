@@ -29,7 +29,7 @@ Because each passage of vector text needs to be drawn to `BitmapData`, each sepa
 
 <aside class="info">In general, you should customize font styles on the parent component of a text editor using a [`starling.text.TextFormat`](http://doc.starling-framework.org/current/starling/text/TextFormat.html) object. For example, to customize the font styles on a [`TextInput`](text-input.html) component, you'd set the input's [`fontStyles`](../api-reference/feathers/controls/TextInput.html#fontStyles) property.
 
-``` code
+``` actionscript
 input.fontStyles = new TextFormat( "Helvetica", 20, 0xcc0000 );
 ```
 
@@ -37,7 +37,7 @@ However, `starling.text.TextFormat` object does not always expose every unique f
 
 To use the classic Flash `TextField` with `TextInput`, create a [`TextFieldTextEditor`](../api-reference/feathers/controls/text/TextFieldTextEditor.html) in the appropriate factory exposed by the parent component. In the following example, we'll use the [`textEditorFactory`](../api-reference/feathers/controls/TextInput.html#textEditorFactory) of a [`TextInput`](text-input.html) component:
 
-``` code
+``` actionscript
 var input:TextInput = new TextInput();
 input.textEditorFactory = function():ITextEditor
 {
@@ -54,13 +54,13 @@ input.textEditorFactory = function():ITextEditor
 
 Advanced font styles may be customized using the native [`flash.text.TextFormat`](http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html) class. Pass an instance of `TextFormat` to the text editor's [`textFormat`](../api-reference/feathers/controls/text/TextFieldTextEditor.html#textFormat) property:
 
-``` code
+``` actionscript
 textEditor.textFormat = new TextFormat( "Source Sans Pro", 16, 0xcccccc );
 ```
 
 The `TextFormat` allows you to customize font size, color, alignment, and more.
 
-``` code
+``` actionscript
 var format:TextFormat = new TextFormat( "Helvetica" );
 format.size = 20;
 format.color = 0xc4c4c4;
@@ -75,7 +75,7 @@ format.align = TextFormatAlign.CENTER;
 
 For instance, we can provide a different font style for the focused state of a `TextInput` by calling [`setTextFormatForState()`](../api-reference/feathers/controls/text/TextFieldTextEditor.html#setTextFormatForState()):
 
-```code
+``` actionscript
 var defaultFormat:TextFormat = new TextFormat( "Helvetica", 20, 0xc4c4c4 );
 textEditor.textFormat = defaultFormat;
 
@@ -89,7 +89,7 @@ We didn't provide separate font styles for other states, like `TextInput.STATE_D
 
 To embed a TTF or OTF font for `TextFieldTextEditor`, use `[Embed]` metadata, like this:
 
-``` code
+``` actionscript
 [Embed(source="my-font.ttf",fontFamily="My Font Name",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="false")]
 private static const MY_FONT:Class;
 ```
@@ -105,7 +105,7 @@ Here are the parameters:
 
 To use an embedded font with `TextFieldTextEditor`, pass the name specified in the `fontFamily` parameter of the `[Embed]` metadata to the `TextFormat` object.
 
-``` code
+``` actionscript
 textEditor.textFormat = new TextFormat( "My Font Name", 16, 0xcccccc );
 textEditor.embedFonts = true;
 ```

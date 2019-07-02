@@ -7,7 +7,6 @@ package feathers.examples.youtube.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
-	import feathers.data.ListCollection;
 	import feathers.data.VectorCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoDetails;
@@ -161,7 +160,7 @@ package feathers.examples.youtube.screens
 					if(this._model.cachedLists.hasOwnProperty(this._model.selectedList.url))
 					{
 						this._message.visible = false;
-						this._list.dataProvider = ListCollection(this._model.cachedLists[this._model.selectedList.url]);
+						this._list.dataProvider = VectorCollection(this._model.cachedLists[this._model.selectedList.url]);
 
 						//show the scroll bars so that the user knows they can scroll
 						this._list.revealScrollBars();

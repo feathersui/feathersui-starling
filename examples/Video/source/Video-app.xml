@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/31.0">
+<application xmlns="http://ns.adobe.com/air/application/32.0">
 	<id>com.feathersui.examples.Video</id>
 	<filename>Feathers Video</filename>
 	<name>Feathers Video</name>
 	<versionNumber>4.0.0</versionNumber>
 	<description>Video example application built with Feathers UI controls for Starling</description>
-	<copyright>2018 Bowler Hat LLC</copyright>
+	<copyright>2019 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>Video.swf</content>

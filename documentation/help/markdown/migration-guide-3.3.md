@@ -21,7 +21,7 @@ This bug has now been fixed in Feathers 3.3.0, including a fix for the original 
 
 In Feathers 3.1.2 and 3.2.0, the following code would modify the color of only `label2`:
 
-``` code
+``` actionscript
 var myFontStyles:TextFormat = new TextFormat("_sans", 12, 0x000000);
 label1.fontStyles = myFontStyles;
 label2.fontStyles = myFontStyles;
@@ -30,7 +30,7 @@ label2.fontStyles.color = 0xff0000; //should actually change both!
 
 However, it was actually supposed to modify the color of both labels, and that's what you will now see in Feathers 3.3. If you don't want both labels to use the modified color, you should use `clone()` to ensure that each label uses a different `TextFormat` object:
 
-``` code
+``` actionscript
 var myFontStyles:TextFormat = new TextFormat("_sans", 12, 0x000000);
 label1.fontStyles = myFontStyles.clone();
 label2.fontStyles = myFontStyles.clone();

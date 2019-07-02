@@ -9,13 +9,13 @@ Normally, a [`Callout`](../callout.html) component will close itself when the us
 
 Let's start by creating a `Callout`. In this case, we probably want to ensure that it isn't modal, so that touches can reach components below the `Callout`. That's why we pass the `false` at the end.
 
-``` code
+``` actionscript
 var callout:Callout = Callout.show( content, origin, Callout.DIRECTION_ANY, false );
 ```
 
 Now, let's ensure that the `Callout` doesn't close when touching anywhere else:
 
-``` code
+``` actionscript
 callout.closeOnTouchBeganOutside = false;
 callout.closeOnTouchEndedOutside = false;
 ```
@@ -24,7 +24,7 @@ We simply set the [`closeOnTouchBeganOutside`](../../api-reference/feathers/cont
 
 Next, let's make sure that the keyboard cannot close the `Callout` either:
 
-``` code
+``` actionscript
 callout.closeOnKeys = null;
 ```
 

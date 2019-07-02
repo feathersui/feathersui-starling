@@ -12,33 +12,38 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.system.DeviceCapabilities;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import feathers.controls.Toast;
+	import feathers.controls.ButtonGroup;
 
-	public class AlertScreen extends PanelScreen
+	public class ToastScreen extends PanelScreen
 	{
-		public function AlertScreen()
+		public function ToastScreen()
 		{
 			super();
 		}
 
-		private var _showAlertButton:Button;
+		private var _showToastButtons:ButtonGroup;
 
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
 			super.initialize();
 
-			this.title = "Alert";
+			this.title = "Toast";
 
 			this.layout = new AnchorLayout();
 
-			this._showAlertButton = new Button();
-			this._showAlertButton.label = "Show Alert";
-			this._showAlertButton.addEventListener(Event.TRIGGERED, showAlertButton_triggeredHandler);
-			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			buttonLayoutData.horizontalCenter = 0;
-			buttonLayoutData.verticalCenter = 0;
-			this._showAlertButton.layoutData = buttonLayoutData;
-			this.addChild(this._showAlertButton);
+			this._showToastButtons = new ButtonGroup();
+			this._showToastButtons.dataProvider = new ArrayCollection(
+			[
+				{ label: "Show Toast with Message", triggered: showMessageButton_triggeredHandler },
+				{ label: "Show Toast with Actions", triggered: showActionsButton_triggeredHandler },
+			])
+			var buttonGroupLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			buttonGroupLayoutData.horizontalCenter = 0;
+			buttonGroupLayoutData.verticalCenter = 0;
+			this._showToastButtons.layoutData = buttonGroupLayoutData;
+			this.addChild(this._showToastButtons);
 
 			this.headerFactory = this.customHeaderFactory;
 
@@ -79,18 +84,17 @@ package feathers.examples.componentsExplorer.screens
 			this.onBackButton();
 		}
 
-		private function showAlertButton_triggeredHandler(event:Event):void
+		private function showMessageButton_triggeredHandler(event:Event):void
 		{
-			var alert:Alert = Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ArrayCollection(
+			Toast.showMessage("Hi, there!");
+		}
+
+		private function showActionsButton_triggeredHandler(event:Event):void
+		{
+			Toast.showMessageWithActions("I have an action", new ArrayCollection(
 			[
-				{ label: "OK" },
-				{ label: "Cancel" }
+				{ label: "Neat!" }
 			]));
-			//when the enter key is pressed, treat it as OK
-			alert.acceptButtonIndex = 0;
-			//when the back or escape key is pressed, treat it as cancel
-			alert.cancelButtonIndex = 1;
-			alert.addEventListener(Event.CLOSE, alert_closeHandler);
 		}
 
 		private function alert_closeHandler(event:Event, data:Object):void

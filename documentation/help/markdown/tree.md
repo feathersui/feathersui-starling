@@ -28,7 +28,7 @@ The [`Tree`](../api-reference/feathers/controls/Tree.html) class renders a serie
 
 First, let's create a `Tree` control and add it to the display list:
 
-``` code
+``` actionscript
 var tree:Tree = new Tree();
 tree.width = 250;
 tree.height = 300;
@@ -37,7 +37,7 @@ this.addChild( tree );
 
 Next, we want the tree to display some items, so let's create an [`ArrayHierarchicalCollection`](../api-reference/feathers/data/ArrayHierarchicalCollection.html) as its data provider. In the example below, a specially-formatted set of objects is passed to the `ArrayHierarchicalCollection`:
 
-``` code
+``` actionscript
 var groceryList:ArrayHierarchicalCollection = new ArrayHierarchicalCollection(
 [
     {
@@ -85,13 +85,13 @@ By default, a tree renders items from the data provider using the [`DefaultTreeI
 
 Start by taking a moment to review one of the items from the data provider:
 
-``` code
+``` actionscript
 { text: "Node 2" }
 ```
 
 The item's `text` property contains a string. We can tell the default item renderer to use the value from this property to display a label.
 
-``` code
+``` actionscript
 tree.itemRendererFactory = function():ITreeItemRenderer
 {
     var itemRenderer:DefaultTreeItemRenderer = new DefaultTreeItemRenderer();
@@ -104,13 +104,13 @@ When using the [`labelField`](../api-reference/feathers/controls/renderers/BaseD
 
 We could also display textures in the item renderer. Consider this modified item, with an extra `thumbnail` field:
 
-``` code
+``` actionscript
 { text: "Node 2", thumbnail: textureAtlas.getTexture( "my-texture" ) }
 ```
 
 We can tell the item renderers to use this property too:
 
-``` code
+``` actionscript
 tree.itemRendererFactory = function():ITreeItemRenderer
 {
     var itemRenderer:DefaultTreeItemRenderer = new DefaultTreeItemRenderer();
@@ -130,13 +130,13 @@ The `Tree` component may have one selected item. You can access information abou
 
 To listen for when the selection changes, listen to [`Event.CHANGE`](../api-reference/feathers/controls/Tree.html#event:change):
 
-``` code
+``` actionscript
 tree.addEventListener( Event.CHANGE, tree_changeHandler );
 ```
 
 The listener might look something like this:
 
-``` code
+``` actionscript
 private function tree_changeHandler( event:Event ):void
 {
     var tree:Tree = Tree( event.currentTarget );
@@ -146,7 +146,7 @@ private function tree_changeHandler( event:Event ):void
 
 You can manually change the selection, if needed:
 
-``` code
+``` actionscript
 tree.selectedLocation = new <int>[0, 4];
 ```
 
@@ -154,25 +154,25 @@ Selection indices start at `0`, so the above code would select the fifth item in
 
 If you prefer, you can change selection by passing in an item from the data provider:
 
-``` code
+``` actionscript
 tree.selectedItem = item;
 ```
 
 If needed, you can clear selection manually by setting `selectedLocation` to an empty value:
 
-``` code
+``` actionscript
 tree.selectedLocation = new <int>[];
 ```
 
 Or you can set `selectedItem` to `null`:
 
-``` code
+``` actionscript
 tree.selectedItem = null;
 ```
 
 To disable selection completely, use the [`isSelectable`](../api-reference/feathers/controls/Tree.html#isSelectable) property:
 
-``` code
+``` actionscript
 tree.isSelectable = false;
 ```
 
@@ -184,7 +184,7 @@ A tree has a background skin and a layout. Much of the ability to customize the 
 
 We can give the tree a background skin that fills the entire width and height of the tree. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 tree.backgroundSkin = skin;
@@ -194,7 +194,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the tree a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 tree.backgroundDisabledSkin = skin;
@@ -206,7 +206,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 Padding may be added around the edges of the tree's content. This padding is different than any type of padding that may be provided by the `layout` property. The layout padding is applied inside the tree's content, but the tree's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
-``` code
+``` actionscript
 tree.paddingTop = 15;
 tree.paddingRight = 20;
 tree.paddingBottom = 15;
@@ -215,13 +215,13 @@ tree.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/Scroller.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 tree.padding = 20;
 ```
 
 The default layout for a tree is to display the items vertically one after the other. We can change that to a horizontal layout, a tiled layout, or even a completely [custom layout algorithm](custom-layouts.html). Let's switch to a [`HorizontalLayout`](horizontal-layout.html) and customize it a bit:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.verticalAlign = VerticalAlign.JUSTIFY;
 layout.gap = 10;
@@ -231,7 +231,7 @@ tree.layout = layout;
 
 When the tree automatically defaults to a [`VerticalLayout`](vertical-layout.html), it also updates its scroll policy so that it will scroll vertically with elastic edges and will only scroll horizontally if the content is larger than the view port. If we're switching to a horizontal layout, the scroll policies won't be updated automatically, so we should also manually adjust the scroll policies:
 
-``` code
+``` actionscript
 tree.horizontalScrollPolicy = ScrollPolicy.AUTO;
 tree.verticalScrollPolicy = ScrollPolicy.OFF;
 ```
@@ -248,7 +248,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -257,7 +257,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -266,14 +266,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 tree.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 tree.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -284,7 +284,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the tree's scroll bars:
 
-``` code
+``` actionscript
 tree.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();
@@ -306,13 +306,13 @@ This section only explains how to access the item renderer sub-components. Pleas
 
 If you are creating a [theme](themes.html), you can set a function for the default styles like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultTreeItemRenderer ).defaultStyleFunction = setItemRendererStyles;
 ```
 
 The styling function might look like this:
 
-``` code
+``` actionscript
 private function setItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):void
 {
     var skin:ImageSkin = new ImageSkin( upTexture );
@@ -325,13 +325,13 @@ private function setItemRendererStyles(itemRenderer:DefaultTreeItemRenderer):voi
 
 If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
 
-``` code
+``` actionscript
 tree.customItemRendererStyleName = "custom-item-renderer";
 ```
 
 You can set the function for the custom [`customItemRendererStyleName`](../api-reference/feathers/controls/Tree.html#customItemRendererStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( DefaultTreeItemRenderer )
     .setFunctionForStyleName( "custom-item-renderer", setCustomItemRendererStyles );
 ```
@@ -340,7 +340,7 @@ getStyleProviderForClass( DefaultTreeItemRenderer )
 
 If you are not using a theme, you can use [`itemRendererFactory`](../api-reference/feathers/controls/Tree.html#itemRendererFactory) to provide skins for the tree's item renderers:
 
-``` code
+``` actionscript
 tree.itemRendererFactory = function():ITreeItemRenderer
 {
     var itemRenderer:DefaultTreeItemRenderer = new DefaultTreeItemRenderer();
@@ -364,13 +364,13 @@ If the default item renderer doesn't have the features that you need, the `Tree`
 
 The easiest way to tell a tree to display its data using a custom item renderer is to set the [`itemRendererType`](../api-reference/feathers/controls/Tree.html#itemRendererType) property:
 
-``` code
+``` actionscript
 tree.itemRendererType = ExampleCustomItemRenderer;
 ```
 
 Sometimes, you might want to change some properties on each item renderer as it is created. You can use the [`itemRendererFactory`](../api-reference/feathers/controls/Tree.html#itemRendererFactory) property instead of `itemRendererType` to call a function that returns a newly created item renderer:
 
-``` code
+``` actionscript
 tree.itemRendererFactory = function():ITreeItemRenderer
 {
     var itemRenderer:ExampleCustomItemRenderer = new ExampleCustomItemRenderer();
@@ -383,7 +383,7 @@ tree.itemRendererFactory = function():ITreeItemRenderer
 
 Listening to events dispatched by a custom item renderer isn't too difficult. Simply dispatch the event normally from the item renderer. No need for bubbling. As an example, let's say that we want to dispatch `Event.COMPLETE` from an item renderer when something happens:
 
-``` code
+``` actionscript
 function someEventHandler( event:Event ):void
 {
     this.dispatchEventWith( Event.COMPLETE );
@@ -392,13 +392,13 @@ function someEventHandler( event:Event ):void
 
 On our tree, first we need to listen for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 tree.addEventListener( FeathersEventType.RENDERER_ADD, tree_rendererAddHandler );
 ```
 
 Inside the listener for `FeathersEventType.RENDERER_ADD`, we add a listener for our event dispatched by the item renderer:
 
-``` code
+``` actionscript
 function tree_rendererAddHandler( event:Event, itemRenderer:ITreeItemRenderer ):void
 {
     itemRenderer.addEventListener( Event.COMPLETE, itemRenderer_customCompleteHandler );
@@ -412,13 +412,13 @@ function itemRenderer_customCompleteHandler( event:Event ):void
 
 Finally, we want to be sure to remove the listeners from the item renderers, so we should also listen for `FeathersEventType.RENDERER_REMOVE`:
 
-``` code
+``` actionscript
 tree.addEventListener( FeathersEventType.RENDERER_REMOVE, tree_rendererRemoveHandler );
 ```
 
 The listener for `FeathersEventType.RENDERER_REMOVE` looks very similar to the listener for `FeathersEventType.RENDERER_ADD`:
 
-``` code
+``` actionscript
 function tree_rendererRemoveHandler( event:Event, itemRenderer:ITreeItemRenderer ):void
 {
     itemRenderer.removeEventListener( Event.COMPLETE, itemRenderer_customCompleteHandler );
@@ -429,7 +429,7 @@ function tree_rendererRemoveHandler( event:Event, itemRenderer:ITreeItemRenderer
 
 A tree may display differnent item renderers for different items in the data provider. We can use the [`setItemRendererFactoryWithID()`](../api-reference/feathers/controls/Tree.html#setItemRendererFactoryWithID()) method to pass in more than one item renderer factory:
 
-``` code
+``` actionscript
 function regularItemFactory():ITreeItemRenderer
 {
     return new DefaultTreeItemRenderer();
@@ -447,7 +447,7 @@ Each factory should be given a unique `String` identifier. We'll use these value
 
 The [`factoryIDFunction`](../api-reference/feathers/controls/Tree.html#factoryIDFunction) is used to determine which item renderer factory should be used for a particular item. In the example below, we use `factoryIDFunction` to give the first item in the data provider a different item renderer than the other items:
  
-``` code
+``` actionscript
 tree.factoryIDFunction = function( item:Object, location:Vector.&lt;int&gt; ):String
 {
     if(location[0] == 0)

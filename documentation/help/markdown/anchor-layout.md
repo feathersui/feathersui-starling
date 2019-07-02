@@ -24,7 +24,7 @@ Using [`AnchorLayoutData`](../api-reference/feathers/layout/AnchorLayoutData.htm
 
 Let's start out with the basic case of anchoring a component inside of its parent container. First we'll create a [`LayoutGroup`](layout-group.html) container and add a [`Button`](button.html) as a child:
 
-``` code
+``` actionscript
 var container:LayoutGroup = new LayoutGroup();
 container.width = 400;
 container.height = 400;
@@ -37,13 +37,13 @@ container.addChild( button );
 
 Since the container has no layout by default, the standard `x` and `y` properties will be used, so the button will appear at the top left. Let's give an `AnchorLayout` a try:
 
-``` code
+``` actionscript
 container.layout = new AnchorLayout();
 ```
 
 Our anchors aren't stored in the `AnchorLayout`. Since each child in the container will be positioned separately, we associate [`AnchorLayoutData`](../api-reference/feathers/layout/AnchorLayoutData.html) with each child using the [`layoutData`](../api-reference/feathers/core/ILayoutDisplayObject.html#layoutData) property on any [`ILayoutDisplayObject`](../api-reference/feathers/core/ILayoutDisplayObject.html):
 
-``` code
+``` actionscript
 var layoutData:AnchorLayoutData = new AnchorLayoutData();
 layoutData.horizontalCenter = 0;
 layoutData.verticalCenter = 0;
@@ -52,7 +52,7 @@ button.layoutData = layoutData;
 
 By setting the [`horizontalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#horizontalCenter) and [`verticalCenter`](../api-reference/feathers/layout/AnchorLayoutData.html#verticalCenter) properties in the code above, we center the button both horizontally or vertically inside the container. When the container resizes, the button's position will be updated so that it stays in the center. We can test this by resizing the container when the button is triggered:
 
-``` code
+``` actionscript
 button.addEventListener( Event.TRIGGERED, function( event:Event ):void
 {
     container.width = 500;
@@ -62,7 +62,7 @@ button.addEventListener( Event.TRIGGERED, function( event:Event ):void
 
 `AnchorLayout` isn't simply for centering objects in a container. Let's try a couple of other anchors instead:
 
-``` code
+``` actionscript
 var layoutData:AnchorLayoutData = new AnchorLayoutData();
 layoutData.right = 10;
 layoutData.bottom = 10;
@@ -73,7 +73,7 @@ In this case, we want to position the button 10 pixels from the right edge of th
 
 Let's say that we want the button to always fill the width of the container. We can anchor it to the left edge and the right edge at the same time:
 
-``` code
+``` actionscript
 var layoutData:AnchorLayoutData = new AnchorLayoutData();
 layoutData.left = 10;
 layoutData.right = 10;
@@ -86,7 +86,7 @@ Now, when the container is resized, the button is always 10 pixels from the left
 
 Let's add a second button and anchor it both the parent container and to the first button.
 
-``` code
+``` actionscript
 var button2:Button = new Button();
 button2.label = "Another Button";
 container.addChild( button2 );
@@ -102,7 +102,7 @@ Similar to our first example above, we've anchored the second button's bottom an
 
 Let's expand this example in the same way that we did above. We want the second button to fill the remaining height in the container, above the first button.
 
-``` code
+``` actionscript
 var layoutData2:AnchorLayoutData = new AnchorLayoutData();
 layoutData2.right = 10;
 layoutData2.bottom = 10;

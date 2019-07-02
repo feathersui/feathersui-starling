@@ -27,7 +27,7 @@ Events dispatched from the active screen can be used to trigger navigation. Navi
 
 First, let's create a `ScreenNavigator` component and add it to the display list:
 
-``` code
+``` actionscript
 this._navigator = new ScreenNavigator();
 this.addChild( this._navigator );
 ```
@@ -36,7 +36,7 @@ You may also set its `width` and `height`, but that's optional because the `Scre
 
 To add a new screen that the navigator can show, call [`addScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#addScreen()) and pass in an ID string to associate with the screen along with a [`ScreenNavigatorItem`](../api-reference/feathers/controls/ScreenNavigatorItem.html):
 
-``` code
+``` actionscript
 var mainMenuItem:ScreenNavigatorItem = new ScreenNavigatorItem( MainMenuScreen );
 this._navigator.addScreen( "mainMenu", mainMenuItem );
 ```
@@ -49,13 +49,13 @@ The first argument required by the `ScreenNavigatorItem` constructor may be one 
 
 To show a specific screen, call [`showScreen()`](../api-reference/feathers/controls/ScreenNavigator.html#showScreen()), and pass in the screen's ID. We'll use the `"mainMenu"` string that we registered with `addScreen()` earlier:
 
-``` code
+``` actionscript
 this._navigator.showScreen( "mainMenu" );
 ```
 
 To access the currently visible screen, use the [`activeScreen`](../api-reference/feathers/controls/supportClasses/BaseScreenNavigator.html#activeScreen) property.
 
-``` code
+``` actionscript
 var mainMenu:MainMenuScreen = MainMenuScreen( this._navigator.activeScreen );
 ```
 
@@ -63,7 +63,7 @@ You can also use [`activeScreenID`](../api-reference/feathers/controls/supportCl
 
 To make the `ScreenNavigator` remove the active screen, call [`clearScreen()`](../api-reference/feathers/controls/supportClasses/ScreenNavigator.html#clearScreen()).
 
-``` code
+``` actionscript
 this._navigator.clearScreen();
 ```
 
@@ -73,21 +73,21 @@ If the active screen dispatches an event, the `ScreenNavigator` can listen for i
 
 Before we get to that, let's make a couple of changes to our existing code. First, let's move the main menu screen's ID into a constant. Then, let's add a second screen.
 
-``` code
+``` actionscript
 private static const MAIN_MENU:String = "mainMenu";
 private static const OPTIONS:String = "options";
 ```
 
 The constants will help us avoid typing mistakes that the compiler can easily catch. Let's use the `MAIN_MENU` constant in the call to `addScreen()`:
 
-``` code
+``` actionscript
 var mainMenuItem:ScreenNavigatorItem = new ScreenNavigatorItem( MainMenuScreen );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
 ```
 
 You probably noticed that we defined an `OPTIONS` constant too. Let's add the options screen that goes with it:
 
-``` code
+``` actionscript
 var optionsItem:ScreenNavigatorItem = new ScreenNavigatorItem( OptionsScreen );
 this._navigator.addScreen( OPTIONS, optionsItem );
 ```
@@ -98,7 +98,7 @@ Now that we have a second screen, let's look at how we can navigate from the mai
 
 The best way to navigate from one screen to another is to dispatch an event from the currently active screen. Using the `ScreenNavigatorItem`, we can map an event to a screen indentifier. The `ScreenNavigator` will automatically navigate to a different screen when one of these events is dispatched. Let's map an event from the main menu screen that will navigate to the options screen:
 
-``` code
+``` actionscript
 var mainMenuItem:ScreenNavigatorItem = new ScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForEvent( MainMenuScreen.SHOW_OPTIONS, OPTIONS );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
@@ -108,13 +108,13 @@ Using [`setScreenIDForEvent()`](../api-reference/feathers/controls/ScreenNavigat
 
 Inside `MainMenuScreen`, we can add a constant named `SHOW_OPTIONS` that we'll use as an event type:
 
-``` code
+``` actionscript
 public static const SHOW_OPTIONS:String = "showOptions";
 ```
 
 Then, we might dispatch this event when a button is triggered:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this.dispatchEventWith( SHOW_OPTIONS );
@@ -123,7 +123,7 @@ protected function optionsButton_triggeredHandler( event:Event ):void
 
 Next, let's repeat the process with the options screen to navigate back to the main menu screen when an event is dispatched.
 
-``` code
+``` actionscript
 var optionsItem:ScreenNavigatorItem = new ScreenNavigatorItem( OptionsScreen );
 optionsItem.setScreenIDForEvent( Event.COMPLETE, MAIN_MENU );
 this._navigator.addScreen( OPTIONS, optionsItem );
@@ -131,7 +131,7 @@ this._navigator.addScreen( OPTIONS, optionsItem );
 
 Inside `OptionsScreen`, we might dispatch an event when a button is triggered, similar to how we did it in `MainMenuScreen`. This time, we'll just use the built in `Event.COMPLETE` constant instead of defining a new one:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this.dispatchEventWith( Event.COMPLETE );
@@ -152,13 +152,13 @@ Each of the built-in transition classes has one or more static methods that you 
 
 We can pass the result to the screen navigator's [`transition`](../api-reference/feathers/controls/ScreenNavigator.html#transition) property:
 
-``` code
+``` actionscript
 this._navigator.transition = Fade.createFadeInTransition();
 ```
 
 In the code above, we didn't pass any arguments to `Fade.createFadeInTransition()`. However, this function exposes some optional parameters that we can customize, if desired. For instance, we might want to customize the duration of the animation (in seconds) and the easing function:
 
-``` code
+``` actionscript
 this._navigator.transition = Fade.createFadeInTransition( 0.75, Transitions.EASE_IN_OUT );
 ```
 
@@ -174,13 +174,13 @@ A `ScreenNavigator` dispatches [`FeathersEventType.TRANSITION_START`](../api-ref
 
 Let's listen for `FeathersEventType.TRANSITION_COMPLETE`:
 
-``` code
+``` actionscript
 this._navigator.addEventListener( FeathersEventType.TRANSITION_COMPLETE, navigator_transitionCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function navigator_transitionCompleteHandler( event:Event ):void
 {
     // do something after the transition animation
@@ -193,20 +193,20 @@ Optionally, we can pass properties to the screen before it is shown. If we have 
 
 In the class where we create the `ScreenNavigator`, let's create an `OptionsData` instance too. In a moment, we'll pass it to each screen that needs it.
 
-``` code
+``` actionscript
 this._optionsData = new OptionsData();
 ```
 
 Now, when we add our `OptionsScreen` to the `ScreenNavigator`, we pass it the `OptionsData` instance in using the [`properties`](../api-reference/feathers/controls/ScreenNavigatorItem.html#properties) property on the `ScreenNavigatorItem`:
 
-``` code
+``` actionscript
 var optionsItem:ScreenNavivatorItem = new ScreenNavigatorItem( OptionsScreen );
 optionsItem.properties.options = this._optionsData;
 ```
 
 In `OptionsScreen`, we need to add a variable or a getter and setter named `options` to match up with `optionsItem.properties.options`:
 
-``` code
+``` actionscript
 protected var _options:OptionsData;
  
 public function get options():OptionsData
@@ -222,7 +222,7 @@ public function set options( value:OptionsData ):void
 
 We want to update the screen when the `options` property changes, so we should invalidate the screen, and the `draw()` function will be called again:
 
-``` code
+``` actionscript
 public function set options( value:OptionsData ):void
 {
     if(this._options == value)
@@ -244,7 +244,7 @@ public function set options( value:OptionsData ):void
 
 The `ScreenNavigatorItem` event map can be used for more than simply navigating from one screen to another. You can also call a function when an event or signal is dispatched. Let's add a new event to the main menu that will be dispatched when an "About Our Product" button is clicked. We want it to open a website in the browser.
 
-``` code
+``` actionscript
 var mainMenuItem:ScreenNavigatorItem = new ScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForEvent( MainMenuScreen.SHOW_OPTIONS, OPTIONS );
 mainMenuItem.setFunctionForEvent( MainMenuScreen.LINK_TO_HOME_PAGE, openHomePageLink );
@@ -252,7 +252,7 @@ mainMenuItem.setFunctionForEvent( MainMenuScreen.LINK_TO_HOME_PAGE, openHomePage
 
 The function may optionally receives the event listener arguments.
 
-``` code
+``` actionscript
 protected function openHomePageLink():void
 {
     navigateToURL( new URLRequest( "http://www.example.com/" ), "_blank" );
@@ -261,7 +261,7 @@ protected function openHomePageLink():void
 
 Optionally, the function may receive the listener arguments for the event dispatched by the screen, if needed:
 
-``` code
+``` actionscript
 protected function openHomePageLink( event:Event ):void
 ```
 
@@ -273,7 +273,7 @@ If as3-signals has been detected, the `ScreenNavigator` will first check a scree
 
 Let's rework the example above to use signals instead of events. Let's start with changing how `MainMenuScreen` is added to the `ScreenNavigator`:
 
-``` code
+``` actionscript
 var mainMenuItem:ScreenNavigatorItem = new ScreenNavigatorItem( MainMenuScreen );
 mainMenuItem.setScreenIDForEvent( "onOptions", OPTIONS );
 this._navigator.addScreen( MAIN_MENU, mainMenuItem );
@@ -281,7 +281,7 @@ this._navigator.addScreen( MAIN_MENU, mainMenuItem );
 
 Inside `MainMenuScreen`, we add a signal called `onOptions` that will automatically be detected when the `ScreenNavigator` reads the event map:
 
-``` code
+``` actionscript
 protected var _onOptions:Signal = new Signal();
  
 public function get onOptions():ISignal
@@ -292,7 +292,7 @@ public function get onOptions():ISignal
 
 The `MainMenuScreen` might dispatch `onOptions` when a button is triggered:
 
-``` code
+``` actionscript
 protected function optionsButton_triggeredHandler( event:Event ):void
 {
     this._onOptions.dispatch();

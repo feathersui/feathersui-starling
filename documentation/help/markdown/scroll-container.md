@@ -22,14 +22,14 @@ The [`ScrollContainer`](../api-reference/feathers/controls/ScrollContainer.html)
 
 First, let's create a `ScrollContainer` component and add it to the display list:
 
-``` code
+``` actionscript
 var container:ScrollContainer = new ScrollContainer();
 this.addChild( container );
 ```
 
 A `ScrollContainer` works a lot like any [`DisplayObjectContainer`](http://doc.starling-framework.org/core/starling/display/DisplayObjectContainer.html), so you can use the standard `addChild()`, `removeChild()` and other display list manipulation functions.
 
-``` code
+``` actionscript
 var xPosition:Number = 0;
 for(var i:int = 0; i < 5; i++)
 {
@@ -44,7 +44,7 @@ The children of a `ScrollContainer` do not need to be Feathers UI controls. As y
 
 By default, the `ScrollContainer` will automatically resize itself to fit the area that the children occupy. We can set the width and height manually, if desired, to override this behavior:
 
-``` code
+``` actionscript
 container.width = 200;
 container.height = 200;
 ```
@@ -53,7 +53,7 @@ container.height = 200;
 
 We manually positioned the quads in the example code above. Instead, let's pass a [`HorizontalLayout`](../api-reference/feathers/layout/HorizontalLayout.html) to the [`layout`](../api-reference/feathers/controls/ScrollContainer.html#layout) property of the `ScrollContainer`. This layout will calculate the positioning of children for us automatically:
 
-``` code
+``` actionscript
 var layout:HorizontalLayout = new HorizontalLayout();
 layout.gap = 10;
 container.layout = layout;
@@ -71,7 +71,7 @@ The skins for a `ScrollContainer` control are mainly the background skins and so
 
 We can give the `ScrollContainer` a background skin that stretches to fill the entire width and height of the scroll container. In the following example, we pass in a `starling.display.Image`, but the skin may be any Starling display object:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 2, 2, 1, 6 );
 container.backgroundSkin = skin;
@@ -81,7 +81,7 @@ It's as simple as setting the [`backgroundSkin`](../api-reference/feathers/contr
 
 We can give the `ScrollContainer` a different background when it is disabled:
 
-``` code
+``` actionscript
 var skin:Image = new Image( texture );
 skin.scale9Grid = new Rectangle( 1, 3, 2, 6 );
 container.backgroundDisabledSkin = skin;
@@ -93,7 +93,7 @@ The [`backgroundDisabledSkin`](../api-reference/feathers/controls/Scroller.html#
 
 Padding may be added around the edges of the container's content. This padding is different than any type of padding that may be provided by the layout. The layout padding is applied inside the container's content, but the container's padding is applied outside of the content, and is generally used to show a bit of the background as a border around the content.
 
-``` code
+``` actionscript
 container.paddingTop = 15;
 container.paddingRight = 20;
 container.paddingBottom = 15;
@@ -102,7 +102,7 @@ container.paddingLeft = 20;
 
 If all four padding values should be the same, you may use the [`padding`](../api-reference/feathers/controls/ScrollContainer.html#padding) property to quickly set them all at once:
 
-``` code
+``` actionscript
 container.padding = 20;
 ```
 
@@ -114,7 +114,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -123,7 +123,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -132,14 +132,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 container.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 container.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -150,7 +150,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the container's scroll bars:
 
-``` code
+``` actionscript
 container.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

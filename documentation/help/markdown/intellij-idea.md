@@ -37,19 +37,19 @@ Let's get your [IntelliJ IDEA](http://www.jetbrains.com/idea/) development envir
 
 	Open your modules **index.template.html** file in the **html-template** folder. Search for the following line of JavaScript:
 
-	``` code
+	``` javascript
 var params = {};
 ```
 
 	Add the following line after it:
 
-	``` code
+	``` javascript
 params.wmode = "direct";
 ```
 
 	Next, look for the `<object>` HTML elements near the bottom of the document. Add the following `<param>` element inside *both* `<object>` elements.
 
-	``` code
+	``` xml
 <param name="wmode" value="direct" />
 ```
 

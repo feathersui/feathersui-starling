@@ -33,7 +33,7 @@ Next, we're going to create a custom template for new Feathers MXML files. The d
 
 4. Enter `Feathers Component` for the **Name** and `mxml` for the **Extension**. Then, enter the following code for the template:
 
-	``` code
+	``` xml
 	<?xml version="1.0"?>
 	<${Superclass} xmlns:f="library://ns.feathersui.com/mxml" xmlns:fx="http://ns.adobe.com/mxml/2009">
 	</${Superclass}>
@@ -107,19 +107,19 @@ To use this template at any time, choose the **File** menu → **New** → **MXM
 
 	Open the module's **index.template.html** file in the **html-template** folder. Search for the following line of JavaScript:
 
-	``` code
+	``` javascript
 	var params = {};
 	```
 
 	Add the following line after it:
 
-	``` code
+	``` javascript
 	params.wmode = "direct";
 	```
 
 	Next, look for the `<object>` HTML elements near the bottom of the document. Add the following `<param>` element inside *both* `<object>` elements.
 
-	``` code
+	``` html
 	<param name="wmode" value="direct" />
 	```
 

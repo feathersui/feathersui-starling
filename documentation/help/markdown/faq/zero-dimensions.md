@@ -11,7 +11,7 @@ A Feathers component will *invalidate* when you change one of its properties. Th
 
 If you can't wait until the next frame, and you need to the component to measure itself immediately and process any other property changes, you can call the [`validate()`](../../api-reference/feathers/core/FeathersControl.html#validate()) function yourself:
 
-``` code
+``` actionscript
 label.text = "hello";
 trace( label.width ); // 0
 label.validate();       // validate yourself, right this instant!

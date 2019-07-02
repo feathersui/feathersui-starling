@@ -25,7 +25,7 @@ A [`ScrollScreen`](../api-reference/feathers/controls/ScrollScreen.html) compone
 
 Just like [`ScrollContainer`](scroll-container.html), you can add children and use layouts. Typically, you would override `initialize()` in a subclass of `ScrollScreen` and add children there:
 
-``` code
+``` actionscript
 protected function initialize():void
 {
 	// never forget to call this!
@@ -51,7 +51,7 @@ Some devices, such as Android phones and tablets, have hardware keys. These may 
 
 Screen provides [`backButtonHandler`](../api-reference/feathers/controls/ScrollScreen.html#backButtonHandler), [`menuButtonHandler`](../api-reference/feathers/controls/ScrollScreen.html#menuButtonHandler), and [`searchButtonHandler`](../api-reference/feathers/controls/ScrollScreen.html#searchButtonHandler).
 
-``` code
+``` actionscript
 this.backButtonHandler = function():void
 {
     trace( "the back button has been pressed." );
@@ -66,13 +66,13 @@ When the screen is shown by the screen navigator, the screen dispatches [`Feathe
 
 Let's listen for `FeathersEventType.TRANSITION_IN_COMPLETE`:
 
-``` code
+``` actionscript
 this.addEventListener( FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler );
 ```
 
 The event listener might look like this:
 
-``` code
+``` actionscript
 private function transitionInCompleteHandler( event:Event ):void
 {
     // do something after the screen transitions in
@@ -101,7 +101,7 @@ This section only explains how to access the horizontal scroll bar and vertical 
 
 If you're creating a [theme](themes.html), you can target the [`Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR) style name for the horizontal scroll bar and the [`Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR`](../api-reference/feathers/controls/Scroller.html#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR) style name for the vertical scroll bar.
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR, setHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -110,7 +110,7 @@ getStyleProviderForClass( ScrollBar )
 
 The styling function for the horizontal scroll bar might look like this:
 
-``` code
+``` actionscript
 private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 {
     scrollBar.trackLayoutMode = TrackLayoutMode.SINGLE;
@@ -119,14 +119,14 @@ private function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 
 You can override the default style names to use different ones in your theme, if you prefer:
 
-``` code
+``` actionscript
 screen.customHorizontalScrollBarStyleName = "custom-horizontal-scroll-bar";
 screen.customVerticalScrollBarStyleName = "custom-vertical-scroll-bar";
 ```
 
 You can set the function for the [`customHorizontalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customHorizontalScrollBarStyleName) and the [`customVerticalScrollBarStyleName`](../api-reference/feathers/controls/Scroller.html#customVerticalScrollBarStyleName) like this:
 
-``` code
+``` actionscript
 getStyleProviderForClass( ScrollBar )
     .setFunctionForStyleName( "custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );
 getStyleProviderForClass( ScrollBar )
@@ -137,7 +137,7 @@ getStyleProviderForClass( ScrollBar )
 
 If you are not using a theme, you can use [`horizontalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#horizontalScrollBarFactory) and [`verticalScrollBarFactory`](../api-reference/feathers/controls/Scroller.html#verticalScrollBarFactory) to provide skins for the container's scroll bars:
 
-``` code
+``` actionscript
 screen.horizontalScrollBarFactory = function():ScrollBar
 {
     var scrollBar:ScrollBar = new ScrollBar();

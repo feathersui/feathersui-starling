@@ -11,7 +11,7 @@ A [`TabBar`](../tab-bar.html) component contains one or more [`ToggleButton`](..
 
 We can customize the tabs inside the tab bar's [`tabFactory`](../../api-reference/feathers/controls/TabBar.html#tabFactory). As long as we aren't setting any advanced font styles on the tab's [text renderer](../text-renderers.html) (and the theme isn't either), we can pass a `starling.text.TextFormat` directly to the tab's [`fontStyles`](../../api-reference/feathers/controls/Button.html#fontStyles) property.
 
-``` code
+``` actionscript
 var tabs:TabBar = new TabBar();
 tabs.tabFactory = function():ToggleButton
 {

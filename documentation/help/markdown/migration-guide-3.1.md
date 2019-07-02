@@ -19,7 +19,7 @@ In fact, the font styles don't need to be set directly on the text renderer anym
 
 Let's customize the font styles on a [`Label`](label.html) component to see how it works:
 
-``` code
+``` actionscript
 var label:Label = new Label();
 label.text = "Hello World";
 label.fontStyles = new TextFormat( "_sans", 20, 0xff0000 );
@@ -30,7 +30,7 @@ That's it! In the vast majority of cases, you won't need to deal with the text r
 
 If we wanted the `Label` to use different font styles when disabled, we can do that easily too:
 
-``` code
+``` actionscript
 label.disabledFontStyles = new TextFormat( "_sans", 20, 0x999999 );
 ```
 
@@ -38,7 +38,7 @@ Most components that contain a text renderer will now have `fontStyles` and `dis
 
 Finally, if a component supports a more complex set of mutiple states, such as the touch states in a `Button`, it will have a `setFontStylesForState()` method. This method accepts the name of the state along with a `TextFormat` object to use when the component is in that state. In the following example, we set separate font styles for the "down" and "hover" states of a [`Button`](button.html):
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.setFontStylesForState( ButtonState.DOWN, new TextFormat( "_sans", 20, 0xffffff ) );
 button.setFontStylesForState( ButtonState.HOVER, new TextFormat( "_sans", 20, 0xff9999 ) );
@@ -50,7 +50,7 @@ In previous versions of Feathers, it was easy to run into conflicts with the the
 
 Starting with Feathers 3.1, certain properties are now considered "styles". If you set a "style property" outside of the theme, you don't need to worry about the theme replacing it later. However, any other styles from the theme won't be affected. As an example, if you wanted to customize a button's font styles outside the theme, but keep the background skin from the theme, it's easy.
 
-``` code
+``` actionscript
 var button:Button = new Button();
 button.label = "Click Me";
 //this can't be replaced by the theme
@@ -64,7 +64,7 @@ To see how style are now separated from other properties in the API reference, s
 
 Be aware that if you set a regular property in a theme, it may still conflict with code outside of the them. For example, you should not set the `minWidth` and `minHeight` properties directly on a component in a theme. These properties are **not** considered styles, and you may run into conflicts if you also try to set them outside of the theme.
 
-``` code
+``` actionscript
 //inside the theme
 private function setButtonStyles( button:Button ):void
 {
@@ -75,7 +75,7 @@ private function setButtonStyles( button:Button ):void
 
 Instead, set `minWidth` and `minHeight` on the component's skin:
 
-``` code
+``` actionscript
 //inside the theme
 private function setButtonStyles( button:Button ):void
 {
@@ -90,7 +90,7 @@ If a component doesn't have explicit dimensions, it will always use the skin's d
 
 What if a component doesn't need to display a background skin? Consider using a transparent background skin, in that case. You might simply pass in a `starling.display.Quad` with its `alpha` property set to `0`:
 
-``` code
+``` actionscript
 var backgroundSkin:Quad = new Quad( 40, 20 );
 backgroundSkin.alpha = 0;
 component.backgroundSkin = backgroundSkin;

@@ -29,7 +29,7 @@ See the [Hello World example](http://feathersui.com/examples/hello-world/) runni
 
 Below, you'll find the basic structure of the `Main` class that we'll use as the root Starling display object. This walkthrough assumes that you already know how to initialize Starling. You may look through the example's full source code to see how this is done.
 
-``` code
+``` actionscript
 package feathers.examples.helloWorld
 {
     import feathers.controls.Button;
@@ -59,7 +59,7 @@ In our `Main` class, most of the code that we add later will go into the `addedT
 
 Let's start by initializing a [theme](themes.html). By default, the Feathers components don't have skins. However, several example *themes* are included with Feathers to easily provide sample skins to all components. A theme can be instantiated in just one line of code.
 
-``` code
+``` actionscript
 new MetalWorksMobileTheme();
 ```
 
@@ -69,7 +69,7 @@ When a new component initializes, the theme will create appropriate skins, inclu
 
 With the theme created, let's create the `Button` and set it's label:
 
-``` code
+``` actionscript
 this.button = new Button();
 this.button.label = "Click Me";
 this.addChild( button );
@@ -77,13 +77,13 @@ this.addChild( button );
 
 If we want to do something when the button is tapped or clicked, we should listen to the `Event.TRIGGERED` event.
 
-``` code
+``` actionscript
 this.button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
 ```
 
 Our listener function should look something like this:
 
-``` code
+``` actionscript
 protected function button_triggeredHandler( event:Event ):void
 {
     TextCallout.show( "Hi, I'm Feathers!\nHave a nice day.", this.button );
@@ -98,13 +98,13 @@ At this moment, our button still has `width` and `height` values of `0` because 
 
 In this case, we want to position our button immediately, without waiting for validation. To make a Feathers control draw **right now**, call the `validate()` function:
 
-``` code
+``` actionscript
 this.button.validate();
 ```
 
 Now, we can properly center our button on the stage because it will correctly report appropriate dimensions based on the size of the button's skin and label:
 
-``` code
+``` actionscript
 this.button.x = (this.stage.stageWidth - this.button.width) / 2;
 this.button.y = (this.stage.stageHeight - this.button.height) / 2;
 ```

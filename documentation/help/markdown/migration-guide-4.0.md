@@ -9,10 +9,11 @@ This guide explains how to migrate an application created with Feathers 3 to Fea
 
 -   [Removed APIs that were deprecated in Feathers 3](#removed-apis-that-were-deprecated-in-feathers-3)
 -   [Themes and `AssetManager`](#themes-and-assetmanager)
+-   [`TextArea` inner padding](#textarea-inner-padding)
 
 ## Removed APIs that were deprecated in Feathers 3
 
-A number of APIs were deprecated in Feathers 3. See the [Feathers 3.0 Migration Guide](migration-guide-3.0.html) and the [Feathers 3.3 Migration Guide](migration-guide-3.3.html) for complete details.
+A number of APIs were deprecated in Feathers 3. See the [Feathers 3.0 Migration Guide](migration-guide-3.0.html) and the [Feathers 3.3 Migration Guide](migration-guide-3.3.html) for complete details, including a number of regular expressions that you can use with Find/Replace in your IDE to ease migration away from some of the old constants.
 
 ## Themes and `AssetManager`
 
@@ -22,7 +23,7 @@ The new `AssetManager` handles errors differently, so the example themes now dis
 
 An example event listener for `FeathersEventType.ERROR` appears below:
 
-``` code
+``` actionscript
 theme.addEventListener(FeathersEventType.ERROR, function(event:Event, error:String):void
 {
 	trace("AssetManager error:", error);
@@ -30,6 +31,12 @@ theme.addEventListener(FeathersEventType.ERROR, function(event:Event, error:Stri
 ```
 
 The `Event.COMPLETE` event dispatched by the example themes has not changed.
+
+## `TextArea` inner padding
+
+The [`TextArea`](text-area.html) component now supports a prompt, similar to the `TextInput` component. In order to position the prompt relative to the text inside the view port, a new `innerPadding` style has been created (with `innerPaddingTop`, `innerPaddingRight`, `innerPaddingBottom`, and `innerPaddingLeft` styles to allow inner padding on each individual side to be customized). This inner padding is used to position the prompt, and it is also passed down to the `ITextEditorViewPort` component to position its text.
+
+Previously, you might have set `padding`, `paddingTop`, `paddingRight`, `paddingBottom`, or `paddingLeft` on a `TextFieldTextEditorViewPort` component to add some padding around the text. This will no longer work because the `TextArea` will pass its inner padding values down to the view port and your values will be overridden. Instead, you should set the inner padding values on the `TextArea`, and they will be passed down to the view port automatically. This is considered a breaking change.
 
 ## Related Links
 

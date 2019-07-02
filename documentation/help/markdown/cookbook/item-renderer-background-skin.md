@@ -13,7 +13,7 @@ The example [custom item renderer with `FeathersControl` and `IListItemRenderer`
 
 Let's start by adding a `backgroundSkin` property to our custom item renderer class:
 
-``` code
+``` actionscript
 private var _backgroundSkin:DisplayObject;
  
 public function get backgroundSkin():DisplayObject
@@ -46,7 +46,7 @@ Notice that if an old background skin already exists, we remove it. Then, if the
 
 As you may recall, the example custom item renderer based on `FeathersControl` and `IListItemRenderer` had a `layoutChildren()` function. Let's simply set the width and height of the background skin in there.
 
-``` code
+``` actionscript
 protected function layoutChildren():void
 {
     if(this._backgroundSkin)
@@ -61,7 +61,7 @@ protected function layoutChildren():void
 
 You probably also want to include the background skin with the measurement calculations inside the `autoSizeIfNeeded()` function:
 
-``` code
+``` actionscript
 var newWidth:Number = this.explicitWidth;
 if(needsWidth)
 {
