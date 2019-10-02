@@ -34,10 +34,7 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Minimum requirements for a scroll bar to be usable with a <code>Scroller</code>
-	 * component.
-	 *
-	 * @see Scroller
+	 * A UI component that displays a range of values from a minimum to a maximum.
 	 *
 	 * @productversion Feathers 1.3.0
 	 */
