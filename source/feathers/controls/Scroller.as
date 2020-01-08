@@ -8002,7 +8002,7 @@ package feathers.controls
 			var point:Point = Pool.getPoint(
 				(event.stageX - starlingViewPort.x) * scaleFactor,
 				(event.stageY - starlingViewPort.y) * scaleFactor);
-			var isContained:Boolean = this.contains(this.stage.hitTest(point));
+			var isContained:Boolean = this.stage !== null && this.contains(this.stage.hitTest(point));
 			if(!isContained)
 			{
 				Pool.putPoint(point);
