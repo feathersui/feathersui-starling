@@ -32,9 +32,9 @@ package feathers.controls
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import starling.display.DisplayObject;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically

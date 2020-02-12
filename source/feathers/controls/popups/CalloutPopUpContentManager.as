@@ -9,7 +9,6 @@ package feathers.controls.popups
 {
 	import feathers.controls.Callout;
 	import feathers.core.PopUpManager;
-	import feathers.layout.RelativePosition;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 

@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.DataGrid;
 	import feathers.controls.DataGridColumn;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.DefaultDataGridHeaderRenderer;

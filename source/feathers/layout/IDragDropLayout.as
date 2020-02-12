@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import starling.display.DisplayObject;
-	import flash.geom.Rectangle;
 
 	/**
 	 * Methods for layouts that support drag and drop.

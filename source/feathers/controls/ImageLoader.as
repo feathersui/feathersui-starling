@@ -36,16 +36,16 @@ package feathers.controls
 
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.Mesh;
 	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	import starling.styles.MeshStyle;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 	import starling.utils.SystemUtil;
-	import starling.styles.MeshStyle;
-	import starling.display.Mesh;
 
 	/**
 	 * The tint value to use on the internal

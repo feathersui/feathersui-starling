@@ -8,11 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.List;
+	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
+
 	import starling.display.DisplayObject;
-	import feathers.core.IValidating;
-	import feathers.core.IFeathersControl;
 	import starling.events.Event;
 
 	/**
