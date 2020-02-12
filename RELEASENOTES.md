@@ -4,6 +4,16 @@ Noteworthy changes in official, stable releases of [Feathers UI](https://feather
 
 ## 4.1.0 - February 2020
 
+* Targets Starling 2.6.
+* DefaultTreeItemRenderer: Fixed issue where icons and other styles were not properly restricted, when set outside of a theme.
+* Effects: Fixed issue where tween delay was not included in total time.
+* FeathersControl: Fixed issue where a null reference error could be thrown when removing a component in the parent's Event.ADDED_TO_STAGE listener.
+* FeathersControl: Fixed issue where setting visible to the same value before showEffect or hideEffect completed would incorrectly interrupt the effect.
+* List: Fixed issue where accessories/icons would disappear when displaying the drag-and-drop avatar.
+* Scroller: Fixed issue where a null reference error could be thrown in the mouse wheel handler.
+* Toast: added openEffect, which is triggered after the parent container has run its layout code. Event.OPEN is dispatched when this effect is complete.
+* WebView: Fixed issue where the height incorrectly defaulted to the same value as the width.
+
 ## 4.0.0 - January 2019
 
 See the [Feathers 4.0 Migration Guide](https://feathersui.com/help/migration-guide-4.0.html) for details about how to upgrade to Feathers 4.0 from previous versions.
