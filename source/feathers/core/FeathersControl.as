@@ -3613,6 +3613,12 @@ package feathers.core
 		 */
 		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
+			if(this.stage === null)
+			{
+				//this could happen if removed from parent in another
+				//Event.ADDED_TO_STAGE listener
+				return;
+			}
 			//initialize before setting the validation queue to avoid
 			//getting added to the validation queue before initialization
 			//completes.
