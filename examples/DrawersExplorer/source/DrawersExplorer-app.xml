@@ -3,9 +3,9 @@
 	<id>com.feathersui.examples.DrawersExplorer</id>
 	<filename>Drawers</filename>
 	<name>Drawers</name>
-	<versionNumber>4.0.0</versionNumber>
+	<versionNumber>4.1.0</versionNumber>
 	<description>Drawers Explorer example application built with Feathers UI controls for Starling</description>
-	<copyright>2019 Bowler Hat LLC</copyright>
+	<copyright>2020 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>DrawersExplorer.swf</content>

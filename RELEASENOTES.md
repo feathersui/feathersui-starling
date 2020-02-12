@@ -2,6 +2,8 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
+## 4.1.0 - February 2020
+
 ## 4.0.0 - January 2019
 
 See the [Feathers 4.0 Migration Guide](https://feathersui.com/help/migration-guide-4.0.html) for details about how to upgrade to Feathers 4.0 from previous versions.

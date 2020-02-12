@@ -3,9 +3,9 @@
 	<id>com.feathersui.examples.HelloWorld</id>
 	<filename>Hello World</filename>
 	<name>Hello World</name>
-	<versionNumber>4.0.0</versionNumber>
+	<versionNumber>4.1.0</versionNumber>
 	<description>Hello World example application built with Feathers UI controls for Starling</description>
-	<copyright>2019 Bowler Hat LLC</copyright>
+	<copyright>2020 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>HelloWorld.swf</content>
