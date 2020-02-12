@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -7774,7 +7774,7 @@ package feathers.controls
 			{
 				//if snapToPages is enabled, we need it to snap to the nearest
 				//page on TouchPhase.ENDED, even if we don't drag again
-				//BowlerHatLLC/feathers#1771
+				//BowlerHatLLC/feathersui-starling#1771
 				this._isDraggingVertically = false;
 				this._isDraggingHorizontally = false;
 			}
@@ -8016,7 +8016,7 @@ package feathers.controls
 			var point:Point = Pool.getPoint(
 				(event.stageX - starlingViewPort.x) * scaleFactor,
 				(event.stageY - starlingViewPort.y) * scaleFactor);
-			var isContained:Boolean = this.contains(this.stage.hitTest(point));
+			var isContained:Boolean = this.stage !== null && this.contains(this.stage.hitTest(point));
 			if(!isContained)
 			{
 				Pool.putPoint(point);

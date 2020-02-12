@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -32,9 +32,9 @@ package feathers.controls
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.Pool;
-	import starling.display.DisplayObject;
 
 	/**
 	 * A style name to add to all item renderers in this list. Typically

@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -9,7 +9,6 @@ package feathers.controls.renderers
 {
 	import feathers.controls.List;
 	import feathers.core.IToggle;
-	import starling.display.DisplayObject;
 
 	/**
 	 * Dispatched when the the user taps or clicks the item renderer. The touch

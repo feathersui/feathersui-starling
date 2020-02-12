@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -2153,7 +2153,7 @@ package feathers.controls.text
 				viewPortX = MAX_VIEW_PORT_POSITION - viewPortWidth;
 			}
 			//the previous calculation may have pushed the value below the
-			//minimum, so it shouldn't be else if (BowlerHatLLC/feathers#1779)
+			//minimum, so it shouldn't be else if (BowlerHatLLC/feathersui-starling#1779)
 			if(viewPortX < MIN_VIEW_PORT_POSITION)
 			{
 				viewPortX = MIN_VIEW_PORT_POSITION;
@@ -2164,7 +2164,7 @@ package feathers.controls.text
 				viewPortY = MAX_VIEW_PORT_POSITION - viewPortHeight;
 			}
 			//the previous calculation may have pushed the value below the
-			//minimum, so it shouldn't be else if (BowlerHatLLC/feathers#1779)
+			//minimum, so it shouldn't be else if (BowlerHatLLC/feathersui-starling#1779)
 			if(viewPortY < MIN_VIEW_PORT_POSITION)
 			{
 				viewPortY = MIN_VIEW_PORT_POSITION;

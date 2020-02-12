@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.motion.Fade;
 	import feathers.motion.effectClasses.IEffectContext;
 	import feathers.skins.IStyleProvider;
+	import feathers.system.DeviceCapabilities;
 	import feathers.text.FontStylesSet;
 	import feathers.utils.skins.resetFluidChildDimensionsForMeasurement;
 
@@ -34,7 +35,6 @@ package feathers.controls
 	import starling.events.Event;
 	import starling.text.TextFormat;
 	import starling.utils.Pool;
-	import feathers.system.DeviceCapabilities;
 
 	/**
 	 * The primary background to display behind the toast's content.
@@ -267,10 +267,8 @@ package feathers.controls
 	[Style(name="paddingLeft",type="Number")]
 
 	/**
-	 * Dispatched when the toast is closed. The <code>data</code> property of
-	 * the event object will contain the item from the <code>ButtonGroup</code>
-	 * data provider for the button that is triggered. If no button is
-	 * triggered, then the <code>data</code> property will be <code>null</code>.
+	 * Dispatched when the toast is opened. This event is dispatched after the
+	 * <code>openEffect</code> has completed, if one is defined.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -287,7 +285,43 @@ package feathers.controls
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
+	 * @eventType starling.events.Event.OPEN
+	 * 
+	 * @see #openEffect
+	 * @see #event:close starling.events.Event.CLOSE
+	 */
+	[Event(name="open",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the toast is closed. This event is dispatched after the
+	 * <code>closeEffect</code> has completed, if one is defined.
+	 * 
+	 * <p>The <code>data</code> property of the event object will contain
+	 * the item from the <code>ButtonGroup</code> data provider for the button
+	 * that is triggered. If no button is triggered, then the <code>data</code>
+	 * property will be <code>null</code>.</p>
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The triggered button, or
+	 *   <code>null</code></td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
 	 * @eventType starling.events.Event.CLOSE
+	 * 
+	 * @see #close()
+	 * @see #closeEffect
+	 * @see #event:open starling.events.Event.OPEN
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
@@ -603,6 +637,15 @@ package feathers.controls
 			toast.addEventListener(Event.CLOSE, toast_closeHandler);
 			var container:DisplayObjectContainer = getContainerForStarling(Starling.current);
 			container.addChild(toast);
+			if(container is IValidating)
+			{
+				//validate the parent container before opening the toast because
+				//we want to be sure that the toast is positioned properly in
+				//the layout for things that may rely on the position, like
+				//openEffect
+				IValidating(container).validate();
+			}
+			toast.open();
 			return toast;
 		}
 
@@ -703,13 +746,11 @@ package feathers.controls
 		public function Toast()
 		{
 			super();
-			this._addedEffect = Fade.createFadeInEffect();
 			if(this._fontStylesSet === null)
 			{
 				this._fontStylesSet = new FontStylesSet();
 				this._fontStylesSet.addEventListener(Event.CHANGE, fontStyles_changeHandler);
 			}
-			this.addEventListener(Event.ADDED_TO_STAGE, toast_addedToStageHandler);
 		}
 
 		/**
@@ -959,10 +1000,81 @@ package feathers.controls
 				return;
 			}
 			this._timeout = value;
-			if(this.stage)
+			if(this._isOpen)
 			{
 				this.startTimeout();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _openEffectContext:IEffectContext = null;
+
+		/**
+		 * @private
+		 */
+		protected var _openEffect:Function = Fade.createFadeInEffect();
+
+		/**
+		 * An optional effect that is activated when the toast is opened.
+		 *
+		 * <p>In the following example, a open effect fades the toast's
+		 * <code>alpha</code> property from <code>0</code> to <code>1</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * toast.openEffect = Fade.createFadeBetweenEffect(0, 1);</listing>
+		 *
+		 * <p>A number of animated effects may be found in the
+		 * <a href="../motion/package-detail.html">feathers.motion</a> package.
+		 * However, you are not limited to only these effects. It's possible
+		 * to create custom effects too.</p>
+		 *
+		 * <p>A custom effect function should have the following signature:</p>
+		 * <pre>function(target:DisplayObject):IEffectContext</pre>
+		 *
+		 * <p>The <code>IEffectContext</code> is used by the component to
+		 * control the effect, performing actions like playing the effect,
+		 * pausing it, or cancelling it.</p>
+		 * 
+		 * <p>Custom animated effects that use
+		 * <code>starling.display.Tween</code> typically return a
+		 * <code>TweenEffectContext</code>. In the following example, we
+		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
+		 * previous example.</p>
+		 * 
+		 * <listing version="3.0">
+		 * toast.closeEffect = function(target:DisplayObject):IEffectContext
+		 * {
+		 *     toast.alpha = 0;
+		 *     var tween:Tween = new Tween(target, 0.5, Transitions.EASE_OUT);
+		 *     tween.fadeTo(1);
+		 *     return new TweenEffectContext(target, tween);
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.FeathersControl#closeEffect
+		 * @see #showToast()
+		 * @see ../../../help/effects.html Effects and animation for Feathers components
+		 * @see feathers.motion.effectClasses.IEffectContext
+		 * @see feathers.motion.effectClasses.TweenEffectContext
+		 */
+		public function get openEffect():Function
+		{
+			return this._openEffect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set openEffect(value:Function):void
+		{
+			if(this._openEffect == value)
+			{
+				return;
+			}
+			this._openEffect = value;
 		}
 
 		/**
@@ -1013,7 +1125,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#addedEffect
+		 * @see feathers.core.FeathersControl#openEffect
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see feathers.motion.effectClasses.IEffectContext
 		 * @see feathers.motion.effectClasses.TweenEffectContext
@@ -1347,19 +1459,58 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isClosing:Boolean = false;
+		protected var _closeData:Object = null;
 
 		/**
 		 * @private
 		 */
-		protected var _closeData:Object = null;
+		protected var _isClosing:Boolean = false;
 
 		/**
 		 * Indicates if the toast is currently closing.
+		 * 
+		 * @see #isOpening
+		 * @see #isOpen
 		 */
 		public function get isClosing():Boolean
 		{
 			return this._isClosing;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isOpening:Boolean = false;
+
+		/**
+		 * Indicates if the toast is currently opening.
+		 * 
+		 * @see #isClosing
+		 */
+		public function get isOpening():Boolean
+		{
+			return this._isOpening;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isOpen:Boolean = false;
+
+		/**
+		 * Indicates if the toast is currently open. Does not change from
+		 * <code>false</code> to <code>true</code> until the open effect has
+		 * completed. Similarly, does not change from <code>true</code> to
+		 * <code>false</code> until the close effect has completed.
+		 * 
+		 * @see #isOpening
+		 * @see #isClosing
+		 * @see #event:open starling.events.Event.OPEN
+		 * @see #event:close starling.events.Event.CLOSE
+		 */
+		public function get isOpen():Boolean
+		{
+			return this._isOpen;
 		}
 
 		/**
@@ -1779,6 +1930,35 @@ package feathers.controls
 				savedContent.dispose();
 			}
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 * 
+		 * @see #showToast()
+		 */
+		protected function open():void
+		{
+			if(this._isOpen || this._isOpening)
+			{
+				return;
+			}
+			if(this._suspendEffectsCount == 0 && this._closeEffectContext !== null)
+			{
+				this._closeEffectContext.interrupt();
+				this._closeEffectContext = null;
+			}
+			if(this._openEffect !== null)
+			{
+				this._isOpening = true;
+				this._openEffectContext = IEffectContext(this._openEffect(this));
+				this._openEffectContext.addEventListener(Event.COMPLETE, openEffectContext_completeHandler);
+				this._openEffectContext.play();
+			}
+			else
+			{
+				this.completeOpen();
+			}
 		}
 
 		/**
@@ -2500,18 +2680,33 @@ package feathers.controls
 		{
 			var closeData:Object = this._closeData;
 			var dispose:Boolean = this._disposeFromCloseCall;
+			this._closeEffectContext = null;
 			this._closeData = null;
 			this._disposeFromCloseCall = false;
 			this._isClosing = false;
+			this._isOpen = false;
+			//remove from parent before dispatching close so that the parent
+			//layout is updated before any new toasts are added, but don't
+			//dispose the toast yet!
+			this.removeFromParent(false);
 			this.dispatchEventWith(Event.CLOSE, false, closeData);
-			this.removeFromParent(dispose);
+			if(dispose)
+			{
+				//dispose after the close event has been dispatched so that the
+				//listeners aren't removed
+				this.dispose();
+			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function toast_addedToStageHandler(event:Event):void
+		protected function completeOpen():void
 		{
+			this._openEffectContext = null;
+			this._isOpening = false;
+			this._isOpen = true;
+			this.dispatchEventWith(Event.OPEN);
 			this.startTimeout();
 		}
 
@@ -2535,11 +2730,19 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function closeToast(data:Object, dispose:Boolean):void
 		{
 			if(!this.parent || this._isClosing)
 			{
 				return;
+			}
+			if(this._suspendEffectsCount == 0 && this._openEffectContext !== null)
+			{
+				this._openEffectContext.interrupt();
+				this._openEffectContext = null;
 			}
 			this._isClosing = true;
 			this._closeData = data;
@@ -2571,6 +2774,14 @@ package feathers.controls
 		protected function closeEffectContext_completeHandler(event:Event):void
 		{
 			this.completeClose();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function openEffectContext_completeHandler(event:Event):void
+		{
+			this.completeOpen();
 		}
 	}
 }

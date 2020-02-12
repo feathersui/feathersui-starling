@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2019 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -36,16 +36,16 @@ package feathers.controls
 
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.Mesh;
 	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	import starling.styles.MeshStyle;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 	import starling.utils.SystemUtil;
-	import starling.styles.MeshStyle;
-	import starling.display.Mesh;
 
 	/**
 	 * The tint value to use on the internal
