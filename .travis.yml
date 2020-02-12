@@ -7,8 +7,6 @@ before_script:
   # brew
   - brew update > /dev/null
   - brew install ant pandoc > /dev/null
-  - brew install caskroom/cask/brew-cask
-  - brew tap caskroom/versions
   - brew cask install flash-player-debugger
   # air
   - mkdir -p air_sdk
