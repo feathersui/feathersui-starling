@@ -33,7 +33,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.STOP):Function
+		public static function createMoveEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "stop"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -54,7 +54,7 @@ package feathers.motion
 		 * @see #createMoveXToEffect()
 		 * @see #createMoveYToEffect()
 		 */
-		public static function createMoveToEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveToEffect(toX:Number, toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -76,7 +76,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveXToEffect(toX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveXToEffect(toX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -98,7 +98,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveYToEffect(toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveYToEffect(toY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -123,7 +123,7 @@ package feathers.motion
 		 * @see #createMoveXFromEffect()
 		 * @see #createMoveYFromEffect()
 		 */
-		public static function createMoveFromEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveFromEffect(fromX:Number, fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -145,7 +145,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveXFromEffect(fromX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveXFromEffect(fromX:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -167,7 +167,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveYFromEffect(fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveYFromEffect(fromY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -192,7 +192,7 @@ package feathers.motion
 		 * @see #createMoveXByEffect()
 		 * @see #createMoveYByEffect()
 		 */
-		public static function createMoveByEffect(xBy:Number, yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveByEffect(xBy:Number, yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -214,7 +214,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveXByEffect(xBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveXByEffect(xBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
@@ -236,7 +236,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createMoveYByEffect(yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createMoveYByEffect(yBy:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IMoveEffectContext
 			{
