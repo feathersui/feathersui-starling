@@ -97,8 +97,8 @@
 
 			<arg value="-templates-path"/>
 			<arg value="${api.root}/templates"/>
-			<arg value="-main-title=Feathers ${feathers.version} API Reference"/>
-			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Reference"/>
+			<arg value="-main-title=Feathers (Starling) ${feathers.version} API Reference"/>
+			<arg value="-window-title=Feathers (Starling) API Reference"/>
 			<arg value="-footer=${footer.text}"/>
 			<arg value="-package-description-file=./package-descriptions.xml"/>
 			<arg value="-output=${api.output}"/>
