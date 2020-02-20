@@ -1,4 +1,4 @@
-/*
+﻿/*
 Feathers
 Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
 
@@ -4797,7 +4797,7 @@ package feathers.controls
 			{
 				this._viewPort.visibleWidth = visibleWidth;
 			}
-			this._viewPort.minVisibleWidth = this.actualWidth - horizontalWidthOffset;
+			this._viewPort.minVisibleWidth = this.actualMinWidth - horizontalWidthOffset;
 			this._viewPort.maxVisibleWidth = this._explicitMaxWidth - horizontalWidthOffset;
 			this._viewPort.minWidth = visibleWidth;
 
