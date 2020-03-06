@@ -3752,7 +3752,7 @@ package feathers.core
 			if(!stopped)
 			{
 				this.suspendEffects();
-				this.visible = this._pendingVisible;
+				super.visible = this._pendingVisible;
 				this.resumeEffects();
 			}
 		}
