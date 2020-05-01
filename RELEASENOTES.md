@@ -2,6 +2,11 @@
 
 Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
 
+## 4.1.1 - May 2020
+
+* FeathersControl: Fixed issue where super.visible was never set to false at the completion of a hideEffect.
+* Scroller: Fixed issue where scroller actualWidth was incorrectly passed to view port minVisibleWidth instead of actualMinWidth.
+
 ## 4.1.0 - February 2020
 
 * Targets Starling 2.6.
