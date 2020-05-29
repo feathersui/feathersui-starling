@@ -7,7 +7,7 @@
 	<property file="./sdk.properties"/>
 	<property file="./build.local.properties"/>
 	<property file="./build.properties"/>
-	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit}"/>
+	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit.tasks}"/>
 
 	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
@@ -375,7 +375,7 @@
 		</copy>
 	</target>
 
-	<target name="-test" depends="-feathers">
+	<target name="-test" depends="-feathers" unless="skip-tests">
 		<java jar="${mxmlc}" dir="${test.root}/source" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
