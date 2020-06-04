@@ -69,7 +69,7 @@
 		</java>
 	</target>
 
-	<target name="-feathers" depends="-starling">
+	<target name="-feathers" depends="-starling,-api-xml">
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
@@ -79,6 +79,14 @@
 			<arg value="-external-library-path+=${dependency.output}"/>
 			<arg value="-output=${output.path}/feathers.swc"/>
 		</java>
+		<echo message="Inserting asdoc XML into .swc"/>
+		<zip destfile="${output.path}/feathers.swc" update="true">
+			<zipfileset dir="${dependency.output}/tempdita" prefix="docs">
+				<include name="*.*"/>
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
 	</target>
 
 	<target name="-api" depends="-starling">
@@ -102,6 +110,27 @@
 			<arg value="-footer=${footer.text}"/>
 			<arg value="-package-description-file=${api.root}/package-descriptions.xml"/>
 			<arg value="-output=${api.output}"/>
+		</java>
+	</target>
+
+	<target name="-api-xml" depends="-starling">
+		<echo message="Generating asdoc XML"/>
+		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="+flexlib=${flashsdk.framework}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-doc-sources+=${source.root}"/>
+
+			<!-- these two arguments are needed after switching to the AIR SDK
+				with ASC 2.0 to stop weird errors -->
+			<arg value="-theme="/>
+			<arg value="-compiler.fonts.local-fonts-snapshot="/>
+
+			<arg value="-keep-xml=true"/>
+			<arg value="-skip-xsl=true"/>
+			<arg value="-package-description-file=${api.root}/package-descriptions.xml"/>
+			<arg value="-output=${dependency.output}"/>
 		</java>
 	</target>
 
