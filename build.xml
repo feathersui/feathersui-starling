@@ -100,7 +100,7 @@
 			<arg value="-main-title=Feathers (Starling) ${feathers.version} API Reference"/>
 			<arg value="-window-title=Feathers (Starling) API Reference"/>
 			<arg value="-footer=${footer.text}"/>
-			<arg value="-package-description-file=./package-descriptions.xml"/>
+			<arg value="-package-description-file=${api.root}/package-descriptions.xml"/>
 			<arg value="-output=${api.output}"/>
 		</java>
 	</target>
