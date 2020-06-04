@@ -23,9 +23,10 @@ jobs:
           cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
           wget -O flexunit.zip http://mirrors.ibiblio.org/apache/flex/flexunit/4.2.0/binaries/apache-flex-flexunit-4.2.0-4.12.0-bin.zip
           unzip -q flexunit.zip
+          rm flexunit/flexunit-4.2.0-20140410-flex_4.12.0.swc
       - name: Checkout Starling
         run: |
           git clone https://github.com/Gamua/Starling-Framework $GITHUB_WORKSPACE/starling --depth 1
       - name: Ant Build
         run: |
-          ant package -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflashplayer="/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger" -Dpandoc="/usr/local/bin/pandoc" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dskip-tests=1
+          ant package -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflashplayer="/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger" -Dpandoc="/usr/local/bin/pandoc" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit"
