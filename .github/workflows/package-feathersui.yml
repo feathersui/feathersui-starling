@@ -1,6 +1,6 @@
 name: Package Feathers UI for Starling
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
