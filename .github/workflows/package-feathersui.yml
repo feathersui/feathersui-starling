@@ -1,6 +1,10 @@
 name: Package Feathers UI for Starling
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
 
 jobs:
   build:
