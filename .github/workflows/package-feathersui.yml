@@ -24,7 +24,7 @@ jobs:
           brew install ant
           brew install pandoc
           brew cask install flash-player-debugger
-          wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/installers/archive/playerglobal/playerglobal19_0.swc
+          wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/updaters/32/playerglobal32_0.swc
           mkdir ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
           cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
           wget -O flexunit.zip http://mirrors.ibiblio.org/apache/flex/flexunit/4.2.0/binaries/apache-flex-flexunit-4.2.0-4.12.0-bin.zip
