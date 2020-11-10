@@ -682,7 +682,7 @@ package feathers.layout
 		 */
 		protected function positionHorizontally(item:ILayoutDisplayObject, layoutData:AnchorLayoutData, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
 		{
-			var uiItem:IFeathersControl = item as IFeathersControl;
+			var uiItem:IMeasureDisplayObject = item as IMeasureDisplayObject;
 			var percentWidth:Number = layoutData.percentWidth;
 			if(percentWidth === percentWidth) //!isNaN
 			{
@@ -835,7 +835,7 @@ package feathers.layout
 		 */
 		protected function positionVertically(item:ILayoutDisplayObject, layoutData:AnchorLayoutData, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
 		{
-			var uiItem:IFeathersControl = item as IFeathersControl;
+			var uiItem:IMeasureDisplayObject = item as IMeasureDisplayObject;
 			var percentHeight:Number = layoutData.percentHeight;
 			if(percentHeight === percentHeight) //!isNaN
 			{
