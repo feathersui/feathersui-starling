@@ -21,9 +21,8 @@ jobs:
       - uses: joshtynjala/setup-adobe-air-action@v1
       - name: Install dependencies
         run: |
-          brew install ant
           brew install pandoc
-          brew cask install flash-player-debugger
+          brew install --cask flash-player-debugger
           wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/updaters/32/playerglobal32_0.swc
           mkdir ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
           cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
