@@ -36,3 +36,8 @@ jobs:
       - name: Ant Build
         run: |
           ant package -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflashplayer="/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger" -Dpandoc="/usr/local/bin/pandoc" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: feathersui-starling
+          path: output
+          if-no-files-found: error
