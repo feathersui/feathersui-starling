@@ -41,7 +41,7 @@ package feathers.tests
 			}, 200);
 		}
 
-		[Test(async)]
+		[Test(async,timeout="600")]
 		public function testKeepTextureAfterLoadNewImageWithSameDimensions():void
 		{
 			var isSecondImageLoaded:Boolean = false;
@@ -63,10 +63,10 @@ package feathers.tests
 			{
 				Assert.assertTrue("Second image did not complete loading.", isSecondImageLoaded);
 				Assert.assertFalse("Texture incorrectly disposed after setting ImageLoader source to image with same dimensions.", loader.hasDisposedTexture);
-			}, 200);
+			}, 400);
 		}
 
-		[Test(async)]
+		[Test(async,timeout="600")]
 		public function testDisposeTextureAfterLoadNewImageWithDifferentDimensions():void
 		{
 			var isSecondImageLoaded:Boolean = false;
@@ -87,7 +87,7 @@ package feathers.tests
 			{
 				Assert.assertTrue("Second image did not complete loading.", isSecondImageLoaded);
 				Assert.assertTrue("Texture not disposed after setting ImageLoader source to image with different dimensions.", loader.hasDisposedTexture);
-			}, 200);
+			}, 400);
 		}
 	}
 }
