@@ -171,7 +171,7 @@ package feathers.motion
 					{
 						oldScreen.alpha = 1;
 					}
-					var tween:FadeTween = new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
+					var tween:FadeTween = new FadeTween(newScreen, null, duration, ease, onComplete, tweenProperties);
 				}
 				else
 				{
