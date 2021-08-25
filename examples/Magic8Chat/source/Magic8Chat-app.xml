@@ -3,9 +3,9 @@
 	<id>com.feathersui.examples.Magic8Chat</id>
 	<filename>Magic8Chat</filename>
 	<name>Magic8Chat</name>
-	<versionNumber>4.1.1</versionNumber>
+	<versionNumber>4.2.0</versionNumber>
 	<description>Magic8Chat example application built with Feathers UI controls for Starling</description>
-	<copyright>2020 Bowler Hat LLC</copyright>
+	<copyright>2021 Bowler Hat LLC</copyright>
 
 	<initialWindow>
 		<content>Magic8Chat.swf</content>
