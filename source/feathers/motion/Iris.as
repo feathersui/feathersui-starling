@@ -55,7 +55,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisOpenEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return createIrisOpenEffectAtRatio(0.5, 0.5, duration, ease, interruptBehavior);
 		}
@@ -69,7 +69,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisOpenEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -95,7 +95,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisOpenEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisOpenEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -203,7 +203,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisCloseEffect(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return createIrisCloseEffectAtRatio(0.5, 0.5, duration, ease, interruptBehavior);
 		}
@@ -217,7 +217,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisCloseEffectAtRatio(ratioX:Number, ratioY:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -243,7 +243,7 @@ package feathers.motion
 		 *
 		 * @productversion Feathers 3.5.0
 		 */
-		public static function createIrisCloseEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createIrisCloseEffectAtXY(x:Number, y:Number, duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{

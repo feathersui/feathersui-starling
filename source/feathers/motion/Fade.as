@@ -43,7 +43,7 @@ package feathers.motion
 		 * @see #createFadeOutEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createFadeInEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return createFadeBetweenEffect(0.0, 1.0, duration, ease, interruptBehavior);
 		}
@@ -57,7 +57,7 @@ package feathers.motion
 		 * @see #createFadeInEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createFadeOutEffect(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return createFadeBetweenEffect(1.0, 0.0, duration, ease, interruptBehavior);
 		}
@@ -71,7 +71,7 @@ package feathers.motion
 		 * @see #createFadeFromEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeToEffect(endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createFadeToEffect(endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -92,7 +92,7 @@ package feathers.motion
 		 * @see #createFadeToEffect()
 		 * @see #createFadeBetweenEffect()
 		 */
-		public static function createFadeFromEffect(startAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createFadeFromEffect(startAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{
@@ -121,7 +121,7 @@ package feathers.motion
 		 * 
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
-		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
+		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = "end"):Function
 		{
 			return function(target:DisplayObject):IEffectContext
 			{

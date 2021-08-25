@@ -27,7 +27,7 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function TweenEffectContext(target:DisplayObject, tween:Tween, interruptBehavior:String = EffectInterruptBehavior.END)
+		public function TweenEffectContext(target:DisplayObject, tween:Tween, interruptBehavior:String = "end")
 		{
 			this._tween = tween;
 			this._interruptBehavior = interruptBehavior;
