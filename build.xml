@@ -220,7 +220,7 @@
 			<fileset dir="${basedir}">
 				<include name="README.md"/>
 				<include name="LICENSE.md"/>
-				<include name="RELEASENOTES.md"/>
+				<include name="CHANGELOG.md"/>
 			</fileset>
 		</copy>
 
@@ -440,11 +440,11 @@
 		<fail unless="apm" message="Path to apm executable is missing."/>
 		<copy overwrite="true" file="${output.path}/${swc.file}" todir="${output.path}/apm/lib"/>
 		<copy overwrite="true" file="package-swc.json" tofile="${output.path}/apm/package.json"/>
-		<copy overwrite="true" file="RELEASENOTES.md" tofile="${output.path}/apm/CHANGELOG.md"/>
 		<copy overwrite="true" todir="${output.path}/apm">
 			<fileset dir="${basedir}">
 				<include name="README.md"/>
 				<include name="LICENSE.md"/>
+				<include name="CHANGELOG.md"/>
 			</fileset>
 		</copy>
 
@@ -452,11 +452,11 @@
 			<fileset dir="${source.root}"/>
 		</copy>
 		<copy overwrite="true" file="package-src.json" tofile="${output.path}/apm-src/package.json"/>
-		<copy overwrite="true" file="RELEASENOTES.md" tofile="${output.path}/apm-src/CHANGELOG.md"/>
 		<copy overwrite="true" todir="${output.path}/apm-src">
 			<fileset dir="${basedir}">
 				<include name="README.md"/>
 				<include name="LICENSE.md"/>
+				<include name="CHANGELOG.md"/>
 			</fileset>
 		</copy>
 
