@@ -29,10 +29,10 @@ jobs:
           rm flexunit/flexunit-4.2.0-20140410-flex_4.12.0.swc
       - name: Checkout Starling
         run: |
-          git clone https://github.com/Gamua/Starling-Framework ${{ env.GITHUB_WORKSPACE }}/starling --depth 1
+          git clone https://github.com/Gamua/Starling-Framework $Env:GITHUB_WORKSPACE/starling --depth 1
       - name: Ant Build
         run: |
-          ant full "-Dflashsdk.root=${{ env.AIR_HOME }}" "-Dstarling.root=${{ env.GITHUB_WORKSPACE }}/starling/starling/src" "-Dflexunit.root=${{ env.GITHUB_WORKSPACE }}/flexunit" "-Dflashplayer=${{ env.GITHUB_WORKSPACE }}/flashplayer_32_sa_debug.exe"
+          ant full "-Dflashsdk.root=${{ env.AIR_HOME }}" "-Dstarling.root=$Env:GITHUB_WORKSPACE/starling/starling/src" "-Dflexunit.root=$Env:GITHUB_WORKSPACE/flexunit" "-Dflashplayer=$Env:GITHUB_WORKSPACE/flashplayer_32_sa_debug.exe"
       - uses: actions/upload-artifact@v2
         with:
           name: feathersui-starling
