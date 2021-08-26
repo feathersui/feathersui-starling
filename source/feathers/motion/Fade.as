@@ -1,6 +1,6 @@
 /*
 Feathers
-Copyright 2012-2020 Bowler Hat LLC. All Rights Reserved.
+Copyright 2012-2021 Bowler Hat LLC. All Rights Reserved.
 
 This program is free software. You can redistribute and/or modify it in
 accordance with the terms of the accompanying license agreement.
@@ -171,7 +171,7 @@ package feathers.motion
 					{
 						oldScreen.alpha = 1;
 					}
-					var tween:FadeTween = new FadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
+					var tween:FadeTween = new FadeTween(newScreen, null, duration, ease, onComplete, tweenProperties);
 				}
 				else
 				{

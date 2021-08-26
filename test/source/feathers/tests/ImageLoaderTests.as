@@ -93,7 +93,7 @@ package feathers.tests
 			}, 200);
 		}
 
-		[Test(async)]
+		[Test(async,timeout="600")]
 		public function testResizeWithNewSource():void
 		{
 			var loader:ImageLoader = this._loader;
@@ -111,7 +111,7 @@ package feathers.tests
 				Assert.assertStrictlyEquals("ImageLoader height property not changed after loading second URL.", 200, loader.height);
 				Assert.assertStrictlyEquals("ImageLoader minWidth property not changed after loading second URL.", 200, loader.minWidth);
 				Assert.assertStrictlyEquals("ImageLoader minHeight property not changed after loading second URL.", 200, loader.minHeight);
-			}, 200);
+			}, 400);
 		}
 
 		[Test(async)]
