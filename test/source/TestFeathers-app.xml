@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/32.0">
+	<id>com.feathersui.TestFeathers</id>
+	<filename>TestFeathers</filename>
+	<name>TestFeathers</name>
+	<versionNumber>1.0.0</versionNumber>
+	<description>Test runner for Feathers UI controls for Starling</description>
+	<copyright>2021 Bowler Hat LLC</copyright>
+
+	<initialWindow>
+		<content>TestFeathers.swf</content>
+		<autoOrients>true</autoOrients>
+		<fullScreen>false</fullScreen>
+		<visible>true</visible>
+		<renderMode>direct</renderMode>
+	</initialWindow>
+
+	<supportedLanguages>en</supportedLanguages>
+</application>
