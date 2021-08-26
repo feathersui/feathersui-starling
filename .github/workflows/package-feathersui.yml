@@ -32,7 +32,7 @@ jobs:
           git clone https://github.com/Gamua/Starling-Framework $GITHUB_WORKSPACE/starling --depth 1
       - name: Ant Build
         run: |
-          ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="flashplayer"
+          ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="/usr/local/bin/flashplayer"
       - uses: actions/upload-artifact@v2
         with:
           name: feathersui-starling
