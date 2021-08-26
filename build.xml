@@ -427,10 +427,22 @@
 		<copy todir="${dependency.output}/fixtures">
 			<fileset dir="${test.root}/fixtures"/>
 		</copy>
+    	<condition property="adl.file" value="adl.exe">
+        	<os family="windows"/>
+		</condition>
+		<property name="adl.file" value="adl"/>
+		<condition property="flexunit.command" value="${flashplayer}">
+			<isset property="flashplayer"/>
+		</condition>
+		<condition property="flexunit.swf" value="${dependency.output}/TestFeathers.swf">
+			<isset property="flashplayer"/>
+		</condition>
+		<property name="flexunit.command" value="${flashsdk.bin}/${adl.file}"/>
+		<property name="flexunit.swf" value="${dependency.output}/TestFeathers-app.xml"/>
 		<flexunit
-			command="${flashsdk.bin}/adl"
+			command="${flexunit.command}"
 			player="flash"
-			swf="${dependency.output}/TestFeathers-app.xml"
+			swf="${flexunit.swf}"
 			haltonfailure="true"
 			verbose="true"
 			toDir="${dependency.output}"/>
