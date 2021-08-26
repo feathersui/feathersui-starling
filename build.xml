@@ -9,26 +9,30 @@
 	<property file="./build.properties"/>
 	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit.tasks}"/>
 
-	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
+	<target name="swc" depends="-feathers,-cleanup" description="builds .swc file only"/>
 
 	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
 
-	<target name="test" depends="-test,-cleanup" description="runs unit tests"/>
+	<target name="test" depends="-test,-cleanup" description="runs automated tests"/>
 
-	<target name="full" depends="-feathers,-test,-api,-themes,-includes,-cleanup" description="builds everything">
+	<target name="full" depends="-feathers,-test,-api,-themes,-includes,-cleanup" description="builds distribution, but doesn't package as .zip file">
 
 		<!-- move feathers.swc to its final location for distribution.
 			basically, we didn't want the extra swc directory for a quick build. -->
 
 		<copy overwrite="true" todir="${swc.output}">
 			<fileset dir="${output.path}">
-				<include name="feathers.swc"/>
+				<include name="${swc.file}"/>
 			</fileset>
 		</copy>
-		<delete file="${output.path}/feathers.swc"/>
+		<delete file="${output.path}/${swc.file}"/>
 	</target>
 
-	<target name="package" depends="full" description="builds everything and creates a zip file for distribution">
+	<target name="apm" depends="-apm,-cleanup" description="builds apm package">
+		<delete file="${output.path}/${swc.file}"/>
+	</target>
+
+	<target name="package" depends="full" description="builds and packages a .zip file for distribution">
 		<zip destfile="${output.path}/feathers-ui-${feathers.version}.zip">
 			<zipfileset dir="${output.path}"/>
 		</zip>
@@ -56,6 +60,9 @@
 
 	<target name="-cleanup">
 		<delete dir="${dependency.output}"/>
+		<echo>${output.path}/apm</echo>
+		<delete dir="${output.path}/apm"/>
+		<delete dir="${output.path}/apm-src"/>
 	</target>
 
 	<target name="-starling" depends="-prepare">
@@ -70,17 +77,17 @@
 	</target>
 
 	<target name="-feathers" depends="-starling,-api-xml">
-		<echo message="Building feathers.swc"/>
+		<echo message="Building ${swc.file}"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-sources+=${source.root}"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-output=${output.path}/feathers.swc"/>
+			<arg value="-output=${output.path}/${swc.file}"/>
 		</java>
 		<echo message="Inserting asdoc XML into .swc"/>
-		<zip destfile="${output.path}/feathers.swc" update="true">
+		<zip destfile="${output.path}/${swc.file}" update="true">
 			<zipfileset dir="${dependency.output}/tempdita" prefix="docs">
 				<include name="*.*"/>
 				<exclude name="ASDoc_Config.xml" />
@@ -142,7 +149,7 @@
 			<arg value="-source-path+=${themes.root}/AeonDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/AeonDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"/>
 		</java>
 
@@ -153,7 +160,7 @@
 			<arg value="-source-path+=${themes.root}/MetalWorksDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"/>
 		</java>
 
@@ -164,7 +171,7 @@
 			<arg value="-source-path+=${themes.root}/MetalWorksMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"/>
 		</java>
 
@@ -175,7 +182,7 @@
 			<arg value="-source-path+=${themes.root}/MinimalDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"/>
 		</java>
 
@@ -186,7 +193,7 @@
 			<arg value="-source-path+=${themes.root}/MinimalMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"/>
 		</java>
 
@@ -197,7 +204,7 @@
 			<arg value="-source-path+=${themes.root}/TopcoatLightMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/TopcoatLightMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"/>
 		</java>
 	</target>
@@ -427,5 +434,39 @@
 			haltonfailure="true"
 			verbose="true"
 			toDir="${dependency.output}"/>
+	</target>
+
+	<target name="-apm" depends="-feathers">
+		<fail unless="apm" message="Path to apm executable is missing."/>
+		<copy overwrite="true" file="${output.path}/${swc.file}" todir="${output.path}/apm/lib"/>
+		<copy overwrite="true" file="package-swc.json" tofile="${output.path}/apm/package.json"/>
+		<copy overwrite="true" file="RELEASENOTES.md" tofile="${output.path}/apm/CHANGELOG.md"/>
+		<copy overwrite="true" todir="${output.path}/apm">
+			<fileset dir="${basedir}">
+				<include name="README.md"/>
+				<include name="LICENSE.md"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${output.path}/apm-src/src">
+			<fileset dir="${source.root}"/>
+		</copy>
+		<copy overwrite="true" file="package-src.json" tofile="${output.path}/apm-src/package.json"/>
+		<copy overwrite="true" file="RELEASENOTES.md" tofile="${output.path}/apm-src/CHANGELOG.md"/>
+		<copy overwrite="true" todir="${output.path}/apm-src">
+			<fileset dir="${basedir}">
+				<include name="README.md"/>
+				<include name="LICENSE.md"/>
+			</fileset>
+		</copy>
+
+		<exec executable="${apm}" dir="${output.path}">
+			<arg value="build"/>
+			<arg value="apm"/>
+		</exec>
+		<exec executable="${apm}" dir="${output.path}">
+			<arg value="build"/>
+			<arg value="apm-src"/>
+		</exec>
 	</target>
 </project>
