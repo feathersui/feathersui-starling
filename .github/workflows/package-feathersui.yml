@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -20,19 +20,20 @@ jobs:
       - uses: joshtynjala/setup-adobe-air-action@v1
       - name: Install dependencies
         run: |
-          C:/msys64/usr/bin/wget -O flashplayer_32_sa_debug.exe https://fpdownload.macromedia.com/pub/flashplayer/updaters/32/flashplayer_32_sa_debug.exe
-          C:/msys64/usr/bin/wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/updaters/32/playerglobal32_0.swc
+          wget -O flashplayer_32_sa_debug.dmg https://fpdownload.macromedia.com/pub/flashplayer/updaters/32/flashplayer_32_sa_debug.dmg
+          hdiutil attach flashplayer_32_sa_debug.dmg
+          wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/updaters/32/playerglobal32_0.swc
           mkdir ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
-          C:/msys64/usr/bin/cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
-          C:/msys64/usr/bin/wget -O flexunit.zip http://mirrors.ibiblio.org/apache/flex/flexunit/4.2.0/binaries/apache-flex-flexunit-4.2.0-4.12.0-bin.zip
-          C:/msys64/usr/bin/unzip -q flexunit.zip
+          cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
+          wget -O flexunit.zip http://mirrors.ibiblio.org/apache/flex/flexunit/4.2.0/binaries/apache-flex-flexunit-4.2.0-4.12.0-bin.zip
+          unzip -q flexunit.zip
           rm flexunit/flexunit-4.2.0-20140410-flex_4.12.0.swc
       - name: Checkout Starling
         run: |
-          git clone https://github.com/Gamua/Starling-Framework $Env:GITHUB_WORKSPACE/starling --depth 1
+          git clone https://github.com/Gamua/Starling-Framework $GITHUB_WORKSPACE/starling --depth 1
       - name: Ant Build
         run: |
-          ant full "-Dflashsdk.root=${{ env.AIR_HOME }}" "-Dstarling.root=$Env:GITHUB_WORKSPACE/starling/starling/src" "-Dflexunit.root=$Env:GITHUB_WORKSPACE/flexunit" "-Dflashplayer=$Env:GITHUB_WORKSPACE/flashplayer_32_sa_debug.exe"
+          ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="/Volumes/Flash\ Player/Flash\ Player.app/Contents/MacOS/Flash\ Player\ Debugger"
       - uses: actions/upload-artifact@v2
         with:
           name: feathersui-starling
