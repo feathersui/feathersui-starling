@@ -414,13 +414,16 @@
 			<arg value="-output=${dependency.output}/TestFeathers.swf"/>
 			<arg value="TestFeathers.as"/>
 		</java>
+		<copy todir="${dependency.output}">
+			<fileset file="${test.root}/source/TestFeathers-app.xml"/>
+		</copy>
 		<copy todir="${dependency.output}/fixtures">
 			<fileset dir="${test.root}/fixtures"/>
 		</copy>
 		<flexunit
-			command="${flashplayer}"
+			command="${flashsdk.bin}/adl"
 			player="flash"
-			swf="${dependency.output}/TestFeathers.swf"
+			swf="${dependency.output}/TestFeathers-app.xml"
 			haltonfailure="true"
 			verbose="true"
 			toDir="${dependency.output}"/>
