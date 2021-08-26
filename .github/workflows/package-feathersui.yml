@@ -18,10 +18,9 @@ jobs:
         with:
           java-version: 11
       - uses: joshtynjala/setup-adobe-air-action@v1
+      - uses: joshtynjala/setup-adobe-flash-player-action@v1
       - name: Install dependencies
         run: |
-          wget -O flashplayer_32_sa_debug.dmg https://fpdownload.macromedia.com/pub/flashplayer/updaters/32/flashplayer_32_sa_debug.dmg
-          hdiutil attach flashplayer_32_sa_debug.dmg
           wget -O playerglobal.swc https://fpdownload.macromedia.com/get/flashplayer/updaters/32/playerglobal32_0.swc
           mkdir ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
           cp -f playerglobal.swc ${{ env.AIR_HOME }}/frameworks/libs/player/11.1/
@@ -33,7 +32,7 @@ jobs:
           git clone https://github.com/Gamua/Starling-Framework $GITHUB_WORKSPACE/starling --depth 1
       - name: Ant Build
         run: |
-          ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+          ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="flashplayer"
       - uses: actions/upload-artifact@v2
         with:
           name: feathersui-starling
