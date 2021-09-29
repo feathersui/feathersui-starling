@@ -1451,9 +1451,8 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * This was accidentally named wrong. It is included for temporary
-		 * backward compatibility.
 		 */
+		[Deprecated(since="4.2.0",replacement="innerPaddingBottom")]
 		public function get paddinnerPaddingBottomingBottom():Number
 		{
 			return this._innerPaddingBottom;
