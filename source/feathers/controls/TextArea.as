@@ -1451,8 +1451,18 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * This was accidentally named wrong. It is included for temporary
+		 * backward compatibility.
 		 */
 		public function get paddinnerPaddingBottomingBottom():Number
+		{
+			return this._innerPaddingBottom;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get innerPaddingBottom():Number
 		{
 			return this._innerPaddingBottom;
 		}
