@@ -209,7 +209,7 @@ package feathers.core
 			{
 				throw new ArgumentError("IToggle passed to ToggleGroup addItem() must not be null.");
 			}
-			
+
 			var index:int = this._items.indexOf(item);
 			if(index >= 0)
 			{
@@ -422,6 +422,5 @@ package feathers.core
 				this.selectedIndex = -1;
 			}
 		}
-		
 	}
 }

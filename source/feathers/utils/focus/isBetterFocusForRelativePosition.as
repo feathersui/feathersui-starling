@@ -45,7 +45,7 @@ package feathers.utils.focus
 		var maxPrimaryDistance1:Number = calculateMaxPrimaryAxisDistanceForRelativePosition(focusedRect, rect, relativePosition);
 		var secondaryDistance1:Number = calculateSecondaryAxisDistanceForRelativePosition(focusedRect, rect, relativePosition);
 		var onSameAxis1:Boolean = itemsAreOnSameAxis(focusedRect, rect, relativePosition);
-		
+
 		if(object2 === null)
 		{
 			var minPrimaryDistance2:Number = Number.POSITIVE_INFINITY;

@@ -326,14 +326,14 @@ package feathers.controls
 				event.preventDefault();
 				this.backButtonHandler();
 			}
-			
+
 			if(this.menuButtonHandler != null &&
 				event.keyCode == Keyboard.MENU)
 			{
 				event.preventDefault();
 				this.menuButtonHandler();
 			}
-			
+
 			if(this.searchButtonHandler != null &&
 				event.keyCode == Keyboard.SEARCH)
 			{

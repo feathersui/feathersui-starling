@@ -1009,7 +1009,7 @@ package feathers.controls
 				//the implementation in ScrollContainer can handle this
 				return super.autoSizeIfNeeded();
 			}
-			
+
 			var needsWidth:Boolean = this._explicitWidth !== this._explicitWidth; //isNaN
 			var needsHeight:Boolean = this._explicitHeight !== this._explicitHeight; //isNaN
 			var needsMinWidth:Boolean = this._explicitMinWidth !== this._explicitMinWidth; //isNaN
@@ -1031,7 +1031,7 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-			
+
 			//we don't measure the header and footer here because they are
 			//handled in calculateViewPortOffsets(), which is automatically
 			//called by Scroller before autoSizeIfNeeded().

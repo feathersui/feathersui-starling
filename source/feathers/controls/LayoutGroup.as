@@ -512,7 +512,7 @@ package feathers.controls
 			}
 			//the super function already checks if oldIndex < 0, and throws an
 			//appropriate error, so no need to do it again!
-			
+
 			this.items.removeAt(oldIndex);
 			this.items.insertAt(index, child);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
@@ -584,7 +584,7 @@ package feathers.controls
 				//things are properly updated when the LayoutGroup is
 				//transformed
 				this.currentBackgroundSkin.setRequiresRedraw();
-				
+
 				var mask:DisplayObject = this.currentBackgroundSkin.mask;
 				var filter:FragmentFilter = this.currentBackgroundSkin.filter;
 				painter.pushState();
@@ -852,7 +852,7 @@ package feathers.controls
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
 				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
 				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
-			
+
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;

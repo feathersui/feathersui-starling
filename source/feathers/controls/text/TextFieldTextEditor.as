@@ -1476,7 +1476,7 @@ package feathers.controls.text
 			//ease major memory pressure from native filters
 			this.textField = null;
 			this.measureTextField = null;
-			
+
 			this.stateContext = null;
 
 			super.dispose();
@@ -1671,7 +1671,7 @@ package feathers.controls.text
 				//nativeStage, focus will be removed from the StageText, but the
 				//soft keyboard will incorrectly remain open.
 				nativeStage.focus = null;
-				
+
 				//previously, there was a comment here that said that the native
 				//stage focus should not be set to null. this was due to an
 				//issue in focus manager where focus would be restored

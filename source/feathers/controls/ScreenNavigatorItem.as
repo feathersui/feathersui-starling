@@ -255,7 +255,7 @@ package feathers.controls
 			{
 				throw new ArgumentError("ScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
 			}
-			
+
 			if(this._properties)
 			{
 				for(var propertyName:String in this._properties)
@@ -263,7 +263,7 @@ package feathers.controls
 					screenInstance[propertyName] = this._properties[propertyName];
 				}
 			}
-			
+
 			return screenInstance;
 		}
 	}

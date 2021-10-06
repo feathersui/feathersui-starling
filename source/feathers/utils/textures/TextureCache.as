@@ -243,7 +243,7 @@ package feathers.utils.textures
 				this._retainCounts[key] = count;
 				return Texture(this._retainedTextures[key]);
 			}
-			
+
 			if(!(key in this._unretainedTextures))
 			{
 				throw new ArgumentError("Texture with key \"" + key + "\" cannot be retained because it has not been added to the cache.");
@@ -272,7 +272,7 @@ package feathers.utils.textures
 			{
 				//get the existing texture
 				var texture:Texture = Texture(this._retainedTextures[key]);
-				
+
 				//remove from retained
 				delete this._retainCounts[key];
 				delete this._retainedTextures[key];

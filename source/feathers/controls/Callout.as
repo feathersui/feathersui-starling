@@ -2175,7 +2175,7 @@ package feathers.controls
 				IValidating(this._content).validate();
 			}
 			this._ignoreContentResize = oldIgnoreContentResize;
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{

@@ -326,7 +326,7 @@ package feathers.utils.touch
 				//save the position so that we can do a final hit test
 				this._touchLastGlobalPosition.x = touch.globalX;
 				this._touchLastGlobalPosition.y = touch.globalY;
-				
+
 				this._touchBeginTime = getTimer();
 				this._target.addEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
 			}

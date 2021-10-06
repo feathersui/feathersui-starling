@@ -2046,7 +2046,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var adjustedGap:Number = this._gap;
 			if(adjustedGap == Number.POSITIVE_INFINITY)
 			{
@@ -2061,7 +2061,7 @@ package feathers.controls
 				this._explicitBackgroundSkinMinWidth, this._explicitBackgroundSkinMinHeight,
 				this._explicitBackgroundSkinMaxWidth, this._explicitBackgroundSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this._backgroundSkin as IMeasureDisplayObject;
-			
+
 			resetFluidChildDimensionsForMeasurement(this._content,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
@@ -2089,7 +2089,7 @@ package feathers.controls
 			{
 				IValidating(this._backgroundSkin).validate();
 			}
-			
+
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
@@ -2215,7 +2215,7 @@ package feathers.controls
 					}
 				}
 			}
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
@@ -2497,7 +2497,7 @@ package feathers.controls
 				this._content.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 				this._content.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 			}
-			
+
 			this.refreshMessageTextRendererDimensions(false);
 			if(this.actionsGroup)
 			{
@@ -2626,7 +2626,7 @@ package feathers.controls
 					this.actionsGroup.x = this.messageTextRenderer.x - this._gap - this.actionsGroup.width;
 				}
 			}
-			
+
 			if(this._actionsPosition == RelativePosition.LEFT || this._actionsPosition == RelativePosition.RIGHT)
 			{
 				if(this._verticalAlign == VerticalAlign.TOP)

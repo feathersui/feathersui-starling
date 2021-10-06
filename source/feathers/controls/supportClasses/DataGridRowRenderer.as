@@ -721,7 +721,7 @@ class CellRendererFactoryStorage
 	{
 		this.factory = factory;
 	}
-	
+
 	public var activeCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
 	public var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
 	public var factory:Function;

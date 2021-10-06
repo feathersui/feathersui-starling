@@ -1085,7 +1085,7 @@ package feathers.layout
 					return;
 				}
 				positionY += tileHeight + this._verticalGap;
-				
+
 				if(columnItemCount > 0 &&
 					(y < (positionY + (tileHeight / 2))) &&
 					(y < (pageStartY + height)) && //not on next page

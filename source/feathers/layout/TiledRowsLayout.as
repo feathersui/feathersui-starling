@@ -1230,7 +1230,7 @@ package feathers.layout
 					return;
 				}
 				positionX += tileWidth + this._horizontalGap;
-				
+
 				if(rowItemCount > 0 &&
 					(x < (positionX + (tileWidth / 2))) &&
 					(x < (pageStartX + width)) && //not on next page
@@ -1876,7 +1876,7 @@ package feathers.layout
 				}
 				return tileCount;
 			}
-			
+
 			//in this case, the width is not known, but it may have a maximum
 			if(requestedColumnCount > 0)
 			{
@@ -1886,7 +1886,7 @@ package feathers.layout
 			{
 				tileCount = totalItemCount;
 			}
-			
+
 			var maxTileCount:int = int.MAX_VALUE;
 			if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)

@@ -824,9 +824,9 @@ package feathers.controls.text
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			
+
 			super.draw();
-			
+
 			if(dataInvalid || selectionInvalid)
 			{
 				this.positionCursorAtCharIndex(this.getCursorIndexFromSelectionRange());

@@ -3346,7 +3346,6 @@ package feathers.controls
 			{
 				this.selectedIndex = index;
 			}
-			
 		}
 
 		/**
@@ -3419,7 +3418,6 @@ package feathers.controls
 			}
 			else
 			{
-				
 				//we aren't tracking another touch, so let's look for a new one.
 				touch = event.getTouch(tab, TouchPhase.BEGAN);
 				if(!touch)

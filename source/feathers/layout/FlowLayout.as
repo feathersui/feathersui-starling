@@ -496,7 +496,7 @@ package feathers.layout
 			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			
+
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			//let's figure out if we can show multiple rows
 			var supportsMultipleRows:Boolean = true;
@@ -893,7 +893,7 @@ package feathers.layout
 					supportsMultipleRows = false;
 				}
 			}
-			
+
 			if(this._typicalItem is IValidating)
 			{
 				IValidating(this._typicalItem).validate();
@@ -1011,7 +1011,7 @@ package feathers.layout
 			{
 				availableRowWidth = maxRowWidth;
 			}
-			
+
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
 			//height is NaN, we need to calculate the viewport height ourselves
@@ -1044,9 +1044,9 @@ package feathers.layout
 			result = this.calculateMaxScrollYAndRowHeightOfIndex(index, items, x, y, width, height, result);
 			var maxScrollY:Number = result.x;
 			var rowHeight:Number = result.y;
-			
+
 			result.x = 0;
-			
+
 			var bottomPosition:Number = maxScrollY - (height - rowHeight);
 			if(scrollY >= bottomPosition && scrollY <= maxScrollY)
 			{

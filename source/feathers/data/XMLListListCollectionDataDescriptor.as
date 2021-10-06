@@ -61,7 +61,7 @@ package feathers.data
 		public function addItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
-			
+
 			//wow, this is weird. unless I have failed epicly, I can find no 
 			//other way to insert an element into an XMLList at a specific index.
 			var dataClone:XMLList = (data as XMLList).copy();

@@ -399,7 +399,7 @@ package feathers.text
 		{
 			this.dispatchEvent(event);
 		}
-		
+
 		private function textField_keyFocusChangeHandler(event:FocusEvent):void
 		{
 			//StageText doesn't dispatch this event, so we shouldn't either

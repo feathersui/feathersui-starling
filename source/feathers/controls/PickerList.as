@@ -1582,7 +1582,7 @@ package feathers.controls
 			this.button.minWidth = buttonMinWidth;
 			this.button.minHeight = buttonMinHeight;
 			this.button.validate();
-			
+
 			if(this._typicalItem !== null)
 			{
 				this.refreshButtonLabel();
@@ -1592,7 +1592,7 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			var newMinWidth:Number = this._explicitMinWidth;
 			var newMinHeight:Number = this._explicitMinHeight;
-			
+
 			if(needsWidth)
 			{
 				newWidth = this.button.width;
@@ -1644,7 +1644,7 @@ package feathers.controls
 			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.addChild(this.button);
-			
+
 			//we will use these values for measurement, if possible
 			this.button.initializeNow();
 			this.buttonExplicitWidth = this.button.explicitWidth;

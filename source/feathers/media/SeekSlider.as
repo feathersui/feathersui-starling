@@ -256,7 +256,7 @@ package feathers.media
 			{
 				IValidating(this._progressSkin).validate();
 			}
-			
+
 			if(this._direction === Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height / 2 - this._minimumPadding - this._maximumPadding;
@@ -360,6 +360,5 @@ package feathers.media
 			this._progress = progress;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
 	}
 }

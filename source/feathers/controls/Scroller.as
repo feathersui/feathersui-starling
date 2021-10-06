@@ -4692,7 +4692,7 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-			
+
 			//we account for the explicit minimum dimensions of the view port
 			//and the minimum dimensions of the background skin because it helps
 			//the final measurements stabilize faster.

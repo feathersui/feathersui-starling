@@ -2551,7 +2551,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var measureContent:Boolean = this._autoSizeMode === AutoSizeMode.CONTENT || !this.stage;
 			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
 			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;

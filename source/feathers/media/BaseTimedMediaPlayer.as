@@ -255,7 +255,7 @@ package feathers.media
 		 */
 		protected function playMedia():void
 		{
-			
+
 		}
 
 		/**

@@ -1891,7 +1891,7 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-			
+
 			//we don't measure the header and footer here because they are
 			//handled in calculateViewPortOffsets(), which is automatically
 			//called by Scroller before autoSizeIfNeeded().

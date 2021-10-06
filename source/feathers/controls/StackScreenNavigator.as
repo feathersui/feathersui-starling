@@ -456,7 +456,7 @@ package feathers.controls
 				//_isInitialized is set to true and when the screen is actually
 				//shown, so we need to clear this variable, just in case. 
 				this._tempRootScreenID = null;
-				
+
 				//this clears the whole stack and starts fresh
 				this._stack.length = 0;
 				if(value !== null)
@@ -1394,7 +1394,7 @@ package feathers.controls
 
 			this._dragCancelled = false;
 			var starling:Starling = this.stage !== null ? this.stage.starling : Starling.current;
-			
+
 			var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
 			var velocityCount:int = this._previousVelocityX.length;
 			var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
@@ -1460,7 +1460,7 @@ package feathers.controls
 			{
 				this._dragEffectTransition = this.popTransition;
 			}
-			
+
 			//if no transition has been specified, use the default
 			if(this._dragEffectTransition === null)
 			{

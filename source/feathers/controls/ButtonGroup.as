@@ -1914,12 +1914,12 @@ package feathers.controls
 			this._viewPortBounds.maxWidth = this._explicitMaxWidth;
 			this._viewPortBounds.maxHeight = this._explicitMaxHeight;
 			this.layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
-			
+
 			var contentWidth:Number = this._layoutResult.contentWidth;
 			var contentHeight:Number = this._layoutResult.contentHeight;
 			//minimum dimensions are the same as the measured dimensions
 			this.saveMeasurements(contentWidth, contentHeight, contentWidth, contentHeight);
-			
+
 			//final validation to avoid juggler next frame issues
 			for each(var button:Button in this.activeButtons)
 			{

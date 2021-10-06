@@ -817,7 +817,7 @@ package feathers.layout
 					availableWidth = maxWidth;
 				}
 			}
-			
+
 			//we add one extra here because the first item renderer in view may
 			//be partially obscured, which would reveal an extra item renderer.
 			var maxVisibleTypicalItemCount:int = Math.ceil(availableWidth / (calculatedTypicalItemWidth + gap)) + 1;
@@ -998,7 +998,7 @@ package feathers.layout
 
 			var gap:Number = this._gap;
 			var positionX:Number = 0;
-			
+
 			var maxItemHeight:Number = calculatedTypicalItemHeight;
 			positionX += ((calculatedTypicalItemWidth + gap) * itemCount);
 			positionX -= gap;
@@ -1070,9 +1070,9 @@ package feathers.layout
 			this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
 			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 			var gap:Number = this._gap;
-			
+
 			var resultLastIndex:int = 0;
-			
+
 			var totalItemWidth:Number = itemCount * (calculatedTypicalItemWidth + gap) - gap;
 
 			//the actual code that figures out which items are visible assumes
@@ -1165,7 +1165,7 @@ package feathers.layout
 			{
 				itemCount += this._beforeVirtualizedItemCount;
 			}
-			
+
 			var result:int = index;
 			if(keyCode == Keyboard.HOME)
 			{

@@ -4269,7 +4269,7 @@ package feathers.controls.renderers
 			{
 				IValidating(this.currentAccessory).validate();
 			}
-			
+
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
@@ -4278,7 +4278,7 @@ package feathers.controls.renderers
 				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
 				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{

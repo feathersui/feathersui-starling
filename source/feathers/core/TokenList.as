@@ -47,7 +47,7 @@ package feathers.core
 		public function TokenList()
 		{
 		}
-		
+
 		protected var _joinedNames:String = null;
 
 		/**
@@ -122,7 +122,7 @@ package feathers.core
 				this._joinedNames += " " + name;
 			}
 			this.names[this.names.length] = name;
-			
+
 			this.dispatchEventWith(Event.CHANGE);
 		}
 

@@ -732,6 +732,5 @@ package feathers.media
 		{
 			this.handleSoundComplete();
 		}
-		
 	}
 }

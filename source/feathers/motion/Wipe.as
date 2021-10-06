@@ -517,7 +517,7 @@ class WipeTween extends Tween
 		}
 
 		super(mask, duration, ease);
-		
+
 		if(oldScreen)
 		{
 			if(xOffset < 0)

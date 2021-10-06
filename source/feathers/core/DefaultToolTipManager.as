@@ -237,13 +237,13 @@ package feathers.core
 		{
 			this._root.removeEventListener(TouchEvent.TOUCH, root_touchHandler);
 			this._root = null;
-			
+
 			if(Starling.juggler.contains(this._delayedCall))
 			{
 				Starling.juggler.remove(this._delayedCall);
 				this._delayedCall = null;
 			}
-			
+
 			if(this._toolTip)
 			{
 				this._toolTip.removeFromParent(true);
@@ -338,7 +338,7 @@ package feathers.core
 					this._target = null;
 					return;
 				}
-				
+
 				//every time TouchPhase.HOVER is dispatched, the mouse has
 				//moved. we need to reset the timer and update the position
 				//where the tool tip will appear when the timer completes

@@ -1114,7 +1114,7 @@ package feathers.controls
 					newMinHeight = backgroundMinHeight;
 				}
 			}
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{

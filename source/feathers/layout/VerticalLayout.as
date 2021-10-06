@@ -428,7 +428,7 @@ package feathers.layout
 			//if there are no items in layout, then we don't want to subtract
 			//any gap when calculating the total height, so default to 0.
 			var gap:Number = 0;
-			
+
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
 			var headerCount:int = 0;
@@ -1088,7 +1088,7 @@ package feathers.layout
 					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
 				}
 			}
-			
+
 			var secondToLastIndex:int = itemCount - 2;
 			var maxPositionY:Number = scrollY + height;
 			var startPositionY:Number = this._paddingTop;
@@ -1117,7 +1117,7 @@ package feathers.layout
 						}
 					}
 				}
-				
+
 				var gap:Number = this._gap;
 				if(hasFirstGap && i == 0)
 				{

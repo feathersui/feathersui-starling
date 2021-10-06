@@ -2115,7 +2115,7 @@ package feathers.controls
 			{
 				this.createLabel();
 			}
-			
+
 			if(textRendererInvalid || stateInvalid || dataInvalid)
 			{
 				this.refreshLabel();
@@ -2135,7 +2135,7 @@ package feathers.controls
 			}
 
 			super.draw();
-			
+
 			if(textRendererInvalid || stylesInvalid || stateInvalid || dataInvalid || sizeInvalid)
 			{
 				this.layoutContent();
@@ -2160,7 +2160,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var labelRenderer:ITextRenderer = null;
 			if(this._label !== null && this.labelTextRenderer)
 			{
@@ -2168,7 +2168,7 @@ package feathers.controls
 				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
-			
+
 			var adjustedGap:Number = this._gap;
 			if(adjustedGap == Number.POSITIVE_INFINITY)
 			{
@@ -2183,7 +2183,7 @@ package feathers.controls
 				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
 				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
-			
+
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
@@ -2192,7 +2192,7 @@ package feathers.controls
 			{
 				IValidating(this.currentSkin).validate();
 			}
-			
+
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
@@ -2338,7 +2338,7 @@ package feathers.controls
 					}
 				}
 			}
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
@@ -2865,7 +2865,7 @@ package feathers.controls
 					this.currentIcon.x = this.labelTextRenderer.x - this._gap - this.currentIcon.width;
 				}
 			}
-			
+
 			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.RIGHT)
 			{
 				if(this._verticalAlign == VerticalAlign.TOP)

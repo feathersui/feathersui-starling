@@ -388,10 +388,10 @@ package feathers.controls.popups
 			}
 
 			this.content = content;
-			
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			
+
 			var panelFactory:Function = (this.panelFactory !== null) ? this.panelFactory : defaultPanelFactory;
 			this.panel = Panel(panelFactory());
 			if(this.customPanelStyleName)
@@ -413,9 +413,9 @@ package feathers.controls.popups
 
 			PopUpManager.addPopUp(this.panel, true, false, this._overlayFactory);
 			this.layout();
-			
+
 			this.panel.addEventListener(Event.REMOVED_FROM_STAGE, panel_removedFromStageHandler);
-			
+
 			var stage:Stage = Starling.current.stage;
 			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);

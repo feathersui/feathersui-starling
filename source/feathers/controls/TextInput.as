@@ -2929,7 +2929,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var measureBackground:IMeasureDisplayObject = this.currentBackground as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this.currentBackground,
 				this._explicitWidth, this._explicitHeight,

@@ -1648,7 +1648,7 @@ package feathers.controls
 			{
 				this.refreshMaximumTrackStyles();
 			}
-			
+
 			if(stateInvalid || thumbFactoryInvalid || minimumTrackFactoryInvalid ||
 				maximumTrackFactoryInvalid)
 			{
@@ -2129,7 +2129,7 @@ package feathers.controls
 			{
 				return;
 			}
-			
+
 			var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
 			var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
 			var maximumTrack:BasicButton = BasicButton(factory());
@@ -2249,7 +2249,7 @@ package feathers.controls
 			{
 				IValidating(this.thumb).validate();
 			}
-			
+
 			if(this._minimum == this._maximum)
 			{
 				var percentage:Number = 1;
@@ -2308,7 +2308,7 @@ package feathers.controls
 					this.maximumTrack.width = this._maximumTrackSkinExplicitWidth;
 					this.minimumTrack.width = this._minimumTrackSkinExplicitWidth;
 				}
-				
+
 				//final validation to avoid juggler next frame issues
 				if(this.minimumTrack is IValidating)
 				{
@@ -2390,7 +2390,7 @@ package feathers.controls
 				{
 					IValidating(this.minimumTrack).validate();
 				}
-				
+
 				if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
 				{
 					this.minimumTrack.x = Math.round((this.actualWidth - this.minimumTrack.width) / 2);

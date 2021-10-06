@@ -539,7 +539,7 @@ package feathers.controls.text
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
-			
+
 			var viewPort:Rectangle = this.stageText.viewPort;
 			viewPort.x += (this._paddingLeft * scaleFactor);
 			viewPort.y += (this._paddingTop * scaleFactor);

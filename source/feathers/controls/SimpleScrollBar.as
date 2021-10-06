@@ -1072,7 +1072,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			this.thumb.width = this._thumbExplicitWidth;
 			this.thumb.height = this._thumbExplicitHeight;
 			var measureThumb:IMeasureDisplayObject;

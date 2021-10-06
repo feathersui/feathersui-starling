@@ -596,7 +596,7 @@ package feathers.controls.supportClasses
 				this._horizontalScrollPosition, this._verticalScrollPosition,
 				this._rows, 0, 0, this._actualVisibleWidth, this._actualVisibleHeight, result);
 		}
-		
+
 		public function itemToCellRenderer(item:Object, columnIndex:int):IDataGridCellRenderer
 		{
 			var rowRenderer:DataGridRowRenderer = this._rowRendererMap[item] as DataGridRowRenderer;
@@ -772,7 +772,7 @@ package feathers.controls.supportClasses
 			var inactiveRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.inactiveRowRenderers;
 			var activeRowRenderers:Vector.<DataGridRowRenderer> = this._rowStorage.activeRowRenderers;
 			var activeRowRenderersCount:int = activeRowRenderers.length;
-			
+
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = inactiveRowRenderers.length;
@@ -915,7 +915,7 @@ package feathers.controls.supportClasses
 					//(this doesn't necessarily mean that the current typical
 					//item was the typical item last time this function was
 					//called)
-					
+
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
@@ -925,7 +925,7 @@ package feathers.controls.supportClasses
 					//the typical item has changed, and doesn't have a row
 					//renderer yet. the previous typical item had a row
 					//renderer, so we will try to reuse it.
-					
+
 					//we can reuse the existing typical row renderer if the old
 					//typical item wasn't in the data provider. otherwise, it
 					//may still be needed for the same item.
@@ -942,7 +942,7 @@ package feathers.controls.supportClasses
 					{
 						//we can reuse the item renderer used for the old
 						//typical item!
-						
+
 						//if the old typical item was in the data provider,
 						//remove it from the renderer map.
 						if(this._typicalRowIsInDataProvider)
@@ -1396,7 +1396,7 @@ class RowRendererFactoryStorage
 	{
 
 	}
-	
+
 	public var activeRowRenderers:Vector.<DataGridRowRenderer> = new <DataGridRowRenderer>[];
 	public var inactiveRowRenderers:Vector.<DataGridRowRenderer> = new <DataGridRowRenderer>[];
 }

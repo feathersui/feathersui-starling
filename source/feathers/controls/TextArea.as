@@ -2163,7 +2163,7 @@ package feathers.controls
 		override protected function layoutChildren():void
 		{
 			super.layoutChildren();
-			
+
 			if(this.promptTextRenderer !== null)
 			{
 				this.promptTextRenderer.x = this._leftViewPortOffset + this._innerPaddingLeft;

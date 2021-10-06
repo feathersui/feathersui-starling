@@ -1618,7 +1618,7 @@ package feathers.controls
 				//list, but the other lists can stay
 				this.createMeridiemList();
 			}
-			
+
 			if(this._editingMode == DateTimeMode.DATE)
 			{
 				//does this locale show the month or the date first?
@@ -1631,7 +1631,7 @@ package feathers.controls
 					this.listGroup.setChildIndex(this.datesList, 0);
 				}
 			}
-			
+
 			if(localeChanged)
 			{
 				if(this.monthsList)
@@ -2266,7 +2266,7 @@ package feathers.controls
 			//the item renderers in the lists may need to be enabled or disabled
 			//after the ranges change, so we need to call updateAll() on the
 			//collections
-			
+
 			var yearsCollection:IListCollection = this.yearsList ? this.yearsList.dataProvider : null;
 			if(yearsCollection && (oldMinYear != this._minYear || oldMaxYear != this._maxYear))
 			{

@@ -3321,7 +3321,7 @@ package feathers.controls
 			{
 				IValidating(this.offTrack).validate();
 			}
-			
+
 			if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
 			{
 				this.onTrack.y = Math.round((this.actualHeight - this.onTrack.height) / 2);
@@ -3347,7 +3347,7 @@ package feathers.controls
 				//to auto-size
 				this.onTrack.height = this._onTrackSkinExplicitHeight;
 			}
-			
+
 			//final validation to avoid juggler next frame issues
 			if(this.onTrack is IValidating)
 			{

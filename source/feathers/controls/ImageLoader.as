@@ -2296,15 +2296,15 @@ package feathers.controls
 			{
 				//someone else added this URL to the cache while we were in the
 				//middle of loading it. we can reuse the texture from the cache!
-				
+
 				//don't forget to dispose the BitmapData, though...
 				bitmapData.dispose();
-				
+
 				//then invalidate so that everything is resized correctly
 				this.invalidate(INVALIDATION_FLAG_DATA);
 				return;
 			}
-			
+
 			if(!this._texture)
 			{
 				//skip Texture.fromBitmapData() because we don't want
@@ -2411,7 +2411,7 @@ package feathers.controls
 				this.invalidate(INVALIDATION_FLAG_DATA);
 				return;
 			}
-			
+
 			if(this._texture)
 			{
 				this._texture.root.uploadAtfData(rawData);

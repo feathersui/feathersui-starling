@@ -763,7 +763,7 @@ package feathers.controls.supportClasses
 			{
 				this.validate();
 			}
-			
+
 			if(isSameInstance)
 			{
 				//we can't transition if both screens are the same display

@@ -419,9 +419,9 @@ package feathers.controls.supportClasses
 			}
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
-		
+
 		private var _factoryIDFunction:Function;
-		
+
 		public function get factoryIDFunction():Function
 		{
 			return this._factoryIDFunction;
@@ -857,7 +857,7 @@ package feathers.controls.supportClasses
 				this._horizontalScrollPosition, this._verticalScrollPosition,
 				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
-		
+
 		public function itemToItemRenderer(item:Object):IListItemRenderer
 		{
 			return IListItemRenderer(this._rendererMap[item]);
@@ -1160,7 +1160,7 @@ package feathers.controls.supportClasses
 					//(this doesn't necessarily mean that the current typical
 					//item was the typical item last time this function was
 					//called)
-					
+
 					//the index may have changed if items were added, removed or
 					//reordered in the data provider
 					typicalRenderer.index = typicalItemIndex;
@@ -1174,7 +1174,7 @@ package feathers.controls.supportClasses
 					//the typical item has changed, and doesn't have an item
 					//renderer yet. the previous typical item had an item
 					//renderer, so we will try to reuse it.
-					
+
 					//we can reuse the existing typical item renderer if the old
 					//typical item wasn't in the data provider. otherwise, it
 					//may still be needed for the same item.
@@ -1204,7 +1204,7 @@ package feathers.controls.supportClasses
 					{
 						//we can reuse the item renderer used for the old
 						//typical item!
-						
+
 						//if the old typical item was in the data provider,
 						//remove it from the renderer map.
 						if(this._typicalItemIsInDataProvider)
@@ -1632,7 +1632,7 @@ package feathers.controls.supportClasses
 		private function recoverInactiveRenderers(storage:ItemRendererFactoryStorage):void
 		{
 			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
-			
+
 			var itemCount:int = inactiveItemRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1651,7 +1651,7 @@ package feathers.controls.supportClasses
 			var inactiveItemRenderers:Vector.<IListItemRenderer> = storage.inactiveItemRenderers;
 			var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
 			var activeItemRenderersCount:int = activeItemRenderers.length;
-			
+
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = inactiveItemRenderers.length;
@@ -1764,7 +1764,7 @@ package feathers.controls.supportClasses
 			renderer.factoryID = null;
 			this.removeChild(DisplayObject(renderer), true);
 		}
-		
+
 		private function getFactoryID(item:Object, index:int):String
 		{
 			if(this._factoryIDFunction === null)
@@ -1777,7 +1777,7 @@ package feathers.controls.supportClasses
 			}
 			return this._factoryIDFunction(item, index);
 		}
-		
+
 		private function factoryIDToFactory(id:String):Function
 		{
 			if(id !== null)
@@ -1818,7 +1818,7 @@ package feathers.controls.supportClasses
 			var layout:IDragDropLayout = IDragDropLayout(this._layout);
 			this._dropIndicatorSkin.width = this._explicitDropIndicatorWidth;
 			this._dropIndicatorSkin.height = this._explicitDropIndicatorHeight;
-			
+
 			var dropX:Number = this._horizontalScrollPosition + localX;
 			var dropY:Number = this._verticalScrollPosition + localY;
 			var dropIndex:int = layout.getDropIndex(dropX, dropY,
@@ -2043,7 +2043,7 @@ package feathers.controls.supportClasses
 			//recover
 			this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
 			delete this._rendererMap[itemRenderer.data];
-			
+
 			//free
 			var storage:ItemRendererFactoryStorage = this.factoryIDToStorage(itemRenderer.factoryID);
 			var activeItemRenderers:Vector.<IListItemRenderer> = storage.activeItemRenderers;
@@ -2262,7 +2262,7 @@ package feathers.controls.supportClasses
 					var currentDragX:Number = point.x;
 					var currentDragY:Number = point.y;
 					Pool.putPoint(point);
-					
+
 					var starling:Starling = this.stage.starling;
 					var verticalInchesMoved:Number = (currentDragX - this._startDragX) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
 					var horizontalInchesMoved:Number = (currentDragY - this._startDragY) / (DeviceCapabilities.dpi / starling.contentScaleFactor);
@@ -2271,7 +2271,7 @@ package feathers.controls.supportClasses
 					{
 						var dragData:DragData = new DragData();
 						dragData.setDataForFormat(this._dragFormat, itemRenderer.data);
-						
+
 						//we don't create a new item renderer here because
 						//it might remove accessories or icons from the original
 						//item renderer that is still visible in the list.
@@ -2318,9 +2318,9 @@ class ItemRendererFactoryStorage
 {
 	public function ItemRendererFactoryStorage()
 	{
-		
+
 	}
-	
+
 	public var activeItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 }

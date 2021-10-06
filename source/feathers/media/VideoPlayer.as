@@ -1356,7 +1356,7 @@ package feathers.media
 						//on the NetStream. it is safe to ignore this case.
 						return;
 					}
-					
+
 					//any time that the NetStream stops, we want to remove the
 					//Event.ENTER_FRAME listener. in most cases, we don't want
 					//a listener being called every frame for no reason. on iOS,
@@ -1373,7 +1373,7 @@ package feathers.media
 					if(Starling.context.driverInfo !== "Disposed")
 					{
 						this.stop();
-						
+
 						//set this flag after calling stop() because stopping
 						//will seek to the beginning and may check for the flag.
 						this._hasPlayedToEnd = true;

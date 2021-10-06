@@ -945,7 +945,7 @@ package feathers.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

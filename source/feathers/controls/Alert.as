@@ -1040,7 +1040,7 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-			
+
 			if(this._icon is IValidating)
 			{
 				IValidating(this._icon).validate();

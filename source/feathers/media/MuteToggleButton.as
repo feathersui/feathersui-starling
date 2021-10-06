@@ -567,7 +567,7 @@ package feathers.media
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var volumeSliderFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_VOLUME_SLIDER_FACTORY);
-			
+
 			if(volumeSliderFactoryInvalid)
 			{
 				this.createVolumeSlider();
@@ -577,9 +577,9 @@ package feathers.media
 			{
 				this.refreshVolumeSliderProperties();
 			}
-			
+
 			super.draw();
-			
+
 			this.handlePendingActions();
 		}
 
