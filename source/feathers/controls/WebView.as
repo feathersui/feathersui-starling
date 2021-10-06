@@ -551,7 +551,7 @@ package feathers.controls
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			this.stageWebView.stage = this.stage.starling.nativeStage;
 		}
 

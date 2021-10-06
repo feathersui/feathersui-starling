@@ -895,7 +895,7 @@ package feathers.controls.text
 		{
 			if(this._textElement === null)
 			{
-				return
+				return;
 			}
 			var displayText:String = this._text;
 			if(this._imeText !== null)
@@ -1334,7 +1334,7 @@ package feathers.controls.text
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 		}
 
 		/**

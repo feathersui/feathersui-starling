@@ -1036,17 +1036,17 @@ package feathers.layout
 			var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
 			if(bottomAnchorDisplayObject && (items.indexOf(bottomAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(bottomAnchorDisplayObject) >= 0))
 			{
-				return false
+				return false;
 			}
 			var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 			if(horizontalCenterAnchorDisplayObject && (items.indexOf(horizontalCenterAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(horizontalCenterAnchorDisplayObject) >= 0))
 			{
-				return false
+				return false;
 			}
 			var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 			if(verticalCenterAnchorDisplayObject && (items.indexOf(verticalCenterAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(verticalCenterAnchorDisplayObject) >= 0))
 			{
-				return false
+				return false;
 			}
 			return true;
 		}

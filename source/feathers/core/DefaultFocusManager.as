@@ -1078,7 +1078,7 @@ package feathers.core
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			if(this._focus !== null && focusTarget !== null)
 			{
 				//ignore touches on focusOwner because we consider the

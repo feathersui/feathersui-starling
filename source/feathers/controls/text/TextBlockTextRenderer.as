@@ -1455,13 +1455,13 @@ package feathers.controls.text
 						yPosition += currentBitmapHeight;
 						totalBitmapHeight -= currentBitmapHeight;
 					}
-					while(totalBitmapHeight > 0)
+					while(totalBitmapHeight > 0);
 					xPosition += currentBitmapWidth;
 					totalBitmapWidth -= currentBitmapWidth;
 					yPosition = offsetY;
 					totalBitmapHeight = this._snapshotHeight;
 				}
-				while(totalBitmapWidth > 0)
+				while(totalBitmapWidth > 0);
 			}
 			super.render(painter);
 		}
@@ -2246,13 +2246,13 @@ package feathers.controls.text
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
 				}
-				while(totalBitmapHeight > 0)
+				while(totalBitmapHeight > 0);
 				xPosition += currentBitmapWidth;
 				totalBitmapWidth -= currentBitmapWidth;
 				yPosition = 0;
 				totalBitmapHeight = this._snapshotHeight;
 			}
-			while(totalBitmapWidth > 0)
+			while(totalBitmapWidth > 0);
 			bitmapData.dispose();
 			if(this.textSnapshots)
 			{

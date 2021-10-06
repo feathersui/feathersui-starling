@@ -984,7 +984,7 @@ package feathers.media
 		{
 			if(!this.stage)
 			{
-				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.")
+				throw new IllegalOperationError("Cannot enter full screen mode if the video player does not have access to the Starling stage.");
 			}
 			var starling:Starling = this.stage.starling;
 			var nativeStage:Stage = starling.nativeStage;

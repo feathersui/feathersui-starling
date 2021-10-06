@@ -45,7 +45,7 @@ package feathers.controls
 			}
 			else if(classOrFunctionOrDisplayObject !== null)
 			{
-				throw new ArgumentError("Unknown view type. Must be Class, Function, or DisplayObject.")
+				throw new ArgumentError("Unknown view type. Must be Class, Function, or DisplayObject.");
 			}
 			this._label = label;
 			this._icon = icon;

@@ -1729,7 +1729,7 @@ package feathers.controls.supportClasses
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(!itemRenderer)
+			while(!itemRenderer);
 			itemRenderer.data = item;
 			itemRenderer.index = index;
 			itemRenderer.owner = this._owner;
@@ -1788,7 +1788,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".")
+					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".");
 				}
 			}
 			return this._itemRendererFactory;

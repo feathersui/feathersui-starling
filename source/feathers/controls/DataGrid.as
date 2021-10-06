@@ -2549,7 +2549,7 @@ package feathers.controls
 					headerRenderer = inactiveHeaderRenderers.shift();
 				}
 			}
-			while(headerRenderer === null)
+			while(headerRenderer === null);
 			headerRenderer.data = column;
 			headerRenderer.columnIndex = columnIndex;
 			headerRenderer.owner = this;

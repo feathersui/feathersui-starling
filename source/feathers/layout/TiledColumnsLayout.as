@@ -480,7 +480,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -677,7 +677,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			if(this._paging === Direction.HORIZONTAL)
@@ -1440,7 +1440,7 @@ package feathers.layout
 					}
 					i += verticalTileCount;
 				}
-				while(resultLength < minimumItemCount && pageStart < itemCount)
+				while(resultLength < minimumItemCount && pageStart < itemCount);
 			}
 		}
 

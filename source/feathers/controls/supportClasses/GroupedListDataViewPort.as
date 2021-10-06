@@ -2780,7 +2780,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".")
+					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".");
 				}
 			}
 			return this._itemRendererFactory;
@@ -2837,7 +2837,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					throw new ReferenceError("Cannot find header renderer factory for ID \"" + id + "\".")
+					throw new ReferenceError("Cannot find header renderer factory for ID \"" + id + "\".");
 				}
 			}
 			return this._headerRendererFactory;
@@ -2868,7 +2868,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					throw new ReferenceError("Cannot find footer renderer factory for ID \"" + id + "\".")
+					throw new ReferenceError("Cannot find footer renderer factory for ID \"" + id + "\".");
 				}
 			}
 			return this._footerRendererFactory;

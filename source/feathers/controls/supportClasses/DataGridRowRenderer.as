@@ -445,7 +445,7 @@ package feathers.controls.supportClasses
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(cellRenderer === null)
+			while(cellRenderer === null);
 			this.refreshCellRendererProperties(cellRenderer, columnIndex, column);
 
 			column.addEventListener(Event.CHANGE, column_changeHandler);

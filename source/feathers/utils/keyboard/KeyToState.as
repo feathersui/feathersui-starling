@@ -379,7 +379,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 			this.changeState(this._downState);
@@ -401,7 +401,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

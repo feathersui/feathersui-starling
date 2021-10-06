@@ -55,7 +55,7 @@ package feathers.layout
 			super();
 			if(Object(this).constructor == BaseTiledLayout)
 			{
-				throw new AbstractClassError()
+				throw new AbstractClassError();
 			}
 		}
 

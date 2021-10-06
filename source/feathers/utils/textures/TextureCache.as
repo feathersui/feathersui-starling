@@ -149,7 +149,7 @@ package feathers.utils.textures
 		{
 			if(!this._retainedTextures)
 			{
-				throw new IllegalOperationError("Cannot add a texture after the cache has been disposed.")
+				throw new IllegalOperationError("Cannot add a texture after the cache has been disposed.");
 			}
 			if(key in this._unretainedTextures || key in this._retainedTextures)
 			{
@@ -234,7 +234,7 @@ package feathers.utils.textures
 		{
 			if(!this._retainedTextures)
 			{
-				throw new IllegalOperationError("Cannot retain a texture after the cache has been disposed.")
+				throw new IllegalOperationError("Cannot retain a texture after the cache has been disposed.");
 			}
 			if(key in this._retainedTextures)
 			{

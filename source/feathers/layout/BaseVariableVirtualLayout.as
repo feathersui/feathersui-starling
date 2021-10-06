@@ -73,7 +73,7 @@ package feathers.layout
 			super();
 			if(Object(this).constructor === BaseLinearLayout)
 			{
-				throw new AbstractClassError()
+				throw new AbstractClassError();
 			}
 		}
 

@@ -363,7 +363,7 @@ package feathers.core
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
 			return new BitmapFontTextRenderer();
-		}
+		};
 
 		/**
 		 * A function used by all UI controls that support text editor to
@@ -380,7 +380,7 @@ package feathers.core
 		public static var defaultTextEditorFactory:Function = function():ITextEditor
 		{
 			return new StageTextTextEditor();
-		}
+		};
 
 		/**
 		 * Constructor.
@@ -883,7 +883,7 @@ package feathers.core
 			}
 			if(this._applyingStyles)
 			{
-				throw new IllegalOperationError("Cannot change styleProvider while the current style provider is applying styles.")
+				throw new IllegalOperationError("Cannot change styleProvider while the current style provider is applying styles.");
 			}
 			if(this._styleProvider !== null && this._styleProvider is EventDispatcher)
 			{

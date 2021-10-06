@@ -1104,7 +1104,7 @@ package feathers.controls.supportClasses
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			this._textFieldContainer.visible = true;
 		}
 

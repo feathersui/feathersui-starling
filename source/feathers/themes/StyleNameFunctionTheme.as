@@ -161,7 +161,7 @@ package feathers.themes
 					previousStyleProvider = currentStyleProvider;
 					currentStyleProvider = nextStyleProvider as ConditionalStyleProvider;
 				}
-				while(true)
+				while(true);
 			}
 			this._conditionalRegistry = null;
 		}

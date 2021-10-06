@@ -191,6 +191,6 @@ package feathers.core
 				return 1;
 			}
 			return 0;
-		}
+		};
 	}
 }

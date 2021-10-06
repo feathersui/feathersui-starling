@@ -658,7 +658,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._isTransitionActive && (id == this._previousScreenInTransitionID || id == this._activeScreenID))
 			{
-				throw new IllegalOperationError("Cannot remove a screen while it is transitioning in or out.")
+				throw new IllegalOperationError("Cannot remove a screen while it is transitioning in or out.");
 			}
 			if(this._activeScreenID == id)
 			{

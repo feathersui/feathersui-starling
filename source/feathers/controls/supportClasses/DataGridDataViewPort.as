@@ -834,7 +834,7 @@ package feathers.controls.supportClasses
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(rowRenderer === null)
+			while(rowRenderer === null);
 			rowRenderer.data = item;
 			rowRenderer.columns = this._columns;
 			rowRenderer.index = rowIndex;

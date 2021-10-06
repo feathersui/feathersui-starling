@@ -2533,7 +2533,7 @@ package feathers.controls.text
 					}
 					target = target.parent;
 				}
-				while(target)
+				while(target);
 			}
 			else
 			{

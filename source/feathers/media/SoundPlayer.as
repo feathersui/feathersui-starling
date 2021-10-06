@@ -336,7 +336,7 @@ package feathers.media
 			}
 			else
 			{
-				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
+				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.");
 			}
 			if(this._autoPlay && this._sound)
 			{

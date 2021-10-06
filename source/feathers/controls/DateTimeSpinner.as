@@ -2605,7 +2605,7 @@ package feathers.controls
 			}
 			//this value is used for measurement to try to avoid truncated text.
 			//it will not be displayed!
-			return "Wom"; 
+			return "Wom";
 		}
 
 		/**

@@ -867,7 +867,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -1000,7 +1000,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
@@ -2032,7 +2032,7 @@ package feathers.layout
 					}
 				}
 			}
-			while(needsAnotherPass)
+			while(needsAnotherPass);
 			this._discoveredItemsCache.length = 0;
 		}
 

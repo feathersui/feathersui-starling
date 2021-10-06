@@ -126,7 +126,7 @@ package feathers.utils.text
 						startIndex = nextStartIndex;
 						isExcluding = !isExcluding;
 					}
-					while(true)
+					while(true);
 				}
 			}
 			else

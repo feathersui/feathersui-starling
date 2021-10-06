@@ -218,7 +218,7 @@ package feathers.utils.touch
 		 */
 		public function set tapToSelect(value:TapToSelect):void
 		{
-			this._tapToSelect = value
+			this._tapToSelect = value;
 		}
 
 		/**

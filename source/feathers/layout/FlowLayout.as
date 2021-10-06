@@ -748,7 +748,7 @@ package feathers.layout
 					}
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._rowItems.length = 0;
@@ -864,7 +864,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 			//this function is very long because it may be called every frame,
 			//in some situations. testing revealed that splitting this function
@@ -990,7 +990,7 @@ package feathers.layout
 					maxRowWidth = totalRowWidth;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 
 			if(supportsMultipleRows)
 			{
@@ -1285,7 +1285,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			return itemCount;
 		}
 
@@ -1357,7 +1357,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			var lastItem:DisplayObject = items[itemCount - 1];
 			dropIndicator.x = lastItem.x + lastItem.width - dropIndicator.width / 2;
 			dropIndicator.y = lastItem.y;
@@ -1423,7 +1423,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			if(this._typicalItem is IValidating)
@@ -1525,7 +1525,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			return result;
 		}
 
@@ -1678,7 +1678,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			result.setTo(positionY, maxItemHeight);
 			return result;
 		}
