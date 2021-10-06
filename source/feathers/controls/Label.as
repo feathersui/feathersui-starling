@@ -1030,7 +1030,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			resetFluidChildDimensionsForMeasurement(DisplayObject(this.textRenderer),
 				this._explicitWidth - this._paddingLeft - this._paddingRight,
 				this._explicitHeight - this._paddingTop - this._paddingBottom,
