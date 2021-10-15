@@ -30,6 +30,7 @@
 
 	<target name="apm" depends="-apm,-cleanup" description="builds apm package">
 		<delete file="${output.path}/${swc.file}"/>
+		<delete dir="${themes.output}" includeemptydirs="true"/>
 	</target>
 
 	<target name="package" depends="full" description="builds and packages a .zip file for distribution">
@@ -59,10 +60,9 @@
 	</target>
 
 	<target name="-cleanup">
-		<delete dir="${dependency.output}"/>
-		<echo>${output.path}/apm</echo>
-		<delete dir="${output.path}/apm"/>
-		<delete dir="${output.path}/apm-src"/>
+		<delete dir="${dependency.output}" includeemptydirs="true"/>
+		<delete dir="${output.path}/apm" includeemptydirs="true"/>
+		<delete dir="${output.path}/apm-src" includeemptydirs="true"/>
 	</target>
 
 	<target name="-starling" depends="-prepare">
@@ -447,38 +447,86 @@
 			verbose="true"
 			toDir="${dependency.output}"/>
 	</target>
+    
+    <macrodef name="apm">
+        <attribute name="src"/>
+        <attribute name="swc"/>
+        <attribute name="readme"/>
+        <attribute name="changelog" default=""/>
+        <attribute name="package-swc"/>
+        <attribute name="package-src"/>
+            <sequential>
+				<fail unless="apm" message="Path to apm executable is missing."/>
+				<copy overwrite="true" file="@{swc}" todir="${output.path}/apm/swc"/>
+				<copy overwrite="true" file="@{package-swc}" tofile="${output.path}/apm/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
 
-	<target name="-apm" depends="-feathers">
-		<fail unless="apm" message="Path to apm executable is missing."/>
-		<copy overwrite="true" file="${output.path}/${swc.file}" todir="${output.path}/apm/lib"/>
-		<copy overwrite="true" file="package-swc.json" tofile="${output.path}/apm/package.json"/>
-		<copy overwrite="true" todir="${output.path}/apm">
-			<fileset dir="${basedir}">
-				<include name="README.md"/>
-				<include name="LICENSE.md"/>
-				<include name="CHANGELOG.md"/>
-			</fileset>
-		</copy>
+				<copy overwrite="true" todir="${output.path}/apm-src/src">
+					<fileset dir="@{src}"/>
+				</copy>
+				<copy overwrite="true" file="@{package-src}" tofile="${output.path}/apm-src/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm-src">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
 
-		<copy overwrite="true" todir="${output.path}/apm-src/src">
-			<fileset dir="${source.root}"/>
-		</copy>
-		<copy overwrite="true" file="package-src.json" tofile="${output.path}/apm-src/package.json"/>
-		<copy overwrite="true" todir="${output.path}/apm-src">
-			<fileset dir="${basedir}">
-				<include name="README.md"/>
-				<include name="LICENSE.md"/>
-				<include name="CHANGELOG.md"/>
-			</fileset>
-		</copy>
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm"/>
+				</exec>
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm-src"/>
+				</exec>
 
-		<exec executable="${apm}" dir="${output.path}">
-			<arg value="build"/>
-			<arg value="apm"/>
-		</exec>
-		<exec executable="${apm}" dir="${output.path}">
-			<arg value="build"/>
-			<arg value="apm-src"/>
-		</exec>
+				<delete includeemptydirs="true">
+					<fileset dir="${output.path}/apm"/>
+					<fileset dir="${output.path}/apm-src"/>
+				</delete>
+        </sequential>
+    </macrodef>
+
+	<target name="-apm" depends="-feathers,-themes">
+		<apm src="${source.root}"
+			swc="${output.path}/${swc.file}"
+			readme="README.md"
+			changelog="CHANGELOG.md"
+			package-swc="package-swc.json"
+			package-src="package-src.json"/>
+		<apm src="${themes.root}/AeonDesktopTheme/source"
+			swc="${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"
+			readme="${themes.root}/AeonDesktopTheme/README.md"
+			package-swc="${themes.root}/AeonDesktopTheme/package-swc.json"
+			package-src="${themes.root}/AeonDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksDesktopTheme/source"
+			swc="${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"
+			readme="${themes.root}/MetalWorksDesktopTheme/README.md"
+			package-swc="${themes.root}/MetalWorksDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksMobileTheme/source"
+			swc="${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"
+			readme="${themes.root}/MetalWorksMobileTheme/README.md"
+			package-swc="${themes.root}/MetalWorksMobileTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalDesktopTheme/source"
+			swc="${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"
+			readme="${themes.root}/MinimalDesktopTheme/README.md"
+			package-swc="${themes.root}/MinimalDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MinimalDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalMobileTheme/source"
+			swc="${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"
+			readme="${themes.root}/MinimalMobileTheme/README.md"
+			package-swc="${themes.root}/MinimalMobileTheme/package-swc.json"
+			package-src="${themes.root}/MinimalMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/TopcoatLightMobileTheme/source"
+			swc="${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"
+			readme="${themes.root}/TopcoatLightMobileTheme/README.md"
+			package-swc="${themes.root}/TopcoatLightMobileTheme/package-swc.json"
+			package-src="${themes.root}/TopcoatLightMobileTheme/package-src.json"/>
 	</target>
 </project>

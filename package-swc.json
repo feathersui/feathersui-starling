@@ -1,13 +1,19 @@
 {
-  "id": "feathersui",
+  "id": "com.feathersui",
   "name": "feathersui",
   "url": "https://feathersui.com/as3-starling/",
   "docUrl": "https://feathersui/api-reference/",
   "description": "Cross-platform user interface components for creative frontend projects built with Starling",
   "type": "swc",
   "version": "4.2.0",
-  "sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_4.2.0.airpackage",
+  "sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/com.feathersui_4.2.0.airpackage",
   "dependencies": ["starling:2.7.0"],
   "parameters": [],
-  "tags": ["components", "gui", "starling", "ui", "widgets"]
+  "tags": ["components", "gui", "starling", "ui", "widgets"],
+  "status": "release",
+  "license": {
+    "type": "Simplified BSD",
+    "url": "https://github.com/feathersui/feathersui-starling/blob/v4.2.0/LICENSE.md",
+    "public": true
+  }
 }
