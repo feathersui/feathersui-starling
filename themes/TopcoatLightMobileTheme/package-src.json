@@ -1,12 +1,12 @@
 {
-	"id": "com.feathersui.TopcoatLightMobileTheme-source",
+	"id": "feathersui_TopcoatLightMobileTheme-source",
 	"name": "Feathers UI Topcoat Light Mobile Theme",
 	"url": "https://feathersui.com/as3-starling/",
 	"docUrl": "https://feathersui/api-reference/",
 	"description": "Topcoat light mobile theme for Feathers UI (Starling version)",
 	"type": "src",
 	"version": "4.2.0",
-	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/com.feathersui.TopcoatLightMobileTheme-source_4.2.0.airpackage",
+	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_TopcoatLightMobileTheme-source_4.2.0.airpackage",
 	"dependencies": [
 		"starling-source:2.7.0",
 		"feathersui-source:4.2.0"
