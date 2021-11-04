@@ -239,7 +239,6 @@ package feathers.layout
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
-
 		/**
 		 * @private
 		 */
@@ -423,7 +422,7 @@ package feathers.layout
 		 * If the layout is virtualized, specifies the minimum total number of
 		 * items that will be created, even if some are not currently visible
 		 * in the view port.
-		 * 
+		 *
 		 * @default 1
 		 *
 		 * @see #useVirtualLayout

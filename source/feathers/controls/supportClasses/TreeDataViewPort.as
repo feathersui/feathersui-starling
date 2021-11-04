@@ -783,7 +783,7 @@ package feathers.controls.supportClasses
 		private function locationToDisplayIndex(location:Vector.<int>, returnNearestIfBranchNotOpen:Boolean):int
 		{
 			this._displayIndex = -1;
-			var result:Object =  this.locationToDisplayIndexAtBranch(new <int>[], location, returnNearestIfBranchNotOpen);
+			var result:Object = this.locationToDisplayIndexAtBranch(new <int>[], location, returnNearestIfBranchNotOpen);
 			if(result !== null)
 			{
 				return this._displayIndex;
@@ -1213,7 +1213,7 @@ package feathers.controls.supportClasses
 						delete this._itemRendererMap[item.toXMLString()];
 					}
 					else
-					{	
+					{
 						delete this._itemRendererMap[item];
 					}
 				}
@@ -1319,7 +1319,7 @@ package feathers.controls.supportClasses
 							delete this._itemRendererMap[item.toXMLString()];
 						}
 						else
-						{	
+						{
 							delete this._itemRendererMap[item];
 						}
 					}
@@ -1351,7 +1351,7 @@ package feathers.controls.supportClasses
 					delete this._itemRendererMap[item.toXMLString()];
 				}
 				else
-				{	
+				{
 					delete this._itemRendererMap[item];
 				}
 			}

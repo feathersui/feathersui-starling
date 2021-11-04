@@ -55,7 +55,7 @@ package feathers.controls
 	 * textArea.setSkinForState( TextInputState.DISABLED, skin );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 * @see #setSkinForState()
 	 */
@@ -298,7 +298,7 @@ package feathers.controls
 	 * textArea.innerPaddingBottom = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:innerPadding
 	 */
 	[Style(name="innerPaddingBottom",type="Number")]
@@ -381,7 +381,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #text
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -1457,7 +1457,7 @@ package feathers.controls
 		{
 			return this._innerPaddingBottom;
 		}
-		
+
 		/**
 		 * @private
 		 */

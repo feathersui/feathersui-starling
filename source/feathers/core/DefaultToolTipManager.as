@@ -44,7 +44,7 @@ package feathers.core
 			toolTip.styleNameList.add(Label.ALTERNATE_STYLE_NAME_TOOL_TIP);
 			return toolTip;
 		}
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -58,7 +58,7 @@ package feathers.core
 		 * @private
 		 */
 		protected var _touchPointID:int = -1;
-		
+
 		/**
 		 * @private
 		 */
@@ -137,7 +137,7 @@ package feathers.core
 		/**
 		 * The delay, in seconds, before a tool tip may be displayed when the
 		 * mouse is idle over a component with a tool tip.
-		 * 
+		 *
 		 * @default 0.5
 		 */
 		public function get showDelay():Number
@@ -165,7 +165,7 @@ package feathers.core
 		 * threshold, the tool tip will be shown immediately. This allows
 		 * tooltips for adjacent components, such as those appearing in
 		 * toolbars, to be shown quickly.
-		 * 
+		 *
 		 * <p>To disable this behavior, set the <code>resetDelay</code> to
 		 * <code>0</code>.</p>
 		 *
@@ -191,7 +191,7 @@ package feathers.core
 
 		/**
 		 * The offset, in pixels, of the tool tip position on the x axis.
-		 * 
+		 *
 		 * @default 0
 		 */
 		public function get offsetX():Number
@@ -229,7 +229,7 @@ package feathers.core
 		{
 			this._offsetY = value;
 		}
-		
+
 		/**
 		 * @copy feathers.core.IToolTipManager#dispose()
 		 */

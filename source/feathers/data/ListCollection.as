@@ -146,7 +146,7 @@ package feathers.data
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #updateItemAt()
 	 *
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ITEM
@@ -273,7 +273,7 @@ package feathers.data
 		 * <code>dataDescriptor</code> needs to be provided to translate from
 		 * the data source's APIs to something that can be understood by
 		 * <code>ListCollection</code>.
-		 * 
+		 *
 		 * <p>Data sources of type Array, Vector, and XMLList are automatically
 		 * detected, and no <code>dataDescriptor</code> needs to be set if the
 		 * <code>ListCollection</code> uses one of these types.</p>
@@ -333,7 +333,7 @@ package feathers.data
 
 		/**
 		 * Describes the underlying data source by translating APIs.
-		 * 
+		 *
 		 * @see IListCollectionDataDescriptor
 		 */
 		public function get dataDescriptor():IListCollectionDataDescriptor

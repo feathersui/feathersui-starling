@@ -274,7 +274,7 @@ package feathers.layout
 			this._horizontalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -283,7 +283,7 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *

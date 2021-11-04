@@ -36,7 +36,7 @@ package feathers.utils.keyboard
 	 *         this._keyToSelect = new KeyToSelect(this);
 	 *         this._keyToSelect.keyCode = Keyboard.SPACE;
 	 *     }
-	 *     
+	 * 
 	 *     private var _keyToSelect:KeyToSelect;
 	 * // ...</listing>
 	 *
@@ -122,7 +122,7 @@ package feathers.utils.keyboard
 
 		/**
 		 * The key that will select the target, when pressed.
-		 * 
+		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
 		public function get keyCode():uint

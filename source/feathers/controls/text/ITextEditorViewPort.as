@@ -28,7 +28,7 @@ package feathers.controls.text
 		 * @private
 		 */
 		function set paddingTop(value:Number):void;
-		
+
 		/**
 		 * The padding between the right edge of the viewport and the text.
 		 */
@@ -38,7 +38,7 @@ package feathers.controls.text
 		 * @private
 		 */
 		function set paddingRight(value:Number):void;
-		
+
 		/**
 		 * The padding between the bottom edge of the viewport and the text.
 		 */
@@ -48,7 +48,7 @@ package feathers.controls.text
 		 * @private
 		 */
 		function set paddingBottom(value:Number):void;
-		
+
 		/**
 		 * The padding between the left edge of the viewport and the text.
 		 */

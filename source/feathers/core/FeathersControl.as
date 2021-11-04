@@ -55,7 +55,7 @@ package feathers.core
 	 * control.focusIndicatorSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:focusPaddingTop
 	 * @see #style:focusPaddingRight
 	 * @see #style:focusPaddingBottom
@@ -168,7 +168,7 @@ package feathers.core
 	 * control.focusPaddingLeft = -2;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:focusPadding
 	 */
 	[Style(name="focusPaddingLeft",type="Number")]
@@ -434,13 +434,13 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * control.showEffect = function(target:DisplayObject):IEffectContext
 		 * {
@@ -503,13 +503,13 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeOutEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * control.hideEffect = function(target:DisplayObject):IEffectContext
 		 * {
@@ -538,7 +538,7 @@ package feathers.core
 		{
 			this._hideEffect = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -602,7 +602,7 @@ package feathers.core
 		/**
 		 * An optional effect that is activated when the component receives
 		 * focus.
-		 * 
+		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
@@ -618,7 +618,7 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>.</p>
@@ -655,11 +655,11 @@ package feathers.core
 
 		/**
 		 * An optional effect that is activated when the component loses focus.
-		 * 
+		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
@@ -675,7 +675,7 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>.</p>
@@ -732,13 +732,13 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * control.addedEffect = function(target:DisplayObject):IEffectContext
 		 * {
@@ -1099,7 +1099,7 @@ package feathers.core
 		 * pausing it, or cancelling it. Custom animated resize effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenResizeEffectContext</code>.</p>
-		 * 
+		 *
 		 * @see feathers.motion.Resize
 		 * @see #width
 		 * @see #height
@@ -1487,7 +1487,7 @@ package feathers.core
 				}
 				else
 				{
-				this._explicitHeight = value;
+					this._explicitHeight = value;
 					hasSetExplicitHeight = true;
 				}
 				this._resizeEffectContext.play();
@@ -1593,7 +1593,7 @@ package feathers.core
 		/**
 		 * The minimum width value explicitly set by passing a value to the
 		 * <code>minWidth</code> setter.
-		 * 
+		 *
 		 * <p>If no value has been passed to the <code>minWidth</code> setter,
 		 * this property returns <code>NaN</code>.</p>
 		 */
@@ -1999,7 +1999,7 @@ package feathers.core
 		/**
 		 * Text to display in a tool tip to when hovering over this component,
 		 * if the <code>ToolTipManager</code> is enabled.
-		 * 
+		 *
 		 * @default null
 		 *
 		 * @see ../../../help/tool-tips.html Tool tips in Feathers
@@ -2027,7 +2027,7 @@ package feathers.core
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#focusManager
 		 *
 		 * @default null
@@ -2064,11 +2064,11 @@ package feathers.core
 		 * <p>The implementation of this property is provided for convenience,
 		 * but it cannot be used unless a subclass implements the
 		 * <code>IFocusDisplayObject</code> interface.</p>
-		 * 
+		 *
 		 * @copy feathers.core.IFocusDisplayObject#focusOwner
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.core.IFocusDisplayObject
 		 */
 		public function get focusOwner():IFocusDisplayObject
@@ -2556,7 +2556,7 @@ package feathers.core
 
 		/**
 		 * Indicates if effects have been suspended.
-		 * 
+		 *
 		 * @see #suspendEffects()
 		 * @see #resumeEffects()
 		 */
@@ -2644,17 +2644,19 @@ package feathers.core
 		 * bounds (such as at negative dimensions), padding should be added to
 		 * the filter to account for these regions.
 		 */
-		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle = null):Rectangle
 		{
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
 			}
 
-			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
-			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+			var minX:Number = Number.MAX_VALUE;
+			var maxX:Number = -Number.MAX_VALUE;
+			var minY:Number = Number.MAX_VALUE;
+			var maxY:Number = -Number.MAX_VALUE;
 
-			if (targetSpace == this) // optimization
+			if(targetSpace == this) //optimization
 			{
 				minX = 0;
 				minY = 0;
@@ -2695,7 +2697,7 @@ package feathers.core
 
 			resultRect.x = minX;
 			resultRect.y = minY;
-			resultRect.width  = maxX - minX;
+			resultRect.width = maxX - minX;
 			resultRect.height = maxY - minY;
 
 			return resultRect;
@@ -3064,13 +3066,13 @@ package feathers.core
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeOutEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * function customEffect(target:DisplayObject):IEffectContext
 		 * {
@@ -3103,7 +3105,7 @@ package feathers.core
 		/**
 		 * Resets the <code>styleProvider</code> property to its default value,
 		 * which is usually the global style provider for the component.
-		 * 
+		 *
 		 * @see #styleProvider
 		 * @see #defaultStyleProvider
 		 */
@@ -3115,7 +3117,7 @@ package feathers.core
 		/**
 		 * Indicates that effects should not be activated temporarily. Call
 		 * <code>resumeEffects()</code> when effects should be allowed again.
-		 * 
+		 *
 		 * @see #resumeEffects()
 		 */
 		public function suspendEffects():void
@@ -3125,7 +3127,7 @@ package feathers.core
 
 		/**
 		 * Indicates that effects should be re-activated after being suspended.
-		 * 
+		 *
 		 * @see #suspendEffects()
 		 */
 		public function resumeEffects():void
@@ -3180,7 +3182,7 @@ package feathers.core
 		 * Then, if the component has a style provider, it will be applied. The
 		 * component will not validate, though. To initialize and validate
 		 * immediately, call <code>validate()</code> instead.
-		 * 
+		 *
 		 * @see #isInitialized
 		 * @see #initialize()
 		 * @see #event:initialize FeathersEventType.INITIALIZE
@@ -3400,14 +3402,14 @@ package feathers.core
 		 * style provider to set the style later will be ignored. This allows
 		 * developers to customize a component's styles directly without
 		 * worrying about conflicts from the style provider or theme.
-		 * 
+		 *
 		 * <p>If a style provider is currently applying styles to the component,
 		 * returns <code>true</code> if the style is restricted or false if it
 		 * may be set.</p>
-		 * 
+		 *
 		 * <p>If the style setter is called outside of a style provider, marks
 		 * the style as restricted and returns <code>false</code>.</p>
-		 * 
+		 *
 		 * <p>The <code>key</code> parameter should be a unique value for each
 		 * separate style. In most cases, <code>processStyleRestriction()</code>
 		 * will be called in the style property setter, so
@@ -3420,12 +3422,12 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * private var _customStyle:Object;
-		 *
+		 * 
 		 * public function get customStyle():Object
 		 * {
 		 *     return this._customStyle;
 		 * }
-		 *
+		 * 
 		 * public function set customStyle( value:Object ):void
 		 * {
 		 *     if( this.processStyleRestriction( arguments.callee ) )
@@ -3466,7 +3468,7 @@ package feathers.core
 		 * The next style that is set will not be restricted. This allows
 		 * components to set defaults by calling the setter while still allowing
 		 * the style property to be replaced by a theme in the future.
-		 * 
+		 *
 		 * @see #processStyleRestriction()
 		 */
 		protected function ignoreNextStyleRestriction():void

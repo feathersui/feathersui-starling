@@ -199,7 +199,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #selectedItem
 	 * @see #selectedIndex
 	 *
@@ -380,12 +380,12 @@ package feathers.controls
 		 * @private
 		 */
 		protected var buttonExplicitMinHeight:Number;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _dataProvider:IListCollection;
-		
+
 		/**
 		 * The collection of data displayed by the list.
 		 *
@@ -400,7 +400,7 @@ package feathers.controls
 		 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 		 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 		 * ]);
-		 *
+		 * 
 		 * list.itemRendererFactory = function():IListItemRenderer
 		 * {
 		 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -410,7 +410,7 @@ package feathers.controls
 		 * };</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.data.ArrayCollection
 		 * @see feathers.data.VectorCollection
 		 * @see feathers.data.XMLListCollection
@@ -499,7 +499,7 @@ package feathers.controls
 		 * {
 		 *     var list:PickerList = PickerList( event.currentTarget );
 		 *     var index:int = list.selectedIndex;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -511,7 +511,7 @@ package feathers.controls
 		{
 			return this._selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -525,7 +525,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * The currently selected item. Returns <code>null</code> if no item is
 		 * selected.
@@ -548,7 +548,7 @@ package feathers.controls
 		 * {
 		 *     var list:PickerList = PickerList( event.currentTarget );
 		 *     var item:Object = list.selectedItem;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -564,7 +564,7 @@ package feathers.controls
 			}
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -613,12 +613,12 @@ package feathers.controls
 			this._prompt = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _labelField:String = "label";
-		
+
 		/**
 		 * The field in the selected item that contains the label text to be
 		 * displayed by the picker list's button control. If the selected item
@@ -645,7 +645,7 @@ package feathers.controls
 		{
 			return this._labelField;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -658,7 +658,7 @@ package feathers.controls
 			this._labelField = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -699,7 +699,7 @@ package feathers.controls
 		{
 			return this._labelFunction;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -755,7 +755,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _typicalItem:Object = null;
-		
+
 		/**
 		 * Used to auto-size the list. If the list's width or height is NaN, the
 		 * list will try to automatically pick an ideal size. This item is
@@ -772,7 +772,7 @@ package feathers.controls
 		{
 			return this._typicalItem;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -870,7 +870,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _buttonProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the picker's button
 		 * sub-component, and the properties will be passed down to the button
@@ -908,7 +908,7 @@ package feathers.controls
 			}
 			return this._buttonProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1063,7 +1063,7 @@ package feathers.controls
 			}
 			return this._listProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1238,7 +1238,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _isCloseListPending:Boolean = false;
-		
+
 		/**
 		 * Using <code>labelField</code> and <code>labelFunction</code>,
 		 * generates a label from the selected item to be displayed by the
@@ -1356,7 +1356,7 @@ package feathers.controls
 			//instead, clean up in the Event.REMOVED_FROM_STAGE listener.
 			this._popUpContentManager.close();
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -1710,7 +1710,7 @@ package feathers.controls
 				this.button.label = this._prompt;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1722,7 +1722,7 @@ package feathers.controls
 				this.button[propertyName] = propertyValue;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1823,7 +1823,7 @@ package feathers.controls
 				this._listIsOpenOnTouchBegan = this._popUpContentManager.isOpen;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1840,7 +1840,7 @@ package feathers.controls
 			}
 			this.openList();
 		}
-		
+
 		/**
 		 * @private
 		 */

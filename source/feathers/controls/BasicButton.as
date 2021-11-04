@@ -132,7 +132,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.keepDownStateOnRollOut = true;</listing>
-	 * 
+	 *
 	 * @default false
 	 */
 	[Style(name="keepDownStateOnRollOut",type="Boolean")]
@@ -212,12 +212,12 @@ package feathers.controls
 	 * @see #currentState
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
-	
+
 	/**
 	 * A simple button control with states, but no content, that is useful for
 	 * purposes like skinning. For a more full-featured button, with a label and
 	 * icon, see <code>feathers.controls.Button</code> instead.
-	 * 
+	 *
 	 * @see feathers.controls.Button
 	 *
 	 * @productversion Feathers 3.0.0

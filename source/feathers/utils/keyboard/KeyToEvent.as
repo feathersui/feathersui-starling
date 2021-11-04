@@ -35,7 +35,7 @@ package feathers.utils.keyboard
 	 *         this._keyToEvent = new KeyToEvent(this, Event.TRIGGERED);
 	 *         this._keyToEvent.keyCode = Keyboard.SPACE;
 	 *     }
-	 *     
+	 * 
 	 *     private var _keyToEvent:KeyToEvent;
 	 * // ...</listing>
 	 *

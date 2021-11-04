@@ -37,7 +37,7 @@ package feathers.controls.renderers
 	 * renderer.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -156,7 +156,7 @@ package feathers.controls.renderers
 	 * renderer.padding = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:paddingTop
 	 * @see #style:paddingRight
 	 * @see #style:paddingBottom
@@ -1140,7 +1140,7 @@ package feathers.controls.renderers
 		 *
 		 * <p>In the following example, a custom content label properties are
 		 * customized:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * renderer.contentLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * renderer.contentLabelProperties.embedFonts = true;</listing>
@@ -2117,7 +2117,6 @@ package feathers.controls.renderers
 					this.content.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.content.height) / 2;
 				}
 			}
-
 		}
 
 		/**

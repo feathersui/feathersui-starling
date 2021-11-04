@@ -2200,7 +2200,6 @@ package feathers.controls.supportClasses
 			}
 		}
 
-
 		private function freeInactiveHeaderRenderers(storage:HeaderRendererFactoryStorage, minimumHeaderCount:int):void
 		{
 			var inactiveHeaderRenderers:Vector.<IGroupedListHeaderRenderer> = storage.inactiveHeaderRenderers;
@@ -2253,7 +2252,7 @@ package feathers.controls.supportClasses
 				footerRenderer.groupIndex = -1;
 				footerRenderer.layoutIndex = -1;
 				activeFooterRenderers[activeFooterRenderersCount] = footerRenderer;
-				activeFooterRenderersCount++
+				activeFooterRenderersCount++;
 			}
 			var inactiveFooterRendererCount:int = inactiveFooterRenderers.length;
 			for(i = 0; i < inactiveFooterRendererCount; i++)

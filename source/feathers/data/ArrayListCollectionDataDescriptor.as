@@ -11,7 +11,7 @@ package feathers.data
 
 	/**
 	 * An <code>IListCollectionDataDescriptor</code> implementation for Arrays.
-	 * 
+	 *
 	 * @see ListCollection
 	 * @see IListCollectionDataDescriptor
 	 *
@@ -25,7 +25,7 @@ package feathers.data
 		public function ArrayListCollectionDataDescriptor()
 		{
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -34,7 +34,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Array).length;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -43,7 +43,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Array)[index];
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -52,7 +52,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Array)[index] = item;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -61,7 +61,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Array).insertAt(index, item);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -79,7 +79,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Array).length = 0;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -88,7 +88,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Array).indexOf(item);
 		}
-		
+
 		/**
 		 * @private
 		 */

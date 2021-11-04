@@ -10,7 +10,7 @@ package feathers.core
 	/**
 	 * @private
 	 * A text editor that is compatible with <code>TextEditorIMEClient</code>.
-	 * 
+	 *
 	 * @see feathers.utils.text.TextEditorIMEClient
 	 *
 	 * @productversion Feathers 3.0.0

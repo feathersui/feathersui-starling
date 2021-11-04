@@ -271,7 +271,7 @@ package feathers.data
 
 		/**
 		 * The <code>Vector</code> data source for this collection.
-		 * 
+		 *
 		 * <p>Note: Ideally, this property would be typed as something other
 		 * than <code>Object</code>, but there is no type that will accept all
 		 * <code>Vector</code> objects without requiring a cast first.</p>
@@ -796,7 +796,7 @@ package feathers.data
 			this._filterFunction = null;
 			this.refreshFilterAndSort();
 
- 			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
+			var vectorData:Vector.<*> = this._vectorData as Vector.<*>;
 			var itemCount:int = vectorData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{

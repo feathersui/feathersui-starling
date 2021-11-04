@@ -657,7 +657,7 @@ package feathers.controls
 		 *         ]
 		 *     },
 		 * ]);
-		 *
+		 * 
 		 * list.itemRendererFactory = function():IGroupedListItemRenderer
 		 * {
 		 *     var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
@@ -743,7 +743,7 @@ package feathers.controls
 		 * <p>The following example disables selection:</p>
 		 *
 		 * <listing version="3.0">
-	 	 * list.isSelectable = false;</listing>
+		 * list.isSelectable = false;</listing>
 		 *
 		 * @default true
 		 *
@@ -800,7 +800,7 @@ package feathers.controls
 		 *     var list:List = GroupedList(event.currentTarget);
 		 *     var groupIndex:int = list.selectedGroupIndex;
 		 *     var itemIndex:int = list.selectedItemIndex;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -836,7 +836,7 @@ package feathers.controls
 		 *     var list:GroupedList = GroupedList( event.currentTarget );
 		 *     var groupIndex:int = list.selectedGroupIndex;
 		 *     var itemIndex:int = list.selectedItemIndex;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -862,7 +862,7 @@ package feathers.controls
 		 * {
 		 *     var list:GroupedList = GroupedList( event.currentTarget );
 		 *     var item:Object = list.selectedItem;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -1048,7 +1048,7 @@ package feathers.controls
 		 * }
 		 * list.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
 		 * list.setItemRendererFactoryWithID( "first-item", firstItemFactory );
-		 *
+		 * 
 		 * list.factoryIDFunction = function( item:Object, groupIndex:int, itemIndex:int ):String
 		 * {
 		 *     if(index == 0)
@@ -1163,7 +1163,7 @@ package feathers.controls
 		 * renderer when the list validates. The available properties
 		 * depend on which <code>IGroupedListItemRenderer</code> implementation
 		 * is returned by <code>itemRendererFactory</code>.
-		 * 
+		 *
 		 * <p>By default, the <code>itemRendererFactory</code> will return a
 		 * <code>DefaultGroupedListItemRenderer</code> instance. If you aren't
 		 * using a custom item renderer, you can refer to
@@ -1749,7 +1749,7 @@ package feathers.controls
 		 * }
 		 * list.setHeaderRendererFactoryWithID( "regular-header", regularHeaderFactory );
 		 * list.setHeaderRendererFactoryWithID( "custom-header", customHeaderFactory );
-		 *
+		 * 
 		 * list.headerFactoryIDFunction = function( header:Object, groupIndex:int ):String
 		 * {
 		 *     //check if the subTitle property exists in the header data
@@ -2032,7 +2032,7 @@ package feathers.controls
 		 * }
 		 * list.setFooterRendererFactoryWithID( "regular-footer", regularFooterFactory );
 		 * list.setFooterRendererFactoryWithID( "custom-footer", customFooterFactory );
-		 *
+		 * 
 		 * list.footerFactoryIDFunction = function( footer:Object, groupIndex:int ):String
 		 * {
 		 *     //check if the footerAccessory property exists in the footer data
@@ -2454,7 +2454,7 @@ package feathers.controls
 		 * After the next validation, scrolls the list so that the specified
 		 * item is visible. If <code>animationDuration</code> is greater than
 		 * zero, the scroll will animate. The duration is in seconds.
-		 * 
+		 *
 		 * <p>The <code>itemIndex</code> parameter is optional. If set to
 		 * <code>-1</code>, the list will scroll to the start of the specified
 		 * group.</p>
@@ -2716,7 +2716,7 @@ package feathers.controls
 		 * where only the visible headers will have a header renderer, so the
 		 * result will usually be <code>null</code> for most header data in the
 		 * data provider.
-		 * 
+		 *
 		 * @see #groupToHeaderData()
 		 * @see ../../../help/faq/layout-virtualization.html What is layout virtualization?
 		 */
@@ -2852,7 +2852,7 @@ package feathers.controls
 						this._helperLocation[0] = this._selectedGroupIndex;
 						this._helperLocation[1] = this._selectedItemIndex;
 						pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
-						this._helperLocation.length = 0
+						this._helperLocation.length = 0;
 					}
 					else
 					{
@@ -2920,9 +2920,9 @@ package feathers.controls
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
-				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
-				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
-				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
+				event.keyCode == Keyboard.PAGE_UP || event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT || event.keyCode == Keyboard.RIGHT)
 			{
 				this.dataViewPort.calculateNavigationDestination(this._selectedGroupIndex, this._selectedItemIndex, event.keyCode, this._helperLocation);
 				var newGroupIndex:int = this._helperLocation[0];

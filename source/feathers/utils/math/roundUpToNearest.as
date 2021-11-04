@@ -10,11 +10,11 @@ package feathers.utils.math
 	/**
 	 * Rounds a Number <em>up</em> to the nearest multiple of an input. For example, by rounding
 	 * 16 up to the nearest 10, you will receive 20. Similar to the built-in function Math.ceil().
-	 * 
+	 *
 	 * @param	numberToRound		the number to round up
 	 * @param	nearest				the number whose mutiple must be found
 	 * @return	the rounded number
-	 * 
+	 *
 	 * @see Math#ceil
 	 *
 	 * @productversion Feathers 1.0.0

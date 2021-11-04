@@ -65,7 +65,7 @@ package feathers.controls
 	 * grid.columnDragOverlaySkin = skin;</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #reorderColumns
 	 */
 	[Style(name="columnDragOverlaySkin",type="starling.display.DisplayObject")]
@@ -80,7 +80,7 @@ package feathers.controls
 	 * grid.columnResizeSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #resizableColumns
 	 * @see feathers.controls.DataGridColumn#resizable
 	 */
@@ -141,7 +141,7 @@ package feathers.controls
 	 * grid.extendedColumnDropIndicator = true;</listing>
 	 *
 	 * @default false
-	 * 
+	 *
 	 * @see #reorderColumns
 	 * @see #style:columnDropIndicatorSkin
 	 */
@@ -156,7 +156,7 @@ package feathers.controls
 	 * scroller.headerBackgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:headerBackgroundDisabledSkin
 	 */
 	[Style(name="headerBackgroundSkin",type="starling.display.DisplayObject")]
@@ -167,7 +167,7 @@ package feathers.controls
 	 * between the header renderers.
 	 *
 	 * <p>The function is expected to have the following signature:</p>
-	 * 
+	 *
 	 * <pre>function():DisplayObject</pre>
 	 *
 	 * <p>The following example provides a factory for the header dividers:</p>
@@ -206,7 +206,7 @@ package feathers.controls
 	 * grid.columnDragAvatarAlpha = 0.5;</listing>
 	 *
 	 * @default 0.8
-	 * 
+	 *
 	 * @see #reorderColumns
 	 */
 	[Style(name="columnDragAvatarAlpha",type="Number")]
@@ -221,7 +221,7 @@ package feathers.controls
 	 * grid.columnDropIndicatorSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #reorderColumns
 	 * @see #style:extendedColumnDropIndicator
 	 */
@@ -247,7 +247,7 @@ package feathers.controls
 	 * columns.
 	 *
 	 * <p>The function is expected to have the following signature:</p>
-	 * 
+	 *
 	 * <pre>function():DisplayObject</pre>
 	 *
 	 * <p>The following example provides a factory for the vertical dividers:</p>
@@ -319,7 +319,7 @@ package feathers.controls
 	 * this.addChild( grid );</listing>
 	 *
 	 * @see ../../../help/data-grid.html How to use the Feathers DataGrid component
-	 * 
+	 *
 	 * @productversion Feathers 3.4.0
 	 */
 	public class DataGrid extends Scroller implements IDragSource, IDropTarget
@@ -513,7 +513,7 @@ package feathers.controls
 		 * grid.sortableColumns = true;</listing>
 		 *
 		 * @default false
-		 * 
+		 *
 		 * @see feathers.controls.DataGridColumn#sortOrder
 		 */
 		public function get sortableColumns():Boolean
@@ -543,7 +543,7 @@ package feathers.controls
 		 * grid.resizableColumns = true;</listing>
 		 *
 		 * @default false
-		 * 
+		 *
 		 * @see #style:columnResizeSkin
 		 */
 		public function get resizableColumns():Boolean
@@ -886,7 +886,7 @@ package feathers.controls
 		 * ]);</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see #dataProvider
 		 * @see feathers.controls.DataGridColumn
 		 */
@@ -956,7 +956,7 @@ package feathers.controls
 		{
 			return this._isSelectable;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -973,12 +973,12 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedIndex:int = -1;
-		
+
 		/**
 		 * The index of the currently selected item. Returns <code>-1</code> if
 		 * no item is selected.
@@ -1001,7 +1001,7 @@ package feathers.controls
 		 * {
 		 *     var grid:DataGrid = DataGrid( event.currentTarget );
 		 *     var index:int = grid.selectedIndex;
-		 *
+		 * 
 		 * }
 		 * grid.addEventListener( Event.CHANGE, grid_changeHandler );</listing>
 		 *
@@ -1059,7 +1059,7 @@ package feathers.controls
 		 * {
 		 *     var grid:DataGrid = DataGrid( event.currentTarget );
 		 *     var item:Object = grid.selectedItem;
-		 *
+		 * 
 		 * }
 		 * grid.addEventListener( Event.CHANGE, grid_changeHandler );</listing>
 		 *
@@ -1161,7 +1161,7 @@ package feathers.controls
 		 * {
 		 *     var grid:DataGrid = DataGrid( event.currentTarget );
 		 *     var indices:Vector.&lt;int&gt; = grid.selectedIndices;
-		 *
+		 * 
 		 * }
 		 * grid.addEventListener( Event.CHANGE, grid_changeHandler );</listing>
 		 *
@@ -1234,7 +1234,7 @@ package feathers.controls
 		 * {
 		 *     var grid:DataGrid = DataGrid( event.currentTarget );
 		 *     var items:Vector.&lt;Object&gt; = grid.selectedItems;
-		 *
+		 * 
 		 * }
 		 * grid.addEventListener( Event.CHANGE, grid_changeHandler );</listing>
 		 *
@@ -1303,12 +1303,12 @@ package feathers.controls
 			}
 			return result;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _typicalItem:Object = null;
-		
+
 		/**
 		 * Used to auto-size the data grid when a virtualized layout is used.
 		 * If the data grid's width or height is unknown, the data grid will
@@ -1327,7 +1327,7 @@ package feathers.controls
 		{
 			return this._typicalItem;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1441,7 +1441,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @see #style:verticalDividerFactory
 		 */
 		public function get verticalDividerFactory():Function
@@ -1473,7 +1473,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @see #style:headerDividerFactory
 		 */
 		public function get headerDividerFactory():Function
@@ -1502,7 +1502,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _cellRendererFactory:Function = null;
-		
+
 		/**
 		 * Specifies a default factory for cell renderers that will be used if
 		 * the <code>cellRendererFactory</code> from a
@@ -1530,7 +1530,7 @@ package feathers.controls
 		{
 			return this._cellRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1551,7 +1551,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @see #style:customCellRendererStyleName
 		 */
 		public function get customCellRendererStyleName():String
@@ -1576,7 +1576,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _headerRendererFactory:Function = null;
-		
+
 		/**
 		 * Specifies a default factory for header renderers that will be used if
 		 * the <code>headerRendererFactory</code> from a
@@ -1604,7 +1604,7 @@ package feathers.controls
 		{
 			return this._headerRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1625,7 +1625,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @see #style:customHeaderRendererStyleName
 		 */
 		public function get customHeaderRendererStyleName():String
@@ -1675,7 +1675,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _headerDividerTouchX:Number;
-		
+
 		/**
 		 * @private
 		 */
@@ -1710,7 +1710,7 @@ package feathers.controls
 			this.pendingItemIndex = -1;
 			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
 		}
-		
+
 		/**
 		 * Scrolls the data grid so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
@@ -1730,7 +1730,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * grid.scrollToDisplayIndex( 10 );</listing>
-		 * 
+		 *
 		 * @param index The integer index of an item from the data provider.
 		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
 		 *
@@ -2671,9 +2671,9 @@ package feathers.controls
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
-				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
-				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
-				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
+				event.keyCode == Keyboard.PAGE_UP || event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT || event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex != newIndex)
@@ -3279,7 +3279,7 @@ package feathers.controls
 			var dividerIndex:int = this._headerDividerStorage.activeDividers.indexOf(divider);
 			if(dividerIndex == (this._headerDividerStorage.activeDividers.length - 1) &&
 				this._scrollBarDisplayMode === ScrollBarDisplayMode.FIXED &&
-					this._minVerticalScrollPosition != this._maxVerticalScrollPosition)
+				this._minVerticalScrollPosition != this._maxVerticalScrollPosition)
 			{
 				//no resizing!
 				return;

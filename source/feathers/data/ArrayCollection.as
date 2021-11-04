@@ -237,7 +237,7 @@ package feathers.data
 	 * Wraps an <code>Array</code> in the common <code>IListCollection</code>
 	 * API used by many Feathers UI controls, including <code>List</code> and
 	 * <code>TabBar</code>.
-	 * 
+	 *
 	 * @productversion Feathers 3.3.0
 	 */
 	public class ArrayCollection extends EventDispatcher implements IListCollection
@@ -265,7 +265,7 @@ package feathers.data
 		protected var _arrayData:Array;
 
 		/**
-		 * The <code>Array</code> data source for this collection. 
+		 * The <code>Array</code> data source for this collection.
 		 */
 		public function get arrayData():Array
 		{

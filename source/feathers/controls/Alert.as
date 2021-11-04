@@ -157,7 +157,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * alert.icon = new Image( texture );</listing>
-	 * 
+	 *
 	 * @default null
 	 */
 	[Style(name="icon",type="starling.display.DisplayObject")]
@@ -210,7 +210,7 @@ package feathers.controls
 	 * }</listing>
 	 *
 	 * @see ../../../help/alert.html How to use the Feathers Alert component
-	 * 
+	 *
 	 * @productversion Feathers 1.2.0
 	 */
 	public class Alert extends Panel
@@ -265,7 +265,7 @@ package feathers.controls
 		 * Creates overlays for modal alerts. When this property is
 		 * <code>null</code>, uses the <code>overlayFactory</code> defined by
 		 * <code>PopUpManager</code> instead.
-		 * 
+		 *
 		 * <p>Note: Specific, individual alerts may have custom overlays that
 		 * are different than the default by passing a different overlay factory
 		 * to <code>Alert.show()</code>.</p>
@@ -283,7 +283,7 @@ package feathers.controls
 		 *     quad.alpha = 0.75;
 		 *     return quad;
 		 * };</listing>
-		 * 
+		 *
 		 * @default null
 		 *
 		 * @see feathers.core.PopUpManager#overlayFactory
@@ -296,7 +296,7 @@ package feathers.controls
 		 * components.
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
@@ -325,7 +325,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-		 *
+		 * 
 		 * function button_triggeredHandler( event:Event ):void
 		 * {
 		 *     var alert:Alert = Alert.show( "This is an alert!", "Hello World", new ArrayCollection(
@@ -559,7 +559,7 @@ package feathers.controls
 		/**
 		 * The index of the button in the <code>buttonsDataProvider</code> to
 		 * trigger when <code>Keyboard.ENTER</code> is pressed.
-		 * 
+		 *
 		 * <p>In the following example, the <code>acceptButtonIndex</code> is
 		 * set to the first button in the data provider.</p>
 		 *
@@ -605,7 +605,7 @@ package feathers.controls
 		 *     { label: "Cancel" },
 		 * ]));
 		 * alert.cancelButtonIndex = 1;</listing>
-		 * 
+		 *
 		 * @default -1
 		 */
 		public function get cancelButtonIndex():int

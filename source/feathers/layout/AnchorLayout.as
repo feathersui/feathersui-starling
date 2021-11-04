@@ -1197,7 +1197,7 @@ package feathers.layout
 							if(hasTopPosition && topAnchor === null &&
 								hasBottomPosition && bottomAnchor === null)
 							{
-								var itemHeight:Number = containerHeight - top - bottom; 
+								var itemHeight:Number = containerHeight - top - bottom;
 								if(measureItem.explicitMaxHeight === measureItem.explicitMaxHeight && //!isNaN
 									measureItem.explicitMaxHeight < itemHeight)
 								{

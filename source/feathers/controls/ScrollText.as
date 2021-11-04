@@ -214,7 +214,7 @@ package feathers.controls
 	 * determines if the component should use an embedded font or not. If
 	 * the specified font is not actually embedded, the text may not be
 	 * displayed at all.
-	 * 
+	 *
 	 * <p>If the font styles are passed in using
 	 * <code>starling.text.TextFormat</code>, the component  will automatically
 	 * detect if a font is embedded or not, and the <code>embedFonts</code>
@@ -425,13 +425,13 @@ package feathers.controls
 	 * var heading:Object = new Object();
 	 * heading.fontWeight = "bold";
 	 * heading.color = "#FF0000";
-	 *
+	 * 
 	 * var body:Object = new Object();
 	 * body.fontStyle = "italic";
-	 *
+	 * 
 	 * style.setStyle(".heading", heading);
 	 * style.setStyle("body", body);
-	 *
+	 * 
 	 * scrollText.styleSheet = style;
 	 * scrollText.isHTML = true;
 	 * scrollText.text = "&lt;body&gt;&lt;span class='heading'&gt;Hello&lt;/span&gt; World...&lt;/body&gt;";</listing>

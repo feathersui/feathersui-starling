@@ -97,7 +97,7 @@ package feathers.events
 		/**
 		 * The x location, in pixels, of the current action, in the local
 		 * coordinate system of the <code>IDropTarget</code>.
-		 * 
+		 *
 		 * <p>Value will always be <code>NaN</code> for <code>DRAG_START</code>
 		 * and <code>DRAG_COMPLETE</code> events.</p>
 		 *
@@ -108,7 +108,7 @@ package feathers.events
 		/**
 		 * The y location, in pixels, of the current action, in the local
 		 * coordinate system of the <code>IDropTarget</code>.
-		 * 
+		 *
 		 * <p>Value will always be <code>NaN</code> for <code>DRAG_START</code>
 		 * and <code>DRAG_COMPLETE</code> events.</p>
 		 *

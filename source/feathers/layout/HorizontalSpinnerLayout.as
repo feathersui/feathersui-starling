@@ -240,7 +240,7 @@ package feathers.layout
 			this._paddingLeft = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -249,7 +249,7 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -276,7 +276,7 @@ package feathers.layout
 			this._horizontalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */

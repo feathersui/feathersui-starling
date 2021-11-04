@@ -121,19 +121,19 @@ package feathers.controls
 	 * package
 	 * {
 	 *     import feathers.controls.PanelScreen;
-	 *     
+	 * 
 	 *     public class CustomScreen extends PanelScreen
 	 *     {
 	 *         public function CustomScreen()
 	 *         {
 	 *             super();
 	 *         }
-	 *         
+	 * 
 	 *         override protected function initialize():void
 	 *         {
 	 *             //runs once when screen is first added to the stage
 	 *             //a good place to add children and customize the layout
-	 *             
+	 * 
 	 *             //don't forget to call this!
 	 *             super.initialize()
 	 *         }
@@ -244,7 +244,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.backButtonHandler = onBackButton;
-		 *
+		 * 
 		 * private function onBackButton():void
 		 * {
 		 *     this.dispatchEvent( Event.COMPLETE );
@@ -267,7 +267,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.menuButtonHandler = onMenuButton;
-		 *
+		 * 
 		 * private function onMenuButton():void
 		 * {
 		 *     //do something with the menu button
@@ -290,7 +290,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.searchButtonHandler = onSearchButton;
-		 *
+		 * 
 		 * private function onSearchButton():void
 		 * {
 		 *     //do something with the search button

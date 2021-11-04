@@ -26,7 +26,7 @@ package feathers.utils.touch
 	 * target is touched. Conveniently handles all <code>TouchEvent</code> listeners
 	 * automatically. Useful for custom item renderers that should be change
 	 * state based on touch.
-	 * 
+	 *
 	 * @see feathers.utils.keyboard.KeyToState
 	 *
 	 * @productversion Feathers 3.2.0
@@ -89,7 +89,7 @@ package feathers.utils.touch
 
 		/**
 		 * The function to call when the state is changed.
-		 * 
+		 *
 		 * <p>The callback is expected to have the following signature:</p>
 		 * <pre>function(currentState:String):void</pre>
 		 */
@@ -135,7 +135,7 @@ package feathers.utils.touch
 
 		/**
 		 * The value for the "up" state.
-		 * 
+		 *
 		 * @default feathers.controls.ButtonState.UP
 		 */
 		public function get upState():String
@@ -279,7 +279,7 @@ package feathers.utils.touch
 		 * <code>false</code>, and the touch leaves the bounds of the button
 		 * after <code>TouchPhase.BEGAN</code>, the button state will change to
 		 * <code>upState</code>.
-		 * 
+		 *
 		 * @default false
 		 */
 		public function get keepDownStateOnRollOut():Boolean

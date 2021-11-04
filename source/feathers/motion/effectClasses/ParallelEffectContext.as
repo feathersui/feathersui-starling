@@ -11,9 +11,9 @@ package feathers.motion.effectClasses
 
 	/**
 	 * An effect context for running multiple effects in parallel.
-	 * 
+	 *
 	 * @productversion Feathers 3.5.0
-	 * 
+	 *
 	 * @see feathers.motion.Parallel
 	 */
 	public class ParallelEffectContext extends BaseEffectContext implements IEffectContext

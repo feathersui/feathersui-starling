@@ -201,7 +201,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #value
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -2048,7 +2048,7 @@ package feathers.controls
 			if(this.touchPointID >= 0)
 			{
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
-				var claim:DisplayObject = exclusiveTouch.getClaim(this.touchPointID)
+				var claim:DisplayObject = exclusiveTouch.getClaim(this.touchPointID);
 				if(claim != this)
 				{
 					if(claim)

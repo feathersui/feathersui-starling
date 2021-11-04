@@ -25,11 +25,11 @@ package feathers.motion
 	 * navigators that show or hide a display object masked by a growing or
 	 * shrinking circle. In a transition, both display objects remain stationary
 	 * while a stencil mask is animated.
-	 * 
+	 *
 	 * <p>Note: This effect is not supported with display objects that have
 	 * transparent backgrounds due to limitations in stencil masks. Display
 	 * objects should be fully opaque.</p>
-	 * 
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see ../../../help/transitions.html#iris Transitions for Feathers screen navigators: Iris
 	 *
@@ -50,7 +50,7 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle in the center.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -64,7 +64,7 @@ package feathers.motion
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle at a specific position
 		 * in the range from 0.0 to 1.0.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -84,13 +84,13 @@ package feathers.motion
 					maskHeight = 1;
 				}
 				return createIrisOpenEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease, interruptBehavior);
-			}
+			};
 		}
 
 		/**
 		 * Creates an effect function for the target component that shows the
 		 * component by masking it with a growing circle at a specific position.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -100,7 +100,7 @@ package feathers.motion
 			return function(target:DisplayObject):IEffectContext
 			{
 				return createIrisOpenEffectContextAtXY(target, x, y, duration, ease, interruptBehavior);
-			}
+			};
 		}
 
 		/**
@@ -198,7 +198,7 @@ package feathers.motion
 		/**
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle in the center.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -212,7 +212,7 @@ package feathers.motion
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle at a specific position
 		 * in the range 0.0 to 1.0.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -232,13 +232,13 @@ package feathers.motion
 					maskHeight = 1;
 				}
 				return createIrisCloseEffectContextAtXY(target, maskWidth * ratioX, maskHeight * ratioY, duration, ease, interruptBehavior);
-			}
+			};
 		}
 
 		/**
 		 * Creates an effect function for the target component that hides the
 		 * component by masking it with a shrinking circle at a specific position.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 *
 		 * @productversion Feathers 3.5.0
@@ -248,7 +248,7 @@ package feathers.motion
 			return function(target:DisplayObject):IEffectContext
 			{
 				return createIrisCloseEffectContextAtXY(target, x, y, duration, ease, interruptBehavior);
-			}
+			};
 		}
 
 		/**
@@ -376,7 +376,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -403,7 +403,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -440,7 +440,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -467,7 +467,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 	}
 }

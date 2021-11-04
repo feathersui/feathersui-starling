@@ -35,7 +35,7 @@ package feathers.controls
 	 * label.backgroundDisabledSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
@@ -49,7 +49,7 @@ package feathers.controls
 	 * label.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -196,7 +196,7 @@ package feathers.controls
 	 * label.paddingLeft = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingLeft",type="Number")]
@@ -424,7 +424,7 @@ package feathers.controls
 		 * The number of text lines displayed by the label. The component may
 		 * contain multiple text lines if the text contains line breaks or if
 		 * the <code>wordWrap</code> property is enabled.
-		 * 
+		 *
 		 * @see #wordWrap
 		 */
 		public function get numLines():int

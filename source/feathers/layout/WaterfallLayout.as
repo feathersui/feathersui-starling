@@ -291,7 +291,7 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *

@@ -26,7 +26,7 @@ package feathers.core
 		 * <listing version="3.0">
 		 * var group:ToggleGroup = new ToggleGroup();
 		 * group.addEventListener( Event.CHANGE, group_changeHandler );
-		 *
+		 * 
 		 * var radio:Radio = new Radio();
 		 * radio.toggleGroup = group;
 		 * this.addChild( radio );</listing>

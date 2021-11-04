@@ -9,7 +9,7 @@ package feathers.motion.effectClasses
 {
 	/**
 	 * Gives a component the ability to control a move effect.
-	 * 
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 */
 	public interface IMoveEffectContext extends IEffectContext
@@ -53,5 +53,5 @@ package feathers.motion.effectClasses
 		 * @private
 		 */
 		function set newY(value:Number):void;
-	}	
+	}
 }

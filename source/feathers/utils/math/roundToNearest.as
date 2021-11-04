@@ -10,11 +10,11 @@ package feathers.utils.math
 	/**
 	 * Rounds a Number to the nearest multiple of an input. For example, by rounding
 	 * 16 to the nearest 10, you will receive 20. Similar to the built-in function Math.round().
-	 * 
+	 *
 	 * @param	numberToRound		the number to round
 	 * @param	nearest				the number whose mutiple must be found
 	 * @return	the rounded number
-	 * 
+	 *
 	 * @see Math#round
 	 *
 	 * @productversion Feathers 1.0.0

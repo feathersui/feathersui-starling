@@ -50,7 +50,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _screen:Object;
-		
+
 		/**
 		 * The screen to be displayed by the <code>ScreenNavigator</code>. It
 		 * may be one of several possible types:
@@ -93,7 +93,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _events:Object;
-		
+
 		/**
 		 * A set of key-value pairs representing actions that should be
 		 * triggered when events are dispatched by the screen when it is shown.
@@ -129,7 +129,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _properties:Object;
-		
+
 		/**
 		 * A set of key-value pairs representing properties to be set on the
 		 * screen when it is shown. A pair's key is the name of the screen's
@@ -231,7 +231,7 @@ package feathers.controls
 		{
 			delete this._events[eventType];
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */

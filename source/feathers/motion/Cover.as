@@ -70,7 +70,7 @@ package feathers.motion
 				}
 				//we only have the new screen
 				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -110,7 +110,7 @@ package feathers.motion
 				}
 				//we only have the new screen
 				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -150,7 +150,7 @@ package feathers.motion
 				}
 				//we only have the new screen
 				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -190,7 +190,7 @@ package feathers.motion
 				}
 				//we only have the new screen
 				return slideInNewScreen(newScreen, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**

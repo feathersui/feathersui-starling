@@ -10,7 +10,7 @@ package feathers.media
 	/**
 	 * Dispatched when the original, native width or height of the video content
 	 * is calculated.
-	 * 
+	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
 	 * <tr><th>Property</th><th>Value</th></tr>
@@ -25,7 +25,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #nativeWidth
 	 * @see #nativeHeight
 	 *
@@ -42,11 +42,11 @@ package feathers.media
 	{
 		/**
 		 * The original, native width of the loaded video.
-		 * 
+		 *
 		 * @see #event:dimensionsChange feathers.events.MediaPlayerEventType.DIMENSIONS_CHANGE
 		 */
 		function get nativeWidth():Number;
-		
+
 		/**
 		 * The original, native height of the loaded video.
 		 *

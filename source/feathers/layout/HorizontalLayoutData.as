@@ -77,7 +77,6 @@ package feathers.layout
 		 */
 		protected var _percentHeight:Number;
 
-
 		/**
 		 * The height of the layout object, as a percentage of the container's
 		 * height.

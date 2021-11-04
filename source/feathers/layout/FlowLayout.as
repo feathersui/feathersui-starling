@@ -190,7 +190,7 @@ package feathers.layout
 		 * value of the <code>horizontalGap</code> property will be used instead.
 		 *
 		 * @default NaN
-		 * 
+		 *
 		 * @see #gap
 		 */
 		public function get lastHorizontalGap():Number
@@ -361,7 +361,7 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -400,7 +400,7 @@ package feathers.layout
 		/**
 		 * If the total height of the content is less than the bounds, the
 		 * content may be aligned vertically.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -1293,7 +1293,7 @@ package feathers.layout
 		 * @inheritDoc
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			if(dropIndicator is IValidating)
 			{

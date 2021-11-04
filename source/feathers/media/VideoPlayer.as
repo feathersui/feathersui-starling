@@ -60,7 +60,7 @@ package feathers.media
 	 * Dispatched when the media player changes to the full-screen display mode
 	 * or back to the normal display mode. The value of the
 	 * <code>isFullScreen</code> property indicates if the media player is
-	 * displayed in full screen mode or normally. 
+	 * displayed in full screen mode or normally.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -127,7 +127,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#event:onMetaData flash.net.NetStream onMetaData callback
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.METADATA_RECEIVED
@@ -180,7 +180,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #texture
 	 *
 	 * @eventType starling.events.Event.READY
@@ -341,7 +341,7 @@ package feathers.media
 		 * @private
 		 */
 		protected static const NO_VIDEO_SOURCE_SEEK_ERROR:String = "Cannot seek media when videoSource property has not been set.";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>VideoPlayer</code> components.
@@ -368,7 +368,7 @@ package feathers.media
 		{
 			return new NetStream(netConnection);
 		}
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -449,15 +449,15 @@ package feathers.media
 		 * component like an <code>ImageLoader</code> should be added as a child
 		 * of the <code>VideoPlayer</code> to display the texture when it is
 		 * ready.
-		 * 
+		 *
 		 * <p>The <code>texture</code> property will initially return
 		 * <code>null</code>. Listen for <code>Event.READY</code> to know when
 		 * a valid texture is available to render.</p>
-		 * 
+		 *
 		 * <p>In the following example, a listener is added for
 		 * <code>Event.READY</code>, and the texture is displayed by an
 		 * <code>ImageLoader</code> component:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * function videoPlayer_readyHandler( event:Event ):void
 		 * {
@@ -467,7 +467,7 @@ package feathers.media
 		 * }
 		 * 
 		 * videoPlayer.addEventListener( Event.READY, videoPlayer_readyHandler );</listing>
-		 * 
+		 *
 		 * @see #event:ready starling.events.Event.READY
 		 * @see feathers.controls.ImageLoader
 		 */
@@ -522,7 +522,7 @@ package feathers.media
 
 		/**
 		 * The <code>flash.net.NetStream</code> object used to play the video.
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html flash.net.NetStream
 		 */
 		public function get netStream():NetStream
@@ -544,12 +544,12 @@ package feathers.media
 		 * A string representing the video URL or any other accepted value that
 		 * may be passed to the <code>play()</code> function of a
 		 * <code>NetStream</code> object.
-		 * 
+		 *
 		 * <p>In the following example, a video file URL is passed in:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * videoPlayer.videoSource = "http://example.com/video.m4v";</listing>
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html#play() Full description of flash.net.NetStream.play() in Adobe's Flash Platform API Reference
 		 */
 		public function get videoSource():String
@@ -643,7 +643,7 @@ package feathers.media
 		 * that fills the entire Starling stage. Depending on the value of
 		 * <code>fullScreenDisplayState</code>, it may also change the value of
 		 * the native stage's <code>displayState</code> property.
-		 * 
+		 *
 		 * @see #toggleFullScreen()
 		 * @see #event:displayStateChange feathers.events.MediaPlayerEventType.DISPLAY_STATE_CHANGE
 		 */
@@ -662,7 +662,7 @@ package feathers.media
 		 * When the video player is displayed normally (in other words, when it
 		 * isn't full-screen), determines the value of the native stage's
 		 * <code>displayState</code> property.
-		 * 
+		 *
 		 * <p>Using this property, it is possible to set the native stage's
 		 * <code>displayState</code> property to
 		 * <code>StageDisplayState.FULL_SCREEN_INTERACTIVE</code> or
@@ -723,15 +723,15 @@ package feathers.media
 		 * <code>StageDisplayState.NORMAL</code> when the video player is in
 		 * full screen mode. The video player will still be displayed as a modal
 		 * pop-up that fills the entire Starling stage, in this situation.</p>
-		 * 
+		 *
 		 * <p>In the following example, the display state for full-screen mode
 		 * is changed:</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * videoPlayer.fullScreenDisplayState = StageDisplayState.FULL_SCREEN;</listing>
-		 * 
+		 *
 		 * @default StageDisplayState.FULL_SCREEN_INTERACTIVE
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN_INTERACTIVE StageDisplayState.FULL_SCREEN_INTERACTIVE
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#FULL_SCREEN StageDisplayState.FULL_SCREEN
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageDisplayState.html#NORMAL StageDisplayState.NORMAL
@@ -817,7 +817,7 @@ package feathers.media
 		 *     connection.connect( command );
 		 *     return connection;
 		 * };</listing>
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html flash.net.NetConnection
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetConnection.html#connect() flash.net.NetConnection.connect()
 		 */
@@ -863,7 +863,7 @@ package feathers.media
 		 *     //change properties here
 		 *     return stream;
 		 * };</listing>
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/NetStream.html flash.net.NetStream
 		 */
 		public function get netStreamFactory():Function
@@ -965,16 +965,16 @@ package feathers.media
 
 		/**
 		 * Goes to full screen or returns to normal display.
-		 * 
+		 *
 		 * <p> When the player is full screen, it will be displayed as a modal
 		 * pop-up that fills the entire Starling stage. Depending on the value
 		 * of <code>fullScreenDisplayState</code>, it may also change the value
 		 * of the native stage's <code>displayState</code> property.</p>
-		 * 
+		 *
 		 * <p>When the player is displaying normally (in other words, when it is
 		 * not full screen), it will be displayed in its parent's layout like
 		 * any other Feathers component.</p>
-		 * 
+		 *
 		 * @see #isFullScreen
 		 * @see #fullScreenDisplayState
 		 * @see #normalDisplayState

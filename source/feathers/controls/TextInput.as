@@ -58,7 +58,7 @@ package feathers.controls
 	 * input.setSkinForState( TextInputState.DISABLED, skin );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 * @see #setSkinForState()
 	 * @see feathers.controls.TextInputState#DISABLED
@@ -238,7 +238,7 @@ package feathers.controls
 	 * input.defaultIcon = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #setIconForState()
 	 */
 	[Style(name="defaultIcon",type="starling.display.DisplayObject")]
@@ -609,7 +609,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #text
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -776,7 +776,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
-	 * 
+	 *
 	 * @see #currentState
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
@@ -983,7 +983,7 @@ package feathers.controls
 		 * A text editor may be an <code>INativeFocusOwner</code>, so we need to
 		 * return the value of its <code>nativeFocus</code> property. If not,
 		 * then we return <code>null</code>.
-		 * 
+		 *
 		 * @see feathers.core.INativeFocusOwner
 		 */
 		public function get nativeFocus():Object
@@ -1337,7 +1337,7 @@ package feathers.controls
 		 * input.isSelectable = false;</listing>
 		 *
 		 * @default true
-		 * 
+		 *
 		 * @see #isEditable
 		 */
 		public function get isSelectable():Boolean
@@ -2468,7 +2468,7 @@ package feathers.controls
 		 * Focuses the text input control so that it may be edited, and selects
 		 * all of its text. Call <code>selectRange()</code> after
 		 * <code>setFocus()</code> to select a different range.
-		 * 
+		 *
 		 * @see #selectRange()
 		 */
 		public function setFocus():void
@@ -2552,7 +2552,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, returns
 		 * <code>null</code>.</p>
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
 		 * @see #style:fontStyles
@@ -3373,7 +3373,7 @@ package feathers.controls
 			}
 			if(this.currentIcon &&
 				(this._originalIconWidth !== this._originalIconWidth || //isNaN
-					this._originalIconHeight !== this._originalIconHeight)) //isNaN
+				this._originalIconHeight !== this._originalIconHeight)) //isNaN
 			{
 				if(this.currentIcon is IValidating)
 				{

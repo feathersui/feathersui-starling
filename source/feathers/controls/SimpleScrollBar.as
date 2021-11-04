@@ -62,7 +62,7 @@ package feathers.controls
 	 * Determines if the scroll bar's thumb can be dragged horizontally or
 	 * vertically. When this value changes, the scroll bar's width and
 	 * height values do not change automatically.
-	 * 
+	 *
 	 * <p>Note: When using a <code>SimpleScrollBar</code> with a scrolling
 	 * container, the container will automatically set the correct
 	 * <code>direction</code> value. Generally, you should not need to set this
@@ -72,7 +72,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * scrollBar.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -1020,7 +1020,7 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA)
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -1294,7 +1294,7 @@ package feathers.controls
 					{
 						heightOffset = thumbHeight;
 					}
-					heightOffset *=  valueOffset / (range * thumbHeight / contentHeight);
+					heightOffset *= valueOffset / (range * thumbHeight / contentHeight);
 					thumbHeight -= heightOffset;
 					if(thumbHeight < thumbMinHeight)
 					{

@@ -335,7 +335,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#displayAsPassword
 		 *
 		 * @see feathers.controls.TextInput#displayAsPassword
@@ -418,7 +418,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isEditable
 		 *
 		 * @see feathers.controls.TextInput#isEditable
@@ -448,7 +448,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isSelectable
 		 *
 		 * @see feathers.controls.TextInput#isSelectable
@@ -547,7 +547,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#maxChars
 		 *
 		 * @see feathers.controls.TextInput#maxChars
@@ -577,7 +577,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#restrict
 		 *
 		 * @see feathers.controls.TextInput#restrict

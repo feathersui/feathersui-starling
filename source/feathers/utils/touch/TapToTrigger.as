@@ -27,15 +27,15 @@ package feathers.utils.touch
 	 *         super();
 	 *         this._tapToTrigger = new TapToTrigger(this);
 	 *     }
-	 *     
+	 * 
 	 *     private var _tapToTrigger:TapToTrigger;
 	 * }</listing>
-	 * 
+	 *
 	 * <p>Note: When combined with a <code>TapToSelect</code> instance, the
 	 * <code>TapToTrigger</code> instance should be created first because
 	 * <code>Event.TRIGGERED</code> should be dispatched before
 	 * <code>Event.CHANGE</code>.</p>
-	 * 
+	 *
 	 * @see http://doc.starling-framework.org/current/starling/events/Event.html#TRIGGERED starling.events.Event.TRIGGERED
 	 * @see feathers.utils.touch.TapToSelect
 	 * @see feathers.utils.touch.LongPress

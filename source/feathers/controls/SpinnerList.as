@@ -248,7 +248,7 @@ package feathers.controls
 			{
 				return;
 			}
-			this.selectedIndex = index; 
+			this.selectedIndex = index;
 		}
 
 		/**
@@ -660,9 +660,9 @@ package feathers.controls
 				return;
 			}
 			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
-				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
-				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
-				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
+				event.keyCode == Keyboard.PAGE_UP || event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT || event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex != newIndex)

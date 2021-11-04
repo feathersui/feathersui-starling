@@ -111,7 +111,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 	}
 }

@@ -109,7 +109,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * loader.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -179,7 +179,7 @@ package feathers.controls
 	 * loader.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -358,7 +358,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * loader.verticalAlign = VerticalAlign.BOTTOM;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -430,7 +430,7 @@ package feathers.controls
 	 * <a target="_top" href="../../../help/deprecation-policy.html">Feathers deprecation policy</a>.</p>
 	 *
 	 * @eventType feathers.events.FeathersEventType.ERROR
-	 * 
+	 *
 	 * @see #event:ioError
 	 * @see #event:securityError
 	 */
@@ -724,7 +724,7 @@ package feathers.controls
 		 * var cache:TextureCache = new TextureCache(30);
 		 * loader1.textureCache = cache;
 		 * loader2.textureCache = cache;</listing>
-		 * 
+		 *
 		 * <p><strong>Warning:</strong> the textures in the cache will not be
 		 * disposed automatically. When the cache is no longer needed (such as
 		 * when the <code>ImageLoader</code> components have all been disposed),
@@ -1435,7 +1435,7 @@ package feathers.controls
 			this._textureQueueDuration = value;
 			if(this._delayTextureCreation)
 			{
-				 if((this._pendingBitmapDataTexture || this._pendingRawTextureData) &&
+				if((this._pendingBitmapDataTexture || this._pendingRawTextureData) &&
 					oldDuration == Number.POSITIVE_INFINITY && this._textureQueueDuration < Number.POSITIVE_INFINITY)
 				{
 					this.addToTextureQueue();
@@ -1594,7 +1594,7 @@ package feathers.controls
 		/**
 		 * Determines if textures loaded from URLs are uploaded asynchronously
 		 * or not.
-		 * 
+		 *
 		 * <p>Note: depending on the version of AIR and the platform it is
 		 * running on, textures may be uploaded synchronously, even when this
 		 * property is <code>true</code>.</p>
@@ -1604,7 +1604,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * loader.asyncTextureUpload = false;</listing>
-		 * 
+		 *
 		 * @default true
 		 */
 		public function get asyncTextureUpload():Boolean
@@ -1642,7 +1642,7 @@ package feathers.controls
 		 * context.loadPolicyFile = true;
 		 * loader.loaderContext = context;
 		 * </listing>
-		 * 
+		 *
 		 * @see https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/system/LoaderContext.html flash.system.LoaderContext
 		 */
 		public function get loaderContext():LoaderContext

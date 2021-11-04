@@ -700,7 +700,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * Specifies whether the text field is a password text field that hides
 		 * the input characters using asterisks instead of the actual
 		 * characters.
@@ -733,7 +733,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#maxChars
 		 *
 		 * @see feathers.controls.TextInput#maxChars
@@ -764,7 +764,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#restrict
 		 *
 		 * @see feathers.controls.TextInput#restrict
@@ -795,7 +795,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isEditable
 		 *
 		 * @see feathers.controls.TextInput#isEditable
@@ -825,7 +825,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isSelectable
 		 *
 		 * @see feathers.controls.TextInput#isSelectable
@@ -1177,7 +1177,7 @@ package feathers.controls.text
 		 * <code>flash.text.TextField</code> will be used in measurement and
 		 * layout. To visually align with other text renderers and text editors,
 		 * it is often best to leave the gutter disabled.
-		 * 
+		 *
 		 * <p>Returns <code>true</code> if the <code>border</code> property is
 		 * <code>true</code>.</p>
 		 *
@@ -1274,7 +1274,7 @@ package feathers.controls.text
 		/**
 		 * If enabled, the text editor will remain in focus, even if something
 		 * else is touched.
-		 * 
+		 *
 		 * <p>Note: If the <code>FocusManager</code> is enabled, this property
 		 * will be ignored.</p>
 		 *
@@ -1393,7 +1393,7 @@ package feathers.controls.text
 		 * textEditor.softKeyboard = SoftKeyboardType.NUMBER;</listing>
 		 *
 		 * @default flash.text.SoftKeyboardType.DEFAULT
-		 * 
+		 *
 		 * @see https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/SoftKeyboardType.html flash.text.SoftKeyboardType
 		 */
 		public function get softKeyboard():String
@@ -1422,12 +1422,12 @@ package feathers.controls.text
 		/**
 		 * Indicates of the text editor resets its current scroll position to
 		 * 0 on focus out.
-		 * 
+		 *
 		 * <p>In the following example, the scroll position is not reset on focus out:</p>
 		 *
 		 * <listing version="3.0">
 		 * textEditor.resetScrollOnFocusOut = false;</listing>
-		 * 
+		 *
 		 * @default true
 		 */
 		public function get resetScrollOnFocusOut():Boolean
@@ -2036,7 +2036,7 @@ package feathers.controls.text
 					{
 						//if the TextFormat has changed from the last commit,
 						//the selection range may be lost when we set the text
-						//so we need to save it to restore later. 
+						//so we need to save it to restore later.
 						this._pendingSelectionBeginIndex = this.textField.selectionBeginIndex;
 						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
 					}
@@ -2196,7 +2196,7 @@ package feathers.controls.text
 
 			if(!this._textFieldHasFocus && (sizeInvalid || stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
-				//we're going to update the texture in render() because 
+				//we're going to update the texture in render() because
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
 				this._needsTextureUpdate = true;
@@ -2442,7 +2442,7 @@ package feathers.controls.text
 			{
 				//skip Texture.fromBitmapData() because we don't want
 				//it to create an onRestore function that will be
-				//immediately discarded for garbage collection. 
+				//immediately discarded for garbage collection.
 				newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
 					true, false, false, scaleFactor);
 				newTexture.root.uploadBitmapData(bitmapData);

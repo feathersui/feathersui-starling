@@ -31,7 +31,7 @@ package feathers.media
 	 *
 	 * @see #bytesLoaded
 	 * @see #bytesTotal
-	 * 
+	 *
 	 * @eventType feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 	 */
 	[Event(name="loadProgress",type="starling.events.Event")]
@@ -45,7 +45,7 @@ package feathers.media
 	{
 		/**
 		 * The number of bytes loaded for the current media.
-		 * 
+		 *
 		 * @see #bytesTotal
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 */
@@ -53,7 +53,7 @@ package feathers.media
 
 		/**
 		 * The total number of bytes to load for the current media.
-		 * 
+		 *
 		 * @see #bytesLoaded
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 */

@@ -274,7 +274,7 @@ package feathers.layout
 
 		/**
 		 * The alignment of the items vertically, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported by <code>VerticalLayout</code>. It may be
 		 * used with <code>HorizontalLayout</code> only.</p>
@@ -311,7 +311,7 @@ package feathers.layout
 
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported by <code>HorizontalLayout</code>. It may be
 		 * used with <code>VerticalLayout</code> only.</p>

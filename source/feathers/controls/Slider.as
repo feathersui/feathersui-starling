@@ -118,7 +118,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * slider.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -140,7 +140,7 @@ package feathers.controls
 	 * slider.maximumPadding = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:minimumPadding
 	 */
 	[Style(name="maximumPadding",type="Number")]
@@ -261,7 +261,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #value
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -406,7 +406,7 @@ package feathers.controls
 		{
 			return new Button();
 		}
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -469,7 +469,7 @@ package feathers.controls
 		 * @see #createThumb()
 		 */
 		protected var thumb:DisplayObject;
-		
+
 		/**
 		 * The minimum track sub-component.
 		 *
@@ -600,7 +600,7 @@ package feathers.controls
 		{
 			return this._value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -622,12 +622,12 @@ package feathers.controls
 				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _minimum:Number = 0;
-		
+
 		/**
 		 * The slider's value will not go lower than the minimum.
 		 *
@@ -649,7 +649,7 @@ package feathers.controls
 		{
 			return this._minimum;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -662,12 +662,12 @@ package feathers.controls
 			this._minimum = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _maximum:Number = 0;
-		
+
 		/**
 		 * The slider's value will not go higher than the maximum. The maximum
 		 * is zero (<code>0</code>), by default, and it should almost always be
@@ -691,7 +691,7 @@ package feathers.controls
 		{
 			return this._maximum;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -704,12 +704,12 @@ package feathers.controls
 			this._maximum = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _step:Number = 0;
-		
+
 		/**
 		 * As the slider's thumb is dragged, the value is snapped to a multiple
 		 * of the step. Paging using the slider's track will use the <code>step</code>
@@ -734,7 +734,7 @@ package feathers.controls
 		{
 			return this._step;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -796,12 +796,12 @@ package feathers.controls
 			}
 			this._page = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var isDragging:Boolean = false;
-		
+
 		/**
 		 * Determines if the slider dispatches the <code>Event.CHANGE</code>
 		 * event every time the thumb moves, or only once it stops moving.
@@ -1310,12 +1310,12 @@ package feathers.controls
 			this._customMaximumTrackStyleName = value;
 			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _maximumTrackProperties:PropertyProxy;
-		
+
 		/**
 		 * An object that stores properties for the slider's "maximum" track,
 		 * and the properties will be passed down to the "maximum" track when
@@ -1352,7 +1352,7 @@ package feathers.controls
 			}
 			return this._maximumTrackProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1497,7 +1497,7 @@ package feathers.controls
 		 * slider.thumbProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #thumbFactory
 		 */
@@ -1509,7 +1509,7 @@ package feathers.controls
 			}
 			return this._thumbProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1606,7 +1606,7 @@ package feathers.controls
 				this.value = this._maximum;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2102,7 +2102,7 @@ package feathers.controls
 				this._minimumTrackSkinExplicitWidth = this.minimumTrack.width;
 				this._minimumTrackSkinExplicitHeight = this.minimumTrack.height;
 				this._minimumTrackSkinExplicitMinWidth = this._minimumTrackSkinExplicitWidth;
-				this._minimumTrackSkinExplicitMinHeight = this._minimumTrackSkinExplicitHeight
+				this._minimumTrackSkinExplicitMinHeight = this._minimumTrackSkinExplicitHeight;
 			}
 		}
 
@@ -2158,10 +2158,10 @@ package feathers.controls
 				this._maximumTrackSkinExplicitWidth = this.maximumTrack.width;
 				this._maximumTrackSkinExplicitHeight = this.maximumTrack.height;
 				this._maximumTrackSkinExplicitMinWidth = this._maximumTrackSkinExplicitWidth;
-				this._maximumTrackSkinExplicitMinHeight = this._maximumTrackSkinExplicitHeight
+				this._maximumTrackSkinExplicitMinHeight = this._maximumTrackSkinExplicitHeight;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2174,7 +2174,7 @@ package feathers.controls
 			}
 			this.thumb.visible = this._showThumb;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2540,7 +2540,7 @@ package feathers.controls
 			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2622,7 +2622,7 @@ package feathers.controls
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */

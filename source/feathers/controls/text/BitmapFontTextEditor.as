@@ -133,10 +133,10 @@ package feathers.controls.text
 	 * Text that may be edited at runtime by the user with the
 	 * <code>TextInput</code> component, rendered with
 	 * <a href="http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts" target="_top">bitmap fonts</a>.
-	 * 
+	 *
 	 * <p>The following example shows how to use
 	 * <code>BitmapFontTextEditor</code> with a <code>TextInput</code>:</p>
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * var input:TextInput = new TextInput();
 	 * input.textEditorFactory = function():ITextEditor
@@ -379,7 +379,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isEditable
 		 *
 		 * @see feathers.controls.TextInput#isEditable
@@ -409,7 +409,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isSelectable
 		 *
 		 * @see feathers.controls.TextInput#isSelectable
@@ -509,7 +509,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#maxChars
 		 *
 		 * @see feathers.controls.TextInput#maxChars
@@ -539,7 +539,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#restrict
 		 *
 		 * @see feathers.controls.TextInput#restrict

@@ -25,11 +25,11 @@ package feathers.controls.renderers
 		 * for the original item.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
-		 * 
+		 *
 		 * @see #dataField
 		 */
 		function get data():Object;
-		
+
 		/**
 		 * @private
 		 */
@@ -41,12 +41,12 @@ package feathers.controls.renderers
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get column():DataGridColumn;
-		
+
 		/**
 		 * @private
 		 */
 		function set column(value:DataGridColumn):void;
-		
+
 		/**
 		 * The index (numeric position, starting from zero) of the item within
 		 * the data grid's columns.
@@ -54,12 +54,12 @@ package feathers.controls.renderers
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get columnIndex():int;
-		
+
 		/**
 		 * @private
 		 */
 		function set columnIndex(value:int):void;
-		
+
 		/**
 		 * The index (numeric position, starting from zero) of the item within
 		 * the data grid's data provider. Like the <code>data</code> property,
@@ -69,12 +69,12 @@ package feathers.controls.renderers
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get rowIndex():int;
-		
+
 		/**
 		 * @private
 		 */
 		function set rowIndex(value:int):void;
-		
+
 		/**
 		 * The field used to access this column's data from the item within the
 		 * data grid's data provider. Like the <code>data</code> property, this
@@ -82,23 +82,23 @@ package feathers.controls.renderers
 		 * for a different item.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
-		 * 
+		 *
 		 * @see #data
 		 */
 		function get dataField():String;
-		
+
 		/**
 		 * @private
 		 */
 		function set dataField(value:String):void;
-		
+
 		/**
 		 * The data grid that contains this cell renderer.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get owner():DataGrid;
-		
+
 		/**
 		 * @private
 		 */

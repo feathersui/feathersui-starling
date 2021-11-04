@@ -10,7 +10,7 @@ package feathers.layout
 	/**
 	 * A layout where items are divided into separate groups, with headers for
 	 * each group.
-	 * 
+	 *
 	 * @see feathers.controls.GroupedList
 	 *
 	 * @productversion Feathers 2.3.0

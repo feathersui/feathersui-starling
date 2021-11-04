@@ -4528,7 +4528,6 @@ package feathers.controls.renderers
 			return width;
 		}
 
-
 		/**
 		 * @private
 		 */
@@ -4603,7 +4602,7 @@ package feathers.controls.renderers
 					//isNaN() can allocate an object that needs garbage collection.
 					if(this._accessoryGap !== this._accessoryGap) //isNaN
 					{
-						adjustedAccessoryGap =  this._gap;
+						adjustedAccessoryGap = this._gap;
 					}
 					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{

@@ -117,19 +117,19 @@ package feathers.controls
 	 * package
 	 * {
 	 *     import feathers.controls.Screen;
-	 *     
+	 * 
 	 *     public class CustomScreen extends Screen
 	 *     {
 	 *         public function CustomScreen()
 	 *         {
 	 *             super();
 	 *         }
-	 *         
+	 * 
 	 *         override protected function initialize():void
 	 *         {
 	 *             //runs once when screen is first added to the stage
 	 *             //a good place to add children and customize the layout
-	 *             
+	 * 
 	 *             //don't forget to call this!
 	 *             super.initialize()
 	 *         }
@@ -211,7 +211,7 @@ package feathers.controls
 		{
 			this._owner = value;
 		}
-		
+
 		/**
 		 * Optional callback for the back hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
@@ -225,7 +225,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.backButtonHandler = onBackButton;
-		 *
+		 * 
 		 * private function onBackButton():void
 		 * {
 		 *     this.dispatchEvent( Event.COMPLETE );
@@ -234,7 +234,7 @@ package feathers.controls
 		 * @default null
 		 */
 		protected var backButtonHandler:Function;
-		
+
 		/**
 		 * Optional callback for the menu hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
@@ -248,7 +248,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.menuButtonHandler = onMenuButton;
-		 *
+		 * 
 		 * private function onMenuButton():void
 		 * {
 		 *     //do something with the menu button
@@ -257,7 +257,7 @@ package feathers.controls
 		 * @default null
 		 */
 		protected var menuButtonHandler:Function;
-		
+
 		/**
 		 * Optional callback for the search hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
@@ -271,7 +271,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * this.searchButtonHandler = onSearchButton;
-		 *
+		 * 
 		 * private function onSearchButton():void
 		 * {
 		 *     //do something with the search button
@@ -280,7 +280,7 @@ package feathers.controls
 		 * @default null
 		 */
 		protected var searchButtonHandler:Function;
-		
+
 		/**
 		 * @private
 		 */
@@ -309,7 +309,7 @@ package feathers.controls
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
 			this.stage.starling.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, screen_nativeStage_keyDownHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */

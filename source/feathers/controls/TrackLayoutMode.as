@@ -25,7 +25,7 @@ package feathers.controls
 		 * The component has multiple tracks, meeting in the middle of the thumb
 		 * and filling the available space on each side. The tracks will be
 		 * resized as the thumb moves.
-		 * 
+		 *
 		 * <p>This track layout mode is designed for components where the track
 		 * on different sides of the thumb may be colored differently to show
 		 * the value "filling up" as the thumb is dragged.</p>

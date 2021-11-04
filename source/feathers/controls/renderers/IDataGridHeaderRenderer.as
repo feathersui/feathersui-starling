@@ -33,7 +33,7 @@ package feathers.controls.renderers
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
@@ -53,45 +53,45 @@ package feathers.controls.renderers
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get data():DataGridColumn;
-		
+
 		/**
 		 * @private
 		 */
 		function set data(value:DataGridColumn):void;
-		
+
 		/**
 		 * The index of the header within the layout.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get columnIndex():int;
-		
+
 		/**
 		 * @private
 		 */
 		function set columnIndex(value:int):void;
-		
+
 		/**
 		 * The data grid that contains this header renderer.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
 		 */
 		function get owner():DataGrid;
-		
+
 		/**
 		 * @private
 		 */
 		function set owner(value:DataGrid):void;
-		
+
 		/**
 		 * Indicates if this column is sorted.
 		 *
 		 * <p>This property is set by the data grid, and should not be set manually.</p>
-		 * 
+		 *
 		 * @see feathers.data.SortOrder
 		 */
 		function get sortOrder():String;
-		
+
 		/**
 		 * @private
 		 */

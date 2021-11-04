@@ -173,12 +173,12 @@ package feathers.controls.renderers
 			//set set another flag that it understands.
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _dataField:String = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -186,7 +186,7 @@ package feathers.controls.renderers
 		{
 			return this._dataField;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -204,7 +204,7 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var _column:DataGridColumn = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -212,7 +212,7 @@ package feathers.controls.renderers
 		{
 			return this._column;
 		}
-		
+
 		/**
 		 * @private
 		 */

@@ -213,7 +213,7 @@ package feathers.controls
 	 * toast.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -286,7 +286,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.OPEN
-	 * 
+	 *
 	 * @see #openEffect
 	 * @see #event:close starling.events.Event.CLOSE
 	 */
@@ -295,7 +295,7 @@ package feathers.controls
 	/**
 	 * Dispatched when the toast is closed. This event is dispatched after the
 	 * <code>closeEffect</code> has completed, if one is defined.
-	 * 
+	 *
 	 * <p>The <code>data</code> property of the event object will contain
 	 * the item from the <code>ButtonGroup</code> data provider for the button
 	 * that is triggered. If no button is triggered, then the <code>data</code>
@@ -318,7 +318,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.CLOSE
-	 * 
+	 *
 	 * @see #close()
 	 * @see #closeEffect
 	 * @see #event:open starling.events.Event.OPEN
@@ -386,7 +386,7 @@ package feathers.controls
 		 * components.
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
@@ -551,7 +551,7 @@ package feathers.controls
 
 		/**
 		 * Shows a toast with custom content.
-		 * 
+		 *
 		 * @see #showMessage()
 		 * @see #showMessageWithActions()
 		 */
@@ -569,7 +569,7 @@ package feathers.controls
 
 		/**
 		 * Shows a toast with a simple text message.
-		 * 
+		 *
 		 * @see #showMessageWithActions()
 		 * @see #showContent()
 		 */
@@ -587,7 +587,7 @@ package feathers.controls
 
 		/**
 		 * Shows a toast with a text message and some action buttons.
-		 * 
+		 *
 		 * @see #showMessage()
 		 * @see #showContent()
 		 */
@@ -606,7 +606,7 @@ package feathers.controls
 
 		/**
 		 * Shows a toast instance.
-		 * 
+		 *
 		 * @see #showMessage()
 		 * @see #showMessageWithActions()
 		 * @see #showContent()
@@ -665,7 +665,7 @@ package feathers.controls
 			//keep skipping toasts that have a timeout
 			while(_queueMode == ToastQueueMode.CANCEL_TIMEOUT &&
 				_queue.length > 0 &&
-				toast.timeout < Number.POSITIVE_INFINITY)
+				toast.timeout < Number.POSITIVE_INFINITY);
 			showToast(toast, toast.timeout);
 		}
 
@@ -696,7 +696,7 @@ package feathers.controls
 			container.addEventListener(Event.REMOVED_FROM_STAGE, function(event:Event):void
 			{
 				delete Toast._containers[starling];
-			})
+			});
 			PopUpManager.forStarling(starling).addPopUp(container, false, false);
 			return container;
 		}
@@ -982,7 +982,7 @@ package feathers.controls
 		 * The time, in seconds, when the toast will automatically close. Set
 		 * to <code>Number.POSITIVE_INFINITY</code> to require the toast to be
 		 * closed manually.
-		 * 
+		 *
 		 * @default Number.POSITIVE_INFINITY
 		 */
 		public function get timeout():Number
@@ -1036,13 +1036,13 @@ package feathers.controls
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * toast.closeEffect = function(target:DisplayObject):IEffectContext
 		 * {
@@ -1107,13 +1107,13 @@ package feathers.controls
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * toast.closeEffect = function(target:DisplayObject):IEffectContext
 		 * {
@@ -1404,7 +1404,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toast.disposeOnSelfClose = false;</listing>
-		 * 
+		 *
 		 * @default true
 		 *
 		 * @see #close()
@@ -1438,9 +1438,9 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toast.disposeContent = false;</listing>
-		 * 
+		 *
 		 * @default true
-		 * 
+		 *
 		 * @see #disposeOnSelfClose
 		 */
 		public function get disposeContent():Boolean
@@ -1468,7 +1468,7 @@ package feathers.controls
 
 		/**
 		 * Indicates if the toast is currently closing.
-		 * 
+		 *
 		 * @see #isOpening
 		 * @see #isOpen
 		 */
@@ -1484,7 +1484,7 @@ package feathers.controls
 
 		/**
 		 * Indicates if the toast is currently opening.
-		 * 
+		 *
 		 * @see #isClosing
 		 */
 		public function get isOpening():Boolean
@@ -1502,7 +1502,7 @@ package feathers.controls
 		 * <code>false</code> to <code>true</code> until the open effect has
 		 * completed. Similarly, does not change from <code>true</code> to
 		 * <code>false</code> until the close effect has completed.
-		 * 
+		 *
 		 * @see #isOpening
 		 * @see #isClosing
 		 * @see #event:open starling.events.Event.OPEN
@@ -1934,7 +1934,7 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @see #showToast()
 		 */
 		protected function open():void
@@ -1964,7 +1964,7 @@ package feathers.controls
 		/**
 		 * Closes the toast and optionally disposes it. If a
 		 * <code>closeEffect</code> has been specified, it will be played.
-		 * 
+		 *
 		 * @see #closeEffect
 		 */
 		public function close(dispose:Boolean = true):void
@@ -2342,7 +2342,7 @@ package feathers.controls
 				{
 					adjustedGap = this._minGap;
 				}
-				if(this._actionsPosition === RelativePosition.LEFT || 
+				if(this._actionsPosition === RelativePosition.LEFT ||
 					this._actionsPosition === RelativePosition.RIGHT)
 				{
 					calculatedWidth -= (this.actionsGroup.width + adjustedGap);
@@ -2506,7 +2506,7 @@ package feathers.controls
 			}
 			else if(this.messageTextRenderer)
 			{
-				this.positionSingleChild(DisplayObject(this.messageTextRenderer))
+				this.positionSingleChild(DisplayObject(this.messageTextRenderer));
 			}
 		}
 
@@ -2540,7 +2540,7 @@ package feathers.controls
 				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */

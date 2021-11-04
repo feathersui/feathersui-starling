@@ -128,7 +128,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * tabs.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -458,7 +458,7 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
 	 */
-	[Event(name="triggered", type="starling.events.Event")]
+	[Event(name="triggered",type="starling.events.Event")]
 
 	/**
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
@@ -1224,11 +1224,11 @@ package feathers.controls
 		 * properties on the tabs when they are first created. For instance, if
 		 * you are skinning Feathers components without a theme, you might use
 		 * this factory to set skins and other styles on a tab.
-		 * 
+		 *
 		 * <p>Optionally, the first tab and the last tab may be different than
 		 * the other tabs in the middle. Use the <code>firstTabFactory</code>
 		 * and/or the <code>lastTabFactory</code> to customize one or both of
-		 * these tabs.</p> 
+		 * these tabs.</p>
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -1805,7 +1805,7 @@ package feathers.controls
 		 * {
 		 *     var tabs:TabBar = TabBar( event.currentTarget );
 		 *     var index:int = tabs.selectedIndex;
-		 *
+		 * 
 		 * }
 		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
 		 *
@@ -1856,7 +1856,7 @@ package feathers.controls
 		 * {
 		 *     var tabs:TabBar = TabBar( event.currentTarget );
 		 *     var item:Object = tabs.selectedItem;
-		 *
+		 * 
 		 * }
 		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
 		 *
@@ -2099,13 +2099,13 @@ package feathers.controls
 		/**
 		 * Drag and drop is restricted to components that have the same
 		 * <code>dragFormat</code>.
-		 * 
+		 *
 		 * <p>In the following example, the drag format of two tab bars is customized:</p>
 		 *
 		 * <listing version="3.0">
 		 * tabs1.dragFormat = "my-custom-format";
 		 * tabs2.dragFormat = "my-custom-format";</listing>
-		 * 
+		 *
 		 * @default "feathers-tab-bar-item"
 		 */
 		public function get dragFormat():String
@@ -2149,12 +2149,12 @@ package feathers.controls
 		 * touching an item and dragging it. The <code>dragEnabled</code>
 		 * property enables dragging items, but dropping items must be enabled
 		 * separately with the <code>dropEnabled</code> property.
-		 * 
+		 *
 		 * <p>In the following example, a tab bar's items may be dragged:</p>
 		 *
 		 * <listing version="3.0">
 		 * tabs.dragEnabled = true;</listing>
-		 * 
+		 *
 		 * @see #dropEnabled
 		 * @see #dragFormat
 		 */
@@ -2191,12 +2191,12 @@ package feathers.controls
 		/**
 		 * Indicates if this tab bar can accept items that are dragged and
 		 * dropped over the tab bar's hit area.
-		 * 
+		 *
 		 * <p>In the following example, a tab bar's items may be dropped:</p>
 		 *
 		 * <listing version="3.0">
 		 * tabs.dropEnabled = true;</listing>
-		 * 
+		 *
 		 * @see #dragEnabled
 		 * @see #dragFormat
 		 */
@@ -3183,7 +3183,7 @@ package feathers.controls
 			this.focusedTabFocusOut();
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */

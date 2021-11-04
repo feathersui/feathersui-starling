@@ -31,7 +31,7 @@ package feathers.controls.renderers
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
@@ -51,12 +51,12 @@ package feathers.controls.renderers
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get data():Object;
-		
+
 		/**
 		 * @private
 		 */
 		function set data(value:Object):void;
-		
+
 		/**
 		 * The index (numeric position, starting from zero) of the item within
 		 * the list's data provider. Like the <code>data</code> property, this
@@ -66,19 +66,19 @@ package feathers.controls.renderers
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get index():int;
-		
+
 		/**
 		 * @private
 		 */
 		function set index(value:int):void;
-		
+
 		/**
 		 * The list that contains this item renderer.
 		 *
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get owner():List;
-		
+
 		/**
 		 * @private
 		 */

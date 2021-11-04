@@ -38,7 +38,7 @@ package feathers.utils.touch
 	 *         super();
 	 *         this._longPress = new LongPress(this);
 	 *     }
-	 *     
+	 * 
 	 *     private var _longPress:LongPress;
 	 * }</listing>
 	 *

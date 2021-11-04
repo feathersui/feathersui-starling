@@ -9,7 +9,7 @@ package feathers.utils.math
 {
 	/**
 	 * Forces a numeric value into a specified range.
-	 * 
+	 *
 	 * @param value		The value to force into the range.
 	 * @param minimum	The minimum bound of the range.
 	 * @param maximum	The maximum bound of the range.

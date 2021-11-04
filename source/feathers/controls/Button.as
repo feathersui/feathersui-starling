@@ -241,7 +241,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -458,7 +458,7 @@ package feathers.controls
 	 * button.paddingBottom = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingBottom",type="Number")]
@@ -544,7 +544,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.verticalAlign = VerticalAlign.TOP;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -630,7 +630,7 @@ package feathers.controls
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * label text renderer.
-		 * 
+		 *
 		 * <p>Note: the label text renderer is not a
 		 * <code>feathers.controls.Label</code>. It is an instance of one of the
 		 * <code>ITextRenderer</code> implementations.</p>
@@ -1914,7 +1914,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, returns
 		 * <code>null</code>.</p>
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
 		 * @see #style:fontStyles
@@ -1935,7 +1935,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, the value of
 		 * the <code>fontStyles</code> property will be used instead.</p>
-		 * 
+		 *
 		 * <p>Note: if the text renderer has been customized with advanced font
 		 * formatting, it may override the values specified with
 		 * <code>setFontStylesForState()</code> and properties like
@@ -2486,7 +2486,7 @@ package feathers.controls
 			this.labelTextRenderer.visible = this._label !== null && this._label.length > 0;
 			this.labelTextRenderer.isEnabled = this._isEnabled;
 		}
-		
+
 		/**
 		 * Sets the <code>currentIcon</code> property.
 		 *
@@ -2615,7 +2615,7 @@ package feathers.controls
 			this.longPress.isEnabled = this._isEnabled && this._isLongPressEnabled;
 			this.longPress.longPressDuration = this._longPressDuration;
 		}
-		
+
 		/**
 		 * Positions and sizes the button's content.
 		 *
@@ -2779,7 +2779,7 @@ package feathers.controls
 				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */

@@ -21,7 +21,7 @@ package feathers.motion
 	 * Creates effects for Feathers components and transitions for screen
 	 * navigators, that animate the <code>alpha</code> property of a display
 	 * object to make it fade in or out.
-	 * 
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 * @see ../../../help/transitions.html#fade Transitions for Feathers screen navigators: Fade
 	 *
@@ -38,7 +38,7 @@ package feathers.motion
 		 * Creates an effect function that fades in the target component by
 		 * animating the <code>alpha</code> property from <code>0.0</code> to
 		 * <code>1.0</code>.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeOutEffect()
 		 * @see #createFadeBetweenEffect()
@@ -52,7 +52,7 @@ package feathers.motion
 		 * Creates an effect function that fades out the target component by
 		 * animating the <code>alpha</code> property from <code>1.0</code> to
 		 * <code>0.0</code>.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeInEffect()
 		 * @see #createFadeBetweenEffect()
@@ -66,7 +66,7 @@ package feathers.motion
 		 * Creates an effect function that fades the target component by
 		 * animating the <code>alpha</code> property from its current value to a
 		 * new value.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeFromEffect()
 		 * @see #createFadeBetweenEffect()
@@ -80,14 +80,14 @@ package feathers.motion
 				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
 		 * Creates an effect function that fades the target component by
 		 * animating the <code>alpha</code> property from a start value to its
 		 * current value.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 * @see #createFadeToEffect()
 		 * @see #createFadeBetweenEffect()
@@ -111,14 +111,14 @@ package feathers.motion
 				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
 		 * Creates an effect function that fades the target component by
 		 * animating the <code>alpha</code> property between a start value and
 		 * an ending value.
-		 * 
+		 *
 		 * @see ../../../help/effects.html Effects and animation for Feathers components
 		 */
 		public static function createFadeBetweenEffect(startAlpha:Number, endAlpha:Number, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, interruptBehavior:String = EffectInterruptBehavior.END):Function
@@ -139,7 +139,7 @@ package feathers.motion
 				var context:TweenEffectContext = new TweenEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -187,7 +187,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -235,7 +235,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -278,7 +278,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 	}
 }

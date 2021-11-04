@@ -408,7 +408,6 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-
 		/**
 		 * @private
 		 */

@@ -43,7 +43,7 @@ package feathers.media
 		/**
 		 * Controls properties of the currently playing audio, like volume and
 		 * panning.
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/SoundTransform.html flash.media.SoundTransform
 		 * @see #event:soundTransformChange feathers.events.MediaPlayerEventType.SOUND_TRANSFORM_CHANGE
 		 */

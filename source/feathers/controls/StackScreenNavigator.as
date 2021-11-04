@@ -454,7 +454,7 @@ package feathers.controls
 				//we may have delayed showing the root screen until after
 				//initialization, but this property could be set between when
 				//_isInitialized is set to true and when the screen is actually
-				//shown, so we need to clear this variable, just in case. 
+				//shown, so we need to clear this variable, just in case.
 				this._tempRootScreenID = null;
 
 				//this clears the whole stack and starts fresh
@@ -492,7 +492,7 @@ package feathers.controls
 		 * scroller.minimumDragDistance = 0.1;</listing>
 		 *
 		 * @default 0.04
-		 * 
+		 *
 		 * @see #isSwipeToPopEnabled
 		 */
 		public function get minimumDragDistance():Number
@@ -524,7 +524,7 @@ package feathers.controls
 		 * navigator.minimumSwipeVelocity = 2;</listing>
 		 *
 		 * @default 5
-		 * 
+		 *
 		 * @see #isSwipeToPopEnabled
 		 */
 		public function get minimumSwipeVelocity():Number
@@ -547,12 +547,12 @@ package feathers.controls
 
 		/**
 		 * Determines if the swipe gesture to pop the current screen is enabled.
-		 * 
+		 *
 		 * <p>In the following example, swiping to go back is enabled:</p>
 		 *
 		 * <listing version="3.0">
 		 * navigator.isSwipeToPopEnabled = true;</listing>
-		 * 
+		 *
 		 * @default false
 		 */
 		public function get isSwipeToPopEnabled():Boolean
@@ -585,7 +585,7 @@ package feathers.controls
 		 * drawers.swipeToPopGestureEdgeSize = 0.25;</listing>
 		 *
 		 * @default 0.1
-		 * 
+		 *
 		 * @see #isSwipeToPopEnabled
 		 */
 		public function get swipeToPopGestureEdgeSize():Number
@@ -839,7 +839,7 @@ package feathers.controls
 		 * screen. May be used in the case where you want to navigate from
 		 * screen A to screen B and then to screen C, but when popping screen C,
 		 * you want to skip screen B and return to screen A.
-		 * 
+		 *
 		 * <p>Returns a reference to the new screen, unless a transition is
 		 * currently active. In that case, the new screen will be queued until
 		 * the transition has completed, and no reference will be returned.</p>

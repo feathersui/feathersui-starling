@@ -36,9 +36,9 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 * Used internally by DataGrid. Not meant to be used on its own.
-	 * 
+	 *
 	 * @see feathers.controls.DataGrid
-	 * 
+	 *
 	 * @productversion Feathers 3.4.0
 	 */
 	public class DataGridDataViewPort extends FeathersControl implements IViewPort

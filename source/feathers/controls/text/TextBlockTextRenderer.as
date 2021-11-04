@@ -77,26 +77,26 @@ package feathers.controls.text
 	 *     return new TextBlockTextRenderer();
 	 * };
 	 * this.addChild( label );</listing>
-	 * 
+	 *
 	 * <strong>Embedding Fonts</strong>
-	 * 
+	 *
 	 * <p>This text renderer supports embedded TrueType or OpenType fonts.</p>
-	 * 
+	 *
 	 * <p>In the following example, a TrueType font is included with
 	 * <code>[Embed]</code> metadata:</p>
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * [Embed(source="path/to/font.ttf",fontFamily="MyCustomFont",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="true")]
 	 * private static const MY_CUSTOM_FONT:Class;</listing>
-	 * 
+	 *
 	 * <p>The <code>source</code> field should point to the font file, relative
 	 * to the current <code>.as</code> file that contains the metadata.</p>
-	 * 
+	 *
 	 * <p>Set the <code>fontFamily</code> field to the string value that you
 	 * want to use when referencing this font in code. For example, you would
 	 * use this name when you create a <code>starling.text.TextFormat</code>
 	 * object. Replace "MyCustomFont" with an appropriate name for your font.</p>
-	 * 
+	 *
 	 * <p><strong>Tip:</strong> For best results, try not to set the exact same
 	 * name in the <code>fontFamily</code> field as the name of device font
 	 * installed on your system. Debugging embedded font issues can be
@@ -105,13 +105,13 @@ package feathers.controls.text
 	 * doesn't exist on your development computer, you'll see when something is
 	 * wrong immediately, instead of discovering it later when you're testing
 	 * on other devices.</p>
-	 * 
+	 *
 	 * <p>If the font is bold, set the <code>fontWeight</code> field to "bold".
 	 * Otherwise, set it to "normal".</p>
-	 * 
+	 *
 	 * <p>If the font is italic, set the <code>fontStyle</code> field to
 	 * "italic". Otherwise, set it to "normal".</p>
-	 * 
+	 *
 	 * <p>Since the text renderer is based on Flash Text Engine, you
 	 * <strong>must</strong> set the <code>embedAsCFF</code> field to
 	 * "true".</p>
@@ -398,7 +398,7 @@ package feathers.controls.text
 		 * var text4:TextElement = new TextElement("styles", format3);
 		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text1, text2, text3, text4];
 		 * var group:GroupElement = new GroupElement(elements);
-		 *
+		 * 
 		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
 		 * textRenderer.content = group;</listing>
 		 *
@@ -413,7 +413,7 @@ package feathers.controls.text
 		 * var graphic:GraphicElement = new GraphicElement(bitmap, bitmap.width, bitmap.height, format);
 		 * var elements:Vector.&lt;ContentElement&gt; = new &lt;ContentElement&gt;[text, graphic];
 		 * var group:GroupElement = new GroupElement(elements);
-		 *
+		 * 
 		 * var textRenderer:TextBlockTextRenderer = new TextBlockTextRenderer();
 		 * textRenderer.content = group;</listing>
 		 *
@@ -521,7 +521,7 @@ package feathers.controls.text
 		 * <code>content</code> property is customized with Flash Text Engine
 		 * rich text objects such as <code>GroupElement</code> and
 		 * <code>GraphicElement</code>.</p>
-		 * 
+		 *
 		 * @default null
 		 *
 		 * @see #setElementFormatForState()
@@ -575,7 +575,7 @@ package feathers.controls.text
 		 * <code>content</code> property is customized with Flash Text Engine
 		 * rich text objects such as <code>GroupElement</code> and
 		 * <code>GraphicElement</code>.</p>
-		 * 
+		 *
 		 * @default null
 		 *
 		 * @see #elementFormat
@@ -628,7 +628,7 @@ package feathers.controls.text
 		 * <code>content</code> property is customized with Flash Text Engine
 		 * rich text objects such as <code>GroupElement</code> and
 		 * <code>GraphicElement</code>.</p>
-		 * 
+		 *
 		 * @default null
 		 *
 		 * @see #stateContext
@@ -706,7 +706,7 @@ package feathers.controls.text
 		/**
 		 * The alignment of the text. For justified text, see the
 		 * <code>textJustifier</code> property.
-		 * 
+		 *
 		 * <p>If <code>textAlign</code> is <code>null</code> the horizontal
 		 * alignment from the <code>starling.text.TextFormat</code> font styles
 		 * may be used. If no <code>starling.text.TextFormat</code> font styles
@@ -1507,7 +1507,7 @@ package feathers.controls.text
 		 *
 		 * <p>If an <code>ElementFormat</code> is not defined for a specific
 		 * state, returns <code>null</code>.</p>
-		 * 
+		 *
 		 * @see #setElementFormatForState()
 		 */
 		public function getElementFormatForState(state:String):ElementFormat
@@ -1526,15 +1526,15 @@ package feathers.controls.text
 		 * For advanced use cases where <code>starling.text.TextFormat</code>
 		 * cannot be used on the parent component because the full capabilities
 		 * of Flash Text Engine are required.
-		 * 
+		 *
 		 * <p>If an <code>ElementFormat</code> is not defined for a specific
 		 * state, the value of the <code>elementFormat</code> property will be
 		 * used instead.</p>
-		 * 
+		 *
 		 * <p>If the <code>disabledElementFormat</code> property is not
 		 * <code>null</code> and the <code>isEnabled</code> property is
 		 * <code>false</code>, all other element formats will be ignored.</p>
-		 * 
+		 *
 		 * @see #stateContext
 		 * @see #elementFormat
 		 */
@@ -1747,7 +1747,7 @@ package feathers.controls.text
 
 			if(contentStateChanged || this._needsNewTexture)
 			{
-				//we're going to update the texture in render() because 
+				//we're going to update the texture in render() because
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
 				this._needsTextureUpdate = true;
@@ -2075,7 +2075,7 @@ package feathers.controls.text
 			var scaleFactor:Number = starling.contentScaleFactor;
 			this._lastGlobalContentScaleFactor = scaleFactor;
 			//these are getting put into an int later, so we don't want it
-			//to possibly round down and cut off part of the text. 
+			//to possibly round down and cut off part of the text.
 			if(this._savedTextLinesWidth < this.actualWidth)
 			{
 				var rectangleSnapshotWidth:Number = Math.ceil(this._savedTextLinesWidth * scaleFactor);
@@ -2174,7 +2174,7 @@ package feathers.controls.text
 					{
 						//skip Texture.fromBitmapData() because we don't want
 						//it to create an onRestore function that will be
-						//immediately discarded for garbage collection. 
+						//immediately discarded for garbage collection.
 						newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
 							true, false, false, scaleFactor);
 						newTexture.root.uploadBitmapData(bitmapData);
@@ -2188,7 +2188,7 @@ package feathers.controls.text
 						}
 						else if(this.textSnapshots.length > snapshotIndex)
 						{
-							snapshot = this.textSnapshots[snapshotIndex]
+							snapshot = this.textSnapshots[snapshotIndex];
 						}
 					}
 					else
@@ -2423,7 +2423,7 @@ package feathers.controls.text
 						var truncatedTextLength:int = lineLength - this._truncationOffset;
 						//we want to start at this line so that the previous
 						//lines don't become invalid.
-						var truncatedText:String =  this._text.substr(lineStartIndex, truncatedTextLength) + this._truncationText;
+						var truncatedText:String = this._text.substr(lineStartIndex, truncatedTextLength) + this._truncationText;
 						var lineBreakIndex:int = this._text.indexOf(LINE_FEED, lineStartIndex);
 						if(lineBreakIndex < 0)
 						{

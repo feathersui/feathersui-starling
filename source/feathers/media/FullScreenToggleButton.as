@@ -16,7 +16,7 @@ package feathers.media
 	/**
 	 * A specialized toggle button that controls whether a media player is
 	 * displayed normally or in full-screen mode.
-	 * 
+	 *
 	 * @see ../../../help/video-player.html How to use the Feathers VideoPlayer component
 	 *
 	 * @productversion Feathers 2.2.0
@@ -31,7 +31,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -86,7 +86,7 @@ package feathers.media
 				this._mediaPlayer.addEventListener(MediaPlayerEventType.DISPLAY_STATE_CHANGE, mediaPlayer_displayStageChangeHandler);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -94,7 +94,7 @@ package feathers.media
 		{
 			this._mediaPlayer.toggleFullScreen();
 		}
-		
+
 		/**
 		 * @private
 		 */

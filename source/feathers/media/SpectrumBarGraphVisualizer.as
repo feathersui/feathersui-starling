@@ -72,12 +72,12 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * @private
 		 */
 		protected static var HELPER_QUAD:Quad = new Quad(1, 1);
-		
+
 		/**
 		 * @private
 		 */

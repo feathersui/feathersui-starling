@@ -23,7 +23,7 @@ package feathers.controls
 
 		/**
 		 * Decelerates a bit faster than the normal amount.
-		 * 
+		 *
 		 * @see #NORMAL
 		 *
 		 * @productversion Feathers 3.0.0

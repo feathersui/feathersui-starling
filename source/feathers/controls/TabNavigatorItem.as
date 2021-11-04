@@ -145,7 +145,7 @@ package feathers.controls
 		 * as when it was hidden. However, the screen will also be kept in
 		 * memory even when it isn't displayed, limiting the resources that are
 		 * available for other views.
-		 * 
+		 *
 		 * <p>Using <code>screenClass</code> or <code>screenFunction</code>
 		 * instead of <code>screenDisplayObject</code> is the recommended best
 		 * practice. In general, <code>screenDisplayObject</code> should only be

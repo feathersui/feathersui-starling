@@ -41,7 +41,7 @@ package feathers.system
 		/**
 		 * The minimum physical width, in inches, of the device when in
 		 * portrait orientation to be considered a tablet.
-		 * 
+		 *
 		 * <p>When calling <code>isTablet()</code>, a device must meet the
 		 * requirements of both the minimum portrait width and the minimum
 		 * landscape width.</p>
@@ -56,7 +56,7 @@ package feathers.system
 		/**
 		 * The minimum physical size, in inches, of the device's larger side to
 		 * be considered a tablet.
-		 * 
+		 *
 		 * <p>When calling <code>isTablet()</code>, a device must meet the
 		 * requirements of both the minimum portrait width and the minimum
 		 * landscape width.</p>
@@ -76,7 +76,7 @@ package feathers.system
 		 * The minimum physical width, in inches, of the device when in
 		 * portrait orientation to be considered a large phone (sometimes
 		 * called a phablet).
-		 * 
+		 *
 		 * <p>When calling <code>isLargePhone()</code>, a device must meet the
 		 * requirements of both the minimum portrait width and the minimum
 		 * landscape width.</p>
@@ -91,7 +91,7 @@ package feathers.system
 		/**
 		 * The minimum physical size, in inches, of the device's larger side to
 		 * be considered a large phone (sometimes called a phablet).
-		 * 
+		 *
 		 * <p>When calling <code>isLargePhone()</code>, a device must meet the
 		 * requirements of both the minimum portrait width and the minimum
 		 * landscape width.</p>
@@ -122,7 +122,7 @@ package feathers.system
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Stage.html#fullScreenWidth Full description of flash.display.Stage.fullScreenWidth in Adobe's Flash Platform API Reference
 		 */
 		public static var screenPixelHeight:Number = NaN;
-		
+
 		/**
 		 * The screen density to be used by Feathers. Defaults to the value of
 		 * <code>flash.system.Capabilities.screenDPI</code>, but may be
@@ -200,7 +200,7 @@ package feathers.system
 		 * Determines if this device is probably a phone, based on the physical
 		 * width and height, in inches, calculated using the full-screen
 		 * dimensions and the screen density.
-		 * 
+		 *
 		 * <p>Returns <code>true</code> if the device is smaller than the
 		 * minimum dimensions of a tablet. Larger phones (sometimes called
 		 * phablets) are classified as phones when calling

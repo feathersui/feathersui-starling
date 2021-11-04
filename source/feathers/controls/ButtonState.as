@@ -47,7 +47,7 @@ package feathers.controls
 		/**
 		 * The disabled state, when the component's <code>isEnabled</code>
 		 * property is <code>false</code>.
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#isEnabled
 		 *
 		 * @productversion Feathers 3.0.0

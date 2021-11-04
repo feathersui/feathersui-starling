@@ -26,6 +26,6 @@ package feathers.layout
 		 * <code>layout()</code>.
 		 */
 		function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void;
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void;
 	}
 }

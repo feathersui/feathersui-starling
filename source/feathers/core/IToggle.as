@@ -24,7 +24,7 @@ package feathers.core
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #isSelected
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -42,7 +42,7 @@ package feathers.core
 		 * Indicates if the IToggle is selected or not.
 		 */
 		function get isSelected():Boolean;
-		
+
 		/**
 		 * @private
 		 */

@@ -9,7 +9,7 @@ package feathers.controls
 {
 	/**
 	 * Layout options for the default item renderers.
-	 * 
+	 *
 	 * @see feathers.controls.DefaultListItemRenderer
 	 * @see feathers.controls.DefaultGroupedListItemRenderer
 	 *

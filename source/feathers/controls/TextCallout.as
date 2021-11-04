@@ -124,7 +124,7 @@ package feathers.controls
 	 * @eventType starling.events.Event.CLOSE
 	 */
 	[Event(name="close",type="starling.events.Event")]
-	
+
 	/**
 	 * A special <code>Callout</code> designed to display text.
 	 *
@@ -133,7 +133,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-	 *
+	 * 
 	 * function button_triggeredHandler( event:Event ):void
 	 * {
 	 *     var button:Button = Button( event.currentTarget );
@@ -220,7 +220,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-		 *
+		 * 
 		 * function button_triggeredHandler( event:Event ):void
 		 * {
 		 *     var button:Button = Button( event.currentTarget );
@@ -253,7 +253,7 @@ package feathers.controls
 				factory = calloutOverlayFactory;
 				if(factory == null)
 				{
-					factory = PopUpManager.defaultOverlayFactory
+					factory = PopUpManager.defaultOverlayFactory;
 				}
 			}
 			PopUpManager.addPopUp(callout, isModal, false, factory);

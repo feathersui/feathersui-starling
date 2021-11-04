@@ -11,7 +11,7 @@ package feathers.data
 
 	/**
 	 * An <code>IListCollectionDataDescriptor</code> implementation for Vector.&lt;uint&gt;.
-	 * 
+	 *
 	 * @see ListCollection
 	 * @see IListCollectionDataDescriptor
 	 *
@@ -25,7 +25,7 @@ package feathers.data
 		public function VectorUintListCollectionDataDescriptor()
 		{
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -34,7 +34,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<uint>).length;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -43,7 +43,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<uint>)[index];
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -52,7 +52,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Vector.<uint>)[index] = item as uint;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -61,7 +61,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Vector.<uint>).insertAt(index, item as uint);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -79,7 +79,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			(data as Vector.<uint>).length = 0;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -88,7 +88,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<uint>).indexOf(item as uint);
 		}
-		
+
 		/**
 		 * @private
 		 */

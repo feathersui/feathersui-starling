@@ -36,9 +36,9 @@ package feathers.controls
 
 	/**
 	 * Configures a column in a <code>DataGrid</code> component.
-	 * 
+	 *
 	 * @see feathers.controls.DataGrid
-	 * 
+	 *
 	 * @productversion Feathers 3.4.0
 	 */
 	public class DataGridColumn extends EventDispatcher
@@ -126,7 +126,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _cellRendererFactory:Function = null;
-		
+
 		/**
 		 * A function called that is expected to return a new cell renderer.
 		 *
@@ -152,7 +152,7 @@ package feathers.controls
 		{
 			return this._cellRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -212,7 +212,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _headerRendererFactory:Function = null;
-		
+
 		/**
 		 * A function called that is expected to return a new header renderer.
 		 *
@@ -238,7 +238,7 @@ package feathers.controls
 		{
 			return this._headerRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -373,16 +373,16 @@ package feathers.controls
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( a:Object, b:Object ):int</pre>
-		 * 
+		 *
 		 * <p>The return value should be <code>-1</code> if the first item
 		 * should appear before the second item when the collection is sorted.
 		 * The return value should be <code>1</code> if the first item should
 		 * appear after the second item when the collection in sorted. Finally,
 		 * the return value should be <code>0</code> if both items have the
 		 * same sort order.</p>
-		 * 
+		 *
 		 * @default null
-		 * 
+		 *
 		 * @see #sortOrder
 		 */
 		public function get sortCompareFunction():Function
@@ -412,10 +412,10 @@ package feathers.controls
 		 * Indicates if the column may be sorted by triggering the
 		 * header renderer, and which direction it should be sorted
 		 * by default (ascending or descending).
-		 * 
+		 *
 		 * <p>Setting this property will not start a sort. It only provides the
 		 * initial order of the sort when triggered by the user.</p>
-		 * 
+		 *
 		 * <p>If the <code>sortableColumns</code> property of the
 		 * <code>DataGrid</code> is <code>false</code>, it takes precendence
 		 * over this property, and the column will not be sortable.</p>
@@ -426,7 +426,7 @@ package feathers.controls
 		 * column.sortOrder = SortOrder.NONE;</listing>
 		 *
 		 * @default feathers.data.SortOrder.ASCENDING
-		 * 
+		 *
 		 * @see feathers.controls.DataGrid#sortableColumns
 		 * @see #sortCompareFunction
 		 * @see feathers.data.SortOrder#ASCENDING
@@ -458,7 +458,7 @@ package feathers.controls
 
 		/**
 		 * Indicates if the column may be resized by dragging from its right edge.
-		 * 
+		 *
 		 * <p>If the <code>resizableColumns</code> property of the
 		 * <code>DataGrid</code> is <code>false</code>, it takes precendence
 		 * over this property, and the column will not be resizable.</p>
@@ -469,7 +469,7 @@ package feathers.controls
 		 * column.resizable = false;</listing>
 		 *
 		 * @default true
-		 * 
+		 *
 		 * @see feathers.controls.DataGrid#resizableColumns
 		 */
 		public function get resizable():Boolean

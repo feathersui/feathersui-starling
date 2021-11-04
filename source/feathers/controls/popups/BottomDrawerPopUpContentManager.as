@@ -149,7 +149,7 @@ package feathers.controls.popups
 		 * };</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Panel
 		 */
 		public var panelFactory:Function = null;
@@ -163,7 +163,7 @@ package feathers.controls.popups
 		 * manager.customPanelStyleName = "my-custom-pop-up-panel";</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Panel
 		 */
 		public var customPanelStyleName:String = null;
@@ -182,7 +182,7 @@ package feathers.controls.popups
 		 * };</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Button
 		 */
 		public var closeButtonFactory:Function = null;
@@ -196,7 +196,7 @@ package feathers.controls.popups
 		 * manager.customCloseButtonStyleName = "my-custom-close-button";</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Button
 		 */
 		public var customCloseButtonStyleName:String = null;
@@ -208,7 +208,7 @@ package feathers.controls.popups
 
 		/**
 		 * A prompt to display in the panel's title.
-		 * 
+		 *
 		 * <p>Note: If using this manager with a component that has its own
 		 * prompt (like <code>PickerList</code>), this value may be overridden
 		 * by the component.</p>
@@ -407,7 +407,7 @@ package feathers.controls.popups
 			//make sure the content is scaled the same as the source
 			var matrix:Matrix = Pool.getMatrix();
 			source.getTransformationMatrix(PopUpManager.root, matrix);
-			panel.scaleX = matrixToScaleX(matrix)
+			panel.scaleX = matrixToScaleX(matrix);
 			panel.scaleY = matrixToScaleY(matrix);
 			Pool.putMatrix(matrix);
 

@@ -43,13 +43,13 @@ package feathers.text
 	 * Used internally by <code>ITextRenderer</code> implementations to pass
 	 * around sets of <code>TextFormat</code> objects for a component's
 	 * different states.
-	 * 
+	 *
 	 * <p>A custom component that uses one or more text renderers is expected to
 	 * provide user-facing APIs to set its font styles using
 	 * separate <code>TextFormat</code> instances. The combined set of these
 	 * formats should be stored in a <code>FontStylesSet</code> that can be
 	 * passed into the text renderer.</p>
-	 * 
+	 *
 	 * @see feathers.core.ITextRenderer
 	 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 	 *
@@ -79,7 +79,7 @@ package feathers.text
 
 		/**
 		 * The default font format used to display the text.
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function get format():TextFormat
@@ -216,7 +216,7 @@ package feathers.text
 
 		/**
 		 * Sets the <code>TextFormat</code> for a specific state.
-		 * 
+		 *
 		 * <p>Pass in <code>null</code> to clear the format for the state.</p>
 		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
@@ -257,7 +257,7 @@ package feathers.text
 		 * state of the text renderer passed in. If the text renderer has a
 		 * <code>stateContext</code>, the state of the <code>stateContext</code>
 		 * takes precedent.
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		public function getTextFormatForTarget(target:IFeathersControl):TextFormat

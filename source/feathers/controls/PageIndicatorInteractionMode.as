@@ -9,7 +9,7 @@ package feathers.controls
 {
 	/**
 	 * Interaction modes for page indicators.
-	 * 
+	 *
 	 * @see feathers.controls.PageIndicator
 	 *
 	 * @productversion Feathers 3.0.0

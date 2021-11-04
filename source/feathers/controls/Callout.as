@@ -95,7 +95,7 @@ package feathers.controls
 	 * callout.bottomArrowGap = -4;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:bottomArrowSkin
 	 */
 	[Style(name="bottomArrowGap",type="Number")]
@@ -112,14 +112,14 @@ package feathers.controls
 	 * callout.bottomArrowSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:bottomArrowGap
 	 */
 	[Style(name="bottomArrowSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The horizontal alignment of the callout, relative to the origin.
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -144,7 +144,7 @@ package feathers.controls
 	 * callout.leftArrowGap = -4;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:leftArrowSkin
 	 */
 	[Style(name="leftArrowGap",type="Number")]
@@ -161,7 +161,7 @@ package feathers.controls
 	 * callout.leftArrowSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:leftArrowGap
 	 */
 	[Style(name="leftArrowSkin",type="starling.display.DisplayObject")]
@@ -176,7 +176,7 @@ package feathers.controls
 	 * callout.originGap = 10;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #origin
 	 */
 	[Style(name="originGap",type="Number")]
@@ -213,7 +213,7 @@ package feathers.controls
 	 * callout.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -279,7 +279,7 @@ package feathers.controls
 	 * callout.rightArrowGap = -4;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:rightArrowSkin
 	 */
 	[Style(name="rightArrowGap",type="Number")]
@@ -296,7 +296,7 @@ package feathers.controls
 	 * callout.rightArrowSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:rightArrowGap
 	 */
 	[Style(name="rightArrowSkin",type="starling.display.DisplayObject")]
@@ -331,14 +331,14 @@ package feathers.controls
 	 * callout.topArrowSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:topArrowGap
 	 */
 	[Style(name="topArrowSkin",type="starling.display.DisplayObject")]
 
 	/**
 	 * The vertical alignment of the callout, relative to the origin.
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -565,7 +565,7 @@ package feathers.controls
 		 *     //set properties here!
 		 *     return callout;
 		 * };</listing>
-		 * 
+		 *
 		 * <p>Note: the default callout factory sets the following properties:</p>
 		 *
 		 * <listing version="3.0">
@@ -609,7 +609,7 @@ package feathers.controls
 		 * the original. The provided width and height values are optional, and
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
-		 * 
+		 *
 		 * <p>The <code>supportedPositions</code> parameter should be a
 		 * <code>Vector.&lt;String&gt;</code> of values from the
 		 * <code>feathers.layout.RelativePosition</code> class. The positions
@@ -623,7 +623,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-		 *
+		 * 
 		 * function button_triggeredHandler( event:Event ):void
 		 * {
 		 *     var label:Label = new Label();
@@ -1151,7 +1151,7 @@ package feathers.controls
 		 * the callout. Setting either of these values manually will either have
 		 * no effect or unexpected behavior, so it is recommended that you
 		 * avoid modifying those properties.</p>
-		 * 
+		 *
 		 * <p>Note: The <code>origin</code> is excluded when using
 		 * <code>closeOnTouchBeganOutside</code> and <code>closeOnTouchEndedOutside</code>.
 		 * In other words, when the origin is touched, and either of these
@@ -1219,14 +1219,14 @@ package feathers.controls
 		 * constants from <code>feathers.layout.RelativePosition</code> or
 		 * <code>null</code>. If <code>null</code>, the callout will attempt to
 		 * position itself using values in the following order:
-		 * 
+		 *
 		 * <ul>
 		 *     <li><code>RelativePosition.BOTTOM</code></li>
 		 *     <li><code>RelativePosition.TOP</code></li>
 		 *     <li><code>RelativePosition.RIGHT</code></li>
 		 *     <li><code>RelativePosition.LEFT</code></li>
 		 * </ul>
-		 * 
+		 *
 		 * <p>Note: If the callout's origin is not set, the
 		 * <code>supportedPositions</code> property will be ignored.</p>
 		 *
@@ -2315,7 +2315,7 @@ package feathers.controls
 				this._ignoreContentResize = true;
 				this._content.width = oldContentWidth;
 				this._content.height = oldContentHeight;
-				this._ignoreContentResize = oldIgnoreContentResize
+				this._ignoreContentResize = oldIgnoreContentResize;
 			}
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
@@ -2386,7 +2386,7 @@ package feathers.controls
 				xPosition = this._leftArrowSkin.width + this._leftArrowGap;
 			}
 			var yPosition:Number = 0;
-			if(this._topArrowSkin !== null &&  this._arrowPosition === RelativePosition.TOP)
+			if(this._topArrowSkin !== null && this._arrowPosition === RelativePosition.TOP)
 			{
 				yPosition = this._topArrowSkin.height + this._topArrowGap;
 			}
@@ -2492,7 +2492,7 @@ package feathers.controls
 							bottomArrowSkinX = maxBottomArrowSkinX;
 						}
 					}
-					this._bottomArrowSkin.x = bottomArrowSkinX; 
+					this._bottomArrowSkin.x = bottomArrowSkinX;
 					this._bottomArrowSkin.y = yPosition + backgroundHeight + this._bottomArrowGap;
 				}
 				else //top

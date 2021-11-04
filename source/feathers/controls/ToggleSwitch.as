@@ -328,7 +328,7 @@ package feathers.controls
 	 * toggle.offText = "off";</listing>
 	 *
 	 * @default "OFF"
-	 * 
+	 *
 	 * @see #style:onText
 	 */
 	[Style(name="offText",type="String")]
@@ -344,7 +344,7 @@ package feathers.controls
 	 * toggle.paddingLeft = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:paddingRight
 	 */
 	[Style(name="paddingLeft",type="Number")]
@@ -476,7 +476,7 @@ package feathers.controls
 
 	/**
 	 * @copy feathers.core.IToggle#event:change
-	 * 
+	 *
 	 * @see #isSelected
 	 */
 	[Event(name="change",type="starling.events.Event")]
@@ -1127,7 +1127,7 @@ package feathers.controls
 		 * text renderer, and the properties will be passed down to the text
 		 * renderer when the toggle switch validates. If <code>null</code>, then
 		 * <code>defaultLabelProperties</code> is used instead.
-		 * 
+		 *
 		 * <p>The available properties depend on which
 		 * <code>ITextRenderer</code> implementation is returned by
 		 * <code>labelFactory</code> (possibly <code>onLabelFactory</code>
@@ -1188,7 +1188,7 @@ package feathers.controls
 		 * text renderer, and the properties will be passed down to the text
 		 * renderer when the toggle switch validates. If <code>null</code>, then
 		 * <code>defaultLabelProperties</code> is used instead.
-		 * 
+		 *
 		 * <p>The available properties depend on which
 		 * <code>ITextRenderer</code> implementation is returned by
 		 * <code>labelFactory</code> (possibly <code>offLabelFactory</code>
@@ -2031,7 +2031,7 @@ package feathers.controls
 		 * toggle.onTrackProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #onTrackFactory
 		 */
@@ -2186,7 +2186,7 @@ package feathers.controls
 		 * toggle.offTrackProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #offTrackFactory
 		 */
@@ -2340,7 +2340,7 @@ package feathers.controls
 		 * toggle.thumbProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #thumbFactory
 		 */
@@ -2883,7 +2883,7 @@ package feathers.controls
 				this._onTrackSkinExplicitWidth = this.onTrack.width;
 				this._onTrackSkinExplicitHeight = this.onTrack.height;
 				this._onTrackSkinExplicitMinWidth = this._onTrackSkinExplicitWidth;
-				this._onTrackSkinExplicitMinHeight = this._onTrackSkinExplicitHeight
+				this._onTrackSkinExplicitMinHeight = this._onTrackSkinExplicitHeight;
 			}
 		}
 
@@ -2937,7 +2937,7 @@ package feathers.controls
 				this._offTrackSkinExplicitWidth = this.offTrack.width;
 				this._offTrackSkinExplicitHeight = this.offTrack.height;
 				this._offTrackSkinExplicitMinWidth = this._offTrackSkinExplicitWidth;
-				this._offTrackSkinExplicitMinHeight = this._offTrackSkinExplicitHeight
+				this._offTrackSkinExplicitMinHeight = this._offTrackSkinExplicitHeight;
 			}
 		}
 

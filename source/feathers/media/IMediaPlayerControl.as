@@ -9,7 +9,7 @@ package feathers.media
 {
 	/**
 	 * An interface for sub-components added to a media player.
-	 * 
+	 *
 	 * @see feathers.media.IMediaPlayer
 	 * @see feathers.media.IAudioPlayer
 	 * @see feathers.media.IVideoPlayer

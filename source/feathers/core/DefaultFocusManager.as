@@ -70,7 +70,7 @@ package feathers.core
 	 * backwards when holding the shift key) or with the arrow keys on a d-pad
 	 * (such as those that appear on a smart TV remote control and some game
 	 * controllers).
-	 * 
+	 *
 	 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
 	 * Launcher on desktop for debugging purposes, set
 	 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>

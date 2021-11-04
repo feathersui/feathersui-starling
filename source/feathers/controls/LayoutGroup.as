@@ -40,7 +40,7 @@ package feathers.controls
 	 * group.backgroundDisabledSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
@@ -56,7 +56,7 @@ package feathers.controls
 	 * group.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -912,7 +912,7 @@ package feathers.controls
 		protected function handleLayoutResult():void
 		{
 			//the layout's dimensions are also the minimum dimensions
-			//we calculate the minimum dimensions for the background skin in 
+			//we calculate the minimum dimensions for the background skin in
 			//refreshViewPortBounds() and let the layout handle it
 			var viewPortWidth:Number = this._layoutResult.viewPortWidth;
 			var viewPortHeight:Number = this._layoutResult.viewPortHeight;

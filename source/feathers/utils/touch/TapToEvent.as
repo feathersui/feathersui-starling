@@ -33,10 +33,10 @@ package feathers.utils.touch
 	 *         super();
 	 *         this._tapToEvent = new TapToEvent(this, Event.TRIGGERED);
 	 *     }
-	 *     
+	 * 
 	 *     private var _tapToEvent:TapToEvent;
 	 * }</listing>
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 * @see feathers.utils.touch.TapToSelect
 	 * @see feathers.utils.touch.LongPress

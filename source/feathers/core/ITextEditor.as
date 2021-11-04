@@ -28,7 +28,7 @@ package feathers.core
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #text
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -200,7 +200,7 @@ package feathers.core
 
 		/**
 		 * Determines if the text is editable.
-		 * 
+		 *
 		 * @see #isSelectable
 		 */
 		function get isEditable():Boolean;
@@ -240,7 +240,7 @@ package feathers.core
 		 * The index of the first character of the selection. If no text is
 		 * selected, then this is the value of the caret index. This value will
 		 * always be smaller than <code>selectionEndIndex</code>.
-		 * 
+		 *
 		 * @see #selectionEndIndex
 		 */
 		function get selectionBeginIndex():int;
@@ -262,7 +262,7 @@ package feathers.core
 		 * <p>Warning: The <code>fontStyles</code> property may be ignored if
 		 * more advanced styles defined by the text renderer implementation have
 		 * been set.</p>
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 */
 		function get fontStyles():FontStylesSet;

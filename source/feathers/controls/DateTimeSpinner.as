@@ -226,7 +226,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #value
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -427,7 +427,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var meridiemList:SpinnerList;
-		
+
 		/**
 		 * @private
 		 */
@@ -450,9 +450,9 @@ package feathers.controls
 		 * The locale used to display the date. Supports values defined by
 		 * Unicode Technical Standard #35, such as <code>"en_US"</code>,
 		 * <code>"fr_FR"</code> or <code>"ru_RU"</code>.
-		 * 
+		 *
 		 * @default flash.globalization.LocaleID.DEFAULT
-		 * 
+		 *
 		 * @see http://unicode.org/reports/tr35/ Unicode Technical Standard #35
 		 */
 		public function get locale():String
@@ -604,7 +604,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * spinner.minuteStep = 15;</listing>
-		 * 
+		 *
 		 * @default 1
 		 */
 		public function get minuteStep():int
@@ -636,9 +636,9 @@ package feathers.controls
 
 		/**
 		 * Determines which parts of the <code>Date</code> value may be edited.
-		 * 
+		 *
 		 * @default feathers.controls.DateTimeMode.DATE_AND_TIME
-		 * 
+		 *
 		 * @see feathers.controls.DateTimeMode#DATE_AND_TIME
 		 * @see feathers.controls.DateTimeMode#DATE
 		 * @see feathers.controls.DateTimeMode#TIME
@@ -855,7 +855,7 @@ package feathers.controls
 		 * properties of the list sub-components when they are first created.
 		 * For instance, if you are skinning Feathers components without a
 		 * theme, you might use this factory to style the list sub-components.
-		 * 
+		 *
 		 * <p><strong>Warning:</strong> The <code>itemRendererFactory</code>
 		 * and <code>customItemRendererStyleName</code> properties of the
 		 * <code>SpinnerList</code> should not be set in the
@@ -1292,7 +1292,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * spinner.scrollToDate( new Date(2016, 0, 1), 1.5 );</listing>
-		 * 
+		 *
 		 * @see #style:scrollDuration
 		 */
 		public function scrollToDate(date:Date, animationDuration:Number = NaN):void
@@ -1427,7 +1427,7 @@ package feathers.controls
 			this.listGroup.height = this._explicitHeight;
 			this.listGroup.minWidth = this._explicitMinWidth;
 			this.listGroup.minHeight = this._explicitMinHeight;
-			this.listGroup.validate();//minimum dimensions
+			this.listGroup.validate(); //minimum dimensions
 
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
@@ -2298,7 +2298,7 @@ package feathers.controls
 				hoursCollection.updateAll();
 			}
 			var minutesCollection:IListCollection = this.minutesList ? this.minutesList.dataProvider : null;
-			if(minutesCollection && (oldMinMinutes != this._minMinute || oldMaxMinutes!= this._maxMinute))
+			if(minutesCollection && (oldMinMinutes != this._minMinute || oldMaxMinutes != this._maxMinute))
 			{
 				minutesCollection.updateAll();
 			}
@@ -2392,7 +2392,7 @@ package feathers.controls
 					DAYS_IN_MONTH[MAX_MONTH_VALUE], MAX_HOURS_VALUE_24HOURS,
 					MAX_MINUTES_VALUE);
 			}
-			else // date
+			else //date
 			{
 				//for 2015, this would give us 2150
 				//for 2065, this would give us 2200

@@ -80,7 +80,7 @@ package feathers.controls
 	 * button.scaleWhenSelected = 0.9;</listing>
 	 *
 	 * @default 1
-	 * 
+	 *
 	 * @see #isSelected
 	 * @see #getScaleForState()
 	 * @see #setScaleForState()
@@ -504,7 +504,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.isToggle = true;
 		 * button.isSelected = true;</listing>
-		 * 
+		 *
 		 * <p><strong>Warning:</strong> Do not listen to
 		 * <code>Event.TRIGGERED</code> to be notified when the
 		 * <code>isSelected</code> property changes. You must listen to

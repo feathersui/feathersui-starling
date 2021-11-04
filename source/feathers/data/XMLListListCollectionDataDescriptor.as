@@ -13,7 +13,7 @@ package feathers.data
 	 * An <code>IListCollectionDataDescriptor</code> implementation for
 	 * XMLLists. Has some limitations due to certain things that cannot be done
 	 * to XMLLists.
-	 * 
+	 *
 	 * @see ListCollection
 	 * @see IListCollectionDataDescriptor
 	 *
@@ -27,7 +27,7 @@ package feathers.data
 		public function XMLListListCollectionDataDescriptor()
 		{
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -36,7 +36,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as XMLList).length();
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -45,7 +45,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return data[index];
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -54,7 +54,7 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			data[index] = XML(item);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -62,7 +62,7 @@ package feathers.data
 		{
 			this.checkForCorrectDataType(data);
 
-			//wow, this is weird. unless I have failed epicly, I can find no 
+			//wow, this is weird. unless I have failed epicly, I can find no
 			//other way to insert an element into an XMLList at a specific index.
 			var dataClone:XMLList = (data as XMLList).copy();
 			data[index] = item;
@@ -72,7 +72,7 @@ package feathers.data
 				data[i + 1] = dataClone[i];
 			}
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -97,7 +97,7 @@ package feathers.data
 				delete data[0];
 			}
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -116,7 +116,7 @@ package feathers.data
 			}
 			return -1;
 		}
-		
+
 		/**
 		 * @private
 		 */

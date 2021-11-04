@@ -264,7 +264,7 @@ package feathers.controls.popups
 			//make sure the content is scaled the same as the source
 			var matrix:Matrix = Pool.getMatrix();
 			source.getTransformationMatrix(PopUpManager.root, matrix);
-			content.scaleX = matrixToScaleX(matrix)
+			content.scaleX = matrixToScaleX(matrix);
 			content.scaleY = matrixToScaleY(matrix);
 			Pool.putMatrix(matrix);
 
@@ -481,7 +481,6 @@ package feathers.controls.popups
 				this.touchPointID = touch.id;
 			}
 		}
-
 
 	}
 }

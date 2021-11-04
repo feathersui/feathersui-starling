@@ -31,7 +31,7 @@ package feathers.utils.display
 
 		/**
 		 * Adds a new scale for the specified density.
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * selector.addScaleForDensity( 160, 1 );
 		 * selector.addScaleForDensity( 240, 1.5 );

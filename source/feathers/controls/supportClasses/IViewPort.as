@@ -11,7 +11,7 @@ package feathers.controls.supportClasses
 
 	/**
 	 * Interface used for the view port of scrolling containers.
-	 * 
+	 *
 	 * @see feathers.controls.Scroller
 	 *
 	 * @productversion Feathers 1.0.0

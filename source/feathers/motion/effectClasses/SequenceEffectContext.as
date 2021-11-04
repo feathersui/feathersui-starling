@@ -12,9 +12,9 @@ package feathers.motion.effectClasses
 	/**
 	 * An effect context for running multiple effects one after another, in
 	 * sequence.
-	 * 
+	 *
 	 * @productversion Feathers 3.5.0
-	 * 
+	 *
 	 * @see feathers.motion.Sequence
 	 */
 	public class SequenceEffectContext extends BaseEffectContext implements IEffectContext

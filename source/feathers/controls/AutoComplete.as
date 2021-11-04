@@ -243,7 +243,7 @@ package feathers.controls
 		 *     "Orange",
 		 *     "Watermelon"
 		 * ]));</listing>
-		 * 
+		 *
 		 * @default null
 		 */
 		public function get source():IAutoCompleteSource

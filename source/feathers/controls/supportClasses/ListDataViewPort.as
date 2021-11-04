@@ -989,7 +989,7 @@ package feathers.controls.supportClasses
 
 			if(scrollInvalid && this.hasEventListener(Event.ENTER_FRAME, this.dragScroll_enterFrameHandler))
 			{
-				this.refreshDropIndicator(this._dragLocalX, this._dragLocalY)
+				this.refreshDropIndicator(this._dragLocalX, this._dragLocalY);
 			}
 		}
 
@@ -1822,7 +1822,7 @@ package feathers.controls.supportClasses
 			var dropX:Number = this._horizontalScrollPosition + localX;
 			var dropY:Number = this._verticalScrollPosition + localY;
 			var dropIndex:int = layout.getDropIndex(dropX, dropY,
-					this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
+				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight);
 			layout.positionDropIndicator(this._dropIndicatorSkin, dropIndex,
 				dropX, dropY, this._layoutItems, this.actualVisibleWidth, this.actualVisibleHeight);
 			this.addChild(this._dropIndicatorSkin);
@@ -2280,7 +2280,7 @@ package feathers.controls.supportClasses
 						avatar.alpha = 0.8;
 
 						this._droppedOnSelf = false;
-						point = touch.getLocation(DisplayObject(itemRenderer),  Pool.getPoint());
+						point = touch.getLocation(DisplayObject(itemRenderer), Pool.getPoint());
 						DragDropManager.startDrag(this._owner, touch, dragData, DisplayObject(avatar), -point.x, -point.y);
 						Pool.putPoint(point);
 						exclusiveTouch.claimTouch(this._dragTouchPointID, DisplayObject(itemRenderer));

@@ -132,11 +132,11 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * object.nextUpFocus = otherObject;</listing>
-		 * 
+		 *
 		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
 		 * Launcher on desktop for debugging purposes, set
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
-		 * 
+		 *
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
 		 *
 		 * @productversion Feathers 3.4.0
@@ -159,11 +159,11 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * object.nextRightFocus = otherObject;</listing>
-		 * 
+		 *
 		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
 		 * Launcher on desktop for debugging purposes, set
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
-		 * 
+		 *
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
 		 *
 		 * @productversion Feathers 3.4.0
@@ -186,11 +186,11 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * object.nextDownFocus = otherObject;</listing>
-		 * 
+		 *
 		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
 		 * Launcher on desktop for debugging purposes, set
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
-		 * 
+		 *
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
 		 *
 		 * @productversion Feathers 3.4.0
@@ -213,11 +213,11 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * object.nextLeftFocus = otherObject;</listing>
-		 * 
+		 *
 		 * <p>To simulate <code>KeyLocation.D_PAD</code> in the AIR Debug
 		 * Launcher on desktop for debugging purposes, set
 		 * <code>DeviceCapabilities.simulateDPad</code> to <code>true</code>.</p>
-		 * 
+		 *
 		 * @see feathers.system.DeviceCapabilities#simulateDPad
 		 *
 		 * @productversion Feathers 3.4.0

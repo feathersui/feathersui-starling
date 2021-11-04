@@ -27,7 +27,7 @@ package feathers.utils
 	 * or if the desktop native window resizes,
 	 * <code>ScreenDensityScaleFactorManager</code> will automatically resize
 	 * Starling based on the new dimensions.
-	 * 
+	 *
 	 * <p>When using <code>ScreenDensityScaleFactorManager</code>, the Starling
 	 * stage dimensions will not be exactly the same on all devices. When
 	 * comparing two different phones, the stage dimensions will be similar, but
@@ -35,7 +35,7 @@ package feathers.utils
 	 * Apple iPhone 5 in portrait orientation will be 320x568, but the stage
 	 * dimensions on a Google Nexus 5 will be 360x640. With this in mind, be
 	 * sure to use "fluid" layouts to account for the differences.</p>
-	 * 
+	 *
 	 * <p>It's also important to understand that tablets will have much larger
 	 * Starling stage dimensions than phones.
 	 * <code>ScreenDensityScaleFactorManager</code> is designed to behave more
@@ -50,19 +50,19 @@ package feathers.utils
 	 * <listing version="3.0">
 	 * this._starling = new Starling( RootClass, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE );
 	 * this._scaler = new ScreenDensityScaleFactorManager(this._starling);</listing>
-	 * 
+	 *
 	 * <strong>How <code>contentScaleFactor</code> is calculated</strong>
-	 * 
+	 *
 	 * <p>The device's screen density (sometimes referred to as DPI or PPI) is
 	 * used to calculate an appropriate <code>contentScaleFactor</code> value.
 	 * The calculation is inspired by native apps on Google's Android operating
 	 * system where "density-independent pixels" are used for layout. You might
 	 * consider this an advanced form of the techniques described in
 	 * <a href="http://wiki.starling-framework.org/manual/multi-resolution_development">Starling Multi-Resolution Development</a>.</p>
-	 * 
+	 *
 	 * <p>The following chart shows how different screen densities map to
 	 * different <code>contentScaleFactor</code> values on both iOS and Android:</p>
-	 * 
+	 *
 	 * <table class="innertable">
 	 * <tr><th>Android</th><th>iOS</th><th>Density</th><th>Scale Factor</th></tr>
 	 * <tr><td>ldpi</td><td></td><td>120</td><td>0.75</td></tr>
@@ -72,7 +72,7 @@ package feathers.utils
 	 * <tr><td>xxhdpi</td><td>Retina HD (&#64;3x)</td><td>480</td><td>3</td></tr>
 	 * <tr><td>xxxhdpi</td><td></td><td>640</td><td>4</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * <p>The density values in the table above are approximate. The screen
 	 * density of an iPhone 5 is 326, so it uses the scale factor from the
 	 * "xhdpi" bucket because 326 is closer to 320 than it is to 480.</p>
@@ -85,9 +85,9 @@ package feathers.utils
 	 * because it makes more sense for Starling to use the same scale factor as
 	 * native apps on iPad, this class makes a special exception just for
 	 * them.</p>
-	 * 
+	 *
 	 * <strong>Loading Assets</strong>
-	 * 
+	 *
 	 * <p>After creating <code>ScreenDensityScaleFactorManager</code>, you can
 	 * use Starling's <code>contentScaleFactor</code> property to determine
 	 * which set of assets to load:</p>
@@ -105,12 +105,12 @@ package feathers.utils
 	 *     var assets1x:File = File.applicationDirectory.resolvePath( "assets/1x" );
 	 *     assetManager.enqueue( assets1x );
 	 * }</listing>
-	 * 
+	 *
 	 * <p>Providing assets for every scale factor is optional because Starling
 	 * will automatically resize any textures that have been given a different
 	 * <code>scale</code> than the current <code>contentScaleFactor</code> when
 	 * they are rendered to the screen.</p>
-	 * 
+	 *
 	 * <p>For example, since "ldpi" devices with a low screen density typically
 	 * aren't manufactured anymore, it might not be worth spending time
 	 * designing a set of assets specifically for scale factor 0.75. Instead,
@@ -125,7 +125,7 @@ package feathers.utils
 	 * bit more memory at runtime than strictly necessary on these devices, but
 	 * you won't need to include as many image files with your app, so its
 	 * download size will be smaller.</p>
-	 * 
+	 *
 	 * <p>Similarly, lower resolution textures can be scaled up on devices with
 	 * a higher <code>contentScaleFactor</code>. It is said that the human eye
 	 * starts to have difficulty perceiving every individual pixel when a
@@ -134,7 +134,7 @@ package feathers.utils
 	 * may not be strictly necessary. You can often load assets for scale factor
 	 * 2 on these higher-density devices because the difference is so difficult
 	 * to see with the naked eye.</p>
-	 * 
+	 *
 	 * @see http://wiki.starling-framework.org/manual/multi-resolution_development Starling Multi-Resolution Development
 	 *
 	 * @productversion Feathers 2.2.0

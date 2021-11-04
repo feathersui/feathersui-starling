@@ -175,7 +175,7 @@ package feathers.data
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #updateAll()
 	 *
 	 * @eventType feathers.events.CollectionEventType.UPDATE_ALL
@@ -214,8 +214,8 @@ package feathers.data
 		protected var _vectorData:Object = null;
 
 		/**
-		 * The <code>Vector</code> data source for this collection. 
-		 * 
+		 * The <code>Vector</code> data source for this collection.
+		 *
 		 * <p>Note: Ideally, this property would be typed as something other
 		 * than <code>Object</code>, but there is no type that will accept all
 		 * <code>Vector</code> objects without requiring a cast first.</p>
@@ -323,7 +323,7 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#updateItemAt()
-		 * 
+		 *
 		 * @see #updateAll()
 		 */
 		public function updateItemAt(index:int, ...rest:Array):void
@@ -467,7 +467,7 @@ package feathers.data
 
 		/**
 		 * @copy feathers.data.IHierarchicalCollection#removeItemAt()
-		 * 
+		 *
 		 * @see #removeItemAtLocation()
 		 *
 		 * @throws RangeError Branch not found at specified location
@@ -533,7 +533,7 @@ package feathers.data
 			var location:Vector.<int> = this.getItemLocation(item);
 			if(location !== null)
 			{
-				this.removeItemAtLocation(location)
+				this.removeItemAtLocation(location);
 			}
 		}
 
