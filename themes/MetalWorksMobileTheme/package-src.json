@@ -8,8 +8,8 @@
 	"version": "4.1.1",
 	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.1.1/feathersui_MetalWorksMobileTheme-source_4.1.1.airpackage",
 	"dependencies": [
-		"starling-source:2.7.0",
-		"feathersui-source:4.1.1"
+		"starling-source:2.x.x",
+		"feathersui-source:4.1.x"
 	],
 	"parameters": [],
 	"tags": ["theme", "feathers", "starling"],
