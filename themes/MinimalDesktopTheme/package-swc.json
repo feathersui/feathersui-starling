@@ -7,6 +7,7 @@
 	"type": "swc",
 	"version": "4.1.1",
 	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.1.1/feathersui_MinimalDesktopTheme_4.1.1.airpackage",
+	"publishedAt": "2021-11-19T00:00:00.000Z",
 	"dependencies": [
 		"starling:2.x.x",
 		"feathersui:4.1.x"
