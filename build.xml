@@ -9,7 +9,7 @@
 	<property file="./build.properties"/>
 	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit}"/>
 
-	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
+	<target name="swc" depends="-feathers,-cleanup" description="builds .swc only"/>
 
 	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
 
@@ -22,10 +22,10 @@
 
 		<copy overwrite="true" todir="${swc.output}">
 			<fileset dir="${output.path}">
-				<include name="feathers.swc"/>
+				<include name="${swc.file}"/>
 			</fileset>
 		</copy>
-		<delete file="${output.path}/feathers.swc"/>
+		<delete file="${output.path}/${swc.file}"/>
 	</target>
 
 	<target name="package" depends="full" description="builds everything and creates a zip file for distribution">
@@ -36,6 +36,11 @@
 		<delete includeemptydirs="true">
 			<fileset dir="${output.path}" excludes="feathers-ui-${feathers.version}.zip"/>
 		</delete>
+	</target>
+
+	<target name="apm" depends="-apm,-cleanup" description="builds apm package">
+		<delete file="${output.path}/${swc.file}"/>
+		<delete dir="${themes.output}" includeemptydirs="true"/>
 	</target>
 
 	<target name="-prepare">
@@ -70,14 +75,14 @@
 	</target>
 
 	<target name="-feathers" depends="-starling">
-		<echo message="Building feathers.swc"/>
+		<echo message="Building ${swc.file}"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-sources+=${source.root}"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-output=${output.path}/feathers.swc"/>
+			<arg value="-output=${output.path}/${swc.file}"/>
 		</java>
 	</target>
 
@@ -113,7 +118,7 @@
 			<arg value="-source-path+=${themes.root}/AeonDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/AeonDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"/>
 		</java>
 
@@ -124,7 +129,7 @@
 			<arg value="-source-path+=${themes.root}/MetalWorksDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"/>
 		</java>
 
@@ -135,7 +140,7 @@
 			<arg value="-source-path+=${themes.root}/MetalWorksMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MetalWorksMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"/>
 		</java>
 
@@ -146,7 +151,7 @@
 			<arg value="-source-path+=${themes.root}/MinimalDesktopTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalDesktopTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"/>
 		</java>
 
@@ -157,7 +162,7 @@
 			<arg value="-source-path+=${themes.root}/MinimalMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/MinimalMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"/>
 		</java>
 
@@ -168,7 +173,7 @@
 			<arg value="-source-path+=${themes.root}/TopcoatLightMobileTheme/source"/>
 			<arg value="-include-sources+=${themes.root}/TopcoatLightMobileTheme/source"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
-			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
 			<arg value="-output=${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"/>
 		</java>
 	</target>
@@ -395,5 +400,87 @@
 			haltonfailure="true"
 			verbose="true"
 			toDir="${dependency.output}"/>
+	</target>
+    
+    <macrodef name="apm">
+        <attribute name="src"/>
+        <attribute name="swc"/>
+        <attribute name="readme"/>
+        <attribute name="changelog" default=""/>
+        <attribute name="package-swc"/>
+        <attribute name="package-src"/>
+            <sequential>
+				<fail unless="apm" message="Path to apm executable is missing."/>
+				<copy overwrite="true" file="@{swc}" todir="${output.path}/apm/swc"/>
+				<copy overwrite="true" file="@{package-swc}" tofile="${output.path}/apm/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
+
+				<copy overwrite="true" todir="${output.path}/apm-src/src">
+					<fileset dir="@{src}"/>
+				</copy>
+				<copy overwrite="true" file="@{package-src}" tofile="${output.path}/apm-src/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm-src">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
+
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm"/>
+				</exec>
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm-src"/>
+				</exec>
+
+				<delete includeemptydirs="true">
+					<fileset dir="${output.path}/apm"/>
+					<fileset dir="${output.path}/apm-src"/>
+				</delete>
+        </sequential>
+    </macrodef>
+
+	<target name="-apm" depends="-feathers,-themes">
+		<apm src="${source.root}"
+			swc="${output.path}/${swc.file}"
+			readme="README.md"
+			changelog="CHANGELOG.md"
+			package-swc="package-swc.json"
+			package-src="package-src.json"/>
+		<apm src="${themes.root}/AeonDesktopTheme/source"
+			swc="${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"
+			readme="${themes.root}/AeonDesktopTheme/README.md"
+			package-swc="${themes.root}/AeonDesktopTheme/package-swc.json"
+			package-src="${themes.root}/AeonDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksDesktopTheme/source"
+			swc="${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"
+			readme="${themes.root}/MetalWorksDesktopTheme/README.md"
+			package-swc="${themes.root}/MetalWorksDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksMobileTheme/source"
+			swc="${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"
+			readme="${themes.root}/MetalWorksMobileTheme/README.md"
+			package-swc="${themes.root}/MetalWorksMobileTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalDesktopTheme/source"
+			swc="${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"
+			readme="${themes.root}/MinimalDesktopTheme/README.md"
+			package-swc="${themes.root}/MinimalDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MinimalDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalMobileTheme/source"
+			swc="${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"
+			readme="${themes.root}/MinimalMobileTheme/README.md"
+			package-swc="${themes.root}/MinimalMobileTheme/package-swc.json"
+			package-src="${themes.root}/MinimalMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/TopcoatLightMobileTheme/source"
+			swc="${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"
+			readme="${themes.root}/TopcoatLightMobileTheme/README.md"
+			package-swc="${themes.root}/TopcoatLightMobileTheme/package-swc.json"
+			package-src="${themes.root}/TopcoatLightMobileTheme/package-src.json"/>
 	</target>
 </project>
