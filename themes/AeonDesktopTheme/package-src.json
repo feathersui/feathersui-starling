@@ -7,6 +7,7 @@
 	"type": "src",
 	"version": "4.2.0",
 	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_AeonDesktopTheme-source_4.2.0.airpackage",
+	"publishedAt": "2021-11-19T00:00:00.000Z",
 	"dependencies": [
 		"starling-source:2.x.x",
 		"feathersui-source:4.2.x"
