@@ -8,8 +8,8 @@
 	"version": "4.2.0",
 	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_AeonDesktopTheme_4.2.0.airpackage",
 	"dependencies": [
-		"starling:2.7.0",
-		"feathersui:4.2.0"
+		"starling:2.x.x",
+		"feathersui:4.2.x"
 	],
 	"parameters": [],
 	"tags": ["theme", "feathers", "starling"],

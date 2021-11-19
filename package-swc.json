@@ -7,7 +7,7 @@
   "type": "swc",
   "version": "4.2.0",
   "sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_4.2.0.airpackage",
-  "dependencies": ["starling:2.7.0"],
+  "dependencies": ["starling:2.x.x"],
   "parameters": [],
   "tags": ["components", "gui", "starling", "ui", "widgets"],
   "status": "release",
