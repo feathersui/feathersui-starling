@@ -1,6 +1,6 @@
-# Feathers UI Release Notes
+# Feathers UI (Starling version)
 
-Noteworthy changes in official, stable releases of [Feathers UI](https://feathersui.com/).
+Noteworthy changes in official, stable releases of [Feathers UI (Starling version)](https://feathersui.com/learn/as3-starling/).
 
 ## 4.1.1 - May 2020
 
