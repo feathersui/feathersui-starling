@@ -352,6 +352,8 @@ package feathers.controls.supportClasses
 			this.refreshSelectionEvents();
 
 			super.draw();
+			
+			this._updateForDataReset = false;
 		}
 
 		/**
