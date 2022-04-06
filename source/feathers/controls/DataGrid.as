@@ -2112,7 +2112,7 @@ package feathers.controls
 				}
 				var size:Number = this._customColumnSizes[i];
 				totalWidth += size;
-				indices[i] = i;
+				indices.push(i);
 			}
 			if(totalWidth == availableWidth)
 			{
