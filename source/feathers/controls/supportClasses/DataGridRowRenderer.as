@@ -352,8 +352,6 @@ package feathers.controls.supportClasses
 			this.refreshSelectionEvents();
 
 			super.draw();
-			
-			this._updateForDataReset = false;
 		}
 
 		/**
@@ -393,6 +391,8 @@ package feathers.controls.supportClasses
 					this.freeInactiveCellRenderers(storage);
 				}
 			}
+			
+			this._updateForDataReset = false;
 		}
 
 		/**
