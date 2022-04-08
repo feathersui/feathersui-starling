@@ -391,6 +391,8 @@ package feathers.controls.supportClasses
 					this.freeInactiveCellRenderers(storage);
 				}
 			}
+			
+			this._updateForDataReset = false;
 		}
 
 		/**
