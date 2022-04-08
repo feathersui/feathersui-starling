@@ -2101,6 +2101,7 @@ package feathers.controls
 			var count:int = this._customColumnSizes.length;
 			var totalWidth:Number = 0;
 			var indices:Vector.<int> = new <int>[];
+			var currentIndex:int = 0;
 			for(var i:int = 0; i < count; i++)
 			{
 				var column:DataGridColumn = DataGridColumn(this._columns.getItemAt(i));
@@ -2112,7 +2113,7 @@ package feathers.controls
 				}
 				var size:Number = this._customColumnSizes[i];
 				totalWidth += size;
-				indices[i] = i;
+				indices[currentIndex++] = i;
 			}
 			if(totalWidth == availableWidth)
 			{
