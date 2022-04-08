@@ -2113,7 +2113,8 @@ package feathers.controls
 				}
 				var size:Number = this._customColumnSizes[i];
 				totalWidth += size;
-				indices[currentIndex++] = i;
+				indices[currentIndex] = i;
+				currentIndex++;
 			}
 			if(totalWidth == availableWidth)
 			{
