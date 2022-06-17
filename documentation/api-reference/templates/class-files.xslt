@@ -127,6 +127,7 @@
 										<xsl:value-of select="$name"/>
 										<xsl:call-template name="getPageTitlePostFix"/>
 									</title>
+									<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 									<xsl:if test="$showIncludeExamples='true' and apiClassifierDetail/example/codeblock">
 										<script src="{$baseRef}AC_OETags.js" type="text/javascript"/>
 									</xsl:if>

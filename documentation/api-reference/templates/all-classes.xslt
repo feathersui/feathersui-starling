@@ -30,6 +30,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<base target="classFrame"/>
 				<xsl:call-template name="getStyleLink">
 					<xsl:with-param name="link" select="asdoc/link"/>

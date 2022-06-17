@@ -21,6 +21,7 @@
 			<head>
 				<title><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'PackageList']]/entry[2]/p"/> - <xsl:value-of select="$title-base"/></title>
 				<base target="classFrame"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<xsl:call-template name="getStyleLink">
 					<xsl:with-param name="link" select="asdoc/link"/>
 				</xsl:call-template>
