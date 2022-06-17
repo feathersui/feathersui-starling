@@ -576,3 +576,85 @@ html>body .listing pre
 .showInheritedSkinPart {
 	display: inline;
 }
+
+/****** start mobile tweaks ******/
+.titleTable tr td.titleTableTopNav a,
+	.titleTable tr td.titleTableSubNav a {
+	padding-right: 6px;
+	padding-left: 6px;
+	border-right: solid 1px #000;
+}
+.titleTable tr td.titleTableTopNav a:last-of-type,
+	.titleTable tr td.titleTableSubNav a:last-of-type,
+	.titleTable tr td.titleTableTopNav a#framesLink1,
+	.titleTable tr td.titleTableTopNav a#noFramesLink11 {
+	border-right: none;
+}
+@media only screen and (max-width: 600px) {
+	.titleTable tr {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	.titleTable tr.titleTableRow2 {
+		height: auto;
+		background-size: contain;
+	}
+	.titleTable tr td {
+		display: flex;
+		align-items: center;
+		background-size: contain;
+		align-self: stretch;
+		min-height: 44px;
+		flex-grow: 1;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.titleTable tr td.titleTableTitle {
+		white-space: normal;
+		flex-grow: 2;
+	}
+	.titleTable tr td.titleTableLogo {
+		display: none;
+	}
+	.titleTable tr td.titleTableSubTitle {
+		flex-grow: 2;
+	}
+	.titleTable tr td.titleTableTopNav {
+		justify-content: end;
+	}
+	.titleTable tr td.titleTableSubNav {
+		justify-content: end;
+	}
+	.MainContent, .summarySection, .detailHeader, .detailBody {
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+	.summaryTable {
+		overflow-x: auto;
+		display: block;
+	}
+	.detailHeader tr {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+	}
+	.detailHeaderName {
+		word-break: break-word;
+		white-space: normal;
+	}
+	.allIndexTable {
+		overflow-x: auto;
+		display: block;
+	}
+	.idxrow,
+	.seeAlso a,
+	.detailBody code {
+		/* word-break: normal; */
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+	.titleTable tr td.titleTableSearch {
+		display: none;
+	}
+}

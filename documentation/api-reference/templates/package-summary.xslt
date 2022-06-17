@@ -43,6 +43,7 @@
 					<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = $localTitle]]/entry[2]/p"/>
 					<xsl:call-template name="getPageTitlePostFix"/>
 				</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<xsl:call-template name="getStyleLink">
 					<xsl:with-param name="link" select="asdoc/link"/>
 				</xsl:call-template>

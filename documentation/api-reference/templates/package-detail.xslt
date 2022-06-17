@@ -96,6 +96,7 @@
 										<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Summary']]/entry[2]/p"/>
 										<xsl:call-template name="getPageTitlePostFix"/>
 									</title>
+									<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 								</head>
 								<xsl:element name="body">
 									<xsl:if test="$isEclipse">

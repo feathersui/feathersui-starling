@@ -142,6 +142,7 @@
 					<xsl:value-of select="localizedIndex"/>
 					<xsl:call-template name="getPageTitlePostFix"/>
 				</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<xsl:call-template name="getStyleLink">
 					<xsl:with-param name="link" select="asdoc/link"/>
 				</xsl:call-template>
@@ -184,7 +185,7 @@
 				</xsl:call-template>
 				<div class="MainContent">
 					<br/>
-					<table border="0" cellspacing="0" cellpadding="0">
+					<table class="allIndexTable" border="0" cellspacing="0" cellpadding="0">
 						<xsl:for-each select="$displayLetters">
 							<tr>
 								<td colspan="2">
@@ -233,7 +234,7 @@
 												</xsl:choose>
 											</xsl:if>
 										</xsl:if>
-										<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;&nbsp;]]></xsl:text>
+										<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp; ]]></xsl:text>
 									</xsl:for-each>
 								</td>
 							</tr>
@@ -961,7 +962,7 @@
 													</xsl:choose>
 												</xsl:if>
 											</xsl:if>
-											<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;&nbsp;]]></xsl:text>
+											<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp; ]]></xsl:text>
 										</xsl:for-each>
 									</td>
 								</tr>
