@@ -416,136 +416,52 @@
 			<span>
 
 				<xsl:if test="$showProperties">
-					<a href="#propertySummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Properties']]/entry[2]/p"/>
-					</a>
-					<xsl:if
-						test="$showPackageProperties or $showConstructors or $showMethods or $showPackageFunctions or $showEvents or $showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#propertySummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Properties']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showPackageProperties">
-					<a href="package.html#propertySummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Properties']]/entry[2]/p"/>
-					</a>
-					<xsl:if
-						test="$showConstructors or $showMethods or $showPackageFunctions or $showEvents or $showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package.html#propertySummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Properties']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showConstructors">
-					<a href="#constructorSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constructor']]/entry[2]/p"/>
-					</a>
-					<xsl:if
-						test="$showMethods or $showPackageFunctions or $showEvents or $showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#constructorSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constructor']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="not($showMethods=false)">
-					<a href="#methodSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Method']]/entry[2]/p"/>
-					</a>
-					<xsl:if
-						test="$showPackageFunctions or $showEvents or $showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#methodSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Method']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showPackageFunctions">
-					<a href="package.html#methodSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Functions']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showEvents or $showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package.html#methodSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Functions']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showEvents">
-					<a href="#eventSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Events']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showStyles or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#eventSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Events']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showStyles">
-					<a href="#styleSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Styles']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showSkinState or $showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#styleSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Styles']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showSkinPart">
-					<a href="#SkinPartSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'SkinParts']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showSkinState or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#SkinPartSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'SkinParts']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showSkinState">
-					<a href="#SkinStateSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'SkinStates']]/entry[2]/p"/>
-					</a>					
-					<xsl:if test="$showEffects or $showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#SkinStateSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'SkinStates']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showEffects">
-					<a href="#effectSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Effects']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showConstants or $showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#effectSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Effects']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showConstants">
-					<a href="#constantSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constants']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showPackageConstants or $showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#constantSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constants']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showPackageConstants">
-					<a href="package.html#constantSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constants']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showInterfaces or $showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package.html#constantSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Constants']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showInterfaces">
-					<a href="package-detail.html#interfaceSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Interfaces']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showClasses or $showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package-detail.html#interfaceSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Interfaces']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showClasses">
-					<a href="package-detail.html#classSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Classes']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showPackageUse or $showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package-detail.html#classSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Classes']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showPackageUse">
-					<a href="package-use.html">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Use']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$showIncludeExamples or $additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="package-use.html"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Use']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$showIncludeExamples">
-					<a href="#includeExamplesSummary">
-						<xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Examples']]/entry[2]/p"/>
-					</a>
-					<xsl:if test="$additionalLinks">
-						<xsl:text>&#xA0;| </xsl:text>
-					</xsl:if>
+					<a href="#includeExamplesSummary"><xsl:value-of select="$asdoc_terms/row[entry[1][p/text() = 'Examples']]/entry[2]/p"/></a>
 				</xsl:if>
 				<xsl:if test="$additionalLinks">
 					<xsl:copy-of select="$additionalLinks"/>
