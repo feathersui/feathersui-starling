@@ -120,39 +120,55 @@ function titleBar_setSubNav(showConstants,showProperties,showStyles,showSkinPart
 {
     if (isEclipse() || top.titlebar)
     {
+        var borderStyle = "solid 1px #333";
         findTitleTableObject("propertiesLink").style.display = showProperties ? "inline" : "none";
-        findTitleTableObject("propertiesBar").style.display = (showProperties && (showPackageProperties || showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("propertiesLink").style.borderRight = (showProperties && (showPackageProperties || showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("propertiesBar").style.display = (showProperties && (showPackageProperties || showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("packagePropertiesLink").style.display = showPackageProperties ? "inline" : "none";
-        findTitleTableObject("packagePropertiesBar").style.display = (showPackageProperties && (showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showConstants || showEffects || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("packagePropertiesLink").style.borderRight = (showPackageProperties && (showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showConstants || showEffects || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("packagePropertiesBar").style.display = (showPackageProperties && (showConstructor || showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showConstants || showEffects || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("constructorLink").style.display = showConstructor ? "inline" : "none";
-        findTitleTableObject("constructorBar").style.display = (showConstructor && (showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("constructorLink").style.borderRight = (showConstructor && (showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("constructorBar").style.display = (showConstructor && (showMethods || showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("methodsLink").style.display = showMethods ? "inline" : "none";
-        findTitleTableObject("methodsBar").style.display = (showMethods && (showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("methodsLink").style.borderRight = (showMethods && (showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("methodsBar").style.display = (showMethods && (showPackageFunctions || showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("packageFunctionsLink").style.display = showPackageFunctions ? "inline" : "none";
-        findTitleTableObject("packageFunctionsBar").style.display = (showPackageFunctions && (showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("packageFunctionsLink").style.borderRight = (showPackageFunctions && (showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("packageFunctionsBar").style.display = (showPackageFunctions && (showEvents || showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("eventsLink").style.display = showEvents ? "inline" : "none";
-        findTitleTableObject("eventsBar").style.display = (showEvents && (showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("eventsLink").style.borderRight = (showEvents && (showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("eventsBar").style.display = (showEvents && (showStyles || showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("stylesLink").style.display = showStyles ? "inline" : "none";
-        findTitleTableObject("stylesBar").style.display = (showStyles && (showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("stylesLink").style.borderRight = (showStyles && (showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("stylesBar").style.display = (showStyles && (showSkinPart || showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         
         findTitleTableObject("SkinPartLink").style.display = showSkinPart ? "inline" : "none";
-        findTitleTableObject("SkinPartBar").style.display = (showSkinPart && (showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("SkinPartLink").style.borderRight = (showSkinPart && (showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("SkinPartBar").style.display = (showSkinPart && (showSkinState || showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         
         findTitleTableObject("SkinStateLink").style.display = showSkinState ? "inline" : "none";
-	findTitleTableObject("SkinStateBar").style.display = (showSkinState && (showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+	    findTitleTableObject("SkinStateLink").style.borderRight = (showSkinState && (showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("SkinStateBar").style.display = (showSkinState && (showEffects || showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
                 
         findTitleTableObject("effectsLink").style.display = showEffects ? "inline" : "none";
-        findTitleTableObject("effectsBar").style.display = (showEffects && (showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("effectsLink").style.borderRight = (showEffects && (showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("effectsBar").style.display = (showEffects && (showConstants || showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("constantsLink").style.display = showConstants ? "inline" : "none";
-        findTitleTableObject("constantsBar").style.display = (showConstants && (showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("constantsLink").style.borderRight = (showConstants && (showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("constantsBar").style.display = (showConstants && (showPackageConstants || showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("packageConstantsLink").style.display = showPackageConstants ? "inline" : "none";
-        findTitleTableObject("packageConstantsBar").style.display = (showPackageConstants && (showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("packageConstantsLink").style.borderRight = (showPackageConstants && (showInterfaces || showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("packageConstantsBar").style.display = (showPackageConstants && (showInterfaces || showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("interfacesLink").style.display = showInterfaces ? "inline" : "none";
-        findTitleTableObject("interfacesBar").style.display = (showInterfaces && (showClasses || showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("interfacesLink").style.borderRight = (showInterfaces && (showClasses || showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("interfacesBar").style.display = (showInterfaces && (showClasses || showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("classesLink").style.display = showClasses ? "inline" : "none";
-        findTitleTableObject("classesBar").style.display = (showClasses && (showPackageUse || showExamples)) ? "inline" : "none";
+        findTitleTableObject("classesLink").style.borderRight = (showClasses && (showPackageUse || showExamples)) ? borderStyle : "none";
+        // findTitleTableObject("classesBar").style.display = (showClasses && (showPackageUse || showExamples)) ? "inline" : "none";
         findTitleTableObject("packageUseLink").style.display = showPackageUse ? "inline" : "none";
-        findTitleTableObject("packageUseBar").style.display = (showPackageUse && showExamples) ? "inline" : "none";
+        findTitleTableObject("packageUseLink").style.borderRight = (showPackageUse && showExamples) ? borderStyle : "none";
+        // findTitleTableObject("packageUseBar").style.display = (showPackageUse && showExamples) ? "inline" : "none";
         findTitleTableObject("examplesLink").style.display = showExamples ? "inline" : "none";
     }
 }
@@ -221,12 +237,20 @@ function setInheritedVisible(show, selectorText)
                 
             if (rules[i].selectorText == ".showInherited" + selectorText)
                 rules[i].style.display = show ? "none" : "";
+
+            if (rules[i].selectorText == "table.hideInherited" + selectorText)
+                rules[i].style.display = show ? "block" : "none";
+            
+            if (rules[i].selectorText == "table.showInherited" + selectorText)
+                rules[i].style.display = show ? "none" : "block";
         }
     }
     else
     {
         document.styleSheets[0].addRule(".hideInherited" + selectorText, show ? "display:inline" : "display:none");
         document.styleSheets[0].addRule(".showInherited" + selectorText, show ? "display:none" : "display:inline");
+        document.styleSheets[0].addRule("table.hideInherited" + selectorText, show ? "display:block" : "display:none");
+        document.styleSheets[0].addRule("table.showInherited" + selectorText, show ? "display:none" : "display:block");
     }
     setCookie("showInherited" + selectorText, show ? "true" : "false", new Date(3000,1,1,1,1), "/", document.location.domain);
     setRowColors(show, selectorText);

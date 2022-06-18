@@ -582,7 +582,7 @@ html>body .listing pre
 	.titleTable tr td.titleTableSubNav a {
 	padding-right: 6px;
 	padding-left: 6px;
-	border-right: solid 1px #000;
+	border-right: solid 1px #333;
 }
 .titleTable tr td.titleTableTopNav a:last-of-type,
 	.titleTable tr td.titleTableSubNav a:last-of-type,
@@ -605,7 +605,7 @@ html>body .listing pre
 		align-items: center;
 		background-size: contain;
 		align-self: stretch;
-		min-height: 44px;
+		min-height: 32px;
 		flex-grow: 1;
 		padding-left: 10px;
 		padding-right: 10px;
@@ -657,4 +657,77 @@ html>body .listing pre
 	.titleTable tr td.titleTableSearch {
 		display: none;
 	}
+
+	/* title bar in a frame */
+	.titleTable.titleTableFrame tr {
+		flex-wrap: unset;
+	}
+	.titleTable.titleTableFrame tr td.titleTableTopNav {
+		flex-grow: 3;
+	}
+	.titleTable.titleTableFrame tr td.titleTableTitle {
+		flex-grow: 1;
+	}
+}
+@media only screen and (max-width: 450px) {
+	.titleTable.titleTableFrame tr td.titleTableTopNav a:not(#noFramesLink1),
+		.titleTable.titleTableFrame tr td.titleTableSubNav a {
+		display: none !important;
+	}
+}
+
+
+table.hideInheritedConstant {
+	display: none;
+}
+table.showInheritedConstant {
+	display: block;
+}
+table.hideInheritedProtectedConstant {
+	display: none;
+}
+table.showInheritedProtectedConstant {
+	display: block;
+}
+table.hideInheritedProperty {
+	display: none;
+}
+table.showInheritedProperty {
+	display: block;
+}
+table.hideInheritedProtectedProperty {
+	display: none;
+}
+table.showInheritedProtectedProperty {
+	display: block;
+}
+table.hideInheritedMethod {
+	display: none;
+}
+table.showInheritedMethod {
+	display: block;
+}
+table.hideInheritedProtectedMethod {
+	display: none;
+}
+table.showInheritedProtectedMethod {
+	display: block;
+}
+table.hideInheritedEvent {
+	display: none;
+}
+table.showInheritedEvent {
+	display: block;
+}
+table.hideInheritedStyle {
+	display: none;
+}
+table.showInheritedStyle {
+	display: block;
+}
+table.hideInheritedEffect {
+	display: none;
+}
+table.showInheritedEffect {
+	display: block;
 }
