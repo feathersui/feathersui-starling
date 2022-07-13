@@ -2475,7 +2475,7 @@ package feathers.controls
 				return;
 			}
 			this._scrollBarDisplayMode = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 
 		/**
