@@ -2973,7 +2973,7 @@ package feathers.controls
 			}
 			this._decelerationRate = value;
 			this._logDecelerationRate = Math.log(this._decelerationRate);
-			this._fixedThrowDuration = -0.1 / Math.log(Math.pow(this._decelerationRate, 1000 / 60))
+			this._fixedThrowDuration = -0.1 / Math.log(Math.pow(this._decelerationRate, 1000 / 60));
 		}
 
 		/**
@@ -6152,7 +6152,7 @@ package feathers.controls
 					}
 					else
 					{
-						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height
+						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height;
 					}
 				}
 				if(this._topPullView !== null && !this._isTopPullViewActive)
