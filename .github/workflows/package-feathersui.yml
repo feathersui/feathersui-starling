@@ -18,7 +18,10 @@ jobs:
         with:
           java-version: 11
           distribution: "temurin"
-      - uses: joshtynjala/setup-adobe-air-action@v1
+      - uses: joshtynjala/setup-adobe-air-action@v2
+        with:
+          air-version: "33.1"
+          accept-license: true
       - uses: joshtynjala/setup-adobe-flash-player-action@v1
       - name: Install dependencies
         run: |
