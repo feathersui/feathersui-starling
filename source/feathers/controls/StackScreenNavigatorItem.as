@@ -549,7 +549,7 @@ package feathers.controls
 				return;
 			}
 			var index:int = this._popEvents.indexOf(eventType);
-			if(index >= 0)
+			if(index == -1)
 			{
 				return;
 			}
@@ -605,7 +605,7 @@ package feathers.controls
 				return;
 			}
 			var index:int = this._popToRootEvents.indexOf(eventType);
-			if(index >= 0)
+			if(index == -1)
 			{
 				return;
 			}
