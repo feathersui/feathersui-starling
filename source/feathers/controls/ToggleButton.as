@@ -697,9 +697,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.selectedFormat = value;
 			if(value !== null)

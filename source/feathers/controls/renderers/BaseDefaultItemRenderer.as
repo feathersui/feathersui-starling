@@ -3053,9 +3053,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -3086,9 +3087,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -3119,9 +3121,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
@@ -3340,9 +3343,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -3373,9 +3377,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -3406,9 +3411,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
