@@ -194,7 +194,7 @@ package feathers.controls
 			{
 				throw new ArgumentError("SpinnerList requires isSelectable to be true.");
 			}
-			super.snapToPages = value;
+			super.isSelectable = value;
 		}
 
 		/**
