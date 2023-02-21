@@ -4099,9 +4099,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._iconLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -4159,9 +4160,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._accessoryLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
