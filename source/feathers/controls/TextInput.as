@@ -2597,9 +2597,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._fontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2656,9 +2657,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._promptFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._promptFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
