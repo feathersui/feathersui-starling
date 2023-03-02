@@ -321,7 +321,7 @@ package feathers.controls
 		 *
 		 * @see #source
 		 */
-		public function get minimumAutoCompleteLength():Number
+		public function get minimumAutoCompleteLength():int
 		{
 			return this._minimumAutoCompleteLength;
 		}
@@ -329,7 +329,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set minimumAutoCompleteLength(value:Number):void
+		public function set minimumAutoCompleteLength(value:int):void
 		{
 			this._minimumAutoCompleteLength = value;
 		}
