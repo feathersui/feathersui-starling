@@ -696,7 +696,7 @@ package feathers.controls
 		 * customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.valueParseFunction = function(displayedText:String):String
+		 * stepper.valueParseFunction = function(displayedText:String):Number
 		 * {
 		 *     return currencyFormatter.parse(displayedText).value;
 		 * };</listing>
