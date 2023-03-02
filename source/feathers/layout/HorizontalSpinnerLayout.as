@@ -186,7 +186,7 @@ package feathers.layout
 		protected var _paddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, above the items.
+		 * The minimum space, in pixels, below the items.
 		 *
 		 * @default 0
 		 */
