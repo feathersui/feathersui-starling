@@ -2469,9 +2469,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldValue:TextFormat = this._onLabelFontStylesSet.getFormatForState(state);
+			if (oldValue !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._onLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2528,9 +2529,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldValue:TextFormat = this._offLabelFontStylesSet.getFormatForState(state);
+			if(oldValue !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._offLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
