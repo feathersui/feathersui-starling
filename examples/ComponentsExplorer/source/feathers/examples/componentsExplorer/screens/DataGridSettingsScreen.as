@@ -47,7 +47,7 @@ package feathers.examples.componentsExplorer.screens
 			//never forget to call super.initialize()
 			super.initialize();
 
-			this.title = "Date Time Spinner Settings";
+			this.title = "Data Grid Settings";
 
 			this.layout = new AnchorLayout();
 
