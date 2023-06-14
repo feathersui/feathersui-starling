@@ -870,7 +870,7 @@ package feathers.controls
 		 */
 		public static var globalStyleProvider:IStyleProvider;
 
-		private static function defaultTextCalloutFactory():TextCallout
+		private static function defaultErrorCalloutFactory():TextCallout
 		{
 			return new TextCallout();
 		}
@@ -3220,7 +3220,7 @@ package feathers.controls
 				return;
 			}
 			
-			var factory:Function = this._errorCalloutFactory != null ? this._errorCalloutFactory : defaultTextCalloutFactory;
+			var factory:Function = this._errorCalloutFactory != null ? this._errorCalloutFactory : defaultErrorCalloutFactory;
 			this.callout = TextCallout(factory());
 			var errorCalloutStyleName:String = this._customErrorCalloutStyleName != null ? this._customErrorCalloutStyleName : this.errorCalloutStyleName;
 			this.callout.styleNameList.add(errorCalloutStyleName);
