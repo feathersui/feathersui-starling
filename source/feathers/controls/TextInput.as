@@ -1813,8 +1813,8 @@ package feathers.controls
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():TextCallout</pre>
 		 *
-		 * <p>In the following example, a custom error callout factory is passed to the
-		 * text input:</p>
+		 * <p>In the following example, a custom error callout factory is passed
+		 * to the text input:</p>
 		 *
 		 * <listing version="3.0">
 		 * input.errorCalloutFactory = function():TextCallout
