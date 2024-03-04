@@ -97,7 +97,7 @@ package feathers.core
 		 * @see feathers.core.IPopUpManager
 		 */
 		public static var popUpManagerFactory:Function = defaultPopUpManagerFactory;
-		
+
 		/**
 		 * A function that returns a display object to use as an overlay for
 		 * modal pop-ups.

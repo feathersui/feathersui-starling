@@ -65,7 +65,7 @@ package feathers.utils.touch
 
 		/**
 		 * The time, in seconds, to delay the state.
-		 * 
+		 *
 		 * @default 0.25
 		 */
 		public function get delay():Number

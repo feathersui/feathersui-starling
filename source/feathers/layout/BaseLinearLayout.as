@@ -29,7 +29,7 @@ package feathers.layout
 			super();
 			if(Object(this).constructor == BaseLinearLayout)
 			{
-				throw new AbstractClassError()
+				throw new AbstractClassError();
 			}
 		}
 
@@ -283,7 +283,7 @@ package feathers.layout
 		[Bindable(event="change")]
 		/**
 		 * The alignment of the items vertically, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported by <code>VerticalLayout</code>. It may be
 		 * used with <code>HorizontalLayout</code> only.</p>
@@ -321,7 +321,7 @@ package feathers.layout
 		[Bindable(event="change")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported by <code>HorizontalLayout</code>. It may be
 		 * used with <code>VerticalLayout</code> only.</p>

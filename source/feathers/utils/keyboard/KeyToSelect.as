@@ -36,7 +36,7 @@ package feathers.utils.keyboard
 	 *         this._keyToSelect = new KeyToSelect(this);
 	 *         this._keyToSelect.keyCode = Keyboard.SPACE;
 	 *     }
-	 *     
+	 * 
 	 *     private var _keyToSelect:KeyToSelect;
 	 * // ...</listing>
 	 *
@@ -122,7 +122,7 @@ package feathers.utils.keyboard
 
 		/**
 		 * The key that will select the target, when pressed.
-		 * 
+		 *
 		 * @default flash.ui.Keyboard.SPACE
 		 */
 		public function get keyCode():uint
@@ -295,7 +295,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
@@ -316,7 +316,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

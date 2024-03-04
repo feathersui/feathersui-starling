@@ -158,7 +158,7 @@ package feathers.controls.renderers
 	 * sub-views, including a label to display text, an icon to display an
 	 * image, and an "accessory" to display a UI control or another display
 	 * object (with shortcuts for including a second image or a second label).
-	 * 
+	 *
 	 * @see feathers.controls.Tree
 	 *
 	 * @productversion Feathers 3.3.0
@@ -530,7 +530,7 @@ package feathers.controls.renderers
 		{
 			return DefaultTreeItemRenderer.globalStyleProvider;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -538,7 +538,7 @@ package feathers.controls.renderers
 		{
 			return Tree(this._owner);
 		}
-		
+
 		/**
 		 * @private
 		 */

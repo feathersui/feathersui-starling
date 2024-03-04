@@ -14,7 +14,7 @@ package feathers.events
 	 * <code>dispatchEventWith()</code> and take advantage of the Starling's
 	 * event object pooling. The object passed to an event listener will be of
 	 * type <code>starling.events.Event</code>.
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * function listener( event:Event ):void
 	 * {
@@ -37,12 +37,12 @@ package feathers.events
 		 * it begins playing or is paused.
 		 */
 		public static const PLAYBACK_STATE_CHANGE:String = "playbackStageChange";
-		
+
 		/**
 		 * Dispatched when a media player's total playhead time changes.
 		 */
 		public static const TOTAL_TIME_CHANGE:String = "totalTimeChange";
-		
+
 		/**
 		 * Dispatched when a media player's current playhead time changes.
 		 */

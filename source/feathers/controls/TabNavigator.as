@@ -178,7 +178,7 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
 	 */
-	[Event(name="triggered", type="starling.events.Event")]
+	[Event(name="triggered",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the user starts a swipe gesture to switch tabs.
@@ -343,7 +343,7 @@ package feathers.controls
 		 * {
 		 *     var navigator:TabNavigator = TabNavigator( event.currentTarget );
 		 *     var index:int = navigator.selectedIndex;
-		 *
+		 * 
 		 * }
 		 * navigator.addEventListener( Event.CHANGE, navigator_changeHandler );</listing>
 		 *
@@ -612,12 +612,12 @@ package feathers.controls
 
 		/**
 		 * Determines if the swipe gesture to switch between tabs is enabled.
-		 * 
+		 *
 		 * <p>In the following example, swiping between tabs is enabled:</p>
 		 *
 		 * <listing version="3.0">
 		 * navigator.isSwipeEnabled = true;</listing>
-		 * 
+		 *
 		 * @default false
 		 */
 		public function get isSwipeEnabled():Boolean

@@ -80,7 +80,7 @@ package feathers.controls
 	 * button.scaleWhenSelected = 0.9;</listing>
 	 *
 	 * @default 1
-	 * 
+	 *
 	 * @see #isSelected
 	 * @see #getScaleForState()
 	 * @see #setScaleForState()
@@ -505,7 +505,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.isToggle = true;
 		 * button.isSelected = true;</listing>
-		 * 
+		 *
 		 * <p><strong>Warning:</strong> Do not listen to
 		 * <code>Event.TRIGGERED</code> to be notified when the
 		 * <code>isSelected</code> property changes. You must listen to
@@ -698,9 +698,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.selectedFormat = value;
 			if(value !== null)

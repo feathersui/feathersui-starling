@@ -115,7 +115,7 @@ package feathers.skins
 			}
 			else
 			{
-				result = new <Class>[]; 
+				result = new <Class>[];
 			}
 			var index:int = 0;
 			for(var forClass:Object in this._classToStyleProvider)

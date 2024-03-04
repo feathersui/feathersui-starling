@@ -79,7 +79,7 @@ package feathers.skins
 		/**
 		 * When <code>applyStyles()</code> is called, the target is passed to
 		 * this function to determine which style provider should be called.
-		 * 
+		 *
 		 * <pre>function(target:IFeathersControl):Boolean</pre>
 		 */
 		public function get conditionalFunction():Function

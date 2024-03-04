@@ -169,7 +169,7 @@ package feathers.controls.text
 		 * <code>feathers.text.BitmapFontTextFormat</code> used to render the
 		 * text. Updated during validation, and may be <code>null</code> before
 		 * the first validation.
-		 * 
+		 *
 		 * <p>Do not modify this value. It is meant for testing and debugging
 		 * only. Use the parent's <code>starling.text.TextFormat</code> font
 		 * styles APIs instead.</p>
@@ -290,7 +290,7 @@ package feathers.controls.text
 		 * <code>BitmapFontTextFormat</code> will always take precedence.</p>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see #textFormat
 		 * @see #selectedTextFormat
 		 */
@@ -370,7 +370,7 @@ package feathers.controls.text
 		 * A texture smoothing value passed to each character image. If
 		 * <code>null</code>, defaults to the value specified by the
 		 * <code>smoothing</code> property of the <code>BitmapFont</code>.
-		 * 
+		 *
 		 * <p>In the following example, the texture smoothing is changed:</p>
 		 *
 		 * <listing version="3.0">
@@ -384,7 +384,7 @@ package feathers.controls.text
 		{
 			return this._textureSmoothing;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -450,7 +450,7 @@ package feathers.controls.text
 		 * textRenderer.breakLongWords = true;</listing>
 		 *
 		 * @default false
-		 * 
+		 *
 		 * @see #wordWrap
 		 */
 		public function get breakLongWords():Boolean
@@ -1607,7 +1607,7 @@ package feathers.controls.text
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
-				var charWidth:Number = charData.width * scale; 
+				var charWidth:Number = charData.width * scale;
 				//add only the width of the character and not the xAdvance
 				//because the final character doesn't have whitespace after it
 				currentX += currentKerning + charWidth;

@@ -426,7 +426,7 @@ package feathers.controls
 		 */
 		public function get content():IFeathersControl
 		{
-			return this._content
+			return this._content;
 		}
 
 		/**
@@ -503,7 +503,7 @@ package feathers.controls
 		 */
 		public function get overlaySkin():DisplayObject
 		{
-			return this._overlaySkin
+			return this._overlaySkin;
 		}
 
 		/**
@@ -570,7 +570,7 @@ package feathers.controls
 		 */
 		public function get topDrawer():IFeathersControl
 		{
-			return this._topDrawer
+			return this._topDrawer;
 		}
 
 		/**
@@ -862,7 +862,7 @@ package feathers.controls
 		 */
 		public function get rightDrawer():IFeathersControl
 		{
-			return this._rightDrawer
+			return this._rightDrawer;
 		}
 
 		/**
@@ -1154,7 +1154,8 @@ package feathers.controls
 		 */
 		public function get bottomDrawer():IFeathersControl
 		{
-			return this._bottomDrawer
+			return this._bottomDrawer;
+
 		}
 
 		/**
@@ -1973,7 +1974,7 @@ package feathers.controls
 		 * drawers.openGestureEdgeSize = 0.25;</listing>
 		 *
 		 * @default 0.1
-		 * 
+		 *
 		 * @see #openGesture
 		 * @see feathers.controls.DragGesture#EDGE
 		 */
@@ -2552,7 +2553,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var measureContent:Boolean = this._autoSizeMode === AutoSizeMode.CONTENT || !this.stage;
 			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
 			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;

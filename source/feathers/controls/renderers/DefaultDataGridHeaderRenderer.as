@@ -41,7 +41,7 @@ package feathers.controls.renderers
 	 * headerRenderer.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -137,7 +137,7 @@ package feathers.controls.renderers
 	 *
 	 * <listing version="3.0">
 	 * headerRenderer.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -162,7 +162,7 @@ package feathers.controls.renderers
 	 * headerRenderer.padding = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:paddingTop
 	 * @see #style:paddingRight
 	 * @see #style:paddingBottom
@@ -239,7 +239,7 @@ package feathers.controls.renderers
 	 * headerRenderer.sortAscendingIcon = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:sortDescendingIcon
 	 */
 	[Style(name="sortAscendingIcon",type="starling.display.DisplayObject")]
@@ -253,7 +253,7 @@ package feathers.controls.renderers
 	 * headerRenderer.sortDescendingIcon = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:sortAscendingIcon
 	 */
 	[Style(name="sortDescendingIcon",type="starling.display.DisplayObject")]
@@ -267,7 +267,7 @@ package feathers.controls.renderers
 	 *
 	 * <listing version="3.0">
 	 * headerRenderer.verticalAlign = VerticalAlign.BOTTOM;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -318,7 +318,7 @@ package feathers.controls.renderers
 
 	/**
 	 * The default renderer used for headers in a <code>DataGrid</code> component.
-	 * 
+	 *
 	 * @see feathers.controls.DataGrid
 	 *
 	 * @productversion Feathers 3.4.0
@@ -585,9 +585,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -618,9 +619,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)

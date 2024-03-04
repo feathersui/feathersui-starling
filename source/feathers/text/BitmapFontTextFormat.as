@@ -14,7 +14,7 @@ package feathers.text
 
 	/**
 	 * Customizes a bitmap font for use by a <code>BitmapFontTextRenderer</code>.
-	 * 
+	 *
 	 * @see feathers.controls.text.BitmapFontTextRenderer
 	 *
 	 * @productversion Feathers 1.0.0
@@ -24,7 +24,7 @@ package feathers.text
 		/**
 		 * Constructor.
 		 */
-		public function BitmapFontTextFormat(font:Object, size:Number = NaN, color:uint = 0xffffff, align:String = TextFormatAlign.LEFT, leading : Number = 0)
+		public function BitmapFontTextFormat(font:Object, size:Number = NaN, color:uint = 0xffffff, align:String = TextFormatAlign.LEFT, leading:Number = 0)
 		{
 			if(font is String)
 			{
@@ -48,12 +48,12 @@ package feathers.text
 		{
 			return this.font ? this.font.name : null;
 		}
-		
+
 		/**
 		 * The BitmapFont instance to use.
 		 */
 		public var font:BitmapFont;
-		
+
 		/**
 		 * The color used to tint the bitmap font's texture when rendered.
 		 * Tinting works like the "multiply" blend mode. In other words, the
@@ -68,7 +68,7 @@ package feathers.text
 		 * @see http://doc.starling-framework.org/core/starling/display/BlendMode.html#MULTIPLY starling.display.BlendMode.MULTIPLY
 		 */
 		public var color:uint;
-		
+
 		/**
 		 * The size at which to display the bitmap font. Set to <code>NaN</code>
 		 * to use the default size in the BitmapFont instance.
@@ -76,7 +76,7 @@ package feathers.text
 		 * @default NaN
 		 */
 		public var size:Number;
-		
+
 		/**
 		 * The number of extra pixels between characters. May be positive or
 		 * negative.

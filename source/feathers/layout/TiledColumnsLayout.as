@@ -111,7 +111,7 @@ package feathers.layout
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedColumnCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
-		 * 
+		 *
 		 * <p>Note: If the <code>distributeWidths</code> property is set to
 		 * <code>true</code>, the <code>useSquareTiles</code> property will be
 		 * automatically changed to <code>false</code>.</p>
@@ -484,7 +484,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -681,7 +681,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			if(this._paging === Direction.HORIZONTAL)
@@ -928,7 +928,7 @@ package feathers.layout
 		 * @inheritDoc
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			if(this._useVirtualLayout)
 			{
@@ -1089,7 +1089,7 @@ package feathers.layout
 					return;
 				}
 				positionY += tileHeight + this._verticalGap;
-				
+
 				if(columnItemCount > 0 &&
 					(y < (positionY + (tileHeight / 2))) &&
 					(y < (pageStartY + height)) && //not on next page
@@ -1444,7 +1444,7 @@ package feathers.layout
 					}
 					i += verticalTileCount;
 				}
-				while(resultLength < minimumItemCount && pageStart < itemCount)
+				while(resultLength < minimumItemCount && pageStart < itemCount);
 			}
 		}
 
@@ -1696,7 +1696,7 @@ package feathers.layout
 				}
 				else
 				{
-					resultX -= Math.round((width - tileWidth) / 2)
+					resultX -= Math.round((width - tileWidth) / 2);
 				}
 				result.x = resultX;
 				result.y = 0;

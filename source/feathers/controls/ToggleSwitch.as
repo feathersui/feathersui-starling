@@ -328,7 +328,7 @@ package feathers.controls
 	 * toggle.offText = "off";</listing>
 	 *
 	 * @default "OFF"
-	 * 
+	 *
 	 * @see #style:onText
 	 */
 	[Style(name="offText",type="String")]
@@ -344,7 +344,7 @@ package feathers.controls
 	 * toggle.paddingLeft = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:paddingRight
 	 */
 	[Style(name="paddingLeft",type="Number")]
@@ -476,7 +476,7 @@ package feathers.controls
 
 	/**
 	 * @copy feathers.core.IToggle#event:change
-	 * 
+	 *
 	 * @see #isSelected
 	 */
 	[Event(name="change",type="starling.events.Event")]
@@ -1127,7 +1127,7 @@ package feathers.controls
 		 * text renderer, and the properties will be passed down to the text
 		 * renderer when the toggle switch validates. If <code>null</code>, then
 		 * <code>defaultLabelProperties</code> is used instead.
-		 * 
+		 *
 		 * <p>The available properties depend on which
 		 * <code>ITextRenderer</code> implementation is returned by
 		 * <code>labelFactory</code> (possibly <code>onLabelFactory</code>
@@ -1188,7 +1188,7 @@ package feathers.controls
 		 * text renderer, and the properties will be passed down to the text
 		 * renderer when the toggle switch validates. If <code>null</code>, then
 		 * <code>defaultLabelProperties</code> is used instead.
-		 * 
+		 *
 		 * <p>The available properties depend on which
 		 * <code>ITextRenderer</code> implementation is returned by
 		 * <code>labelFactory</code> (possibly <code>offLabelFactory</code>
@@ -1318,9 +1318,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._onLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._onLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -1351,9 +1352,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._onLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._onLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1384,9 +1386,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._onLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._onLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
@@ -1506,9 +1509,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._offLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._offLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -1539,9 +1543,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._offLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._offLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1572,9 +1577,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._offLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._offLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
@@ -2032,7 +2038,7 @@ package feathers.controls
 		 * toggle.onTrackProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #onTrackFactory
 		 */
@@ -2187,7 +2193,7 @@ package feathers.controls
 		 * toggle.offTrackProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #offTrackFactory
 		 */
@@ -2341,7 +2347,7 @@ package feathers.controls
 		 * toggle.thumbProperties.defaultSkin = new Image( texture );</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.BasicButton
 		 * @see #thumbFactory
 		 */
@@ -2464,9 +2470,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._onLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._onLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2523,9 +2530,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._offLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._offLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2884,7 +2892,7 @@ package feathers.controls
 				this._onTrackSkinExplicitWidth = this.onTrack.width;
 				this._onTrackSkinExplicitHeight = this.onTrack.height;
 				this._onTrackSkinExplicitMinWidth = this._onTrackSkinExplicitWidth;
-				this._onTrackSkinExplicitMinHeight = this._onTrackSkinExplicitHeight
+				this._onTrackSkinExplicitMinHeight = this._onTrackSkinExplicitHeight;
 			}
 		}
 
@@ -2938,7 +2946,7 @@ package feathers.controls
 				this._offTrackSkinExplicitWidth = this.offTrack.width;
 				this._offTrackSkinExplicitHeight = this.offTrack.height;
 				this._offTrackSkinExplicitMinWidth = this._offTrackSkinExplicitWidth;
-				this._offTrackSkinExplicitMinHeight = this._offTrackSkinExplicitHeight
+				this._offTrackSkinExplicitMinHeight = this._offTrackSkinExplicitHeight;
 			}
 		}
 
@@ -3322,7 +3330,7 @@ package feathers.controls
 			{
 				IValidating(this.offTrack).validate();
 			}
-			
+
 			if(this._trackScaleMode === TrackScaleMode.DIRECTIONAL)
 			{
 				this.onTrack.y = Math.round((this.actualHeight - this.onTrack.height) / 2);
@@ -3348,7 +3356,7 @@ package feathers.controls
 				//to auto-size
 				this.onTrack.height = this._onTrackSkinExplicitHeight;
 			}
-			
+
 			//final validation to avoid juggler next frame issues
 			if(this.onTrack is IValidating)
 			{

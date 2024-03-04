@@ -43,7 +43,7 @@ package feathers.controls
 	 * progress.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 * @see #style:fillSkin
 	 */
@@ -74,7 +74,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * progress.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -796,7 +796,7 @@ package feathers.controls
 			this.autoSizeIfNeeded();
 
 			this.layoutChildren();
-			
+
 			if(this.currentBackground is IValidating)
 			{
 				IValidating(this.currentBackground).validate();
@@ -850,7 +850,7 @@ package feathers.controls
 			{
 				IValidating(this.currentFill).validate();
 			}
-			
+
 			//minimum dimensions
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
@@ -940,7 +940,7 @@ package feathers.controls
 					newHeight = fillHeight;
 				}
 			}
-			
+
 			return this.saveMeasurements(newWidth, newHeight, newMinWidth, newMinHeight);
 		}
 

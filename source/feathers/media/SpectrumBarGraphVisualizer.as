@@ -72,12 +72,12 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * @private
 		 */
 		protected static var HELPER_QUAD:Quad = new Quad(1, 1);
-		
+
 		/**
 		 * @private
 		 */
@@ -315,9 +315,9 @@ package feathers.media
 			{
 				return;
 			}
-			
+
 			SoundMixer.computeSpectrum(this._bytes, true, 0);
-			
+
 			this._barValues.length = barCount;
 			var valuesPerBar:int = 256 / barCount;
 			//read left values
@@ -351,7 +351,7 @@ package feathers.media
 				//calculate the average
 				this._barValues[i] /= (2 * valuesPerBar);
 			}
-			
+
 			var xPosition:Number = 0;
 			var maxHeight:Number = this.actualHeight - 1;
 			HELPER_QUAD.color = this._color;

@@ -31,7 +31,7 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 * Used internally by DataGrid. Not meant to be used on its own.
-	 * 
+	 *
 	 * @see feathers.controls.DataGrid
 	 *
 	 * @productversion Feathers 3.4.0
@@ -381,7 +381,7 @@ package feathers.controls.supportClasses
 				}
 			}
 			this.renderUnrenderedData();
-			this.freeInactiveCellRenderers(this._defaultStorage)
+			this.freeInactiveCellRenderers(this._defaultStorage);
 			if(this._additionalStorage !== null)
 			{
 				storageCount = this._additionalStorage.length;
@@ -391,6 +391,8 @@ package feathers.controls.supportClasses
 					this.freeInactiveCellRenderers(storage);
 				}
 			}
+			
+			this._updateForDataReset = false;
 		}
 
 		/**
@@ -445,7 +447,7 @@ package feathers.controls.supportClasses
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(cellRenderer === null)
+			while(cellRenderer === null);
 			this.refreshCellRendererProperties(cellRenderer, columnIndex, column);
 
 			column.addEventListener(Event.CHANGE, column_changeHandler);
@@ -721,7 +723,7 @@ class CellRendererFactoryStorage
 	{
 		this.factory = factory;
 	}
-	
+
 	public var activeCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
 	public var inactiveCellRenderers:Vector.<IDataGridCellRenderer> = new <IDataGridCellRenderer>[];
 	public var factory:Function;

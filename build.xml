@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="feathers" default="swc" basedir=".">
+	
+	<!-- build.local.properties and sdk.local.proprties are optional files that
+		can be used to override the default properties. -->
+	<property file="./sdk.local.properties"/>
+	<property file="./sdk.properties"/>
+	<property file="./build.local.properties"/>
+	<property file="./build.properties"/>
+	<taskdef resource="flexUnitTasks.tasks" classpath="${flexunit.tasks}"/>
+
+	<target name="swc" depends="-feathers,-cleanup" description="builds .swc file only"/>
+
+	<target name="api" depends="-api,-cleanup" description="builds API reference only"/>
+
+	<target name="test" depends="-test,-cleanup" description="runs automated tests"/>
+
+	<target name="full" depends="-feathers,-test,-api,-themes,-includes,-cleanup" description="builds distribution, but doesn't package as .zip file">
+
+		<!-- move feathers.swc to its final location for distribution.
+			basically, we didn't want the extra swc directory for a quick build. -->
+
+		<copy overwrite="true" todir="${swc.output}">
+			<fileset dir="${output.path}">
+				<include name="${swc.file}"/>
+			</fileset>
+		</copy>
+		<delete file="${output.path}/${swc.file}"/>
+	</target>
+
+	<target name="apm" depends="-apm,-cleanup" description="builds apm package">
+		<delete file="${output.path}/${swc.file}"/>
+		<delete dir="${themes.output}" includeemptydirs="true"/>
+	</target>
+
+	<target name="package" depends="full" description="builds and packages a .zip file for distribution">
+		<zip destfile="${output.path}/feathers-ui-${feathers.version}.zip">
+			<zipfileset dir="${output.path}"/>
+		</zip>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${output.path}" excludes="feathers-ui-${feathers.version}.zip"/>
+		</delete>
+	</target>
+
+	<target name="-prepare">
+		<delete dir="${output.path}"/>
+
+		<loadfile srcFile="${source.root}/feathers/FEATHERS_VERSION.as" property="version.test">
+			<filterchain>
+				<linecontains>
+					<contains value="public const FEATHERS_VERSION:String"/>
+				</linecontains>
+				<tokenfilter>
+					<containsstring contains="${feathers.version}"/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+		<fail unless="version.test" message="feathers.FEATHERS_VERSION contains incorrect version string."/>
+	</target>
+
+	<target name="-cleanup">
+		<delete dir="${dependency.output}" includeemptydirs="true"/>
+		<delete dir="${output.path}/apm" includeemptydirs="true"/>
+		<delete dir="${output.path}/apm-src" includeemptydirs="true"/>
+	</target>
+
+	<target name="-starling" depends="-prepare">
+		<echo message="Building starling.swc"/>
+		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
+			<arg value="-load-config=${flashplayer.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=."/>
+			<arg value="-include-sources+=."/>
+			<arg value="-output=${dependency.output}/starling.swc"/>
+		</java>
+	</target>
+
+	<target name="-feathers" depends="-starling,-api-xml">
+		<echo message="Building ${swc.file}"/>
+		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-load-config=${flashplayer.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-include-sources+=${source.root}"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-output=${output.path}/${swc.file}"/>
+		</java>
+		<echo message="Inserting asdoc XML into .swc"/>
+		<zip destfile="${output.path}/${swc.file}" update="true">
+			<zipfileset dir="${dependency.output}/tempdita" prefix="docs">
+				<include name="*.*"/>
+				<exclude name="ASDoc_Config.xml" />
+				<exclude name="overviews.xml" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="-api" depends="-starling">
+		<echo message="Generating API Reference"/>
+		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="+flexlib=${flashsdk.framework}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-doc-sources+=${source.root}"/>
+
+			<!-- these two arguments are needed after switching to the AIR SDK
+				with ASC 2.0 to stop weird errors -->
+			<arg value="-theme="/>
+			<arg value="-compiler.fonts.local-fonts-snapshot="/>
+
+			<arg value="-templates-path"/>
+			<arg value="${api.root}/templates"/>
+			<arg value="-main-title=Feathers (Starling) ${feathers.version} API Reference"/>
+			<arg value="-window-title=Feathers (Starling) API Reference"/>
+			<arg value="-footer=${footer.text}"/>
+			<arg value="-package-description-file=${api.root}/package-descriptions.xml"/>
+			<arg value="-output=${api.output}"/>
+		</java>
+	</target>
+
+	<target name="-api-xml" depends="-starling">
+		<echo message="Generating asdoc XML"/>
+		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="+flexlib=${flashsdk.framework}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-doc-sources+=${source.root}"/>
+
+			<!-- these two arguments are needed after switching to the AIR SDK
+				with ASC 2.0 to stop weird errors -->
+			<arg value="-theme="/>
+			<arg value="-compiler.fonts.local-fonts-snapshot="/>
+
+			<arg value="-keep-xml=true"/>
+			<arg value="-skip-xsl=true"/>
+			<arg value="-package-description-file=${api.root}/package-descriptions.xml"/>
+			<arg value="-output=${dependency.output}"/>
+		</java>
+	</target>
+
+	<target name="-themes" depends="-feathers">
+		<echo message="Building AeonDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/AeonDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/AeonDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/AeonDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"/>
+		</java>
+
+		<echo message="Building MetalWorksDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MetalWorksDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MetalWorksDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MetalWorksDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"/>
+		</java>
+
+		<echo message="Building MetalWorksMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MetalWorksMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MetalWorksMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MetalWorksMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"/>
+		</java>
+
+		<echo message="Building MinimalDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MinimalDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MinimalDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MinimalDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"/>
+		</java>
+
+		<echo message="Building MinimalMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MinimalMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MinimalMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MinimalMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"/>
+		</java>
+
+		<echo message="Building TopcoatLightMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/TopcoatLightMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/TopcoatLightMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/TopcoatLightMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/${swc.file}"/>
+			<arg value="-output=${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"/>
+		</java>
+	</target>
+
+	<target name="-includes">
+		<echo message="Copying Feathers source code"/>
+		<copy overwrite="true" todir="${source.output}">
+			<fileset dir="${source.root}"/>
+		</copy>
+				
+		<echo message="Copying informational documents"/>
+		<copy overwrite="true" todir="${output.path}">
+			<fileset dir="${basedir}">
+				<include name="README.md"/>
+				<include name="LICENSE.md"/>
+				<include name="CHANGELOG.md"/>
+			</fileset>
+		</copy>
+
+		<echo message="Copying theme source code and assets"/>
+
+		<copy overwrite="true" todir="${themes.output}/AeonDesktopTheme">
+			<fileset dir="${themes.root}/AeonDesktopTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MetalWorksDesktopTheme">
+			<fileset dir="${themes.root}/MetalWorksDesktopTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MetalWorksMobileTheme">
+			<fileset dir="${themes.root}/MetalWorksMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MinimalDesktopTheme">
+			<fileset dir="${themes.root}/MinimalDesktopTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MinimalMobileTheme">
+			<fileset dir="${themes.root}/MinimalMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/TopcoatLightMobileTheme">
+			<fileset dir="${themes.root}/TopcoatLightMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<echo message="Copying examples"/>
+
+		<copy overwrite="true" todir="${examples.output}/ComponentsExplorer">
+			<fileset dir="${examples.root}/ComponentsExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/ComponentsExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/DrawersExplorer">
+			<fileset dir="${examples.root}/DrawersExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/DrawersExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/DragAndDrop">
+			<fileset dir="${examples.root}/DragAndDrop">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Gallery">
+			<fileset dir="${examples.root}/Gallery">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/GalleryWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/HelloWorld">
+			<fileset dir="${examples.root}/HelloWorld">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/HelloWorldWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/LayoutExplorer">
+			<fileset dir="${examples.root}/LayoutExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/LayoutExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Magic8Chat">
+			<fileset dir="${examples.root}/Magic8Chat">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/Magic8ChatWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/PullToRefresh">
+			<fileset dir="${examples.root}/PullToRefresh">
+				<include name="README.md"/>
+				<include name="assets/**"/>
+				<include name="source/**"/>
+				<exclude name="source/PullToRefreshWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/StackScreenNavigatorExplorer">
+			<fileset dir="${examples.root}/StackScreenNavigatorExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/StackScreenNavigatorExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Tabs">
+			<fileset dir="${examples.root}/Tabs">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TabsWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/TileList">
+			<fileset dir="${examples.root}/TileList">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TileListWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Todos">
+			<fileset dir="${examples.root}/Todos">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/TodosWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/TrainTimes">
+			<fileset dir="${examples.root}/TrainTimes">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TrainTimesWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/TransitionsExplorer">
+			<fileset dir="${examples.root}/TransitionsExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TransitionsExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Video">
+			<fileset dir="${examples.root}/Video">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/YouTubeFeeds">
+			<fileset dir="${examples.root}/YouTubeFeeds">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/YouTubeFeedsWeb.as"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="-test" depends="-feathers" unless="skip-tests">
+		<java jar="${mxmlc}" dir="${test.root}/source" fork="true" failonerror="true">
+			<arg value="-load-config=${flashplayer.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-library-path+=${flexunit.root}"/>
+			<arg value="-library-path+=${output.path}"/>
+			<arg value="-output=${dependency.output}/TestFeathers.swf"/>
+			<arg value="TestFeathers.as"/>
+		</java>
+		<copy todir="${dependency.output}">
+			<fileset file="${test.root}/source/TestFeathers-app.xml"/>
+		</copy>
+		<copy todir="${dependency.output}/fixtures">
+			<fileset dir="${test.root}/fixtures"/>
+		</copy>
+    	<condition property="adl.file" value="adl.exe">
+        	<os family="windows"/>
+		</condition>
+		<property name="adl.file" value="adl"/>
+		<condition property="flexunit.command" value="${flashplayer}">
+			<isset property="flashplayer"/>
+		</condition>
+		<condition property="flexunit.swf" value="${dependency.output}/TestFeathers.swf">
+			<isset property="flashplayer"/>
+		</condition>
+		<property name="flexunit.command" value="${flashsdk.bin}/${adl.file}"/>
+		<property name="flexunit.swf" value="${dependency.output}/TestFeathers-app.xml"/>
+		<flexunit
+			command="${flexunit.command}"
+			player="flash"
+			swf="${flexunit.swf}"
+			haltonfailure="true"
+			verbose="true"
+			toDir="${dependency.output}"/>
+	</target>
+    
+    <macrodef name="apm">
+        <attribute name="src"/>
+        <attribute name="swc"/>
+        <attribute name="readme"/>
+        <attribute name="changelog" default=""/>
+        <attribute name="package-swc"/>
+        <attribute name="package-src"/>
+            <sequential>
+				<fail unless="apm" message="Path to apm executable is missing."/>
+				<copy overwrite="true" file="@{swc}" todir="${output.path}/apm/swc"/>
+				<copy overwrite="true" file="@{package-swc}" tofile="${output.path}/apm/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
+
+				<copy overwrite="true" todir="${output.path}/apm-src/src">
+					<fileset dir="@{src}"/>
+				</copy>
+				<copy overwrite="true" file="@{package-src}" tofile="${output.path}/apm-src/package.json"/>
+				<copy overwrite="true" todir="${output.path}/apm-src">
+					<fileset file="@{readme}"/>
+					<fileset file="@{changelog}"/>
+					<fileset file="${basedir}/LICENSE.md"/>
+				</copy>
+
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm"/>
+				</exec>
+				<exec executable="${apm}" dir="${output.path}" failonerror="true">
+					<arg value="build"/>
+					<arg value="apm-src"/>
+				</exec>
+
+				<delete includeemptydirs="true">
+					<fileset dir="${output.path}/apm"/>
+					<fileset dir="${output.path}/apm-src"/>
+				</delete>
+        </sequential>
+    </macrodef>
+
+	<target name="-apm" depends="-feathers,-themes">
+		<apm src="${source.root}"
+			swc="${output.path}/${swc.file}"
+			readme="README.md"
+			changelog="CHANGELOG.md"
+			package-swc="package-swc.json"
+			package-src="package-src.json"/>
+		<apm src="${themes.root}/AeonDesktopTheme/source"
+			swc="${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"
+			readme="${themes.root}/AeonDesktopTheme/README.md"
+			package-swc="${themes.root}/AeonDesktopTheme/package-swc.json"
+			package-src="${themes.root}/AeonDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksDesktopTheme/source"
+			swc="${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"
+			readme="${themes.root}/MetalWorksDesktopTheme/README.md"
+			package-swc="${themes.root}/MetalWorksDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MetalWorksMobileTheme/source"
+			swc="${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"
+			readme="${themes.root}/MetalWorksMobileTheme/README.md"
+			package-swc="${themes.root}/MetalWorksMobileTheme/package-swc.json"
+			package-src="${themes.root}/MetalWorksMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalDesktopTheme/source"
+			swc="${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"
+			readme="${themes.root}/MinimalDesktopTheme/README.md"
+			package-swc="${themes.root}/MinimalDesktopTheme/package-swc.json"
+			package-src="${themes.root}/MinimalDesktopTheme/package-src.json"/>
+		<apm src="${themes.root}/MinimalMobileTheme/source"
+			swc="${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"
+			readme="${themes.root}/MinimalMobileTheme/README.md"
+			package-swc="${themes.root}/MinimalMobileTheme/package-swc.json"
+			package-src="${themes.root}/MinimalMobileTheme/package-src.json"/>
+		<apm src="${themes.root}/TopcoatLightMobileTheme/source"
+			swc="${themes.output}/TopcoatLightMobileTheme/swc/TopcoatLightMobileTheme.swc"
+			readme="${themes.root}/TopcoatLightMobileTheme/README.md"
+			package-swc="${themes.root}/TopcoatLightMobileTheme/package-swc.json"
+			package-src="${themes.root}/TopcoatLightMobileTheme/package-src.json"/>
+	</target>
+</project>

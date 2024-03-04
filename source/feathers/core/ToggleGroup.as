@@ -37,7 +37,7 @@ package feathers.core
 	/**
 	 * Controls the selection of two or more IToggle instances where only one
 	 * may be selected at a time.
-	 * 
+	 *
 	 * @see IToggle
 	 *
 	 * @productversion Feathers 1.0.0
@@ -125,7 +125,7 @@ package feathers.core
 			}
 			return this._items[this._selectedIndex];
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -133,7 +133,7 @@ package feathers.core
 		{
 			this.selectedIndex = this._items.indexOf(value);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -154,7 +154,7 @@ package feathers.core
 		{
 			return this._selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -176,7 +176,7 @@ package feathers.core
 				var item:IToggle = this._items[i];
 				item.isSelected = i == value;
 			}
-			this._ignoreChanges = oldIgnoreChanges
+			this._ignoreChanges = oldIgnoreChanges;
 			if(hasChanged)
 			{
 				//only dispatch if there's been a change. we didn't return
@@ -194,7 +194,7 @@ package feathers.core
 		{
 			return this._items.length;
 		}
-		
+
 		/**
 		 * Adds a toggle to the group. If it is the first item added to the
 		 * group, and <code>isSelectionRequired</code> is <code>true</code>, it
@@ -211,7 +211,7 @@ package feathers.core
 			{
 				throw new ArgumentError("IToggle passed to ToggleGroup addItem() must not be null.");
 			}
-			
+
 			var index:int = this._items.indexOf(item);
 			if(index >= 0)
 			{
@@ -233,7 +233,7 @@ package feathers.core
 				IGroupedToggle(item).toggleGroup = this;
 			}
 		}
-		
+
 		/**
 		 * Removes a toggle from the group. If the item being removed is
 		 * selected and <code>isSelectionRequired</code> is <code>true</code>,
@@ -340,7 +340,7 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * var item:IToggle = group.getItemAt( 2 );</listing>
-		 * 
+		 *
 		 * @see #numItems
 		 */
 		public function getItemAt(index:int):IToggle
@@ -401,7 +401,7 @@ package feathers.core
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -424,6 +424,5 @@ package feathers.core
 				this.selectedIndex = -1;
 			}
 		}
-		
 	}
 }

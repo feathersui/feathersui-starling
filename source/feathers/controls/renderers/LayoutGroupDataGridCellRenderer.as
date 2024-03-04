@@ -179,12 +179,12 @@ package feathers.controls.renderers
 			//interaction, it needs to be bindable.
 			this.dispatchEventWith("dataChange");
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _dataField:String = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -192,7 +192,7 @@ package feathers.controls.renderers
 		{
 			return this._dataField;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -210,7 +210,7 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var _column:DataGridColumn = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -218,7 +218,7 @@ package feathers.controls.renderers
 		{
 			return this._column;
 		}
-		
+
 		/**
 		 * @private
 		 */

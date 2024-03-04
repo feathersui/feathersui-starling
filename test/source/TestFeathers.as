@@ -152,7 +152,9 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.system.Capabilities;
 	import flash.system.fscommand;
+	import flash.utils.getDefinitionByName;
 
 	import org.flexunit.internals.TraceListener;
 	import org.flexunit.listeners.CIListener;
@@ -369,7 +371,18 @@ package
 
 		private function flexunit_testsCompleteHandler(event:flash.events.Event):void
 		{
-			fscommand("quit");
+			if(Capabilities.playerType == "Desktop")
+			{
+				var NativeApplication:Class = Class(getDefinitionByName("flash.desktop.NativeApplication"));
+				if(NativeApplication)
+				{
+					NativeApplication.nativeApplication.exit();
+				}
+			}
+			else
+			{
+				fscommand("quit");
+			}
 		}
 
 	}

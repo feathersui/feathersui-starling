@@ -1019,8 +1019,8 @@ package feathers.controls.supportClasses
 				}
 			}
 			sizeInvalid = this.saveMeasurements(
-					calculatedVisibleWidth, totalContentHeight,
-					calculatedVisibleWidth, totalContentHeight) || sizeInvalid;
+				calculatedVisibleWidth, totalContentHeight,
+				calculatedVisibleWidth, totalContentHeight) || sizeInvalid;
 			this._actualVisibleWidth = calculatedVisibleWidth;
 			this._actualVisibleHeight = calculatedVisibleHeight;
 			this._actualMinVisibleWidth = calculatedVisibleWidth;
@@ -1104,7 +1104,7 @@ package feathers.controls.supportClasses
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			this._textFieldContainer.visible = true;
 		}
 

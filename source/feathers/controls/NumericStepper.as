@@ -201,7 +201,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #value
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -697,7 +697,7 @@ package feathers.controls
 		 * customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.valueParseFunction = function(displayedText:String):String
+		 * stepper.valueParseFunction = function(displayedText:String):Number
 		 * {
 		 *     return currencyFormatter.parse(displayedText).value;
 		 * };</listing>
@@ -1520,7 +1520,7 @@ package feathers.controls
 			var newHeight:Number = this._explicitHeight;
 			var newMinWidth:Number = this._explicitMinWidth;
 			var newMinHeight:Number = this._explicitMinHeight;
-			
+
 			this.decrementButton.validate();
 			this.incrementButton.validate();
 			var decrementButtonWidth:Number = this.decrementButton.width;
@@ -1531,7 +1531,7 @@ package feathers.controls
 			var incrementButtonHeight:Number = this.incrementButton.height;
 			var incrementButtonMinWidth:Number = this.incrementButton.minWidth;
 			var incrementButtonMinHeight:Number = this.incrementButton.minHeight;
-			
+
 			//we'll default to the values set in the textInputFactory
 			var textInputWidth:Number = this.textInputExplicitWidth;
 			var textInputHeight:Number = this.textInputExplicitHeight;
@@ -1539,7 +1539,7 @@ package feathers.controls
 			var textInputMinHeight:Number = this.textInputExplicitMinHeight;
 			var textInputMaxWidth:Number = Number.POSITIVE_INFINITY;
 			var textInputMaxHeight:Number = Number.POSITIVE_INFINITY;
-			
+
 			if(this._buttonLayoutMode === StepperButtonLayoutMode.RIGHT_SIDE_VERTICAL)
 			{
 				var maxButtonWidth:Number = decrementButtonWidth;
@@ -1552,7 +1552,7 @@ package feathers.controls
 				{
 					maxButtonMinWidth = incrementButtonMinWidth;
 				}
-				
+
 				if(!needsWidth)
 				{
 					textInputWidth = this._explicitWidth - maxButtonWidth - this._textInputGap;
@@ -1635,7 +1635,7 @@ package feathers.controls
 				}
 				textInputMaxWidth = this._explicitMaxWidth - decrementButtonWidth - incrementButtonWidth;
 			}
-			
+
 			if(textInputWidth < 0)
 			{
 				textInputWidth = 0;
@@ -1886,7 +1886,7 @@ package feathers.controls
 			//the text input manually.
 			this.textInput.isFocusEnabled = !this._focusManager;
 			this.addChild(this.textInput);
-			
+
 			//we will use these values for measurement, if possible
 			this.textInput.initializeNow();
 			this.textInputExplicitWidth = this.textInput.explicitWidth;
@@ -2049,7 +2049,7 @@ package feathers.controls
 			if(this.touchPointID >= 0)
 			{
 				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
-				var claim:DisplayObject = exclusiveTouch.getClaim(this.touchPointID)
+				var claim:DisplayObject = exclusiveTouch.getClaim(this.touchPointID);
 				if(claim != this)
 				{
 					if(claim)

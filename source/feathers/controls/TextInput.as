@@ -58,7 +58,7 @@ package feathers.controls
 	 * input.setSkinForState( TextInputState.DISABLED, skin );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 * @see #setSkinForState()
 	 * @see feathers.controls.TextInputState#DISABLED
@@ -238,7 +238,7 @@ package feathers.controls
 	 * input.defaultIcon = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #setIconForState()
 	 */
 	[Style(name="defaultIcon",type="starling.display.DisplayObject")]
@@ -609,7 +609,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #text
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -776,7 +776,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.STATE_CHANGE
-	 * 
+	 *
 	 * @see #currentState
 	 */
 	[Event(name="stateChange",type="starling.events.Event")]
@@ -871,6 +871,11 @@ package feathers.controls
 		 */
 		public static var globalStyleProvider:IStyleProvider;
 
+		private static function defaultErrorCalloutFactory():TextCallout
+		{
+			return new TextCallout();
+		}
+		
 		/**
 		 * Constructor.
 		 */
@@ -984,7 +989,7 @@ package feathers.controls
 		 * A text editor may be an <code>INativeFocusOwner</code>, so we need to
 		 * return the value of its <code>nativeFocus</code> property. If not,
 		 * then we return <code>null</code>.
-		 * 
+		 *
 		 * @see feathers.core.INativeFocusOwner
 		 */
 		public function get nativeFocus():Object
@@ -1339,7 +1344,7 @@ package feathers.controls
 		 * input.isSelectable = false;</listing>
 		 *
 		 * @default true
-		 * 
+		 *
 		 * @see #isEditable
 		 */
 		public function get isSelectable():Boolean
@@ -1431,9 +1436,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -1464,9 +1470,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1581,9 +1588,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._promptFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._promptFontStylesSet.format = value;
 			if(value !== null)
@@ -1614,9 +1622,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._promptFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._promptFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1787,6 +1796,52 @@ package feathers.controls
 				this._promptProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _errorCalloutFactory:Function;
+		
+		/**
+		 * A function used to instantiate the error text callout. If null,
+		 * <code>new TextCallout()</code> is used instead.
+		 * The error text callout must be an instance of
+		 * <code>TextCallout</code>. This factory can be used to change
+		 * properties on the callout when it is first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set styles on the callout.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():TextCallout</pre>
+		 *
+		 * <p>In the following example, a custom error callout factory is passed
+		 * to the text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.errorCalloutFactory = function():TextCallout
+		 * {
+		 *     return new TextCallout();
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #errorString
+		 * @see feathers.controls.TextCallout
+		 */
+		public function get errorCalloutFactory():Function
+		{
+			return this._errorCalloutFactory;
+		}
+		
+		public function set errorCalloutFactory(value:Function):void
+		{
+			if(this._errorCalloutFactory == value)
+			{
+				return;
+			}
+			this._errorCalloutFactory = value;
+			this.invalidate(INVALIDATION_FLAG_ERROR_CALLOUT_FACTORY);
 		}
 
 		/**
@@ -2470,7 +2525,7 @@ package feathers.controls
 		 * Focuses the text input control so that it may be edited, and selects
 		 * all of its text. Call <code>selectRange()</code> after
 		 * <code>setFocus()</code> to select a different range.
-		 * 
+		 *
 		 * @see #selectRange()
 		 */
 		public function setFocus():void
@@ -2554,7 +2609,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, returns
 		 * <code>null</code>.</p>
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
 		 * @see #style:fontStyles
@@ -2595,9 +2650,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._fontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2654,9 +2710,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._promptFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._promptFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2931,7 +2988,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var measureBackground:IMeasureDisplayObject = this.currentBackground as IMeasureDisplayObject;
 			resetFluidChildDimensionsForMeasurement(this.currentBackground,
 				this._explicitWidth, this._explicitHeight,
@@ -3164,7 +3221,9 @@ package feathers.controls
 			{
 				return;
 			}
-			this.callout = new TextCallout();
+			
+			var factory:Function = this._errorCalloutFactory != null ? this._errorCalloutFactory : defaultErrorCalloutFactory;
+			this.callout = TextCallout(factory());
 			var errorCalloutStyleName:String = this._customErrorCalloutStyleName != null ? this._customErrorCalloutStyleName : this.errorCalloutStyleName;
 			this.callout.styleNameList.add(errorCalloutStyleName);
 			this.callout.closeOnKeys = null;
@@ -3375,7 +3434,7 @@ package feathers.controls
 			}
 			if(this.currentIcon &&
 				(this._originalIconWidth !== this._originalIconWidth || //isNaN
-					this._originalIconHeight !== this._originalIconHeight)) //isNaN
+				this._originalIconHeight !== this._originalIconHeight)) //isNaN
 			{
 				if(this.currentIcon is IValidating)
 				{

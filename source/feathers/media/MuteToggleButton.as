@@ -96,7 +96,7 @@ package feathers.media
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_VOLUME_SLIDER_FACTORY:String = "volumeSliderFactory";
-		
+
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * pop-up volume slider.
@@ -104,7 +104,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_VOLUME_SLIDER:String = "feathers-volume-toggle-button-volume-slider";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>MuteToggleButton</code> components.
@@ -567,7 +567,7 @@ package feathers.media
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var volumeSliderFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_VOLUME_SLIDER_FACTORY);
-			
+
 			if(volumeSliderFactoryInvalid)
 			{
 				this.createVolumeSlider();
@@ -577,9 +577,9 @@ package feathers.media
 			{
 				this.refreshVolumeSliderProperties();
 			}
-			
+
 			super.draw();
-			
+
 			this.handlePendingActions();
 		}
 

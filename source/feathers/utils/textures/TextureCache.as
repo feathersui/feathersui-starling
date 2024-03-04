@@ -14,16 +14,16 @@ package feathers.utils.textures
 	/**
 	 * Caches textures in memory. Each texture may be saved with its own key,
 	 * such as the URL where the original image file is located.
-	 * 
+	 *
 	 * <p><strong>Note:</strong> Most developers will only need to create a
 	 * <code>TextureCache</code>, pass it to multiple <code>ImageLoader</code>
 	 * components, and dispose the cache when finished. APIs to retain and
 	 * release textures are meant to be used by <code>ImageLoader</code>.</p>
-	 * 
+	 *
 	 * <p>A single <code>TextureCache</code> may be passed to multiple
 	 * <code>ImageLoader</code> components using the <code>textureCache</code>
 	 * property:</p>
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * var cache:TextureCache = new TextureCache();
 	 * loader1.textureCache = cache;
@@ -34,13 +34,13 @@ package feathers.utils.textures
 	 *
 	 * <listing version="3.0">
 	 * cache.dispose();</listing>
-	 * 
+	 *
 	 * <p>To use a TextureCache in a <code>List</code> or
 	 * <code>GroupedList</code> with the default item renderer, pass the cache
 	 * to the <code>ImageLoader</code> components using the
 	 * <code>iconLoaderFactory</code> or
 	 * <code>accessoryLoaderFactory</code>:</p>
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * var cache:TextureCache = new TextureCache();
 	 * list.itemRendererFactory = function():IListItemRenderer
@@ -54,7 +54,7 @@ package feathers.utils.textures
 	 *     };
 	 *     return itemRenderer;
 	 * };</listing>
-	 * 
+	 *
 	 * @see feathers.controls.ImageLoader#textureCache
 	 *
 	 * @productversion Feathers 2.3.0
@@ -141,7 +141,7 @@ package feathers.utils.textures
 
 		/**
 		 * Saves a texture, and associates it with a specific key.
-		 * 
+		 *
 		 * @see #removeTexture()
 		 * @see #hasTexture()
 		 */
@@ -149,7 +149,7 @@ package feathers.utils.textures
 		{
 			if(!this._retainedTextures)
 			{
-				throw new IllegalOperationError("Cannot add a texture after the cache has been disposed.")
+				throw new IllegalOperationError("Cannot add a texture after the cache has been disposed.");
 			}
 			if(key in this._unretainedTextures || key in this._retainedTextures)
 			{
@@ -227,14 +227,14 @@ package feathers.utils.textures
 		 * Gets the texture associated with the specified key, and increments
 		 * the retain count for the texture. Always remember to call
 		 * <code>releaseTexture()</code> when finished with a retained texture.
-		 * 
+		 *
 		 * @see #releaseTexture()
 		 */
 		public function retainTexture(key:String):Texture
 		{
 			if(!this._retainedTextures)
 			{
-				throw new IllegalOperationError("Cannot retain a texture after the cache has been disposed.")
+				throw new IllegalOperationError("Cannot retain a texture after the cache has been disposed.");
 			}
 			if(key in this._retainedTextures)
 			{
@@ -243,7 +243,7 @@ package feathers.utils.textures
 				this._retainCounts[key] = count;
 				return Texture(this._retainedTextures[key]);
 			}
-			
+
 			if(!(key in this._unretainedTextures))
 			{
 				throw new ArgumentError("Texture with key \"" + key + "\" cannot be retained because it has not been added to the cache.");
@@ -272,7 +272,7 @@ package feathers.utils.textures
 			{
 				//get the existing texture
 				var texture:Texture = Texture(this._retainedTextures[key]);
-				
+
 				//remove from retained
 				delete this._retainCounts[key];
 				delete this._retainedTextures[key];

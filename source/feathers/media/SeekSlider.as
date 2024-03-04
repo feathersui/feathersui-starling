@@ -27,7 +27,7 @@ package feathers.media
 	 * var skin:Image = new Image( texture );
 	 * skin.scale9Grid = new Rectangle( 2, 3, 6, 1 );
 	 * slider.progressSkin = skin;</listing>
-	 * 
+	 *
 	 * @default null
 	 */
 	[Style(name="progressSkin",type="starling.display.DisplayObject")]
@@ -65,7 +65,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-seek-slider-thumb";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>SeekSlider</code> components.
@@ -74,7 +74,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -256,7 +256,7 @@ package feathers.media
 			{
 				IValidating(this._progressSkin).validate();
 			}
-			
+
 			if(this._direction === Direction.VERTICAL)
 			{
 				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height / 2 - this._minimumPadding - this._maximumPadding;
@@ -360,6 +360,5 @@ package feathers.media
 			this._progress = progress;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
 	}
 }

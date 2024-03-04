@@ -19,7 +19,7 @@ package feathers.controls.text
 	 * @private
 	 * A text editor view port for the <code>TextArea</code> component that uses
 	 * <code>flash.text.StageText</code>.
-	 * 
+	 *
 	 * <p><strong>WARNING!</strong> This component isn't recommended for use in
 	 * production apps. It is buggy because <code>StageText</code> has a limited
 	 * API that doesn't expose things like scroll position.</p>
@@ -38,7 +38,7 @@ package feathers.controls.text
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -539,7 +539,7 @@ package feathers.controls.text
 				nativeScaleFactor = starling.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = starling.contentScaleFactor / nativeScaleFactor;
-			
+
 			var viewPort:Rectangle = this.stageText.viewPort;
 			viewPort.x += (this._paddingLeft * scaleFactor);
 			viewPort.y += (this._paddingTop * scaleFactor);

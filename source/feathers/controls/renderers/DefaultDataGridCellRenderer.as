@@ -18,7 +18,7 @@ package feathers.controls.renderers
 	 * text, an icon to display an image, and an "accessory" to display a UI
 	 * component or another display object (with shortcuts for including a
 	 * second image or a second label).
-	 * 
+	 *
 	 * @see feathers.controls.DataGrid
 	 *
 	 * @productversion Feathers 3.4.0
@@ -52,6 +52,7 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>DefaultListItemRenderer</code>
 		 * components.
@@ -76,12 +77,12 @@ package feathers.controls.renderers
 		{
 			return DefaultDataGridCellRenderer.globalStyleProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _rowIndex:int = -1;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -89,7 +90,7 @@ package feathers.controls.renderers
 		{
 			return this._rowIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -128,12 +129,12 @@ package feathers.controls.renderers
 			this._columnIndex = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _dataField:String = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -141,7 +142,7 @@ package feathers.controls.renderers
 		{
 			return this._dataField;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -159,7 +160,7 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var _column:DataGridColumn = null;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -167,7 +168,7 @@ package feathers.controls.renderers
 		{
 			return this._column;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -180,7 +181,7 @@ package feathers.controls.renderers
 			this._column = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -188,7 +189,7 @@ package feathers.controls.renderers
 		{
 			return DataGrid(this._owner);
 		}
-		
+
 		/**
 		 * @private
 		 */

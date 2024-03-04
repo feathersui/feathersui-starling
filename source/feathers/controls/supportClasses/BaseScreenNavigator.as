@@ -42,7 +42,7 @@ package feathers.controls.supportClasses
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #activeScreen
 	 * @see #activeScreenID
 	 *
@@ -660,7 +660,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._isTransitionActive && (id == this._previousScreenInTransitionID || id == this._activeScreenID))
 			{
-				throw new IllegalOperationError("Cannot remove a screen while it is transitioning in or out.")
+				throw new IllegalOperationError("Cannot remove a screen while it is transitioning in or out.");
 			}
 			if(this._activeScreenID == id)
 			{
@@ -765,7 +765,7 @@ package feathers.controls.supportClasses
 			{
 				this.validate();
 			}
-			
+
 			if(isSameInstance)
 			{
 				//we can't transition if both screens are the same display
@@ -972,11 +972,11 @@ package feathers.controls.supportClasses
 				this._previousScreenInTransitionID = null;
 				if(previousScreen !== null)
 				{
-					previousScreen.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE)
+					previousScreen.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE);
 				}
 				if(activeScreen !== null)
 				{
-					activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE)
+					activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE);
 				}
 				//we need to dispatch this event before the previous screen's
 				//owner property is set to null because legacy code that was

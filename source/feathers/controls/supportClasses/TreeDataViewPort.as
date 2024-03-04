@@ -783,7 +783,7 @@ package feathers.controls.supportClasses
 		private function locationToDisplayIndex(location:Vector.<int>, returnNearestIfBranchNotOpen:Boolean):int
 		{
 			this._displayIndex = -1;
-			var result:Object =  this.locationToDisplayIndexAtBranch(new <int>[], location, returnNearestIfBranchNotOpen);
+			var result:Object = this.locationToDisplayIndexAtBranch(new <int>[], location, returnNearestIfBranchNotOpen);
 			if(result !== null)
 			{
 				return this._displayIndex;
@@ -916,7 +916,7 @@ package feathers.controls.supportClasses
 					//(this doesn't necessarily mean that the current typical
 					//item was the typical item last time this function was
 					//called)
-					
+
 					//the location may have changed if items were added,
 					//removed or reordered in the data provider
 					typicalItemRenderer.location = typicalItemLocation;
@@ -926,7 +926,7 @@ package feathers.controls.supportClasses
 					//the typical item has changed, and doesn't have an item
 					//renderer yet. the previous typical item had an item
 					//renderer, so we will try to reuse it.
-					
+
 					//we can reuse the existing typical item renderer if the old
 					//typical item wasn't in the data provider. otherwise, it
 					//may still be needed for the same item.
@@ -956,7 +956,7 @@ package feathers.controls.supportClasses
 					{
 						//we can reuse the item renderer used for the old
 						//typical item!
-						
+
 						//if the old typical item was in the data provider,
 						//remove it from the renderer map.
 						if(this._typicalItemIsInDataProvider)
@@ -1159,7 +1159,7 @@ package feathers.controls.supportClasses
 					{
 						maximumViewPortEdge = viewPortHeight;
 					}
-					
+
 					this._minimumItemCount = Math.ceil(maximumViewPortEdge / minimumTypicalItemEdge) + 1;
 				}
 				else
@@ -1213,7 +1213,7 @@ package feathers.controls.supportClasses
 						delete this._itemRendererMap[item.toXMLString()];
 					}
 					else
-					{	
+					{
 						delete this._itemRendererMap[item];
 					}
 				}
@@ -1319,7 +1319,7 @@ package feathers.controls.supportClasses
 							delete this._itemRendererMap[item.toXMLString()];
 						}
 						else
-						{	
+						{
 							delete this._itemRendererMap[item];
 						}
 					}
@@ -1335,7 +1335,7 @@ package feathers.controls.supportClasses
 		private function recoverInactiveItemRenderers(storage:ItemRendererFactoryStorage):void
 		{
 			var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
-			
+
 			var itemCount:int = inactiveItemRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1351,7 +1351,7 @@ package feathers.controls.supportClasses
 					delete this._itemRendererMap[item.toXMLString()];
 				}
 				else
-				{	
+				{
 					delete this._itemRendererMap[item];
 				}
 			}
@@ -1362,7 +1362,7 @@ package feathers.controls.supportClasses
 			var inactiveItemRenderers:Vector.<ITreeItemRenderer> = storage.inactiveItemRenderers;
 			var activeItemRenderers:Vector.<ITreeItemRenderer> = storage.activeItemRenderers;
 			var activeItemRenderersCount:int = activeItemRenderers.length;
-			
+
 			//we may keep around some extra renderers to avoid too much
 			//allocation and garbage collection. they'll be hidden.
 			var itemCount:int = inactiveItemRenderers.length;
@@ -1440,7 +1440,7 @@ package feathers.controls.supportClasses
 				//storing null values instead of calling splice() to improve
 				//performance.
 			}
-			while(!itemRenderer)
+			while(!itemRenderer);
 			itemRenderer.data = item;
 			itemRenderer.owner = this._owner;
 			itemRenderer.factoryID = factoryID;
@@ -1482,7 +1482,7 @@ package feathers.controls.supportClasses
 			itemRenderer.factoryID = null;
 			this.removeChild(DisplayObject(itemRenderer), true);
 		}
-		
+
 		private function getFactoryID(item:Object, location:Vector.<int>):String
 		{
 			if(this._factoryIDFunction === null)
@@ -1495,7 +1495,7 @@ package feathers.controls.supportClasses
 			}
 			return this._factoryIDFunction(item);
 		}
-		
+
 		private function factoryIDToFactory(id:String):Function
 		{
 			if(id !== null)
@@ -1506,7 +1506,7 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".")
+					throw new ReferenceError("Cannot find item renderer factory for ID \"" + id + "\".");
 				}
 			}
 			return this._itemRendererFactory;
@@ -1649,7 +1649,7 @@ class ItemRendererFactoryStorage
 	{
 
 	}
-	
+
 	public var activeItemRenderers:Vector.<ITreeItemRenderer> = new <ITreeItemRenderer>[];
 	public var inactiveItemRenderers:Vector.<ITreeItemRenderer> = new <ITreeItemRenderer>[];
 }

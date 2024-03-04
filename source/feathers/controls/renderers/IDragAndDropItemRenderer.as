@@ -15,7 +15,6 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set dragEnabled(value:Boolean):void;
-		
 
 		/**
 		 * An optional display object to use to trigger drag and drop in the

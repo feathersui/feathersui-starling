@@ -71,7 +71,7 @@ package feathers.motion
 				}
 				//we only have the old screen
 				return slideOutOldScreen(oldScreen, -oldScreen.width, 0, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -112,7 +112,7 @@ package feathers.motion
 				}
 				//we only have the old screen
 				return slideOutOldScreen(oldScreen, oldScreen.width, 0, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -152,7 +152,7 @@ package feathers.motion
 				}
 				//we only have the old screen
 				return slideOutOldScreen(oldScreen, 0, -oldScreen.height, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**
@@ -192,7 +192,7 @@ package feathers.motion
 				}
 				//we only have the old screen
 				return slideOutOldScreen(oldScreen, 0, oldScreen.height, duration, ease, tweenProperties, onComplete, managed);
-			}
+			};
 		}
 
 		/**

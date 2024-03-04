@@ -398,7 +398,7 @@ package feathers.controls
 		 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 		 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 		 * ]);
-		 *
+		 * 
 		 * list.itemRendererFactory = function():IListItemRenderer
 		 * {
 		 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -506,7 +506,7 @@ package feathers.controls
 		{
 			return this._isSelectable;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -523,7 +523,7 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -552,7 +552,7 @@ package feathers.controls
 		 * {
 		 *     var list:List = List( event.currentTarget );
 		 *     var index:int = list.selectedIndex;
-		 *
+		 *     trace( "change: " + index );
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -611,7 +611,7 @@ package feathers.controls
 		 * {
 		 *     var list:List = List( event.currentTarget );
 		 *     var item:Object = list.selectedItem;
-		 *
+		 *     trace( "change: " + item );
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -714,7 +714,7 @@ package feathers.controls
 		 * {
 		 *     var list:List = List( event.currentTarget );
 		 *     var indices:Vector.&lt;int&gt; = list.selectedIndices;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -788,7 +788,7 @@ package feathers.controls
 		 * {
 		 *     var list:List = List( event.currentTarget );
 		 *     var items:Vector.&lt;Object&gt; = list.selectedItems;
-		 *
+		 * 
 		 * }
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
@@ -909,7 +909,7 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _itemRendererFactory:Function;
-		
+
 		/**
 		 * A function called that is expected to return a new item renderer. Has
 		 * a higher priority than <code>itemRendererType</code>. Typically, you
@@ -941,7 +941,7 @@ package feathers.controls
 		{
 			return this._itemRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -951,7 +951,7 @@ package feathers.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1024,12 +1024,12 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _typicalItem:Object = null;
-		
+
 		/**
 		 * Used to auto-size the list when a virtualized layout is used. If the
 		 * list's width or height is unknown, the list will try to automatically
@@ -1048,7 +1048,7 @@ package feathers.controls
 		{
 			return this._typicalItem;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1215,13 +1215,13 @@ package feathers.controls
 		/**
 		 * Drag and drop is restricted to components that have the same
 		 * <code>dragFormat</code>.
-		 * 
+		 *
 		 * <p>In the following example, the drag format of two lists is customized:</p>
 		 *
 		 * <listing version="3.0">
 		 * list1.dragFormat = "my-custom-format";
 		 * list2.dragFormat = "my-custom-format";</listing>
-		 * 
+		 *
 		 * @default "feathers-list-item"
 		 */
 		public function get dragFormat():String
@@ -1256,12 +1256,12 @@ package feathers.controls
 		 * touching an item and dragging it. The <code>dragEnabled</code>
 		 * property enables dragging items, but dropping items must be enabled
 		 * separately with the <code>dropEnabled</code> property.
-		 * 
+		 *
 		 * <p>In the following example, a list's items may be dragged:</p>
 		 *
 		 * <listing version="3.0">
 		 * list.dragEnabled = true;</listing>
-		 * 
+		 *
 		 * @see #dropEnabled
 		 * @see #dragFormat
 		 */
@@ -1291,12 +1291,12 @@ package feathers.controls
 		/**
 		 * Indicates if this list can accept items that are dragged and
 		 * dropped over the list's hit area.
-		 * 
+		 *
 		 * <p>In the following example, a list's items may be dropped:</p>
 		 *
 		 * <listing version="3.0">
 		 * list.dropEnabled = true;</listing>
-		 * 
+		 *
 		 * @see #dragEnabled
 		 * @see #dragFormat
 		 */
@@ -1406,7 +1406,7 @@ package feathers.controls
 			this.pendingItemIndex = -1;
 			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
 		}
-		
+
 		/**
 		 * Scrolls the list so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
@@ -1425,7 +1425,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * list.scrollToDisplayIndex( 10 );</listing>
-		 * 
+		 *
 		 * @param index The integer index of an item from the data provider.
 		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
 		 *
@@ -1469,7 +1469,7 @@ package feathers.controls
 		 * types of item renderers may be displayed in the list. A custom
 		 * <code>factoryIDFunction</code> may be specified to return the ID of
 		 * the factory to use for a specific item in the data provider.
-		 * 
+		 *
 		 * @see #factoryIDFunction
 		 * @see #getItemRendererFactoryWithID()
 		 */
@@ -1529,13 +1529,13 @@ package feathers.controls
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeBetweenEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * function customEffect(target:DisplayObject):IEffectContext
 		 * {
@@ -1585,13 +1585,13 @@ package feathers.controls
 		 * <p>The <code>IEffectContext</code> is used by the component to
 		 * control the effect, performing actions like playing the effect,
 		 * pausing it, or cancelling it.</p>
-		 * 
+		 *
 		 * <p>Custom animated effects that use
 		 * <code>starling.display.Tween</code> typically return a
 		 * <code>TweenEffectContext</code>. In the following example, we
 		 * recreate the <code>Fade.createFadeOutEffect()</code> used in the
 		 * previous example.</p>
-		 * 
+		 *
 		 * <listing version="3.0">
 		 * function customEffect(target:DisplayObject):IEffectContext
 		 * {
@@ -1777,9 +1777,9 @@ package feathers.controls
 				this.dispatchEventWith(Event.TRIGGERED, false, this.selectedItem);
 			}
 			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.END ||
-				event.keyCode == Keyboard.PAGE_UP ||event.keyCode == Keyboard.PAGE_DOWN ||
-				event.keyCode == Keyboard.UP ||event.keyCode == Keyboard.DOWN ||
-				event.keyCode == Keyboard.LEFT ||event.keyCode == Keyboard.RIGHT)
+				event.keyCode == Keyboard.PAGE_UP || event.keyCode == Keyboard.PAGE_DOWN ||
+				event.keyCode == Keyboard.UP || event.keyCode == Keyboard.DOWN ||
+				event.keyCode == Keyboard.LEFT || event.keyCode == Keyboard.RIGHT)
 			{
 				var newIndex:int = this.dataViewPort.calculateNavigationDestination(this.selectedIndex, event.keyCode);
 				if(this.selectedIndex != newIndex)

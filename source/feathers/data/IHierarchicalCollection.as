@@ -181,7 +181,7 @@ package feathers.data
 
 	/**
 	 * An interface for hierarchical collections.
-	 * 
+	 *
 	 * @productversion 3.3.0
 	 */
 	public interface IHierarchicalCollection extends IFeathersEventDispatcher

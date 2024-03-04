@@ -281,7 +281,7 @@ package feathers.controls.text
 		 */
 		public function StageTextTextEditor()
 		{
-			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os) || 
+			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os) ||
 				(Capabilities.playerType === "Desktop" && Capabilities.isDebugger);
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
@@ -575,7 +575,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#displayAsPassword
 		 *
 		 * @see feathers.controls.TextInput#displayAsPassword
@@ -606,7 +606,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isEditable
 		 *
 		 * @see feathers.controls.TextInput#isEditable
@@ -638,7 +638,7 @@ package feathers.controls.text
 		 * <p><strong>Warning:</strong> This property is ignored because
 		 * <code>flash.text.StageText</code> does not support selectable text
 		 * that is not editable.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#isSelectable
 		 *
 		 * @see feathers.controls.TextInput#isSelectable
@@ -860,7 +860,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#maxChars
 		 *
 		 * @see feathers.controls.TextInput#maxChars
@@ -935,7 +935,7 @@ package feathers.controls.text
 
 		/**
 		 * <p>This property is managed by the <code>TextInput</code>.</p>
-		 * 
+		 *
 		 * @copy feathers.controls.TextInput#restrict
 		 *
 		 * @see feathers.controls.TextInput#restrict
@@ -1175,11 +1175,11 @@ package feathers.controls.text
 		 *
 		 * <listing version="3.0">
 		 * textEditor.clearButtonMode = StageTextClearButtonMode.NEVER;</listing>
-		 * 
+		 *
 		 * <p>Requires <code>-swf-version=34</code> or newer.</p>
 		 *
 		 * @default flash.text.StageTextClearButtonMode.WHILE_EDITING
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#clearButtonMode Full description of flash.text.StageText.clearButtonMode in Adobe's Flash Platform API Reference
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageTextClearButtonMode.html Full description of flash.text.StageTextClearButtonMode in Adobe's Flash Platform API Reference
 		 */
@@ -1661,7 +1661,7 @@ package feathers.controls.text
 					//be called, and we need to hide the StageText.
 					this.stageText.visible = false;
 				}
-				//we're going to update the texture in render() because 
+				//we're going to update the texture in render() because
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
 				this._needsTextureUpdate = true;
@@ -1993,13 +1993,13 @@ package feathers.controls.text
 			}
 			//StageText sucks because it requires that the BitmapData's width
 			//and height exactly match its view port width and height.
-			//(may be doubled on Retina Mac) 
+			//(may be doubled on Retina Mac)
 			try
 			{
 				var bitmapData:BitmapData = new BitmapData(viewPort.width * nativeScaleFactor, viewPort.height * nativeScaleFactor, true, 0x00ff00ff);
 				this.stageText.drawViewPortToBitmapData(bitmapData);
-			} 
-			catch(error:Error) 
+			}
+			catch(error:Error)
 			{
 				//drawing stage text to the bitmap data at double size may fail
 				//on runtime versions less than 15, so fall back to using a
@@ -2016,7 +2016,7 @@ package feathers.controls.text
 				var scaleFactor:Number = starling.contentScaleFactor;
 				//skip Texture.fromBitmapData() because we don't want
 				//it to create an onRestore function that will be
-				//immediately discarded for garbage collection. 
+				//immediately discarded for garbage collection.
 				newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
 					true, false, false, scaleFactor);
 				newTexture.root.uploadBitmapData(bitmapData);
@@ -2362,7 +2362,7 @@ package feathers.controls.text
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			return true;
 		}
 

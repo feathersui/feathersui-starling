@@ -24,7 +24,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #totalTime
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.TOTAL_TIME_CHANGE
@@ -48,7 +48,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #currentTime
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.CURRENT_TIME_CHANGE
@@ -73,7 +73,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #isPlaying
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.PLAYBACK_STATE_CHANGE
@@ -132,7 +132,7 @@ package feathers.media
 
 		/**
 		 * Toggles the media content between playing and paused states.
-		 * 
+		 *
 		 * @see #isPlaying
 		 * @see #play()
 		 * @see #pause()
@@ -141,7 +141,7 @@ package feathers.media
 
 		/**
 		 * Plays the media content.
-		 * 
+		 *
 		 * @see #isPlaying
 		 * @see #pause()
 		 * @see #stop()
@@ -158,7 +158,7 @@ package feathers.media
 
 		/**
 		 * Stops the media content and returns the playhead to the beginning.
-		 * 
+		 *
 		 * @see #isPlaying
 		 * @see #play()
 		 * @see #pause()

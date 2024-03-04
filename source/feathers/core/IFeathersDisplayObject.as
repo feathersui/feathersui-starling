@@ -328,7 +328,7 @@ package feathers.core
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#localToGlobal() Full description of starling.display.DisplayObject.localToGlobal() in Gamua's Starling Framework API Reference
 		 */
-		function localToGlobal(localPoint:Point, resultPoint:Point=null):Point;
+		function localToGlobal(localPoint:Point, resultPoint:Point = null):Point;
 
 		/**
 		 * Converts a point from the stage's coordinate space to the display
@@ -336,7 +336,7 @@ package feathers.core
 		 *
 		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#globalToLocal() Full description of starling.display.DisplayObject.globalToLocal() in Gamua's Starling Framework API Reference
 		 */
-		function globalToLocal(globalPoint:Point, resultPoint:Point=null):Point;
+		function globalToLocal(globalPoint:Point, resultPoint:Point = null):Point;
 
 		/**
 		 * Calculates a transformation matrix to convert values from the display

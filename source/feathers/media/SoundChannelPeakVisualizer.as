@@ -171,7 +171,7 @@ package feathers.media
 		override protected function draw():void
 		{
 			this.autoSizeIfNeeded();
-			
+
 			if(this._mediaPlayer && this._mediaPlayer.soundChannel)
 			{
 				var soundChannel:SoundChannel = this._mediaPlayer.soundChannel;

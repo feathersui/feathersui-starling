@@ -70,7 +70,7 @@ package feathers.layout
 		/**
 		 * If the total item height is less than the bounds, the positions of
 		 * the items can be aligned vertically, on the y-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -435,7 +435,7 @@ package feathers.layout
 			//if there are no items in layout, then we don't want to subtract
 			//any gap when calculating the total height, so default to 0.
 			var gap:Number = 0;
-			
+
 			var headerIndicesIndex:int = -1;
 			var nextHeaderIndex:int = -1;
 			var headerCount:int = 0;
@@ -874,7 +874,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -1007,7 +1007,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
@@ -1095,7 +1095,7 @@ package feathers.layout
 					nextHeaderIndex = this._headerIndices[headerIndicesIndex];
 				}
 			}
-			
+
 			var secondToLastIndex:int = itemCount - 2;
 			var maxPositionY:Number = scrollY + height;
 			var startPositionY:Number = this._paddingTop;
@@ -1124,7 +1124,7 @@ package feathers.layout
 						}
 					}
 				}
-				
+
 				var gap:Number = this._gap;
 				if(hasFirstGap && i == 0)
 				{
@@ -1531,7 +1531,7 @@ package feathers.layout
 		 * @private
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
@@ -2039,7 +2039,7 @@ package feathers.layout
 					}
 				}
 			}
-			while(needsAnotherPass)
+			while(needsAnotherPass);
 			this._discoveredItemsCache.length = 0;
 		}
 

@@ -31,7 +31,7 @@ package feathers.themes
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #isCompleteForStarling()
 	 *
 	 * @eventType starling.events.Event.COMPLETE
@@ -54,7 +54,7 @@ package feathers.themes
 		/**
 		 * Indicates if the assets have been loaded and the theme has been
 		 * initialized for a specific Starling instance.
-		 * 
+		 *
 		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
 		function isCompleteForStarling(starling:Starling):Boolean;

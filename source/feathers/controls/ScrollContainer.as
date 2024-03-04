@@ -564,7 +564,7 @@ package feathers.controls
 		{
 			var oldBypass:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
-			var child:DisplayObject =  super.removeChildAt(index, dispose);
+			var child:DisplayObject = super.removeChildAt(index, dispose);
 			this.displayListBypassEnabled = oldBypass;
 			return child;
 		}

@@ -42,7 +42,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/media/Sound.html#id3 flash.media.Sound.id3
 	 *
 	 * @eventType feathers.events.MediaPlayerEventType.METADATA_RECEIVED
@@ -70,7 +70,7 @@ package feathers.media
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #bytesLoaded
 	 * @see #bytesTotal
 	 *
@@ -181,7 +181,7 @@ package feathers.media
 
 	/**
 	 * Controls playback of audio with a <code>flash.media.Sound</code> object.
-	 * 
+	 *
 	 * @see ../../../help/sound-player.html How to use the Feathers SoundPlayer component
 	 *
 	 * @productversion Feathers 2.2.0
@@ -192,7 +192,7 @@ package feathers.media
 		 * @private
 		 */
 		protected static const NO_SOUND_SOURCE_PLAY_ERROR:String = "Cannot play media when soundSource property has not been set.";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>SoundPlayer</code> components.
@@ -201,7 +201,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -217,23 +217,23 @@ package feathers.media
 		{
 			return SoundPlayer.globalStyleProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _sound:Sound;
-		
+
 		/**
 		 * The <code>flash.media.Sound</code> object that has loaded the
 		 * content specified by <code>soundSource</code>.
-		 * 
+		 *
 		 * @see #soundSource
 		 */
 		public function get sound():Sound
 		{
 			return this._sound;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -336,7 +336,7 @@ package feathers.media
 			}
 			else
 			{
-				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.")
+				throw new ArgumentError("Invalid source type for SoundPlayer. Expected a URL as a String, an URLRequest, a Sound object, or null.");
 			}
 			if(this._autoPlay && this._sound)
 			{
@@ -366,7 +366,7 @@ package feathers.media
 		/**
 		 * Indicates if the <code>flash.media.Sound</code> object has finished
 		 * loading its content.
-		 * 
+		 *
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 * @see #event:loadComplete feathers.events.MediaPlayerEventType.LOAD_COMPLETE
 		 */
@@ -377,7 +377,7 @@ package feathers.media
 
 		/**
 		 * @copy feathers.media.IProgressiveMediaPlayer#bytesLoaded
-		 * 
+		 *
 		 * @see #bytesTotal
 		 * @see #event:loadProgress feathers.events.MediaPlayerEventType.LOAD_PROGRESS
 		 */
@@ -456,7 +456,7 @@ package feathers.media
 		 *
 		 * <listing version="3.0">
 		 * soundPlayer.autoPlay = false;</listing>
-		 * 
+		 *
 		 * @see #soundSource
 		 */
 		public function get autoPlay():Boolean
@@ -480,7 +480,7 @@ package feathers.media
 		/**
 		 * Determines if, upon reaching the end of the sound, the playhead
 		 * automatically returns to the start of the media and plays again.
-		 * 
+		 *
 		 * <p>If <code>loop</code> is <code>true</code>, the
 		 * <code>autoRewind</code> property will be ignored because looping will
 		 * always automatically rewind to the beginning.</p>
@@ -732,6 +732,5 @@ package feathers.media
 		{
 			this.handleSoundComplete();
 		}
-		
 	}
 }

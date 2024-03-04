@@ -2489,6 +2489,7 @@ package feathers.controls
 				return;
 			}
 			this._scrollBarDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -2986,7 +2987,7 @@ package feathers.controls
 			}
 			this._decelerationRate = value;
 			this._logDecelerationRate = Math.log(this._decelerationRate);
-			this._fixedThrowDuration = -0.1 / Math.log(Math.pow(this._decelerationRate, 1000 / 60))
+			this._fixedThrowDuration = -0.1 / Math.log(Math.pow(this._decelerationRate, 1000 / 60));
 		}
 
 		/**
@@ -4706,7 +4707,7 @@ package feathers.controls
 			{
 				IValidating(this.currentBackgroundSkin).validate();
 			}
-			
+
 			//we account for the explicit minimum dimensions of the view port
 			//and the minimum dimensions of the background skin because it helps
 			//the final measurements stabilize faster.
@@ -6165,7 +6166,7 @@ package feathers.controls
 					}
 					else
 					{
-						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height
+						this.bottomPullViewRatio = (position - adjustedMaxScrollPosition) / this._bottomPullView.height;
 					}
 				}
 				if(this._topPullView !== null && !this._isTopPullViewActive)

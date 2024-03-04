@@ -345,7 +345,7 @@ package feathers.controls
 		 * <p>The following example passes in a data provider and tells the item
 		 * renderer how to interpret the data:</p>
 		 *
-		 * <listing version="3.0"> 
+		 * <listing version="3.0">
 		 * tree.dataProvider = new ArrayHierarchicalCollection(
 		 * [
 		 *     {
@@ -458,7 +458,7 @@ package feathers.controls
 		 * <p>The following example disables selection:</p>
 		 *
 		 * <listing version="3.0">
-	 	 * tree.isSelectable = false;</listing>
+		 * tree.isSelectable = false;</listing>
 		 *
 		 * @default true
 		 *
@@ -504,7 +504,7 @@ package feathers.controls
 		 * {
 		 *     var tree:Tree = Tree( event.currentTarget );
 		 *     var location:Vector.&lt;int&gt; = tree.selectedLocation;
-		 *
+		 * 
 		 * }
 		 * tree.addEventListener( Event.CHANGE, tree_changeHandler );</listing>
 		 *
@@ -547,7 +547,7 @@ package feathers.controls
 		 * {
 		 *     var tree:Tree = Tree( event.currentTarget );
 		 *     var item:Object = tree.selectedItem;
-		 *
+		 * 
 		 * }
 		 * tree.addEventListener( Event.CHANGE, tree_changeHandler );</listing>
 		 *
@@ -755,7 +755,7 @@ package feathers.controls
 		 * }
 		 * tree.setItemRendererFactoryWithID( "regular-item", regularItemFactory );
 		 * tree.setItemRendererFactoryWithID( "first-item", firstItemFactory );
-		 *
+		 * 
 		 * tree.factoryIDFunction = function( item:Object, location:Vector.&lt;int&gt; ):String
 		 * {
 		 *     if(location.length == 1 &amp;&amp; location[0] == 0)

@@ -31,7 +31,7 @@ package feathers.controls.renderers
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
@@ -51,24 +51,24 @@ package feathers.controls.renderers
 		 * <p>This property is set by the tree, and it should not be set manually.</p>
 		 */
 		function get data():Object;
-		
+
 		/**
 		 * @private
 		 */
 		function set data(value:Object):void;
-		
+
 		/**
 		 * The tree that contains this item renderer.
 		 *
 		 * <p>This property is set by the tree, and it should not be set manually.</p>
 		 */
 		function get owner():Tree;
-		
+
 		/**
 		 * @private
 		 */
 		function set owner(value:Tree):void;
-		
+
 		/**
 		 * The location (a vector of numeric indices, starting from zero) of
 		 * the item within the tree's data provider. Like the <code>data</code>
@@ -78,7 +78,7 @@ package feathers.controls.renderers
 		 * <p>This property is set by the tree, and it should not be set manually.</p>
 		 */
 		function get location():Vector.<int>;
-		
+
 		/**
 		 * @private
 		 */

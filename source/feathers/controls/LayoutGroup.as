@@ -51,7 +51,7 @@ package feathers.controls
 	 * group.backgroundDisabledSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
@@ -67,7 +67,7 @@ package feathers.controls
 	 * group.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -652,7 +652,7 @@ package feathers.controls
 			}
 			//the super function already checks if oldIndex < 0, and throws an
 			//appropriate error, so no need to do it again!
-			
+
 			this.items.removeAt(oldIndex);
 			this.items.insertAt(index, child);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
@@ -724,7 +724,7 @@ package feathers.controls
 				//things are properly updated when the LayoutGroup is
 				//transformed
 				this.currentBackgroundSkin.setRequiresRedraw();
-				
+
 				var mask:DisplayObject = this.currentBackgroundSkin.mask;
 				var filter:FragmentFilter = this.currentBackgroundSkin.filter;
 				painter.pushState();
@@ -1029,7 +1029,7 @@ package feathers.controls
 				this._explicitBackgroundWidth, this._explicitBackgroundHeight,
 				this._explicitBackgroundMinWidth, this._explicitBackgroundMinHeight,
 				this._explicitBackgroundMaxWidth, this._explicitBackgroundMaxHeight);
-			
+
 			this.viewPortBounds.x = 0;
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
@@ -1107,7 +1107,7 @@ package feathers.controls
 		protected function handleLayoutResult():void
 		{
 			//the layout's dimensions are also the minimum dimensions
-			//we calculate the minimum dimensions for the background skin in 
+			//we calculate the minimum dimensions for the background skin in
 			//refreshViewPortBounds() and let the layout handle it
 			var viewPortWidth:Number = this._layoutResult.viewPortWidth;
 			var viewPortHeight:Number = this._layoutResult.viewPortHeight;

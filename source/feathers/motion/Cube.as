@@ -59,7 +59,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -87,7 +87,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -115,7 +115,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -143,7 +143,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 	}
 }
@@ -162,9 +162,9 @@ import starling.rendering.Painter;
 class CubeTween extends Tween
 {
 	public function CubeTween(newScreen:DisplayObject, oldScreen:DisplayObject,
-			rotationYOffset:Number, rotationXOffset:Number,
-			duration:Number, ease:Object, onCompleteCallback:Function,
-			tweenProperties:Object)
+		rotationYOffset:Number, rotationXOffset:Number,
+		duration:Number, ease:Object, onCompleteCallback:Function,
+		tweenProperties:Object)
 	{
 		var cube:CulledSprite3D = new CulledSprite3D();
 		if(newScreen)

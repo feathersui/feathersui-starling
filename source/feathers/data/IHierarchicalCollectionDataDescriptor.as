@@ -39,13 +39,13 @@ package feathers.data
 		/**
 		 * The number of items at the specified location in the data source.
 		 */
-		function getLengthAtLocation(data:Object, location:Vector.<int> = null):int
+		function getLengthAtLocation(data:Object, location:Vector.<int> = null):int;
 
 		/**
 		 * Returns the item at the specified location in the data source.
 		 *
 		 * <p>The rest arguments are the indices that make up the location.</p>
-		 * 
+		 *
 		 * <p>Calling <code>getItemAtLocation()</code> instead is recommended
 		 * because the <code>Vector.&lt;int&gt;</code> location may be reused to
 		 * avoid excessive garbage collection from temporary objects created by

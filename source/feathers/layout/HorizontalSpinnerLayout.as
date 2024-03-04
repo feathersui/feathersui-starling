@@ -190,7 +190,7 @@ package feathers.layout
 
 		[Bindable(event="change")]
 		/**
-		 * The minimum space, in pixels, above the items.
+		 * The minimum space, in pixels, below the items.
 		 *
 		 * @default 0
 		 */
@@ -244,7 +244,7 @@ package feathers.layout
 			this._paddingLeft = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -253,7 +253,7 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -280,7 +280,7 @@ package feathers.layout
 			this._horizontalAlign = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -830,7 +830,7 @@ package feathers.layout
 					availableWidth = maxWidth;
 				}
 			}
-			
+
 			//we add one extra here because the first item renderer in view may
 			//be partially obscured, which would reveal an extra item renderer.
 			var maxVisibleTypicalItemCount:int = Math.ceil(availableWidth / (calculatedTypicalItemWidth + gap)) + 1;
@@ -987,7 +987,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -1011,7 +1011,7 @@ package feathers.layout
 
 			var gap:Number = this._gap;
 			var positionX:Number = 0;
-			
+
 			var maxItemHeight:Number = calculatedTypicalItemHeight;
 			positionX += ((calculatedTypicalItemWidth + gap) * itemCount);
 			positionX -= gap;
@@ -1077,15 +1077,15 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
 			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 			var gap:Number = this._gap;
-			
+
 			var resultLastIndex:int = 0;
-			
+
 			var totalItemWidth:Number = itemCount * (calculatedTypicalItemWidth + gap) - gap;
 
 			//the actual code that figures out which items are visible assumes
@@ -1178,7 +1178,7 @@ package feathers.layout
 			{
 				itemCount += this._beforeVirtualizedItemCount;
 			}
-			
+
 			var result:int = index;
 			if(keyCode == Keyboard.HOME)
 			{
@@ -1310,7 +1310,7 @@ package feathers.layout
 				}
 				if(item is IValidating)
 				{
-					IValidating(item).validate()
+					IValidating(item).validate();
 				}
 			}
 		}

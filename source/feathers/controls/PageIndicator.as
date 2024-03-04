@@ -37,7 +37,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -68,7 +68,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.horizontalAlign = HorizontalAlign.RIGHT;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -146,7 +146,7 @@ package feathers.controls
 	 * pages.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -225,7 +225,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * pages.verticalAlign = VerticalAlign.BOTTOM;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -254,7 +254,7 @@ package feathers.controls
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
-	 * 
+	 *
 	 * @see #selectedIndex
 	 *
 	 * @eventType starling.events.Event.CHANGE
@@ -405,7 +405,7 @@ package feathers.controls
 		 * {
 		 *     var pages:PageIndicator = PageIndicator( event.currentTarget );
 		 *     var index:int = pages.selectedIndex;
-		 *
+		 * 
 		 * }
 		 * pages.addEventListener( Event.CHANGE, pages_changeHandler );</listing>
 		 *
@@ -992,7 +992,7 @@ package feathers.controls
 							}
 							this.selectedIndex = newIndex;
 						}
-						else // previous/next
+						else //previous/next
 						{
 							if(point.x < this.selectedSymbol.x)
 							{

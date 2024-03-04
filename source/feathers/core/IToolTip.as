@@ -9,7 +9,7 @@ package feathers.core
 {
 	/**
 	 * An interface for tool tips created by the tool tip manager.
-	 * 
+	 *
 	 * @see ../../../help/tool-tips.html Tool tips in Feathers
 	 * @see feathers.core.ToolTipManager
 	 *

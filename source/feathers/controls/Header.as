@@ -47,7 +47,7 @@ package feathers.controls
 	 * header.backgroundSkin = new Quad( 10, 10, 0xff0000 );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -64,7 +64,7 @@ package feathers.controls
 	 * header.backgroundDisabledSkin = new Quad( 10, 10, 0x999999 );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #style:backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
@@ -167,7 +167,7 @@ package feathers.controls
 	 * header.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -183,7 +183,7 @@ package feathers.controls
 	 * header.paddingRight = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingRight",type="Number")]
@@ -199,7 +199,7 @@ package feathers.controls
 	 * header.paddingBottom = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingBottom",type="Number")]
@@ -215,7 +215,7 @@ package feathers.controls
 	 * header.paddingLeft = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingLeft",type="Number")]
@@ -663,7 +663,7 @@ package feathers.controls
 
 		/**
 		 * The UI controls that appear in the left region of the header.
-		 * 
+		 *
 		 * <p>If <code>leftItems</code> is not empty, and
 		 * <code>titleAlign</code> is <code>HorizontalAlign.LEFT</code>, the
 		 * title text renderer will appear to the right of the left items.</p>
@@ -1247,9 +1247,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -1280,9 +1281,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1530,7 +1532,7 @@ package feathers.controls
 				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.useVirtualLayout = false;
 				layout.verticalAlign = VerticalAlign.MIDDLE;
-				this._layout = layout; 
+				this._layout = layout;
 			}
 		}
 

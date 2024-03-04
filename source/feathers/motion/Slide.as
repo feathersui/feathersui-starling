@@ -73,7 +73,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -117,7 +117,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -161,7 +161,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 
 		/**
@@ -205,7 +205,7 @@ package feathers.motion
 				}
 				Starling.juggler.add(tween);
 				return null;
-			}
+			};
 		}
 	}
 }

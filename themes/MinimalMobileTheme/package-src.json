@@ -1,0 +1,24 @@
+{
+	"id": "feathersui_MinimalMobileTheme-source",
+	"name": "Feathers UI Minimal Mobile Theme",
+	"url": "https://feathersui.com/as3-starling/",
+	"docUrl": "https://feathersui/api-reference/",
+	"description": "Minimal mobile theme for Feathers UI (Starling version)",
+	"type": "src",
+	"version": "4.2.0",
+	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_MinimalMobileTheme-source_4.2.0.airpackage",
+	"publishedAt": "2021-11-19T00:00:00.000Z",
+	"dependencies": [
+		"starling-source:2.x.x",
+		"feathersui-source:4.2.x"
+	],
+	"parameters": [],
+	"tags": ["theme", "feathers", "starling"],
+	"status": "release",
+	"license": {
+	  "type": "Simplified BSD",
+	  "url": "https://github.com/feathersui/feathersui-starling/blob/v4.2.0/LICENSE.md",
+	  "public": true
+	}
+  }
+  

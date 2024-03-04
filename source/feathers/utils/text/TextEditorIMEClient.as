@@ -148,7 +148,7 @@ package feathers.utils.text
 		/**
 		 * @private
 		 */
-		public function updateComposition(text:String,attributes:Vector.<CompositionAttributeRange>, compositionStartIndex:int, compositionEndIndex:int):void
+		public function updateComposition(text:String, attributes:Vector.<CompositionAttributeRange>, compositionStartIndex:int, compositionEndIndex:int):void
 		{
 			this._compositionStartIndex = compositionStartIndex;
 			this._compositionEndIndex = compositionEndIndex;

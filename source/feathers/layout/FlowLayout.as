@@ -194,7 +194,7 @@ package feathers.layout
 		 * value of the <code>horizontalGap</code> property will be used instead.
 		 *
 		 * @default NaN
-		 * 
+		 *
 		 * @see #gap
 		 */
 		public function get lastHorizontalGap():Number
@@ -370,7 +370,7 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -410,7 +410,7 @@ package feathers.layout
 		/**
 		 * If the total height of the content is less than the bounds, the
 		 * content may be aligned vertically.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -507,7 +507,7 @@ package feathers.layout
 			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			
+
 			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN
 			//let's figure out if we can show multiple rows
 			var supportsMultipleRows:Boolean = true;
@@ -759,7 +759,7 @@ package feathers.layout
 					}
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			//we don't want to keep a reference to any of the items, so clear
 			//this cache
 			this._rowItems.length = 0;
@@ -875,7 +875,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 			//this function is very long because it may be called every frame,
 			//in some situations. testing revealed that splitting this function
@@ -904,7 +904,7 @@ package feathers.layout
 					supportsMultipleRows = false;
 				}
 			}
-			
+
 			if(this._typicalItem is IValidating)
 			{
 				IValidating(this._typicalItem).validate();
@@ -1001,7 +1001,7 @@ package feathers.layout
 					maxRowWidth = totalRowWidth;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 
 			if(supportsMultipleRows)
 			{
@@ -1022,7 +1022,7 @@ package feathers.layout
 			{
 				availableRowWidth = maxRowWidth;
 			}
-			
+
 			var totalHeight:Number = positionY + maxItemHeight + this._paddingBottom;
 			//the available height is the height of the viewport. if the explicit
 			//height is NaN, we need to calculate the viewport height ourselves
@@ -1055,9 +1055,9 @@ package feathers.layout
 			result = this.calculateMaxScrollYAndRowHeightOfIndex(index, items, x, y, width, height, result);
 			var maxScrollY:Number = result.x;
 			var rowHeight:Number = result.y;
-			
+
 			result.x = 0;
-			
+
 			var bottomPosition:Number = maxScrollY - (height - rowHeight);
 			if(scrollY >= bottomPosition && scrollY <= maxScrollY)
 			{
@@ -1296,7 +1296,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			return itemCount;
 		}
 
@@ -1304,7 +1304,7 @@ package feathers.layout
 		 * @inheritDoc
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			if(dropIndicator is IValidating)
 			{
@@ -1368,7 +1368,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			var lastItem:DisplayObject = items[itemCount - 1];
 			dropIndicator.x = lastItem.x + lastItem.width - dropIndicator.width / 2;
 			dropIndicator.y = lastItem.y;
@@ -1434,7 +1434,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			if(this._typicalItem is IValidating)
@@ -1536,7 +1536,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			return result;
 		}
 
@@ -1689,7 +1689,7 @@ package feathers.layout
 					rowItemCount++;
 				}
 			}
-			while(i < itemCount)
+			while(i < itemCount);
 			result.setTo(positionY, maxItemHeight);
 			return result;
 		}

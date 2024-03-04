@@ -43,7 +43,7 @@ package feathers.layout
 		 *
 		 * If the total item width is less than the bounds, the positions of
 		 * the items can be aligned horizontally, on the x-axis.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 		 * constant is not supported.</p>
 		 *
@@ -115,7 +115,7 @@ package feathers.layout
 			this._distributeWidths = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -132,14 +132,14 @@ package feathers.layout
 		 * columns as possible.
 		 *
 		 * @default 0
-		 * 
+		 *
 		 * @see #maxColumnCount
 		 */
 		public function get requestedColumnCount():int
 		{
 			return this._requestedColumnCount;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -156,12 +156,12 @@ package feathers.layout
 			this._requestedColumnCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _maxColumnCount:int = 0;
-		
+
 		/**
 		 * The maximum number of columns to display. If the explicit width of
 		 * the view port is set or if the <code>requestedColumnCount</code> is
@@ -176,7 +176,7 @@ package feathers.layout
 		{
 			return this._maxColumnCount;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -530,7 +530,7 @@ package feathers.layout
 				{
 					if(this._useVirtualLayout)
 					{
-						availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+						availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight;
 					}
 					else
 					{
@@ -719,7 +719,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -851,7 +851,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
@@ -1256,7 +1256,7 @@ package feathers.layout
 		 * @private
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
@@ -1525,7 +1525,7 @@ package feathers.layout
 				}
 				if(item is IValidating)
 				{
-					IValidating(item).validate()
+					IValidating(item).validate();
 				}
 			}
 		}
@@ -1772,7 +1772,7 @@ package feathers.layout
 					}
 				}
 			}
-			while(needsAnotherPass)
+			while(needsAnotherPass);
 			this._discoveredItemsCache.length = 0;
 		}
 

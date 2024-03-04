@@ -102,7 +102,7 @@ package feathers.controls.popups
 		 * constants from <code>feathers.layout.RelativePosition</code> or
 		 * <code>null</code>. If <code>null</code>, the callout will attempt to
 		 * position itself using values in the following order:
-		 * 
+		 *
 		 * <ul>
 		 *     <li><code>RelativePosition.BOTTOM</code></li>
 		 *     <li><code>RelativePosition.TOP</code></li>
@@ -225,7 +225,7 @@ package feathers.controls.popups
 			//make sure the content is scaled the same as the source
 			var matrix:Matrix = Pool.getMatrix();
 			source.getTransformationMatrix(PopUpManager.root, matrix);
-			var contentScaleX:Number = matrixToScaleX(matrix)
+			var contentScaleX:Number = matrixToScaleX(matrix);
 			var contentScaleY:Number = matrixToScaleY(matrix);
 			Pool.putMatrix(matrix);
 			if(contentScaleX != 1 || contentScaleY != 1)
@@ -241,7 +241,8 @@ package feathers.controls.popups
 					callout.scaleX = contentScaleX;
 					callout.scaleY = contentScaleY;
 					return callout;
-				}
+				};
+
 			}
 
 			this.content = content;

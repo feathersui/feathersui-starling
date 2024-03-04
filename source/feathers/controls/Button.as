@@ -241,7 +241,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.horizontalAlign = HorizontalAlign.LEFT;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>HorizontalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -458,7 +458,7 @@ package feathers.controls
 	 * button.paddingBottom = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingBottom",type="Number")]
@@ -544,7 +544,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.verticalAlign = VerticalAlign.TOP;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>VerticalAlign.JUSTIFY</code>
 	 * constant is not supported.</p>
 	 *
@@ -631,7 +631,7 @@ package feathers.controls
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
 		 * label text renderer.
-		 * 
+		 *
 		 * <p>Note: the label text renderer is not a
 		 * <code>feathers.controls.Label</code>. It is an instance of one of the
 		 * <code>ITextRenderer</code> implementations.</p>
@@ -1377,9 +1377,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -1410,9 +1411,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1915,7 +1917,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, returns
 		 * <code>null</code>.</p>
-		 * 
+		 *
 		 * @see http://doc.starling-framework.org/current/starling/text/TextFormat.html starling.text.TextFormat
 		 * @see #setFontStylesForState()
 		 * @see #style:fontStyles
@@ -1936,7 +1938,7 @@ package feathers.controls
 		 *
 		 * <p>If font styles are not defined for a specific state, the value of
 		 * the <code>fontStyles</code> property will be used instead.</p>
-		 * 
+		 *
 		 * <p>Note: if the text renderer has been customized with advanced font
 		 * formatting, it may override the values specified with
 		 * <code>setFontStylesForState()</code> and properties like
@@ -1956,9 +1958,10 @@ package feathers.controls
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._fontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -2116,7 +2119,7 @@ package feathers.controls
 			{
 				this.createLabel();
 			}
-			
+
 			if(textRendererInvalid || stateInvalid || dataInvalid)
 			{
 				this.refreshLabel();
@@ -2136,7 +2139,7 @@ package feathers.controls
 			}
 
 			super.draw();
-			
+
 			if(textRendererInvalid || stylesInvalid || stateInvalid || dataInvalid || sizeInvalid)
 			{
 				this.layoutContent();
@@ -2161,7 +2164,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			var labelRenderer:ITextRenderer = null;
 			if(this._label !== null && this.labelTextRenderer)
 			{
@@ -2169,7 +2172,7 @@ package feathers.controls
 				this.refreshLabelTextRendererDimensions(true);
 				this.labelTextRenderer.measureText(HELPER_POINT);
 			}
-			
+
 			var adjustedGap:Number = this._gap;
 			if(adjustedGap == Number.POSITIVE_INFINITY)
 			{
@@ -2184,7 +2187,7 @@ package feathers.controls
 				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
 				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
-			
+
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
@@ -2193,7 +2196,7 @@ package feathers.controls
 			{
 				IValidating(this.currentSkin).validate();
 			}
-			
+
 			var newMinWidth:Number = this._explicitMinWidth;
 			if(needsMinWidth)
 			{
@@ -2339,7 +2342,7 @@ package feathers.controls
 					}
 				}
 			}
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
@@ -2487,7 +2490,7 @@ package feathers.controls
 			this.labelTextRenderer.visible = this._label !== null && this._label.length > 0;
 			this.labelTextRenderer.isEnabled = this._isEnabled;
 		}
-		
+
 		/**
 		 * Sets the <code>currentIcon</code> property.
 		 *
@@ -2616,7 +2619,7 @@ package feathers.controls
 			this.longPress.isEnabled = this._isEnabled && this._isLongPressEnabled;
 			this.longPress.longPressDuration = this._longPressDuration;
 		}
-		
+
 		/**
 		 * Positions and sizes the button's content.
 		 *
@@ -2780,7 +2783,7 @@ package feathers.controls
 				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -2866,7 +2869,7 @@ package feathers.controls
 					this.currentIcon.x = this.labelTextRenderer.x - this._gap - this.currentIcon.width;
 				}
 			}
-			
+
 			if(this._iconPosition == RelativePosition.LEFT || this._iconPosition == RelativePosition.RIGHT)
 			{
 				if(this._verticalAlign == VerticalAlign.TOP)

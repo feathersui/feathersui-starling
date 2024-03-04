@@ -252,11 +252,11 @@ package feathers.data
 		 *
 		 * <listing version="3.0">
 		 * var collection:IListCollection; //this would be created from a concrete implementation
-		 *
+		 * 
 		 * var list:List = new List();
 		 * list.dataProvider = collection;
 		 * this.addChild( list );
-		 *
+		 * 
 		 * var input:TextInput = new TextInput();
 		 * input.addEventListener( Event.CHANGE, function():void
 		 * {
@@ -289,7 +289,7 @@ package feathers.data
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( a:Object, b:Object ):int</pre>
-		 * 
+		 *
 		 * <p>The return value should be <code>-1</code> if the first item
 		 * should appear before the second item when the collection is sorted.
 		 * The return value should be <code>1</code> if the first item should
@@ -441,7 +441,7 @@ package feathers.data
 		/**
 		 * Removes the first item in the collection and returns it.
 		 */
-		function shift():Object
+		function shift():Object;
 
 		/**
 		 * Determines if the specified item is in the collection.

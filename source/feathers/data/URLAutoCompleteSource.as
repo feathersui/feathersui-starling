@@ -254,7 +254,6 @@ package feathers.data
 			this.dispatchEventWith(starling.events.Event.COMPLETE, false, suggestions);
 		}
 
-
 		/**
 		 * @private
 		 */

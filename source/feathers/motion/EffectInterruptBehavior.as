@@ -9,7 +9,7 @@ package feathers.motion
 {
 	/**
 	 * Constants for determining how an effect behaves when it is interrupted.
-	 * 
+	 *
 	 * @see feathers.motion.effectClasses.IEffectContext#interrupt()
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *

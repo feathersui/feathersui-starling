@@ -110,7 +110,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * group.direction = Direction.HORIZONTAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -166,7 +166,7 @@ package feathers.controls
 	 * group.gap = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:firstGap
 	 * @see #style:lastGap
 	 */
@@ -240,7 +240,7 @@ package feathers.controls
 	 * group.paddingTop = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingTop",type="Number")]
@@ -349,7 +349,7 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
 	 */
-	[Event(name="triggered", type="starling.events.Event")]
+	[Event(name="triggered",type="starling.events.Event")]
 
 	[DefaultProperty("dataProvider")]
 	/**
@@ -402,32 +402,32 @@ package feathers.controls
 		 * @private
 		 */
 		private static const DEFAULT_BUTTON_FIELDS:Vector.<String> = new <String>
-		[
-			"defaultIcon",
-			"upIcon",
-			"downIcon",
-			"hoverIcon",
-			"disabledIcon",
-			"defaultSelectedIcon",
-			"selectedUpIcon",
-			"selectedDownIcon",
-			"selectedHoverIcon",
-			"selectedDisabledIcon",
-			"isSelected",
-			"isToggle",
-			"isLongPressEnabled",
-			"name",
-		];
+			[
+				"defaultIcon",
+				"upIcon",
+				"downIcon",
+				"hoverIcon",
+				"disabledIcon",
+				"defaultSelectedIcon",
+				"selectedUpIcon",
+				"selectedDownIcon",
+				"selectedHoverIcon",
+				"selectedDisabledIcon",
+				"isSelected",
+				"isToggle",
+				"isLongPressEnabled",
+				"name",
+			];
 
 		/**
 		 * @private
 		 */
 		private static const DEFAULT_BUTTON_EVENTS:Vector.<String> = new <String>
-		[
-			Event.TRIGGERED,
-			Event.CHANGE,
-			FeathersEventType.LONG_PRESS,
-		];
+			[
+				Event.TRIGGERED,
+				Event.CHANGE,
+				FeathersEventType.LONG_PRESS,
+			];
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the buttons.
@@ -582,7 +582,7 @@ package feathers.controls
 		 *     <li>Event.TRIGGERED</li>
 		 *     <li>Event.CHANGE (only supported by <code>ToggleButton</code>)</li>
 		 * </ul>
-		 * 
+		 *
 		 * <p>Event listeners may have one of the following signatures:</p>
 		 * <pre>function(event:Event):void</pre>
 		 * <pre>function(event:Event, eventData:Object):void</pre>
@@ -1355,7 +1355,7 @@ package feathers.controls
 		 * buttons, and the properties will be passed down to every button when
 		 * the button group validates. For a list of available properties,
 		 * refer to <a href="Button.html"><code>feathers.controls.Button</code></a>.
-		 * 
+		 *
 		 * <p>These properties are shared by every button, so anything that cannot
 		 * be shared (such as display objects, which cannot be added to multiple
 		 * parents) should be passed to buttons using the
@@ -1915,12 +1915,12 @@ package feathers.controls
 			this._viewPortBounds.maxWidth = this._explicitMaxWidth;
 			this._viewPortBounds.maxHeight = this._explicitMaxHeight;
 			this.layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
-			
+
 			var contentWidth:Number = this._layoutResult.contentWidth;
 			var contentHeight:Number = this._layoutResult.contentHeight;
 			//minimum dimensions are the same as the measured dimensions
 			this.saveMeasurements(contentWidth, contentHeight, contentWidth, contentHeight);
-			
+
 			//final validation to avoid juggler next frame issues
 			for each(var button:Button in this.activeButtons)
 			{

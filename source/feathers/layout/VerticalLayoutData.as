@@ -48,14 +48,14 @@ package feathers.layout
 		 * <p>A percentage may be specified in the range from <code>0</code>
 		 * to <code>100</code>. If the value is set to <code>NaN</code>, this
 		 * property is ignored.</p>
-		 * 
+		 *
 		 * <p>Performance tip: If all items in your layout will have 100% width,
 		 * it's better to set the <code>horizontalAlign</code> property of the
 		 * <code>VerticalLayout</code> to
 		 * <code>HorizontalAlign.JUSTIFY</code>.</p>
 		 *
 		 * @default NaN
-		 * 
+		 *
 		 * @see feathers.layout.VerticalLayout#horizontalAlign
 		 */
 		public function get percentWidth():Number

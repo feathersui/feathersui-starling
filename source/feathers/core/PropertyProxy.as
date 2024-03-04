@@ -200,7 +200,7 @@ package feathers.core
 			{
 				result += " " + propertyName;
 			}
-			return result + "]"
+			return result + "]";
 		}
 
 		/**

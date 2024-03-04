@@ -35,7 +35,7 @@ package feathers.controls
 	 * label.backgroundDisabledSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #backgroundSkin
 	 */
 	[Style(name="backgroundDisabledSkin",type="starling.display.DisplayObject")]
@@ -49,7 +49,7 @@ package feathers.controls
 	 * label.backgroundSkin = new Image( texture );</listing>
 	 *
 	 * @default null
-	 * 
+	 *
 	 * @see #backgroundDisabledSkin
 	 */
 	[Style(name="backgroundSkin",type="starling.display.DisplayObject")]
@@ -196,7 +196,7 @@ package feathers.controls
 	 * label.paddingLeft = 20;</listing>
 	 *
 	 * @default 0
-	 * 
+	 *
 	 * @see #style:padding
 	 */
 	[Style(name="paddingLeft",type="Number")]
@@ -425,7 +425,7 @@ package feathers.controls
 		 * The number of text lines displayed by the label. The component may
 		 * contain multiple text lines if the text contains line breaks or if
 		 * the <code>wordWrap</code> property is enabled.
-		 * 
+		 *
 		 * @see #wordWrap
 		 */
 		public function get numLines():int
@@ -544,9 +544,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -577,9 +578,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -1031,7 +1033,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			
+
 			resetFluidChildDimensionsForMeasurement(DisplayObject(this.textRenderer),
 				this._explicitWidth - this._paddingLeft - this._paddingRight,
 				this._explicitHeight - this._paddingTop - this._paddingBottom,
@@ -1115,7 +1117,7 @@ package feathers.controls
 					newMinHeight = backgroundMinHeight;
 				}
 			}
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{

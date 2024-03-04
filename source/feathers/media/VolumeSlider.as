@@ -48,7 +48,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-volume-slider-thumb";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>VolumeSlider</code> components.
@@ -57,7 +57,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */

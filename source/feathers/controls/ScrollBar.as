@@ -171,7 +171,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * scrollBar.direction = Direction.VERTICAL;</listing>
-	 * 
+	 *
 	 * <p><strong>Note:</strong> The <code>Direction.NONE</code>
 	 * constant is not supported.</p>
 	 *
@@ -2606,7 +2606,7 @@ package feathers.controls
 				this._minimumTrackSkinExplicitWidth = this.minimumTrack.width;
 				this._minimumTrackSkinExplicitHeight = this.minimumTrack.height;
 				this._minimumTrackSkinExplicitMinWidth = this._minimumTrackSkinExplicitWidth;
-				this._minimumTrackSkinExplicitMinHeight = this._minimumTrackSkinExplicitHeight
+				this._minimumTrackSkinExplicitMinHeight = this._minimumTrackSkinExplicitHeight;
 			}
 		}
 
@@ -2665,7 +2665,7 @@ package feathers.controls
 				this._maximumTrackSkinExplicitWidth = this.maximumTrack.width;
 				this._maximumTrackSkinExplicitHeight = this.maximumTrack.height;
 				this._maximumTrackSkinExplicitMinWidth = this._maximumTrackSkinExplicitWidth;
-				this._maximumTrackSkinExplicitMinHeight = this._maximumTrackSkinExplicitHeight
+				this._maximumTrackSkinExplicitMinHeight = this._maximumTrackSkinExplicitHeight;
 			}
 		}
 

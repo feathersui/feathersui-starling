@@ -30,7 +30,7 @@ package feathers.utils.keyboard
 	 *         this._keyToTrigger = new KeyToTrigger(this);
 	 *         this._keyToTrigger.keyCode = Keyboard.ENTER;
 	 *     }
-	 *     
+	 * 
 	 *     private var _keyToTrigger:KeyToTrigger;
 	 * // ...</listing>
 	 *

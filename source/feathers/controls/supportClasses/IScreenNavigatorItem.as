@@ -24,7 +24,7 @@ package feathers.controls.supportClasses
 		 * An optional event that the screen will dispatch when it's ready for
 		 * the transition to start. If <code>null</code>, the transition will
 		 * start immediately.
-		 * 
+		 *
 		 * <p>Useful for loading assets or doing other long tasks to prepare
 		 * the screen before it is shown. It is recommended to display some
 		 * kind of progress indicator over the previous screen during this

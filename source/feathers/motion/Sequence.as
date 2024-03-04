@@ -13,8 +13,8 @@ package feathers.motion
 	import starling.display.DisplayObject;
 
 	/**
-	 * Combines multiple effects that play one after another in sequence. 
-	 * 
+	 * Combines multiple effects that play one after another in sequence.
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *
 	 * @productversion Feathers 3.5.0
@@ -34,7 +34,7 @@ package feathers.motion
 			return function(target:DisplayObject):IEffectContext
 			{
 				return new SequenceEffectContext(target, rest);
-			}
+			};
 		}
 	}
 }

@@ -1,0 +1,24 @@
+{
+	"id": "feathersui_MetalWorksDesktopTheme",
+	"name": "Feathers UI Metal Works Desktop Theme",
+	"url": "https://feathersui.com/as3-starling/",
+	"docUrl": "https://feathersui/api-reference/",
+	"description": "Metal Works desktop theme for Feathers UI (Starling version)",
+	"type": "swc",
+	"version": "4.2.0",
+	"sourceUrl": "https://github.com/feathersui/feathersui-starling/releases/download/v4.2.0/feathersui_MetalWorksDesktopTheme_4.2.0.airpackage",
+	"publishedAt": "2021-11-19T00:00:00.000Z",
+	"dependencies": [
+		"starling:2.x.x",
+		"feathersui:4.2.x"
+	],
+	"parameters": [],
+	"tags": ["theme", "feathers", "starling"],
+	"status": "release",
+	"license": {
+	  "type": "Simplified BSD",
+	  "url": "https://github.com/feathersui/feathersui-starling/blob/v4.2.0/LICENSE.md",
+	  "public": true
+	}
+  }
+  

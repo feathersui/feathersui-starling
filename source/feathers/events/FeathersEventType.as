@@ -260,7 +260,7 @@ package feathers.events
 		 * The <code>FeathersEventType.STATE_CHANGE</code> event type is used by
 		 * Feathers classes that implement the <code>IStateContext</code>
 		 * interface.
-		 * 
+		 *
 		 * @see feathers.core.IStateContext
 		 */
 		public static const STATE_CHANGE:String = "stateChange";

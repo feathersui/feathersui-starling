@@ -13,8 +13,8 @@ package feathers.motion
 	import starling.display.DisplayObject;
 
 	/**
-	 * Combines multiple effects that play at the same time, in parallel. 
-	 * 
+	 * Combines multiple effects that play at the same time, in parallel.
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *
 	 * @productversion Feathers 3.5.0
@@ -35,7 +35,7 @@ package feathers.motion
 			return function(target:DisplayObject):IEffectContext
 			{
 				return new ParallelEffectContext(target, rest);
-			}
+			};
 		}
 	}
 }

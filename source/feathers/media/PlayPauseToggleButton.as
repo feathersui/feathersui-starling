@@ -46,7 +46,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_STYLE_NAME_OVERLAY_PLAY_PAUSE_TOGGLE_BUTTON:String = "feathers-overlay-play-pause-toggle-button";
-		
+
 		/**
 		 * The default <code>IStyleProvider</code> for all
 		 * <code>PlayPauseToggleButton</code> components.
@@ -55,7 +55,7 @@ package feathers.media
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var globalStyleProvider:IStyleProvider;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -121,7 +121,7 @@ package feathers.media
 		 * Determines if the button may be touched when the media player is
 		 * playing its content. In other words, this button will only work when
 		 * the content is paused.
-		 * 
+		 *
 		 * @default true
 		 */
 		public function get touchableWhenPlaying():Boolean

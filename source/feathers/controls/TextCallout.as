@@ -134,7 +134,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-	 *
+	 * 
 	 * function button_triggeredHandler( event:Event ):void
 	 * {
 	 *     var button:Button = Button( event.currentTarget );
@@ -221,7 +221,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.addEventListener( Event.TRIGGERED, button_triggeredHandler );
-		 *
+		 * 
 		 * function button_triggeredHandler( event:Event ):void
 		 * {
 		 *     var button:Button = Button( event.currentTarget );
@@ -254,7 +254,7 @@ package feathers.controls
 				factory = calloutOverlayFactory;
 				if(factory == null)
 				{
-					factory = PopUpManager.defaultOverlayFactory
+					factory = PopUpManager.defaultOverlayFactory;
 				}
 			}
 			PopUpManager.addPopUp(callout, isModal, false, factory);
@@ -382,9 +382,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.format = value;
 			if(value !== null)
@@ -415,9 +416,10 @@ package feathers.controls
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._fontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._fontStylesSet.disabledFormat = value;
 			if(value !== null)

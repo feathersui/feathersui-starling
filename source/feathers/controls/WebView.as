@@ -71,7 +71,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @see #location
-	 * 
+	 *
 	 * @eventType feathers.events.FeathersEventType.LOCATION_CHANGE
 	 */
 	[Event(name="locationChange",type="starling.events.Event")]
@@ -551,7 +551,7 @@ package feathers.controls
 				}
 				target = target.parent;
 			}
-			while(target)
+			while(target);
 			this.stageWebView.stage = this.stage.starling.nativeStage;
 		}
 

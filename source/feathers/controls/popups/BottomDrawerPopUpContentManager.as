@@ -149,7 +149,7 @@ package feathers.controls.popups
 		 * };</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Panel
 		 */
 		public var panelFactory:Function = null;
@@ -163,7 +163,7 @@ package feathers.controls.popups
 		 * manager.customPanelStyleName = "my-custom-pop-up-panel";</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Panel
 		 */
 		public var customPanelStyleName:String = null;
@@ -182,7 +182,7 @@ package feathers.controls.popups
 		 * };</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Button
 		 */
 		public var closeButtonFactory:Function = null;
@@ -196,7 +196,7 @@ package feathers.controls.popups
 		 * manager.customCloseButtonStyleName = "my-custom-close-button";</listing>
 		 *
 		 * @default null
-		 * 
+		 *
 		 * @see feathers.controls.Button
 		 */
 		public var customCloseButtonStyleName:String = null;
@@ -208,7 +208,7 @@ package feathers.controls.popups
 
 		/**
 		 * A prompt to display in the panel's title.
-		 * 
+		 *
 		 * <p>Note: If using this manager with a component that has its own
 		 * prompt (like <code>PickerList</code>), this value may be overridden
 		 * by the component.</p>
@@ -388,10 +388,10 @@ package feathers.controls.popups
 			}
 
 			this.content = content;
-			
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = HorizontalAlign.JUSTIFY;
-			
+
 			var panelFactory:Function = (this.panelFactory !== null) ? this.panelFactory : defaultPanelFactory;
 			this.panel = Panel(panelFactory());
 			if(this.customPanelStyleName)
@@ -407,15 +407,15 @@ package feathers.controls.popups
 			//make sure the content is scaled the same as the source
 			var matrix:Matrix = Pool.getMatrix();
 			source.getTransformationMatrix(PopUpManager.root, matrix);
-			panel.scaleX = matrixToScaleX(matrix)
+			panel.scaleX = matrixToScaleX(matrix);
 			panel.scaleY = matrixToScaleY(matrix);
 			Pool.putMatrix(matrix);
 
 			PopUpManager.addPopUp(this.panel, true, false, this._overlayFactory);
 			this.layout();
-			
+
 			this.panel.addEventListener(Event.REMOVED_FROM_STAGE, panel_removedFromStageHandler);
-			
+
 			var stage:Stage = Starling.current.stage;
 			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);

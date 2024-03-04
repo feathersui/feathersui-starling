@@ -85,7 +85,7 @@ package feathers.layout
 		 *         item.validate();
 		 *     }
 		 * }</listing>
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#validate()
 		 */
 		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
@@ -94,7 +94,7 @@ package feathers.layout
 		 * Using the current index and a key press, calculates the new index.
 		 * This might be use to change a list's <code>selectedIndex</code> when
 		 * a key is pressed.
-		 * 
+		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#UP flash.ui.Keyboard.UP
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#DOWN flash.ui.Keyboard.DOWN
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#LEFT flash.ui.Keyboard.LEFT
@@ -104,7 +104,7 @@ package feathers.layout
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#PAGE_UP flash.ui.Keyboard.PAGE_UP
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/ui/Keyboard.html#PAGE_DOWN flash.ui.Keyboard.PAGE_DOWN
 		 */
-		function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int
+		function calculateNavigationDestination(items:Vector.<DisplayObject>, index:int, keyCode:uint, bounds:LayoutBoundsResult):int;
 
 		/**
 		 * Using the item dimensions, calculates a scroll position that will
@@ -145,6 +145,6 @@ package feathers.layout
 		 * @see #getScrollPositionForIndex()
 		 */
 		function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number,
-			items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+			items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point;
 	}
 }

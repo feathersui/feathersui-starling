@@ -38,7 +38,7 @@ package feathers.utils.touch
 	 *         super();
 	 *         this._longPress = new LongPress(this);
 	 *     }
-	 *     
+	 * 
 	 *     private var _longPress:LongPress;
 	 * }</listing>
 	 *
@@ -218,7 +218,7 @@ package feathers.utils.touch
 		 */
 		public function set tapToSelect(value:TapToSelect):void
 		{
-			this._tapToSelect = value
+			this._tapToSelect = value;
 		}
 
 		/**
@@ -326,7 +326,7 @@ package feathers.utils.touch
 				//save the position so that we can do a final hit test
 				this._touchLastGlobalPosition.x = touch.globalX;
 				this._touchLastGlobalPosition.y = touch.globalY;
-				
+
 				this._touchBeginTime = getTimer();
 				this._target.addEventListener(Event.ENTER_FRAME, target_enterFrameHandler);
 			}

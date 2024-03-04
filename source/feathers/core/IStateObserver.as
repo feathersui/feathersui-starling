@@ -9,7 +9,7 @@ package feathers.core
 {
 	/**
 	 * Watches an <code>IStateContext</code> for state changes.
-	 * 
+	 *
 	 * @see feathers.core.IStateContext
 	 *
 	 * @productversion Feathers 2.3.0

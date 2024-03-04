@@ -106,13 +106,13 @@ package feathers.layout
 		 * If the total width of the tiles in a row (minus padding and gap)
 		 * does not fill the entire row, the remaining space will be distributed
 		 * to each tile equally.
-		 * 
+		 *
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedColumnCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
 		 *
 		 * @default false
-		 * 
+		 *
 		 * @see #requestedColumnCount
 		 */
 		override public function get distributeWidths():Boolean
@@ -128,7 +128,7 @@ package feathers.layout
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedRowCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
-		 * 
+		 *
 		 * <p>Note: If the <code>distributeHeights</code> property is set to
 		 * <code>true</code>, the <code>useSquareTiles</code> property will be
 		 * automatically changed to <code>false</code>.</p>
@@ -176,7 +176,7 @@ package feathers.layout
 			}
 
 			var scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
-			var scrollY:Number = viewPortBounds? viewPortBounds.scrollY : 0;
+			var scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
 			var boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
 			var boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
 			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
@@ -484,7 +484,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.");
 			}
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
@@ -686,7 +686,7 @@ package feathers.layout
 			}
 			if(!this._useVirtualLayout)
 			{
-				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.");
 			}
 
 			if(this._paging === Direction.HORIZONTAL)
@@ -1074,7 +1074,7 @@ package feathers.layout
 		 * @inheritDoc
 		 */
 		public function positionDropIndicator(dropIndicator:DisplayObject, index:int,
-			x:Number, y: Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
+			x:Number, y:Number, items:Vector.<DisplayObject>, width:Number, height:Number):void
 		{
 			if(this._useVirtualLayout)
 			{
@@ -1234,7 +1234,7 @@ package feathers.layout
 					return;
 				}
 				positionX += tileWidth + this._horizontalGap;
-				
+
 				if(rowItemCount > 0 &&
 					(x < (positionX + (tileWidth / 2))) &&
 					(x < (pageStartX + width)) && //not on next page
@@ -1362,8 +1362,8 @@ package feathers.layout
 					tileHeight = tileWidth;
 				}
 			}
-			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight, 
-				height, height, this._paddingTop + this._paddingBottom, 
+			var verticalTileCount:int = this.calculateVerticalTileCount(tileHeight,
+				height, height, this._paddingTop + this._paddingBottom,
 				this._verticalGap, this._requestedRowCount, itemCount,
 				horizontalTileCount, this._distributeHeights && !this._useSquareTiles);
 			if(this._distributeHeights && !this._useSquareTiles)
@@ -1466,7 +1466,7 @@ package feathers.layout
 					}
 					i += horizontalTileCount;
 				}
-				while(resultLength < minimumItemCount && pageStart < itemCount)
+				while(resultLength < minimumItemCount && pageStart < itemCount);
 			}
 		}
 
@@ -1880,7 +1880,7 @@ package feathers.layout
 				}
 				return tileCount;
 			}
-			
+
 			//in this case, the width is not known, but it may have a maximum
 			if(requestedColumnCount > 0)
 			{
@@ -1890,7 +1890,7 @@ package feathers.layout
 			{
 				tileCount = totalItemCount;
 			}
-			
+
 			var maxTileCount:int = int.MAX_VALUE;
 			if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)

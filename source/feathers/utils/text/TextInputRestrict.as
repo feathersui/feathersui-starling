@@ -51,7 +51,7 @@ package feathers.utils.text
 		/**
 		 * @private
 		 */
-		protected var _restricts:Vector.<RegExp>
+		protected var _restricts:Vector.<RegExp>;
 
 		/**
 		 * @private
@@ -119,14 +119,14 @@ package feathers.utils.text
 						}
 						else
 						{
-							partialRestrict = value.substr(startIndex)
+							partialRestrict = value.substr(startIndex);
 							this._restricts.push(this.createRestrictRegExp(partialRestrict, isExcluding));
 							break;
 						}
 						startIndex = nextStartIndex;
 						isExcluding = !isExcluding;
 					}
-					while(true)
+					while(true);
 				}
 			}
 			else

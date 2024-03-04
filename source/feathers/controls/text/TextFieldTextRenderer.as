@@ -65,26 +65,26 @@ package feathers.controls.text
 	 *     return new TextFieldTextRenderer();
 	 * };
 	 * this.addChild( label );</listing>
-	 * 
+	 *
 	 * <strong>Embedding Fonts</strong>
-	 * 
+	 *
 	 * <p>This text renderer supports embedded TrueType or OpenType fonts.</p>
-	 * 
+	 *
 	 * <p>In the following example, a TrueType font is included with
 	 * <code>[Embed]</code> metadata:</p>
-	 * 
+	 *
 	 * <listing version="3.0">
 	 * [Embed(source="path/to/font.ttf",fontFamily="MyCustomFont",fontWeight="normal",fontStyle="normal",mimeType="application/x-font",embedAsCFF="false")]
 	 * private static const MY_CUSTOM_FONT:Class;</listing>
-	 * 
+	 *
 	 * <p>The <code>source</code> field should point to the font file, relative
 	 * to the current <code>.as</code> file that contains the metadata.</p>
-	 * 
+	 *
 	 * <p>Set the <code>fontFamily</code> field to the string value that you
 	 * want to use when referencing this font in code. For example, you would
 	 * use this name when you create a <code>starling.text.TextFormat</code>
 	 * object. Replace "MyCustomFont" with an appropriate name for your font.</p>
-	 * 
+	 *
 	 * <p><strong>Tip:</strong> For best results, try not to set the exact same
 	 * name in the <code>fontFamily</code> field as the name of device font
 	 * installed on your system. Debugging embedded font issues can be
@@ -93,13 +93,13 @@ package feathers.controls.text
 	 * doesn't exist on your development computer, you'll see when something is
 	 * wrong immediately, instead of discovering it later when you're testing
 	 * on other devices.</p>
-	 * 
+	 *
 	 * <p>If the font is bold, set the <code>fontWeight</code> field to "bold".
 	 * Otherwise, set it to "normal".</p>
-	 * 
+	 *
 	 * <p>If the font is italic, set the <code>fontStyle</code> field to
 	 * "italic". Otherwise, set it to "normal".</p>
-	 * 
+	 *
 	 * <p>Since the text renderer is based on <code>flash.text.TextField</code>,
 	 * you <strong>must</strong> set the <code>embedAsCFF</code> field to
 	 * "false".</p>
@@ -440,7 +440,7 @@ package feathers.controls.text
 		 * <code>starling.text.TextFormat</code> cannot be used on the parent
 		 * component because the full capabilities of
 		 * <code>flash.text.TextField</code> are required.
-		 * 
+		 *
 		 * The font and styles used to draw the text when the
 		 * <code>stateContext</code> implements the <code>IToggle</code>
 		 * interface, and it is selected.
@@ -497,13 +497,13 @@ package feathers.controls.text
 		 * var heading:Object = new Object();
 		 * heading.fontWeight = "bold";
 		 * heading.color = "#FF0000";
-		 *
+		 * 
 		 * var body:Object = new Object();
 		 * body.fontStyle = "italic";
-		 *
+		 * 
 		 * style.setStyle(".heading", heading);
 		 * style.setStyle("body", body);
-		 *
+		 * 
 		 * textRenderer.styleSheet = style;
 		 * textRenderer.isHTML = true;
 		 * textRenderer.text = "&lt;body&gt;&lt;span class='heading'&gt;Hello&lt;/span&gt; World...&lt;/body&gt;";</listing>
@@ -1111,7 +1111,7 @@ package feathers.controls.text
 		 * <code>flash.text.TextField</code> will be used in measurement and
 		 * layout. To visually align with other text renderers and text editors,
 		 * it is often best to leave the gutter disabled.
-		 * 
+		 *
 		 * <p>Returns <code>true</code> if the <code>border</code> property is
 		 * <code>true</code>.</p>
 		 *
@@ -1360,13 +1360,13 @@ package feathers.controls.text
 						yPosition += currentBitmapHeight;
 						totalBitmapHeight -= currentBitmapHeight;
 					}
-					while(totalBitmapHeight > 0)
+					while(totalBitmapHeight > 0);
 					xPosition += currentBitmapWidth;
 					totalBitmapWidth -= currentBitmapWidth;
 					yPosition = offsetY;
 					totalBitmapHeight = this._snapshotHeight;
 				}
-				while(totalBitmapWidth > 0)
+				while(totalBitmapWidth > 0);
 			}
 			super.render(painter);
 		}
@@ -1505,7 +1505,7 @@ package feathers.controls.text
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshTextFormat();
@@ -1696,7 +1696,7 @@ package feathers.controls.text
 			{
 				this._previousActualWidth = this.actualWidth;
 				this._previousActualHeight = this.actualHeight;
-				//we're going to update the texture in render() because 
+				//we're going to update the texture in render() because
 				//there's a chance that it will be updated more than once per
 				//frame if we do it here.
 				this._needsTextureUpdate = true;
@@ -2068,7 +2068,7 @@ package feathers.controls.text
 					{
 						//skip Texture.fromBitmapData() because we don't want
 						//it to create an onRestore function that will be
-						//immediately discarded for garbage collection. 
+						//immediately discarded for garbage collection.
 						newTexture = Texture.empty(bitmapData.width / scaleFactor, bitmapData.height / scaleFactor,
 							true, false, false, scaleFactor);
 						newTexture.root.uploadBitmapData(bitmapData);
@@ -2082,7 +2082,7 @@ package feathers.controls.text
 						}
 						else if(this.textSnapshots.length > snapshotIndex)
 						{
-							snapshot = this.textSnapshots[snapshotIndex]
+							snapshot = this.textSnapshots[snapshotIndex];
 						}
 					}
 					else
@@ -2141,13 +2141,13 @@ package feathers.controls.text
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
 				}
-				while(totalBitmapHeight > 0)
+				while(totalBitmapHeight > 0);
 				xPosition += currentBitmapWidth;
 				totalBitmapWidth -= currentBitmapWidth;
 				yPosition = 0;
 				totalBitmapHeight = this._snapshotHeight;
 			}
-			while(totalBitmapWidth > 0)
+			while(totalBitmapWidth > 0);
 			bitmapData.dispose();
 			if(this.textSnapshots)
 			{

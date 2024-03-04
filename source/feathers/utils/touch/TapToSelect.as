@@ -36,7 +36,7 @@ package feathers.utils.touch
 	 *         super();
 	 *         this._tapToSelect = new TapToSelect(this);
 	 *     }
-	 *     
+	 * 
 	 *     private var _tapToSelect:TapToSelect;
 	 * }</listing>
 	 *
@@ -44,7 +44,7 @@ package feathers.utils.touch
 	 * <code>TapToSelect</code> instance should be created second because
 	 * <code>Event.TRIGGERED</code> should be dispatched before
 	 * <code>Event.CHANGE</code>.</p>
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 * @see feathers.utils.touch.LongPress
 	 *
@@ -162,11 +162,11 @@ package feathers.utils.touch
 		 * In addition to a normal call to <code>hitTest()</code>, a custom
 		 * function may impose additional rules that determine if the target
 		 * should be selected. Called on <code>TouchPhase.BEGAN</code>.
-		 * 
+		 *
 		 * <p>The function must have the following signature:</p>
-		 * 
+		 *
 		 * <pre>function(localPosition:Point):Boolean;</pre>
-		 * 
+		 *
 		 * <p>The function should return <code>true</code> if the target should
 		 * be selected, and <code>false</code> if it should not be selected.</p>
 		 */

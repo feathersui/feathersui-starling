@@ -62,7 +62,7 @@ package feathers.core
 		 * The internal font styles used to render the text that are passed down
 		 * from the parent component. Generally, most developers will set font
 		 * styles on the parent component.
-		 * 
+		 *
 		 * <p>Warning: The <code>fontStyles</code> property may be ignored if
 		 * more advanced styles defined by the text renderer implementation have
 		 * been set.</p>

@@ -35,7 +35,7 @@ package feathers.utils.keyboard
 	 *         this._keyToEvent = new KeyToEvent(this, Event.TRIGGERED);
 	 *         this._keyToEvent.keyCode = Keyboard.SPACE;
 	 *     }
-	 *     
+	 * 
 	 *     private var _keyToEvent:KeyToEvent;
 	 * // ...</listing>
 	 *
@@ -284,7 +284,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			this._stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
@@ -305,7 +305,7 @@ package feathers.utils.keyboard
 			if(this._keyLocation != uint.MAX_VALUE &&
 				!((event.keyLocation == this._keyLocation) || (this._keyLocation == 4 && DeviceCapabilities.simulateDPad)))
 			{
-				return;	
+				return;
 			}
 			var stage:Stage = Stage(event.currentTarget);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);

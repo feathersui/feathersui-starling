@@ -55,7 +55,7 @@ package feathers.layout
 			super();
 			if(Object(this).constructor == BaseTiledLayout)
 			{
-				throw new AbstractClassError()
+				throw new AbstractClassError();
 			}
 		}
 
@@ -393,7 +393,7 @@ package feathers.layout
 		/**
 		 * If the total column height is less than the bounds, the items in the
 		 * column can be aligned vertically.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> VerticalAlign.JUSTIFY is not supported.
 		 * The <code>distributeHeights</code> property may be used to fill the
 		 * available space when the content is not large enough.</p>
@@ -433,7 +433,7 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> HorizontalAlign.JUSTIFY is not supported.
 		 * The <code>distributeWidths</code> property may be used to fill the
 		 * available space when the content is not large enough.</p>
@@ -579,13 +579,13 @@ package feathers.layout
 		 * If the total width of the tiles in a row (minus padding and gap)
 		 * does not fill the entire row, the remaining space will be distributed
 		 * to each tile equally.
-		 * 
+		 *
 		 * <p>If the container using the layout might resize, setting
 		 * <code>requestedColumnCount</code> is recommended because the tiles
 		 * will resize too, and their dimensions may not be reset.</p>
 		 *
 		 * @default false
-		 * 
+		 *
 		 * @see #requestedColumnCount
 		 */
 		public function get distributeWidths():Boolean
@@ -873,5 +873,5 @@ package feathers.layout
 		{
 			return this._useVirtualLayout;
 		}
-	}	
+	}
 }

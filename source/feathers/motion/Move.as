@@ -17,7 +17,7 @@ package feathers.motion
 	/**
 	 * An effect that animates a component's <code>x</code> and <code>y</code>
 	 * position.
-	 * 
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
 	 *
 	 * @productversion Feathers 3.5.0
@@ -28,7 +28,7 @@ package feathers.motion
 		 * Creates an effect function for the target component that animates
 		 * its x and y position when they are changed. Must be used with
 		 * the <code>moveEffect</code> property.
-		 * 
+		 *
 		 * @see feathers.core.FeathersControl#moveEffect
 		 *
 		 * @productversion Feathers 3.5.0
@@ -41,7 +41,7 @@ package feathers.motion
 				var context:TweenMoveEffectContext = new TweenMoveEffectContext(target, tween);
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -50,7 +50,7 @@ package feathers.motion
 		 * location.
 		 *
 		 * @productversion Feathers 3.5.0
-		 * 
+		 *
 		 * @see #createMoveXToEffect()
 		 * @see #createMoveYToEffect()
 		 */
@@ -66,7 +66,7 @@ package feathers.motion
 				context.newY = toY;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -88,7 +88,7 @@ package feathers.motion
 				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -110,7 +110,7 @@ package feathers.motion
 				context.newY = toY;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -119,7 +119,7 @@ package feathers.motion
 		 * current location.
 		 *
 		 * @productversion Feathers 3.5.0
-		 * 
+		 *
 		 * @see #createMoveXFromEffect()
 		 * @see #createMoveYFromEffect()
 		 */
@@ -135,7 +135,7 @@ package feathers.motion
 				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -157,7 +157,7 @@ package feathers.motion
 				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -179,7 +179,7 @@ package feathers.motion
 				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -188,7 +188,7 @@ package feathers.motion
 		 * location calculated by an offset.
 		 *
 		 * @productversion Feathers 3.5.0
-		 * 
+		 *
 		 * @see #createMoveXByEffect()
 		 * @see #createMoveYByEffect()
 		 */
@@ -204,7 +204,7 @@ package feathers.motion
 				context.newY = target.y + yBy;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -226,7 +226,7 @@ package feathers.motion
 				context.newY = target.y;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 
 		/**
@@ -248,7 +248,7 @@ package feathers.motion
 				context.newY = target.y + yBy;
 				context.interruptBehavior = interruptBehavior;
 				return context;
-			}
+			};
 		}
 	}
 }

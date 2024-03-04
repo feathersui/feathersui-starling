@@ -39,9 +39,9 @@ package feathers.motion.effectClasses
 
 	/**
 	 * Gives a component the ability to control an effect.
-	 * 
+	 *
 	 * @see ../../../help/effects.html Effects and animation for Feathers components
-	 * 
+	 *
 	 * @productversion Feathers 3.5.0
 	 */
 	public interface IEffectContext extends IFeathersEventDispatcher
@@ -58,7 +58,7 @@ package feathers.motion.effectClasses
 
 		/**
 		 * The position of the effect, from <code>0</code> to <code>1</code>.
-		 * 
+		 *
 		 * @see #duration
 		 */
 		function get position():Number;
@@ -70,7 +70,7 @@ package feathers.motion.effectClasses
 
 		/**
 		 * Starts playing the effect from its current position to the end.
-		 * 
+		 *
 		 * @see #pause()
 		 */
 		function play():void;
@@ -90,7 +90,7 @@ package feathers.motion.effectClasses
 		 * Stops the effect at its current position and forces
 		 * <code>Event.COMPLETE</code> to dispatch. The <code>data</code>
 		 * property of the event will be <code>true</code>.
-		 * 
+		 *
 		 * @see #toEnd()
 		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
@@ -100,7 +100,7 @@ package feathers.motion.effectClasses
 		 * Advances the effect to the end and forces
 		 * <code>Event.COMPLETE</code> to dispatch. The <code>data</code>
 		 * property of the event will be <code>false</code>.
-		 * 
+		 *
 		 * @see #stop()
 		 * @see #event:complete starling.events.Event.COMPLETE
 		 */
@@ -110,10 +110,10 @@ package feathers.motion.effectClasses
 		 * Interrupts the playing effect, but the effect context will be allowed
 		 * to determine on its own if it should call <code>stop()</code> or
 		 * <code>toEnd()</code>.
-		 * 
+		 *
 		 * @see #toEnd()
 		 * @see #stop()
 		 */
 		function interrupt():void;
-	}	
+	}
 }

@@ -31,7 +31,7 @@ package feathers.controls.renderers
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
-	 * 
+	 *
 	 * @see feathers.utils.touch.TapToTrigger
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
@@ -51,12 +51,12 @@ package feathers.controls.renderers
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get data():Object;
-		
+
 		/**
 		 * @private
 		 */
 		function set data(value:Object):void;
-		
+
 		/**
 		 * The index of the item's parent group within the data provider of the
 		 * grouped list.
@@ -64,7 +64,7 @@ package feathers.controls.renderers
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get groupIndex():int;
-		
+
 		/**
 		 * @private
 		 */
@@ -93,14 +93,14 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		function set layoutIndex(value:int):void;
-		
+
 		/**
 		 * The grouped list that contains this item renderer.
 		 *
 		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get owner():GroupedList;
-		
+
 		/**
 		 * @private
 		 */

@@ -3059,9 +3059,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -3092,9 +3093,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -3125,9 +3127,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._iconLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
@@ -3346,9 +3349,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.format;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.format = value;
 			if(value !== null)
@@ -3379,9 +3383,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.disabledFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.disabledFormat = value;
 			if(value !== null)
@@ -3412,9 +3417,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(savedCallee);
 			}
-			if(value !== null)
+			var oldValue:TextFormat = this._accessoryLabelFontStylesSet.selectedFormat;
+			if(oldValue !== null)
 			{
-				value.removeEventListener(Event.CHANGE, changeHandler);
+				oldValue.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.selectedFormat = value;
 			if(value !== null)
@@ -4099,9 +4105,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._iconLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._iconLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -4159,9 +4166,10 @@ package feathers.controls.renderers
 			{
 				processStyleRestriction(key);
 			}
-			if(format !== null)
+			var oldFormat:TextFormat = this._accessoryLabelFontStylesSet.getFormatForState(state);
+			if(oldFormat !== null)
 			{
-				format.removeEventListener(Event.CHANGE, changeHandler);
+				oldFormat.removeEventListener(Event.CHANGE, changeHandler);
 			}
 			this._accessoryLabelFontStylesSet.setFormatForState(state, format);
 			if(format !== null)
@@ -4275,7 +4283,7 @@ package feathers.controls.renderers
 			{
 				IValidating(this.currentAccessory).validate();
 			}
-			
+
 			resetFluidChildDimensionsForMeasurement(this.currentSkin,
 				this._explicitWidth, this._explicitHeight,
 				this._explicitMinWidth, this._explicitMinHeight,
@@ -4284,7 +4292,7 @@ package feathers.controls.renderers
 				this._explicitSkinMinWidth, this._explicitSkinMinHeight,
 				this._explicitSkinMaxWidth, this._explicitSkinMaxHeight);
 			var measureSkin:IMeasureDisplayObject = this.currentSkin as IMeasureDisplayObject;
-			
+
 			var newWidth:Number = this._explicitWidth;
 			if(needsWidth)
 			{
@@ -4534,7 +4542,6 @@ package feathers.controls.renderers
 			return width;
 		}
 
-
 		/**
 		 * @private
 		 */
@@ -4609,7 +4616,7 @@ package feathers.controls.renderers
 					//isNaN() can allocate an object that needs garbage collection.
 					if(this._accessoryGap !== this._accessoryGap) //isNaN
 					{
-						adjustedAccessoryGap =  this._gap;
+						adjustedAccessoryGap = this._gap;
 					}
 					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
