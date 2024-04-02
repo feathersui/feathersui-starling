@@ -2146,7 +2146,7 @@ package feathers.controls.supportClasses
 					{
 						horizontalScrollPosition = this._owner.maxHorizontalScrollPosition;
 					}
-					else if(verticalScrollPosition < this._owner.minHorizontalScrollPosition)
+					else if(horizontalScrollPosition < this._owner.minHorizontalScrollPosition)
 					{
 						horizontalScrollPosition = this._owner.minHorizontalScrollPosition;
 					}
