@@ -354,6 +354,7 @@ package feathers.motion.effectClasses
 		protected function playTween_onComplete():void
 		{
 			this._playTween = null;
+			this._playing = false;
 			this.cleanupEffect();
 			this.dispatchEventWith(Event.COMPLETE, false, false);
 		}
