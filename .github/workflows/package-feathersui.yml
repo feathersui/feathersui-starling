@@ -13,8 +13,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: 11
           distribution: "temurin"
@@ -37,7 +37,7 @@ jobs:
       - name: Ant Build
         run: |
           ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="/usr/local/bin/flashplayer"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: feathersui-starling
           path: output
