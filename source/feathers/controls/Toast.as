@@ -688,10 +688,14 @@ package feathers.controls
 		{
 			if(starling in Toast._containers)
 			{
-				return DisplayObjectContainer(Toast._containers[starling]);
+				var container:DisplayObjectContainer = DisplayObjectContainer(Toast._containers[starling]);
+				// always move it to the top, so that new toasts don't appear
+				// behind other pop-ups added after the first toast
+				container.parent.setChildIndex(container, container.parent.numChildren - 1);
+				return container;
 			}
 			var factory:Function = Toast._containerFactory !== null ? Toast._containerFactory : defaultContainerFactory;
-			var container:DisplayObjectContainer = DisplayObjectContainer(factory());
+			container = DisplayObjectContainer(factory());
 			Toast._containers[starling] = container;
 			container.addEventListener(Event.REMOVED_FROM_STAGE, function(event:Event):void
 			{
