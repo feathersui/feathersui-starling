@@ -8,4 +8,4 @@ This theme's texture atlas was exported from Adobe Animate CC. To modify colors 
 
 ## Credits
 
-The Aeon theme is originally designed by Adobe Systems Incorporated. Contains modifications by [Josh Tynjala](http://twitter.com/joshtynjala).
+The Aeon theme is originally designed by Adobe Systems Incorporated. Contains modifications by [Josh Tynjala](https://joshblog.net/).

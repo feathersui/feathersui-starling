@@ -8,4 +8,4 @@ This theme's texture atlas was exported from Adobe Animate CC. To modify colors 
 
 ## Credits
 
-This theme is based on the appearance of [MinimalComps](http://minimalcomps.com/), a great set of Flash user interface components created by [Keith Peters](http://bit-101.com/). With permission, the theme was ported to Feathers by [Josh Tynjala](http://twitter.com/joshtynjala). This theme uses the free Ronda Seven font, designed by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/).
+This theme is based on the appearance of [MinimalComps](https://github.com/minimalcomps/minimalcomps/), a great set of Flash user interface components created by [Keith Peters](https://bit-101.com/). With permission, the theme was ported to Feathers by [Josh Tynjala](https://joshblog.net/). This theme uses the free Ronda Seven font, designed by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/).

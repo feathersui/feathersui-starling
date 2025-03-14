@@ -8,4 +8,4 @@ This theme's texture atlas was exported from Adobe Animate CC. To modify colors 
 
 ## Credits
 
-Created exclusively for Feathers by [Josh Tynjala](http://twitter.com/joshtynjala). Uses the open source font [Source Sans Pro](https://github.com/adobe/Source-Sans-Pro) created by Adobe Systems Incorporated.
+Created exclusively for Feathers by [Josh Tynjala](https://joshblog.net/). Uses the open source font [Source Sans Pro](https://github.com/adobe/Source-Sans-Pro) created by Adobe Systems Incorporated.
