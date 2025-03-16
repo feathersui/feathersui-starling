@@ -1089,17 +1089,22 @@ package feathers.controls
 					calculatedHeight = this._originalFillHeight;
 					//if the size is too small, and the value is equal to the
 					//minimum, people don't expect to see the fill
+					if(this.currentFill)
 					this.currentFill.visible = this._value > this._minimum;
 				}
 				else
 				{
 					//if it was hidden before, we want to show it again
+					if(this.currentFill)
 					this.currentFill.visible = true;
 				}
-				this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.currentFill.height = calculatedHeight;
-				this.currentFill.x = this._paddingLeft;
-				this.currentFill.y = this.actualHeight - this._paddingBottom - this.currentFill.height;
+				if(this.currentFill){
+					this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+					this.currentFill.height = calculatedHeight;
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this.actualHeight - this._paddingBottom - this.currentFill.height;
+				}
+
 			}
 			else //horizontal
 			{
@@ -1109,17 +1114,21 @@ package feathers.controls
 					calculatedWidth = this._originalFillWidth;
 					//if the size is too small, and the value is equal to the
 					//minimum, people don't expect to see the fill
+					if(this.currentFill)
 					this.currentFill.visible = this._value > this._minimum;
 				}
 				else
 				{
 					//if it was hidden before, we want to show it again
+					if(this.currentFill)
 					this.currentFill.visible = true;
 				}
-				this.currentFill.width = calculatedWidth;
-				this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-				this.currentFill.x = this._paddingLeft;
-				this.currentFill.y = this._paddingTop;
+				if(this.currentFill){
+					this.currentFill.width = calculatedWidth;
+					this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this._paddingTop;
+				}
 			}
 		}
 	}
