@@ -7,6 +7,7 @@
 	<property file="./sdk.local.properties"/>
 	<property file="./build.properties"/>
 	<!-- inherit SDK properties from the root of the repository -->
+	<property file="../../sdk.local.properties"/>
 	<property file="../../sdk.properties"/>
 
 	<target name="build" depends="-build-swf"/>

@@ -7,10 +7,8 @@
 	<property file="./sdk.local.properties"/>
 	<property file="./build.properties"/>
 	<!-- inherit SDK properties from the root of the repository -->
+	<property file="../../sdk.local.properties"/>
 	<property file="../../sdk.properties"/>
-	
-	<fail unless="certificate.path" message="Must define certificate.path in build.local.properties to sign AIR application"/>
-	<fail unless="certificate.password" message="Must define certificate.password in build.local.properties to sign AIR application"/>
 
 	<target name="build" depends="build-desktop"/>
 
@@ -31,7 +29,11 @@
 			<arg value="-output=${output.path}/Video.swf"/>
 		</java>
 	</target>
-	<target name="build-desktop" depends="build-air-swf">
+	<target name="-check-desktop-properties">
+		<fail unless="certificate.path" message="Must define certificate.path in build.local.properties to sign AIR application"/>
+		<fail unless="certificate.password" message="Must define certificate.password in build.local.properties to sign AIR application"/>
+	</target>
+	<target name="build-desktop" depends="-check-desktop-properties,build-air-swf">
 		<echo message="Packaging Video"/>
 		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-package"/>

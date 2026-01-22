@@ -7,14 +7,8 @@
 	<property file="./sdk.local.properties"/>
 	<property file="./build.properties"/>
 	<!-- inherit SDK properties from the root of the repository -->
+	<property file="../../sdk.local.properties"/>
 	<property file="../../sdk.properties"/>
-	
-	<fail unless="ios.provision.path"/>
-	<fail unless="ios.certificate.path"/>
-	<fail unless="ios.certificate.password"/>
-	
-	<fail unless="android.certificate.path"/>
-	<fail unless="android.certificate.password"/>
 
 	<target name="build" depends="build-web,build-android,build-ios"/>
 
@@ -50,7 +44,12 @@
 			<arg value="-output=${output.path}/LayoutExplorer.swf"/>
 		</java>
 	</target>
-	<target name="build-ios" depends="build-air-swf">
+	<target name="-check-ios-properties">
+		<fail unless="ios.provision.path"/>
+		<fail unless="ios.certificate.path"/>
+		<fail unless="ios.certificate.password"/>
+	</target>
+	<target name="build-ios" depends="-check-ios-properties,build-air-swf">
 		<echo message="Packaging LayoutExplorer.ipa"/>
 		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-package"/>
@@ -93,7 +92,11 @@
 			<arg value="LayoutExplorer.swf"/>
 		</java>
 	</target>
-	<target name="build-android" depends="build-air-swf">
+	<target name="-check-android-properties">
+		<fail unless="android.certificate.path"/>
+		<fail unless="android.certificate.password"/>
+	</target>
+	<target name="build-android" depends="-check-android-properties,build-air-swf">
 		<echo message="Packaging LayoutExplorer.apk"/>
 		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-package"/>
