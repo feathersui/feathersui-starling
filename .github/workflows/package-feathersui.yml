@@ -37,6 +37,62 @@ jobs:
       - name: Ant Build
         run: |
           ant full -Dflashsdk.root="${{ env.AIR_HOME }}" -Dstarling.root="$GITHUB_WORKSPACE/starling/starling/src" -Dflexunit.root="$GITHUB_WORKSPACE/flexunit" -Dflashplayer="/usr/local/bin/flashplayer"
+      - name: Example Ant Build - ComponentsExplorer
+        working-directory: examples/ComponentsExplorer
+        run: |
+          ant build-web
+      - name: Example Ant Build - DragAndDrop
+        working-directory: examples/DragAndDrop
+        run: |
+          ant build
+      - name: Example Ant Build - DrawersExplorer
+        working-directory: examples/DrawersExplorer
+        run: |
+          ant build-web
+      - name: Example Ant Build - HelloWorld
+        working-directory: examples/HelloWorld
+        run: |
+          ant build-web
+      - name: Example Ant Build - LayoutExplorer
+        working-directory: examples/LayoutExplorer
+        run: |
+          ant build-web
+      - name: Example Ant Build - Magic8Chat
+        working-directory: examples/Magic8Chat
+        run: |
+          ant build-web
+      - name: Example Ant Build - PullToRefresh
+        working-directory: examples/PullToRefresh
+        run: |
+          ant build-web
+      - name: Example Ant Build - StackScreenNavigatorExplorer
+        working-directory: examples/StackScreenNavigatorExplorer
+        run: |
+          ant build-web
+      - name: Example Ant Build - Tabs
+        working-directory: examples/Tabs
+        run: |
+          ant build-web
+      - name: Example Ant Build - TileList
+        working-directory: examples/TileList
+        run: |
+          ant build-web
+      - name: Example Ant Build - Todos
+        working-directory: examples/Todos
+        run: |
+          ant build-web
+      - name: Example Ant Build - TrainTimes
+        working-directory: examples/TrainTimes
+        run: |
+          ant build-web
+      - name: Example Ant Build - TransitionsExplorer
+        working-directory: examples/TransitionsExplorer
+        run: |
+          ant build-web
+      - name: Example Ant Build - YouTubeFeeds
+        working-directory: examples/YouTubeFeeds
+        run: |
+          ant build-web -Dyoutube.api.key=abc123
       - uses: actions/upload-artifact@v4
         with:
           name: feathersui-starling
