@@ -2,8 +2,6 @@ name: Package Feathers UI for Starling
 
 on:
   push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
