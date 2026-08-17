@@ -10,7 +10,7 @@ package feathers.motion.effectClasses
 	/**
 	 * Gives a component the ability to control a resize effect.
 	 *
-	 * @see ../../../help/effects.html Effects and animation for Feathers components
+	 * @see ../../../../help/effects.html Effects and animation for Feathers components
 	 */
 	public interface IResizeEffectContext extends IEffectContext
 	{
