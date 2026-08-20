@@ -1,7 +1,7 @@
 {
   "id": "feathersui-source",
   "name": "feathersui-source",
-  "url": "https://feathersui.com/as3-starling/",
+  "url": "https://feathersui.com/learn/as3-starling/",
   "docUrl": "https://feathersui/api-reference/",
   "description": "Cross-platform user interface components for creative frontend projects built with Starling",
   "type": "src",

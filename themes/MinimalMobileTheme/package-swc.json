@@ -1,7 +1,7 @@
 {
 	"id": "feathersui_MinimalMobileTheme",
 	"name": "Feathers UI Minimal Mobile Theme",
-	"url": "https://feathersui.com/as3-starling/",
+	"url": "https://feathersui.com/learn/as3-starling/",
 	"docUrl": "https://feathersui/api-reference/",
 	"description": "Minimal mobile theme for Feathers UI (Starling version)",
 	"type": "swc",
