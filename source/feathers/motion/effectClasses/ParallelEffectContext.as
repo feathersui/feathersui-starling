@@ -21,7 +21,7 @@ package feathers.motion.effectClasses
 		/**
 		 * Constructor.
 		 */
-		public function ParallelEffectContext(target:DisplayObject, functions:Array)
+		public function ParallelEffectContext(target:DisplayObject, functions:Array, transition:Object = null)
 		{
 			var duration:Number = 0;
 			var count:int = functions.length;
@@ -36,7 +36,7 @@ package feathers.motion.effectClasses
 					duration = contextDuration;
 				}
 			}
-			super(target, duration);
+			super(target, duration, transition);
 		}
 
 		/**

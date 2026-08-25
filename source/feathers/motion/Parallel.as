@@ -37,5 +37,24 @@ package feathers.motion
 				return new ParallelEffectContext(target, rest);
 			};
 		}
+
+		/**
+		 * Creates an effect function that combines multiple effect functions
+		 * that will play at the same time, in parallel. The ease function 
+		 * will apply to the full duration of the effect, which will be the 
+		 * longest duration of the parallel effects.
+		 *
+		 * @productversion Feathers 3.5.0
+		 */
+		public static function createParallelEffectWithEasing(ease:Object, effect1:Function, effect2:Function, ...rest:Array):Function
+		{
+			//the order doesn't matter, so just add them at the end
+			rest[rest.length] = effect1;
+			rest[rest.length] = effect2;
+			return function(target:DisplayObject):IEffectContext
+			{
+				return new ParallelEffectContext(target, rest, ease);
+			};
+		}
 	}
 }
